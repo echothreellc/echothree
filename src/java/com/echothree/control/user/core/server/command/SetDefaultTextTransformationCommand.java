@@ -61,8 +61,8 @@ public class SetDefaultTextTransformationCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String textTransformationName = form.getTextTransformationName();
-        TextTransformationDetailValue textTransformationDetailValue = coreControl.getTextTransformationDetailValueByNameForUpdate(textTransformationName);
+        var textTransformationName = form.getTextTransformationName();
+        var textTransformationDetailValue = coreControl.getTextTransformationDetailValueByNameForUpdate(textTransformationName);
         
         if(textTransformationDetailValue != null) {
             textTransformationDetailValue.setIsDefault(Boolean.TRUE);

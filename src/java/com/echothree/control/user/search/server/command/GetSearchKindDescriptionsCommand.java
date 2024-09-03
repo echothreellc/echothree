@@ -65,9 +65,9 @@ public class GetSearchKindDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var searchControl = Session.getModelController(SearchControl.class);
-        GetSearchKindDescriptionsResult result = SearchResultFactory.getGetSearchKindDescriptionsResult();
-        String searchKindName = form.getSearchKindName();
-        SearchKind searchKind = searchControl.getSearchKindByName(searchKindName);
+        var result = SearchResultFactory.getGetSearchKindDescriptionsResult();
+        var searchKindName = form.getSearchKindName();
+        var searchKind = searchControl.getSearchKindByName(searchKindName);
         
         if(searchKind != null) {
             result.setSearchKind(searchControl.getSearchKindTransfer(getUserVisit(), searchKind));

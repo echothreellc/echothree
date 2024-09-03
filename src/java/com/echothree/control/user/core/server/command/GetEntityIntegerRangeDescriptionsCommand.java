@@ -72,28 +72,28 @@ public class GetEntityIntegerRangeDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        GetEntityIntegerRangeDescriptionsResult result = CoreResultFactory.getGetEntityIntegerRangeDescriptionsResult();
-        String componentVendorName = form.getComponentVendorName();
-        ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+        var result = CoreResultFactory.getGetEntityIntegerRangeDescriptionsResult();
+        var componentVendorName = form.getComponentVendorName();
+        var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
         
         if(componentVendor != null) {
-            String entityTypeName = form.getEntityTypeName();
-            EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+            var entityTypeName = form.getEntityTypeName();
+            var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
             
             if(entityType != null) {
-                String entityAttributeName = form.getEntityAttributeName();
-                EntityAttribute entityAttribute = coreControl.getEntityAttributeByName(entityType, entityAttributeName);
+                var entityAttributeName = form.getEntityAttributeName();
+                var entityAttribute = coreControl.getEntityAttributeByName(entityType, entityAttributeName);
                 
                 if(entityAttribute != null) {
-                    EntityAttributeType entityAttributeType = entityAttribute.getLastDetail().getEntityAttributeType();
-                    String entityAttributeTypeName = entityAttributeType.getEntityAttributeTypeName();
+                    var entityAttributeType = entityAttribute.getLastDetail().getEntityAttributeType();
+                    var entityAttributeTypeName = entityAttributeType.getEntityAttributeTypeName();
                     
                     if(entityAttributeTypeName.equals(EntityAttributeTypes.INTEGER.name())) {
-                        String entityIntegerRangeName = form.getEntityIntegerRangeName();
-                        EntityIntegerRange entityIntegerRange = coreControl.getEntityIntegerRangeByName(entityAttribute, entityIntegerRangeName);
+                        var entityIntegerRangeName = form.getEntityIntegerRangeName();
+                        var entityIntegerRange = coreControl.getEntityIntegerRangeByName(entityAttribute, entityIntegerRangeName);
                         
                         if(entityIntegerRange != null) {
-                            UserVisit userVisit = getUserVisit();
+                            var userVisit = getUserVisit();
                             
                             result.setEntityIntegerRange(coreControl.getEntityIntegerRangeTransfer(userVisit, entityIntegerRange, null));
                             result.setEntityIntegerRangeDescriptions(coreControl.getEntityIntegerRangeDescriptionTransfersByEntityIntegerRange(userVisit, entityIntegerRange, null));

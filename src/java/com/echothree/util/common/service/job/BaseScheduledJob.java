@@ -50,7 +50,7 @@ public abstract class BaseScheduledJob {
 
     private void startJob(UserVisitPK userVisitPK)
             throws NamingException {
-        StartJobForm commandForm = JobUtil.getHome().getStartJobForm();
+        var commandForm = JobUtil.getHome().getStartJobForm();
 
         commandForm.setJobName(jobName);
 
@@ -59,7 +59,7 @@ public abstract class BaseScheduledJob {
 
     private void endJob(UserVisitPK userVisitPK)
             throws NamingException {
-        EndJobForm commandForm = JobUtil.getHome().getEndJobForm();
+        var commandForm = JobUtil.getHome().getEndJobForm();
 
         commandForm.setJobName(jobName);
 
@@ -68,17 +68,17 @@ public abstract class BaseScheduledJob {
 
     public void executeJob()
             throws NamingException {
-        GetJobUserVisitForm commandForm = AuthenticationUtil.getHome().getGetJobUserVisitForm();
+        var commandForm = AuthenticationUtil.getHome().getGetJobUserVisitForm();
 
         commandForm.setJobName(jobName);
 
-        CommandResult commandResult = AuthenticationUtil.getHome().getJobUserVisit(commandForm);
+        var commandResult = AuthenticationUtil.getHome().getJobUserVisit(commandForm);
 
         if(commandResult.hasErrors()) {
             getLog().error(commandResult);
         } else {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetJobUserVisitResult getJobUserVisitResult = (GetJobUserVisitResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var getJobUserVisitResult = (GetJobUserVisitResult)executionResult.getResult();
 
             userVisitPK = getJobUserVisitResult.getUserVisitPK();
 

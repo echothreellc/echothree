@@ -49,14 +49,14 @@ public class EntityAttributeGroupTransferCache
     }
     
     public EntityAttributeGroupTransfer getEntityAttributeGroupTransfer(EntityAttributeGroup entityAttributeGroup, EntityInstance entityInstance) {
-        EntityAttributeGroupTransfer entityAttributeGroupTransfer = get(entityAttributeGroup);
+        var entityAttributeGroupTransfer = get(entityAttributeGroup);
         
         if(entityAttributeGroupTransfer == null) {
-            EntityAttributeGroupDetail entityAttributeGroupDetail = entityAttributeGroup.getLastDetail();
-            String entityAttributeGroupName = entityAttributeGroupDetail.getEntityAttributeGroupName();
-            Boolean isDefault = entityAttributeGroupDetail.getIsDefault();
-            Integer sortOrder = entityAttributeGroupDetail.getSortOrder();
-            String description = coreControl.getBestEntityAttributeGroupDescription(entityAttributeGroup, getLanguage());
+            var entityAttributeGroupDetail = entityAttributeGroup.getLastDetail();
+            var entityAttributeGroupName = entityAttributeGroupDetail.getEntityAttributeGroupName();
+            var isDefault = entityAttributeGroupDetail.getIsDefault();
+            var sortOrder = entityAttributeGroupDetail.getSortOrder();
+            var description = coreControl.getBestEntityAttributeGroupDescription(entityAttributeGroup, getLanguage());
             
             entityAttributeGroupTransfer = new EntityAttributeGroupTransfer(entityAttributeGroupName, isDefault, sortOrder, description);
             if(entityInstance == null) {
@@ -67,9 +67,9 @@ public class EntityAttributeGroupTransferCache
             
             if(includeEntityAttributes) {
                 if(entityInstance != null) {
-                    List<EntityAttributeTransfer> entityAttributeTransfers = coreControl.getEntityAttributeTransfersByEntityAttributeGroupAndEntityType(userVisit,
+                    var entityAttributeTransfers = coreControl.getEntityAttributeTransfersByEntityAttributeGroupAndEntityType(userVisit,
                             entityAttributeGroup, entityInstance.getEntityType(), entityInstance);
-                    MapWrapper<EntityAttributeTransfer> mapWrapper = new MapWrapper<>(entityAttributeTransfers.size());
+                    var mapWrapper = new MapWrapper<EntityAttributeTransfer>(entityAttributeTransfers.size());
 
                     entityAttributeTransfers.forEach((entityAttributeTransfer) -> {
                         mapWrapper.put(entityAttributeTransfer.getEntityAttributeName(), entityAttributeTransfer);

@@ -62,8 +62,8 @@ public class GetContentCategoryCommand
     
     @Override
     protected ContentCategory getEntity() {
-        String contentWebAddressName = form.getContentWebAddressName();
-        String contentCollectionName = form.getContentCollectionName();
+        var contentWebAddressName = form.getContentWebAddressName();
+        var contentCollectionName = form.getContentCollectionName();
         var parameterCount = (contentWebAddressName == null ? 0 : 1) + (contentCollectionName == null ? 0 : 1);
         ContentCategory contentCategory = null;
 
@@ -72,7 +72,7 @@ public class GetContentCategoryCommand
             ContentCollection contentCollection = null;
 
             if(contentWebAddressName != null) {
-                ContentWebAddress contentWebAddress = contentControl.getContentWebAddressByName(contentWebAddressName);
+                var contentWebAddress = contentControl.getContentWebAddressByName(contentWebAddressName);
 
                 if(contentWebAddress != null) {
                     contentCollection = contentWebAddress.getLastDetail().getContentCollection();
@@ -88,11 +88,11 @@ public class GetContentCategoryCommand
             }
 
             if(!hasExecutionErrors()) {
-                String contentCatalogName = form.getContentCatalogName();
-                String contentCategoryName = form.getContentCategoryName();
+                var contentCatalogName = form.getContentCatalogName();
+                var contentCategoryName = form.getContentCategoryName();
                 var partyPK = getPartyPK();
 
-                ContentCatalog contentCatalog = contentCatalogName == null ? contentControl.getDefaultContentCatalog(contentCollection)
+                var contentCatalog = contentCatalogName == null ? contentControl.getDefaultContentCatalog(contentCollection)
                         : contentControl.getContentCatalogByName(contentCollection, contentCatalogName);
 
                 if(contentCatalog != null) {
@@ -124,7 +124,7 @@ public class GetContentCategoryCommand
     
     @Override
     protected BaseResult getResult(ContentCategory contentCategory) {
-        GetContentCategoryResult result = ContentResultFactory.getGetContentCategoryResult();
+        var result = ContentResultFactory.getGetContentCategoryResult();
 
         if (contentCategory != null) {
             var contentControl = Session.getModelController(ContentControl.class);

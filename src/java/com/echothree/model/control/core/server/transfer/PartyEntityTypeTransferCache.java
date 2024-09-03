@@ -37,12 +37,12 @@ public class PartyEntityTypeTransferCache
     }
     
     public PartyEntityTypeTransfer getPartyEntityTypeTransfer(PartyEntityType partyEntityType) {
-        PartyEntityTypeTransfer partyEntityTypeTransfer = get(partyEntityType);
+        var partyEntityTypeTransfer = get(partyEntityType);
         
         if(partyEntityTypeTransfer == null) {
-            PartyTransfer party = partyControl.getPartyTransfer(userVisit, partyEntityType.getParty());
-            EntityTypeTransfer entityType = coreControl.getEntityTypeTransfer(userVisit, partyEntityType.getEntityType());
-            Boolean confirmDelete = partyEntityType.getConfirmDelete();
+            var party = partyControl.getPartyTransfer(userVisit, partyEntityType.getParty());
+            var entityType = coreControl.getEntityTypeTransfer(userVisit, partyEntityType.getEntityType());
+            var confirmDelete = partyEntityType.getConfirmDelete();
             
             partyEntityTypeTransfer = new PartyEntityTypeTransfer(party, entityType, confirmDelete);
             put(partyEntityType, partyEntityTypeTransfer);

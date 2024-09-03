@@ -118,9 +118,9 @@ public class EditItemImageTypeCommand
     @Override
     public void doLock(ItemImageTypeEdit edit, ItemImageType itemImageType) {
         var itemControl = Session.getModelController(ItemControl.class);
-        ItemImageTypeDescription itemImageTypeDescription = itemControl.getItemImageTypeDescription(itemImageType, getPreferredLanguage());
-        ItemImageTypeDetail itemImageTypeDetail = itemImageType.getLastDetail();
-        Integer quality = itemImageTypeDetail.getQuality();
+        var itemImageTypeDescription = itemControl.getItemImageTypeDescription(itemImageType, getPreferredLanguage());
+        var itemImageTypeDetail = itemImageType.getLastDetail();
+        var quality = itemImageTypeDetail.getQuality();
 
         preferredMimeType = itemImageTypeDetail.getPreferredMimeType();
 
@@ -138,12 +138,12 @@ public class EditItemImageTypeCommand
     @Override
     public void canUpdate(ItemImageType itemImageType) {
         var itemControl = Session.getModelController(ItemControl.class);
-        String itemImageTypeName = edit.getItemImageTypeName();
-        ItemImageType duplicateItemImageType = itemControl.getItemImageTypeByName(itemImageTypeName);
+        var itemImageTypeName = edit.getItemImageTypeName();
+        var duplicateItemImageType = itemControl.getItemImageTypeByName(itemImageTypeName);
 
         if(duplicateItemImageType == null || itemImageType.equals(duplicateItemImageType)) {
             var coreControl = getCoreControl();
-            String preferredMimeTypeName = edit.getPreferredMimeTypeName();
+            var preferredMimeTypeName = edit.getPreferredMimeTypeName();
 
             preferredMimeType = preferredMimeTypeName == null ? null : coreControl.getMimeTypeByName(preferredMimeTypeName);
 
@@ -159,10 +159,10 @@ public class EditItemImageTypeCommand
     public void doUpdate(ItemImageType itemImageType) {
         var itemControl = Session.getModelController(ItemControl.class);
         var partyPK = getPartyPK();
-        ItemImageTypeDetailValue itemImageTypeDetailValue = itemControl.getItemImageTypeDetailValueForUpdate(itemImageType);
-        ItemImageTypeDescription itemImageTypeDescription = itemControl.getItemImageTypeDescriptionForUpdate(itemImageType, getPreferredLanguage());
-        String strQuality = edit.getQuality();
-        String description = edit.getDescription();
+        var itemImageTypeDetailValue = itemControl.getItemImageTypeDetailValueForUpdate(itemImageType);
+        var itemImageTypeDescription = itemControl.getItemImageTypeDescriptionForUpdate(itemImageType, getPreferredLanguage());
+        var strQuality = edit.getQuality();
+        var description = edit.getDescription();
 
         itemImageTypeDetailValue.setItemImageTypeName(edit.getItemImageTypeName());
         itemImageTypeDetailValue.setPreferredMimeTypePK(preferredMimeType == null ? null : preferredMimeType.getPrimaryKey());
@@ -177,7 +177,7 @@ public class EditItemImageTypeCommand
         } else if(itemImageTypeDescription != null && description == null) {
             itemControl.deleteItemImageTypeDescription(itemImageTypeDescription, partyPK);
         } else if(itemImageTypeDescription != null && description != null) {
-            ItemImageTypeDescriptionValue itemImageTypeDescriptionValue = itemControl.getItemImageTypeDescriptionValue(itemImageTypeDescription);
+            var itemImageTypeDescriptionValue = itemControl.getItemImageTypeDescriptionValue(itemImageTypeDescription);
 
             itemImageTypeDescriptionValue.setDescription(description);
             itemControl.updateItemImageTypeDescriptionFromValue(itemImageTypeDescriptionValue, partyPK);

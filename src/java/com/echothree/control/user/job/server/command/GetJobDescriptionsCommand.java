@@ -65,9 +65,9 @@ public class GetJobDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var jobControl = Session.getModelController(JobControl.class);
-        GetJobDescriptionsResult result = JobResultFactory.getGetJobDescriptionsResult();
-        String jobName = form.getJobName();
-        Job job = jobControl.getJobByName(jobName);
+        var result = JobResultFactory.getGetJobDescriptionsResult();
+        var jobName = form.getJobName();
+        var job = jobControl.getJobByName(jobName);
         
         if(job != null) {
             result.setJob(jobControl.getJobTransfer(getUserVisit(), job));

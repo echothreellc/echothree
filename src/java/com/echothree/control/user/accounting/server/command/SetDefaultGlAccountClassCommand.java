@@ -62,8 +62,8 @@ public class SetDefaultGlAccountClassCommand
     @Override
     protected BaseResult execute() {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        String glAccountClassName = form.getGlAccountClassName();
-        GlAccountClassDetailValue glAccountClassDetailValue = accountingControl.getGlAccountClassDetailValueByNameForUpdate(glAccountClassName);
+        var glAccountClassName = form.getGlAccountClassName();
+        var glAccountClassDetailValue = accountingControl.getGlAccountClassDetailValueByNameForUpdate(glAccountClassName);
         
         if(glAccountClassDetailValue != null) {
             glAccountClassDetailValue.setIsDefault(Boolean.TRUE);

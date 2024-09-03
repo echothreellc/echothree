@@ -32,11 +32,11 @@ public class LetterDescriptionTransferCache
     }
     
     public LetterDescriptionTransfer getLetterDescriptionTransfer(LetterDescription letterDescription) {
-        LetterDescriptionTransfer letterDescriptionTransfer = get(letterDescription);
+        var letterDescriptionTransfer = get(letterDescription);
         
         if(letterDescriptionTransfer == null) {
-            LetterTransfer letterTransfer = letterControl.getLetterTransfer(userVisit, letterDescription.getLetter());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, letterDescription.getLanguage());
+            var letterTransfer = letterControl.getLetterTransfer(userVisit, letterDescription.getLetter());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, letterDescription.getLanguage());
             
             letterDescriptionTransfer = new LetterDescriptionTransfer(languageTransfer, letterTransfer, letterDescription.getDescription());
             put(letterDescription, letterDescriptionTransfer);

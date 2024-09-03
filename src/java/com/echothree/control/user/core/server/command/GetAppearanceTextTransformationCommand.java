@@ -65,17 +65,17 @@ public class GetAppearanceTextTransformationCommand
     
     @Override
     protected BaseResult execute() {
-        GetAppearanceTextTransformationResult result = CoreResultFactory.getGetAppearanceTextTransformationResult();
-        String appearanceName = form.getAppearanceName();
-        Appearance appearance = AppearanceLogic.getInstance().getAppearanceByName(this, appearanceName);
+        var result = CoreResultFactory.getGetAppearanceTextTransformationResult();
+        var appearanceName = form.getAppearanceName();
+        var appearance = AppearanceLogic.getInstance().getAppearanceByName(this, appearanceName);
         
         if(!hasExecutionErrors()) {
-            String textTransformationName = form.getTextTransformationName();
-            TextTransformation textTransformation = AppearanceLogic.getInstance().getTextTransformationByName(this, textTransformationName);
+            var textTransformationName = form.getTextTransformationName();
+            var textTransformation = AppearanceLogic.getInstance().getTextTransformationByName(this, textTransformationName);
             
             if(!hasExecutionErrors()) {
                 var coreControl = getCoreControl();
-                AppearanceTextTransformation appearanceTextTransformation = coreControl.getAppearanceTextTransformation(appearance, textTransformation);
+                var appearanceTextTransformation = coreControl.getAppearanceTextTransformation(appearance, textTransformation);
 
                 if(appearanceTextTransformation != null) {
                     result.setAppearanceTextTransformation(coreControl.getAppearanceTextTransformationTransfer(getUserVisit(), appearanceTextTransformation));

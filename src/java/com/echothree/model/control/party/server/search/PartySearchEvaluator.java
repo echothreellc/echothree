@@ -355,7 +355,7 @@ public class PartySearchEvaluator
                         }
 
                         if(firstNameSdx != null) {
-                            EntityInstancePKHolder entityInstancePKHolder = getEntityInstancePKHolderByFirstNameSdx(firstNameSdx);
+                            var entityInstancePKHolder = getEntityInstancePKHolderByFirstNameSdx(firstNameSdx);
 
                             if(resultSet == null) {
                                 resultSet = entityInstancePKHolder;
@@ -366,7 +366,7 @@ public class PartySearchEvaluator
                             resultSet = null;
                         }
                     } else {
-                        EntityInstancePKHolder entityInstancePKHolder = getEntityInstancePKHolderByFirstName(firstName);
+                        var entityInstancePKHolder = getEntityInstancePKHolderByFirstName(firstName);
 
                         if(resultSet == null) {
                             resultSet = entityInstancePKHolder;
@@ -389,7 +389,7 @@ public class PartySearchEvaluator
                         }
 
                         if(middleNameSdx != null) {
-                            EntityInstancePKHolder entityInstancePKHolder = getEntityInstancePKHolderByMiddleNameSdx(middleNameSdx);
+                            var entityInstancePKHolder = getEntityInstancePKHolderByMiddleNameSdx(middleNameSdx);
 
                             if(resultSet == null) {
                                 resultSet = entityInstancePKHolder;
@@ -400,7 +400,7 @@ public class PartySearchEvaluator
                             resultSet = null;
                         }
                     } else {
-                        EntityInstancePKHolder entityInstancePKHolder = getEntityInstancePKHolderByMiddleName(middleName);
+                        var entityInstancePKHolder = getEntityInstancePKHolderByMiddleName(middleName);
 
                         if(resultSet == null) {
                             resultSet = entityInstancePKHolder;
@@ -423,7 +423,7 @@ public class PartySearchEvaluator
                         }
 
                         if(lastNameSdx != null) {
-                            EntityInstancePKHolder entityInstancePKHolder = getEntityInstancePKHolderByLastNameSdx(lastNameSdx);
+                            var entityInstancePKHolder = getEntityInstancePKHolderByLastNameSdx(lastNameSdx);
 
                             if(resultSet == null) {
                                 resultSet = entityInstancePKHolder;
@@ -434,7 +434,7 @@ public class PartySearchEvaluator
                             resultSet = null;
                         }
                     } else {
-                        EntityInstancePKHolder entityInstancePKHolder = getEntityInstancePKHolderByLastName(lastName);
+                        var entityInstancePKHolder = getEntityInstancePKHolderByLastName(lastName);
 
                         if(resultSet == null) {
                             resultSet = entityInstancePKHolder;
@@ -446,7 +446,7 @@ public class PartySearchEvaluator
             }
 
             if(countryGeoCode != null && areaCode != null && (resultSet == null || resultSet.size() > 0)) {
-                EntityInstancePKHolder entityInstancePKHolder = getEntityInstancePKHolderByAreaCode(countryGeoCode, areaCode);
+                var entityInstancePKHolder = getEntityInstancePKHolderByAreaCode(countryGeoCode, areaCode);
 
                 if(resultSet == null) {
                     resultSet = entityInstancePKHolder;
@@ -456,7 +456,7 @@ public class PartySearchEvaluator
             }
             
             if(countryGeoCode != null && telephoneNumber != null && (resultSet == null || resultSet.size() > 0)) {
-                EntityInstancePKHolder entityInstancePKHolder = getEntityInstancePKHolderByTelephoneNumber(countryGeoCode, telephoneNumber);
+                var entityInstancePKHolder = getEntityInstancePKHolderByTelephoneNumber(countryGeoCode, telephoneNumber);
 
                 if(resultSet == null) {
                     resultSet = entityInstancePKHolder;
@@ -466,7 +466,7 @@ public class PartySearchEvaluator
             }
             
             if(countryGeoCode != null && telephoneExtension != null && (resultSet == null || resultSet.size() > 0)) {
-                EntityInstancePKHolder entityInstancePKHolder = getEntityInstancePKHolderByTelephoneExtension(countryGeoCode, telephoneExtension);
+                var entityInstancePKHolder = getEntityInstancePKHolderByTelephoneExtension(countryGeoCode, telephoneExtension);
 
                 if(resultSet == null) {
                     resultSet = entityInstancePKHolder;
@@ -476,7 +476,7 @@ public class PartySearchEvaluator
             }
             
             if(emailAddress != null && (resultSet == null || resultSet.size() > 0)) {
-                EntityInstancePKHolder entityInstancePKHolder = getEntityInstancePKHolderByEmailAddress(emailAddress);
+                var entityInstancePKHolder = getEntityInstancePKHolderByEmailAddress(emailAddress);
 
                 if(resultSet == null) {
                     resultSet = entityInstancePKHolder;
@@ -487,7 +487,7 @@ public class PartySearchEvaluator
             
             if(resultSet == null || resultSet.size() > 0) {
                 if(q != null) {
-                    EntityInstancePKHolder entityInstancePKHolder = executeQuery(eea);
+                    var entityInstancePKHolder = executeQuery(eea);
                     
                     if(resultSet == null) {
                         resultSet = entityInstancePKHolder;

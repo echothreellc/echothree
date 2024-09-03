@@ -89,13 +89,13 @@ public class EditContactListGroupDescriptionCommand
     public ContactListGroupDescription getEntity(EditContactListGroupDescriptionResult result) {
         var contactListControl = Session.getModelController(ContactListControl.class);
         ContactListGroupDescription contactListGroupDescription = null;
-        String contactListGroupName = spec.getContactListGroupName();
-        ContactListGroup contactListGroup = contactListControl.getContactListGroupByName(contactListGroupName);
+        var contactListGroupName = spec.getContactListGroupName();
+        var contactListGroup = contactListControl.getContactListGroupByName(contactListGroupName);
 
         if(contactListGroup != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -137,7 +137,7 @@ public class EditContactListGroupDescriptionCommand
     @Override
     public void doUpdate(ContactListGroupDescription contactListGroupDescription) {
         var contactListControl = Session.getModelController(ContactListControl.class);
-        ContactListGroupDescriptionValue contactListGroupDescriptionValue = contactListControl.getContactListGroupDescriptionValue(contactListGroupDescription);
+        var contactListGroupDescriptionValue = contactListControl.getContactListGroupDescriptionValue(contactListGroupDescription);
 
         contactListGroupDescriptionValue.setDescription(edit.getDescription());
 

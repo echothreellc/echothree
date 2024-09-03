@@ -65,9 +65,9 @@ public class GetInventoryConditionDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var inventoryControl = Session.getModelController(InventoryControl.class);
-        GetInventoryConditionDescriptionsResult result = InventoryResultFactory.getGetInventoryConditionDescriptionsResult();
-        String inventoryConditionName = form.getInventoryConditionName();
-        InventoryCondition inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
+        var result = InventoryResultFactory.getGetInventoryConditionDescriptionsResult();
+        var inventoryConditionName = form.getInventoryConditionName();
+        var inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
         
         if(inventoryCondition != null) {
             result.setInventoryCondition(inventoryControl.getInventoryConditionTransfer(getUserVisit(), inventoryCondition));

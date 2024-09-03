@@ -52,17 +52,17 @@ public class TransactionTransferCache
 
     @Override
     public TransactionTransfer getTransfer(Transaction transaction) {
-        TransactionTransfer transactionTransfer = get(transaction);
+        var transactionTransfer = get(transaction);
 
         if(transactionTransfer == null) {
-            TransactionDetail transactionDetail = transaction.getLastDetail();
-            String transactionName = transactionDetail.getTransactionName();
-            Party groupParty = transactionDetail.getGroupParty();
-            PartyTransfer groupPartyTransfer = groupParty == null? null: partyControl.getPartyTransfer(userVisit, groupParty);
-            TransactionGroupTransfer transactionGroupTransfer = accountingControl.getTransactionGroupTransfer(userVisit, transactionDetail.getTransactionGroup());
-            TransactionTypeTransfer transactionTypeTransfer = accountingControl.getTransactionTypeTransfer(userVisit, transactionDetail.getTransactionType());
-            Long unformattedPostingTime = transactionDetail.getPostingTime();
-            String postingTime = formatTypicalDateTime(unformattedPostingTime);
+            var transactionDetail = transaction.getLastDetail();
+            var transactionName = transactionDetail.getTransactionName();
+            var groupParty = transactionDetail.getGroupParty();
+            var groupPartyTransfer = groupParty == null? null: partyControl.getPartyTransfer(userVisit, groupParty);
+            var transactionGroupTransfer = accountingControl.getTransactionGroupTransfer(userVisit, transactionDetail.getTransactionGroup());
+            var transactionTypeTransfer = accountingControl.getTransactionTypeTransfer(userVisit, transactionDetail.getTransactionType());
+            var unformattedPostingTime = transactionDetail.getPostingTime();
+            var postingTime = formatTypicalDateTime(unformattedPostingTime);
 
             transactionTransfer = new TransactionTransfer(transactionName, groupPartyTransfer, transactionGroupTransfer, transactionTypeTransfer, unformattedPostingTime, postingTime);
             put(transaction, transactionTransfer);

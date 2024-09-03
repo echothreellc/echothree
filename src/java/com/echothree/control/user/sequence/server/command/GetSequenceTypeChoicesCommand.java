@@ -63,9 +63,9 @@ public class GetSequenceTypeChoicesCommand
     @Override
     protected BaseResult execute() {
         var sequenceControl = Session.getModelController(SequenceControl.class);
-        GetSequenceTypeChoicesResult result = SequenceResultFactory.getGetSequenceTypeChoicesResult();
-        String defaultSequenceTypeChoice = form.getDefaultSequenceTypeChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = SequenceResultFactory.getGetSequenceTypeChoicesResult();
+        var defaultSequenceTypeChoice = form.getDefaultSequenceTypeChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setSequenceTypeChoices(sequenceControl.getSequenceTypeChoices(defaultSequenceTypeChoice, getPreferredLanguage(),
                 allowNullChoice));

@@ -85,36 +85,36 @@ public class EditFilterStepDescriptionCommand
     @Override
     protected BaseResult execute() {
         var filterControl = Session.getModelController(FilterControl.class);
-        EditFilterStepDescriptionResult result = FilterResultFactory.getEditFilterStepDescriptionResult();
-        String filterKindName = spec.getFilterKindName();
-        FilterKind filterKind = filterControl.getFilterKindByName(filterKindName);
+        var result = FilterResultFactory.getEditFilterStepDescriptionResult();
+        var filterKindName = spec.getFilterKindName();
+        var filterKind = filterControl.getFilterKindByName(filterKindName);
         
         if(filterKind != null) {
-            String filterTypeName = spec.getFilterTypeName();
-            FilterType filterType = filterControl.getFilterTypeByName(filterKind, filterTypeName);
+            var filterTypeName = spec.getFilterTypeName();
+            var filterType = filterControl.getFilterTypeByName(filterKind, filterTypeName);
             
             if(filterType != null) {
-                String filterName = spec.getFilterName();
-                Filter filter = filterControl.getFilterByName(filterType, filterName);
+                var filterName = spec.getFilterName();
+                var filter = filterControl.getFilterByName(filterType, filterName);
                 
                 if(filter != null) {
-                    String filterStepName = spec.getFilterStepName();
-                    FilterStep filterStep = filterControl.getFilterStepByName(filter, filterStepName);
+                    var filterStepName = spec.getFilterStepName();
+                    var filterStep = filterControl.getFilterStepByName(filter, filterStepName);
                     
                     if(filterStep != null) {
                         var partyControl = Session.getModelController(PartyControl.class);
-                        String languageIsoName = spec.getLanguageIsoName();
-                        Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                        var languageIsoName = spec.getLanguageIsoName();
+                        var language = partyControl.getLanguageByIsoName(languageIsoName);
                         
                         if(language != null) {
                             if(editMode.equals(EditMode.LOCK)) {
-                                FilterStepDescription filterStepDescription = filterControl.getFilterStepDescription(filterStep, language);
+                                var filterStepDescription = filterControl.getFilterStepDescription(filterStep, language);
                                 
                                 if(filterStepDescription != null) {
                                     result.setFilterStepDescription(filterControl.getFilterStepDescriptionTransfer(getUserVisit(), filterStepDescription));
                                     
                                     if(lockEntity(filterStep)) {
-                                        FilterStepDescriptionEdit edit = FilterEditFactory.getFilterStepDescriptionEdit();
+                                        var edit = FilterEditFactory.getFilterStepDescriptionEdit();
                                         
                                         result.setEdit(edit);
                                         edit.setDescription(filterStepDescription.getDescription());
@@ -127,12 +127,12 @@ public class EditFilterStepDescriptionCommand
                                     addExecutionError(ExecutionErrors.UnknownFilterStepDescription.name());
                                 }
                             } else if(editMode.equals(EditMode.UPDATE)) {
-                                FilterStepDescriptionValue filterStepDescriptionValue = filterControl.getFilterStepDescriptionValueForUpdate(filterStep, language);
+                                var filterStepDescriptionValue = filterControl.getFilterStepDescriptionValueForUpdate(filterStep, language);
                                 
                                 if(filterStepDescriptionValue != null) {
                                     if(lockEntityForUpdate(filterStep)) {
                                         try {
-                                            String description = edit.getDescription();
+                                            var description = edit.getDescription();
                                             
                                             filterStepDescriptionValue.setDescription(description);
                                             

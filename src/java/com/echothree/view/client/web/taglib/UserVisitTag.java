@@ -55,7 +55,7 @@ public class UserVisitTag
     }
 
     public String getParameter(final HttpServletRequest httpServletRequest, final String name, final String analyticsName) {
-        String result = httpServletRequest.getParameter(name);
+        var result = httpServletRequest.getParameter(name);
         
         if(result == null) {
             result = httpServletRequest.getParameter(analyticsName);
@@ -67,22 +67,22 @@ public class UserVisitTag
     @Override
     public int doStartTag()
             throws JspException {
-        HttpServletRequest httpServletRequest = (HttpServletRequest)pageContext.getRequest();
-        String campaignValue = getParameter(httpServletRequest, WebConstants.Parameter_Campaign, WebConstants.Parameter_utm_campaign);
-        String campaignSourceValue = getParameter(httpServletRequest, WebConstants.Parameter_Source, WebConstants.Parameter_utm_source);
-        String campaignMediumValue = getParameter(httpServletRequest, WebConstants.Parameter_Medium, WebConstants.Parameter_utm_medium);
-        String campaignTermValue = getParameter(httpServletRequest, WebConstants.Parameter_Term, WebConstants.Parameter_utm_term);
-        String campaignContentValue = getParameter(httpServletRequest, WebConstants.Parameter_Content, WebConstants.Parameter_utm_content);
-        int campaignParameterCount = (campaignValue == null ? 0 : 1) + (campaignSourceValue == null ? 0 : 1) + (campaignMediumValue == null ? 0 : 1)
+        var httpServletRequest = (HttpServletRequest)pageContext.getRequest();
+        var campaignValue = getParameter(httpServletRequest, WebConstants.Parameter_Campaign, WebConstants.Parameter_utm_campaign);
+        var campaignSourceValue = getParameter(httpServletRequest, WebConstants.Parameter_Source, WebConstants.Parameter_utm_source);
+        var campaignMediumValue = getParameter(httpServletRequest, WebConstants.Parameter_Medium, WebConstants.Parameter_utm_medium);
+        var campaignTermValue = getParameter(httpServletRequest, WebConstants.Parameter_Term, WebConstants.Parameter_utm_term);
+        var campaignContentValue = getParameter(httpServletRequest, WebConstants.Parameter_Content, WebConstants.Parameter_utm_content);
+        var campaignParameterCount = (campaignValue == null ? 0 : 1) + (campaignSourceValue == null ? 0 : 1) + (campaignMediumValue == null ? 0 : 1)
                 + (campaignTermValue == null ? 0 : 1) + (campaignContentValue == null ? 0 : 1);
-        String trackValue = getParameter(httpServletRequest, WebConstants.Parameter_Track, WebConstants.Parameter_trk);
-        int trackParameterCount = trackValue == null ? 0 : 1;
-        
-        UserVisitPK userVisitPK = HttpSessionUtils.getInstance().setupUserVisit(httpServletRequest, (HttpServletResponse)pageContext.getResponse(), secureUserKey);
+        var trackValue = getParameter(httpServletRequest, WebConstants.Parameter_Track, WebConstants.Parameter_trk);
+        var trackParameterCount = trackValue == null ? 0 : 1;
+
+        var userVisitPK = HttpSessionUtils.getInstance().setupUserVisit(httpServletRequest, (HttpServletResponse)pageContext.getResponse(), secureUserKey);
         
         if(campaignParameterCount > 0) {
             try {
-                CreateUserVisitCampaignForm commandForm = CampaignUtil.getHome().getCreateUserVisitCampaignForm();
+                var commandForm = CampaignUtil.getHome().getCreateUserVisitCampaignForm();
                 
                 commandForm.setCampaignValue(campaignValue);
                 commandForm.setCampaignSourceValue(campaignSourceValue);
@@ -98,7 +98,7 @@ public class UserVisitTag
         
         if(trackParameterCount > 0) {
             try {
-                CreateUserVisitTrackForm commandForm = TrackUtil.getHome().getCreateUserVisitTrackForm();
+                var commandForm = TrackUtil.getHome().getCreateUserVisitTrackForm();
                 
                 commandForm.setTrackValue(trackValue);
                 

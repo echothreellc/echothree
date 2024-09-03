@@ -48,12 +48,12 @@ public class ChainInstanceTransferCache
     }
     
     public ChainInstanceTransfer getChainInstanceTransfer(ChainInstance chainInstance) {
-        ChainInstanceTransfer chainInstanceTransfer = get(chainInstance);
+        var chainInstanceTransfer = get(chainInstance);
         
         if(chainInstanceTransfer == null) {
-            ChainInstanceDetail chainInstanceDetail = chainInstance.getLastDetail();
-            String chainInstanceName = chainInstanceDetail.getChainInstanceName();
-            ChainTransfer chain = chainControl.getChainTransfer(userVisit, chainInstanceDetail.getChain());
+            var chainInstanceDetail = chainInstance.getLastDetail();
+            var chainInstanceName = chainInstanceDetail.getChainInstanceName();
+            var chain = chainControl.getChainTransfer(userVisit, chainInstanceDetail.getChain());
             
             chainInstanceTransfer = new ChainInstanceTransfer(chainInstanceName, chain);
             put(chainInstance, chainInstanceTransfer);
@@ -63,7 +63,7 @@ public class ChainInstanceTransferCache
             }
             
             if(includeChainInstanceEntityRoles) {
-                List<ChainInstanceEntityRoleTransfer> chainInstanceEntityRoleTransfers = chainControl.getChainInstanceEntityRoleTransfersByChainInstance(userVisit, chainInstance);
+                var chainInstanceEntityRoleTransfers = chainControl.getChainInstanceEntityRoleTransfersByChainInstance(userVisit, chainInstance);
                 MapWrapper<ChainInstanceEntityRoleTransfer> chainInstanceEntityRoles = new MapWrapper<>(chainInstanceEntityRoleTransfers.size());
 
                 chainInstanceEntityRoleTransfers.forEach((chainInstanceEntityRoleTransfer) -> {

@@ -35,12 +35,12 @@ public class GeoCodeTaxTransferCache
     
     @Override
     public GeoCodeTaxTransfer getTransfer(GeoCodeTax geoCodeTax) {
-        GeoCodeTaxTransfer geoCodeTaxTransfer = get(geoCodeTax);
+        var geoCodeTaxTransfer = get(geoCodeTax);
         
         if(geoCodeTaxTransfer == null) {
-            GeoControl geoControl = Session.getModelController(GeoControl.class);
-            GeoCodeTransfer geoCode = geoControl.getGeoCodeTransfer(userVisit, geoCodeTax.getGeoCode());
-            TaxTransfer tax = taxControl.getTaxTransfer(userVisit, geoCodeTax.getTax());
+            var geoControl = Session.getModelController(GeoControl.class);
+            var geoCode = geoControl.getGeoCodeTransfer(userVisit, geoCodeTax.getGeoCode());
+            var tax = taxControl.getTaxTransfer(userVisit, geoCodeTax.getTax());
             
             geoCodeTaxTransfer = new GeoCodeTaxTransfer(geoCode, tax);
             put(geoCodeTax, geoCodeTaxTransfer);

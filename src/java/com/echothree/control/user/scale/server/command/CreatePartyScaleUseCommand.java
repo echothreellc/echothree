@@ -68,7 +68,7 @@ public class CreatePartyScaleUseCommand
     
     @Override
     protected BaseResult execute() {
-        String partyName = form.getPartyName();
+        var partyName = form.getPartyName();
         Party party = null;
 
         if(partyName != null) {
@@ -84,15 +84,15 @@ public class CreatePartyScaleUseCommand
 
         if(!hasExecutionErrors()) {
             var scaleControl = Session.getModelController(ScaleControl.class);
-            String scaleUseTypeName = form.getScaleUseTypeName();
-            ScaleUseType scaleUseType = scaleControl.getScaleUseTypeByName(scaleUseTypeName);
+            var scaleUseTypeName = form.getScaleUseTypeName();
+            var scaleUseType = scaleControl.getScaleUseTypeByName(scaleUseTypeName);
 
             if(scaleUseType != null) {
-                PartyScaleUse partyScaleUse = scaleControl.getPartyScaleUse(party, scaleUseType);
+                var partyScaleUse = scaleControl.getPartyScaleUse(party, scaleUseType);
 
                 if(partyScaleUse == null) {
-                    String scaleName = form.getScaleName();
-                    Scale scale = scaleControl.getScaleByName(scaleName);
+                    var scaleName = form.getScaleName();
+                    var scale = scaleControl.getScaleByName(scaleName);
 
                     if(scale != null) {
                         scaleControl.createPartyScaleUse(party, scaleUseType, scale, getPartyPK());

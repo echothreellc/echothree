@@ -90,12 +90,12 @@ public class EditCommandMessageCommand
     public CommandMessage getEntity(EditCommandMessageResult result) {
         var coreControl = getCoreControl();
         CommandMessage commandMessage = null;
-        String commandMessageTypeName = spec.getCommandMessageTypeName();
+        var commandMessageTypeName = spec.getCommandMessageTypeName();
 
         commandMessageType = coreControl.getCommandMessageTypeByName(commandMessageTypeName);
 
         if(commandMessageType != null) {
-            String commandMessageKey = spec.getCommandMessageKey();
+            var commandMessageKey = spec.getCommandMessageKey();
 
             if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
                 commandMessage = coreControl.getCommandMessageByKey(commandMessageType, commandMessageKey);
@@ -130,8 +130,8 @@ public class EditCommandMessageCommand
     @Override
     public void doLock(CommandMessageEdit edit, CommandMessage commandMessage) {
         var coreControl = getCoreControl();
-        CommandMessageTranslation commandMessageTranslation = coreControl.getCommandMessageTranslation(commandMessage, getPreferredLanguage());
-        CommandMessageDetail commandMessageDetail = commandMessage.getLastDetail();
+        var commandMessageTranslation = coreControl.getCommandMessageTranslation(commandMessage, getPreferredLanguage());
+        var commandMessageDetail = commandMessage.getLastDetail();
 
         edit.setCommandMessageKey(commandMessageDetail.getCommandMessageKey());
 
@@ -143,8 +143,8 @@ public class EditCommandMessageCommand
     @Override
     public void canUpdate(CommandMessage commandMessage) {
         var coreControl = getCoreControl();
-        String commandMessageKey = edit.getCommandMessageKey();
-        CommandMessage duplicateCommandMessage = coreControl.getCommandMessageByKey(commandMessageType, commandMessageKey);
+        var commandMessageKey = edit.getCommandMessageKey();
+        var duplicateCommandMessage = coreControl.getCommandMessageByKey(commandMessageType, commandMessageKey);
 
         if(duplicateCommandMessage != null && !commandMessage.equals(duplicateCommandMessage)) {
             addExecutionError(ExecutionErrors.DuplicateCommandMessageKey.name(), commandMessageType.getLastDetail().getCommandMessageTypeName(), commandMessageKey);
@@ -155,9 +155,9 @@ public class EditCommandMessageCommand
     public void doUpdate(CommandMessage commandMessage) {
         var coreControl = getCoreControl();
         var partyPK = getPartyPK();
-        CommandMessageDetailValue commandMessageDetailValue = coreControl.getCommandMessageDetailValueForUpdate(commandMessage);
-        CommandMessageTranslation commandMessageTranslation = coreControl.getCommandMessageTranslationForUpdate(commandMessage, getPreferredLanguage());
-        String translation = edit.getTranslation();
+        var commandMessageDetailValue = coreControl.getCommandMessageDetailValueForUpdate(commandMessage);
+        var commandMessageTranslation = coreControl.getCommandMessageTranslationForUpdate(commandMessage, getPreferredLanguage());
+        var translation = edit.getTranslation();
 
         commandMessageDetailValue.setCommandMessageKey(edit.getCommandMessageKey());
 
@@ -170,7 +170,7 @@ public class EditCommandMessageCommand
                 coreControl.deleteCommandMessageTranslation(commandMessageTranslation, partyPK);
             } else {
                 if(commandMessageTranslation != null && translation != null) {
-                    CommandMessageTranslationValue commandMessageTranslationValue = coreControl.getCommandMessageTranslationValue(commandMessageTranslation);
+                    var commandMessageTranslationValue = coreControl.getCommandMessageTranslationValue(commandMessageTranslation);
 
                     commandMessageTranslationValue.setTranslation(translation);
                     coreControl.updateCommandMessageTranslationFromValue(commandMessageTranslationValue, partyPK);

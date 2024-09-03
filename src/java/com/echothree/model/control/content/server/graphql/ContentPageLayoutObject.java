@@ -100,7 +100,7 @@ public class ContentPageLayoutObject
     @GraphQLNonNull
     public List<ContentPageLayoutAreaObject> getContentPageLayoutAreas(final DataFetchingEnvironment env) {
         var contentControl = Session.getModelController(ContentControl.class);
-        List<ContentPageLayoutArea> entities = contentControl.getContentPageLayoutAreasByContentPageLayout(contentPageLayout);
+        var entities = contentControl.getContentPageLayoutAreasByContentPageLayout(contentPageLayout);
         List<ContentPageLayoutAreaObject> contentPageLayoutAreas = new ArrayList<>(entities.size());
         
         entities.forEach((entity) -> {

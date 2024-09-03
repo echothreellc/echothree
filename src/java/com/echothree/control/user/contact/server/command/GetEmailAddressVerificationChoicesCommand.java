@@ -53,16 +53,16 @@ public class GetEmailAddressVerificationChoicesCommand
     @Override
     protected BaseResult execute() {
         var contactControl = Session.getModelController(ContactControl.class);
-        GetEmailAddressVerificationChoicesResult result = ContactResultFactory.getGetEmailAddressVerificationChoicesResult();
-        String contactMechanismName = form.getContactMechanismName();
-        ContactMechanism contactMechanism = contactControl.getContactMechanismByName(contactMechanismName);
+        var result = ContactResultFactory.getGetEmailAddressVerificationChoicesResult();
+        var contactMechanismName = form.getContactMechanismName();
+        var contactMechanism = contactControl.getContactMechanismByName(contactMechanismName);
 
         if(contactMechanism != null) {
-            String contactMechanismTypeName = contactMechanism.getLastDetail().getContactMechanismType().getContactMechanismTypeName();
+            var contactMechanismTypeName = contactMechanism.getLastDetail().getContactMechanismType().getContactMechanismTypeName();
 
             if(contactMechanismTypeName.equals(ContactMechanismTypes.EMAIL_ADDRESS.name())) {
-                String defaultEmailAddressVerificationChoice = form.getDefaultEmailAddressVerificationChoice();
-                boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+                var defaultEmailAddressVerificationChoice = form.getDefaultEmailAddressVerificationChoice();
+                var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 
                 result.setEmailAddressVerificationChoices(contactControl.getEmailAddressVerificationChoices(defaultEmailAddressVerificationChoice, getPreferredLanguage(), allowNullChoice, contactMechanism,
                         getPartyPK()));

@@ -72,29 +72,29 @@ public class CreateApplicationEditorUseCommand
     
     @Override
     protected BaseResult execute() {
-        String applicationName = form.getApplicationName();
-        Application application = ApplicationLogic.getInstance().getApplicationByName(this, applicationName);
+        var applicationName = form.getApplicationName();
+        var application = ApplicationLogic.getInstance().getApplicationByName(this, applicationName);
         
         if(!hasExecutionErrors()) {
             var coreControl = getCoreControl();
-            String applicationEditorUseName = form.getApplicationEditorUseName();
-            ApplicationEditorUse applicationEditorUse = coreControl.getApplicationEditorUseByName(application, applicationEditorUseName);
+            var applicationEditorUseName = form.getApplicationEditorUseName();
+            var applicationEditorUse = coreControl.getApplicationEditorUseByName(application, applicationEditorUseName);
 
             if(applicationEditorUse == null) {
-                String defaultEditorName = form.getDefaultEditorName();
-                Editor editor = defaultEditorName == null ? null : coreControl.getEditorByName(defaultEditorName);
+                var defaultEditorName = form.getDefaultEditorName();
+                var editor = defaultEditorName == null ? null : coreControl.getEditorByName(defaultEditorName);
                 
                 if(defaultEditorName == null || editor != null) {
-                    ApplicationEditor applicationEditor = editor == null ? null : ApplicationLogic.getInstance().getApplicationEditor(this, application, editor);
+                    var applicationEditor = editor == null ? null : ApplicationLogic.getInstance().getApplicationEditor(this, application, editor);
                     
                     if(!hasExecutionErrors()) {
-                        String strDefaultHeight = form.getDefaultHeight();
-                        Integer defaultHeight = strDefaultHeight == null ? null : Integer.valueOf(strDefaultHeight);
-                        String strDefaultWidth = form.getDefaultWidth();
-                        Integer defaultWidth = strDefaultWidth == null ? null : Integer.valueOf(strDefaultWidth);
+                        var strDefaultHeight = form.getDefaultHeight();
+                        var defaultHeight = strDefaultHeight == null ? null : Integer.valueOf(strDefaultHeight);
+                        var strDefaultWidth = form.getDefaultWidth();
+                        var defaultWidth = strDefaultWidth == null ? null : Integer.valueOf(strDefaultWidth);
                         var isDefault = Boolean.valueOf(form.getIsDefault());
                         var sortOrder = Integer.valueOf(form.getSortOrder());
-                        PartyPK createdBy = getPartyPK();
+                        var createdBy = getPartyPK();
                         var description = form.getDescription();
                         
                         applicationEditorUse = coreControl.createApplicationEditorUse(application, applicationEditorUseName, applicationEditor, defaultHeight,

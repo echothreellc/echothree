@@ -34,15 +34,15 @@ public class CancellationReasonTransferCache
     }
     
     public CancellationReasonTransfer getCancellationReasonTransfer(CancellationReason cancellationReason) {
-        CancellationReasonTransfer cancellationReasonTransfer = get(cancellationReason);
+        var cancellationReasonTransfer = get(cancellationReason);
         
         if(cancellationReasonTransfer == null) {
-            CancellationReasonDetail cancellationReasonDetail = cancellationReason.getLastDetail();
-            CancellationKindTransfer cancellationKind = cancellationPolicyControl.getCancellationKindTransfer(userVisit, cancellationReasonDetail.getCancellationKind());
-            String cancellationReasonName = cancellationReasonDetail.getCancellationReasonName();
-            Boolean isDefault = cancellationReasonDetail.getIsDefault();
-            Integer sortOrder = cancellationReasonDetail.getSortOrder();
-            String description = cancellationPolicyControl.getBestCancellationReasonDescription(cancellationReason, getLanguage());
+            var cancellationReasonDetail = cancellationReason.getLastDetail();
+            var cancellationKind = cancellationPolicyControl.getCancellationKindTransfer(userVisit, cancellationReasonDetail.getCancellationKind());
+            var cancellationReasonName = cancellationReasonDetail.getCancellationReasonName();
+            var isDefault = cancellationReasonDetail.getIsDefault();
+            var sortOrder = cancellationReasonDetail.getSortOrder();
+            var description = cancellationPolicyControl.getBestCancellationReasonDescription(cancellationReason, getLanguage());
             
             cancellationReasonTransfer = new CancellationReasonTransfer(cancellationKind, cancellationReasonName, isDefault, sortOrder, description);
             put(cancellationReason, cancellationReasonTransfer);

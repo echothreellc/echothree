@@ -63,8 +63,8 @@ public class SetDefaultSearchUseTypeCommand
     @Override
     protected BaseResult execute() {
         var searchControl = Session.getModelController(SearchControl.class);
-        String searchUseTypeName = form.getSearchUseTypeName();
-        SearchUseTypeDetailValue searchUseTypeDetailValue = searchControl.getSearchUseTypeDetailValueByNameForUpdate(searchUseTypeName);
+        var searchUseTypeName = form.getSearchUseTypeName();
+        var searchUseTypeDetailValue = searchControl.getSearchUseTypeDetailValueByNameForUpdate(searchUseTypeName);
         
         if(searchUseTypeDetailValue != null) {
             searchUseTypeDetailValue.setIsDefault(Boolean.TRUE);

@@ -42,17 +42,17 @@ public class TaxTransferCache
     
     @Override
     public TaxTransfer getTransfer(Tax tax) {
-        TaxTransfer taxTransfer = get(tax);
+        var taxTransfer = get(tax);
         
         if(taxTransfer == null) {
-            TaxDetail taxDetail = tax.getLastDetail();
-            String taxName = taxDetail.getTaxName();
-            ContactMechanismPurposeTransfer contactMechanismPurpose = contactControl.getContactMechanismPurposeTransfer(userVisit, taxDetail.getContactMechanismPurpose());
-            GlAccountTransfer glAccount = accountingControl.getGlAccountTransfer(userVisit, taxDetail.getGlAccount());
-            String percent = formatFractionalPercent(taxDetail.getPercent());
-            Boolean isDefault = taxDetail.getIsDefault();
-            Integer sortOrder = taxDetail.getSortOrder();
-            String description = taxControl.getBestTaxDescription(tax, getLanguage());
+            var taxDetail = tax.getLastDetail();
+            var taxName = taxDetail.getTaxName();
+            var contactMechanismPurpose = contactControl.getContactMechanismPurposeTransfer(userVisit, taxDetail.getContactMechanismPurpose());
+            var glAccount = accountingControl.getGlAccountTransfer(userVisit, taxDetail.getGlAccount());
+            var percent = formatFractionalPercent(taxDetail.getPercent());
+            var isDefault = taxDetail.getIsDefault();
+            var sortOrder = taxDetail.getSortOrder();
+            var description = taxControl.getBestTaxDescription(tax, getLanguage());
             
             taxTransfer = new TaxTransfer(taxName, contactMechanismPurpose, glAccount, percent, isDefault, sortOrder, description);
             put(tax, taxTransfer);

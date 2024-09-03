@@ -74,30 +74,30 @@ public class CreateLetterContactMechanismPurposeCommand
     @Override
     protected BaseResult execute() {
         var chainControl = Session.getModelController(ChainControl.class);
-        String chainKindName = form.getChainKindName();
-        ChainKind chainKind = chainControl.getChainKindByName(chainKindName);
+        var chainKindName = form.getChainKindName();
+        var chainKind = chainControl.getChainKindByName(chainKindName);
         
         if(chainKind != null) {
-            String chainTypeName = form.getChainTypeName();
-            ChainType chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
+            var chainTypeName = form.getChainTypeName();
+            var chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
             
             if(chainType != null) {
                 var letterControl = Session.getModelController(LetterControl.class);
-                String letterName = form.getLetterName();
-                Letter letter = letterControl.getLetterByName(chainType, letterName);
+                var letterName = form.getLetterName();
+                var letter = letterControl.getLetterByName(chainType, letterName);
                 
                 if(letter != null) {
-                    Integer priority = Integer.valueOf(form.getPriority());
-                    LetterContactMechanismPurpose letterContactMechanismPurpose = letterControl.getLetterContactMechanismPurpose(letter,
+                    var priority = Integer.valueOf(form.getPriority());
+                    var letterContactMechanismPurpose = letterControl.getLetterContactMechanismPurpose(letter,
                             priority);
                     
                     if(letterContactMechanismPurpose == null) {
                         var contactControl = Session.getModelController(ContactControl.class);
-                        String contactMechanismPurposeName = form.getContactMechanismPurposeName();
-                        ContactMechanismPurpose contactMechanismPurpose = contactControl.getContactMechanismPurposeByName(contactMechanismPurposeName);
+                        var contactMechanismPurposeName = form.getContactMechanismPurposeName();
+                        var contactMechanismPurpose = contactControl.getContactMechanismPurposeByName(contactMechanismPurposeName);
                         
                         if(contactMechanismPurpose != null) {
-                            String contactMechanismTypeName = contactMechanismPurpose.getContactMechanismType().getContactMechanismTypeName();
+                            var contactMechanismTypeName = contactMechanismPurpose.getContactMechanismType().getContactMechanismTypeName();
                             
                             if(contactMechanismTypeName.equals(ContactMechanismTypes.EMAIL_ADDRESS.name())
                                     || contactMechanismTypeName.equals(ContactMechanismTypes.POSTAL_ADDRESS.name())) {

@@ -32,11 +32,11 @@ public class CampaignContentDescriptionTransferCache
     }
     
     public CampaignContentDescriptionTransfer getCampaignContentDescriptionTransfer(CampaignContentDescription campaignContentDescription) {
-        CampaignContentDescriptionTransfer campaignContentDescriptionTransfer = get(campaignContentDescription);
+        var campaignContentDescriptionTransfer = get(campaignContentDescription);
         
         if(campaignContentDescriptionTransfer == null) {
-            CampaignContentTransfer campaignContentTransfer = campaignControl.getCampaignContentTransfer(userVisit, campaignContentDescription.getCampaignContent());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, campaignContentDescription.getLanguage());
+            var campaignContentTransfer = campaignControl.getCampaignContentTransfer(userVisit, campaignContentDescription.getCampaignContent());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, campaignContentDescription.getLanguage());
             
             campaignContentDescriptionTransfer = new CampaignContentDescriptionTransfer(languageTransfer, campaignContentTransfer, campaignContentDescription.getDescription());
             put(campaignContentDescription, campaignContentDescriptionTransfer);

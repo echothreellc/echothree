@@ -44,23 +44,23 @@ public class CommunicationEventTransferCache
     }
     
     public CommunicationEventTransfer getCommunicationEventTransfer(CommunicationEvent communicationEvent) {
-        CommunicationEventTransfer communicationEventTransfer = get(communicationEvent);
+        var communicationEventTransfer = get(communicationEvent);
         
         if(communicationEventTransfer == null) {
-            CommunicationEventDetail communicationEventDetail = communicationEvent.getLastDetail();
-            String communicationEventName = communicationEventDetail.getCommunicationEventName();
-            CommunicationEventTypeTransfer communicationEventTypeTransfer = communicationControl.getCommunicationEventTypeTransfer(userVisit, 
+            var communicationEventDetail = communicationEvent.getLastDetail();
+            var communicationEventName = communicationEventDetail.getCommunicationEventName();
+            var communicationEventTypeTransfer = communicationControl.getCommunicationEventTypeTransfer(userVisit,
                     communicationEventDetail.getCommunicationEventType());
-            CommunicationSourceTransfer communicationSourceTransfer = communicationControl.getCommunicationSourceTransfer(userVisit, 
+            var communicationSourceTransfer = communicationControl.getCommunicationSourceTransfer(userVisit,
                     communicationEventDetail.getCommunicationSource());
-            CommunicationEventPurposeTransfer communicationEventPurposeTransfer = communicationControl.getCommunicationEventPurposeTransfer(userVisit, 
+            var communicationEventPurposeTransfer = communicationControl.getCommunicationEventPurposeTransfer(userVisit,
                     communicationEventDetail.getCommunicationEventPurpose());
-            CommunicationEvent originalCommunicationEvent = communicationEventDetail.getOriginalCommunicationEvent();
-            CommunicationEventTransfer originalCommunicationEventTransfer = originalCommunicationEvent == null? null: communicationControl.getCommunicationEventTransfer(userVisit, originalCommunicationEvent);
-            CommunicationEvent parentCommunicationEvent = communicationEventDetail.getParentCommunicationEvent();
-            CommunicationEventTransfer parentCommunicationEventTransfer = parentCommunicationEvent == null? null: communicationControl.getCommunicationEventTransfer(userVisit, parentCommunicationEvent);
-            PartyContactMechanismTransfer partyContactMechanismTransfer = contactControl.getPartyContactMechanismTransfer(userVisit, communicationEventDetail.getPartyContactMechanism());
-            DocumentTransfer documentTransfer = documentControl.getDocumentTransfer(userVisit, communicationEventDetail.getDocument());
+            var originalCommunicationEvent = communicationEventDetail.getOriginalCommunicationEvent();
+            var originalCommunicationEventTransfer = originalCommunicationEvent == null? null: communicationControl.getCommunicationEventTransfer(userVisit, originalCommunicationEvent);
+            var parentCommunicationEvent = communicationEventDetail.getParentCommunicationEvent();
+            var parentCommunicationEventTransfer = parentCommunicationEvent == null? null: communicationControl.getCommunicationEventTransfer(userVisit, parentCommunicationEvent);
+            var partyContactMechanismTransfer = contactControl.getPartyContactMechanismTransfer(userVisit, communicationEventDetail.getPartyContactMechanism());
+            var documentTransfer = documentControl.getDocumentTransfer(userVisit, communicationEventDetail.getDocument());
             
             communicationEventTransfer = new CommunicationEventTransfer(communicationEventName, communicationEventTypeTransfer,
                     communicationSourceTransfer, communicationEventPurposeTransfer, originalCommunicationEventTransfer,

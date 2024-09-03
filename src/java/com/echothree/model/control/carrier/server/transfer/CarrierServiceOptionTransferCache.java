@@ -32,11 +32,11 @@ public class CarrierServiceOptionTransferCache
     }
     
     public CarrierServiceOptionTransfer getCarrierServiceOptionTransfer(CarrierServiceOption carrierServiceOption) {
-        CarrierServiceOptionTransfer carrierServiceOptionTransfer = get(carrierServiceOption);
+        var carrierServiceOptionTransfer = get(carrierServiceOption);
         
         if(carrierServiceOptionTransfer == null) {
-            CarrierServiceTransfer carrierService = carrierControl.getCarrierServiceTransfer(userVisit, carrierServiceOption.getCarrierService());
-            CarrierOptionTransfer carrierOption = carrierControl.getCarrierOptionTransfer(userVisit, carrierServiceOption.getCarrierOption());
+            var carrierService = carrierControl.getCarrierServiceTransfer(userVisit, carrierServiceOption.getCarrierService());
+            var carrierOption = carrierControl.getCarrierOptionTransfer(userVisit, carrierServiceOption.getCarrierOption());
             
             carrierServiceOptionTransfer = new CarrierServiceOptionTransfer(carrierService, carrierOption);
             put(carrierServiceOption, carrierServiceOptionTransfer);

@@ -67,16 +67,16 @@ public class DeleteHarmonizedTariffScheduleCodeUnitDescriptionCommand
     @Override
     protected BaseResult execute() {
         var itemControl = Session.getModelController(ItemControl.class);
-        String harmonizedTariffScheduleCodeUnitName = form.getHarmonizedTariffScheduleCodeUnitName();
-        HarmonizedTariffScheduleCodeUnit harmonizedTariffScheduleCodeUnit = itemControl.getHarmonizedTariffScheduleCodeUnitByName(harmonizedTariffScheduleCodeUnitName);
+        var harmonizedTariffScheduleCodeUnitName = form.getHarmonizedTariffScheduleCodeUnitName();
+        var harmonizedTariffScheduleCodeUnit = itemControl.getHarmonizedTariffScheduleCodeUnitByName(harmonizedTariffScheduleCodeUnitName);
         
         if(harmonizedTariffScheduleCodeUnit != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                HarmonizedTariffScheduleCodeUnitDescription harmonizedTariffScheduleCodeUnitDescription = itemControl.getHarmonizedTariffScheduleCodeUnitDescriptionForUpdate(harmonizedTariffScheduleCodeUnit, language);
+                var harmonizedTariffScheduleCodeUnitDescription = itemControl.getHarmonizedTariffScheduleCodeUnitDescriptionForUpdate(harmonizedTariffScheduleCodeUnit, language);
                 
                 if(harmonizedTariffScheduleCodeUnitDescription != null) {
                     itemControl.deleteHarmonizedTariffScheduleCodeUnitDescription(harmonizedTariffScheduleCodeUnitDescription, getPartyPK());

@@ -49,8 +49,8 @@ public class GetPreferredTimeZoneCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        GetPreferredTimeZoneResult result = PartyResultFactory.getGetPreferredTimeZoneResult();
-        TimeZone timeZone = getPreferredTimeZone();
+        var result = PartyResultFactory.getGetPreferredTimeZoneResult();
+        var timeZone = getPreferredTimeZone();
 
         result.setPreferredTimeZone(partyControl.getTimeZoneTransfer(getUserVisit(), timeZone));
         sendEvent(timeZone.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());

@@ -33,14 +33,14 @@ public class PartySecurityRoleTemplateTransferCache
     }
     
     public PartySecurityRoleTemplateTransfer getPartySecurityRoleTemplateTransfer(PartySecurityRoleTemplate partySecurityRoleTemplate) {
-        PartySecurityRoleTemplateTransfer partySecurityRoleTemplateTransfer = get(partySecurityRoleTemplate);
+        var partySecurityRoleTemplateTransfer = get(partySecurityRoleTemplate);
         
         if(partySecurityRoleTemplateTransfer == null) {
-            PartySecurityRoleTemplateDetail partySecurityRoleTemplateDetail = partySecurityRoleTemplate.getLastDetail();
-            String partySecurityRoleTemplateName = partySecurityRoleTemplateDetail.getPartySecurityRoleTemplateName();
-            Boolean isDefault = partySecurityRoleTemplateDetail.getIsDefault();
-            Integer sortOrder = partySecurityRoleTemplateDetail.getSortOrder();
-            String description = securityControl.getBestPartySecurityRoleTemplateDescription(partySecurityRoleTemplate, getLanguage());
+            var partySecurityRoleTemplateDetail = partySecurityRoleTemplate.getLastDetail();
+            var partySecurityRoleTemplateName = partySecurityRoleTemplateDetail.getPartySecurityRoleTemplateName();
+            var isDefault = partySecurityRoleTemplateDetail.getIsDefault();
+            var sortOrder = partySecurityRoleTemplateDetail.getSortOrder();
+            var description = securityControl.getBestPartySecurityRoleTemplateDescription(partySecurityRoleTemplate, getLanguage());
             
             partySecurityRoleTemplateTransfer = new PartySecurityRoleTemplateTransfer(partySecurityRoleTemplateName, isDefault,
                     sortOrder, description);

@@ -38,13 +38,13 @@ public class PartyPrinterGroupUseTransferCache
     }
     
     public PartyPrinterGroupUseTransfer getPartyPrinterGroupUseTransfer(PartyPrinterGroupUse partyPrinterGroupUse) {
-        PartyPrinterGroupUseTransfer partyPrinterGroupUseTransfer = get(partyPrinterGroupUse);
+        var partyPrinterGroupUseTransfer = get(partyPrinterGroupUse);
         
         if(partyPrinterGroupUseTransfer == null) {
-            PartyTransfer party = partyControl.getPartyTransfer(userVisit, partyPrinterGroupUse.getParty());
-            PrinterGroupUseTypeTransfer printerGroupUseType = printerControl.getPrinterGroupUseTypeTransfer(userVisit,
+            var party = partyControl.getPartyTransfer(userVisit, partyPrinterGroupUse.getParty());
+            var printerGroupUseType = printerControl.getPrinterGroupUseTypeTransfer(userVisit,
                     partyPrinterGroupUse.getPrinterGroupUseType());
-            PrinterGroupTransfer printerGroup = printerControl.getPrinterGroupTransfer(userVisit,
+            var printerGroup = printerControl.getPrinterGroupTransfer(userVisit,
                     partyPrinterGroupUse.getPrinterGroup());
             
             partyPrinterGroupUseTransfer = new PartyPrinterGroupUseTransfer(party, printerGroupUseType, printerGroup);

@@ -34,12 +34,12 @@ public class MimeTypeFileExtensionTransferCache
     }
     
     public MimeTypeFileExtensionTransfer getMimeTypeFileExtensionTransfer(MimeTypeFileExtension mimeTypeFileExtension) {
-        MimeTypeFileExtensionTransfer mimeTypeFileExtensionTransfer = get(mimeTypeFileExtension);
+        var mimeTypeFileExtensionTransfer = get(mimeTypeFileExtension);
         
         if(mimeTypeFileExtensionTransfer == null) {
-            MimeTypeTransfer mimeType = coreControl.getMimeTypeTransfer(userVisit, mimeTypeFileExtension.getMimeType());
-            String fileExtension = mimeTypeFileExtension.getFileExtension();
-            Boolean isDefault = mimeTypeFileExtension.getIsDefault();
+            var mimeType = coreControl.getMimeTypeTransfer(userVisit, mimeTypeFileExtension.getMimeType());
+            var fileExtension = mimeTypeFileExtension.getFileExtension();
+            var isDefault = mimeTypeFileExtension.getIsDefault();
             
             mimeTypeFileExtensionTransfer = new MimeTypeFileExtensionTransfer(mimeType, fileExtension, isDefault);
             put(mimeTypeFileExtension, mimeTypeFileExtensionTransfer);

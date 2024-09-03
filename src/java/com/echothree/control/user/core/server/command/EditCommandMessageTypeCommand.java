@@ -89,7 +89,7 @@ public class EditCommandMessageTypeCommand
     public CommandMessageType getEntity(EditCommandMessageTypeResult result) {
         var coreControl = getCoreControl();
         CommandMessageType commandMessageType = null;
-        String commandMessageTypeName = spec.getCommandMessageTypeName();
+        var commandMessageTypeName = spec.getCommandMessageTypeName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
             commandMessageType = coreControl.getCommandMessageTypeByName(commandMessageTypeName);
@@ -121,8 +121,8 @@ public class EditCommandMessageTypeCommand
     @Override
     public void doLock(CommandMessageTypeEdit edit, CommandMessageType commandMessageType) {
         var coreControl = getCoreControl();
-        CommandMessageTypeDescription commandMessageTypeDescription = coreControl.getCommandMessageTypeDescription(commandMessageType, getPreferredLanguage());
-        CommandMessageTypeDetail commandMessageTypeDetail = commandMessageType.getLastDetail();
+        var commandMessageTypeDescription = coreControl.getCommandMessageTypeDescription(commandMessageType, getPreferredLanguage());
+        var commandMessageTypeDetail = commandMessageType.getLastDetail();
 
         edit.setCommandMessageTypeName(commandMessageTypeDetail.getCommandMessageTypeName());
         edit.setIsDefault(commandMessageTypeDetail.getIsDefault().toString());
@@ -136,8 +136,8 @@ public class EditCommandMessageTypeCommand
     @Override
     public void canUpdate(CommandMessageType commandMessageType) {
         var coreControl = getCoreControl();
-        String commandMessageTypeName = edit.getCommandMessageTypeName();
-        CommandMessageType duplicateCommandMessageType = coreControl.getCommandMessageTypeByName(commandMessageTypeName);
+        var commandMessageTypeName = edit.getCommandMessageTypeName();
+        var duplicateCommandMessageType = coreControl.getCommandMessageTypeByName(commandMessageTypeName);
 
         if(duplicateCommandMessageType != null && !commandMessageType.equals(duplicateCommandMessageType)) {
             addExecutionError(ExecutionErrors.DuplicateCommandMessageTypeName.name(), commandMessageTypeName);
@@ -148,9 +148,9 @@ public class EditCommandMessageTypeCommand
     public void doUpdate(CommandMessageType commandMessageType) {
         var coreControl = getCoreControl();
         var partyPK = getPartyPK();
-        CommandMessageTypeDetailValue commandMessageTypeDetailValue = coreControl.getCommandMessageTypeDetailValueForUpdate(commandMessageType);
-        CommandMessageTypeDescription commandMessageTypeDescription = coreControl.getCommandMessageTypeDescriptionForUpdate(commandMessageType, getPreferredLanguage());
-        String description = edit.getDescription();
+        var commandMessageTypeDetailValue = coreControl.getCommandMessageTypeDetailValueForUpdate(commandMessageType);
+        var commandMessageTypeDescription = coreControl.getCommandMessageTypeDescriptionForUpdate(commandMessageType, getPreferredLanguage());
+        var description = edit.getDescription();
 
         commandMessageTypeDetailValue.setCommandMessageTypeName(edit.getCommandMessageTypeName());
         commandMessageTypeDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
@@ -165,7 +165,7 @@ public class EditCommandMessageTypeCommand
                 coreControl.deleteCommandMessageTypeDescription(commandMessageTypeDescription, partyPK);
             } else {
                 if(commandMessageTypeDescription != null && description != null) {
-                    CommandMessageTypeDescriptionValue commandMessageTypeDescriptionValue = coreControl.getCommandMessageTypeDescriptionValue(commandMessageTypeDescription);
+                    var commandMessageTypeDescriptionValue = coreControl.getCommandMessageTypeDescriptionValue(commandMessageTypeDescription);
 
                     commandMessageTypeDescriptionValue.setDescription(description);
                     coreControl.updateCommandMessageTypeDescriptionFromValue(commandMessageTypeDescriptionValue, partyPK);

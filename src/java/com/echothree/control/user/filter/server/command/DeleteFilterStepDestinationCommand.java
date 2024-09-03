@@ -69,27 +69,27 @@ public class DeleteFilterStepDestinationCommand
     @Override
     protected BaseResult execute() {
         var filterControl = Session.getModelController(FilterControl.class);
-        String filterKindName = form.getFilterKindName();
-        FilterKind filterKind = filterControl.getFilterKindByName(filterKindName);
+        var filterKindName = form.getFilterKindName();
+        var filterKind = filterControl.getFilterKindByName(filterKindName);
         
         if(filterKind != null) {
-            String filterTypeName = form.getFilterTypeName();
-            FilterType filterType = filterControl.getFilterTypeByName(filterKind, filterTypeName);
+            var filterTypeName = form.getFilterTypeName();
+            var filterType = filterControl.getFilterTypeByName(filterKind, filterTypeName);
             
             if(filterType != null) {
-                String filterName = form.getFilterName();
-                Filter filter = filterControl.getFilterByName(filterType, filterName);
+                var filterName = form.getFilterName();
+                var filter = filterControl.getFilterByName(filterType, filterName);
                 
                 if(filter != null) {
-                    String fromFilterStepName = form.getFromFilterStepName();
-                    FilterStep fromFilterStep = filterControl.getFilterStepByName(filter, fromFilterStepName);
+                    var fromFilterStepName = form.getFromFilterStepName();
+                    var fromFilterStep = filterControl.getFilterStepByName(filter, fromFilterStepName);
                     
                     if(fromFilterStep != null) {
-                        String toFilterStepName = form.getToFilterStepName();
-                        FilterStep toFilterStep = filterControl.getFilterStepByName(filter, toFilterStepName);
+                        var toFilterStepName = form.getToFilterStepName();
+                        var toFilterStep = filterControl.getFilterStepByName(filter, toFilterStepName);
                         
                         if(toFilterStep != null) {
-                            FilterStepDestination filterStepDestination = filterControl.getFilterStepDestinationForUpdate(fromFilterStep, toFilterStep);
+                            var filterStepDestination = filterControl.getFilterStepDestinationForUpdate(fromFilterStep, toFilterStep);
                             
                             if(filterStepDestination != null) {
                                 filterControl.deleteFilterStepDestination(filterStepDestination, getPartyPK());

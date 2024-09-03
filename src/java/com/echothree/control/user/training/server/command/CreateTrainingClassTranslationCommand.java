@@ -75,31 +75,31 @@ public class CreateTrainingClassTranslationCommand
     @Override
     protected BaseResult execute() {
         var trainingControl = Session.getModelController(TrainingControl.class);
-        String trainingClassName = form.getTrainingClassName();
-        TrainingClass trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
+        var trainingClassName = form.getTrainingClassName();
+        var trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
 
         if(trainingClass != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
-                TrainingClassTranslation trainingClassTranslation = trainingControl.getTrainingClassTranslation(trainingClass, language);
+                var trainingClassTranslation = trainingControl.getTrainingClassTranslation(trainingClass, language);
 
                 if(trainingClassTranslation == null) {
-                    MimeTypeLogic mimeTypeLogic = MimeTypeLogic.getInstance();
-                    String overviewMimeTypeName = form.getOverviewMimeTypeName();
-                    String overview = form.getOverview();
+                    var mimeTypeLogic = MimeTypeLogic.getInstance();
+                    var overviewMimeTypeName = form.getOverviewMimeTypeName();
+                    var overview = form.getOverview();
 
-                    MimeType overviewMimeType = mimeTypeLogic.checkMimeType(this, overviewMimeTypeName, overview, MimeTypeUsageTypes.TEXT.name(),
+                    var overviewMimeType = mimeTypeLogic.checkMimeType(this, overviewMimeTypeName, overview, MimeTypeUsageTypes.TEXT.name(),
                             ExecutionErrors.MissingRequiredOverviewMimeTypeName.name(), ExecutionErrors.MissingRequiredOverview.name(),
                             ExecutionErrors.UnknownOverviewMimeTypeName.name(), ExecutionErrors.UnknownOverviewMimeTypeUsage.name());
 
                     if(!hasExecutionErrors()) {
-                        String introductionMimeTypeName = form.getIntroductionMimeTypeName();
-                        String introduction = form.getIntroduction();
+                        var introductionMimeTypeName = form.getIntroductionMimeTypeName();
+                        var introduction = form.getIntroduction();
 
-                        MimeType introductionMimeType = mimeTypeLogic.checkMimeType(this, introductionMimeTypeName, introduction, MimeTypeUsageTypes.TEXT.name(),
+                        var introductionMimeType = mimeTypeLogic.checkMimeType(this, introductionMimeTypeName, introduction, MimeTypeUsageTypes.TEXT.name(),
                                 ExecutionErrors.MissingRequiredIntroductionMimeTypeName.name(), ExecutionErrors.MissingRequiredIntroduction.name(),
                                 ExecutionErrors.UnknownIntroductionMimeTypeName.name(), ExecutionErrors.UnknownIntroductionMimeTypeUsage.name());
 

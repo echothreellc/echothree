@@ -66,13 +66,13 @@ public class DeleteLocationTypeCommand
     @Override
     protected BaseResult execute() {
         var warehouseControl = Session.getModelController(WarehouseControl.class);
-        String warehouseName = form.getWarehouseName();
-        Warehouse warehouse = warehouseControl.getWarehouseByName(warehouseName);
+        var warehouseName = form.getWarehouseName();
+        var warehouse = warehouseControl.getWarehouseByName(warehouseName);
         
         if(warehouse != null) {
-            Party warehouseParty = warehouse.getParty();
-            String locationTypeName = form.getLocationTypeName();
-            LocationType locationType = warehouseControl.getLocationTypeByNameForUpdate(warehouseParty, locationTypeName);
+            var warehouseParty = warehouse.getParty();
+            var locationTypeName = form.getLocationTypeName();
+            var locationType = warehouseControl.getLocationTypeByNameForUpdate(warehouseParty, locationTypeName);
             
             if(locationType != null) {
                 warehouseControl.deleteLocationType(locationType, getPartyPK());

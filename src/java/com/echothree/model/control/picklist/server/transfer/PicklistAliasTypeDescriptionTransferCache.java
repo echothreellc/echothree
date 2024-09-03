@@ -32,11 +32,11 @@ public class PicklistAliasTypeDescriptionTransferCache
     }
     
     public PicklistAliasTypeDescriptionTransfer getPicklistAliasTypeDescriptionTransfer(PicklistAliasTypeDescription picklistAliasTypeDescription) {
-        PicklistAliasTypeDescriptionTransfer picklistAliasTypeDescriptionTransfer = get(picklistAliasTypeDescription);
+        var picklistAliasTypeDescriptionTransfer = get(picklistAliasTypeDescription);
         
         if(picklistAliasTypeDescriptionTransfer == null) {
-            PicklistAliasTypeTransfer picklistAliasTypeTransfer = picklistControl.getPicklistAliasTypeTransfer(userVisit, picklistAliasTypeDescription.getPicklistAliasType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, picklistAliasTypeDescription.getLanguage());
+            var picklistAliasTypeTransfer = picklistControl.getPicklistAliasTypeTransfer(userVisit, picklistAliasTypeDescription.getPicklistAliasType());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, picklistAliasTypeDescription.getLanguage());
             
             picklistAliasTypeDescriptionTransfer = new PicklistAliasTypeDescriptionTransfer(languageTransfer, picklistAliasTypeTransfer, picklistAliasTypeDescription.getDescription());
             put(picklistAliasTypeDescription, picklistAliasTypeDescriptionTransfer);

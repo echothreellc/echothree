@@ -30,7 +30,7 @@ public class TrainingUtil {
     public static TrainingLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
 
             cachedLocal = (TrainingLocal)ctx.lookup("ejb:echothree/echothree-server/TrainingBean!com.echothree.control.user.training.server.TrainingLocal");
         }
@@ -42,7 +42,7 @@ public class TrainingUtil {
     public static TrainingRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
             
             cachedRemote = (TrainingRemote)ctx.lookup("ejb:echothree/echothree-server/TrainingBean!com.echothree.control.user.training.common.TrainingRemote");
         }

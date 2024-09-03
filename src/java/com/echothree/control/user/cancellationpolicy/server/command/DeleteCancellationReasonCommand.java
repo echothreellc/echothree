@@ -65,12 +65,12 @@ public class DeleteCancellationReasonCommand
     @Override
     protected BaseResult execute() {
         var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
-        String cancellationKindName = form.getCancellationKindName();
-        CancellationKind cancellationKind = cancellationPolicyControl.getCancellationKindByName(cancellationKindName);
+        var cancellationKindName = form.getCancellationKindName();
+        var cancellationKind = cancellationPolicyControl.getCancellationKindByName(cancellationKindName);
         
         if(cancellationKind != null) {
-            String cancellationReasonName = form.getCancellationReasonName();
-            CancellationReason cancellationReason = cancellationPolicyControl.getCancellationReasonByNameForUpdate(cancellationKind, cancellationReasonName);
+            var cancellationReasonName = form.getCancellationReasonName();
+            var cancellationReason = cancellationPolicyControl.getCancellationReasonByNameForUpdate(cancellationKind, cancellationReasonName);
             
             if(cancellationReason != null) {
                 cancellationPolicyControl.deleteCancellationReason(cancellationReason, getPartyPK());

@@ -49,9 +49,9 @@ public class GetMimeTypeDescriptionsCommand
    @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        GetMimeTypeDescriptionsResult result = CoreResultFactory.getGetMimeTypeDescriptionsResult();
-        String mimeTypeName = form.getMimeTypeName();
-        MimeType mimeType = coreControl.getMimeTypeByName(mimeTypeName);
+       var result = CoreResultFactory.getGetMimeTypeDescriptionsResult();
+       var mimeTypeName = form.getMimeTypeName();
+       var mimeType = coreControl.getMimeTypeByName(mimeTypeName);
         
         if(mimeType != null) {
             result.setMimeType(coreControl.getMimeTypeTransfer(getUserVisit(), mimeType));

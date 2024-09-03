@@ -32,12 +32,12 @@ public class SelectorDescriptionTransferCache
     }
     
     public SelectorDescriptionTransfer getSelectorDescriptionTransfer(SelectorDescription selectorDescription) {
-        SelectorDescriptionTransfer selectorDescriptionTransfer = get(selectorDescription);
+        var selectorDescriptionTransfer = get(selectorDescription);
         
         if(selectorDescriptionTransfer == null) {
-            SelectorTransferCache selectorTransferCache = selectorControl.getSelectorTransferCaches(userVisit).getSelectorTransferCache();
-            SelectorTransfer selectorTransfer = selectorTransferCache.getSelectorTransfer(selectorDescription.getSelector());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, selectorDescription.getLanguage());
+            var selectorTransferCache = selectorControl.getSelectorTransferCaches(userVisit).getSelectorTransferCache();
+            var selectorTransfer = selectorTransferCache.getSelectorTransfer(selectorDescription.getSelector());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, selectorDescription.getLanguage());
             
             selectorDescriptionTransfer = new SelectorDescriptionTransfer(languageTransfer, selectorTransfer, selectorDescription.getDescription());
             put(selectorDescription, selectorDescriptionTransfer);

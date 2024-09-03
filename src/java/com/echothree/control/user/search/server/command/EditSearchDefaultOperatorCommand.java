@@ -91,7 +91,7 @@ public class EditSearchDefaultOperatorCommand
     public SearchDefaultOperator getEntity(EditSearchDefaultOperatorResult result) {
         var searchControl = Session.getModelController(SearchControl.class);
         SearchDefaultOperator searchDefaultOperator;
-        String searchDefaultOperatorName = spec.getSearchDefaultOperatorName();
+        var searchDefaultOperatorName = spec.getSearchDefaultOperatorName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
             searchDefaultOperator = searchControl.getSearchDefaultOperatorByName(searchDefaultOperatorName);
@@ -121,8 +121,8 @@ public class EditSearchDefaultOperatorCommand
     @Override
     public void doLock(SearchDefaultOperatorEdit edit, SearchDefaultOperator searchDefaultOperator) {
         var searchControl = Session.getModelController(SearchControl.class);
-        SearchDefaultOperatorDescription searchDefaultOperatorDescription = searchControl.getSearchDefaultOperatorDescription(searchDefaultOperator, getPreferredLanguage());
-        SearchDefaultOperatorDetail searchDefaultOperatorDetail = searchDefaultOperator.getLastDetail();
+        var searchDefaultOperatorDescription = searchControl.getSearchDefaultOperatorDescription(searchDefaultOperator, getPreferredLanguage());
+        var searchDefaultOperatorDetail = searchDefaultOperator.getLastDetail();
 
         edit.setSearchDefaultOperatorName(searchDefaultOperatorDetail.getSearchDefaultOperatorName());
         edit.setIsDefault(searchDefaultOperatorDetail.getIsDefault().toString());
@@ -136,8 +136,8 @@ public class EditSearchDefaultOperatorCommand
     @Override
     public void canUpdate(SearchDefaultOperator searchDefaultOperator) {
         var searchControl = Session.getModelController(SearchControl.class);
-        String searchDefaultOperatorName = edit.getSearchDefaultOperatorName();
-        SearchDefaultOperator duplicateSearchDefaultOperator = searchControl.getSearchDefaultOperatorByName(searchDefaultOperatorName);
+        var searchDefaultOperatorName = edit.getSearchDefaultOperatorName();
+        var duplicateSearchDefaultOperator = searchControl.getSearchDefaultOperatorByName(searchDefaultOperatorName);
 
         if(duplicateSearchDefaultOperator != null && !searchDefaultOperator.equals(duplicateSearchDefaultOperator)) {
             addExecutionError(ExecutionErrors.DuplicateSearchDefaultOperatorName.name(), searchDefaultOperatorName);
@@ -148,9 +148,9 @@ public class EditSearchDefaultOperatorCommand
     public void doUpdate(SearchDefaultOperator searchDefaultOperator) {
         var searchControl = Session.getModelController(SearchControl.class);
         var partyPK = getPartyPK();
-        SearchDefaultOperatorDetailValue searchDefaultOperatorDetailValue = searchControl.getSearchDefaultOperatorDetailValueForUpdate(searchDefaultOperator);
-        SearchDefaultOperatorDescription searchDefaultOperatorDescription = searchControl.getSearchDefaultOperatorDescriptionForUpdate(searchDefaultOperator, getPreferredLanguage());
-        String description = edit.getDescription();
+        var searchDefaultOperatorDetailValue = searchControl.getSearchDefaultOperatorDetailValueForUpdate(searchDefaultOperator);
+        var searchDefaultOperatorDescription = searchControl.getSearchDefaultOperatorDescriptionForUpdate(searchDefaultOperator, getPreferredLanguage());
+        var description = edit.getDescription();
 
         searchDefaultOperatorDetailValue.setSearchDefaultOperatorName(edit.getSearchDefaultOperatorName());
         searchDefaultOperatorDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
@@ -165,7 +165,7 @@ public class EditSearchDefaultOperatorCommand
                 searchControl.deleteSearchDefaultOperatorDescription(searchDefaultOperatorDescription, partyPK);
             } else {
                 if(searchDefaultOperatorDescription != null && description != null) {
-                    SearchDefaultOperatorDescriptionValue searchDefaultOperatorDescriptionValue = searchControl.getSearchDefaultOperatorDescriptionValue(searchDefaultOperatorDescription);
+                    var searchDefaultOperatorDescriptionValue = searchControl.getSearchDefaultOperatorDescriptionValue(searchDefaultOperatorDescription);
 
                     searchDefaultOperatorDescriptionValue.setDescription(description);
                     searchControl.updateSearchDefaultOperatorDescriptionFromValue(searchDefaultOperatorDescriptionValue, partyPK);

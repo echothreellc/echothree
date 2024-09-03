@@ -37,11 +37,11 @@ public class EntityTagTransferCache
     }
     
     public EntityTagTransfer getEntityTagTransfer(EntityTag entityTag) {
-        EntityTagTransfer entityTagTransfer = get(entityTag);
+        var entityTagTransfer = get(entityTag);
         
         if(entityTagTransfer == null) {
-            EntityInstanceTransfer taggedEntityInstance = coreControl.getEntityInstanceTransfer(userVisit, entityTag.getTaggedEntityInstance(), false, false, false, false, false, false);
-            TagTransfer tag = tagControl.getTagTransfer(userVisit, entityTag.getTag());
+            var taggedEntityInstance = coreControl.getEntityInstanceTransfer(userVisit, entityTag.getTaggedEntityInstance(), false, false, false, false, false, false);
+            var tag = tagControl.getTagTransfer(userVisit, entityTag.getTag());
             
             entityTagTransfer = new EntityTagTransfer(taggedEntityInstance, tag);
             put(entityTag, entityTagTransfer);

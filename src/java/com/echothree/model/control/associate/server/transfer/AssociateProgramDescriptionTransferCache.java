@@ -33,11 +33,11 @@ public class AssociateProgramDescriptionTransferCache
     
     @Override
     public AssociateProgramDescriptionTransfer getTransfer(AssociateProgramDescription associateProgramDescription) {
-        AssociateProgramDescriptionTransfer associateProgramDescriptionTransfer = get(associateProgramDescription);
+        var associateProgramDescriptionTransfer = get(associateProgramDescription);
         
         if(associateProgramDescriptionTransfer == null) {
-            AssociateProgramTransfer associateProgramTransfer = associateControl.getAssociateProgramTransfer(userVisit, associateProgramDescription.getAssociateProgram());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, associateProgramDescription.getLanguage());
+            var associateProgramTransfer = associateControl.getAssociateProgramTransfer(userVisit, associateProgramDescription.getAssociateProgram());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, associateProgramDescription.getLanguage());
             
             associateProgramDescriptionTransfer = new AssociateProgramDescriptionTransfer(languageTransfer, associateProgramTransfer, associateProgramDescription.getDescription());
             put(associateProgramDescription, associateProgramDescriptionTransfer);

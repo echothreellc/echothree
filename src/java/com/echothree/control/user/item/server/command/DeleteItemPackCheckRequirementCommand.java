@@ -53,16 +53,16 @@ public class DeleteItemPackCheckRequirementCommand
     @Override
     protected BaseResult execute() {
         var itemControl = Session.getModelController(ItemControl.class);
-        String itemName = form.getItemName();
-        Item item = itemControl.getItemByName(itemName);
+        var itemName = form.getItemName();
+        var item = itemControl.getItemByName(itemName);
         
         if(item != null) {
             var uomControl = Session.getModelController(UomControl.class);
-            String unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
-            UnitOfMeasureType unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(item.getLastDetail().getUnitOfMeasureKind(), unitOfMeasureTypeName);
+            var unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
+            var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(item.getLastDetail().getUnitOfMeasureKind(), unitOfMeasureTypeName);
             
             if(unitOfMeasureType != null) {
-                ItemPackCheckRequirement itemPackCheckRequirement = itemControl.getItemPackCheckRequirementForUpdate(item, unitOfMeasureType);
+                var itemPackCheckRequirement = itemControl.getItemPackCheckRequirementForUpdate(item, unitOfMeasureType);
                 
                 if(itemPackCheckRequirement != null) {
                     itemControl.deleteItemPackCheckRequirement(itemPackCheckRequirement, getPartyPK());

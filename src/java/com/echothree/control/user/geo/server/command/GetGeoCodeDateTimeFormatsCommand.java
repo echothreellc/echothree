@@ -68,14 +68,14 @@ public class GetGeoCodeDateTimeFormatsCommand
     @Override
     protected BaseResult execute() {
         var geoControl = Session.getModelController(GeoControl.class);
-        GetGeoCodeDateTimeFormatsResult result = GeoResultFactory.getGetGeoCodeDateTimeFormatsResult();
-        String geoCodeName = form.getGeoCodeName();
-        String dateTimeFormatName = form.getDateTimeFormatName();
+        var result = GeoResultFactory.getGetGeoCodeDateTimeFormatsResult();
+        var geoCodeName = form.getGeoCodeName();
+        var dateTimeFormatName = form.getDateTimeFormatName();
         var parameterCount = (geoCodeName != null? 1: 0) + (dateTimeFormatName != null? 1: 0);
         
         if(parameterCount == 1) {
             if(geoCodeName != null) {
-                GeoCode geoCode = geoControl.getGeoCodeByName(geoCodeName);
+                var geoCode = geoControl.getGeoCodeByName(geoCodeName);
                 
                 if(geoCode != null) {
                     result.setGeoCode(geoControl.getGeoCodeTransfer(getUserVisit(), geoCode));
@@ -85,7 +85,7 @@ public class GetGeoCodeDateTimeFormatsCommand
                 }
             } else if(dateTimeFormatName != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                DateTimeFormat dateTimeFormat = partyControl.getDateTimeFormatByName(dateTimeFormatName);
+                var dateTimeFormat = partyControl.getDateTimeFormatByName(dateTimeFormatName);
                 
                 if(dateTimeFormat != null) {
                     result.setDateTimeFormat(partyControl.getDateTimeFormatTransfer(getUserVisit(), dateTimeFormat));

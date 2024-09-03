@@ -54,15 +54,15 @@ public class FilterStepTransferCache
 
     @Override
     public FilterStepTransfer getTransfer(FilterStep filterStep) {
-        FilterStepTransfer filterStepTransfer = get(filterStep);
+        var filterStepTransfer = get(filterStep);
         
         if(filterStepTransfer == null) {
-            FilterStepDetail filterStepDetail = filterStep.getLastDetail();
-            FilterTransfer filter = filterControl.getFilterTransfer(userVisit, filterStepDetail.getFilter());
-            String filterStepName = filterStepDetail.getFilterStepName();
-            Selector filterItemSelector = filterStepDetail.getFilterItemSelector();
-            SelectorTransfer filterItemSelectorTransfer = filterItemSelector == null? null: selectorControl.getSelectorTransfer(userVisit, filterItemSelector);
-            String description = filterControl.getBestFilterStepDescription(filterStep, getLanguage());
+            var filterStepDetail = filterStep.getLastDetail();
+            var filter = filterControl.getFilterTransfer(userVisit, filterStepDetail.getFilter());
+            var filterStepName = filterStepDetail.getFilterStepName();
+            var filterItemSelector = filterStepDetail.getFilterItemSelector();
+            var filterItemSelectorTransfer = filterItemSelector == null? null: selectorControl.getSelectorTransfer(userVisit, filterItemSelector);
+            var description = filterControl.getBestFilterStepDescription(filterStep, getLanguage());
             
             filterStepTransfer = new FilterStepTransfer(filter, filterStepName, filterItemSelectorTransfer, description);
             put(filterStep, filterStepTransfer);

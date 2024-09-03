@@ -54,18 +54,18 @@ public class DeleteDepartmentCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        String companyName = form.getCompanyName();
-        PartyCompany partyCompany = partyControl.getPartyCompanyByName(companyName);
+        var companyName = form.getCompanyName();
+        var partyCompany = partyControl.getPartyCompanyByName(companyName);
         
         if(partyCompany != null) {
-            String divisionName = form.getDivisionName();
-            Party partyCompanyParty = partyCompany.getParty();
-            PartyDivision partyDivision = partyControl.getPartyDivisionByName(partyCompanyParty, divisionName);
+            var divisionName = form.getDivisionName();
+            var partyCompanyParty = partyCompany.getParty();
+            var partyDivision = partyControl.getPartyDivisionByName(partyCompanyParty, divisionName);
             
             if(partyDivision != null) {
-                String departmentName = form.getDepartmentName();
-                Party partyDivisionParty = partyDivision.getParty();
-                PartyDepartment partyDepartment = partyControl.getPartyDepartmentByNameForUpdate(partyDivisionParty, departmentName);
+                var departmentName = form.getDepartmentName();
+                var partyDivisionParty = partyDivision.getParty();
+                var partyDepartment = partyControl.getPartyDepartmentByNameForUpdate(partyDivisionParty, departmentName);
                 
                 if(partyDepartment != null) {
                     getLog().error("unimplemented deleteDepartment called");

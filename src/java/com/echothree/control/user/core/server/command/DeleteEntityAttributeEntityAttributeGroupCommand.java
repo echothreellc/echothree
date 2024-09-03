@@ -68,20 +68,20 @@ public class DeleteEntityAttributeEntityAttributeGroupCommand
     
     @Override
     protected BaseResult execute() {
-        EntityAttribute entityAttribute = EntityAttributeLogic.getInstance().getEntityAttributeByName(this, form.getComponentVendorName(), form.getEntityTypeName(), form.getEntityAttributeName());
+        var entityAttribute = EntityAttributeLogic.getInstance().getEntityAttributeByName(this, form.getComponentVendorName(), form.getEntityTypeName(), form.getEntityAttributeName());
         
         if(!hasExecutionErrors()) {
-            EntityAttributeGroup entityAttributeGroup = EntityAttributeLogic.getInstance().getEntityAttributeGroupByName(this, form.getEntityAttributeGroupName());
+            var entityAttributeGroup = EntityAttributeLogic.getInstance().getEntityAttributeGroupByName(this, form.getEntityAttributeGroupName());
             
             if(!hasExecutionErrors()) {
                 var coreControl = getCoreControl();
-                EntityAttributeEntityAttributeGroup entityAttributeEntityAttributeGroup = coreControl.getEntityAttributeEntityAttributeGroupForUpdate(entityAttribute, entityAttributeGroup);
+                var entityAttributeEntityAttributeGroup = coreControl.getEntityAttributeEntityAttributeGroupForUpdate(entityAttribute, entityAttributeGroup);
 
                 if(entityAttributeEntityAttributeGroup != null) {
                     coreControl.deleteEntityAttributeEntityAttributeGroup(entityAttributeEntityAttributeGroup, getPartyPK());
                 } else {
-                    EntityAttributeDetail entityAttributeDetail = entityAttribute.getLastDetail();
-                    EntityTypeDetail entityTypeDetail = entityAttributeDetail.getEntityType().getLastDetail();
+                    var entityAttributeDetail = entityAttribute.getLastDetail();
+                    var entityTypeDetail = entityAttributeDetail.getEntityType().getLastDetail();
                     
                     addExecutionError(ExecutionErrors.UnknownEntityAttributeEntityAttributeGroup.name(),
                             entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(), entityTypeDetail.getEntityTypeName(),

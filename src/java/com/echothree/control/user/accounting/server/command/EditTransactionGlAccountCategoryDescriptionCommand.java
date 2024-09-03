@@ -81,29 +81,29 @@ public class EditTransactionGlAccountCategoryDescriptionCommand
     @Override
     protected BaseResult execute() {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        EditTransactionGlAccountCategoryDescriptionResult result = AccountingResultFactory.getEditTransactionGlAccountCategoryDescriptionResult();
-        String transactionTypeName = spec.getTransactionTypeName();
-        TransactionType transactionType = accountingControl.getTransactionTypeByName(transactionTypeName);
+        var result = AccountingResultFactory.getEditTransactionGlAccountCategoryDescriptionResult();
+        var transactionTypeName = spec.getTransactionTypeName();
+        var transactionType = accountingControl.getTransactionTypeByName(transactionTypeName);
         
         if(transactionType != null) {
-            String transactionGlAccountCategoryName = spec.getTransactionGlAccountCategoryName();
-            TransactionGlAccountCategory transactionGlAccountCategory = accountingControl.getTransactionGlAccountCategoryByName(transactionType, transactionGlAccountCategoryName);
+            var transactionGlAccountCategoryName = spec.getTransactionGlAccountCategoryName();
+            var transactionGlAccountCategory = accountingControl.getTransactionGlAccountCategoryByName(transactionType, transactionGlAccountCategoryName);
 
             if(transactionGlAccountCategory != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = spec.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = spec.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                 if(language != null) {
                     if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                        TransactionGlAccountCategoryDescription transactionGlAccountCategoryDescription = accountingControl.getTransactionGlAccountCategoryDescription(transactionGlAccountCategory, language);
+                        var transactionGlAccountCategoryDescription = accountingControl.getTransactionGlAccountCategoryDescription(transactionGlAccountCategory, language);
 
                         if(transactionGlAccountCategoryDescription != null) {
                             if(editMode.equals(EditMode.LOCK)) {
                                 result.setTransactionGlAccountCategoryDescription(accountingControl.getTransactionGlAccountCategoryDescriptionTransfer(getUserVisit(), transactionGlAccountCategoryDescription));
 
                                 if(lockEntity(transactionGlAccountCategory)) {
-                                    TransactionGlAccountCategoryDescriptionEdit edit = AccountingEditFactory.getTransactionGlAccountCategoryDescriptionEdit();
+                                    var edit = AccountingEditFactory.getTransactionGlAccountCategoryDescriptionEdit();
 
                                     result.setEdit(edit);
                                     edit.setDescription(transactionGlAccountCategoryDescription.getDescription());
@@ -119,12 +119,12 @@ public class EditTransactionGlAccountCategoryDescriptionCommand
                             addExecutionError(ExecutionErrors.UnknownTransactionGlAccountCategoryDescription.name());
                         }
                     } else if(editMode.equals(EditMode.UPDATE)) {
-                        TransactionGlAccountCategoryDescriptionValue transactionGlAccountCategoryDescriptionValue = accountingControl.getTransactionGlAccountCategoryDescriptionValueForUpdate(transactionGlAccountCategory, language);
+                        var transactionGlAccountCategoryDescriptionValue = accountingControl.getTransactionGlAccountCategoryDescriptionValueForUpdate(transactionGlAccountCategory, language);
 
                         if(transactionGlAccountCategoryDescriptionValue != null) {
                             if(lockEntityForUpdate(transactionGlAccountCategory)) {
                                 try {
-                                    String description = edit.getDescription();
+                                    var description = edit.getDescription();
 
                                     transactionGlAccountCategoryDescriptionValue.setDescription(description);
 

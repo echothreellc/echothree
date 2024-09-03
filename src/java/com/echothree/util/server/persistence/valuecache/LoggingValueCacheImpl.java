@@ -54,8 +54,8 @@ public class LoggingValueCacheImpl
         if(PersistenceDebugFlags.LogValueCacheActions) {
             log.info(threadName + " get " + basePK);
         }
-        
-        BaseValue baseValue = wrappedValueCache.get(basePK);
+
+        var baseValue = wrappedValueCache.get(basePK);
         getCount++;
         if(baseValue != null) {
             getCacheHitCount++;

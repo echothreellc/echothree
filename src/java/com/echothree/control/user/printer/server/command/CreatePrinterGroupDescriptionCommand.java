@@ -54,16 +54,16 @@ public class CreatePrinterGroupDescriptionCommand
    @Override
     protected BaseResult execute() {
         var printerControl = Session.getModelController(PrinterControl.class);
-        String printerGroupName = form.getPrinterGroupName();
-        PrinterGroup printerGroup = printerControl.getPrinterGroupByName(printerGroupName);
+       var printerGroupName = form.getPrinterGroupName();
+       var printerGroup = printerControl.getPrinterGroupByName(printerGroupName);
         
         if(printerGroup != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                PrinterGroupDescription printerDescription = printerControl.getPrinterGroupDescription(printerGroup, language);
+                var printerDescription = printerControl.getPrinterGroupDescription(printerGroup, language);
                 
                 if(printerDescription == null) {
                     var description = form.getDescription();

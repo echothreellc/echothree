@@ -48,16 +48,16 @@ public class MessageTransferCache
     }
     
     public MessageTransfer getMessageTransfer(Message message) {
-        MessageTransfer messageTransfer = get(message);
+        var messageTransfer = get(message);
         
         if(messageTransfer == null) {
-            MessageDetail messageDetail = message.getLastDetail();
-            MessageTypeTransfer messageTypeTransfer = messageControl.getMessageTypeTransfer(userVisit, messageDetail.getMessageType());
-            String messageName = messageDetail.getMessageName();
-            Boolean includeByDefault = messageDetail.getIncludeByDefault();
-            Boolean isDefault = messageDetail.getIsDefault();
-            Integer sortOrder = messageDetail.getSortOrder();
-            String description = messageControl.getBestMessageDescription(message, getLanguage());
+            var messageDetail = message.getLastDetail();
+            var messageTypeTransfer = messageControl.getMessageTypeTransfer(userVisit, messageDetail.getMessageType());
+            var messageName = messageDetail.getMessageName();
+            var includeByDefault = messageDetail.getIncludeByDefault();
+            var isDefault = messageDetail.getIsDefault();
+            var sortOrder = messageDetail.getSortOrder();
+            var description = messageControl.getBestMessageDescription(message, getLanguage());
             
             messageTransfer = new MessageTransfer(messageTypeTransfer, messageName, includeByDefault, isDefault, sortOrder, description);
             put(message, messageTransfer);

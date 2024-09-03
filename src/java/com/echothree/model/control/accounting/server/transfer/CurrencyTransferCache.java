@@ -83,28 +83,28 @@ public class CurrencyTransferCache
     
     @Override
     public CurrencyTransfer getTransfer(Currency currency) {
-        CurrencyTransfer currencyTransfer = get(currency);
+        var currencyTransfer = get(currency);
         
         if(currencyTransfer == null) {
-            String currencyIsoName = filterCurrencyIsoName ? null : currency.getCurrencyIsoName();
-            String symbol = filterSymbol ? null : currency.getSymbol();
-            SymbolPositionTransfer symbolPosition = filterSymbolPosition ? null : accountingControl.getSymbolPositionTransfer(userVisit, currency.getSymbolPosition());
-            Boolean symbolOnListStart = filterSymbolOnListStart ? null : currency.getSymbolOnListStart();
-            Boolean symbolOnListMember = filterSymbolOnListMember ? null : currency.getSymbolOnListMember();
-            Boolean symbolOnSubtotal = filterSymbolOnSubtotal ? null : currency.getSymbolOnSubtotal();
-            Boolean symbolOnTotal = filterSymbolOnTotal ? null :  currency.getSymbolOnTotal();
-            String groupingSeparator = filterGroupingSeparator ? null : currency.getGroupingSeparator();
-            Integer groupingSize = filterGroupingSize ? null : currency.getGroupingSize();
-            String fractionSeparator = filterFractionSeparator ? null : currency.getFractionSeparator();
-            Integer defaultFractionDigits = filterDefaultFractionDigits ? null : currency.getDefaultFractionDigits();
-            Integer priceUnitFractionDigits = filterPriceUnitFractionDigits ? null : currency.getPriceUnitFractionDigits();
-            Integer priceLineFractionDigits = filterPriceLineFractionDigits ? null : currency.getPriceLineFractionDigits();
-            Integer costUnitFractionDigits = filterCostUnitFractionDigits ? null : currency.getCostUnitFractionDigits();
-            Integer costLineFractionDigits = filterCostLineFractionDigits ? null : currency.getCostLineFractionDigits();
-            String minusSign = filterMinusSign ? null : currency.getMinusSign();
-            Boolean isDefault = filterisDefault ? null : currency.getIsDefault();
-            Integer sortOrder = filterSortOrder ? null : currency.getSortOrder();
-            String description = filterDescription ? null : accountingControl.getBestCurrencyDescription(currency, getLanguage());
+            var currencyIsoName = filterCurrencyIsoName ? null : currency.getCurrencyIsoName();
+            var symbol = filterSymbol ? null : currency.getSymbol();
+            var symbolPosition = filterSymbolPosition ? null : accountingControl.getSymbolPositionTransfer(userVisit, currency.getSymbolPosition());
+            var symbolOnListStart = filterSymbolOnListStart ? null : currency.getSymbolOnListStart();
+            var symbolOnListMember = filterSymbolOnListMember ? null : currency.getSymbolOnListMember();
+            var symbolOnSubtotal = filterSymbolOnSubtotal ? null : currency.getSymbolOnSubtotal();
+            var symbolOnTotal = filterSymbolOnTotal ? null :  currency.getSymbolOnTotal();
+            var groupingSeparator = filterGroupingSeparator ? null : currency.getGroupingSeparator();
+            var groupingSize = filterGroupingSize ? null : currency.getGroupingSize();
+            var fractionSeparator = filterFractionSeparator ? null : currency.getFractionSeparator();
+            var defaultFractionDigits = filterDefaultFractionDigits ? null : currency.getDefaultFractionDigits();
+            var priceUnitFractionDigits = filterPriceUnitFractionDigits ? null : currency.getPriceUnitFractionDigits();
+            var priceLineFractionDigits = filterPriceLineFractionDigits ? null : currency.getPriceLineFractionDigits();
+            var costUnitFractionDigits = filterCostUnitFractionDigits ? null : currency.getCostUnitFractionDigits();
+            var costLineFractionDigits = filterCostLineFractionDigits ? null : currency.getCostLineFractionDigits();
+            var minusSign = filterMinusSign ? null : currency.getMinusSign();
+            var isDefault = filterisDefault ? null : currency.getIsDefault();
+            var sortOrder = filterSortOrder ? null : currency.getSortOrder();
+            var description = filterDescription ? null : accountingControl.getBestCurrencyDescription(currency, getLanguage());
             
             currencyTransfer = new CurrencyTransfer(currencyIsoName, symbol, symbolPosition, symbolOnListStart, symbolOnListMember,
                     symbolOnSubtotal, symbolOnTotal, groupingSeparator, groupingSize, fractionSeparator, defaultFractionDigits,

@@ -43,18 +43,18 @@ public class LetterTransferCache
     }
     
     public LetterTransfer getLetterTransfer(Letter letter) {
-        LetterTransfer letterTransfer = get(letter);
+        var letterTransfer = get(letter);
         
         if(letterTransfer == null) {
-            LetterDetail letterDetail = letter.getLastDetail();
-            ChainTypeTransfer chainTypeTransfer = chainControl.getChainTypeTransfer(userVisit, letterDetail.getChainType());
-            String letterName = letterDetail.getLetterName();
-            LetterSourceTransfer letterSourceTransfer = letterControl.getLetterSourceTransfer(userVisit, letterDetail.getLetterSource());
-            ContactList contactList = letterDetail.getContactList();
-            ContactListTransfer contactListTransfer = contactList == null? null: contactListControl.getContactListTransfer(userVisit, contactList);
-            Boolean isDefault = letterDetail.getIsDefault();
-            Integer sortOrder = letterDetail.getSortOrder();
-            String description = letterControl.getBestLetterDescription(letter, getLanguage());
+            var letterDetail = letter.getLastDetail();
+            var chainTypeTransfer = chainControl.getChainTypeTransfer(userVisit, letterDetail.getChainType());
+            var letterName = letterDetail.getLetterName();
+            var letterSourceTransfer = letterControl.getLetterSourceTransfer(userVisit, letterDetail.getLetterSource());
+            var contactList = letterDetail.getContactList();
+            var contactListTransfer = contactList == null? null: contactListControl.getContactListTransfer(userVisit, contactList);
+            var isDefault = letterDetail.getIsDefault();
+            var sortOrder = letterDetail.getSortOrder();
+            var description = letterControl.getBestLetterDescription(letter, getLanguage());
             
             letterTransfer = new LetterTransfer(chainTypeTransfer, letterName, letterSourceTransfer, contactListTransfer, isDefault,
                     sortOrder, description);

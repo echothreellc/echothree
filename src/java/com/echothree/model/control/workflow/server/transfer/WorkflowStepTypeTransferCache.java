@@ -30,11 +30,11 @@ public class WorkflowStepTypeTransferCache
     }
     
     public WorkflowStepTypeTransfer getWorkflowStepTypeTransfer(WorkflowStepType workflowStepType) {
-        WorkflowStepTypeTransfer workflowStepTypeTransfer = get(workflowStepType);
+        var workflowStepTypeTransfer = get(workflowStepType);
         
         if(workflowStepTypeTransfer == null) {
-            String workflowStepTypeName = workflowStepType.getWorkflowStepTypeName();
-            String description = workflowControl.getBestWorkflowStepTypeDescription(workflowStepType, getLanguage());
+            var workflowStepTypeName = workflowStepType.getWorkflowStepTypeName();
+            var description = workflowControl.getBestWorkflowStepTypeDescription(workflowStepType, getLanguage());
             
             workflowStepTypeTransfer = new WorkflowStepTypeTransfer(workflowStepTypeName, description);
             put(workflowStepType, workflowStepTypeTransfer);

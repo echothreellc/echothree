@@ -63,13 +63,13 @@ public class SetDefaultApplicationEditorUseCommand
     
     @Override
     protected BaseResult execute() {
-        String applicationName = form.getApplicationName();
-        Application application = ApplicationLogic.getInstance().getApplicationByName(this, applicationName);
+        var applicationName = form.getApplicationName();
+        var application = ApplicationLogic.getInstance().getApplicationByName(this, applicationName);
 
         if(!hasExecutionErrors()) {
             var coreControl = getCoreControl();
-            String applicationEditorUseName = form.getApplicationEditorUseName();
-            ApplicationEditorUseDetailValue applicationEditorUseDetailValue = coreControl.getApplicationEditorUseDetailValueByNameForUpdate(application,
+            var applicationEditorUseName = form.getApplicationEditorUseName();
+            var applicationEditorUseDetailValue = coreControl.getApplicationEditorUseDetailValueByNameForUpdate(application,
                     applicationEditorUseName);
 
             if(applicationEditorUseDetailValue != null) {

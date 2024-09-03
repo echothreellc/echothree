@@ -49,8 +49,8 @@ public class GetPreferredDateTimeFormatCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        GetPreferredDateTimeFormatResult result = PartyResultFactory.getGetPreferredDateTimeFormatResult();
-        DateTimeFormat dateTimeFormat = getPreferredDateTimeFormat();
+        var result = PartyResultFactory.getGetPreferredDateTimeFormatResult();
+        var dateTimeFormat = getPreferredDateTimeFormat();
 
         result.setPreferredDateTimeFormat(partyControl.getDateTimeFormatTransfer(getUserVisit(), dateTimeFormat));
         sendEvent(dateTimeFormat.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());

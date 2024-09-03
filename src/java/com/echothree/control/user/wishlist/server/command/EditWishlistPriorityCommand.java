@@ -87,7 +87,7 @@ public class EditWishlistPriorityCommand
     @Override
     protected BaseResult execute() {
         var wishlistControl = Session.getModelController(WishlistControl.class);
-        EditWishlistPriorityResult result = WishlistResultFactory.getEditWishlistPriorityResult();
+        var result = WishlistResultFactory.getEditWishlistPriorityResult();
         
         if(editMode.equals(EditMode.LOCK)) {
             var wishlistPriority = WishlistPriorityLogic.getInstance().getWishlistPriorityByUniversalSpec(this, spec, false);
@@ -96,9 +96,9 @@ public class EditWishlistPriorityCommand
                 result.setWishlistPriority(wishlistControl.getWishlistPriorityTransfer(getUserVisit(), wishlistPriority));
 
                 if(lockEntity(wishlistPriority)) {
-                    WishlistPriorityDescription wishlistPriorityDescription = wishlistControl.getWishlistPriorityDescription(wishlistPriority, getPreferredLanguage());
-                    WishlistPriorityEdit edit = WishlistEditFactory.getWishlistPriorityEdit();
-                    WishlistPriorityDetail wishlistPriorityDetail = wishlistPriority.getLastDetail();
+                    var wishlistPriorityDescription = wishlistControl.getWishlistPriorityDescription(wishlistPriority, getPreferredLanguage());
+                    var edit = WishlistEditFactory.getWishlistPriorityEdit();
+                    var wishlistPriorityDetail = wishlistPriority.getLastDetail();
 
                     result.setEdit(edit);
                     edit.setWishlistPriorityName(wishlistPriorityDetail.getWishlistPriorityName());
@@ -119,15 +119,15 @@ public class EditWishlistPriorityCommand
             if(wishlistPriority != null) {
                 var wishlistType = wishlistPriority.getLastDetail().getWishlistType();
                 var wishlistPriorityName = edit.getWishlistPriorityName();
-                WishlistPriority duplicateWishlistPriority = wishlistControl.getWishlistPriorityByName(wishlistType, wishlistPriorityName);
+                var duplicateWishlistPriority = wishlistControl.getWishlistPriorityByName(wishlistType, wishlistPriorityName);
 
                 if(duplicateWishlistPriority == null || wishlistPriority.equals(duplicateWishlistPriority)) {
                     if(lockEntityForUpdate(wishlistPriority)) {
                         try {
                             var partyPK = getPartyPK();
-                            WishlistPriorityDetailValue wishlistPriorityDetailValue = wishlistControl.getWishlistPriorityDetailValueForUpdate(wishlistPriority);
-                            WishlistPriorityDescription wishlistPriorityDescription = wishlistControl.getWishlistPriorityDescriptionForUpdate(wishlistPriority, getPreferredLanguage());
-                            String description = edit.getDescription();
+                            var wishlistPriorityDetailValue = wishlistControl.getWishlistPriorityDetailValueForUpdate(wishlistPriority);
+                            var wishlistPriorityDescription = wishlistControl.getWishlistPriorityDescriptionForUpdate(wishlistPriority, getPreferredLanguage());
+                            var description = edit.getDescription();
 
                             wishlistPriorityDetailValue.setWishlistPriorityName(edit.getWishlistPriorityName());
                             wishlistPriorityDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
@@ -140,7 +140,7 @@ public class EditWishlistPriorityCommand
                             } else if(wishlistPriorityDescription != null && description == null) {
                                 wishlistControl.deleteWishlistPriorityDescription(wishlistPriorityDescription, partyPK);
                             } else if(wishlistPriorityDescription != null && description != null) {
-                                WishlistPriorityDescriptionValue wishlistPriorityDescriptionValue = wishlistControl.getWishlistPriorityDescriptionValue(wishlistPriorityDescription);
+                                var wishlistPriorityDescriptionValue = wishlistControl.getWishlistPriorityDescriptionValue(wishlistPriorityDescription);
 
                                 wishlistPriorityDescriptionValue.setDescription(description);
                                 wishlistControl.updateWishlistPriorityDescriptionFromValue(wishlistPriorityDescriptionValue, partyPK);

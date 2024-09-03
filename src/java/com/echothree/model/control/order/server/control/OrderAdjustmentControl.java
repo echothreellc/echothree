@@ -67,11 +67,11 @@ public class OrderAdjustmentControl
     // --------------------------------------------------------------------------------
 
     public OrderAdjustmentType createOrderAdjustmentType(OrderType orderType, String orderAdjustmentTypeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        OrderAdjustmentType defaultOrderAdjustmentType = getDefaultOrderAdjustmentType(orderType);
-        boolean defaultFound = defaultOrderAdjustmentType != null;
+        var defaultOrderAdjustmentType = getDefaultOrderAdjustmentType(orderType);
+        var defaultFound = defaultOrderAdjustmentType != null;
 
         if(defaultFound && isDefault) {
-            OrderAdjustmentTypeDetailValue defaultOrderAdjustmentTypeDetailValue = getDefaultOrderAdjustmentTypeDetailValueForUpdate(orderType);
+            var defaultOrderAdjustmentTypeDetailValue = getDefaultOrderAdjustmentTypeDetailValueForUpdate(orderType);
 
             defaultOrderAdjustmentTypeDetailValue.setIsDefault(Boolean.FALSE);
             updateOrderAdjustmentTypeFromValue(defaultOrderAdjustmentTypeDetailValue, false, createdBy);
@@ -79,8 +79,8 @@ public class OrderAdjustmentControl
             isDefault = Boolean.TRUE;
         }
 
-        OrderAdjustmentType orderAdjustmentType = OrderAdjustmentTypeFactory.getInstance().create();
-        OrderAdjustmentTypeDetail orderAdjustmentTypeDetail = OrderAdjustmentTypeDetailFactory.getInstance().create(orderAdjustmentType, orderType,
+        var orderAdjustmentType = OrderAdjustmentTypeFactory.getInstance().create();
+        var orderAdjustmentTypeDetail = OrderAdjustmentTypeDetailFactory.getInstance().create(orderAdjustmentType, orderType,
                 orderAdjustmentTypeName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -209,9 +209,9 @@ public class OrderAdjustmentControl
     }
 
     public List<OrderAdjustmentTypeTransfer> getOrderAdjustmentTypeTransfers(UserVisit userVisit, OrderType orderType) {
-        List<OrderAdjustmentType> orderAdjustmentTypes = getOrderAdjustmentTypes(orderType);
+        var orderAdjustmentTypes = getOrderAdjustmentTypes(orderType);
         List<OrderAdjustmentTypeTransfer> orderAdjustmentTypeTransfers = new ArrayList<>(orderAdjustmentTypes.size());
-        OrderAdjustmentTypeTransferCache orderAdjustmentTypeTransferCache = getOrderTransferCaches(userVisit).getOrderAdjustmentTypeTransferCache();
+        var orderAdjustmentTypeTransferCache = getOrderTransferCaches(userVisit).getOrderAdjustmentTypeTransferCache();
 
         orderAdjustmentTypes.forEach((orderAdjustmentType) ->
                 orderAdjustmentTypeTransfers.add(orderAdjustmentTypeTransferCache.getOrderAdjustmentTypeTransfer(orderAdjustmentType))
@@ -222,7 +222,7 @@ public class OrderAdjustmentControl
 
     public OrderAdjustmentTypeChoicesBean getOrderAdjustmentTypeChoices(String defaultOrderAdjustmentTypeChoice, Language language, boolean allowNullChoice,
             OrderType orderType) {
-        List<OrderAdjustmentType> orderAdjustmentTypes = getOrderAdjustmentTypes(orderType);
+        var orderAdjustmentTypes = getOrderAdjustmentTypes(orderType);
         var size = orderAdjustmentTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -238,7 +238,7 @@ public class OrderAdjustmentControl
         }
 
         for(var orderAdjustmentType : orderAdjustmentTypes) {
-            OrderAdjustmentTypeDetail orderAdjustmentTypeDetail = orderAdjustmentType.getLastDetail();
+            var orderAdjustmentTypeDetail = orderAdjustmentType.getLastDetail();
 
             var label = getBestOrderAdjustmentTypeDescription(orderAdjustmentType, language);
             var value = orderAdjustmentTypeDetail.getOrderAdjustmentTypeName();
@@ -258,27 +258,27 @@ public class OrderAdjustmentControl
     private void updateOrderAdjustmentTypeFromValue(OrderAdjustmentTypeDetailValue orderAdjustmentTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(orderAdjustmentTypeDetailValue.hasBeenModified()) {
-            OrderAdjustmentType orderAdjustmentType = OrderAdjustmentTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var orderAdjustmentType = OrderAdjustmentTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      orderAdjustmentTypeDetailValue.getOrderAdjustmentTypePK());
-            OrderAdjustmentTypeDetail orderAdjustmentTypeDetail = orderAdjustmentType.getActiveDetailForUpdate();
+            var orderAdjustmentTypeDetail = orderAdjustmentType.getActiveDetailForUpdate();
 
             orderAdjustmentTypeDetail.setThruTime(session.START_TIME_LONG);
             orderAdjustmentTypeDetail.store();
 
-            OrderType orderType = orderAdjustmentTypeDetail.getOrderType(); // Not updated
-            OrderTypePK orderTypePK = orderType.getPrimaryKey(); // Not updated
-            OrderAdjustmentTypePK orderAdjustmentTypePK = orderAdjustmentTypeDetail.getOrderAdjustmentTypePK(); // Not updated
-            String orderAdjustmentTypeName = orderAdjustmentTypeDetailValue.getOrderAdjustmentTypeName();
-            Boolean isDefault = orderAdjustmentTypeDetailValue.getIsDefault();
-            Integer sortOrder = orderAdjustmentTypeDetailValue.getSortOrder();
+            var orderType = orderAdjustmentTypeDetail.getOrderType(); // Not updated
+            var orderTypePK = orderType.getPrimaryKey(); // Not updated
+            var orderAdjustmentTypePK = orderAdjustmentTypeDetail.getOrderAdjustmentTypePK(); // Not updated
+            var orderAdjustmentTypeName = orderAdjustmentTypeDetailValue.getOrderAdjustmentTypeName();
+            var isDefault = orderAdjustmentTypeDetailValue.getIsDefault();
+            var sortOrder = orderAdjustmentTypeDetailValue.getSortOrder();
 
             if(checkDefault) {
-                OrderAdjustmentType defaultOrderAdjustmentType = getDefaultOrderAdjustmentType(orderType);
-                boolean defaultFound = defaultOrderAdjustmentType != null && !defaultOrderAdjustmentType.equals(orderAdjustmentType);
+                var defaultOrderAdjustmentType = getDefaultOrderAdjustmentType(orderType);
+                var defaultFound = defaultOrderAdjustmentType != null && !defaultOrderAdjustmentType.equals(orderAdjustmentType);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    OrderAdjustmentTypeDetailValue defaultOrderAdjustmentTypeDetailValue = getDefaultOrderAdjustmentTypeDetailValueForUpdate(orderType);
+                    var defaultOrderAdjustmentTypeDetailValue = getDefaultOrderAdjustmentTypeDetailValueForUpdate(orderType);
 
                     defaultOrderAdjustmentTypeDetailValue.setIsDefault(Boolean.FALSE);
                     updateOrderAdjustmentTypeFromValue(defaultOrderAdjustmentTypeDetailValue, false, updatedBy);
@@ -306,23 +306,23 @@ public class OrderAdjustmentControl
         // TODO: deleteOrderAdjustmentsByOrderAdjustmentType(orderAdjustmentType, deletedBy);
         deleteOrderAdjustmentTypeDescriptionsByOrderAdjustmentType(orderAdjustmentType, deletedBy);
 
-        OrderAdjustmentTypeDetail orderAdjustmentTypeDetail = orderAdjustmentType.getLastDetailForUpdate();
+        var orderAdjustmentTypeDetail = orderAdjustmentType.getLastDetailForUpdate();
         orderAdjustmentTypeDetail.setThruTime(session.START_TIME_LONG);
         orderAdjustmentType.setActiveDetail(null);
         orderAdjustmentType.store();
 
         // Check for default, and pick one if necessary
-        OrderType orderType = orderAdjustmentTypeDetail.getOrderType();
-        OrderAdjustmentType defaultOrderAdjustmentType = getDefaultOrderAdjustmentType(orderType);
+        var orderType = orderAdjustmentTypeDetail.getOrderType();
+        var defaultOrderAdjustmentType = getDefaultOrderAdjustmentType(orderType);
         if(defaultOrderAdjustmentType == null) {
-            List<OrderAdjustmentType> orderAdjustmentTypes = getOrderAdjustmentTypesForUpdate(orderType);
+            var orderAdjustmentTypes = getOrderAdjustmentTypesForUpdate(orderType);
 
             if(!orderAdjustmentTypes.isEmpty()) {
-                Iterator<OrderAdjustmentType> iter = orderAdjustmentTypes.iterator();
+                var iter = orderAdjustmentTypes.iterator();
                 if(iter.hasNext()) {
                     defaultOrderAdjustmentType = iter.next();
                 }
-                OrderAdjustmentTypeDetailValue orderAdjustmentTypeDetailValue = Objects.requireNonNull(defaultOrderAdjustmentType).getLastDetailForUpdate().getOrderAdjustmentTypeDetailValue().clone();
+                var orderAdjustmentTypeDetailValue = Objects.requireNonNull(defaultOrderAdjustmentType).getLastDetailForUpdate().getOrderAdjustmentTypeDetailValue().clone();
 
                 orderAdjustmentTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateOrderAdjustmentTypeFromValue(orderAdjustmentTypeDetailValue, false, deletedBy);
@@ -337,7 +337,7 @@ public class OrderAdjustmentControl
     // --------------------------------------------------------------------------------
 
     public OrderAdjustmentTypeDescription createOrderAdjustmentTypeDescription(OrderAdjustmentType orderAdjustmentType, Language language, String description, BasePK createdBy) {
-        OrderAdjustmentTypeDescription orderAdjustmentTypeDescription = OrderAdjustmentTypeDescriptionFactory.getInstance().create(orderAdjustmentType, language, description,
+        var orderAdjustmentTypeDescription = OrderAdjustmentTypeDescriptionFactory.getInstance().create(orderAdjustmentType, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(orderAdjustmentType.getPrimaryKey(), EventTypes.MODIFY, orderAdjustmentTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -416,7 +416,7 @@ public class OrderAdjustmentControl
 
     public String getBestOrderAdjustmentTypeDescription(OrderAdjustmentType orderAdjustmentType, Language language) {
         String description;
-        OrderAdjustmentTypeDescription orderAdjustmentTypeDescription = getOrderAdjustmentTypeDescription(orderAdjustmentType, language);
+        var orderAdjustmentTypeDescription = getOrderAdjustmentTypeDescription(orderAdjustmentType, language);
 
         if(orderAdjustmentTypeDescription == null && !language.getIsDefault()) {
             orderAdjustmentTypeDescription = getOrderAdjustmentTypeDescription(orderAdjustmentType, getPartyControl().getDefaultLanguage());
@@ -436,9 +436,9 @@ public class OrderAdjustmentControl
     }
 
     public List<OrderAdjustmentTypeDescriptionTransfer> getOrderAdjustmentTypeDescriptionTransfersByOrderAdjustmentType(UserVisit userVisit, OrderAdjustmentType orderAdjustmentType) {
-        List<OrderAdjustmentTypeDescription> orderAdjustmentTypeDescriptions = getOrderAdjustmentTypeDescriptionsByOrderAdjustmentType(orderAdjustmentType);
+        var orderAdjustmentTypeDescriptions = getOrderAdjustmentTypeDescriptionsByOrderAdjustmentType(orderAdjustmentType);
         List<OrderAdjustmentTypeDescriptionTransfer> orderAdjustmentTypeDescriptionTransfers = new ArrayList<>(orderAdjustmentTypeDescriptions.size());
-        OrderAdjustmentTypeDescriptionTransferCache orderAdjustmentTypeDescriptionTransferCache = getOrderTransferCaches(userVisit).getOrderAdjustmentTypeDescriptionTransferCache();
+        var orderAdjustmentTypeDescriptionTransferCache = getOrderTransferCaches(userVisit).getOrderAdjustmentTypeDescriptionTransferCache();
 
         orderAdjustmentTypeDescriptions.forEach((orderAdjustmentTypeDescription) ->
                 orderAdjustmentTypeDescriptionTransfers.add(orderAdjustmentTypeDescriptionTransferCache.getOrderAdjustmentTypeDescriptionTransfer(orderAdjustmentTypeDescription))
@@ -449,15 +449,15 @@ public class OrderAdjustmentControl
 
     public void updateOrderAdjustmentTypeDescriptionFromValue(OrderAdjustmentTypeDescriptionValue orderAdjustmentTypeDescriptionValue, BasePK updatedBy) {
         if(orderAdjustmentTypeDescriptionValue.hasBeenModified()) {
-            OrderAdjustmentTypeDescription orderAdjustmentTypeDescription = OrderAdjustmentTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var orderAdjustmentTypeDescription = OrderAdjustmentTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     orderAdjustmentTypeDescriptionValue.getPrimaryKey());
 
             orderAdjustmentTypeDescription.setThruTime(session.START_TIME_LONG);
             orderAdjustmentTypeDescription.store();
 
-            OrderAdjustmentType orderAdjustmentType = orderAdjustmentTypeDescription.getOrderAdjustmentType();
-            Language language = orderAdjustmentTypeDescription.getLanguage();
-            String description = orderAdjustmentTypeDescriptionValue.getDescription();
+            var orderAdjustmentType = orderAdjustmentTypeDescription.getOrderAdjustmentType();
+            var language = orderAdjustmentTypeDescription.getLanguage();
+            var description = orderAdjustmentTypeDescriptionValue.getDescription();
 
             orderAdjustmentTypeDescription = OrderAdjustmentTypeDescriptionFactory.getInstance().create(orderAdjustmentType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -474,7 +474,7 @@ public class OrderAdjustmentControl
     }
 
     public void deleteOrderAdjustmentTypeDescriptionsByOrderAdjustmentType(OrderAdjustmentType orderAdjustmentType, BasePK deletedBy) {
-        List<OrderAdjustmentTypeDescription> orderAdjustmentTypeDescriptions = getOrderAdjustmentTypeDescriptionsByOrderAdjustmentTypeForUpdate(orderAdjustmentType);
+        var orderAdjustmentTypeDescriptions = getOrderAdjustmentTypeDescriptionsByOrderAdjustmentTypeForUpdate(orderAdjustmentType);
 
         orderAdjustmentTypeDescriptions.forEach((orderAdjustmentTypeDescription) -> 
                 deleteOrderAdjustmentTypeDescription(orderAdjustmentTypeDescription, deletedBy)
@@ -487,8 +487,8 @@ public class OrderAdjustmentControl
 
     public OrderAdjustment createOrderAdjustment(Order order, Integer orderAdjustmentSequence, OrderAdjustmentType orderAdjustmentType, Long amount,
             BasePK createdBy) {
-        OrderAdjustment orderAdjustment = OrderAdjustmentFactory.getInstance().create();
-        OrderAdjustmentDetail orderAdjustmentDetail = OrderAdjustmentDetailFactory.getInstance().create(orderAdjustment,
+        var orderAdjustment = OrderAdjustmentFactory.getInstance().create();
+        var orderAdjustmentDetail = OrderAdjustmentDetailFactory.getInstance().create(orderAdjustment,
                 order, orderAdjustmentSequence, orderAdjustmentType, amount, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -521,7 +521,7 @@ public class OrderAdjustmentControl
                         "FOR UPDATE";
             }
 
-            PreparedStatement ps = OrderAdjustmentFactory.getInstance().prepareStatement(query);
+            var ps = OrderAdjustmentFactory.getInstance().prepareStatement(query);
 
             ps.setLong(1, order.getPrimaryKey().getEntityId());
 
@@ -542,7 +542,7 @@ public class OrderAdjustmentControl
     }
 
     public void deleteOrderAdjustment(OrderAdjustment orderAdjustment, BasePK deletedBy) {
-        OrderAdjustmentDetail orderAdjustmentDetail = orderAdjustment.getLastDetailForUpdate();
+        var orderAdjustmentDetail = orderAdjustment.getLastDetailForUpdate();
         orderAdjustmentDetail.setThruTime(session.START_TIME_LONG);
         orderAdjustment.setActiveDetail(null);
         orderAdjustment.store();
@@ -551,7 +551,7 @@ public class OrderAdjustmentControl
     }
 
     public void deleteOrderAdjustmentsByOrder(Order order, BasePK deletedBy) {
-        List<OrderAdjustment> orderAdjustments = getOrderAdjustmentsByOrderForUpdate(order);
+        var orderAdjustments = getOrderAdjustmentsByOrderForUpdate(order);
 
         orderAdjustments.forEach((orderAdjustment) -> 
                 deleteOrderAdjustment(orderAdjustment, deletedBy)

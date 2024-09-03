@@ -66,18 +66,18 @@ public class EditNameSuffixCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        EditNameSuffixResult result = PartyResultFactory.getEditNameSuffixResult();
+        var result = PartyResultFactory.getEditNameSuffixResult();
         
         if(editMode.equals(EditMode.LOCK)) {
-            String nameSuffixId = spec.getNameSuffixId();
-            NameSuffix nameSuffix = partyControl.convertNameSuffixIdToEntity(nameSuffixId, EntityPermission.READ_ONLY);
+            var nameSuffixId = spec.getNameSuffixId();
+            var nameSuffix = partyControl.convertNameSuffixIdToEntity(nameSuffixId, EntityPermission.READ_ONLY);
             
             if(nameSuffix != null) {
                 result.setNameSuffix(partyControl.getNameSuffixTransfer(getUserVisit(), nameSuffix));
                 
                 if(lockEntity(nameSuffix)) {
-                    NameSuffixEdit edit = PartyEditFactory.getNameSuffixEdit();
-                    NameSuffixDetail nameSuffixDetail = nameSuffix.getLastDetail();
+                    var edit = PartyEditFactory.getNameSuffixEdit();
+                    var nameSuffixDetail = nameSuffix.getLastDetail();
                     
                     result.setEdit(edit);
                     edit.setDescription(nameSuffixDetail.getDescription());
@@ -92,14 +92,14 @@ public class EditNameSuffixCommand
                 addExecutionError(ExecutionErrors.UnknownNameSuffixId.name(), nameSuffixId);
             }
         } else if(editMode.equals(EditMode.UPDATE)) {
-            String nameSuffixId = spec.getNameSuffixId();
-            NameSuffixPK nameSuffixPK = partyControl.convertNameSuffixIdToPK(nameSuffixId);
+            var nameSuffixId = spec.getNameSuffixId();
+            var nameSuffixPK = partyControl.convertNameSuffixIdToPK(nameSuffixId);
             
             if(nameSuffixPK != null) {
                 if(lockEntityForUpdate(nameSuffixPK)) {
                     try {
                         var partyPK = getPartyPK();
-                        NameSuffixDetailValue nameSuffixDetailValue = partyControl.getNameSuffixDetailValueByPKForUpdate(nameSuffixPK);
+                        var nameSuffixDetailValue = partyControl.getNameSuffixDetailValueByPKForUpdate(nameSuffixPK);
                         
                         nameSuffixDetailValue.setDescription(edit.getDescription());
                         nameSuffixDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));

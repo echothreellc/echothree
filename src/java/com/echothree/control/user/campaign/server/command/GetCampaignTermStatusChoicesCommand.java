@@ -66,13 +66,13 @@ public class GetCampaignTermStatusChoicesCommand
     @Override
     protected BaseResult execute() {
         var campaignControl = Session.getModelController(CampaignControl.class);
-        GetCampaignTermStatusChoicesResult result = CampaignResultFactory.getGetCampaignTermStatusChoicesResult();
-        String campaignTermName = form.getCampaignTermName();
-        CampaignTerm campaignTerm = campaignControl.getCampaignTermByName(campaignTermName);
+        var result = CampaignResultFactory.getGetCampaignTermStatusChoicesResult();
+        var campaignTermName = form.getCampaignTermName();
+        var campaignTerm = campaignControl.getCampaignTermByName(campaignTermName);
         
         if(campaignTerm != null) {
-            String defaultCampaignTermStatusChoice = form.getDefaultCampaignTermStatusChoice();
-            boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+            var defaultCampaignTermStatusChoice = form.getDefaultCampaignTermStatusChoice();
+            var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
             
             result.setCampaignTermStatusChoices(campaignControl.getCampaignTermStatusChoices(defaultCampaignTermStatusChoice,
                     getPreferredLanguage(), allowNullChoice, campaignTerm, getPartyPK()));

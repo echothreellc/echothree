@@ -69,17 +69,17 @@ public class GetBatchTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var batchControl = Session.getModelController(BatchControl.class);
-        GetBatchTypeDescriptionResult result = BatchResultFactory.getGetBatchTypeDescriptionResult();
-        String batchTypeName = form.getBatchTypeName();
-        BatchType batchType = batchControl.getBatchTypeByName(batchTypeName);
+        var result = BatchResultFactory.getGetBatchTypeDescriptionResult();
+        var batchTypeName = form.getBatchTypeName();
+        var batchType = batchControl.getBatchTypeByName(batchTypeName);
         
         if(batchType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
-                BatchTypeDescription batchTypeDescription = batchControl.getBatchTypeDescription(batchType, language);
+                var batchTypeDescription = batchControl.getBatchTypeDescription(batchType, language);
 
                 if(batchTypeDescription != null) {
                     result.setBatchTypeDescription(batchControl.getBatchTypeDescriptionTransfer(getUserVisit(), batchTypeDescription));

@@ -79,22 +79,22 @@ public class ContentPageTransferCache
     }
 
     public ContentPageTransfer getContentPageTransfer(ContentPage contentPage) {
-        ContentPageTransfer contentPageTransfer = get(contentPage);
+        var contentPageTransfer = get(contentPage);
         
         if(contentPageTransfer == null) {
-            ContentPageDetail contentPageDetail = contentPage.getLastDetail();
-            ContentSectionTransfer contentSection = filterContentSection ? null : contentControl.getContentSectionTransfer(userVisit, contentPageDetail.getContentSection());
-            String contentPageName = filterContentPageName ? null : contentPageDetail.getContentPageName();
-            ContentPageLayoutTransfer contentPageLayout = filterContentPageLayout ? null : contentControl.getContentPageLayoutTransfer(userVisit, contentPageDetail.getContentPageLayout());
-            Boolean isDefault = filterIsDefault ? null : contentPageDetail.getIsDefault();
-            Integer sortOrder = filterSortOrder ? null : contentPageDetail.getSortOrder();
-            String description = filterDescription ? null : contentControl.getBestContentPageDescription(contentPage, getLanguage());
+            var contentPageDetail = contentPage.getLastDetail();
+            var contentSection = filterContentSection ? null : contentControl.getContentSectionTransfer(userVisit, contentPageDetail.getContentSection());
+            var contentPageName = filterContentPageName ? null : contentPageDetail.getContentPageName();
+            var contentPageLayout = filterContentPageLayout ? null : contentControl.getContentPageLayoutTransfer(userVisit, contentPageDetail.getContentPageLayout());
+            var isDefault = filterIsDefault ? null : contentPageDetail.getIsDefault();
+            var sortOrder = filterSortOrder ? null : contentPageDetail.getSortOrder();
+            var description = filterDescription ? null : contentControl.getBestContentPageDescription(contentPage, getLanguage());
             
             contentPageTransfer = new ContentPageTransfer(contentSection, contentPageName, contentPageLayout, isDefault, sortOrder, description);
             put(contentPage, contentPageTransfer);
 
             if(includeContentPageAreas) {
-                List<ContentPageAreaTransfer> contentPageAreaTransfers = contentControl.getContentPageAreaTransfersByContentPage(userVisit, contentPage, getLanguage());
+                var contentPageAreaTransfers = contentControl.getContentPageAreaTransfersByContentPage(userVisit, contentPage, getLanguage());
                 Map<String, ContentPageAreaTransfer> contentPageAreas = new LinkedHashMap<>(contentPageAreaTransfers.size());
 
                 contentPageAreaTransfers.forEach((contentPageAreaTransfer) -> {

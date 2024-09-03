@@ -39,13 +39,13 @@ public class OfferChainTypeTransferCache
     }
     
     public OfferChainTypeTransfer getOfferChainTypeTransfer(OfferChainType offerChainType) {
-        OfferChainTypeTransfer offerChainTypeTransfer = get(offerChainType);
+        var offerChainTypeTransfer = get(offerChainType);
         
         if(offerChainTypeTransfer == null) {
-            OfferTransfer offerTransfer = offerControl.getOfferTransfer(userVisit, offerChainType.getOffer());
-            ChainTypeTransfer chainTypeTransfer = chainControl.getChainTypeTransfer(userVisit, offerChainType.getChainType());
-            Chain chain = offerChainType.getChain();
-            ChainTransfer chainTransfer = chain == null? null: chainControl.getChainTransfer(userVisit, chain);
+            var offerTransfer = offerControl.getOfferTransfer(userVisit, offerChainType.getOffer());
+            var chainTypeTransfer = chainControl.getChainTypeTransfer(userVisit, offerChainType.getChainType());
+            var chain = offerChainType.getChain();
+            var chainTransfer = chain == null? null: chainControl.getChainTransfer(userVisit, chain);
             
             offerChainTypeTransfer = new OfferChainTypeTransfer(offerTransfer, chainTypeTransfer, chainTransfer);
             put(offerChainType, offerChainTypeTransfer);

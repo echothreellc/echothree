@@ -72,22 +72,22 @@ public class GetCarrierServiceDescriptionCommand
     @Override
     protected BaseResult execute() {
         var carrierControl = Session.getModelController(CarrierControl.class);
-        GetCarrierServiceDescriptionResult result = CarrierResultFactory.getGetCarrierServiceDescriptionResult();
-        String carrierName = form.getCarrierName();
-        Carrier carrier = carrierControl.getCarrierByName(carrierName);
+        var result = CarrierResultFactory.getGetCarrierServiceDescriptionResult();
+        var carrierName = form.getCarrierName();
+        var carrier = carrierControl.getCarrierByName(carrierName);
         
         if(carrier != null) {
-            Party carrierParty = carrier.getParty();
-            String carrierServiceName = form.getCarrierServiceName();
-            CarrierService carrierService = carrierControl.getCarrierServiceByName(carrierParty, carrierServiceName);
+            var carrierParty = carrier.getParty();
+            var carrierServiceName = form.getCarrierServiceName();
+            var carrierService = carrierControl.getCarrierServiceByName(carrierParty, carrierServiceName);
             
             if(carrierService != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = form.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = form.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
                 
                 if(language != null) {
-                    CarrierServiceDescription carrierServiceDescription = carrierControl.getCarrierServiceDescription(carrierService, language);
+                    var carrierServiceDescription = carrierControl.getCarrierServiceDescription(carrierService, language);
                     
                     if(carrierServiceDescription != null) {
                         result.setCarrierServiceDescription(carrierControl.getCarrierServiceDescriptionTransfer(getUserVisit(), carrierServiceDescription));

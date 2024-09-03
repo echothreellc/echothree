@@ -52,14 +52,14 @@ public class GetUnitOfMeasureKindChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        GetUnitOfMeasureKindChoicesResult result = UomResultFactory.getGetUnitOfMeasureKindChoicesResult();
+        var result = UomResultFactory.getGetUnitOfMeasureKindChoicesResult();
         var uomControl = Session.getModelController(UomControl.class);
-        String unitOfMeasureKindUseTypeName = form.getUnitOfMeasureKindUseTypeName();
-        UnitOfMeasureKindUseType unitOfMeasureKindUseType = unitOfMeasureKindUseTypeName == null? null: uomControl.getUnitOfMeasureKindUseTypeByName(unitOfMeasureKindUseTypeName);
+        var unitOfMeasureKindUseTypeName = form.getUnitOfMeasureKindUseTypeName();
+        var unitOfMeasureKindUseType = unitOfMeasureKindUseTypeName == null? null: uomControl.getUnitOfMeasureKindUseTypeByName(unitOfMeasureKindUseTypeName);
         
         if(unitOfMeasureKindUseTypeName == null || unitOfMeasureKindUseType != null) {
-            String defaultUnitOfMeasureKindChoice = form.getDefaultUnitOfMeasureKindChoice();
-            boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+            var defaultUnitOfMeasureKindChoice = form.getDefaultUnitOfMeasureKindChoice();
+            var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
             
             if(unitOfMeasureKindUseType == null) {
                 result.setUnitOfMeasureKindChoices(uomControl.getUnitOfMeasureKindChoices(defaultUnitOfMeasureKindChoice,

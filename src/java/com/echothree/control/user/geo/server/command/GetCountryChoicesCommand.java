@@ -66,9 +66,9 @@ public class GetCountryChoicesCommand
     @Override
     protected BaseResult execute() {
         var geoControl = Session.getModelController(GeoControl.class);
-        GetCountryChoicesResult result = GeoResultFactory.getGetCountryChoicesResult();
-        String defaultCountryChoice = form.getDefaultCountryChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = GeoResultFactory.getGetCountryChoicesResult();
+        var defaultCountryChoice = form.getDefaultCountryChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setCountryChoices(geoControl.getCountryChoices(defaultCountryChoice, getPreferredLanguage(), allowNullChoice));
         

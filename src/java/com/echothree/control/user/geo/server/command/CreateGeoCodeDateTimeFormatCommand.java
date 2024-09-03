@@ -69,16 +69,16 @@ public class CreateGeoCodeDateTimeFormatCommand
     @Override
     protected BaseResult execute() {
         var geoControl = Session.getModelController(GeoControl.class);
-        String geoCodeName = form.getGeoCodeName();
-        GeoCode geoCode = geoControl.getGeoCodeByName(geoCodeName);
+        var geoCodeName = form.getGeoCodeName();
+        var geoCode = geoControl.getGeoCodeByName(geoCodeName);
         
         if(geoCode != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String dateTimeFormatName = form.getDateTimeFormatName();
-            DateTimeFormat dateTimeFormat = partyControl.getDateTimeFormatByName(dateTimeFormatName);
+            var dateTimeFormatName = form.getDateTimeFormatName();
+            var dateTimeFormat = partyControl.getDateTimeFormatByName(dateTimeFormatName);
             
             if(dateTimeFormat != null) {
-                GeoCodeDateTimeFormat geoCodeDateTimeFormat = geoControl.getGeoCodeDateTimeFormat(geoCode, dateTimeFormat);
+                var geoCodeDateTimeFormat = geoControl.getGeoCodeDateTimeFormat(geoCode, dateTimeFormat);
                 
                 if(geoCodeDateTimeFormat == null) {
                     var isDefault = Boolean.valueOf(form.getIsDefault());

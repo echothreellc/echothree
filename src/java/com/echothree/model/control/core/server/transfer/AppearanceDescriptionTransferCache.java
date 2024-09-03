@@ -35,11 +35,11 @@ public class AppearanceDescriptionTransferCache
     }
     
     public AppearanceDescriptionTransfer getAppearanceDescriptionTransfer(AppearanceDescription appearanceDescription) {
-        AppearanceDescriptionTransfer appearanceDescriptionTransfer = get(appearanceDescription);
+        var appearanceDescriptionTransfer = get(appearanceDescription);
         
         if(appearanceDescriptionTransfer == null) {
-            AppearanceTransfer appearanceTransfer = coreControl.getAppearanceTransfer(userVisit, appearanceDescription.getAppearance());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, appearanceDescription.getLanguage());
+            var appearanceTransfer = coreControl.getAppearanceTransfer(userVisit, appearanceDescription.getAppearance());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, appearanceDescription.getLanguage());
             
             appearanceDescriptionTransfer = new AppearanceDescriptionTransfer(languageTransfer, appearanceTransfer, appearanceDescription.getDescription());
             put(appearanceDescription, appearanceDescriptionTransfer);

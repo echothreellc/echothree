@@ -79,25 +79,25 @@ public class EditSymbolPositionDescriptionCommand
     @Override
     protected BaseResult execute() {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        EditSymbolPositionDescriptionResult result = AccountingResultFactory.getEditSymbolPositionDescriptionResult();
-        String symbolPositionName = spec.getSymbolPositionName();
-        SymbolPosition symbolPosition = accountingControl.getSymbolPositionByName(symbolPositionName);
+        var result = AccountingResultFactory.getEditSymbolPositionDescriptionResult();
+        var symbolPositionName = spec.getSymbolPositionName();
+        var symbolPosition = accountingControl.getSymbolPositionByName(symbolPositionName);
         
         if(symbolPosition != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                    SymbolPositionDescription symbolPositionDescription = accountingControl.getSymbolPositionDescription(symbolPosition, language);
+                    var symbolPositionDescription = accountingControl.getSymbolPositionDescription(symbolPosition, language);
                     
                     if(symbolPositionDescription != null) {
                         if(editMode.equals(EditMode.LOCK)) {
                             result.setSymbolPositionDescription(accountingControl.getSymbolPositionDescriptionTransfer(getUserVisit(), symbolPositionDescription));
 
                             if(lockEntity(symbolPosition)) {
-                                SymbolPositionDescriptionEdit edit = AccountingEditFactory.getSymbolPositionDescriptionEdit();
+                                var edit = AccountingEditFactory.getSymbolPositionDescriptionEdit();
 
                                 result.setEdit(edit);
                                 edit.setDescription(symbolPositionDescription.getDescription());
@@ -113,12 +113,12 @@ public class EditSymbolPositionDescriptionCommand
                         addExecutionError(ExecutionErrors.UnknownSymbolPositionDescription.name());
                     }
                 } else if(editMode.equals(EditMode.UPDATE)) {
-                    SymbolPositionDescriptionValue symbolPositionDescriptionValue = accountingControl.getSymbolPositionDescriptionValueForUpdate(symbolPosition, language);
+                    var symbolPositionDescriptionValue = accountingControl.getSymbolPositionDescriptionValueForUpdate(symbolPosition, language);
                     
                     if(symbolPositionDescriptionValue != null) {
                         if(lockEntityForUpdate(symbolPosition)) {
                             try {
-                                String description = edit.getDescription();
+                                var description = edit.getDescription();
                                 
                                 symbolPositionDescriptionValue.setDescription(description);
                                 

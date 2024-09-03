@@ -56,7 +56,7 @@ public class GetContentForumsCommand
     @Override
     protected Collection<ContentForum> getEntities() {
         var contentControl = Session.getModelController(ContentControl.class);
-        String contentCollectionName = form.getContentCollectionName();
+        var contentCollectionName = form.getContentCollectionName();
         Collection<ContentForum> contentForums = null;
         
         contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
@@ -72,11 +72,11 @@ public class GetContentForumsCommand
     
     @Override
     protected BaseResult getResult(Collection<ContentForum> entities) {
-        GetContentForumsResult result = ContentResultFactory.getGetContentForumsResult();
+        var result = ContentResultFactory.getGetContentForumsResult();
         
         if(entities != null) {
             var contentControl = Session.getModelController(ContentControl.class);
-            UserVisit userVisit = getUserVisit();
+            var userVisit = getUserVisit();
             
             result.setContentCollection(contentControl.getContentCollectionTransfer(userVisit, contentCollection));
             result.setContentForums(contentControl.getContentForumTransfers(userVisit, entities));

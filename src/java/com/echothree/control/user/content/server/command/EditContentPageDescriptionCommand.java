@@ -93,21 +93,21 @@ public class EditContentPageDescriptionCommand
     public ContentPageDescription getEntity(EditContentPageDescriptionResult result) {
         var contentControl = Session.getModelController(ContentControl.class);
         ContentPageDescription contentPageDescription = null;
-        String contentCollectionName = spec.getContentCollectionName();
-        ContentCollection contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
+        var contentCollectionName = spec.getContentCollectionName();
+        var contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
         
         if(contentCollection != null) {
-            String contentSectionName = spec.getContentSectionName();
-            ContentSection contentSection = contentControl.getContentSectionByName(contentCollection, contentSectionName);
+            var contentSectionName = spec.getContentSectionName();
+            var contentSection = contentControl.getContentSectionByName(contentCollection, contentSectionName);
             
             if(contentSection != null) {
-                String contentPageName = spec.getContentPageName();
-                ContentPage contentPage = contentControl.getContentPageByName(contentSection, contentPageName);
+                var contentPageName = spec.getContentPageName();
+                var contentPage = contentControl.getContentPageByName(contentSection, contentPageName);
                 
                 if(contentPage != null) {
                     var partyControl = Session.getModelController(PartyControl.class);
-                    String languageIsoName = spec.getLanguageIsoName();
-                    Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                    var languageIsoName = spec.getLanguageIsoName();
+                    var language = partyControl.getLanguageByIsoName(languageIsoName);
                     
                     result.setContentPage(contentControl.getContentPageTransfer(getUserVisit(), contentPage));
                     
@@ -157,7 +157,7 @@ public class EditContentPageDescriptionCommand
     @Override
     public void doUpdate(ContentPageDescription contentPageDescription) {
         var contentControl = Session.getModelController(ContentControl.class);
-        ContentPageDescriptionValue contentPageDescriptionValue = contentControl.getContentPageDescriptionValue(contentPageDescription);
+        var contentPageDescriptionValue = contentControl.getContentPageDescriptionValue(contentPageDescription);
         contentPageDescriptionValue.setDescription(edit.getDescription());
 
         contentControl.updateContentPageDescriptionFromValue(contentPageDescriptionValue, getPartyPK());

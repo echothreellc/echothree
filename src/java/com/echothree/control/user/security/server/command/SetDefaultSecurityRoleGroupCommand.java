@@ -62,8 +62,8 @@ public class SetDefaultSecurityRoleGroupCommand
     @Override
     protected BaseResult execute() {
         var securityControl = Session.getModelController(SecurityControl.class);
-        String securityRoleGroupName = form.getSecurityRoleGroupName();
-        SecurityRoleGroupDetailValue securityRoleGroupDetailValue = securityControl.getSecurityRoleGroupDetailValueByNameForUpdate(securityRoleGroupName);
+        var securityRoleGroupName = form.getSecurityRoleGroupName();
+        var securityRoleGroupDetailValue = securityControl.getSecurityRoleGroupDetailValueByNameForUpdate(securityRoleGroupName);
         
         if(securityRoleGroupDetailValue != null) {
             securityRoleGroupDetailValue.setIsDefault(Boolean.TRUE);

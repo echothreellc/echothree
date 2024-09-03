@@ -50,19 +50,19 @@ public class CampaignTermTransferCache
     }
 
     public CampaignTermTransfer getCampaignTermTransfer(CampaignTerm campaignTerm) {
-        CampaignTermTransfer campaignTermTransfer = get(campaignTerm);
+        var campaignTermTransfer = get(campaignTerm);
 
         if(campaignTermTransfer == null) {
-            CampaignTermDetail campaignTermDetail = campaignTerm.getLastDetail();
-            String campaignTermName = campaignTermDetail.getCampaignTermName();
-            String valueSha1Hash = campaignTermDetail.getValueSha1Hash();
-            String value = campaignTermDetail.getValue();
-            Boolean isDefault = campaignTermDetail.getIsDefault();
-            Integer sortOrder = campaignTermDetail.getSortOrder();
-            String description = campaignControl.getBestCampaignTermDescription(campaignTerm, getLanguage());
+            var campaignTermDetail = campaignTerm.getLastDetail();
+            var campaignTermName = campaignTermDetail.getCampaignTermName();
+            var valueSha1Hash = campaignTermDetail.getValueSha1Hash();
+            var value = campaignTermDetail.getValue();
+            var isDefault = campaignTermDetail.getIsDefault();
+            var sortOrder = campaignTermDetail.getSortOrder();
+            var description = campaignControl.getBestCampaignTermDescription(campaignTerm, getLanguage());
 
-            EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(campaignTerm.getPrimaryKey());
-            WorkflowEntityStatusTransfer campaignTermStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
+            var entityInstance = coreControl.getEntityInstanceByBasePK(campaignTerm.getPrimaryKey());
+            var campaignTermStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
                     CampaignTermStatusConstants.Workflow_CAMPAIGN_TERM_STATUS, entityInstance);
             
             campaignTermTransfer = new CampaignTermTransfer(campaignTermName, valueSha1Hash, value, isDefault, sortOrder, description,

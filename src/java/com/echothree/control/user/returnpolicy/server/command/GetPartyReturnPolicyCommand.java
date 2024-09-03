@@ -71,21 +71,21 @@ public class GetPartyReturnPolicyCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        GetPartyReturnPolicyResult result = ReturnPolicyResultFactory.getGetPartyReturnPolicyResult();
-        String partyName = form.getPartyName();
-        Party party = partyControl.getPartyByName(partyName);
+        var result = ReturnPolicyResultFactory.getGetPartyReturnPolicyResult();
+        var partyName = form.getPartyName();
+        var party = partyControl.getPartyByName(partyName);
 
         if(party != null) {
             var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
-            String returnKindName = form.getReturnKindName();
-            ReturnKind returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
+            var returnKindName = form.getReturnKindName();
+            var returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
 
             if(returnKind != null) {
-                String returnPolicyName = form.getReturnPolicyName();
-                ReturnPolicy returnPolicy = returnPolicyControl.getReturnPolicyByName(returnKind, returnPolicyName);
+                var returnPolicyName = form.getReturnPolicyName();
+                var returnPolicy = returnPolicyControl.getReturnPolicyByName(returnKind, returnPolicyName);
 
                 if(returnPolicy != null) {
-                    PartyReturnPolicy partyReturnPolicy = returnPolicyControl.getPartyReturnPolicy(party, returnPolicy);
+                    var partyReturnPolicy = returnPolicyControl.getPartyReturnPolicy(party, returnPolicy);
 
                     if(partyReturnPolicy != null) {
                         result.setPartyReturnPolicy(returnPolicyControl.getPartyReturnPolicyTransfer(getUserVisit(), partyReturnPolicy));

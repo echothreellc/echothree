@@ -91,7 +91,7 @@ public class EditTagScopeCommand
     public TagScope getEntity(EditTagScopeResult result) {
         var tagControl = Session.getModelController(TagControl.class);
         TagScope tagScope = null;
-        String tagScopeName = spec.getTagScopeName();
+        var tagScopeName = spec.getTagScopeName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
             tagScope = tagControl.getTagScopeByName(tagScopeName);
@@ -123,8 +123,8 @@ public class EditTagScopeCommand
     @Override
     public void doLock(TagScopeEdit edit, TagScope tagScope) {
         var tagControl = Session.getModelController(TagControl.class);
-        TagScopeDescription tagScopeDescription = tagControl.getTagScopeDescription(tagScope, getPreferredLanguage());
-        TagScopeDetail tagScopeDetail = tagScope.getLastDetail();
+        var tagScopeDescription = tagControl.getTagScopeDescription(tagScope, getPreferredLanguage());
+        var tagScopeDetail = tagScope.getLastDetail();
 
         edit.setTagScopeName(tagScopeDetail.getTagScopeName());
         edit.setIsDefault(tagScopeDetail.getIsDefault().toString());
@@ -138,8 +138,8 @@ public class EditTagScopeCommand
     @Override
     public void canUpdate(TagScope tagScope) {
         var tagControl = Session.getModelController(TagControl.class);
-        String tagScopeName = edit.getTagScopeName();
-        TagScope duplicateTagScope = tagControl.getTagScopeByName(tagScopeName);
+        var tagScopeName = edit.getTagScopeName();
+        var duplicateTagScope = tagControl.getTagScopeByName(tagScopeName);
 
         if(duplicateTagScope != null && !tagScope.equals(duplicateTagScope)) {
             addExecutionError(ExecutionErrors.DuplicateTagScopeName.name(), tagScopeName);
@@ -150,9 +150,9 @@ public class EditTagScopeCommand
     public void doUpdate(TagScope tagScope) {
         var tagControl = Session.getModelController(TagControl.class);
         var partyPK = getPartyPK();
-        TagScopeDetailValue tagScopeDetailValue = tagControl.getTagScopeDetailValueForUpdate(tagScope);
-        TagScopeDescription tagScopeDescription = tagControl.getTagScopeDescriptionForUpdate(tagScope, getPreferredLanguage());
-        String description = edit.getDescription();
+        var tagScopeDetailValue = tagControl.getTagScopeDetailValueForUpdate(tagScope);
+        var tagScopeDescription = tagControl.getTagScopeDescriptionForUpdate(tagScope, getPreferredLanguage());
+        var description = edit.getDescription();
 
         tagScopeDetailValue.setTagScopeName(edit.getTagScopeName());
         tagScopeDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
@@ -165,7 +165,7 @@ public class EditTagScopeCommand
         } else if(tagScopeDescription != null && description == null) {
             tagControl.deleteTagScopeDescription(tagScopeDescription, partyPK);
         } else if(tagScopeDescription != null && description != null) {
-            TagScopeDescriptionValue tagScopeDescriptionValue = tagControl.getTagScopeDescriptionValue(tagScopeDescription);
+            var tagScopeDescriptionValue = tagControl.getTagScopeDescriptionValue(tagScopeDescription);
 
             tagScopeDescriptionValue.setDescription(description);
             tagControl.updateTagScopeDescriptionFromValue(tagScopeDescriptionValue, partyPK);

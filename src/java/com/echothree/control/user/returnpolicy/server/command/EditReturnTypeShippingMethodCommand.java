@@ -82,28 +82,28 @@ public class EditReturnTypeShippingMethodCommand
     @Override
     protected BaseResult execute() {
         var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
-        EditReturnTypeShippingMethodResult result = ReturnPolicyResultFactory.getEditReturnTypeShippingMethodResult();
-        String returnKindName = spec.getReturnKindName();
-        ReturnKind returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
+        var result = ReturnPolicyResultFactory.getEditReturnTypeShippingMethodResult();
+        var returnKindName = spec.getReturnKindName();
+        var returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
         
         if(returnKind != null) {
-            String returnTypeName = spec.getReturnTypeName();
-            ReturnType returnType = returnPolicyControl.getReturnTypeByName(returnKind, returnTypeName);
+            var returnTypeName = spec.getReturnTypeName();
+            var returnType = returnPolicyControl.getReturnTypeByName(returnKind, returnTypeName);
             
             if(returnType != null) {
                 var shippingControl = Session.getModelController(ShippingControl.class);
-                String shippingMethodName = spec.getShippingMethodName();
-                ShippingMethod shippingMethod = shippingControl.getShippingMethodByName(shippingMethodName);
+                var shippingMethodName = spec.getShippingMethodName();
+                var shippingMethod = shippingControl.getShippingMethodByName(shippingMethodName);
                 
                 if(shippingMethod != null) {
                     if(editMode.equals(EditMode.LOCK)) {
-                        ReturnTypeShippingMethod returnTypeShippingMethod = returnPolicyControl.getReturnTypeShippingMethod(returnType, shippingMethod);
+                        var returnTypeShippingMethod = returnPolicyControl.getReturnTypeShippingMethod(returnType, shippingMethod);
                         
                         if(returnTypeShippingMethod != null) {
                             result.setReturnTypeShippingMethod(returnPolicyControl.getReturnTypeShippingMethodTransfer(getUserVisit(), returnTypeShippingMethod));
                             
                             if(lockEntity(returnType)) {
-                                ReturnTypeShippingMethodEdit edit = ReturnPolicyEditFactory.getReturnTypeShippingMethodEdit();
+                                var edit = ReturnPolicyEditFactory.getReturnTypeShippingMethodEdit();
                                 
                                 result.setEdit(edit);
                                 edit.setIsDefault(returnTypeShippingMethod.getIsDefault().toString());
@@ -118,7 +118,7 @@ public class EditReturnTypeShippingMethodCommand
                             addExecutionError(ExecutionErrors.UnknownReturnTypeShippingMethod.name());
                         }
                     } else if(editMode.equals(EditMode.UPDATE)) {
-                        ReturnTypeShippingMethodValue returnTypeShippingMethodValue = returnPolicyControl.getReturnTypeShippingMethodValueForUpdate(returnType, shippingMethod);
+                        var returnTypeShippingMethodValue = returnPolicyControl.getReturnTypeShippingMethodValueForUpdate(returnType, shippingMethod);
                         
                         if(returnTypeShippingMethodValue != null) {
                             if(lockEntityForUpdate(returnType)) {

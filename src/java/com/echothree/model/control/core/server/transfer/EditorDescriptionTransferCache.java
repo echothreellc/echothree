@@ -35,11 +35,11 @@ public class EditorDescriptionTransferCache
     }
     
     public EditorDescriptionTransfer getEditorDescriptionTransfer(EditorDescription editorDescription) {
-        EditorDescriptionTransfer editorDescriptionTransfer = get(editorDescription);
+        var editorDescriptionTransfer = get(editorDescription);
         
         if(editorDescriptionTransfer == null) {
-            EditorTransfer editorTransfer = coreControl.getEditorTransfer(userVisit, editorDescription.getEditor());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, editorDescription.getLanguage());
+            var editorTransfer = coreControl.getEditorTransfer(userVisit, editorDescription.getEditor());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, editorDescription.getLanguage());
             
             editorDescriptionTransfer = new EditorDescriptionTransfer(languageTransfer, editorTransfer, editorDescription.getDescription());
             put(editorDescription, editorDescriptionTransfer);

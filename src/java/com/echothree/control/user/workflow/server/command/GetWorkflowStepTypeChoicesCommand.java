@@ -63,9 +63,9 @@ public class GetWorkflowStepTypeChoicesCommand
     @Override
     protected BaseResult execute() {
         var workflowControl = Session.getModelController(WorkflowControl.class);
-        GetWorkflowStepTypeChoicesResult result = WorkflowResultFactory.getGetWorkflowStepTypeChoicesResult();
-        String defaultWorkflowStepTypeChoice = form.getDefaultWorkflowStepTypeChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = WorkflowResultFactory.getGetWorkflowStepTypeChoicesResult();
+        var defaultWorkflowStepTypeChoice = form.getDefaultWorkflowStepTypeChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setWorkflowStepTypeChoices(workflowControl.getWorkflowStepTypeChoices(defaultWorkflowStepTypeChoice, getPreferredLanguage(), allowNullChoice));
         

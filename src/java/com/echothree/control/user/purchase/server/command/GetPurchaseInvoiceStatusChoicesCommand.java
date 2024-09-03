@@ -64,14 +64,14 @@ public class GetPurchaseInvoiceStatusChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        PurchaseInvoiceLogic purchaseInvoiceLogic = PurchaseInvoiceLogic.getInstance();
-        GetPurchaseInvoiceStatusChoicesResult result = PurchaseResultFactory.getGetPurchaseInvoiceStatusChoicesResult();
-        String invoiceName = form.getInvoiceName();
-        Invoice invoice = purchaseInvoiceLogic.getInvoiceByName(invoiceName);
+        var purchaseInvoiceLogic = PurchaseInvoiceLogic.getInstance();
+        var result = PurchaseResultFactory.getGetPurchaseInvoiceStatusChoicesResult();
+        var invoiceName = form.getInvoiceName();
+        var invoice = purchaseInvoiceLogic.getInvoiceByName(invoiceName);
         
         if(invoiceName == null || invoice != null) {
-            String defaultInvoiceStatusChoice = form.getDefaultInvoiceStatusChoice();
-            boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+            var defaultInvoiceStatusChoice = form.getDefaultInvoiceStatusChoice();
+            var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
             
             result.setPurchaseInvoiceStatusChoices(purchaseInvoiceLogic.getPurchaseInvoiceStatusChoices(defaultInvoiceStatusChoice, getPreferredLanguage(), allowNullChoice, invoice,
                     getPartyPK()));

@@ -32,11 +32,11 @@ public class IndexTypeDescriptionTransferCache
     }
     
     public IndexTypeDescriptionTransfer getIndexTypeDescriptionTransfer(IndexTypeDescription indexTypeDescription) {
-        IndexTypeDescriptionTransfer indexTypeDescriptionTransfer = get(indexTypeDescription);
+        var indexTypeDescriptionTransfer = get(indexTypeDescription);
         
         if(indexTypeDescriptionTransfer == null) {
-            IndexTypeTransfer indexTypeTransfer = indexControl.getIndexTypeTransfer(userVisit, indexTypeDescription.getIndexType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, indexTypeDescription.getLanguage());
+            var indexTypeTransfer = indexControl.getIndexTypeTransfer(userVisit, indexTypeDescription.getIndexType());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, indexTypeDescription.getLanguage());
             
             indexTypeDescriptionTransfer = new IndexTypeDescriptionTransfer(languageTransfer, indexTypeTransfer, indexTypeDescription.getDescription());
             put(indexTypeDescription, indexTypeDescriptionTransfer);

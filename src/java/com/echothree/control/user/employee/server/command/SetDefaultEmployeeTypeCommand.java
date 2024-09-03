@@ -62,8 +62,8 @@ public class SetDefaultEmployeeTypeCommand
     @Override
     protected BaseResult execute() {
         var employeeControl = Session.getModelController(EmployeeControl.class);
-        String employeeTypeName = form.getEmployeeTypeName();
-        EmployeeTypeDetailValue employeeTypeDetailValue = employeeControl.getEmployeeTypeDetailValueByNameForUpdate(employeeTypeName);
+        var employeeTypeName = form.getEmployeeTypeName();
+        var employeeTypeDetailValue = employeeControl.getEmployeeTypeDetailValueByNameForUpdate(employeeTypeName);
         
         if(employeeTypeDetailValue != null) {
             employeeTypeDetailValue.setIsDefault(Boolean.TRUE);

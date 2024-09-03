@@ -38,13 +38,13 @@ public class ShipmentTypeShippingMethodTransferCache
 
     @Override
     public ShipmentTypeShippingMethodTransfer getTransfer(ShipmentTypeShippingMethod shipmentTypeShippingMethod) {
-        ShipmentTypeShippingMethodTransfer shipmentTypeShippingMethodTransfer = get(shipmentTypeShippingMethod);
+        var shipmentTypeShippingMethodTransfer = get(shipmentTypeShippingMethod);
         
         if(shipmentTypeShippingMethodTransfer == null) {
-            ShipmentTypeTransfer shipmentType = shipmentControl.getShipmentTypeTransfer(userVisit, shipmentTypeShippingMethod.getShipmentType());
-            ShippingMethodTransfer shippingMethod = shippingControl.getShippingMethodTransfer(userVisit, shipmentTypeShippingMethod.getShippingMethod());
-            Boolean isDefault = shipmentTypeShippingMethod.getIsDefault();
-            Integer sortOrder = shipmentTypeShippingMethod.getSortOrder();
+            var shipmentType = shipmentControl.getShipmentTypeTransfer(userVisit, shipmentTypeShippingMethod.getShipmentType());
+            var shippingMethod = shippingControl.getShippingMethodTransfer(userVisit, shipmentTypeShippingMethod.getShippingMethod());
+            var isDefault = shipmentTypeShippingMethod.getIsDefault();
+            var sortOrder = shipmentTypeShippingMethod.getSortOrder();
             
             shipmentTypeShippingMethodTransfer = new ShipmentTypeShippingMethodTransfer(shipmentType, shippingMethod, isDefault,
                     sortOrder);

@@ -53,13 +53,13 @@ public class GetWorkEffortScopeDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var workEffortControl = Session.getModelController(WorkEffortControl.class);
-        GetWorkEffortScopeDescriptionsResult result = WorkEffortResultFactory.getGetWorkEffortScopeDescriptionsResult();
-        String workEffortTypeName = form.getWorkEffortTypeName();
-        WorkEffortType workEffortType = workEffortControl.getWorkEffortTypeByName(workEffortTypeName);
+        var result = WorkEffortResultFactory.getGetWorkEffortScopeDescriptionsResult();
+        var workEffortTypeName = form.getWorkEffortTypeName();
+        var workEffortType = workEffortControl.getWorkEffortTypeByName(workEffortTypeName);
         
         if(workEffortType != null) {
-            String workEffortScopeName = form.getWorkEffortScopeName();
-            WorkEffortScope workEffortScope = workEffortControl.getWorkEffortScopeByName(workEffortType, workEffortScopeName);
+            var workEffortScopeName = form.getWorkEffortScopeName();
+            var workEffortScope = workEffortControl.getWorkEffortScopeByName(workEffortType, workEffortScopeName);
             
             if(workEffortScope != null) {
                 result.setWorkEffortScope(workEffortControl.getWorkEffortScopeTransfer(getUserVisit(), workEffortScope));

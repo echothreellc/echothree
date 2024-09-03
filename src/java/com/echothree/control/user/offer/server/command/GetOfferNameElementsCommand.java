@@ -70,7 +70,7 @@ public class GetOfferNameElementsCommand
     
     @Override
     protected BaseResult getResult(Collection<OfferNameElement> entities) {
-        GetOfferNameElementsResult result = OfferResultFactory.getGetOfferNameElementsResult();
+        var result = OfferResultFactory.getGetOfferNameElementsResult();
         var offerNameElementControl = Session.getModelController(OfferNameElementControl.class);
         
         if(session.hasLimit(OfferNameElementFactory.class)) {

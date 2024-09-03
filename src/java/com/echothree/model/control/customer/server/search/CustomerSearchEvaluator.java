@@ -89,7 +89,7 @@ public class CustomerSearchEvaluator
             resultSet = super.executeSearch(eea);
             
             if((resultSet == null || resultSet.size() > 0) && getCustomerType() != null) {
-                EntityInstancePKHolder entityInstancePKHolder = getEntityInstancePKHolderByCustomerType(customerType);
+                var entityInstancePKHolder = getEntityInstancePKHolderByCustomerType(customerType);
                 
                 if(resultSet == null) {
                     resultSet = entityInstancePKHolder;

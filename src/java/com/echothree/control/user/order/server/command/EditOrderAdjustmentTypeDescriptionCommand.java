@@ -91,18 +91,18 @@ public class EditOrderAdjustmentTypeDescriptionCommand
     public OrderAdjustmentTypeDescription getEntity(EditOrderAdjustmentTypeDescriptionResult result) {
         var orderTypeControl = Session.getModelController(OrderTypeControl.class);
         OrderAdjustmentTypeDescription orderAdjustmentTypeDescription = null;
-        String orderTypeName = spec.getOrderTypeName();
+        var orderTypeName = spec.getOrderTypeName();
         var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
             var orderAdjustmentControl = Session.getModelController(OrderAdjustmentControl.class);
-            String orderAdjustmentTypeName = spec.getOrderAdjustmentTypeName();
-            OrderAdjustmentType orderAdjustmentType = orderAdjustmentControl.getOrderAdjustmentTypeByName(orderType, orderAdjustmentTypeName);
+            var orderAdjustmentTypeName = spec.getOrderAdjustmentTypeName();
+            var orderAdjustmentType = orderAdjustmentControl.getOrderAdjustmentTypeByName(orderType, orderAdjustmentTypeName);
 
             if(orderAdjustmentType != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = spec.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = spec.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                 if(language != null) {
                     if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -147,7 +147,7 @@ public class EditOrderAdjustmentTypeDescriptionCommand
     @Override
     public void doUpdate(OrderAdjustmentTypeDescription orderAdjustmentTypeDescription) {
         var orderAdjustmentControl = Session.getModelController(OrderAdjustmentControl.class);
-        OrderAdjustmentTypeDescriptionValue orderAdjustmentTypeDescriptionValue = orderAdjustmentControl.getOrderAdjustmentTypeDescriptionValue(orderAdjustmentTypeDescription);
+        var orderAdjustmentTypeDescriptionValue = orderAdjustmentControl.getOrderAdjustmentTypeDescriptionValue(orderAdjustmentTypeDescription);
         orderAdjustmentTypeDescriptionValue.setDescription(edit.getDescription());
 
         orderAdjustmentControl.updateOrderAdjustmentTypeDescriptionFromValue(orderAdjustmentTypeDescriptionValue, getPartyPK());

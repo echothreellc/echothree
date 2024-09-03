@@ -68,18 +68,18 @@ public class GetContentCollectionDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        GetContentCollectionDescriptionResult result = ContentResultFactory.getGetContentCollectionDescriptionResult();
+        var result = ContentResultFactory.getGetContentCollectionDescriptionResult();
         var contentControl = Session.getModelController(ContentControl.class);
-        String contentCollectionName = form.getContentCollectionName();
-        ContentCollection contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
+        var contentCollectionName = form.getContentCollectionName();
+        var contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
         
         if(contentCollection != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
-                ContentCollectionDescription contentCollectionDescription = contentControl.getContentCollectionDescription(contentCollection, language);
+                var contentCollectionDescription = contentControl.getContentCollectionDescription(contentCollection, language);
 
                 if(contentCollectionDescription != null) {
                     result.setContentCollectionDescription(contentControl.getContentCollectionDescriptionTransfer(getUserVisit(), contentCollectionDescription));

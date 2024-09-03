@@ -66,15 +66,15 @@ public class DeleteCancellationPolicyCommand
     @Override
     protected BaseResult execute() {
         var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
-        String cancellationKindName = form.getCancellationKindName();
-        CancellationKind cancellationKind = cancellationPolicyControl.getCancellationKindByName(cancellationKindName);
+        var cancellationKindName = form.getCancellationKindName();
+        var cancellationKind = cancellationPolicyControl.getCancellationKindByName(cancellationKindName);
         
         if(cancellationKind != null) {
-            String cancellationPolicyName = form.getCancellationPolicyName();
-            CancellationPolicy cancellationPolicy = cancellationPolicyControl.getCancellationPolicyByNameForUpdate(cancellationKind, cancellationPolicyName);
+            var cancellationPolicyName = form.getCancellationPolicyName();
+            var cancellationPolicy = cancellationPolicyControl.getCancellationPolicyByNameForUpdate(cancellationKind, cancellationPolicyName);
             
             if(cancellationPolicy != null) {
-                CancellationPolicyLogic cancellationPolicyLogic = CancellationPolicyLogic.getInstance();
+                var cancellationPolicyLogic = CancellationPolicyLogic.getInstance();
 
                 cancellationPolicyLogic.checkDeleteCancellationPolicy(this, cancellationPolicy);
 

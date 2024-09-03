@@ -39,16 +39,16 @@ public class ItemVolumeTransferCache
     
     @Override
     public ItemVolumeTransfer getTransfer(ItemVolume itemVolume) {
-        ItemVolumeTransfer itemVolumeTransfer = get(itemVolume);
+        var itemVolumeTransfer = get(itemVolume);
         
         if(itemVolumeTransfer == null) {
-            ItemTransfer itemTransfer = itemControl.getItemTransfer(userVisit, itemVolume.getItem());
-            UnitOfMeasureTypeTransfer unitOfMeasureTypeTransfer = uomControl.getUnitOfMeasureTypeTransfer(userVisit,
+            var itemTransfer = itemControl.getItemTransfer(userVisit, itemVolume.getItem());
+            var unitOfMeasureTypeTransfer = uomControl.getUnitOfMeasureTypeTransfer(userVisit,
                     itemVolume.getUnitOfMeasureType());
-            UnitOfMeasureKind volumeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_VOLUME);
-            String height = formatUnitOfMeasure(volumeUnitOfMeasureKind, itemVolume.getHeight());
-            String width = formatUnitOfMeasure(volumeUnitOfMeasureKind, itemVolume.getWidth());
-            String depth = formatUnitOfMeasure(volumeUnitOfMeasureKind, itemVolume.getDepth());
+            var volumeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_VOLUME);
+            var height = formatUnitOfMeasure(volumeUnitOfMeasureKind, itemVolume.getHeight());
+            var width = formatUnitOfMeasure(volumeUnitOfMeasureKind, itemVolume.getWidth());
+            var depth = formatUnitOfMeasure(volumeUnitOfMeasureKind, itemVolume.getDepth());
             
             itemVolumeTransfer = new ItemVolumeTransfer(itemTransfer, unitOfMeasureTypeTransfer, height, width, depth);
             put(itemVolume, itemVolumeTransfer);

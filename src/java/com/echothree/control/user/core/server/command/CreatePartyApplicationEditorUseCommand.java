@@ -72,33 +72,33 @@ public class CreatePartyApplicationEditorUseCommand
     
     @Override
     protected BaseResult execute() {
-        String partyName = form.getPartyName();
-        Party party = PartyLogic.getInstance().getPartyByName(this, partyName);
+        var partyName = form.getPartyName();
+        var party = PartyLogic.getInstance().getPartyByName(this, partyName);
         
         if(!hasExecutionErrors()) {
-            String applicationName = form.getApplicationName();
-            Application application = ApplicationLogic.getInstance().getApplicationByName(this, applicationName);
+            var applicationName = form.getApplicationName();
+            var application = ApplicationLogic.getInstance().getApplicationByName(this, applicationName);
             
             if(!hasExecutionErrors()) {
-                String applicationEditorUseName = form.getApplicationEditorUseName();
-                ApplicationEditorUse applicationEditorUse = ApplicationLogic.getInstance().getApplicationEditorUseByName(this, application, applicationEditorUseName);
+                var applicationEditorUseName = form.getApplicationEditorUseName();
+                var applicationEditorUse = ApplicationLogic.getInstance().getApplicationEditorUseByName(this, application, applicationEditorUseName);
                 
                 if(!hasExecutionErrors()) {
                     var coreControl = getCoreControl();
-                    PartyApplicationEditorUse partyApplicationEditorUse = coreControl.getPartyApplicationEditorUse(party, applicationEditorUse);
+                    var partyApplicationEditorUse = coreControl.getPartyApplicationEditorUse(party, applicationEditorUse);
                     
                     if(partyApplicationEditorUse == null) {
-                        String editorName = form.getEditorName();
-                        Editor editor = editorName == null ? null : ApplicationLogic.getInstance().getEditorByName(this, editorName);
+                        var editorName = form.getEditorName();
+                        var editor = editorName == null ? null : ApplicationLogic.getInstance().getEditorByName(this, editorName);
                         
                         if(!hasExecutionErrors()) {
-                            ApplicationEditor applicationEditor = editor == null ? null : ApplicationLogic.getInstance().getApplicationEditor(this, application, editor);
+                            var applicationEditor = editor == null ? null : ApplicationLogic.getInstance().getApplicationEditor(this, application, editor);
                             
                             if(!hasExecutionErrors()) {
-                                String strPreferredHeight = form.getPreferredHeight();
-                                Integer preferredHeight = strPreferredHeight == null ? null : Integer.valueOf(strPreferredHeight);
-                                String strPreferredWidth = form.getPreferredWidth();
-                                Integer preferredWidth = strPreferredWidth == null ? null : Integer.valueOf(strPreferredWidth);
+                                var strPreferredHeight = form.getPreferredHeight();
+                                var preferredHeight = strPreferredHeight == null ? null : Integer.valueOf(strPreferredHeight);
+                                var strPreferredWidth = form.getPreferredWidth();
+                                var preferredWidth = strPreferredWidth == null ? null : Integer.valueOf(strPreferredWidth);
                                 
                                 coreControl.createPartyApplicationEditorUse(party, applicationEditorUse, applicationEditor, preferredHeight, preferredWidth,
                                         getPartyPK());

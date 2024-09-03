@@ -68,19 +68,19 @@ public class EditUnitOfMeasureKindCommand
     @Override
     protected BaseResult execute() {
         var uomControl = Session.getModelController(UomControl.class);
-        EditUnitOfMeasureKindResult result = UomResultFactory.getEditUnitOfMeasureKindResult();
+        var result = UomResultFactory.getEditUnitOfMeasureKindResult();
         
         if(editMode.equals(EditMode.LOCK)) {
-            String unitOfMeasureKindName = spec.getUnitOfMeasureKindName();
-            UnitOfMeasureKind unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);
+            var unitOfMeasureKindName = spec.getUnitOfMeasureKindName();
+            var unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);
             
             if(unitOfMeasureKind != null) {
                 result.setUnitOfMeasureKind(uomControl.getUnitOfMeasureKindTransfer(getUserVisit(), unitOfMeasureKind));
                 
                 if(lockEntity(unitOfMeasureKind)) {
-                    UnitOfMeasureKindDescription unitOfMeasureKindDescription = uomControl.getUnitOfMeasureKindDescription(unitOfMeasureKind, getPreferredLanguage());
-                    UnitOfMeasureKindEdit edit = UomEditFactory.getUnitOfMeasureKindEdit();
-                    UnitOfMeasureKindDetail unitOfMeasureKindDetail = unitOfMeasureKind.getLastDetail();
+                    var unitOfMeasureKindDescription = uomControl.getUnitOfMeasureKindDescription(unitOfMeasureKind, getPreferredLanguage());
+                    var edit = UomEditFactory.getUnitOfMeasureKindEdit();
+                    var unitOfMeasureKindDetail = unitOfMeasureKind.getLastDetail();
                     
                     result.setEdit(edit);
                     edit.setUnitOfMeasureKindName(unitOfMeasureKindDetail.getUnitOfMeasureKindName());
@@ -99,20 +99,20 @@ public class EditUnitOfMeasureKindCommand
                 addExecutionError(ExecutionErrors.UnknownUnitOfMeasureKindName.name(), unitOfMeasureKindName);
             }
         } else if(editMode.equals(EditMode.UPDATE)) {
-            String unitOfMeasureKindName = spec.getUnitOfMeasureKindName();
-            UnitOfMeasureKind unitOfMeasureKind = uomControl.getUnitOfMeasureKindByNameForUpdate(unitOfMeasureKindName);
+            var unitOfMeasureKindName = spec.getUnitOfMeasureKindName();
+            var unitOfMeasureKind = uomControl.getUnitOfMeasureKindByNameForUpdate(unitOfMeasureKindName);
             
             if(unitOfMeasureKind != null) {
                 unitOfMeasureKindName = edit.getUnitOfMeasureKindName();
-                UnitOfMeasureKind duplicateUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);
+                var duplicateUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);
                 
                 if(duplicateUnitOfMeasureKind == null || unitOfMeasureKind.equals(duplicateUnitOfMeasureKind)) {
                     if(lockEntityForUpdate(unitOfMeasureKind)) {
                         try {
                             var partyPK = getPartyPK();
-                            UnitOfMeasureKindDetailValue unitOfMeasureKindDetailValue = uomControl.getUnitOfMeasureKindDetailValueForUpdate(unitOfMeasureKind);
-                            UnitOfMeasureKindDescription unitOfMeasureKindDescription = uomControl.getUnitOfMeasureKindDescriptionForUpdate(unitOfMeasureKind, getPreferredLanguage());
-                            String description = edit.getDescription();
+                            var unitOfMeasureKindDetailValue = uomControl.getUnitOfMeasureKindDetailValueForUpdate(unitOfMeasureKind);
+                            var unitOfMeasureKindDescription = uomControl.getUnitOfMeasureKindDescriptionForUpdate(unitOfMeasureKind, getPreferredLanguage());
+                            var description = edit.getDescription();
                             
                             unitOfMeasureKindDetailValue.setUnitOfMeasureKindName(edit.getUnitOfMeasureKindName());
                             unitOfMeasureKindDetailValue.setFractionDigits(Integer.valueOf(edit.getFractionDigits()));
@@ -126,7 +126,7 @@ public class EditUnitOfMeasureKindCommand
                             } else if(unitOfMeasureKindDescription != null && description == null) {
                                 uomControl.deleteUnitOfMeasureKindDescription(unitOfMeasureKindDescription, partyPK);
                             } else if(unitOfMeasureKindDescription != null && description != null) {
-                                UnitOfMeasureKindDescriptionValue unitOfMeasureKindDescriptionValue = uomControl.getUnitOfMeasureKindDescriptionValue(unitOfMeasureKindDescription);
+                                var unitOfMeasureKindDescriptionValue = uomControl.getUnitOfMeasureKindDescriptionValue(unitOfMeasureKindDescription);
                                 
                                 unitOfMeasureKindDescriptionValue.setDescription(description);
                                 uomControl.updateUnitOfMeasureKindDescriptionFromValue(unitOfMeasureKindDescriptionValue, partyPK);

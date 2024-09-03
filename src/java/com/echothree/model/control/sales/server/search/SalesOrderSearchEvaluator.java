@@ -84,10 +84,10 @@ public class SalesOrderSearchEvaluator
 
     @Override
     protected EntityInstancePKHolder executeSearch(final ExecutionErrorAccumulator eea) {
-        EntityInstancePKHolder resultSet = super.executeSearch(eea);
+        var resultSet = super.executeSearch(eea);
         
         if(offerUse != null && (resultSet == null || resultSet.size() > 0)) {
-            EntityInstancePKHolder entityInstancePKHolder = getEntityInstancePKHolderByOfferUse(offerUse);
+            var entityInstancePKHolder = getEntityInstancePKHolderByOfferUse(offerUse);
 
             if(resultSet == null) {
                 resultSet = entityInstancePKHolder;
@@ -97,7 +97,7 @@ public class SalesOrderSearchEvaluator
         }
         
         if(associateReferral != null && (resultSet == null || resultSet.size() > 0)) {
-            EntityInstancePKHolder entityInstancePKHolder = getEntityInstancePKHolderByAssociateReferral(associateReferral);
+            var entityInstancePKHolder = getEntityInstancePKHolderByAssociateReferral(associateReferral);
 
             if(resultSet == null) {
                 resultSet = entityInstancePKHolder;

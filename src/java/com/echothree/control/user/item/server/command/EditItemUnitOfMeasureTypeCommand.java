@@ -90,13 +90,13 @@ public class EditItemUnitOfMeasureTypeCommand
     public ItemUnitOfMeasureType getEntity(EditItemUnitOfMeasureTypeResult result) {
         var itemControl = Session.getModelController(ItemControl.class);
         ItemUnitOfMeasureType itemUnitOfMeasureType = null;
-        String itemName = spec.getItemName();
-        Item item = itemControl.getItemByName(itemName);
+        var itemName = spec.getItemName();
+        var item = itemControl.getItemByName(itemName);
 
         if(item != null) {
             var uomControl = Session.getModelController(UomControl.class);
-            String unitOfMeasureTypeName = spec.getUnitOfMeasureTypeName();
-            UnitOfMeasureType unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(item.getLastDetail().getUnitOfMeasureKind(), unitOfMeasureTypeName);
+            var unitOfMeasureTypeName = spec.getUnitOfMeasureTypeName();
+            var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(item.getLastDetail().getUnitOfMeasureKind(), unitOfMeasureTypeName);
 
             if(unitOfMeasureType != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -139,7 +139,7 @@ public class EditItemUnitOfMeasureTypeCommand
     @Override
     public void doUpdate(ItemUnitOfMeasureType itemUnitOfMeasureType) {
         var itemControl = Session.getModelController(ItemControl.class);
-        ItemUnitOfMeasureTypeValue itemUnitOfMeasureTypeValue = itemControl.getItemUnitOfMeasureTypeValue(itemUnitOfMeasureType);
+        var itemUnitOfMeasureTypeValue = itemControl.getItemUnitOfMeasureTypeValue(itemUnitOfMeasureType);
 
         itemUnitOfMeasureTypeValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
         itemUnitOfMeasureTypeValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));

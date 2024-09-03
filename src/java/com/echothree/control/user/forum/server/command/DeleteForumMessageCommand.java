@@ -51,12 +51,12 @@ public class DeleteForumMessageCommand
     @Override
     protected BaseResult execute() {
         var forumControl = Session.getModelController(ForumControl.class);
-        String forumMessageName = form.getForumMessageName();
-        ForumMessage forumMessage = forumControl.getForumMessageByNameForUpdate(forumMessageName);
+        var forumMessageName = form.getForumMessageName();
+        var forumMessage = forumControl.getForumMessageByNameForUpdate(forumMessageName);
         
         if(forumMessage != null) {
-            ForumThread forumThread = forumMessage.getLastDetail().getForumThreadForUpdate();
-            PartyPK deletedBy = getPartyPK();
+            var forumThread = forumMessage.getLastDetail().getForumThreadForUpdate();
+            var deletedBy = getPartyPK();
             
             if(forumControl.countForumMessagesByForumThread(forumThread) == 1) {
                 forumControl.deleteForumThread(forumThread, deletedBy);

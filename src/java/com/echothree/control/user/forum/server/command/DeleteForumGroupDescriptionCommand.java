@@ -53,16 +53,16 @@ public class DeleteForumGroupDescriptionCommand
     @Override
     protected BaseResult execute() {
         var forumControl = Session.getModelController(ForumControl.class);
-        String forumGroupName = form.getForumGroupName();
-        ForumGroup forumGroup = forumControl.getForumGroupByName(forumGroupName);
+        var forumGroupName = form.getForumGroupName();
+        var forumGroup = forumControl.getForumGroupByName(forumGroupName);
         
         if(forumGroup != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                ForumGroupDescription forumGroupDescription = forumControl.getForumGroupDescriptionForUpdate(forumGroup, language);
+                var forumGroupDescription = forumControl.getForumGroupDescriptionForUpdate(forumGroup, language);
                 
                 if(forumGroupDescription != null) {
                     forumControl.deleteForumGroupDescription(forumGroupDescription, getPartyPK());

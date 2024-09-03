@@ -67,16 +67,16 @@ public class DeleteOfferNameElementDescriptionCommand
     @Override
     protected BaseResult execute() {
         var offerNameElementControl = Session.getModelController(OfferNameElementControl.class);
-        String offerNameElementName = form.getOfferNameElementName();
-        OfferNameElement offerNameElement = offerNameElementControl.getOfferNameElementByName(offerNameElementName);
+        var offerNameElementName = form.getOfferNameElementName();
+        var offerNameElement = offerNameElementControl.getOfferNameElementByName(offerNameElementName);
         
         if(offerNameElement != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                OfferNameElementDescription offerNameElementDescription = offerNameElementControl.getOfferNameElementDescriptionForUpdate(offerNameElement, language);
+                var offerNameElementDescription = offerNameElementControl.getOfferNameElementDescriptionForUpdate(offerNameElement, language);
                 
                 if(offerNameElementDescription != null) {
                     offerNameElementControl.deleteOfferNameElementDescription(offerNameElementDescription, getPartyPK());

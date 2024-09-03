@@ -77,8 +77,8 @@ public class CreateSalesOrderPaymentPreferenceCommand
 
     @Override
     protected void setupValidator(Validator validator) {
-        String orderName = form.getOrderName();
-        Order order = orderName == null ? null : SalesOrderLogic.getInstance().getOrderByName(this, orderName);
+        var orderName = form.getOrderName();
+        var order = orderName == null ? null : SalesOrderLogic.getInstance().getOrderByName(this, orderName);
         
         if(order != null) {
             validator.setCurrency(OrderLogic.getInstance().getOrderCurrency(order));
@@ -87,22 +87,22 @@ public class CreateSalesOrderPaymentPreferenceCommand
     
     @Override
     protected BaseResult execute() {
-        CreateSalesOrderPaymentPreferenceResult result = SalesResultFactory.getCreateSalesOrderPaymentPreferenceResult();
-        String orderName = form.getOrderName();
-        Order order = SalesOrderLogic.getInstance().getOrderByName(this, orderName);
-        String paymentMethodName = form.getPaymentMethodName();
-        PaymentMethod paymentMethod = paymentMethodName == null ? null : PaymentMethodLogic.getInstance().getPaymentMethodByName(this, paymentMethodName);
-        String partyPaymentMethodName = form.getPartyPaymentMethodName();
-        PartyPaymentMethod partyPaymentMethod = partyPaymentMethodName == null ? null : PartyPaymentMethodLogic.getInstance().getPartyPaymentMethodByName(this, partyPaymentMethodName);
+        var result = SalesResultFactory.getCreateSalesOrderPaymentPreferenceResult();
+        var orderName = form.getOrderName();
+        var order = SalesOrderLogic.getInstance().getOrderByName(this, orderName);
+        var paymentMethodName = form.getPaymentMethodName();
+        var paymentMethod = paymentMethodName == null ? null : PaymentMethodLogic.getInstance().getPaymentMethodByName(this, paymentMethodName);
+        var partyPaymentMethodName = form.getPartyPaymentMethodName();
+        var partyPaymentMethod = partyPaymentMethodName == null ? null : PartyPaymentMethodLogic.getInstance().getPartyPaymentMethodByName(this, partyPaymentMethodName);
         OrderPaymentPreference orderPaymentPreference = null;
         
         if(!hasExecutionErrors()) {
-            String strOrderPaymentPreferenceSequence = form.getOrderPaymentPreferenceSequence();
-            Integer orderPaymentPreferenceSequence = strOrderPaymentPreferenceSequence == null ? null : Integer.valueOf(strOrderPaymentPreferenceSequence);
-            String strWasPresent = form.getWasPresent();
-            Boolean wasPresent = strWasPresent == null ? null : Boolean.valueOf(strWasPresent);
-            String strMaximumAmount = form.getMaximumAmount();
-            Long maximumAmount = strMaximumAmount == null ? null : Long.valueOf(strMaximumAmount);
+            var strOrderPaymentPreferenceSequence = form.getOrderPaymentPreferenceSequence();
+            var orderPaymentPreferenceSequence = strOrderPaymentPreferenceSequence == null ? null : Integer.valueOf(strOrderPaymentPreferenceSequence);
+            var strWasPresent = form.getWasPresent();
+            var wasPresent = strWasPresent == null ? null : Boolean.valueOf(strWasPresent);
+            var strMaximumAmount = form.getMaximumAmount();
+            var maximumAmount = strMaximumAmount == null ? null : Long.valueOf(strMaximumAmount);
             var sortOrder = Integer.valueOf(form.getSortOrder());
 
             orderPaymentPreference = SalesOrderPaymentPreferenceLogic.getInstance().createSalesOrderPaymentPreference(session,
@@ -111,7 +111,7 @@ public class CreateSalesOrderPaymentPreferenceCommand
         }
         
         if(orderPaymentPreference != null) {
-            OrderPaymentPreferenceDetail orderPaymentPreferenceDetail = orderPaymentPreference.getLastDetail();
+            var orderPaymentPreferenceDetail = orderPaymentPreference.getLastDetail();
             
             result.setOrderName(orderPaymentPreferenceDetail.getOrder().getLastDetail().getOrderName());
             result.setOrderPaymentPreferenceSequence(orderPaymentPreferenceDetail.getOrderPaymentPreferenceSequence().toString());

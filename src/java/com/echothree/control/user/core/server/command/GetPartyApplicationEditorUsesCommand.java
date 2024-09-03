@@ -62,9 +62,9 @@ public class GetPartyApplicationEditorUsesCommand
     
     @Override
     protected BaseResult execute() {
-        GetPartyApplicationEditorUsesResult result = CoreResultFactory.getGetPartyApplicationEditorUsesResult();
-        String partyName = form.getPartyName();
-        Party party = partyName == null ? getParty() : PartyLogic.getInstance().getPartyByName(this, partyName);
+        var result = CoreResultFactory.getGetPartyApplicationEditorUsesResult();
+        var partyName = form.getPartyName();
+        var party = partyName == null ? getParty() : PartyLogic.getInstance().getPartyByName(this, partyName);
         
         if(!hasExecutionErrors()) {
             var coreControl = getCoreControl();

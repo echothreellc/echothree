@@ -63,8 +63,8 @@ public class GetForumThreadsCommand
     
     @Override
     protected BaseResult execute() {
-        GetForumThreadsResult result = ForumResultFactory.getGetForumThreadsResult();
-        String forumName = form.getForumName();
+        var result = ForumResultFactory.getGetForumThreadsResult();
+        var forumName = form.getForumName();
         var parameterCount = (forumName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {
@@ -89,8 +89,8 @@ public class GetForumThreadsCommand
             // If the Key for the Forum is specified, then bypass the ForumRoleType check.
             if(!hasExecutionErrors()) {
                 if(form.getKey() != null || ForumLogic.getInstance().isForumRoleTypePermitted(this, forum, getParty(), ForumConstants.ForumRoleType_READER)) {
-                    boolean includeFutureForumThreads = Boolean.parseBoolean(form.getIncludeFutureForumThreads());
-                    UserVisit userVisit = getUserVisit();
+                    var includeFutureForumThreads = Boolean.parseBoolean(form.getIncludeFutureForumThreads());
+                    var userVisit = getUserVisit();
 
                     if(session.hasLimit(ForumThreadFactory.class)) {
                         result.setForumThreadCount(forumControl.countForumThreadsByForum(forum, includeFutureForumThreads));

@@ -53,9 +53,9 @@ public class GetPartyResponsibilitiesCommand
     
     @Override
     protected BaseResult execute() {
-        GetPartyResponsibilitiesResult result = EmployeeResultFactory.getGetPartyResponsibilitiesResult();
-        String partyName = form.getPartyName();
-        String responsibilityTypeName = form.getResponsibilityTypeName();
+        var result = EmployeeResultFactory.getGetPartyResponsibilitiesResult();
+        var partyName = form.getPartyName();
+        var responsibilityTypeName = form.getResponsibilityTypeName();
         var parameterCount = (partyName == null ? 0 : 1) + (responsibilityTypeName == null ? 0 : 1);
         
         if(parameterCount == 1) {
@@ -63,7 +63,7 @@ public class GetPartyResponsibilitiesCommand
             
             if(partyName != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                Party party = partyControl.getPartyByName(partyName);
+                var party = partyControl.getPartyByName(partyName);
                 
                 if(party != null) {
                     result.setParty(partyControl.getPartyTransfer(getUserVisit(), party));
@@ -72,7 +72,7 @@ public class GetPartyResponsibilitiesCommand
                     addExecutionError(ExecutionErrors.UnknownPartyName.name(), partyName);
                 }
             } else if(responsibilityTypeName != null) {
-                ResponsibilityType responsibilityType = employeeControl.getResponsibilityTypeByName(responsibilityTypeName);
+                var responsibilityType = employeeControl.getResponsibilityTypeByName(responsibilityTypeName);
                 
                 if(responsibilityType != null) {
                     result.setResponsibilityType(employeeControl.getResponsibilityTypeTransfer(getUserVisit(), responsibilityType));

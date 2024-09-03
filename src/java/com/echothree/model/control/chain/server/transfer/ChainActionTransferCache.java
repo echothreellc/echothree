@@ -46,22 +46,22 @@ public class ChainActionTransferCache
     }
 
     public ChainActionTransfer getChainActionTransfer(ChainAction chainAction) {
-        ChainActionTransfer chainActionTransfer = get(chainAction);
+        var chainActionTransfer = get(chainAction);
 
         if(chainActionTransfer == null) {
-            ChainActionDetail chainActionDetail = chainAction.getLastDetail();
-            ChainActionSetTransfer chainActionSetTransfer = chainControl.getChainActionSetTransfer(userVisit, chainActionDetail.getChainActionSet());
-            String chainActionName = chainActionDetail.getChainActionName();
-            ChainActionType chainActionType = chainActionDetail.getChainActionType();
-            ChainActionTypeTransfer chainActionTypeTransfer = chainControl.getChainActionTypeTransfer(userVisit, chainActionType);
-            Integer sortOrder = chainActionDetail.getSortOrder();
-            String description = chainControl.getBestChainActionDescription(chainAction, getLanguage());
+            var chainActionDetail = chainAction.getLastDetail();
+            var chainActionSetTransfer = chainControl.getChainActionSetTransfer(userVisit, chainActionDetail.getChainActionSet());
+            var chainActionName = chainActionDetail.getChainActionName();
+            var chainActionType = chainActionDetail.getChainActionType();
+            var chainActionTypeTransfer = chainControl.getChainActionTypeTransfer(userVisit, chainActionType);
+            var sortOrder = chainActionDetail.getSortOrder();
+            var description = chainControl.getBestChainActionDescription(chainAction, getLanguage());
 
             chainActionTransfer = new ChainActionTransfer(chainActionSetTransfer, chainActionName, chainActionTypeTransfer, sortOrder, description);
             put(chainAction, chainActionTransfer);
 
             if(includeRelated) {
-                String chainActionTypeName = chainActionType.getLastDetail().getChainActionTypeName();
+                var chainActionTypeName = chainActionType.getLastDetail().getChainActionTypeName();
                 if(chainActionTypeName.equals(ChainConstants.ChainActionType_LETTER)) {
                     chainActionTransfer.setChainActionLetter(chainControl.getChainActionLetterTransfer(userVisit, chainAction));
                 } else if(chainActionTypeName.equals(ChainConstants.ChainActionType_SURVEY)) {

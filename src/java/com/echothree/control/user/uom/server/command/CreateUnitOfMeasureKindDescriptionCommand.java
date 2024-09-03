@@ -54,16 +54,16 @@ public class CreateUnitOfMeasureKindDescriptionCommand
     @Override
     protected BaseResult execute() {
         var uomControl = Session.getModelController(UomControl.class);
-        String unitOfMeasureKindName = form.getUnitOfMeasureKindName();
-        UnitOfMeasureKind unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);
+        var unitOfMeasureKindName = form.getUnitOfMeasureKindName();
+        var unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);
         
         if(unitOfMeasureKind != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                UnitOfMeasureKindDescription unitOfMeasureKindDescription = uomControl.getUnitOfMeasureKindDescription(unitOfMeasureKind, language);
+                var unitOfMeasureKindDescription = uomControl.getUnitOfMeasureKindDescription(unitOfMeasureKind, language);
                 
                 if(unitOfMeasureKindDescription == null) {
                     var description = form.getDescription();

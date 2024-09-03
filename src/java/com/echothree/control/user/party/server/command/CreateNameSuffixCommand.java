@@ -51,13 +51,13 @@ public class CreateNameSuffixCommand
     
     @Override
     protected BaseResult execute() {
-        CreateNameSuffixResult result = PartyResultFactory.getCreateNameSuffixResult();
+        var result = PartyResultFactory.getCreateNameSuffixResult();
         var description = form.getDescription();
         var isDefault = Boolean.valueOf(form.getIsDefault());
         var sortOrder = Integer.valueOf(form.getSortOrder());
         var partyControl = Session.getModelController(PartyControl.class);
-        
-        NameSuffix nameSuffix = partyControl.createNameSuffix(description, isDefault, sortOrder, getPartyPK());
+
+        var nameSuffix = partyControl.createNameSuffix(description, isDefault, sortOrder, getPartyPK());
         result.setNameSuffixId(nameSuffix.getPrimaryKey().getEntityId().toString());
         
         return result;

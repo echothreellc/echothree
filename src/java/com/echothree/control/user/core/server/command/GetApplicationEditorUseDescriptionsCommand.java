@@ -65,14 +65,14 @@ public class GetApplicationEditorUseDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        GetApplicationEditorUseDescriptionsResult result = CoreResultFactory.getGetApplicationEditorUseDescriptionsResult();
-        String applicationName = form.getApplicationName();
-        Application application = ApplicationLogic.getInstance().getApplicationByName(this, applicationName);
+        var result = CoreResultFactory.getGetApplicationEditorUseDescriptionsResult();
+        var applicationName = form.getApplicationName();
+        var application = ApplicationLogic.getInstance().getApplicationByName(this, applicationName);
 
         if(!hasExecutionErrors()) {
             var coreControl = getCoreControl();
-            String applicationEditorUseName = form.getApplicationEditorUseName();
-            ApplicationEditorUse applicationEditorUse = coreControl.getApplicationEditorUseByName(application, applicationEditorUseName);
+            var applicationEditorUseName = form.getApplicationEditorUseName();
+            var applicationEditorUse = coreControl.getApplicationEditorUseByName(application, applicationEditorUseName);
 
             if(applicationEditorUse != null) {
                 result.setApplicationEditorUse(coreControl.getApplicationEditorUseTransfer(getUserVisit(), applicationEditorUse));

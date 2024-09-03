@@ -57,23 +57,23 @@ public class WorkEffortTransferCache
     }
     
     public WorkEffortTransfer getWorkEffortTransfer(WorkEffort workEffort) {
-        WorkEffortTransfer workEffortTransfer = get(workEffort);
+        var workEffortTransfer = get(workEffort);
         
         if(workEffortTransfer == null) {
-            WorkEffortDetail workEffortDetail = workEffort.getLastDetail();
-            String workEffortName = workEffortDetail.getWorkEffortName();
-            EntityInstanceTransfer owningEntityInstance = coreControl.getEntityInstanceTransfer(userVisit, workEffortDetail.getOwningEntityInstance(), false, false, false, false, false, false);
-            WorkEffortScopeTransfer workEffortScope = workEffortControl.getWorkEffortScopeTransfer(userVisit, workEffortDetail.getWorkEffortScope());
-            Long unformattedScheduledTime = workEffortDetail.getScheduledTime();
-            String scheduledTime = formatUnitOfMeasure(timeUnitOfMeasureKind, unformattedScheduledTime);
-            Long unformattedScheduledStartTime = workEffortDetail.getScheduledStartTime();
-            String scheduledStartTime = formatTypicalDateTime(unformattedScheduledStartTime);
-            Long unformattedScheduledEndTime = workEffortDetail.getScheduledEndTime();
-            String scheduledEndTime = formatTypicalDateTime(unformattedScheduledEndTime);
-            Long unformattedEstimatedTimeAllowed = workEffortDetail.getEstimatedTimeAllowed();
-            String estimatedTimeAllowed = formatUnitOfMeasure(timeUnitOfMeasureKind, unformattedEstimatedTimeAllowed);
-            Long unformattedMaximumTimeAllowed = workEffortDetail.getMaximumTimeAllowed();
-            String maximumTimeAllowed = formatUnitOfMeasure(timeUnitOfMeasureKind, unformattedMaximumTimeAllowed);
+            var workEffortDetail = workEffort.getLastDetail();
+            var workEffortName = workEffortDetail.getWorkEffortName();
+            var owningEntityInstance = coreControl.getEntityInstanceTransfer(userVisit, workEffortDetail.getOwningEntityInstance(), false, false, false, false, false, false);
+            var workEffortScope = workEffortControl.getWorkEffortScopeTransfer(userVisit, workEffortDetail.getWorkEffortScope());
+            var unformattedScheduledTime = workEffortDetail.getScheduledTime();
+            var scheduledTime = formatUnitOfMeasure(timeUnitOfMeasureKind, unformattedScheduledTime);
+            var unformattedScheduledStartTime = workEffortDetail.getScheduledStartTime();
+            var scheduledStartTime = formatTypicalDateTime(unformattedScheduledStartTime);
+            var unformattedScheduledEndTime = workEffortDetail.getScheduledEndTime();
+            var scheduledEndTime = formatTypicalDateTime(unformattedScheduledEndTime);
+            var unformattedEstimatedTimeAllowed = workEffortDetail.getEstimatedTimeAllowed();
+            var estimatedTimeAllowed = formatUnitOfMeasure(timeUnitOfMeasureKind, unformattedEstimatedTimeAllowed);
+            var unformattedMaximumTimeAllowed = workEffortDetail.getMaximumTimeAllowed();
+            var maximumTimeAllowed = formatUnitOfMeasure(timeUnitOfMeasureKind, unformattedMaximumTimeAllowed);
 
             workEffortTransfer = new WorkEffortTransfer(workEffortName, owningEntityInstance, workEffortScope, unformattedScheduledTime, scheduledTime,
                     unformattedScheduledStartTime, scheduledStartTime, unformattedScheduledEndTime, scheduledEndTime, unformattedEstimatedTimeAllowed,

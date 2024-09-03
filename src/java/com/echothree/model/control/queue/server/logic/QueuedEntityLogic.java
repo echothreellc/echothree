@@ -41,7 +41,7 @@ public class QueuedEntityLogic
     }
     
     public QueuedEntity createQueuedEntityUsingNames(final ExecutionErrorAccumulator eea, final String queueTypeName, final EntityInstance entityInstance) {
-        QueueType queueType = QueueTypeLogic.getInstance().getQueueTypeByName(eea, QueueTypes.INDEXING.name());
+        var queueType = QueueTypeLogic.getInstance().getQueueTypeByName(eea, QueueTypes.INDEXING.name());
         QueuedEntity queuedEntity = null;
         
         if(!hasExecutionErrors(eea)) {

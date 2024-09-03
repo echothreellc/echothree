@@ -63,8 +63,8 @@ public class DeletePaymentMethodCommand
     @Override
     protected BaseResult execute() {
         var paymentMethodControl = Session.getModelController(PaymentMethodControl.class);
-        String paymentMethodName = form.getPaymentMethodName();
-        PaymentMethod paymentMethod = paymentMethodControl.getPaymentMethodByNameForUpdate(paymentMethodName);
+        var paymentMethodName = form.getPaymentMethodName();
+        var paymentMethod = paymentMethodControl.getPaymentMethodByNameForUpdate(paymentMethodName);
         
         if(paymentMethod != null) {
             paymentMethodControl.deletePaymentMethod(paymentMethod, getPartyPK());

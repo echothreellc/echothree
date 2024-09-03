@@ -56,20 +56,20 @@ public class CreateCustomerTypeShippingMethodCommand
     @Override
     protected BaseResult execute() {
         var customerControl = Session.getModelController(CustomerControl.class);
-        String customerTypeName = form.getCustomerTypeName();
-        CustomerType customerType = customerControl.getCustomerTypeByName(customerTypeName);
+        var customerTypeName = form.getCustomerTypeName();
+        var customerType = customerControl.getCustomerTypeByName(customerTypeName);
         
         if(customerType != null) {
             var shippingControl = Session.getModelController(ShippingControl.class);
-            String shippingMethodName = form.getShippingMethodName();
-            ShippingMethod shippingMethod = shippingControl.getShippingMethodByName(shippingMethodName);
+            var shippingMethodName = form.getShippingMethodName();
+            var shippingMethod = shippingControl.getShippingMethodByName(shippingMethodName);
             
             if(shippingMethod != null) {
-                CustomerTypeShippingMethod customerTypeShippingMethod = customerControl.getCustomerTypeShippingMethod(customerType,
+                var customerTypeShippingMethod = customerControl.getCustomerTypeShippingMethod(customerType,
                         shippingMethod);
                 
                 if(customerTypeShippingMethod == null) {
-                    Integer defaultSelectionPriority = Integer.valueOf(form.getDefaultSelectionPriority());
+                    var defaultSelectionPriority = Integer.valueOf(form.getDefaultSelectionPriority());
                     var isDefault = Boolean.valueOf(form.getIsDefault());
                     var sortOrder = Integer.valueOf(form.getSortOrder());
                     

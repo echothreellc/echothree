@@ -51,12 +51,12 @@ public class SetDefaultWorkEffortScopeCommand
     @Override
     protected BaseResult execute() {
         var workEffortControl = Session.getModelController(WorkEffortControl.class);
-        String workEffortTypeName = form.getWorkEffortTypeName();
-        WorkEffortType workEffortType = workEffortControl.getWorkEffortTypeByName(workEffortTypeName);
+        var workEffortTypeName = form.getWorkEffortTypeName();
+        var workEffortType = workEffortControl.getWorkEffortTypeByName(workEffortTypeName);
         
         if(workEffortType != null) {
-            String workEffortTypePriorityName = form.getWorkEffortScopeName();
-            WorkEffortScopeDetailValue workEffortTypePriorityDetailValue = workEffortControl.getWorkEffortScopeDetailValueByNameForUpdate(workEffortType, workEffortTypePriorityName);
+            var workEffortTypePriorityName = form.getWorkEffortScopeName();
+            var workEffortTypePriorityDetailValue = workEffortControl.getWorkEffortScopeDetailValueByNameForUpdate(workEffortType, workEffortTypePriorityName);
             
             if(workEffortTypePriorityDetailValue != null) {
                 workEffortTypePriorityDetailValue.setIsDefault(Boolean.TRUE);

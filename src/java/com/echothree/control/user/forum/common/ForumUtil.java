@@ -30,7 +30,7 @@ public class ForumUtil {
     public static ForumLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
 
             cachedLocal = (ForumLocal)ctx.lookup("ejb:echothree/echothree-server/ForumBean!com.echothree.control.user.forum.server.ForumLocal");
         }
@@ -42,7 +42,7 @@ public class ForumUtil {
     public static ForumRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
             
             cachedRemote = (ForumRemote)ctx.lookup("ejb:echothree/echothree-server/ForumBean!com.echothree.control.user.forum.common.ForumRemote");
         }

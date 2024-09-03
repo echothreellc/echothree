@@ -115,7 +115,7 @@ public class AppearanceLogic
 
     public Color getColorByName(final ExecutionErrorAccumulator eea, final String colorName) {
         var coreControl = Session.getModelController(CoreControl.class);
-        Color color = coreControl.getColorByName(colorName);
+        var color = coreControl.getColorByName(colorName);
 
         if(color == null) {
             handleExecutionError(UnknownColorNameException.class, eea, ExecutionErrors.UnknownColorName.name(), colorName);
@@ -126,7 +126,7 @@ public class AppearanceLogic
     
     public FontStyle getFontStyleByName(final ExecutionErrorAccumulator eea, final String fontStyleName) {
         var coreControl = Session.getModelController(CoreControl.class);
-        FontStyle fontStyle = coreControl.getFontStyleByName(fontStyleName);
+        var fontStyle = coreControl.getFontStyleByName(fontStyleName);
 
         if(fontStyle == null) {
             handleExecutionError(UnknownFontStyleNameException.class, eea, ExecutionErrors.UnknownFontStyleName.name(), fontStyleName);
@@ -137,7 +137,7 @@ public class AppearanceLogic
     
     public FontWeight getFontWeightByName(final ExecutionErrorAccumulator eea, final String fontWeightName) {
         var coreControl = Session.getModelController(CoreControl.class);
-        FontWeight fontWeight = coreControl.getFontWeightByName(fontWeightName);
+        var fontWeight = coreControl.getFontWeightByName(fontWeightName);
 
         if(fontWeight == null) {
             handleExecutionError(UnknownFontWeightNameException.class, eea, ExecutionErrors.UnknownFontWeightName.name(), fontWeightName);
@@ -148,7 +148,7 @@ public class AppearanceLogic
     
     public TextDecoration getTextDecorationByName(final ExecutionErrorAccumulator eea, final String textDecorationName) {
         var coreControl = Session.getModelController(CoreControl.class);
-        TextDecoration textDecoration = coreControl.getTextDecorationByName(textDecorationName);
+        var textDecoration = coreControl.getTextDecorationByName(textDecorationName);
 
         if(textDecoration == null) {
             handleExecutionError(UnknownTextDecorationNameException.class, eea, ExecutionErrors.UnknownTextDecorationName.name(), textDecorationName);
@@ -159,7 +159,7 @@ public class AppearanceLogic
     
     public TextTransformation getTextTransformationByName(final ExecutionErrorAccumulator eea, final String textTransformationName) {
         var coreControl = Session.getModelController(CoreControl.class);
-        TextTransformation textTransformation = coreControl.getTextTransformationByName(textTransformationName);
+        var textTransformation = coreControl.getTextTransformationByName(textTransformationName);
 
         if(textTransformation == null) {
             handleExecutionError(UnknownTextTransformationNameException.class, eea, ExecutionErrors.UnknownTextTransformationName.name(), textTransformationName);

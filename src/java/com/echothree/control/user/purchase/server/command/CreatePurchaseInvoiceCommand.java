@@ -118,7 +118,7 @@ public class CreatePurchaseInvoiceCommand
                             addExecutionError(ExecutionErrors.UnknownBillFromPartyName.name(), billFromPartyName);
                         }
                     } else {
-                        Vendor vendor = vendorControl.getVendorByName(vendorName);
+                        var vendor = vendorControl.getVendorByName(vendorName);
                         
                         if(vendor != null) {
                             billFrom = vendor.getParty();

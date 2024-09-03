@@ -92,27 +92,27 @@ public class SearchEmployeesCommand
     
     @Override
     protected BaseResult execute() {
-        SearchEmployeesResult result = SearchResultFactory.getSearchEmployeesResult();
-        String employeeName = form.getEmployeeName();
-        String partyName = form.getPartyName();
+        var result = SearchResultFactory.getSearchEmployeesResult();
+        var employeeName = form.getEmployeeName();
+        var partyName = form.getPartyName();
         var parameterCount = (employeeName == null ? 0 : 1) + (partyName == null ? 0 : 1);
 
         if(parameterCount < 2) {
             var searchControl = Session.getModelController(SearchControl.class);
-            SearchKind searchKind = searchControl.getSearchKindByName(SearchKinds.EMPLOYEE.name());
+            var searchKind = searchControl.getSearchKindByName(SearchKinds.EMPLOYEE.name());
 
             if(searchKind != null) {
-                String searchTypeName = form.getSearchTypeName();
-                SearchType searchType = searchControl.getSearchTypeByName(searchKind, searchTypeName);
+                var searchTypeName = form.getSearchTypeName();
+                var searchType = searchControl.getSearchTypeByName(searchKind, searchTypeName);
 
                 if(searchType != null) {
-                    String partyAliasTypeName = form.getPartyAliasTypeName();
-                    String alias = form.getAlias();
+                    var partyAliasTypeName = form.getPartyAliasTypeName();
+                    var alias = form.getAlias();
                     PartyAliasType partyAliasType = null;
 
                     if(partyAliasTypeName != null) {
                         var partyControl = Session.getModelController(PartyControl.class);
-                        PartyType partyType = partyControl.getPartyTypeByName(PartyTypes.CUSTOMER.name());
+                        var partyType = partyControl.getPartyTypeByName(PartyTypes.CUSTOMER.name());
 
                         if(partyType != null) {
                             partyAliasType = partyControl.getPartyAliasTypeByName(partyType, partyAliasTypeName);
@@ -127,20 +127,20 @@ public class SearchEmployeesCommand
 
                     if(!hasExecutionErrors()) {
                         var workflowControl = Session.getModelController(WorkflowControl.class);
-                        String employeeStatusChoice = form.getEmployeeStatusChoice();
-                        WorkflowStep employeeStatusWorkflowStep = employeeStatusChoice == null ? null : workflowControl.getWorkflowStepByName(workflowControl.getWorkflowByName(EmployeeStatusConstants.Workflow_EMPLOYEE_STATUS), employeeStatusChoice);
+                        var employeeStatusChoice = form.getEmployeeStatusChoice();
+                        var employeeStatusWorkflowStep = employeeStatusChoice == null ? null : workflowControl.getWorkflowStepByName(workflowControl.getWorkflowByName(EmployeeStatusConstants.Workflow_EMPLOYEE_STATUS), employeeStatusChoice);
 
                         if(employeeStatusChoice == null || employeeStatusWorkflowStep != null) {
-                            String employeeAvailabilityChoice = form.getEmployeeAvailabilityChoice();
-                            WorkflowStep employeeAvailabilityWorkflowStep = employeeAvailabilityChoice == null ? null : workflowControl.getWorkflowStepByName(workflowControl.getWorkflowByName(EmployeeAvailabilityConstants.Workflow_EMPLOYEE_AVAILABILITY), employeeAvailabilityChoice);
+                            var employeeAvailabilityChoice = form.getEmployeeAvailabilityChoice();
+                            var employeeAvailabilityWorkflowStep = employeeAvailabilityChoice == null ? null : workflowControl.getWorkflowStepByName(workflowControl.getWorkflowByName(EmployeeAvailabilityConstants.Workflow_EMPLOYEE_AVAILABILITY), employeeAvailabilityChoice);
 
                             if(employeeAvailabilityChoice == null || employeeAvailabilityWorkflowStep != null) {
-                                SearchLogic searchLogic = SearchLogic.getInstance();
-                                UserVisit userVisit = getUserVisit();
-                                EmployeeSearchEvaluator employeeSearchEvaluator = new EmployeeSearchEvaluator(userVisit, searchType, searchLogic.getDefaultSearchDefaultOperator(null), searchLogic.getDefaultSearchSortOrder(null, searchKind), searchLogic.getDefaultSearchSortDirection(null));
-                                String createdSince = form.getCreatedSince();
-                                String modifiedSince = form.getModifiedSince();
-                                String fields = form.getFields();
+                                var searchLogic = SearchLogic.getInstance();
+                                var userVisit = getUserVisit();
+                                var employeeSearchEvaluator = new EmployeeSearchEvaluator(userVisit, searchType, searchLogic.getDefaultSearchDefaultOperator(null), searchLogic.getDefaultSearchSortOrder(null, searchKind), searchLogic.getDefaultSearchSortDirection(null));
+                                var createdSince = form.getCreatedSince();
+                                var modifiedSince = form.getModifiedSince();
+                                var fields = form.getFields();
 
                                 employeeSearchEvaluator.setFirstName(form.getFirstName());
                                 employeeSearchEvaluator.setFirstNameSoundex(Boolean.parseBoolean(form.getFirstNameSoundex()));

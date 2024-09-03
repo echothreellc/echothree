@@ -30,7 +30,7 @@ public class EscapedWriter
 
     @Override
     public void write (char[] cbuf, int off, int len) throws IOException {
-        for(int i = 0; i < len; i++) {
+        for(var i = 0; i < len; i++) {
             write (cbuf[off + i]);
         }
     }
@@ -38,7 +38,7 @@ public class EscapedWriter
 
     @Override
     public void write (String str, int off, int len) throws IOException {
-        for(int i = 0; i < len; i++) {
+        for(var i = 0; i < len; i++) {
             write (str.charAt (off + i));
         }
     }

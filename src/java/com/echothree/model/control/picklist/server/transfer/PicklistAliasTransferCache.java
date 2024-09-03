@@ -32,12 +32,12 @@ public class PicklistAliasTransferCache
     }
     
     public PicklistAliasTransfer getPicklistAliasTransfer(PicklistAlias picklistAlias) {
-        PicklistAliasTransfer picklistAliasTransfer = get(picklistAlias);
+        var picklistAliasTransfer = get(picklistAlias);
         
         if(picklistAliasTransfer == null) {
-            PicklistTransfer picklist = picklistControl.getPicklistTransfer(userVisit, picklistAlias.getPicklist());
-            PicklistAliasTypeTransfer picklistAliasType = picklistControl.getPicklistAliasTypeTransfer(userVisit, picklistAlias.getPicklistAliasType());
-            String alias = picklistAlias.getAlias();
+            var picklist = picklistControl.getPicklistTransfer(userVisit, picklistAlias.getPicklist());
+            var picklistAliasType = picklistControl.getPicklistAliasTypeTransfer(userVisit, picklistAlias.getPicklistAliasType());
+            var alias = picklistAlias.getAlias();
             
             picklistAliasTransfer = new PicklistAliasTransfer(picklist, picklistAliasType, alias);
             put(picklistAlias, picklistAliasTransfer);

@@ -53,16 +53,16 @@ public class CreateMimeTypeUsageTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
       var coreControl = getCoreControl();
-        String mimeTypeUsageTypeName = form.getMimeTypeUsageTypeName();
-        MimeTypeUsageType mimeTypeUsageType = coreControl.getMimeTypeUsageTypeByName(mimeTypeUsageTypeName);
+        var mimeTypeUsageTypeName = form.getMimeTypeUsageTypeName();
+        var mimeTypeUsageType = coreControl.getMimeTypeUsageTypeByName(mimeTypeUsageTypeName);
         
         if(mimeTypeUsageType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
-                MimeTypeUsageTypeDescription mimeTypeUsageTypeDescription = coreControl.getMimeTypeUsageTypeDescription(mimeTypeUsageType, language);
+                var mimeTypeUsageTypeDescription = coreControl.getMimeTypeUsageTypeDescription(mimeTypeUsageType, language);
 
                 if(mimeTypeUsageTypeDescription == null) {
                     var description = form.getDescription();

@@ -67,16 +67,16 @@ public class DeleteGlAccountCategoryDescriptionCommand
     @Override
     protected BaseResult execute() {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        String glAccountCategoryName = form.getGlAccountCategoryName();
-        GlAccountCategory glAccountCategory = accountingControl.getGlAccountCategoryByName(glAccountCategoryName);
+        var glAccountCategoryName = form.getGlAccountCategoryName();
+        var glAccountCategory = accountingControl.getGlAccountCategoryByName(glAccountCategoryName);
         
         if(glAccountCategory != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                GlAccountCategoryDescription glAccountCategoryDescription = accountingControl.getGlAccountCategoryDescriptionForUpdate(glAccountCategory, language);
+                var glAccountCategoryDescription = accountingControl.getGlAccountCategoryDescriptionForUpdate(glAccountCategory, language);
                 
                 if(glAccountCategoryDescription != null) {
                     accountingControl.deleteGlAccountCategoryDescription(glAccountCategoryDescription, getPartyPK());

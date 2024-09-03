@@ -65,12 +65,12 @@ public class DeleteSearchTypeCommand
     @Override
     protected BaseResult execute() {
         var searchControl = Session.getModelController(SearchControl.class);
-        String searchKindName = form.getSearchKindName();
-        SearchKind searchKind = searchControl.getSearchKindByName(searchKindName);
+        var searchKindName = form.getSearchKindName();
+        var searchKind = searchControl.getSearchKindByName(searchKindName);
         
         if(searchKind != null) {
-            String searchTypeName = form.getSearchTypeName();
-            SearchType searchType = searchControl.getSearchTypeByNameForUpdate(searchKind, searchTypeName);
+            var searchTypeName = form.getSearchTypeName();
+            var searchType = searchControl.getSearchTypeByNameForUpdate(searchKind, searchTypeName);
             
             if(searchType != null) {
                 searchControl.deleteSearchType(searchType, getPartyPK());

@@ -135,11 +135,11 @@ public class WarehouseControl
     // --------------------------------------------------------------------------------
 
     public WarehouseType createWarehouseType(String warehouseTypeName, Integer priority, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        WarehouseType defaultWarehouseType = getDefaultWarehouseType();
-        boolean defaultFound = defaultWarehouseType != null;
+        var defaultWarehouseType = getDefaultWarehouseType();
+        var defaultFound = defaultWarehouseType != null;
 
         if(defaultFound && isDefault) {
-            WarehouseTypeDetailValue defaultWarehouseTypeDetailValue = getDefaultWarehouseTypeDetailValueForUpdate();
+            var defaultWarehouseTypeDetailValue = getDefaultWarehouseTypeDetailValueForUpdate();
 
             defaultWarehouseTypeDetailValue.setIsDefault(Boolean.FALSE);
             updateWarehouseTypeFromValue(defaultWarehouseTypeDetailValue, false, createdBy);
@@ -147,8 +147,8 @@ public class WarehouseControl
             isDefault = Boolean.TRUE;
         }
 
-        WarehouseType warehouseType = WarehouseTypeFactory.getInstance().create();
-        WarehouseTypeDetail warehouseTypeDetail = WarehouseTypeDetailFactory.getInstance().create(warehouseType, warehouseTypeName, priority, isDefault, sortOrder,
+        var warehouseType = WarehouseTypeFactory.getInstance().create();
+        var warehouseTypeDetail = WarehouseTypeDetailFactory.getInstance().create(warehouseType, warehouseTypeName, priority, isDefault, sortOrder,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -288,7 +288,7 @@ public class WarehouseControl
     }
 
     public WarehouseTypeChoicesBean getWarehouseTypeChoices(String defaultWarehouseTypeChoice, Language language, boolean allowNullChoice) {
-        List<WarehouseType> warehouseTypes = getWarehouseTypes();
+        var warehouseTypes = getWarehouseTypes();
         var size = warehouseTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -304,7 +304,7 @@ public class WarehouseControl
         }
 
         for(var warehouseType : warehouseTypes) {
-            WarehouseTypeDetail warehouseTypeDetail = warehouseType.getLastDetail();
+            var warehouseTypeDetail = warehouseType.getLastDetail();
 
             var label = getBestWarehouseTypeDescription(warehouseType, language);
             var value = warehouseTypeDetail.getWarehouseTypeName();
@@ -327,7 +327,7 @@ public class WarehouseControl
 
     public List<WarehouseTypeTransfer> getWarehouseTypeTransfers(UserVisit userVisit, Collection<WarehouseType> warehouseTypes) {
         List<WarehouseTypeTransfer> warehouseTypeTransfers = new ArrayList<>(warehouseTypes.size());
-        WarehouseTypeTransferCache warehouseTypeTransferCache = getWarehouseTransferCaches(userVisit).getWarehouseTypeTransferCache();
+        var warehouseTypeTransferCache = getWarehouseTransferCaches(userVisit).getWarehouseTypeTransferCache();
 
         warehouseTypes.forEach((warehouseType) ->
                 warehouseTypeTransfers.add(warehouseTypeTransferCache.getTransfer(warehouseType))
@@ -341,26 +341,26 @@ public class WarehouseControl
     }
 
     private void updateWarehouseTypeFromValue(WarehouseTypeDetailValue warehouseTypeDetailValue, boolean checkDefault, BasePK updatedBy) {
-        WarehouseType warehouseType = WarehouseTypeFactory.getInstance().getEntityFromPK(session,
+        var warehouseType = WarehouseTypeFactory.getInstance().getEntityFromPK(session,
                 EntityPermission.READ_WRITE, warehouseTypeDetailValue.getWarehouseTypePK());
-        WarehouseTypeDetail warehouseTypeDetail = warehouseType.getActiveDetailForUpdate();
+        var warehouseTypeDetail = warehouseType.getActiveDetailForUpdate();
 
         warehouseTypeDetail.setThruTime(session.START_TIME_LONG);
         warehouseTypeDetail.store();
 
-        WarehouseTypePK warehouseTypePK = warehouseTypeDetail.getWarehouseTypePK();
-        String warehouseTypeName = warehouseTypeDetailValue.getWarehouseTypeName();
-        Integer priority = warehouseTypeDetailValue.getPriority();
-        Boolean isDefault = warehouseTypeDetailValue.getIsDefault();
-        Integer sortOrder = warehouseTypeDetailValue.getSortOrder();
+        var warehouseTypePK = warehouseTypeDetail.getWarehouseTypePK();
+        var warehouseTypeName = warehouseTypeDetailValue.getWarehouseTypeName();
+        var priority = warehouseTypeDetailValue.getPriority();
+        var isDefault = warehouseTypeDetailValue.getIsDefault();
+        var sortOrder = warehouseTypeDetailValue.getSortOrder();
 
         if(checkDefault) {
-            WarehouseType defaultWarehouseType = getDefaultWarehouseType();
-            boolean defaultFound = defaultWarehouseType != null && !defaultWarehouseType.equals(warehouseType);
+            var defaultWarehouseType = getDefaultWarehouseType();
+            var defaultFound = defaultWarehouseType != null && !defaultWarehouseType.equals(warehouseType);
 
             if(isDefault && defaultFound) {
                 // If I'm the default, and a default already existed...
-                WarehouseTypeDetailValue defaultWarehouseTypeDetailValue = getDefaultWarehouseTypeDetailValueForUpdate();
+                var defaultWarehouseTypeDetailValue = getDefaultWarehouseTypeDetailValueForUpdate();
 
                 defaultWarehouseTypeDetailValue.setIsDefault(Boolean.FALSE);
                 updateWarehouseTypeFromValue(defaultWarehouseTypeDetailValue, false, updatedBy);
@@ -387,22 +387,22 @@ public class WarehouseControl
     public void deleteWarehouseType(WarehouseType warehouseType, BasePK deletedBy) {
         deleteWarehouseTypeDescriptionsByWarehouseType(warehouseType, deletedBy);
 
-        WarehouseTypeDetail warehouseTypeDetail = warehouseType.getLastDetailForUpdate();
+        var warehouseTypeDetail = warehouseType.getLastDetailForUpdate();
         warehouseTypeDetail.setThruTime(session.START_TIME_LONG);
         warehouseType.setActiveDetail(null);
         warehouseType.store();
 
         // Check for default, and pick one if necessary
-        WarehouseType defaultWarehouseType = getDefaultWarehouseType();
+        var defaultWarehouseType = getDefaultWarehouseType();
         if(defaultWarehouseType == null) {
-            List<WarehouseType> warehouseTypes = getWarehouseTypesForUpdate();
+            var warehouseTypes = getWarehouseTypesForUpdate();
 
             if(!warehouseTypes.isEmpty()) {
-                Iterator<WarehouseType> iter = warehouseTypes.iterator();
+                var iter = warehouseTypes.iterator();
                 if(iter.hasNext()) {
                     defaultWarehouseType = iter.next();
                 }
-                WarehouseTypeDetailValue warehouseTypeDetailValue = Objects.requireNonNull(defaultWarehouseType).getLastDetailForUpdate().getWarehouseTypeDetailValue().clone();
+                var warehouseTypeDetailValue = Objects.requireNonNull(defaultWarehouseType).getLastDetailForUpdate().getWarehouseTypeDetailValue().clone();
 
                 warehouseTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateWarehouseTypeFromValue(warehouseTypeDetailValue, false, deletedBy);
@@ -418,7 +418,7 @@ public class WarehouseControl
 
     public WarehouseTypeDescription createWarehouseTypeDescription(WarehouseType warehouseType, Language language, String description,
             BasePK createdBy) {
-        WarehouseTypeDescription warehouseTypeDescription = WarehouseTypeDescriptionFactory.getInstance().create(warehouseType,
+        var warehouseTypeDescription = WarehouseTypeDescriptionFactory.getInstance().create(warehouseType,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(warehouseType.getPrimaryKey(), EventTypes.MODIFY, warehouseTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -497,7 +497,7 @@ public class WarehouseControl
 
     public String getBestWarehouseTypeDescription(WarehouseType warehouseType, Language language) {
         String description;
-        WarehouseTypeDescription warehouseTypeDescription = getWarehouseTypeDescription(warehouseType, language);
+        var warehouseTypeDescription = getWarehouseTypeDescription(warehouseType, language);
 
         if(warehouseTypeDescription == null && !language.getIsDefault()) {
             warehouseTypeDescription = getWarehouseTypeDescription(warehouseType, getPartyControl().getDefaultLanguage());
@@ -517,7 +517,7 @@ public class WarehouseControl
     }
 
     public List<WarehouseTypeDescriptionTransfer> getWarehouseTypeDescriptionTransfersByWarehouseType(UserVisit userVisit, WarehouseType warehouseType) {
-        List<WarehouseTypeDescription> warehouseTypeDescriptions = getWarehouseTypeDescriptionsByWarehouseType(warehouseType);
+        var warehouseTypeDescriptions = getWarehouseTypeDescriptionsByWarehouseType(warehouseType);
         List<WarehouseTypeDescriptionTransfer> warehouseTypeDescriptionTransfers = new ArrayList<>(warehouseTypeDescriptions.size());
 
         warehouseTypeDescriptions.forEach((warehouseTypeDescription) ->
@@ -529,15 +529,15 @@ public class WarehouseControl
 
     public void updateWarehouseTypeDescriptionFromValue(WarehouseTypeDescriptionValue warehouseTypeDescriptionValue, BasePK updatedBy) {
         if(warehouseTypeDescriptionValue.hasBeenModified()) {
-            WarehouseTypeDescription warehouseTypeDescription = WarehouseTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var warehouseTypeDescription = WarehouseTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     warehouseTypeDescriptionValue.getPrimaryKey());
 
             warehouseTypeDescription.setThruTime(session.START_TIME_LONG);
             warehouseTypeDescription.store();
 
-            WarehouseType warehouseType = warehouseTypeDescription.getWarehouseType();
-            Language language = warehouseTypeDescription.getLanguage();
-            String description = warehouseTypeDescriptionValue.getDescription();
+            var warehouseType = warehouseTypeDescription.getWarehouseType();
+            var language = warehouseTypeDescription.getLanguage();
+            var description = warehouseTypeDescriptionValue.getDescription();
 
             warehouseTypeDescription = WarehouseTypeDescriptionFactory.getInstance().create(warehouseType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -554,7 +554,7 @@ public class WarehouseControl
     }
 
     public void deleteWarehouseTypeDescriptionsByWarehouseType(WarehouseType warehouseType, BasePK deletedBy) {
-        List<WarehouseTypeDescription> warehouseTypeDescriptions = getWarehouseTypeDescriptionsByWarehouseTypeForUpdate(warehouseType);
+        var warehouseTypeDescriptions = getWarehouseTypeDescriptionsByWarehouseTypeForUpdate(warehouseType);
 
         warehouseTypeDescriptions.forEach((warehouseTypeDescription) ->
                 deleteWarehouseTypeDescription(warehouseTypeDescription, deletedBy)
@@ -567,19 +567,19 @@ public class WarehouseControl
     
     public Warehouse createWarehouse(Party party, String warehouseName, WarehouseType warehouseType, Boolean isDefault,
             Integer sortOrder, BasePK createdBy) {
-        Warehouse defaultWarehouse = getDefaultWarehouse();
-        boolean defaultFound = defaultWarehouse != null;
+        var defaultWarehouse = getDefaultWarehouse();
+        var defaultFound = defaultWarehouse != null;
         
         if(defaultFound && isDefault) {
-            WarehouseValue defaultWarehouseValue = getDefaultWarehouseValueForUpdate();
+            var defaultWarehouseValue = getDefaultWarehouseValueForUpdate();
             
             defaultWarehouseValue.setIsDefault(Boolean.FALSE);
             updateWarehouseFromValue(defaultWarehouseValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        Warehouse warehouse = WarehouseFactory.getInstance().create(party, warehouseName, warehouseType, isDefault, sortOrder,
+
+        var warehouse = WarehouseFactory.getInstance().create(party, warehouseName, warehouseType, isDefault, sortOrder,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, warehouse.getPrimaryKey(), null, createdBy);
@@ -611,8 +611,8 @@ public class WarehouseControl
                         "WHERE whse_par_partyid = ? AND whse_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = WarehouseFactory.getInstance().prepareStatement(query);
+
+            var ps = WarehouseFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, party.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -653,8 +653,8 @@ public class WarehouseControl
                         "WHERE whse_warehousename = ? AND whse_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = WarehouseFactory.getInstance().prepareStatement(query);
+
+            var ps = WarehouseFactory.getInstance().prepareStatement(query);
             
             ps.setString(1, warehouseName);
             ps.setLong(2, Session.MAX_TIME);
@@ -691,8 +691,8 @@ public class WarehouseControl
                         "WHERE whse_isdefault = 1 AND whse_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = WarehouseFactory.getInstance().prepareStatement(query);
+
+            var ps = WarehouseFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, Session.MAX_TIME);
             
@@ -734,8 +734,8 @@ public class WarehouseControl
                         "WHERE whse_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = WarehouseFactory.getInstance().prepareStatement(query);
+
+            var ps = WarehouseFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, Session.MAX_TIME);
             
@@ -764,7 +764,7 @@ public class WarehouseControl
     }
     
     public WarehouseChoicesBean getWarehouseChoices(String defaultWarehouseChoice, boolean allowNullChoice) {
-        List<Warehouse> partyCompanies = getWarehouses();
+        var partyCompanies = getWarehouses();
         var size = partyCompanies.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -780,7 +780,7 @@ public class WarehouseControl
         }
 
         for(var warehouse : partyCompanies) {
-            PartyGroup partyGroup = getPartyControl().getPartyGroup(warehouse.getParty());
+            var partyGroup = getPartyControl().getPartyGroup(warehouse.getParty());
 
             var label = partyGroup.getName();
             var value = warehouse.getWarehouseName();
@@ -821,25 +821,25 @@ public class WarehouseControl
 
     private void updateWarehouseFromValue(WarehouseValue warehouseValue, boolean checkDefault, BasePK updatedBy) {
         if(warehouseValue.hasBeenModified()) {
-            Warehouse warehouse = WarehouseFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var warehouse = WarehouseFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     warehouseValue.getPrimaryKey());
             
             warehouse.setThruTime(session.START_TIME_LONG);
             warehouse.store();
-            
-            PartyPK partyPK = warehouse.getPartyPK();
-            String warehouseName = warehouseValue.getWarehouseName();
-            WarehouseTypePK warehouseTypePK = warehouseValue.getWarehouseTypePK();
-            Boolean isDefault = warehouseValue.getIsDefault();
-            Integer sortOrder = warehouseValue.getSortOrder();
+
+            var partyPK = warehouse.getPartyPK();
+            var warehouseName = warehouseValue.getWarehouseName();
+            var warehouseTypePK = warehouseValue.getWarehouseTypePK();
+            var isDefault = warehouseValue.getIsDefault();
+            var sortOrder = warehouseValue.getSortOrder();
             
             if(checkDefault) {
-                Warehouse defaultWarehouse = getDefaultWarehouse();
-                boolean defaultFound = defaultWarehouse != null && !defaultWarehouse.equals(warehouse);
+                var defaultWarehouse = getDefaultWarehouse();
+                var defaultFound = defaultWarehouse != null && !defaultWarehouse.equals(warehouse);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    WarehouseValue defaultWarehouseValue = getDefaultWarehouseValueForUpdate();
+                    var defaultWarehouseValue = getDefaultWarehouseValueForUpdate();
                     
                     defaultWarehouseValue.setIsDefault(Boolean.FALSE);
                     updateWarehouseFromValue(defaultWarehouseValue, false, updatedBy);
@@ -862,7 +862,7 @@ public class WarehouseControl
     
     public void deleteWarehouse(Warehouse warehouse, BasePK deletedBy) {
         var inventoryControl = Session.getModelController(InventoryControl.class);
-        Party party = warehouse.getPartyForUpdate();
+        var party = warehouse.getPartyForUpdate();
         
         deleteLocationsByWarehouseParty(party, deletedBy);
         deleteLocationTypesByWarehouseParty(party, deletedBy);
@@ -874,17 +874,17 @@ public class WarehouseControl
         warehouse.store();
         
         // Check for default, and pick one if necessary
-        Warehouse defaultWarehouse = getDefaultWarehouse();
+        var defaultWarehouse = getDefaultWarehouse();
         if(defaultWarehouse == null) {
-            List<Warehouse> warehouses = getWarehousesForUpdate();
+            var warehouses = getWarehousesForUpdate();
             
             if(!warehouses.isEmpty()) {
-                Iterator<Warehouse> iter = warehouses.iterator();
+                var iter = warehouses.iterator();
                 if(iter.hasNext()) {
                     defaultWarehouse = iter.next();
                 }
-                
-                WarehouseValue defaultWarehouseValue = defaultWarehouse.getWarehouseValue();
+
+                var defaultWarehouseValue = defaultWarehouse.getWarehouseValue();
                 
                 defaultWarehouseValue.setIsDefault(Boolean.TRUE);
                 updateWarehouseFromValue(defaultWarehouseValue, false, deletedBy);
@@ -900,8 +900,8 @@ public class WarehouseControl
     
     public LocationType createLocationType(Party warehouseParty, String locationTypeName, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
-        LocationType locationType = LocationTypeFactory.getInstance().create();
-        LocationTypeDetail locationTypeDetail = LocationTypeDetailFactory.getInstance().create(locationType, warehouseParty,
+        var locationType = LocationTypeFactory.getInstance().create();
+        var locationTypeDetail = LocationTypeDetailFactory.getInstance().create(locationType, warehouseParty,
                 locationTypeName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -933,8 +933,8 @@ public class WarehouseControl
                         "AND loctypdt_locationtypename = ? AND loctypdt_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = LocationTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = LocationTypeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, warehouseParty.getPrimaryKey().getEntityId());
             ps.setString(2, locationTypeName);
@@ -982,8 +982,8 @@ public class WarehouseControl
                         "AND loctypdt_isdefault = 1 AND loctypdt_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = LocationTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = LocationTypeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, warehouseParty.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1028,8 +1028,8 @@ public class WarehouseControl
                         "AND loctypdt_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = LocationTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = LocationTypeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, warehouseParty.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1055,7 +1055,7 @@ public class WarehouseControl
     }
     
     public List<LocationTypeTransfer> getLocationTypeTransfersByWarehouseParty(UserVisit userVisit, Party warehouseParty) {
-        List<LocationType> locationTypes = getLocationTypesByWarehouseParty(warehouseParty);
+        var locationTypes = getLocationTypesByWarehouseParty(warehouseParty);
         List<LocationTypeTransfer> locationTypeTransfers = null;
         
         if(locationTypes != null) {
@@ -1071,7 +1071,7 @@ public class WarehouseControl
     
     public LocationTypeChoicesBean getLocationTypeChoicesByWarehouseParty(String defaultLocationTypeChoice, Language language,
             boolean allowNullChoice, Party warehouseParty) {
-        List<LocationType> locationTypes = getLocationTypesByWarehouseParty(warehouseParty);
+        var locationTypes = getLocationTypesByWarehouseParty(warehouseParty);
         var size = locationTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -1088,8 +1088,8 @@ public class WarehouseControl
         }
         
         while(iter.hasNext()) {
-            LocationType locationType = (LocationType)iter.next();
-            LocationTypeDetail locationTypeDetail = locationType.getLastDetail();
+            var locationType = (LocationType)iter.next();
+            var locationTypeDetail = locationType.getLastDetail();
             
             var label = getBestLocationTypeDescription(locationType, language);
             var value = locationTypeDetail.getLocationTypeName();
@@ -1109,26 +1109,26 @@ public class WarehouseControl
     private void updateLocationTypeFromValue(LocationTypeDetailValue locationTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(locationTypeDetailValue.hasBeenModified()) {
-            LocationType locationType = LocationTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, locationTypeDetailValue.getLocationTypePK());
-            LocationTypeDetail locationTypeDetail = locationType.getActiveDetailForUpdate();
+            var locationType = LocationTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, locationTypeDetailValue.getLocationTypePK());
+            var locationTypeDetail = locationType.getActiveDetailForUpdate();
             
             locationTypeDetail.setThruTime(session.START_TIME_LONG);
             locationTypeDetail.store();
-            
-            LocationTypePK locationTypePK = locationTypeDetail.getLocationTypePK();
-            Party warehouseParty = locationTypeDetail.getWarehouseParty();
-            PartyPK warehousePartyPK = locationTypeDetail.getWarehousePartyPK();
-            String locationTypeName = locationTypeDetailValue.getLocationTypeName();
-            Boolean isDefault = locationTypeDetailValue.getIsDefault();
-            Integer sortOrder = locationTypeDetailValue.getSortOrder();
+
+            var locationTypePK = locationTypeDetail.getLocationTypePK();
+            var warehouseParty = locationTypeDetail.getWarehouseParty();
+            var warehousePartyPK = locationTypeDetail.getWarehousePartyPK();
+            var locationTypeName = locationTypeDetailValue.getLocationTypeName();
+            var isDefault = locationTypeDetailValue.getIsDefault();
+            var sortOrder = locationTypeDetailValue.getSortOrder();
             
             if(checkDefault) {
-                LocationType defaultLocationType = getDefaultLocationType(warehouseParty);
-                boolean defaultFound = defaultLocationType != null && !defaultLocationType.equals(locationType);
+                var defaultLocationType = getDefaultLocationType(warehouseParty);
+                var defaultFound = defaultLocationType != null && !defaultLocationType.equals(locationType);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    LocationTypeDetailValue defaultLocationTypeDetailValue = getDefaultLocationTypeDetailValueForUpdate(warehouseParty);
+                    var defaultLocationTypeDetailValue = getDefaultLocationTypeDetailValueForUpdate(warehouseParty);
                     
                     defaultLocationTypeDetailValue.setIsDefault(Boolean.FALSE);
                     updateLocationTypeFromValue(defaultLocationTypeDetailValue, false, updatedBy);
@@ -1155,26 +1155,26 @@ public class WarehouseControl
     private void deleteLocationType(LocationType locationType, BasePK deletedBy, boolean adjustDefault) {
         deleteLocationNameElementsByLocationType(locationType, deletedBy);
         deleteLocationTypeDescriptionsByLocationType(locationType, deletedBy);
-        
-        LocationTypeDetail locationTypeDetail = locationType.getLastDetailForUpdate();
+
+        var locationTypeDetail = locationType.getLastDetailForUpdate();
         locationTypeDetail.setThruTime(session.START_TIME_LONG);
         locationTypeDetail.store();
         locationType.setActiveDetail(null);
         
         if(adjustDefault) {
             // Check for default, and pick one if necessary
-            Party warehouseParty = locationTypeDetail.getWarehouseParty();
-            LocationType defaultLocationType = getDefaultLocationType(warehouseParty);
+            var warehouseParty = locationTypeDetail.getWarehouseParty();
+            var defaultLocationType = getDefaultLocationType(warehouseParty);
             
             if(defaultLocationType == null) {
-                List<LocationType> locationTypes = getLocationTypesByWarehousePartyForUpdate(warehouseParty);
+                var locationTypes = getLocationTypesByWarehousePartyForUpdate(warehouseParty);
                 
                 if(!locationTypes.isEmpty()) {
                     Iterator iter = locationTypes.iterator();
                     if(iter.hasNext()) {
                         defaultLocationType = (LocationType)iter.next();
                     }
-                    LocationTypeDetailValue locationTypeDetailValue = Objects.requireNonNull(defaultLocationType).getLastDetailForUpdate().getLocationTypeDetailValue().clone();
+                    var locationTypeDetailValue = Objects.requireNonNull(defaultLocationType).getLastDetailForUpdate().getLocationTypeDetailValue().clone();
                     
                     locationTypeDetailValue.setIsDefault(Boolean.TRUE);
                     updateLocationTypeFromValue(locationTypeDetailValue, false, deletedBy);
@@ -1191,7 +1191,7 @@ public class WarehouseControl
     }
     
     public void deleteLocationTypesByWarehouseParty(Party warehouseParty, BasePK deletedBy) {
-        List<LocationType> locationTypes = getLocationTypesByWarehousePartyForUpdate(warehouseParty);
+        var locationTypes = getLocationTypesByWarehousePartyForUpdate(warehouseParty);
         
         locationTypes.forEach((locationType) -> {
             deleteLocationType(locationType, deletedBy, false);
@@ -1203,7 +1203,7 @@ public class WarehouseControl
     // --------------------------------------------------------------------------------
     
     public LocationTypeDescription createLocationTypeDescription(LocationType locationType, Language language, String description, BasePK createdBy) {
-        LocationTypeDescription locationTypeDescription = LocationTypeDescriptionFactory.getInstance().create(locationType, language, description, session.START_TIME_LONG,
+        var locationTypeDescription = LocationTypeDescriptionFactory.getInstance().create(locationType, language, description, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
         sendEvent(locationType.getPrimaryKey(), EventTypes.MODIFY, locationTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1227,8 +1227,8 @@ public class WarehouseControl
                         "WHERE loctypd_loctyp_locationtypeid = ? AND loctypd_lang_languageid = ? AND loctypd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = LocationTypeDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = LocationTypeDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, locationType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -1276,8 +1276,8 @@ public class WarehouseControl
                         "WHERE loctypd_loctyp_locationtypeid = ? AND loctypd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = LocationTypeDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = LocationTypeDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, locationType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1300,7 +1300,7 @@ public class WarehouseControl
     
     public String getBestLocationTypeDescription(LocationType locationType, Language language) {
         String description;
-        LocationTypeDescription locationTypeDescription = getLocationTypeDescription(locationType, language);
+        var locationTypeDescription = getLocationTypeDescription(locationType, language);
         
         if(locationTypeDescription == null && !language.getIsDefault()) {
             locationTypeDescription = getLocationTypeDescription(locationType, getPartyControl().getDefaultLanguage());
@@ -1320,13 +1320,13 @@ public class WarehouseControl
     }
     
     public List<LocationTypeDescriptionTransfer> getLocationTypeDescriptionTransfersByLocationType(UserVisit userVisit, LocationType locationType) {
-        List<LocationTypeDescription> locationTypeDescriptions = getLocationTypeDescriptionsByLocationType(locationType);
+        var locationTypeDescriptions = getLocationTypeDescriptionsByLocationType(locationType);
         List<LocationTypeDescriptionTransfer> locationTypeDescriptionTransfers = null;
         
         if(locationTypeDescriptions != null) {
             locationTypeDescriptionTransfers = new ArrayList<>(locationTypeDescriptions.size());
             
-            for(LocationTypeDescription locationTypeDescription  : locationTypeDescriptions) {
+            for(var locationTypeDescription  : locationTypeDescriptions) {
                 locationTypeDescriptionTransfers.add(getWarehouseTransferCaches(userVisit).getLocationTypeDescriptionTransferCache().getLocationTypeDescriptionTransfer(locationTypeDescription));
             }
         }
@@ -1336,15 +1336,15 @@ public class WarehouseControl
     
     public void updateLocationTypeDescriptionFromValue(LocationTypeDescriptionValue locationTypeDescriptionValue, BasePK updatedBy) {
         if(locationTypeDescriptionValue.hasBeenModified()) {
-            LocationTypeDescription locationTypeDescription = LocationTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var locationTypeDescription = LocationTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      locationTypeDescriptionValue.getPrimaryKey());
             
             locationTypeDescription.setThruTime(session.START_TIME_LONG);
             locationTypeDescription.store();
-            
-            LocationType locationType = locationTypeDescription.getLocationType();
-            Language language = locationTypeDescription.getLanguage();
-            String description = locationTypeDescriptionValue.getDescription();
+
+            var locationType = locationTypeDescription.getLocationType();
+            var language = locationTypeDescription.getLanguage();
+            var description = locationTypeDescriptionValue.getDescription();
             
             locationTypeDescription = LocationTypeDescriptionFactory.getInstance().create(locationType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1361,7 +1361,7 @@ public class WarehouseControl
     }
     
     public void deleteLocationTypeDescriptionsByLocationType(LocationType locationType, BasePK deletedBy) {
-        List<LocationTypeDescription> locationTypeDescriptions = getLocationTypeDescriptionsByLocationTypeForUpdate(locationType);
+        var locationTypeDescriptions = getLocationTypeDescriptionsByLocationTypeForUpdate(locationType);
         
         locationTypeDescriptions.forEach((locationTypeDescription) -> 
                 deleteLocationTypeDescription(locationTypeDescription, deletedBy)
@@ -1374,8 +1374,8 @@ public class WarehouseControl
     
     public LocationNameElement createLocationNameElement(LocationType locationType, String locationNameElementName, Integer offset,
             Integer length, String validationPattern, BasePK createdBy) {
-        LocationNameElement locationNameElement = LocationNameElementFactory.getInstance().create();
-        LocationNameElementDetail locationNameElementDetail = LocationNameElementDetailFactory.getInstance().create(session,
+        var locationNameElement = LocationNameElementFactory.getInstance().create();
+        var locationNameElementDetail = LocationNameElementDetailFactory.getInstance().create(session,
                 locationNameElement, locationType, locationNameElementName, offset, length, validationPattern, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
@@ -1408,8 +1408,8 @@ public class WarehouseControl
                         "AND locnedt_locationnameelementname = ? AND locnedt_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = LocationNameElementFactory.getInstance().prepareStatement(query);
+
+            var ps = LocationNameElementFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, locationType.getPrimaryKey().getEntityId());
             ps.setString(2, locationNameElementName);
@@ -1459,8 +1459,8 @@ public class WarehouseControl
                         "AND locnedt_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = LocationNameElementFactory.getInstance().prepareStatement(query);
+
+            var ps = LocationNameElementFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, locationType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1482,7 +1482,7 @@ public class WarehouseControl
     }
     
     public List<LocationNameElementValue> getLocationNameElementValuesByLocationTypeForUpdate(LocationType locationType) {
-        List<LocationNameElement> locationNameElements = getLocationNameElementsByLocationTypeForUpdate(locationType);
+        var locationNameElements = getLocationNameElementsByLocationTypeForUpdate(locationType);
         List<LocationNameElementValue> locationNameElementValues = new ArrayList<>(locationNameElements.size());
         
         locationNameElements.forEach((locationNameElement) -> {
@@ -1497,9 +1497,9 @@ public class WarehouseControl
     }
     
     public List<LocationNameElementTransfer> getLocationNameElementTransfersByLocationType(UserVisit userVisit, LocationType locationType) {
-        List<LocationNameElement> locationNameElements = getLocationNameElementsByLocationType(locationType);
+        var locationNameElements = getLocationNameElementsByLocationType(locationType);
         List<LocationNameElementTransfer> locationNameElementTransfers = new ArrayList<>(locationNameElements.size());
-        LocationNameElementTransferCache locationNameElementTransferCache = getWarehouseTransferCaches(userVisit).getLocationNameElementTransferCache();
+        var locationNameElementTransferCache = getWarehouseTransferCaches(userVisit).getLocationNameElementTransferCache();
         
         locationNameElements.forEach((locationNameElement) ->
                 locationNameElementTransfers.add(locationNameElementTransferCache.getLocationNameElementTransfer(locationNameElement))
@@ -1510,19 +1510,19 @@ public class WarehouseControl
     
     public void updateLocationNameElementFromValue(LocationNameElementDetailValue locationNameElementDetailValue, BasePK updatedBy) {
         if(locationNameElementDetailValue.hasBeenModified()) {
-            LocationNameElement locationNameElement = LocationNameElementFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var locationNameElement = LocationNameElementFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      locationNameElementDetailValue.getLocationNameElementPK());
-            LocationNameElementDetail locationNameElementDetail = locationNameElement.getActiveDetailForUpdate();
+            var locationNameElementDetail = locationNameElement.getActiveDetailForUpdate();
             
             locationNameElementDetail.setThruTime(session.START_TIME_LONG);
             locationNameElementDetail.store();
-            
-            LocationNameElementPK locationNameElementPK = locationNameElementDetail.getLocationNameElementPK();
-            LocationTypePK locationTypePK = locationNameElementDetail.getLocationTypePK(); // Not updated
-            String locationNameElementName = locationNameElementDetailValue.getLocationNameElementName();
-            Integer offset = locationNameElementDetailValue.getOffset();
-            Integer length = locationNameElementDetailValue.getLength();
-            String validationPattern = locationNameElementDetailValue.getValidationPattern();
+
+            var locationNameElementPK = locationNameElementDetail.getLocationNameElementPK();
+            var locationTypePK = locationNameElementDetail.getLocationTypePK(); // Not updated
+            var locationNameElementName = locationNameElementDetailValue.getLocationNameElementName();
+            var offset = locationNameElementDetailValue.getOffset();
+            var length = locationNameElementDetailValue.getLength();
+            var validationPattern = locationNameElementDetailValue.getValidationPattern();
             
             locationNameElementDetail = LocationNameElementDetailFactory.getInstance().create(locationNameElementPK,
                     locationTypePK, locationNameElementName, offset, length, validationPattern, session.START_TIME_LONG,
@@ -1537,8 +1537,8 @@ public class WarehouseControl
     
     public void deleteLocationNameElement(LocationNameElement locationNameElement, BasePK deletedBy) {
         deleteLocationNameElementDescriptionsByLocationNameElement(locationNameElement, deletedBy);
-        
-        LocationNameElementDetail locationNameElementDetail = locationNameElement.getLastDetailForUpdate();
+
+        var locationNameElementDetail = locationNameElement.getLastDetailForUpdate();
         locationNameElementDetail.setThruTime(session.START_TIME_LONG);
         locationNameElementDetail.store();
         locationNameElement.setActiveDetail(null);
@@ -1547,7 +1547,7 @@ public class WarehouseControl
     }
     
     public void deleteLocationNameElementsByLocationType(LocationType locationType, BasePK deletedBy) {
-        List<LocationNameElement> locationNameElements = getLocationNameElementsByLocationTypeForUpdate(locationType);
+        var locationNameElements = getLocationNameElementsByLocationTypeForUpdate(locationType);
         
         locationNameElements.forEach((locationNameElement) -> 
                 deleteLocationNameElement(locationNameElement, deletedBy)
@@ -1560,7 +1560,7 @@ public class WarehouseControl
     
     public LocationNameElementDescription createLocationNameElementDescription(LocationNameElement locationNameElement, Language language,
             String description, BasePK createdBy) {
-        LocationNameElementDescription locationNameElementDescription = LocationNameElementDescriptionFactory.getInstance().create(session,
+        var locationNameElementDescription = LocationNameElementDescriptionFactory.getInstance().create(session,
                 locationNameElement, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(locationNameElement.getPrimaryKey(), EventTypes.MODIFY, locationNameElementDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1585,8 +1585,8 @@ public class WarehouseControl
                         "WHERE locned_locne_locationnameelementid = ? AND locned_lang_languageid = ? AND locned_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = LocationNameElementDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = LocationNameElementDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, locationNameElement.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -1634,8 +1634,8 @@ public class WarehouseControl
                         "WHERE locned_locne_locationnameelementid = ? AND locned_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = LocationNameElementDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = LocationNameElementDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, locationNameElement.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1658,7 +1658,7 @@ public class WarehouseControl
     
     public String getBestLocationNameElementDescription(LocationNameElement locationNameElement, Language language) {
         String description;
-        LocationNameElementDescription locationNameElementDescription = getLocationNameElementDescription(locationNameElement, language);
+        var locationNameElementDescription = getLocationNameElementDescription(locationNameElement, language);
         
         if(locationNameElementDescription == null && !language.getIsDefault()) {
             locationNameElementDescription = getLocationNameElementDescription(locationNameElement, getPartyControl().getDefaultLanguage());
@@ -1678,7 +1678,7 @@ public class WarehouseControl
     }
     
     public List<LocationNameElementDescriptionTransfer> getLocationNameElementDescriptionTransfersByLocationNameElement(UserVisit userVisit, LocationNameElement locationNameElement) {
-        List<LocationNameElementDescription> locationNameElementDescriptions = getLocationNameElementDescriptionsByLocationNameElement(locationNameElement);
+        var locationNameElementDescriptions = getLocationNameElementDescriptionsByLocationNameElement(locationNameElement);
         List<LocationNameElementDescriptionTransfer> locationNameElementDescriptionTransfers = null;
         
         if(locationNameElementDescriptions != null) {
@@ -1694,14 +1694,14 @@ public class WarehouseControl
     
     public void updateLocationNameElementDescriptionFromValue(LocationNameElementDescriptionValue locationNameElementDescriptionValue, BasePK updatedBy) {
         if(locationNameElementDescriptionValue.hasBeenModified()) {
-            LocationNameElementDescription locationNameElementDescription = LocationNameElementDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, locationNameElementDescriptionValue.getPrimaryKey());
+            var locationNameElementDescription = LocationNameElementDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, locationNameElementDescriptionValue.getPrimaryKey());
             
             locationNameElementDescription.setThruTime(session.START_TIME_LONG);
             locationNameElementDescription.store();
-            
-            LocationNameElement locationNameElement = locationNameElementDescription.getLocationNameElement();
-            Language language = locationNameElementDescription.getLanguage();
-            String description = locationNameElementDescriptionValue.getDescription();
+
+            var locationNameElement = locationNameElementDescription.getLocationNameElement();
+            var language = locationNameElementDescription.getLanguage();
+            var description = locationNameElementDescriptionValue.getDescription();
             
             locationNameElementDescription = LocationNameElementDescriptionFactory.getInstance().create(locationNameElement,
                     language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1718,7 +1718,7 @@ public class WarehouseControl
     }
     
     public void deleteLocationNameElementDescriptionsByLocationNameElement(LocationNameElement locationNameElement, BasePK deletedBy) {
-        List<LocationNameElementDescription> locationNameElementDescriptions = getLocationNameElementDescriptionsByLocationNameElementForUpdate(locationNameElement);
+        var locationNameElementDescriptions = getLocationNameElementDescriptionsByLocationNameElementForUpdate(locationNameElement);
         
         locationNameElementDescriptions.forEach((locationNameElementDescription) -> 
                 deleteLocationNameElementDescription(locationNameElementDescription, deletedBy)
@@ -1731,8 +1731,8 @@ public class WarehouseControl
     
     public Location createLocation(Party warehouseParty, String locationName, LocationType locationType,
             LocationUseType locationUseType, Integer velocity, InventoryLocationGroup inventoryLocationGroup, BasePK createdBy) {
-        Location location = LocationFactory.getInstance().create();
-        LocationDetail locationDetail = LocationDetailFactory.getInstance().create(location, warehouseParty, locationName,
+        var location = LocationFactory.getInstance().create();
+        var locationDetail = LocationDetailFactory.getInstance().create(location, warehouseParty, locationName,
                 locationType, locationUseType, velocity, inventoryLocationGroup, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -1795,8 +1795,8 @@ public class WarehouseControl
                         "AND locdt_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = LocationFactory.getInstance().prepareStatement(query);
+
+            var ps = LocationFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, warehouseParty.getPrimaryKey().getEntityId());
             ps.setString(2, locationName);
@@ -1845,7 +1845,7 @@ public class WarehouseControl
                         "FOR UPDATE";
             }
 
-            PreparedStatement ps = LocationFactory.getInstance().prepareStatement(query);
+            var ps = LocationFactory.getInstance().prepareStatement(query);
 
             ps.setLong(1, warehouseParty.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1885,7 +1885,7 @@ public class WarehouseControl
                         "FOR UPDATE";
             }
 
-            PreparedStatement ps = LocationFactory.getInstance().prepareStatement(query);
+            var ps = LocationFactory.getInstance().prepareStatement(query);
 
             ps.setString(1, locationName);
 
@@ -1923,8 +1923,8 @@ public class WarehouseControl
                         "WHERE loc_locationid = locdt_loc_locationid AND locdt_loctyp_locationtypeid = ? AND locdt_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = LocationFactory.getInstance().prepareStatement(query);
+
+            var ps = LocationFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, locationType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1963,8 +1963,8 @@ public class WarehouseControl
                         "WHERE loc_locationid = locdt_loc_locationid AND locdt_invlocgrp_inventorylocationgroupid = ? AND locdt_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = LocationFactory.getInstance().prepareStatement(query);
+
+            var ps = LocationFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, inventoryLocationGroup.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1990,7 +1990,7 @@ public class WarehouseControl
     }
     
     public List<LocationTransfer> getLocationTransfersByWarehouseParty(UserVisit userVisit, Party warehouseParty) {
-        List<Location> locations = getLocationsByWarehouseParty(warehouseParty);
+        var locations = getLocationsByWarehouseParty(warehouseParty);
         List<LocationTransfer> locationTransfers = null;
         
         if(locations != null) {
@@ -2005,14 +2005,14 @@ public class WarehouseControl
     }
     
     public LocationChoicesBean getLocationChoicesByWarehouseParty(String defaultLocationChoice, Language language, Party warehouseParty) {
-        List<Location> locations = getLocationsByWarehouseParty(warehouseParty);
+        var locations = getLocationsByWarehouseParty(warehouseParty);
         var size = locations.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         for(var location : locations) {
-            LocationDetail locationDetail = location.getLastDetail();
+            var locationDetail = location.getLastDetail();
             
             var label = getBestLocationDescription(location, language);
             var value = locationDetail.getLocationName();
@@ -2032,8 +2032,8 @@ public class WarehouseControl
             Location location, PartyPK partyPK) {
         var workflowControl = getWorkflowControl();
         LocationStatusChoicesBean locationStatusChoicesBean = new LocationStatusChoicesBean();
-        EntityInstance entityInstance = getEntityInstanceByBaseEntity(location);
-        WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(LocationStatusConstants.Workflow_LOCATION_STATUS,
+        var entityInstance = getEntityInstanceByBaseEntity(location);
+        var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(LocationStatusConstants.Workflow_LOCATION_STATUS,
                 entityInstance);
         
         workflowControl.getWorkflowDestinationChoices(locationStatusChoicesBean, defaultLocationStatusChoice, language,
@@ -2044,10 +2044,10 @@ public class WarehouseControl
     
     public void setLocationStatus(ExecutionErrorAccumulator eea, Location location, String locationStatusChoice, PartyPK modifiedBy) {
         var workflowControl = getWorkflowControl();
-        EntityInstance entityInstance = getEntityInstanceByBaseEntity(location);
-        WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(LocationStatusConstants.Workflow_LOCATION_STATUS,
+        var entityInstance = getEntityInstanceByBaseEntity(location);
+        var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(LocationStatusConstants.Workflow_LOCATION_STATUS,
                 entityInstance);
-        WorkflowDestination workflowDestination = locationStatusChoice == null? null:
+        var workflowDestination = locationStatusChoice == null? null:
             workflowControl.getWorkflowDestinationByName(workflowEntityStatus.getWorkflowStep(), locationStatusChoice);
         
         if(workflowDestination != null || locationStatusChoice == null) {
@@ -2059,20 +2059,20 @@ public class WarehouseControl
     
     public void updateLocationFromValue(LocationDetailValue locationDetailValue, BasePK updatedBy) {
         if(locationDetailValue.hasBeenModified()) {
-            Location location = LocationFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var location = LocationFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     locationDetailValue.getLocationPK());
-            LocationDetail locationDetail = location.getActiveDetailForUpdate();
+            var locationDetail = location.getActiveDetailForUpdate();
             
             locationDetail.setThruTime(session.START_TIME_LONG);
             locationDetail.store();
-            
-            LocationPK locationPK = locationDetail.getLocationPK();
-            PartyPK warehousePartyPK = locationDetail.getWarehousePartyPK();
-            String locationName = locationDetailValue.getLocationName();
-            LocationTypePK locationTypePK = locationDetailValue.getLocationTypePK();
-            LocationUseTypePK locationUseTypePK = locationDetailValue.getLocationUseTypePK();
-            Integer velocity = locationDetailValue.getVelocity();
-            InventoryLocationGroupPK inventoryLocationGroupPK = locationDetailValue.getInventoryLocationGroupPK();
+
+            var locationPK = locationDetail.getLocationPK();
+            var warehousePartyPK = locationDetail.getWarehousePartyPK();
+            var locationName = locationDetailValue.getLocationName();
+            var locationTypePK = locationDetailValue.getLocationTypePK();
+            var locationUseTypePK = locationDetailValue.getLocationUseTypePK();
+            var velocity = locationDetailValue.getVelocity();
+            var inventoryLocationGroupPK = locationDetailValue.getInventoryLocationGroupPK();
             
             locationDetail = LocationDetailFactory.getInstance().create(locationPK, warehousePartyPK, locationName,
                     locationTypePK, locationUseTypePK, velocity, inventoryLocationGroupPK, session.START_TIME_LONG,
@@ -2089,8 +2089,8 @@ public class WarehouseControl
         deleteLocationVolumeByLocation(location, deletedBy);
         deleteLocationCapacitiesByLocation(location, deletedBy);
         deleteLocationDescriptionsByLocation(location, deletedBy);
-        
-        LocationDetail locationDetail = location.getLastDetailForUpdate();
+
+        var locationDetail = location.getLastDetailForUpdate();
         locationDetail.setThruTime(session.START_TIME_LONG);
         locationDetail.store();
         location.setActiveDetail(null);
@@ -2099,7 +2099,7 @@ public class WarehouseControl
     }
     
     public void deleteLocationsByWarehouseParty(Party warehouseParty, BasePK deletedBy) {
-        List<Location> locations = getLocationsByWarehousePartyForUpdate(warehouseParty);
+        var locations = getLocationsByWarehousePartyForUpdate(warehouseParty);
         
         locations.forEach((location) -> 
                 deleteLocation(location, deletedBy)
@@ -2107,7 +2107,7 @@ public class WarehouseControl
     }
     
     public void deleteLocationsByLocationType(LocationType locationType, BasePK deletedBy) {
-        List<Location> locations = getLocationsByLocationTypeForUpdate(locationType);
+        var locations = getLocationsByLocationTypeForUpdate(locationType);
         
         locations.forEach((location) -> 
                 deleteLocation(location, deletedBy)
@@ -2115,7 +2115,7 @@ public class WarehouseControl
     }
     
     public void deleteLocationsByInventoryLocationGroup(InventoryLocationGroup inventoryLocationGroup, BasePK deletedBy) {
-        List<Location> locations = getLocationsByInventoryLocationGroupForUpdate(inventoryLocationGroup);
+        var locations = getLocationsByInventoryLocationGroupForUpdate(inventoryLocationGroup);
         
         locations.forEach((location) -> 
                 deleteLocation(location, deletedBy)
@@ -2127,7 +2127,7 @@ public class WarehouseControl
     // --------------------------------------------------------------------------------
     
     public LocationDescription createLocationDescription(Location location, Language language, String description, BasePK createdBy) {
-        LocationDescription locationDescription = LocationDescriptionFactory.getInstance().create(location, language, description, session.START_TIME_LONG,
+        var locationDescription = LocationDescriptionFactory.getInstance().create(location, language, description, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
         sendEvent(location.getPrimaryKey(), EventTypes.MODIFY, locationDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2151,8 +2151,8 @@ public class WarehouseControl
                         "WHERE locd_loc_locationid = ? AND locd_lang_languageid = ? AND locd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = LocationDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = LocationDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, location.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -2200,8 +2200,8 @@ public class WarehouseControl
                         "WHERE locd_loc_locationid = ? AND locd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = LocationDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = LocationDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, location.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -2224,7 +2224,7 @@ public class WarehouseControl
     
     public String getBestLocationDescription(Location location, Language language) {
         String description;
-        LocationDescription locationDescription = getLocationDescription(location, language);
+        var locationDescription = getLocationDescription(location, language);
         
         if(locationDescription == null && !language.getIsDefault()) {
             locationDescription = getLocationDescription(location, getPartyControl().getDefaultLanguage());
@@ -2244,7 +2244,7 @@ public class WarehouseControl
     }
     
     public List<LocationDescriptionTransfer> getLocationDescriptionTransfersByLocation(UserVisit userVisit, Location location) {
-        List<LocationDescription> locationDescriptions = getLocationDescriptionsByLocation(location);
+        var locationDescriptions = getLocationDescriptionsByLocation(location);
         List<LocationDescriptionTransfer> locationDescriptionTransfers = null;
         
         if(locationDescriptions != null) {
@@ -2260,14 +2260,14 @@ public class WarehouseControl
     
     public void updateLocationDescriptionFromValue(LocationDescriptionValue locationDescriptionValue, BasePK updatedBy) {
         if(locationDescriptionValue.hasBeenModified()) {
-            LocationDescription locationDescription = LocationDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, locationDescriptionValue.getPrimaryKey());
+            var locationDescription = LocationDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, locationDescriptionValue.getPrimaryKey());
             
             locationDescription.setThruTime(session.START_TIME_LONG);
             locationDescription.store();
-            
-            Location location = locationDescription.getLocation();
-            Language language = locationDescription.getLanguage();
-            String description = locationDescriptionValue.getDescription();
+
+            var location = locationDescription.getLocation();
+            var language = locationDescription.getLanguage();
+            var description = locationDescriptionValue.getDescription();
             
             locationDescription = LocationDescriptionFactory.getInstance().create(location, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -2284,7 +2284,7 @@ public class WarehouseControl
     }
     
     public void deleteLocationDescriptionsByLocation(Location location, BasePK deletedBy) {
-        List<LocationDescription> locationDescriptions = getLocationDescriptionsByLocationForUpdate(location);
+        var locationDescriptions = getLocationDescriptionsByLocationForUpdate(location);
         
         locationDescriptions.forEach((locationDescription) -> 
                 deleteLocationDescription(locationDescription, deletedBy)
@@ -2296,7 +2296,7 @@ public class WarehouseControl
     // --------------------------------------------------------------------------------
     
     public LocationVolume createLocationVolume(Location location, Long height, Long width, Long depth, BasePK createdBy) {
-        LocationVolume locationVolume = LocationVolumeFactory.getInstance().create(location, height, width, depth,
+        var locationVolume = LocationVolumeFactory.getInstance().create(location, height, width, depth,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(location.getPrimaryKey(), EventTypes.MODIFY, locationVolume.getPrimaryKey(), null, createdBy);
@@ -2320,8 +2320,8 @@ public class WarehouseControl
                         "WHERE locvol_loc_locationid = ? AND locvol_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = LocationVolumeFactory.getInstance().prepareStatement(query);
+
+            var ps = LocationVolumeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, location.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -2343,7 +2343,7 @@ public class WarehouseControl
     }
     
     public LocationVolumeValue getLocationVolumeValueForUpdate(Location location) {
-        LocationVolume locationVolume = getLocationVolumeForUpdate(location);
+        var locationVolume = getLocationVolumeForUpdate(location);
         
         return locationVolume == null? null: locationVolume.getLocationVolumeValue().clone();
     }
@@ -2353,23 +2353,23 @@ public class WarehouseControl
     }
     
     public LocationVolumeTransfer getLocationVolumeTransfer(UserVisit userVisit, Location location) {
-        LocationVolume locationVolume = getLocationVolume(location);
+        var locationVolume = getLocationVolume(location);
         
         return locationVolume == null? null: getWarehouseTransferCaches(userVisit).getLocationVolumeTransferCache().getLocationVolumeTransfer(locationVolume);
     }
     
     public void updateLocationVolumeFromValue(LocationVolumeValue locationVolumeValue, BasePK updatedBy) {
         if(locationVolumeValue.hasBeenModified()) {
-            LocationVolume locationVolume = LocationVolumeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var locationVolume = LocationVolumeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      locationVolumeValue.getPrimaryKey());
             
             locationVolume.setThruTime(session.START_TIME_LONG);
             locationVolume.store();
-            
-            LocationPK locationPK = locationVolume.getLocationPK(); // Not updated
-            Long height = locationVolumeValue.getHeight();
-            Long width = locationVolumeValue.getWidth();
-            Long depth = locationVolumeValue.getDepth();
+
+            var locationPK = locationVolume.getLocationPK(); // Not updated
+            var height = locationVolumeValue.getHeight();
+            var width = locationVolumeValue.getWidth();
+            var depth = locationVolumeValue.getDepth();
             
             locationVolume = LocationVolumeFactory.getInstance().create(locationPK, height,
                     width, depth, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -2385,7 +2385,7 @@ public class WarehouseControl
     }
     
     public void deleteLocationVolumeByLocation(Location location, BasePK deletedBy) {
-        LocationVolume locationVolume = getLocationVolumeForUpdate(location);
+        var locationVolume = getLocationVolumeForUpdate(location);
         
         if(locationVolume != null)
             deleteLocationVolume(locationVolume, deletedBy);
@@ -2397,7 +2397,7 @@ public class WarehouseControl
     
     public LocationCapacity createLocationCapacity(Location location, UnitOfMeasureType unitOfMeasureType,
             Long capacity, BasePK createdBy) {
-        LocationCapacity locationCapacity = LocationCapacityFactory.getInstance().create(location,
+        var locationCapacity = LocationCapacityFactory.getInstance().create(location,
                 unitOfMeasureType, capacity, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(location.getPrimaryKey(), EventTypes.MODIFY, locationCapacity.getPrimaryKey(), null, createdBy);
@@ -2425,8 +2425,8 @@ public class WarehouseControl
                         "WHERE loccap_loc_locationid = ? AND loccap_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = LocationCapacityFactory.getInstance().prepareStatement(query);
+
+            var ps = LocationCapacityFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, location.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -2468,8 +2468,8 @@ public class WarehouseControl
                         "WHERE loccap_loc_locationid = ? AND loccap_uomt_unitofmeasuretypeid = ? AND loccap_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = LocationCapacityFactory.getInstance().prepareStatement(query);
+
+            var ps = LocationCapacityFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, location.getPrimaryKey().getEntityId());
             ps.setLong(2, unitOfMeasureType.getPrimaryKey().getEntityId());
@@ -2492,22 +2492,22 @@ public class WarehouseControl
     }
     
     public LocationCapacityValue getLocationCapacityValueForUpdate(Location location, UnitOfMeasureType unitOfMeasureType) {
-        LocationCapacity locationCapacity = getLocationCapacityForUpdate(location, unitOfMeasureType);
+        var locationCapacity = getLocationCapacityForUpdate(location, unitOfMeasureType);
         
         return locationCapacity == null? null: locationCapacity.getLocationCapacityValue().clone();
     }
     
     public void updateLocationCapacityFromValue(LocationCapacityValue locationCapacityValue, BasePK updatedBy) {
         if(locationCapacityValue.hasBeenModified()) {
-            LocationCapacity locationCapacity = LocationCapacityFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var locationCapacity = LocationCapacityFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      locationCapacityValue.getPrimaryKey());
             
             locationCapacity.setThruTime(session.START_TIME_LONG);
             locationCapacity.store();
-            
-            UnitOfMeasureTypePK unitOfMeasureTypePK = locationCapacity.getUnitOfMeasureTypePK(); // Not updated
-            LocationPK locationPK = locationCapacity.getLocationPK(); // Not updated
-            Long capacity = locationCapacityValue.getCapacity();
+
+            var unitOfMeasureTypePK = locationCapacity.getUnitOfMeasureTypePK(); // Not updated
+            var locationPK = locationCapacity.getLocationPK(); // Not updated
+            var capacity = locationCapacityValue.getCapacity();
             
             locationCapacity = LocationCapacityFactory.getInstance().create(locationPK, unitOfMeasureTypePK, capacity,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -2521,9 +2521,9 @@ public class WarehouseControl
     }
     
     public List<LocationCapacityTransfer> getLocationCapacityTransfersByLocation(UserVisit userVisit, Location location) {
-        List<LocationCapacity> locationCapacities = getLocationCapacitiesByLocation(location);
+        var locationCapacities = getLocationCapacitiesByLocation(location);
         List<LocationCapacityTransfer> locationCapacityTransfers = new ArrayList<>(locationCapacities.size());
-        LocationCapacityTransferCache locationCapacityTransferCache = getWarehouseTransferCaches(userVisit).getLocationCapacityTransferCache();
+        var locationCapacityTransferCache = getWarehouseTransferCaches(userVisit).getLocationCapacityTransferCache();
         
         locationCapacities.forEach((locationCapacity) ->
                 locationCapacityTransfers.add(locationCapacityTransferCache.getLocationCapacityTransfer(locationCapacity))
@@ -2539,7 +2539,7 @@ public class WarehouseControl
     }
     
     public void deleteLocationCapacitiesByLocation(Location location, BasePK deletedBy) {
-        List<LocationCapacity> locationCapacities = getLocationCapacitiesByLocationForUpdate(location);
+        var locationCapacities = getLocationCapacitiesByLocationForUpdate(location);
         
         locationCapacities.forEach((locationCapacity) -> 
                 deleteLocationCapacity(locationCapacity, deletedBy)
@@ -2560,7 +2560,7 @@ public class WarehouseControl
             includeWarehouse = options.contains(SearchOptions.WarehouseResultIncludeWarehouse);
         }
 
-        try (ResultSet rs = searchControl.getUserVisitSearchResultSet(userVisitSearch)) {
+        try (var rs = searchControl.getUserVisitSearchResultSet(userVisitSearch)) {
             var warehouseControl = Session.getModelController(WarehouseControl.class);
 
             while(rs.next()) {

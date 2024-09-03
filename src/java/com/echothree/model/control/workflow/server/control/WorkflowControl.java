@@ -315,7 +315,7 @@ public class WorkflowControl
     
     public List<WorkflowStepTypeTransfer> getWorkflowStepTypeTransfers(UserVisit userVisit, Collection<WorkflowStepType> workflowStepTypes) {
         List<WorkflowStepTypeTransfer> workflowStepTypeTransfers = new ArrayList<>(workflowStepTypes.size());
-        WorkflowStepTypeTransferCache workflowStepTypeTransferCache = getWorkflowTransferCaches(userVisit).getWorkflowStepTypeTransferCache();
+        var workflowStepTypeTransferCache = getWorkflowTransferCaches(userVisit).getWorkflowStepTypeTransferCache();
         
         workflowStepTypes.forEach((workflowStepType) ->
                 workflowStepTypeTransfers.add(workflowStepTypeTransferCache.getWorkflowStepTypeTransfer(workflowStepType))
@@ -330,7 +330,7 @@ public class WorkflowControl
 
     public WorkflowStepTypeChoicesBean getWorkflowStepTypeChoices(String defaultWorkflowStepTypeChoice,
             Language language, boolean allowNullChoice) {
-        List<WorkflowStepType> workflowStepTypes = getWorkflowStepTypes();
+        var workflowStepTypes = getWorkflowStepTypes();
         var size = workflowStepTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -378,7 +378,7 @@ public class WorkflowControl
         WorkflowStepTypeDescription workflowStepTypeDescription;
         
         try {
-            PreparedStatement ps = WorkflowStepTypeDescriptionFactory.getInstance().prepareStatement(
+            var ps = WorkflowStepTypeDescriptionFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM workflowsteptypedescriptions " +
                     "WHERE wkflstd_wkflst_workflowsteptypeid = ? AND wkflstd_lang_languageid = ?");
@@ -396,7 +396,7 @@ public class WorkflowControl
     
     public String getBestWorkflowStepTypeDescription(WorkflowStepType workflowStepType, Language language) {
         String description;
-        WorkflowStepTypeDescription workflowStepTypeDescription = getWorkflowStepTypeDescription(workflowStepType, language);
+        var workflowStepTypeDescription = getWorkflowStepTypeDescription(workflowStepType, language);
         
         if(workflowStepTypeDescription == null && !language.getIsDefault()) {
             workflowStepTypeDescription = getWorkflowStepTypeDescription(workflowStepType, getPartyControl().getDefaultLanguage());
@@ -417,8 +417,8 @@ public class WorkflowControl
     
     public Workflow createWorkflow(String workflowName, SelectorType selectorType,
             SecurityRoleGroup securityRoleGroup, Integer sortOrder, BasePK createdBy) {
-        Workflow workflow = WorkflowFactory.getInstance().create();
-        WorkflowDetail workflowDetail = WorkflowDetailFactory.getInstance().create(workflow, workflowName,
+        var workflow = WorkflowFactory.getInstance().create();
+        var workflowDetail = WorkflowDetailFactory.getInstance().create(workflow, workflowName,
                 selectorType, securityRoleGroup, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -464,7 +464,7 @@ public class WorkflowControl
     }
 
     public List<Workflow> getWorkflows() {
-        PreparedStatement ps = WorkflowFactory.getInstance().prepareStatement(
+        var ps = WorkflowFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
                 "FROM workflows, workflowdetails " +
                 "WHERE wkfl_activedetailid = wkfldt_workflowdetailid " +
@@ -475,7 +475,7 @@ public class WorkflowControl
     }
     
     public List<Workflow> getWorkflowsBySelectorKind(SelectorKind selectorKind) {
-        PreparedStatement ps = WorkflowFactory.getInstance().prepareStatement(
+        var ps = WorkflowFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
                 "FROM workflowselectorkinds, workflows, workflowdetails " +
                 "WHERE wkflslk_slk_selectorkindid = ? AND wkflslk_thrutime = ? " +
@@ -488,7 +488,7 @@ public class WorkflowControl
     }
     
     public List<Workflow> getWorkflowsByEntityType(final EntityType entityType) {
-        PreparedStatement ps = WorkflowFactory.getInstance().prepareStatement(
+        var ps = WorkflowFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ "
                 + "FROM workflows, workflowdetails, workflowentitytypes "
                 + "WHERE wkfl_activedetailid = wkfldt_workflowdetailid "
@@ -544,7 +544,7 @@ public class WorkflowControl
     
     public List<WorkflowTransfer> getWorkflowTransfers(UserVisit userVisit, Collection<Workflow> workflows) {
         List<WorkflowTransfer> workflowTransfers = new ArrayList<>(workflows.size());
-        WorkflowTransferCache workflowTransferCache = getWorkflowTransferCaches(userVisit).getWorkflowTransferCache();
+        var workflowTransferCache = getWorkflowTransferCaches(userVisit).getWorkflowTransferCache();
         
         workflows.forEach((workflow) ->
                 workflowTransfers.add(workflowTransferCache.getWorkflowTransfer(workflow))
@@ -596,17 +596,17 @@ public class WorkflowControl
 
     public void updateWorkflowFromValue(WorkflowDetailValue workflowDetailValue, BasePK updatedBy) {
         if(workflowDetailValue.hasBeenModified()) {
-            Workflow workflow = WorkflowFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, workflowDetailValue.getWorkflowPK());
-            WorkflowDetail workflowDetail = workflow.getActiveDetailForUpdate();
+            var workflow = WorkflowFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, workflowDetailValue.getWorkflowPK());
+            var workflowDetail = workflow.getActiveDetailForUpdate();
             
             workflowDetail.setThruTime(session.START_TIME_LONG);
             workflowDetail.store();
-            
-            WorkflowPK workflowPK = workflowDetail.getWorkflowPK();
-            String workflowName = workflowDetailValue.getWorkflowName();
-            SelectorTypePK selectorTypePK = workflowDetailValue.getSelectorTypePK();
-            SecurityRoleGroupPK securityRoleGroupPK = workflowDetailValue.getSecurityRoleGroupPK();
-            Integer sortOrder = workflowDetailValue.getSortOrder();
+
+            var workflowPK = workflowDetail.getWorkflowPK();
+            var workflowName = workflowDetailValue.getWorkflowName();
+            var selectorTypePK = workflowDetailValue.getSelectorTypePK();
+            var securityRoleGroupPK = workflowDetailValue.getSecurityRoleGroupPK();
+            var sortOrder = workflowDetailValue.getSortOrder();
             
             workflowDetail = WorkflowDetailFactory.getInstance().create(workflowPK, workflowName, selectorTypePK, securityRoleGroupPK,
                     sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -624,8 +624,8 @@ public class WorkflowControl
         deleteWorkflowEntityTypesByWorkflow(workflow, deletedBy);
         deleteWorkflowEntrancesByWorkflow(workflow, deletedBy);
         deleteWorkflowSelectorKindsByWorkflow(workflow, deletedBy);
-        
-        WorkflowDetail workflowDetail = workflow.getLastDetailForUpdate();
+
+        var workflowDetail = workflow.getLastDetailForUpdate();
         workflowDetail.setThruTime(session.START_TIME_LONG);
         workflow.setActiveDetail(null);
         workflow.store();
@@ -638,7 +638,7 @@ public class WorkflowControl
     // --------------------------------------------------------------------------------
     
     public WorkflowDescription createWorkflowDescription(Workflow workflow, Language language, String description, BasePK createdBy) {
-        WorkflowDescription workflowDescription = WorkflowDescriptionFactory.getInstance().create(workflow, language,
+        var workflowDescription = WorkflowDescriptionFactory.getInstance().create(workflow, language,
                 description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(workflow.getPrimaryKey(), EventTypes.MODIFY, workflowDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -718,7 +718,7 @@ public class WorkflowControl
     
     public String getBestWorkflowDescription(Workflow workflow, Language language) {
         String description;
-        WorkflowDescription workflowDescription = getWorkflowDescription(workflow, language);
+        var workflowDescription = getWorkflowDescription(workflow, language);
         
         if(workflowDescription == null && !language.getIsDefault()) {
             workflowDescription = getWorkflowDescription(workflow, getPartyControl().getDefaultLanguage());
@@ -738,9 +738,9 @@ public class WorkflowControl
     }
     
     public List<WorkflowDescriptionTransfer> getWorkflowDescriptionTransfersByWorkflow(UserVisit userVisit, Workflow workflow) {
-        List<WorkflowDescription> workflowDescriptions = getWorkflowDescriptionsByWorkflow(workflow);
+        var workflowDescriptions = getWorkflowDescriptionsByWorkflow(workflow);
         List<WorkflowDescriptionTransfer> workflowDescriptionTransfers = new ArrayList<>(workflowDescriptions.size());
-        WorkflowDescriptionTransferCache workflowDescriptionTransferCache = getWorkflowTransferCaches(userVisit).getWorkflowDescriptionTransferCache();
+        var workflowDescriptionTransferCache = getWorkflowTransferCaches(userVisit).getWorkflowDescriptionTransferCache();
         
         workflowDescriptions.forEach((workflowDescription) ->
                 workflowDescriptionTransfers.add(workflowDescriptionTransferCache.getWorkflowDescriptionTransfer(workflowDescription))
@@ -751,14 +751,14 @@ public class WorkflowControl
     
     public void updateWorkflowDescriptionFromValue(WorkflowDescriptionValue workflowDescriptionValue, BasePK updatedBy) {
         if(workflowDescriptionValue.hasBeenModified()) {
-            WorkflowDescription workflowDescription = WorkflowDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, workflowDescriptionValue.getPrimaryKey());
+            var workflowDescription = WorkflowDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, workflowDescriptionValue.getPrimaryKey());
             
             workflowDescription.setThruTime(session.START_TIME_LONG);
             workflowDescription.store();
-            
-            Workflow workflow = workflowDescription.getWorkflow();
-            Language language = workflowDescription.getLanguage();
-            String description = workflowDescriptionValue.getDescription();
+
+            var workflow = workflowDescription.getWorkflow();
+            var language = workflowDescription.getLanguage();
+            var description = workflowDescriptionValue.getDescription();
             
             workflowDescription = WorkflowDescriptionFactory.getInstance().create(workflow, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -775,7 +775,7 @@ public class WorkflowControl
     }
     
     public void deleteWorkflowDescriptionsByWorkflow(Workflow workflow, BasePK deletedBy) {
-        List<WorkflowDescription> workflowDescriptions = getWorkflowDescriptionsByWorkflowForUpdate(workflow);
+        var workflowDescriptions = getWorkflowDescriptionsByWorkflowForUpdate(workflow);
         
         workflowDescriptions.forEach((workflowDescription) -> 
                 deleteWorkflowDescription(workflowDescription, deletedBy)
@@ -800,8 +800,8 @@ public class WorkflowControl
             isDefault = Boolean.TRUE;
         }
 
-        WorkflowStep workflowStep = WorkflowStepFactory.getInstance().create();
-        WorkflowStepDetail workflowStepDetail = WorkflowStepDetailFactory.getInstance().create(workflowStep, workflow,
+        var workflowStep = WorkflowStepFactory.getInstance().create();
+        var workflowStepDetail = WorkflowStepDetailFactory.getInstance().create(workflowStep, workflow,
                 workflowStepName, workflowStepType, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -939,7 +939,7 @@ public class WorkflowControl
     }
     
     public WorkflowStep getWorkflowStepUsingNames(String workflowName, String workflowStepName) {
-        Workflow workflow = getWorkflowByName(workflowName);
+        var workflow = getWorkflowByName(workflowName);
         
         return workflow == null? null: getWorkflowStepByName(workflow, workflowStepName);
     }
@@ -954,7 +954,7 @@ public class WorkflowControl
     
     public BaseWorkflowChoicesBean getWorkflowStepChoices(BaseWorkflowChoicesBean baseWorkflowChoicesBean,
             String defaultWorkflowStepChoice, Language language, boolean allowNullChoice, Workflow workflow) {
-        List<WorkflowStep> workflowSteps = getWorkflowStepsByWorkflow(workflow);
+        var workflowSteps = getWorkflowStepsByWorkflow(workflow);
         var size = workflowSteps.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -970,7 +970,7 @@ public class WorkflowControl
         }
         
         for(var workflowStep : workflowSteps) {
-            WorkflowStepDetail workflowStepDetail = workflowStep.getLastDetail();
+            var workflowStepDetail = workflowStep.getLastDetail();
             
             var label = getBestWorkflowStepDescription(workflowStep, language);
             var value = workflowStepDetail.getWorkflowStepName();
@@ -1005,7 +1005,7 @@ public class WorkflowControl
     
     public List<WorkflowStepTransfer> getWorkflowStepTransfers(UserVisit userVisit, Collection<WorkflowStep> workflowSteps) {
         List<WorkflowStepTransfer> workflowStepTransfers = new ArrayList<>(workflowSteps.size());
-        WorkflowStepTransferCache workflowStepTransferCache = getWorkflowTransferCaches(userVisit).getWorkflowStepTransferCache();
+        var workflowStepTransferCache = getWorkflowTransferCaches(userVisit).getWorkflowStepTransferCache();
         
         workflowSteps.forEach((workflowStep) ->
                 workflowStepTransfers.add(workflowStepTransferCache.getWorkflowStepTransfer(workflowStep))
@@ -1020,28 +1020,28 @@ public class WorkflowControl
 
     private void updateWorkflowStepFromValue(WorkflowStepDetailValue workflowStepDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(workflowStepDetailValue.hasBeenModified()) {
-            WorkflowStep workflowStep = WorkflowStepFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var workflowStep = WorkflowStepFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     workflowStepDetailValue.getWorkflowStepPK());
-            WorkflowStepDetail workflowStepDetail = workflowStep.getActiveDetailForUpdate();
+            var workflowStepDetail = workflowStep.getActiveDetailForUpdate();
             
             workflowStepDetail.setThruTime(session.START_TIME_LONG);
             workflowStepDetail.store();
-            
-            WorkflowStepPK workflowStepPK = workflowStepDetail.getWorkflowStepPK();
-            Workflow workflow = workflowStepDetail.getWorkflow();
-            WorkflowPK workflowPK = workflow.getPrimaryKey(); // Not updated
-            String workflowStepName = workflowStepDetailValue.getWorkflowStepName();
-            WorkflowStepTypePK workflowStepTypePK = workflowStepDetailValue.getWorkflowStepTypePK();
-            Boolean isDefault = workflowStepDetailValue.getIsDefault();
-            Integer sortOrder = workflowStepDetailValue.getSortOrder();
+
+            var workflowStepPK = workflowStepDetail.getWorkflowStepPK();
+            var workflow = workflowStepDetail.getWorkflow();
+            var workflowPK = workflow.getPrimaryKey(); // Not updated
+            var workflowStepName = workflowStepDetailValue.getWorkflowStepName();
+            var workflowStepTypePK = workflowStepDetailValue.getWorkflowStepTypePK();
+            var isDefault = workflowStepDetailValue.getIsDefault();
+            var sortOrder = workflowStepDetailValue.getSortOrder();
             
             if(checkDefault) {
-                WorkflowStep defaultWorkflowStep = getDefaultWorkflowStep(workflow);
-                boolean defaultFound = defaultWorkflowStep != null && !defaultWorkflowStep.equals(workflowStep);
+                var defaultWorkflowStep = getDefaultWorkflowStep(workflow);
+                var defaultFound = defaultWorkflowStep != null && !defaultWorkflowStep.equals(workflowStep);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    WorkflowStepDetailValue defaultWorkflowStepDetailValue = getDefaultWorkflowStepDetailValueForUpdate(workflow);
+                    var defaultWorkflowStepDetailValue = getDefaultWorkflowStepDetailValueForUpdate(workflow);
                     
                     defaultWorkflowStepDetailValue.setIsDefault(Boolean.FALSE);
                     updateWorkflowStepFromValue(defaultWorkflowStepDetailValue, false, updatedBy);
@@ -1073,25 +1073,25 @@ public class WorkflowControl
         deleteWorkflowEntranceStepsByWorkflowStep(workflowStep, deletedBy);
         deleteWorkflowDestinationStepsByWorkflowStep(workflowStep, deletedBy);
         deleteWorkflowStepDescriptionsByWorkflowStep(workflowStep, deletedBy);
-        
-        WorkflowStepDetail workflowStepDetail = workflowStep.getLastDetailForUpdate();
+
+        var workflowStepDetail = workflowStep.getLastDetailForUpdate();
         workflowStepDetail.setThruTime(session.START_TIME_LONG);
         workflowStep.setActiveDetail(null);
         workflowStep.store();
         
         if(checkDefault) {
             // Check for default, and pick one if necessary
-            Workflow workflow = workflowStepDetail.getWorkflow();
-            WorkflowStep defaultWorkflowStep = getDefaultWorkflowStep(workflow);
+            var workflow = workflowStepDetail.getWorkflow();
+            var defaultWorkflowStep = getDefaultWorkflowStep(workflow);
             if(defaultWorkflowStep == null) {
-                List<WorkflowStep> workflowSteps = getWorkflowStepsByWorkflowForUpdate(workflow);
+                var workflowSteps = getWorkflowStepsByWorkflowForUpdate(workflow);
 
                 if(!workflowSteps.isEmpty()) {
-                    Iterator<WorkflowStep> iter = workflowSteps.iterator();
+                    var iter = workflowSteps.iterator();
                     if(iter.hasNext()) {
                         defaultWorkflowStep = iter.next();
                     }
-                    WorkflowStepDetailValue workflowStepDetailValue = Objects.requireNonNull(defaultWorkflowStep).getLastDetailForUpdate().getWorkflowStepDetailValue().clone();
+                    var workflowStepDetailValue = Objects.requireNonNull(defaultWorkflowStep).getLastDetailForUpdate().getWorkflowStepDetailValue().clone();
 
                     workflowStepDetailValue.setIsDefault(Boolean.TRUE);
                     updateWorkflowStepFromValue(workflowStepDetailValue, false, deletedBy);
@@ -1120,7 +1120,7 @@ public class WorkflowControl
     
     public WorkflowStepDescription createWorkflowStepDescription(WorkflowStep workflowStep, Language language, String description,
             BasePK createdBy) {
-        WorkflowStepDescription workflowStepDescription = WorkflowStepDescriptionFactory.getInstance().create(workflowStep,
+        var workflowStepDescription = WorkflowStepDescriptionFactory.getInstance().create(workflowStep,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(workflowStep.getLastDetail().getWorkflowPK(), EventTypes.MODIFY, workflowStepDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1144,8 +1144,8 @@ public class WorkflowControl
                         "WHERE wkflsd_wkfls_workflowstepid = ? AND wkflsd_lang_languageid = ? AND wkflsd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = WorkflowStepDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = WorkflowStepDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, workflowStep.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -1193,8 +1193,8 @@ public class WorkflowControl
                         "WHERE wkflsd_wkfls_workflowstepid = ? AND wkflsd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = WorkflowStepDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = WorkflowStepDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, workflowStep.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1217,7 +1217,7 @@ public class WorkflowControl
     
     public String getBestWorkflowStepDescription(WorkflowStep workflowStep, Language language) {
         String description;
-        WorkflowStepDescription workflowStepDescription = getWorkflowStepDescription(workflowStep, language);
+        var workflowStepDescription = getWorkflowStepDescription(workflowStep, language);
         
         if(workflowStepDescription == null && !language.getIsDefault()) {
             workflowStepDescription = getWorkflowStepDescription(workflowStep, getPartyControl().getDefaultLanguage());
@@ -1237,9 +1237,9 @@ public class WorkflowControl
     }
     
     public List<WorkflowStepDescriptionTransfer> getWorkflowStepDescriptionTransfersByWorkflowStep(UserVisit userVisit, WorkflowStep workflowStep) {
-        List<WorkflowStepDescription> workflowStepDescriptions = getWorkflowStepDescriptionsByWorkflowStep(workflowStep);
+        var workflowStepDescriptions = getWorkflowStepDescriptionsByWorkflowStep(workflowStep);
         List<WorkflowStepDescriptionTransfer> workflowStepDescriptionTransfers = new ArrayList<>(workflowStepDescriptions.size());
-        WorkflowStepDescriptionTransferCache workflowStepDescriptionTransferCache = getWorkflowTransferCaches(userVisit).getWorkflowStepDescriptionTransferCache();
+        var workflowStepDescriptionTransferCache = getWorkflowTransferCaches(userVisit).getWorkflowStepDescriptionTransferCache();
         
         workflowStepDescriptions.forEach((workflowStepDescription) ->
                 workflowStepDescriptionTransfers.add(workflowStepDescriptionTransferCache.getWorkflowStepDescriptionTransfer(workflowStepDescription))
@@ -1250,14 +1250,14 @@ public class WorkflowControl
     
     public void updateWorkflowStepDescriptionFromValue(WorkflowStepDescriptionValue workflowStepDescriptionValue, BasePK updatedBy) {
         if(workflowStepDescriptionValue.hasBeenModified()) {
-            WorkflowStepDescription workflowStepDescription = WorkflowStepDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, workflowStepDescriptionValue.getPrimaryKey());
+            var workflowStepDescription = WorkflowStepDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, workflowStepDescriptionValue.getPrimaryKey());
             
             workflowStepDescription.setThruTime(session.START_TIME_LONG);
             workflowStepDescription.store();
-            
-            WorkflowStep workflowStep = workflowStepDescription.getWorkflowStep();
-            Language language = workflowStepDescription.getLanguage();
-            String description = workflowStepDescriptionValue.getDescription();
+
+            var workflowStep = workflowStepDescription.getWorkflowStep();
+            var language = workflowStepDescription.getLanguage();
+            var description = workflowStepDescriptionValue.getDescription();
             
             workflowStepDescription = WorkflowStepDescriptionFactory.getInstance().create(workflowStep, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1274,7 +1274,7 @@ public class WorkflowControl
     }
     
     public void deleteWorkflowStepDescriptionsByWorkflowStep(WorkflowStep workflowStep, BasePK deletedBy) {
-        List<WorkflowStepDescription> workflowStepDescriptions = getWorkflowStepDescriptionsByWorkflowStepForUpdate(workflowStep);
+        var workflowStepDescriptions = getWorkflowStepDescriptionsByWorkflowStepForUpdate(workflowStep);
         
         workflowStepDescriptions.forEach((workflowStepDescription) -> 
                 deleteWorkflowStepDescription(workflowStepDescription, deletedBy)
@@ -1286,7 +1286,7 @@ public class WorkflowControl
     // --------------------------------------------------------------------------------
     
     public WorkflowEntityType createWorkflowEntityType(Workflow workflow, EntityType entityType, BasePK createdBy) {
-        WorkflowEntityType workflowEntityType = WorkflowEntityTypeFactory.getInstance().create(workflow, entityType,
+        var workflowEntityType = WorkflowEntityTypeFactory.getInstance().create(workflow, entityType,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(workflow.getPrimaryKey(), EventTypes.MODIFY, workflowEntityType.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1420,7 +1420,7 @@ public class WorkflowControl
     
     public List<WorkflowEntityTypeTransfer> getWorkflowEntityTypeTransfers(UserVisit userVisit, Collection<WorkflowEntityType> workflowEntityTypes) {
         List<WorkflowEntityTypeTransfer> workflowEntityTypeTransfers = new ArrayList<>(workflowEntityTypes.size());
-        WorkflowEntityTypeTransferCache workflowEntityTypeTransferCache = getWorkflowTransferCaches(userVisit).getWorkflowEntityTypeTransferCache();
+        var workflowEntityTypeTransferCache = getWorkflowTransferCaches(userVisit).getWorkflowEntityTypeTransferCache();
 
         workflowEntityTypes.forEach((workflowEntityType) ->
                 workflowEntityTypeTransfers.add(workflowEntityTypeTransferCache.getWorkflowEntityTypeTransfer(workflowEntityType))
@@ -1475,8 +1475,8 @@ public class WorkflowControl
             isDefault = Boolean.TRUE;
         }
 
-        WorkflowEntrance workflowEntrance = WorkflowEntranceFactory.getInstance().create();
-        WorkflowEntranceDetail workflowEntranceDetail = WorkflowEntranceDetailFactory.getInstance().create(workflowEntrance,
+        var workflowEntrance = WorkflowEntranceFactory.getInstance().create();
+        var workflowEntranceDetail = WorkflowEntranceDetailFactory.getInstance().create(workflowEntrance,
                 workflow, workflowEntranceName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -1624,7 +1624,7 @@ public class WorkflowControl
     }
     
     public WorkflowEntrance getWorkflowEntranceUsingNames(final ExecutionErrorAccumulator eea, final String workflowName, final String workflowEntranceName) {
-        Workflow workflow = getWorkflowByName(workflowName);
+        var workflow = getWorkflowByName(workflowName);
         WorkflowEntrance workflowEntrance = null;
 
         if(workflow != null) {
@@ -1662,8 +1662,8 @@ public class WorkflowControl
     
     public BaseWorkflowChoicesBean getWorkflowEntranceChoices(BaseWorkflowChoicesBean baseWorkflowChoicesBean, String defaultWorkflowEntranceChoice, Language language, boolean allowNullChoice,
             Workflow workflow, PartyPK partyPK) {
-        WorkflowSecurityLogic workflowSecurityLogic = WorkflowSecurityLogic.getInstance();
-        List<WorkflowEntrance> workflowEntrances = getWorkflowEntrancesByWorkflow(workflow);
+        var workflowSecurityLogic = WorkflowSecurityLogic.getInstance();
+        var workflowEntrances = getWorkflowEntrancesByWorkflow(workflow);
         var size = workflowEntrances.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -1680,7 +1680,7 @@ public class WorkflowControl
         
         for(var workflowEntrance : workflowEntrances) {
             if(workflowSecurityLogic.checkWorkflowEntranceAvailable(workflowEntrance, partyPK)) {
-                WorkflowEntranceDetail workflowEntranceDetail = workflowEntrance.getLastDetail();
+                var workflowEntranceDetail = workflowEntrance.getLastDetail();
 
                 var label = getBestWorkflowEntranceDescription(workflowEntrance, language);
                 var value = workflowEntranceDetail.getWorkflowEntranceName();
@@ -1716,7 +1716,7 @@ public class WorkflowControl
     
     public List<WorkflowEntranceTransfer> getWorkflowEntranceTransfers(UserVisit userVisit, Collection<WorkflowEntrance> workflowEntrances) {
         List<WorkflowEntranceTransfer> workflowEntranceTransfers = new ArrayList<>(workflowEntrances.size());
-        WorkflowEntranceTransferCache workflowEntranceTransferCache = getWorkflowTransferCaches(userVisit).getWorkflowEntranceTransferCache();
+        var workflowEntranceTransferCache = getWorkflowTransferCaches(userVisit).getWorkflowEntranceTransferCache();
         
         workflowEntrances.forEach((workflowEntrance) ->
                 workflowEntranceTransfers.add(workflowEntranceTransferCache.getWorkflowEntranceTransfer(workflowEntrance))
@@ -1731,27 +1731,27 @@ public class WorkflowControl
 
     private void updateWorkflowEntranceFromValue(WorkflowEntranceDetailValue workflowEntranceDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(workflowEntranceDetailValue.hasBeenModified()) {
-            WorkflowEntrance workflowEntrance = WorkflowEntranceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var workflowEntrance = WorkflowEntranceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     workflowEntranceDetailValue.getWorkflowEntrancePK());
-            WorkflowEntranceDetail workflowEntranceDetail = workflowEntrance.getActiveDetailForUpdate();
+            var workflowEntranceDetail = workflowEntrance.getActiveDetailForUpdate();
             
             workflowEntranceDetail.setThruTime(session.START_TIME_LONG);
             workflowEntranceDetail.store();
-            
-            WorkflowEntrancePK workflowEntrancePK = workflowEntranceDetail.getWorkflowEntrancePK();
-            Workflow workflow = workflowEntranceDetail.getWorkflow();
-            WorkflowPK workflowPK = workflow.getPrimaryKey(); // Not updated
-            String workflowEntranceName = workflowEntranceDetailValue.getWorkflowEntranceName();
-            Boolean isDefault = workflowEntranceDetailValue.getIsDefault();
-            Integer sortOrder = workflowEntranceDetailValue.getSortOrder();
+
+            var workflowEntrancePK = workflowEntranceDetail.getWorkflowEntrancePK();
+            var workflow = workflowEntranceDetail.getWorkflow();
+            var workflowPK = workflow.getPrimaryKey(); // Not updated
+            var workflowEntranceName = workflowEntranceDetailValue.getWorkflowEntranceName();
+            var isDefault = workflowEntranceDetailValue.getIsDefault();
+            var sortOrder = workflowEntranceDetailValue.getSortOrder();
             
             if(checkDefault) {
-                WorkflowEntrance defaultWorkflowEntrance = getDefaultWorkflowEntrance(workflow);
-                boolean defaultFound = defaultWorkflowEntrance != null && !defaultWorkflowEntrance.equals(workflowEntrance);
+                var defaultWorkflowEntrance = getDefaultWorkflowEntrance(workflow);
+                var defaultFound = defaultWorkflowEntrance != null && !defaultWorkflowEntrance.equals(workflowEntrance);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    WorkflowEntranceDetailValue defaultWorkflowEntranceDetailValue = getDefaultWorkflowEntranceDetailValueForUpdate(workflow);
+                    var defaultWorkflowEntranceDetailValue = getDefaultWorkflowEntranceDetailValueForUpdate(workflow);
                     
                     defaultWorkflowEntranceDetailValue.setIsDefault(Boolean.FALSE);
                     updateWorkflowEntranceFromValue(defaultWorkflowEntranceDetailValue, false, updatedBy);
@@ -1780,26 +1780,26 @@ public class WorkflowControl
         deleteWorkflowEntranceStepsByWorkflowEntrance(workflowEntrance, deletedBy);
         deleteWorkflowEntrancePartyTypesByWorkflowEntrance(workflowEntrance, deletedBy);
         deleteWorkflowEntranceSelectorsByWorkflowEntrance(workflowEntrance, deletedBy);
-        
-        WorkflowEntranceDetail workflowEntranceDetail = workflowEntrance.getLastDetailForUpdate();
+
+        var workflowEntranceDetail = workflowEntrance.getLastDetailForUpdate();
         workflowEntranceDetail.setThruTime(session.START_TIME_LONG);
         workflowEntrance.setActiveDetail(null);
         workflowEntrance.store();
-        
-        Workflow workflow = workflowEntranceDetail.getWorkflow();
+
+        var workflow = workflowEntranceDetail.getWorkflow();
             
         if(checkDefault) {
             // Check for default, and pick one if necessary
-            WorkflowEntrance defaultWorkflowEntrance = getDefaultWorkflowEntrance(workflow);
+            var defaultWorkflowEntrance = getDefaultWorkflowEntrance(workflow);
             if(defaultWorkflowEntrance == null) {
-                List<WorkflowEntrance> workflowEntrances = getWorkflowEntrancesByWorkflowForUpdate(workflow);
+                var workflowEntrances = getWorkflowEntrancesByWorkflowForUpdate(workflow);
 
                 if(!workflowEntrances.isEmpty()) {
-                    Iterator<WorkflowEntrance> iter = workflowEntrances.iterator();
+                    var iter = workflowEntrances.iterator();
                     if(iter.hasNext()) {
                         defaultWorkflowEntrance = iter.next();
                     }
-                    WorkflowEntranceDetailValue workflowEntranceDetailValue = Objects.requireNonNull(defaultWorkflowEntrance).getLastDetailForUpdate().getWorkflowEntranceDetailValue().clone();
+                    var workflowEntranceDetailValue = Objects.requireNonNull(defaultWorkflowEntrance).getLastDetailForUpdate().getWorkflowEntranceDetailValue().clone();
 
                     workflowEntranceDetailValue.setIsDefault(Boolean.TRUE);
                     updateWorkflowEntranceFromValue(workflowEntranceDetailValue, false, deletedBy);
@@ -1828,7 +1828,7 @@ public class WorkflowControl
     
     public WorkflowEntranceDescription createWorkflowEntranceDescription(WorkflowEntrance workflowEntrance, Language language,
             String description, BasePK createdBy) {
-        WorkflowEntranceDescription workflowEntranceDescription = WorkflowEntranceDescriptionFactory.getInstance().create(session,
+        var workflowEntranceDescription = WorkflowEntranceDescriptionFactory.getInstance().create(session,
                 workflowEntrance, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(workflowEntrance.getLastDetail().getWorkflowPK(), EventTypes.MODIFY, workflowEntranceDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1852,8 +1852,8 @@ public class WorkflowControl
                         "WHERE wkflend_wkflen_workflowentranceid = ? AND wkflend_lang_languageid = ? AND wkflend_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = WorkflowEntranceDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = WorkflowEntranceDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, workflowEntrance.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -1901,8 +1901,8 @@ public class WorkflowControl
                         "WHERE wkflend_wkflen_workflowentranceid = ? AND wkflend_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = WorkflowEntranceDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = WorkflowEntranceDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, workflowEntrance.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1925,7 +1925,7 @@ public class WorkflowControl
     
     public String getBestWorkflowEntranceDescription(WorkflowEntrance workflowEntrance, Language language) {
         String description;
-        WorkflowEntranceDescription workflowEntranceDescription = getWorkflowEntranceDescription(workflowEntrance, language);
+        var workflowEntranceDescription = getWorkflowEntranceDescription(workflowEntrance, language);
         
         if(workflowEntranceDescription == null && !language.getIsDefault()) {
             workflowEntranceDescription = getWorkflowEntranceDescription(workflowEntrance, getPartyControl().getDefaultLanguage());
@@ -1945,9 +1945,9 @@ public class WorkflowControl
     }
     
     public List<WorkflowEntranceDescriptionTransfer> getWorkflowEntranceDescriptionTransfersByWorkflowEntrance(UserVisit userVisit, WorkflowEntrance workflowEntrance) {
-        List<WorkflowEntranceDescription> workflowEntranceDescriptions = getWorkflowEntranceDescriptionsByWorkflowEntrance(workflowEntrance);
+        var workflowEntranceDescriptions = getWorkflowEntranceDescriptionsByWorkflowEntrance(workflowEntrance);
         List<WorkflowEntranceDescriptionTransfer> workflowEntranceDescriptionTransfers = new ArrayList<>(workflowEntranceDescriptions.size());
-        WorkflowEntranceDescriptionTransferCache workflowEntranceDescriptionTransferCache = getWorkflowTransferCaches(userVisit).getWorkflowEntranceDescriptionTransferCache();
+        var workflowEntranceDescriptionTransferCache = getWorkflowTransferCaches(userVisit).getWorkflowEntranceDescriptionTransferCache();
         
         workflowEntranceDescriptions.forEach((workflowEntranceDescription) ->
                 workflowEntranceDescriptionTransfers.add(workflowEntranceDescriptionTransferCache.getWorkflowEntranceDescriptionTransfer(workflowEntranceDescription))
@@ -1958,14 +1958,14 @@ public class WorkflowControl
     
     public void updateWorkflowEntranceDescriptionFromValue(WorkflowEntranceDescriptionValue workflowEntranceDescriptionValue, BasePK updatedBy) {
         if(workflowEntranceDescriptionValue.hasBeenModified()) {
-            WorkflowEntranceDescription workflowEntranceDescription = WorkflowEntranceDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, workflowEntranceDescriptionValue.getPrimaryKey());
+            var workflowEntranceDescription = WorkflowEntranceDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, workflowEntranceDescriptionValue.getPrimaryKey());
             
             workflowEntranceDescription.setThruTime(session.START_TIME_LONG);
             workflowEntranceDescription.store();
-            
-            WorkflowEntrance workflowEntrance = workflowEntranceDescription.getWorkflowEntrance();
-            Language language = workflowEntranceDescription.getLanguage();
-            String description = workflowEntranceDescriptionValue.getDescription();
+
+            var workflowEntrance = workflowEntranceDescription.getWorkflowEntrance();
+            var language = workflowEntranceDescription.getLanguage();
+            var description = workflowEntranceDescriptionValue.getDescription();
             
             workflowEntranceDescription = WorkflowEntranceDescriptionFactory.getInstance().create(workflowEntrance, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1982,7 +1982,7 @@ public class WorkflowControl
     }
     
     public void deleteWorkflowEntranceDescriptionsByWorkflowEntrance(WorkflowEntrance workflowEntrance, BasePK deletedBy) {
-        List<WorkflowEntranceDescription> workflowEntranceDescriptions = getWorkflowEntranceDescriptionsByWorkflowEntranceForUpdate(workflowEntrance);
+        var workflowEntranceDescriptions = getWorkflowEntranceDescriptionsByWorkflowEntranceForUpdate(workflowEntrance);
         
         workflowEntranceDescriptions.forEach((workflowEntranceDescription) -> 
                 deleteWorkflowEntranceDescription(workflowEntranceDescription, deletedBy)
@@ -1995,7 +1995,7 @@ public class WorkflowControl
     
     public WorkflowEntranceSelector createWorkflowEntranceSelector(WorkflowEntrance workflowEntrance, Selector selector,
             BasePK createdBy) {
-        WorkflowEntranceSelector workflowEntranceSelector = WorkflowEntranceSelectorFactory.getInstance().create(workflowEntrance,
+        var workflowEntranceSelector = WorkflowEntranceSelectorFactory.getInstance().create(workflowEntrance,
                 selector, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(workflowEntrance.getLastDetail().getWorkflowPK(), EventTypes.MODIFY, workflowEntranceSelector.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2039,8 +2039,8 @@ public class WorkflowControl
                         "WHERE wkflensl_sl_selectorid = ? AND wkflensl_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = WorkflowEntranceSelectorFactory.getInstance().prepareStatement(query);
+
+            var ps = WorkflowEntranceSelectorFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, selector.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -2084,8 +2084,8 @@ public class WorkflowControl
                         "WHERE wkflensl_wkflen_workflowentranceid = ? AND wkflensl_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = WorkflowEntranceSelectorFactory.getInstance().prepareStatement(query);
+
+            var ps = WorkflowEntranceSelectorFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, workflowEntrance.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -2129,8 +2129,8 @@ public class WorkflowControl
                         "AND wkflen_workflowentranceid = wkflensl_wkflen_workflowentranceid AND wkflensl_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = WorkflowEntranceSelectorFactory.getInstance().prepareStatement(query);
+
+            var ps = WorkflowEntranceSelectorFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, workflow.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -2168,8 +2168,8 @@ public class WorkflowControl
                         "WHERE wkflensl_wkflen_workflowentranceid = ? AND wkflensl_sl_selectorid = ? AND wkflensl_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = WorkflowEntranceSelectorFactory.getInstance().prepareStatement(query);
+
+            var ps = WorkflowEntranceSelectorFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, workflowEntrance.getPrimaryKey().getEntityId());
             ps.setLong(2, selector.getPrimaryKey().getEntityId());
@@ -2197,7 +2197,7 @@ public class WorkflowControl
     
     public List<WorkflowEntranceSelectorTransfer> getWorkflowEntranceSelectorTransfers(UserVisit userVisit, Collection<WorkflowEntranceSelector> workflowEntranceSelectors) {
         List<WorkflowEntranceSelectorTransfer> workflowEntranceSelectorTransfers = new ArrayList<>(workflowEntranceSelectors.size());
-        WorkflowEntranceSelectorTransferCache workflowEntranceSelectorTransferCache = getWorkflowTransferCaches(userVisit).getWorkflowEntranceSelectorTransferCache();
+        var workflowEntranceSelectorTransferCache = getWorkflowTransferCaches(userVisit).getWorkflowEntranceSelectorTransferCache();
         
         workflowEntranceSelectors.forEach((workflowEntranceSelector) ->
                 workflowEntranceSelectorTransfers.add(workflowEntranceSelectorTransferCache.getWorkflowEntranceSelectorTransfer(workflowEntranceSelector))
@@ -2237,7 +2237,7 @@ public class WorkflowControl
     
     public WorkflowEntrancePartyType createWorkflowEntrancePartyType(WorkflowEntrance workflowEntrance, PartyType partyType,
             BasePK createdBy) {
-        WorkflowEntrancePartyType workflowEntrancePartyType = WorkflowEntrancePartyTypeFactory.getInstance().create(session,
+        var workflowEntrancePartyType = WorkflowEntrancePartyTypeFactory.getInstance().create(session,
                 workflowEntrance, partyType, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(workflowEntrance.getLastDetail().getWorkflowPK(), EventTypes.MODIFY, workflowEntrancePartyType.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2281,8 +2281,8 @@ public class WorkflowControl
                         "WHERE wkflenptyp_wkflen_workflowentranceid = ? AND wkflenptyp_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = WorkflowEntrancePartyTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = WorkflowEntrancePartyTypeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, workflowEntrance.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -2320,8 +2320,8 @@ public class WorkflowControl
                         "WHERE wkflenptyp_wkflen_workflowentranceid = ? AND wkflenptyp_ptyp_partytypeid = ? AND wkflenptyp_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = WorkflowEntrancePartyTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = WorkflowEntrancePartyTypeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, workflowEntrance.getPrimaryKey().getEntityId());
             ps.setLong(2, partyType.getPrimaryKey().getEntityId());
@@ -2349,7 +2349,7 @@ public class WorkflowControl
     
     public List<WorkflowEntrancePartyTypeTransfer> getWorkflowEntrancePartyTypeTransfers(UserVisit userVisit, Collection<WorkflowEntrancePartyType> workflowEntrancePartyTypes) {
         List<WorkflowEntrancePartyTypeTransfer> workflowEntrancePartyTypeTransfers = new ArrayList<>(workflowEntrancePartyTypes.size());
-        WorkflowEntrancePartyTypeTransferCache workflowEntrancePartyTypeTransferCache = getWorkflowTransferCaches(userVisit).getWorkflowEntrancePartyTypeTransferCache();
+        var workflowEntrancePartyTypeTransferCache = getWorkflowTransferCaches(userVisit).getWorkflowEntrancePartyTypeTransferCache();
         
         workflowEntrancePartyTypes.forEach((workflowEntrancePartyType) ->
                 workflowEntrancePartyTypeTransfers.add(workflowEntrancePartyTypeTransferCache.getWorkflowEntrancePartyTypeTransfer(workflowEntrancePartyType))
@@ -2387,7 +2387,7 @@ public class WorkflowControl
     
     public WorkflowEntranceSecurityRole createWorkflowEntranceSecurityRole(WorkflowEntrancePartyType workflowEntrancePartyType, SecurityRole securityRole,
             BasePK createdBy) {
-        WorkflowEntranceSecurityRole workflowEntranceSecurityRole = WorkflowEntranceSecurityRoleFactory.getInstance().create(session,
+        var workflowEntranceSecurityRole = WorkflowEntranceSecurityRoleFactory.getInstance().create(session,
                 workflowEntrancePartyType, securityRole, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(workflowEntrancePartyType.getWorkflowEntrance().getLastDetail().getWorkflowPK(), EventTypes.MODIFY, workflowEntranceSecurityRole.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2432,8 +2432,8 @@ public class WorkflowControl
                         "WHERE wkflensrol_wkflenptyp_workflowentrancepartytypeid = ? AND wkflensrol_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = WorkflowEntranceSecurityRoleFactory.getInstance().prepareStatement(query);
+
+            var ps = WorkflowEntranceSecurityRoleFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, workflowEntrancePartyType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -2471,8 +2471,8 @@ public class WorkflowControl
                         "WHERE wkflensrol_wkflenptyp_workflowentrancepartytypeid = ? AND wkflensrol_srol_securityroleid = ? AND wkflensrol_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = WorkflowEntranceSecurityRoleFactory.getInstance().prepareStatement(query);
+
+            var ps = WorkflowEntranceSecurityRoleFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, workflowEntrancePartyType.getPrimaryKey().getEntityId());
             ps.setLong(2, securityRole.getPrimaryKey().getEntityId());
@@ -2500,7 +2500,7 @@ public class WorkflowControl
     
     public List<WorkflowEntranceSecurityRoleTransfer> getWorkflowEntranceSecurityRoleTransfers(UserVisit userVisit, Collection<WorkflowEntranceSecurityRole> workflowEntranceSecurityRoles) {
         List<WorkflowEntranceSecurityRoleTransfer> workflowEntranceSecurityRoleTransfers = new ArrayList<>(workflowEntranceSecurityRoles.size());
-        WorkflowEntranceSecurityRoleTransferCache workflowEntranceSecurityRoleTransferCache = getWorkflowTransferCaches(userVisit).getWorkflowEntranceSecurityRoleTransferCache();
+        var workflowEntranceSecurityRoleTransferCache = getWorkflowTransferCaches(userVisit).getWorkflowEntranceSecurityRoleTransferCache();
         
         workflowEntranceSecurityRoles.forEach((workflowEntranceSecurityRole) ->
                 workflowEntranceSecurityRoleTransfers.add(workflowEntranceSecurityRoleTransferCache.getWorkflowEntranceSecurityRoleTransfer(workflowEntranceSecurityRole))
@@ -2536,7 +2536,7 @@ public class WorkflowControl
     
     public WorkflowEntranceStep createWorkflowEntranceStep(WorkflowEntrance workflowEntrance, WorkflowStep workflowStep,
             BasePK createdBy) {
-        WorkflowEntranceStep workflowEntranceStep = WorkflowEntranceStepFactory.getInstance().create(workflowEntrance,
+        var workflowEntranceStep = WorkflowEntranceStepFactory.getInstance().create(workflowEntrance,
                 workflowStep, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(workflowEntrance.getLastDetail().getWorkflowPK(), EventTypes.MODIFY, workflowEntranceStep.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2641,8 +2641,8 @@ public class WorkflowControl
                         "WHERE wkflens_wkflen_workflowentranceid = ? AND wkflens_wkfls_workflowstepid = ? AND wkflens_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = WorkflowEntranceStepFactory.getInstance().prepareStatement(query);
+
+            var ps = WorkflowEntranceStepFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, workflowEntrance.getPrimaryKey().getEntityId());
             ps.setLong(2, workflowStep.getPrimaryKey().getEntityId());
@@ -2670,7 +2670,7 @@ public class WorkflowControl
     
     public List<WorkflowEntranceStepTransfer> getWorkflowEntranceStepTransfers(UserVisit userVisit, Collection<WorkflowEntranceStep> workflowEntranceSteps) {
         List<WorkflowEntranceStepTransfer> workflowEntranceStepTransfers = new ArrayList<>(workflowEntranceSteps.size());
-        WorkflowEntranceStepTransferCache workflowEntranceStepTransferCache = getWorkflowTransferCaches(userVisit).getWorkflowEntranceStepTransferCache();
+        var workflowEntranceStepTransferCache = getWorkflowTransferCaches(userVisit).getWorkflowEntranceStepTransferCache();
         
         workflowEntranceSteps.forEach((workflowEntranceStep) ->
                 workflowEntranceStepTransfers.add(workflowEntranceStepTransferCache.getWorkflowEntranceStepTransfer(workflowEntranceStep))
@@ -2721,8 +2721,8 @@ public class WorkflowControl
             isDefault = Boolean.TRUE;
         }
 
-        WorkflowDestination workflowDestination = WorkflowDestinationFactory.getInstance().create();
-        WorkflowDestinationDetail workflowDestinationDetail = WorkflowDestinationDetailFactory.getInstance().create(workflowDestination, workflowStep,
+        var workflowDestination = WorkflowDestinationFactory.getInstance().create();
+        var workflowDestinationDetail = WorkflowDestinationDetailFactory.getInstance().create(workflowDestination, workflowStep,
                 workflowDestinationName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -2870,8 +2870,8 @@ public class WorkflowControl
     
     public BaseWorkflowChoicesBean getWorkflowDestinationChoices(BaseWorkflowChoicesBean baseWorkflowChoicesBean, String defaultWorkflowDestinationChoice,
             Language language, boolean allowNullChoice, WorkflowStep workflowStep, PartyPK partyPK) {
-        WorkflowSecurityLogic workflowSecurityLogic = WorkflowSecurityLogic.getInstance();
-        List<WorkflowDestination> workflowDestinations = getWorkflowDestinationsByWorkflowStep(workflowStep);
+        var workflowSecurityLogic = WorkflowSecurityLogic.getInstance();
+        var workflowDestinations = getWorkflowDestinationsByWorkflowStep(workflowStep);
         var size = workflowDestinations.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -2888,7 +2888,7 @@ public class WorkflowControl
         
         for(var workflowDestination : workflowDestinations) {
             if(workflowSecurityLogic.checkWorkflowDestinationAvailable(workflowDestination, partyPK)) {
-                WorkflowDestinationDetail workflowDestinationDetail = workflowDestination.getLastDetail();
+                var workflowDestinationDetail = workflowDestination.getLastDetail();
 
                 var label = getBestWorkflowDestinationDescription(workflowDestination, language);
                 var value = workflowDestinationDetail.getWorkflowDestinationName();
@@ -2924,7 +2924,7 @@ public class WorkflowControl
     
     public List<WorkflowDestinationTransfer> getWorkflowDestinationTransfers(UserVisit userVisit, Collection<WorkflowDestination> workflowDestinations) {
         List<WorkflowDestinationTransfer> workflowDestinationTransfers = new ArrayList<>(workflowDestinations.size());
-        WorkflowDestinationTransferCache workflowDestinationTransferCache = getWorkflowTransferCaches(userVisit).getWorkflowDestinationTransferCache();
+        var workflowDestinationTransferCache = getWorkflowTransferCaches(userVisit).getWorkflowDestinationTransferCache();
         
         workflowDestinations.forEach((workflowDestination) ->
                 workflowDestinationTransfers.add(workflowDestinationTransferCache.getWorkflowDestinationTransfer(workflowDestination))
@@ -2939,27 +2939,27 @@ public class WorkflowControl
 
     private void updateWorkflowDestinationFromValue(WorkflowDestinationDetailValue workflowDestinationDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(workflowDestinationDetailValue.hasBeenModified()) {
-            WorkflowDestination workflowDestination = WorkflowDestinationFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var workflowDestination = WorkflowDestinationFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     workflowDestinationDetailValue.getWorkflowDestinationPK());
-            WorkflowDestinationDetail workflowDestinationDetail = workflowDestination.getActiveDetailForUpdate();
+            var workflowDestinationDetail = workflowDestination.getActiveDetailForUpdate();
             
             workflowDestinationDetail.setThruTime(session.START_TIME_LONG);
             workflowDestinationDetail.store();
-            
-            WorkflowDestinationPK workflowDestinationPK = workflowDestinationDetail.getWorkflowDestinationPK();
-            WorkflowStep workflowStep = workflowDestinationDetail.getWorkflowStep();
-            WorkflowStepPK workflowStepPK = workflowStep.getPrimaryKey(); // Not updated
-            String workflowDestinationName = workflowDestinationDetailValue.getWorkflowDestinationName();
-            Boolean isDefault = workflowDestinationDetailValue.getIsDefault();
-            Integer sortOrder = workflowDestinationDetailValue.getSortOrder();
+
+            var workflowDestinationPK = workflowDestinationDetail.getWorkflowDestinationPK();
+            var workflowStep = workflowDestinationDetail.getWorkflowStep();
+            var workflowStepPK = workflowStep.getPrimaryKey(); // Not updated
+            var workflowDestinationName = workflowDestinationDetailValue.getWorkflowDestinationName();
+            var isDefault = workflowDestinationDetailValue.getIsDefault();
+            var sortOrder = workflowDestinationDetailValue.getSortOrder();
             
             if(checkDefault) {
-                WorkflowDestination defaultWorkflowDestination = getDefaultWorkflowDestination(workflowStep);
-                boolean defaultFound = defaultWorkflowDestination != null && !defaultWorkflowDestination.equals(workflowDestination);
+                var defaultWorkflowDestination = getDefaultWorkflowDestination(workflowStep);
+                var defaultFound = defaultWorkflowDestination != null && !defaultWorkflowDestination.equals(workflowDestination);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    WorkflowDestinationDetailValue defaultWorkflowDestinationDetailValue = getDefaultWorkflowDestinationDetailValueForUpdate(workflowStep);
+                    var defaultWorkflowDestinationDetailValue = getDefaultWorkflowDestinationDetailValueForUpdate(workflowStep);
                     
                     defaultWorkflowDestinationDetailValue.setIsDefault(Boolean.FALSE);
                     updateWorkflowDestinationFromValue(defaultWorkflowDestinationDetailValue, false, updatedBy);
@@ -2988,26 +2988,26 @@ public class WorkflowControl
         deleteWorkflowDestinationStepsByWorkflowDestination(workflowDestination, deletedBy);
         deleteWorkflowDestinationPartyTypesByWorkflowDestination(workflowDestination, deletedBy);
         deleteWorkflowDestinationSelectorsByWorkflowDestination(workflowDestination, deletedBy);
-        
-        WorkflowDestinationDetail workflowDestinationDetail = workflowDestination.getLastDetailForUpdate();
+
+        var workflowDestinationDetail = workflowDestination.getLastDetailForUpdate();
         workflowDestinationDetail.setThruTime(session.START_TIME_LONG);
         workflowDestination.setActiveDetail(null);
         workflowDestination.store();
-        
-        WorkflowStep workflowStep = workflowDestinationDetail.getWorkflowStep();
+
+        var workflowStep = workflowDestinationDetail.getWorkflowStep();
         
         if(checkDefault) {
             // Check for default, and pick one if necessary
-            WorkflowDestination defaultWorkflowDestination = getDefaultWorkflowDestination(workflowStep);
+            var defaultWorkflowDestination = getDefaultWorkflowDestination(workflowStep);
             if(defaultWorkflowDestination == null) {
-                List<WorkflowDestination> workflowDestinations = getWorkflowDestinationsByWorkflowStepForUpdate(workflowStep);
+                var workflowDestinations = getWorkflowDestinationsByWorkflowStepForUpdate(workflowStep);
 
                 if(!workflowDestinations.isEmpty()) {
-                    Iterator<WorkflowDestination> iter = workflowDestinations.iterator();
+                    var iter = workflowDestinations.iterator();
                     if(iter.hasNext()) {
                         defaultWorkflowDestination = iter.next();
                     }
-                    WorkflowDestinationDetailValue workflowDestinationDetailValue = Objects.requireNonNull(defaultWorkflowDestination).getLastDetailForUpdate().getWorkflowDestinationDetailValue().clone();
+                    var workflowDestinationDetailValue = Objects.requireNonNull(defaultWorkflowDestination).getLastDetailForUpdate().getWorkflowDestinationDetailValue().clone();
 
                     workflowDestinationDetailValue.setIsDefault(Boolean.TRUE);
                     updateWorkflowDestinationFromValue(workflowDestinationDetailValue, false, deletedBy);
@@ -3035,7 +3035,7 @@ public class WorkflowControl
     // --------------------------------------------------------------------------------
     
     public WorkflowDestinationDescription createWorkflowDestinationDescription(WorkflowDestination workflowDestination, Language language, String description, BasePK createdBy) {
-        WorkflowDestinationDescription workflowDestinationDescription = WorkflowDestinationDescriptionFactory.getInstance().create(workflowDestination, language, description,
+        var workflowDestinationDescription = WorkflowDestinationDescriptionFactory.getInstance().create(workflowDestination, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(workflowDestination.getLastDetail().getWorkflowStep().getLastDetail().getWorkflowPK(), EventTypes.MODIFY, workflowDestinationDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -3059,8 +3059,8 @@ public class WorkflowControl
                         "WHERE wkfldnd_wkfldn_workflowdestinationid = ? AND wkfldnd_lang_languageid = ? AND wkfldnd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = WorkflowDestinationDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = WorkflowDestinationDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, workflowDestination.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -3108,8 +3108,8 @@ public class WorkflowControl
                         "WHERE wkfldnd_wkfldn_workflowdestinationid = ? AND wkfldnd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = WorkflowDestinationDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = WorkflowDestinationDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, workflowDestination.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -3132,7 +3132,7 @@ public class WorkflowControl
     
     public String getBestWorkflowDestinationDescription(WorkflowDestination workflowDestination, Language language) {
         String description;
-        WorkflowDestinationDescription workflowDestinationDescription = getWorkflowDestinationDescription(workflowDestination, language);
+        var workflowDestinationDescription = getWorkflowDestinationDescription(workflowDestination, language);
         
         if(workflowDestinationDescription == null && !language.getIsDefault()) {
             workflowDestinationDescription = getWorkflowDestinationDescription(workflowDestination, getPartyControl().getDefaultLanguage());
@@ -3152,9 +3152,9 @@ public class WorkflowControl
     }
     
     public List<WorkflowDestinationDescriptionTransfer> getWorkflowDestinationDescriptionTransfersByWorkflowDestination(UserVisit userVisit, WorkflowDestination workflowDestination) {
-        List<WorkflowDestinationDescription> workflowDestinationDescriptions = getWorkflowDestinationDescriptionsByWorkflowDestination(workflowDestination);
+        var workflowDestinationDescriptions = getWorkflowDestinationDescriptionsByWorkflowDestination(workflowDestination);
         List<WorkflowDestinationDescriptionTransfer> workflowDestinationDescriptionTransfers = new ArrayList<>(workflowDestinationDescriptions.size());
-        WorkflowDestinationDescriptionTransferCache workflowDestinationDescriptionTransferCache = getWorkflowTransferCaches(userVisit).getWorkflowDestinationDescriptionTransferCache();
+        var workflowDestinationDescriptionTransferCache = getWorkflowTransferCaches(userVisit).getWorkflowDestinationDescriptionTransferCache();
         
         workflowDestinationDescriptions.forEach((workflowDestinationDescription) ->
                 workflowDestinationDescriptionTransfers.add(workflowDestinationDescriptionTransferCache.getWorkflowDestinationDescriptionTransfer(workflowDestinationDescription))
@@ -3165,14 +3165,14 @@ public class WorkflowControl
     
     public void updateWorkflowDestinationDescriptionFromValue(WorkflowDestinationDescriptionValue workflowDestinationDescriptionValue, BasePK updatedBy) {
         if(workflowDestinationDescriptionValue.hasBeenModified()) {
-            WorkflowDestinationDescription workflowDestinationDescription = WorkflowDestinationDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, workflowDestinationDescriptionValue.getPrimaryKey());
+            var workflowDestinationDescription = WorkflowDestinationDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, workflowDestinationDescriptionValue.getPrimaryKey());
             
             workflowDestinationDescription.setThruTime(session.START_TIME_LONG);
             workflowDestinationDescription.store();
-            
-            WorkflowDestination workflowDestination = workflowDestinationDescription.getWorkflowDestination();
-            Language language = workflowDestinationDescription.getLanguage();
-            String description = workflowDestinationDescriptionValue.getDescription();
+
+            var workflowDestination = workflowDestinationDescription.getWorkflowDestination();
+            var language = workflowDestinationDescription.getLanguage();
+            var description = workflowDestinationDescriptionValue.getDescription();
             
             workflowDestinationDescription = WorkflowDestinationDescriptionFactory.getInstance().create(workflowDestination, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -3189,7 +3189,7 @@ public class WorkflowControl
     }
     
     public void deleteWorkflowDestinationDescriptionsByWorkflowDestination(WorkflowDestination workflowDestination, BasePK deletedBy) {
-        List<WorkflowDestinationDescription> workflowDestinationDescriptions = getWorkflowDestinationDescriptionsByWorkflowDestinationForUpdate(workflowDestination);
+        var workflowDestinationDescriptions = getWorkflowDestinationDescriptionsByWorkflowDestinationForUpdate(workflowDestination);
         
         workflowDestinationDescriptions.forEach((workflowDestinationDescription) -> 
                 deleteWorkflowDestinationDescription(workflowDestinationDescription, deletedBy)
@@ -3202,7 +3202,7 @@ public class WorkflowControl
     
     public WorkflowDestinationSelector createWorkflowDestinationSelector(WorkflowDestination workflowDestination, Selector selector,
             BasePK createdBy) {
-        WorkflowDestinationSelector workflowDestinationSelector = WorkflowDestinationSelectorFactory.getInstance().create(session,
+        var workflowDestinationSelector = WorkflowDestinationSelectorFactory.getInstance().create(session,
                 workflowDestination, selector, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(workflowDestination.getLastDetail().getWorkflowStep().getLastDetail().getWorkflowPK(), EventTypes.MODIFY, workflowDestinationSelector.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -3247,8 +3247,8 @@ public class WorkflowControl
                         "WHERE wkfldnsl_sl_selectorid = ? AND wkfldnsl_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = WorkflowDestinationSelectorFactory.getInstance().prepareStatement(query);
+
+            var ps = WorkflowDestinationSelectorFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, selector.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -3291,8 +3291,8 @@ public class WorkflowControl
                         "WHERE wkfldnsl_wkfldn_workflowdestinationid = ? AND wkfldnsl_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = WorkflowDestinationSelectorFactory.getInstance().prepareStatement(query);
+
+            var ps = WorkflowDestinationSelectorFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, workflowDestination.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -3329,8 +3329,8 @@ public class WorkflowControl
                         "WHERE wkfldnsl_wkfldn_workflowdestinationid = ? AND wkfldnsl_sl_selectorid = ? AND wkfldnsl_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = WorkflowDestinationSelectorFactory.getInstance().prepareStatement(query);
+
+            var ps = WorkflowDestinationSelectorFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, workflowDestination.getPrimaryKey().getEntityId());
             ps.setLong(2, selector.getPrimaryKey().getEntityId());
@@ -3358,7 +3358,7 @@ public class WorkflowControl
     
     public List<WorkflowDestinationSelectorTransfer> getWorkflowDestinationSelectorTransfers(UserVisit userVisit, Collection<WorkflowDestinationSelector> workflowDestinationSelectors) {
         List<WorkflowDestinationSelectorTransfer> workflowDestinationSelectorTransfers = new ArrayList<>(workflowDestinationSelectors.size());
-        WorkflowDestinationSelectorTransferCache workflowDestinationSelectorTransferCache = getWorkflowTransferCaches(userVisit).getWorkflowDestinationSelectorTransferCache();
+        var workflowDestinationSelectorTransferCache = getWorkflowTransferCaches(userVisit).getWorkflowDestinationSelectorTransferCache();
         
         workflowDestinationSelectors.forEach((workflowDestinationSelector) ->
                 workflowDestinationSelectorTransfers.add(workflowDestinationSelectorTransferCache.getWorkflowDestinationSelectorTransfer(workflowDestinationSelector))
@@ -3402,7 +3402,7 @@ public class WorkflowControl
     
     public WorkflowDestinationPartyType createWorkflowDestinationPartyType(WorkflowDestination workflowDestination, PartyType partyType,
             BasePK createdBy) {
-        WorkflowDestinationPartyType workflowDestinationPartyType = WorkflowDestinationPartyTypeFactory.getInstance().create(session,
+        var workflowDestinationPartyType = WorkflowDestinationPartyTypeFactory.getInstance().create(session,
                 workflowDestination, partyType, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(workflowDestination.getLastDetail().getWorkflowStep().getLastDetail().getWorkflowPK(), EventTypes.MODIFY, workflowDestinationPartyType.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -3446,8 +3446,8 @@ public class WorkflowControl
                         "WHERE wkfldnptyp_wkfldn_workflowdestinationid = ? AND wkfldnptyp_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = WorkflowDestinationPartyTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = WorkflowDestinationPartyTypeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, workflowDestination.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -3485,8 +3485,8 @@ public class WorkflowControl
                         "WHERE wkfldnptyp_wkfldn_workflowdestinationid = ? AND wkfldnptyp_ptyp_partytypeid = ? AND wkfldnptyp_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = WorkflowDestinationPartyTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = WorkflowDestinationPartyTypeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, workflowDestination.getPrimaryKey().getEntityId());
             ps.setLong(2, partyType.getPrimaryKey().getEntityId());
@@ -3522,7 +3522,7 @@ public class WorkflowControl
     
     public List<WorkflowDestinationPartyTypeTransfer> getWorkflowDestinationPartyTypeTransfers(UserVisit userVisit, Collection<WorkflowDestinationPartyType> workflowDestinationPartyTypes) {
         List<WorkflowDestinationPartyTypeTransfer> workflowDestinationPartyTypeTransfers = new ArrayList<>(workflowDestinationPartyTypes.size());
-        WorkflowDestinationPartyTypeTransferCache workflowDestinationPartyTypeTransferCache = getWorkflowTransferCaches(userVisit).getWorkflowDestinationPartyTypeTransferCache();
+        var workflowDestinationPartyTypeTransferCache = getWorkflowTransferCaches(userVisit).getWorkflowDestinationPartyTypeTransferCache();
         
         workflowDestinationPartyTypes.forEach((workflowDestinationPartyType) ->
                 workflowDestinationPartyTypeTransfers.add(workflowDestinationPartyTypeTransferCache.getWorkflowDestinationPartyTypeTransfer(workflowDestinationPartyType))
@@ -3560,7 +3560,7 @@ public class WorkflowControl
     
     public WorkflowDestinationSecurityRole createWorkflowDestinationSecurityRole(WorkflowDestinationPartyType workflowDestinationPartyType, SecurityRole securityRole,
             BasePK createdBy) {
-        WorkflowDestinationSecurityRole workflowDestinationSecurityRole = WorkflowDestinationSecurityRoleFactory.getInstance().create(session,
+        var workflowDestinationSecurityRole = WorkflowDestinationSecurityRoleFactory.getInstance().create(session,
                 workflowDestinationPartyType, securityRole, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(workflowDestinationPartyType.getWorkflowDestination().getLastDetail().getWorkflowStep().getLastDetail().getWorkflowPK(), EventTypes.MODIFY, workflowDestinationSecurityRole.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -3605,8 +3605,8 @@ public class WorkflowControl
                         "WHERE wkfldnsrol_wkfldnptyp_workflowdestinationpartytypeid = ? AND wkfldnsrol_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = WorkflowDestinationSecurityRoleFactory.getInstance().prepareStatement(query);
+
+            var ps = WorkflowDestinationSecurityRoleFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, workflowDestinationPartyType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -3644,8 +3644,8 @@ public class WorkflowControl
                         "WHERE wkfldnsrol_wkfldnptyp_workflowdestinationpartytypeid = ? AND wkfldnsrol_srol_securityroleid = ? AND wkfldnsrol_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = WorkflowDestinationSecurityRoleFactory.getInstance().prepareStatement(query);
+
+            var ps = WorkflowDestinationSecurityRoleFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, workflowDestinationPartyType.getPrimaryKey().getEntityId());
             ps.setLong(2, securityRole.getPrimaryKey().getEntityId());
@@ -3673,7 +3673,7 @@ public class WorkflowControl
     
     public List<WorkflowDestinationSecurityRoleTransfer> getWorkflowDestinationSecurityRoleTransfers(UserVisit userVisit, Collection<WorkflowDestinationSecurityRole> workflowDestinationSecurityRoles) {
         List<WorkflowDestinationSecurityRoleTransfer> workflowDestinationSecurityRoleTransfers = new ArrayList<>(workflowDestinationSecurityRoles.size());
-        WorkflowDestinationSecurityRoleTransferCache workflowDestinationSecurityRoleTransferCache = getWorkflowTransferCaches(userVisit).getWorkflowDestinationSecurityRoleTransferCache();
+        var workflowDestinationSecurityRoleTransferCache = getWorkflowTransferCaches(userVisit).getWorkflowDestinationSecurityRoleTransferCache();
         
         workflowDestinationSecurityRoles.forEach((workflowDestinationSecurityRole) ->
                 workflowDestinationSecurityRoleTransfers.add(workflowDestinationSecurityRoleTransferCache.getWorkflowDestinationSecurityRoleTransfer(workflowDestinationSecurityRole))
@@ -3709,7 +3709,7 @@ public class WorkflowControl
     
     public WorkflowDestinationStep createWorkflowDestinationStep(WorkflowDestination workflowDestination, WorkflowStep workflowStep,
             BasePK createdBy) {
-        WorkflowDestinationStep workflowDestinationStep = WorkflowDestinationStepFactory.getInstance().create(session,
+        var workflowDestinationStep = WorkflowDestinationStepFactory.getInstance().create(session,
                 workflowDestination, workflowStep, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(workflowDestination.getLastDetail().getWorkflowStep().getLastDetail().getWorkflowPK(), EventTypes.MODIFY, workflowDestinationStep.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -3815,8 +3815,8 @@ public class WorkflowControl
                         "WHERE wkfldns_wkfldn_workflowdestinationid = ? AND wkfldns_wkfls_workflowstepid = ? AND wkfldns_thrutime = ? " +
                         "FOR UPDATE";
             }
-           
-            PreparedStatement ps = WorkflowDestinationStepFactory.getInstance().prepareStatement(query);
+
+            var ps = WorkflowDestinationStepFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, workflowDestination.getPrimaryKey().getEntityId());
             ps.setLong(2, workflowStep.getPrimaryKey().getEntityId());
@@ -3844,7 +3844,7 @@ public class WorkflowControl
     
     public List<WorkflowDestinationStepTransfer> getWorkflowDestinationStepTransfers(UserVisit userVisit, Collection<WorkflowDestinationStep> workflowDestinationSteps) {
         List<WorkflowDestinationStepTransfer> workflowDestinationStepTransfers = new ArrayList<>(workflowDestinationSteps.size());
-        WorkflowDestinationStepTransferCache workflowDestinationStepTransferCache = getWorkflowTransferCaches(userVisit).getWorkflowDestinationStepTransferCache();
+        var workflowDestinationStepTransferCache = getWorkflowTransferCaches(userVisit).getWorkflowDestinationStepTransferCache();
         
         workflowDestinationSteps.forEach((workflowDestinationStep) ->
                 workflowDestinationStepTransfers.add(workflowDestinationStepTransferCache.getWorkflowDestinationStepTransfer(workflowDestinationStep))
@@ -3883,7 +3883,7 @@ public class WorkflowControl
     
     public WorkflowSelectorKind createWorkflowSelectorKind(Workflow workflow, SelectorKind selectorKind,
             BasePK createdBy) {
-        WorkflowSelectorKind workflowSelectorKind = WorkflowSelectorKindFactory.getInstance().create(workflow,
+        var workflowSelectorKind = WorkflowSelectorKindFactory.getInstance().create(workflow,
                 selectorKind, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(workflow.getLastDetail().getWorkflowPK(), EventTypes.MODIFY, workflowSelectorKind.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -3928,8 +3928,8 @@ public class WorkflowControl
                         "WHERE wkflslk_wkfl_workflowid = ? AND wkflslk_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = WorkflowSelectorKindFactory.getInstance().prepareStatement(query);
+
+            var ps = WorkflowSelectorKindFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, workflow.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -3970,8 +3970,8 @@ public class WorkflowControl
                         "WHERE wkflslk_slk_selectorkindid = ? AND wkflslk_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = WorkflowSelectorKindFactory.getInstance().prepareStatement(query);
+
+            var ps = WorkflowSelectorKindFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, selectorKind.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -4008,8 +4008,8 @@ public class WorkflowControl
                         "WHERE wkflslk_wkfl_workflowid = ? AND wkflslk_slk_selectorkindid = ? AND wkflslk_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = WorkflowSelectorKindFactory.getInstance().prepareStatement(query);
+
+            var ps = WorkflowSelectorKindFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, workflow.getPrimaryKey().getEntityId());
             ps.setLong(2, selectorKind.getPrimaryKey().getEntityId());
@@ -4037,7 +4037,7 @@ public class WorkflowControl
     
     public List<WorkflowSelectorKindTransfer> getWorkflowSelectorKindTransfers(UserVisit userVisit, Collection<WorkflowSelectorKind> workflowSelectorKinds) {
         List<WorkflowSelectorKindTransfer> workflowSelectorKindTransfers = new ArrayList<>(workflowSelectorKinds.size());
-        WorkflowSelectorKindTransferCache workflowSelectorKindTransferCache = getWorkflowTransferCaches(userVisit).getWorkflowSelectorKindTransferCache();
+        var workflowSelectorKindTransferCache = getWorkflowTransferCaches(userVisit).getWorkflowSelectorKindTransferCache();
         
         workflowSelectorKinds.forEach((workflowSelectorKind) ->
                 workflowSelectorKindTransfers.add(workflowSelectorKindTransferCache.getWorkflowSelectorKindTransfer(workflowSelectorKind))
@@ -4076,7 +4076,7 @@ public class WorkflowControl
     
     public WorkflowEntityStatus createWorkflowEntityStatus(EntityInstance entityInstance, WorkflowStep workflowStep,
             WorkEffortScope workEffortScope, BasePK createdBy) {
-        WorkflowEntityStatus workflowEntityStatus = WorkflowEntityStatusFactory.getInstance().create(entityInstance, workflowStep, workEffortScope, session.START_TIME_LONG,
+        var workflowEntityStatus = WorkflowEntityStatusFactory.getInstance().create(entityInstance, workflowStep, workEffortScope, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
         sendEvent(entityInstance, EventTypes.MODIFY, workflowEntityStatus.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -4151,8 +4151,8 @@ public class WorkflowControl
                         "WHERE wkfles_wes_workeffortscopeid = ? AND wkfles_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = WorkflowEntityStatusFactory.getInstance().prepareStatement(query);
+
+            var ps = WorkflowEntityStatusFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, workEffortScope.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -4194,8 +4194,8 @@ public class WorkflowControl
                         "AND wkflsdt_wkfl_workflowid = ? AND wkflsdt_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = WorkflowEntityStatusFactory.getInstance().prepareStatement(query);
+
+            var ps = WorkflowEntityStatusFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, entityInstance.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -4227,7 +4227,7 @@ public class WorkflowControl
     }
     
     public WorkflowEntityStatus getWorkflowEntityStatusByEntityInstance(Workflow workflow, EntityInstance entityInstance) {
-        List<WorkflowEntityStatus> workflowEntityStatuses = getWorkflowEntityStatusesByEntityInstance(workflow, entityInstance);
+        var workflowEntityStatuses = getWorkflowEntityStatusesByEntityInstance(workflow, entityInstance);
         WorkflowEntityStatus workflowEntityStatus;
         
         if(workflowEntityStatuses.size() > 1) {
@@ -4283,8 +4283,8 @@ public class WorkflowControl
                         "WHERE wkfles_eni_entityinstanceid = ? AND wkfles_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = WorkflowEntityStatusFactory.getInstance().prepareStatement(query);
+
+            var ps = WorkflowEntityStatusFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, entityInstance.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -4309,7 +4309,7 @@ public class WorkflowControl
         List<WorkflowEntityStatus> workflowEntityStatuses;
         
         try {
-            PreparedStatement ps = WorkflowEntityStatusFactory.getInstance().prepareStatement(
+            var ps = WorkflowEntityStatusFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM workflowentitystatuses, workflowsteps, workflowstepdetails, workflows, workflowdetails " +
                     "WHERE wkfles_thrutime = ? " +
@@ -4405,8 +4405,8 @@ public class WorkflowControl
     
     public WorkflowEntityStatusTransfer getWorkflowEntityStatusTransferByEntityInstance(UserVisit userVisit,
             Workflow workflow, EntityInstance entityInstance) {
-        WorkflowEntityStatus workflowEntityStatus = getWorkflowEntityStatusByEntityInstance(workflow, entityInstance);
-        WorkflowEntityStatusTransfer workflowEntityStatusTransfer = workflowEntityStatus == null? null: getWorkflowEntityStatusTransfer(userVisit,
+        var workflowEntityStatus = getWorkflowEntityStatusByEntityInstance(workflow, entityInstance);
+        var workflowEntityStatusTransfer = workflowEntityStatus == null? null: getWorkflowEntityStatusTransfer(userVisit,
                 workflowEntityStatus);
         
         return workflowEntityStatusTransfer;
@@ -4437,7 +4437,7 @@ public class WorkflowControl
     }
     
     public void deleteWorkflowEntityStatus(WorkflowEntityStatus workflowEntityStatus, BasePK deletedBy) {
-        WorkflowTrigger workflowTrigger = getWorkflowTrigger(workflowEntityStatus);
+        var workflowTrigger = getWorkflowTrigger(workflowEntityStatus);
         
         workflowEntityStatus.setThruTime(session.START_TIME_LONG);
         workflowEntityStatus.store();
@@ -4514,7 +4514,7 @@ public class WorkflowControl
     }
 
     public Long getWorkflowTriggerTime(WorkflowEntityStatus workflowEntityStatus) {
-        WorkflowTrigger workflowTrigger = getWorkflowTrigger(workflowEntityStatus);
+        var workflowTrigger = getWorkflowTrigger(workflowEntityStatus);
 
         return workflowTrigger == null ? null : workflowTrigger.getTriggerTime();
     }
@@ -4661,7 +4661,7 @@ public class WorkflowControl
         if(workflowDestination != null) {
             transitionEntityInWorkflow(eea, workflowEntityStatus, workflowDestination, triggerTime, modifiedBy);
         } else {
-            WorkflowStepDetail workflowStepDetail = workflowStep.getLastDetail();
+            var workflowStepDetail = workflowStep.getLastDetail();
             
             eea.addExecutionError(ExecutionErrors.UnknownWorkflowDestinationName.name(), workflowStepDetail.getWorkflow().getLastDetail().getWorkflowName(),
                     workflowStepDetail.getWorkflowStepName(), workflowDestinationName);

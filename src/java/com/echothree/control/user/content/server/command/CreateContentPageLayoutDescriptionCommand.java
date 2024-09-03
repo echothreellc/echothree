@@ -68,16 +68,16 @@ public class CreateContentPageLayoutDescriptionCommand
     @Override
     protected BaseResult execute() {
         var contentControl = Session.getModelController(ContentControl.class);
-        String contentPageLayoutName = form.getContentPageLayoutName();
-        ContentPageLayout contentPageLayout = contentControl.getContentPageLayoutByName(contentPageLayoutName);
+        var contentPageLayoutName = form.getContentPageLayoutName();
+        var contentPageLayout = contentControl.getContentPageLayoutByName(contentPageLayoutName);
         
         if(contentPageLayout != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                ContentPageLayoutDescription contentPageLayoutDescription = contentControl.getContentPageLayoutDescription(contentPageLayout, language);
+                var contentPageLayoutDescription = contentControl.getContentPageLayoutDescription(contentPageLayout, language);
                 
                 if(contentPageLayoutDescription == null) {
                     var description = form.getDescription();

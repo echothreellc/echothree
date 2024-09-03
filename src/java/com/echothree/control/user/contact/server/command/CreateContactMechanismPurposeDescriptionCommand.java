@@ -54,16 +54,16 @@ public class CreateContactMechanismPurposeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var contactControl = Session.getModelController(ContactControl.class);
-        String contactMechanismPurposeName = form.getContactMechanismPurposeName();
-        ContactMechanismPurpose contactMechanismPurpose = contactControl.getContactMechanismPurposeByName(contactMechanismPurposeName);
+        var contactMechanismPurposeName = form.getContactMechanismPurposeName();
+        var contactMechanismPurpose = contactControl.getContactMechanismPurposeByName(contactMechanismPurposeName);
         
         if(contactMechanismPurpose != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                ContactMechanismPurposeDescription contactMechanismPurposeDescription = contactControl.getContactMechanismPurposeDescription(contactMechanismPurpose, language);
+                var contactMechanismPurposeDescription = contactControl.getContactMechanismPurposeDescription(contactMechanismPurpose, language);
                 
                 if(contactMechanismPurposeDescription == null) {
                     var description = form.getDescription();

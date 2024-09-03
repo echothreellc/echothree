@@ -34,7 +34,7 @@ public class EnglishSortableDescriptionProducer
         List<String> result = new ArrayList<>();
 
         try {
-            TokenStream tokenStream = analyzer.tokenStream(null, new StringReader(string));
+            var tokenStream = analyzer.tokenStream(null, new StringReader(string));
 
             tokenStream.reset();
             
@@ -53,17 +53,17 @@ public class EnglishSortableDescriptionProducer
     }
     
     private void appendWords(StringBuilder stringBuilder, Formatter formatter, List<String> words, int start, int end) {
-        boolean afterBeginning = stringBuilder.length() != 0;
+        var afterBeginning = stringBuilder.length() != 0;
         
-        for(int i = start ; i <= end ; i++) {
-            String currentWord = words.get(i);
+        for(var i = start; i <= end ; i++) {
+            var currentWord = words.get(i);
             
             if(afterBeginning) {
                 stringBuilder.append(' ');
             }
             
             try {
-                long currentLong = Long.parseLong(currentWord);
+                var currentLong = Long.parseLong(currentWord);
                 
                 if(currentLong < 0) {
                     stringBuilder.append('A');
@@ -84,13 +84,13 @@ public class EnglishSortableDescriptionProducer
     }
     
     private String sortableString(String string) {
-        List<String> words = tokenizeString(string);
+        var words = tokenizeString(string);
         StringBuilder result = new StringBuilder();
         Formatter formatter = new Formatter(result);
-        int wordSize = words.size();
-        int firstNonArticle = 0;
+        var wordSize = words.size();
+        var firstNonArticle = 0;
         
-        for(int i = 0 ; i < wordSize ; i++) {
+        for(var i = 0; i < wordSize ; i++) {
             if(!isArticle(words.get(i))) {
                 firstNonArticle = i;
                 break;

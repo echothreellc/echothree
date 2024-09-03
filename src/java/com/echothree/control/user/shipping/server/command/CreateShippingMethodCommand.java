@@ -74,19 +74,19 @@ public class CreateShippingMethodCommand
     @Override
     protected BaseResult execute() {
         var shippingControl = Session.getModelController(ShippingControl.class);
-        String shippingMethodName = form.getShippingMethodName();
-        ShippingMethod shippingMethod = shippingControl.getShippingMethodByName(shippingMethodName);
+        var shippingMethodName = form.getShippingMethodName();
+        var shippingMethod = shippingControl.getShippingMethodByName(shippingMethodName);
         
         if(shippingMethod == null) {
-            String geoCodeSelectorName = form.getGeoCodeSelectorName();
+            var geoCodeSelectorName = form.getGeoCodeSelectorName();
             Selector geoCodeSelector = null;
 
             if(geoCodeSelectorName != null) {
                 var selectorControl = Session.getModelController(SelectorControl.class);
-                SelectorKind selectorKind = selectorControl.getSelectorKindByName(SelectorKinds.POSTAL_ADDRESS.name());
+                var selectorKind = selectorControl.getSelectorKindByName(SelectorKinds.POSTAL_ADDRESS.name());
 
                 if(selectorKind != null) {
-                    SelectorType selectorType = selectorControl.getSelectorTypeByName(selectorKind,
+                    var selectorType = selectorControl.getSelectorTypeByName(selectorKind,
                             SelectorTypes.CARRIER.name());
 
                     if(selectorType != null) {
@@ -100,15 +100,15 @@ public class CreateShippingMethodCommand
             }
 
             if(geoCodeSelectorName == null || geoCodeSelector != null) {
-                String itemSelectorName = form.getItemSelectorName();
+                var itemSelectorName = form.getItemSelectorName();
                 Selector itemSelector = null;
 
                 if(itemSelectorName != null) {
                     var selectorControl = Session.getModelController(SelectorControl.class);
-                    SelectorKind selectorKind = selectorControl.getSelectorKindByName(SelectorKinds.ITEM.name());
+                    var selectorKind = selectorControl.getSelectorKindByName(SelectorKinds.ITEM.name());
 
                     if(selectorKind != null) {
-                        SelectorType selectorType = selectorControl.getSelectorTypeByName(selectorKind,
+                        var selectorType = selectorControl.getSelectorTypeByName(selectorKind,
                                 SelectorTypes.CARRIER.name());
 
                         if(selectorType != null) {
@@ -122,7 +122,7 @@ public class CreateShippingMethodCommand
                 }
 
                 if(itemSelectorName == null || itemSelector != null) {
-                    PartyPK createdBy = getPartyPK();
+                    var createdBy = getPartyPK();
                     var sortOrder = Integer.valueOf(form.getSortOrder());
                     var description = form.getDescription();
 

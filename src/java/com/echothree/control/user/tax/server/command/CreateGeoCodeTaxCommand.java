@@ -53,16 +53,16 @@ public class CreateGeoCodeTaxCommand
     @Override
     protected BaseResult execute() {
         var taxControl = Session.getModelController(TaxControl.class);
-        String taxName = form.getTaxName();
-        Tax tax = taxControl.getTaxByName(taxName);
+        var taxName = form.getTaxName();
+        var tax = taxControl.getTaxByName(taxName);
         
         if(tax != null) {
             var geoControl = Session.getModelController(GeoControl.class);
-            String geoCodeName = form.getGeoCodeName();
-            GeoCode geoCode = geoControl.getGeoCodeByName(geoCodeName);
+            var geoCodeName = form.getGeoCodeName();
+            var geoCode = geoControl.getGeoCodeByName(geoCodeName);
             
             if(geoCode != null) {
-                GeoCodeTax geoCodeTax = taxControl.getGeoCodeTax(geoCode, tax);
+                var geoCodeTax = taxControl.getGeoCodeTax(geoCode, tax);
                 
                 if(geoCodeTax == null) {
                     taxControl.createGeoCodeTax(geoCode, tax, getPartyPK());

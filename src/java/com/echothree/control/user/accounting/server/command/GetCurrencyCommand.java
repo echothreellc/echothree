@@ -63,7 +63,7 @@ public class GetCurrencyCommand
     protected Currency getEntity() {
         var accountingControl = Session.getModelController(AccountingControl.class);
         Currency currency = null;
-        String currencyIsoName = form.getCurrencyIsoName();
+        var currencyIsoName = form.getCurrencyIsoName();
         var parameterCount = (currencyIsoName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         switch(parameterCount) {
@@ -97,7 +97,7 @@ public class GetCurrencyCommand
     @Override
     protected BaseResult getResult(Currency currency) {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        GetCurrencyResult result = AccountingResultFactory.getGetCurrencyResult();
+        var result = AccountingResultFactory.getGetCurrencyResult();
 
         if(currency != null) {
             result.setCurrency(accountingControl.getCurrencyTransfer(getUserVisit(), currency));

@@ -68,9 +68,9 @@ public class GetGeoCodeAliasTypeChoicesCommand
     @Override
     protected BaseResult execute() {
         var geoControl = Session.getModelController(GeoControl.class);
-        GetGeoCodeAliasTypeChoicesResult result = GeoResultFactory.getGetGeoCodeAliasTypeChoicesResult();
-        String geoCodeTypeName = form.getGeoCodeTypeName();
-        String geoCodeName = form.getGeoCodeName();
+        var result = GeoResultFactory.getGetGeoCodeAliasTypeChoicesResult();
+        var geoCodeTypeName = form.getGeoCodeTypeName();
+        var geoCodeName = form.getGeoCodeName();
         var parameterCount = (geoCodeTypeName == null ? 0 : 1) + (geoCodeName == null ? 0 : 1);
         
         if(parameterCount == 1) {
@@ -83,7 +83,7 @@ public class GetGeoCodeAliasTypeChoicesCommand
                     addExecutionError(ExecutionErrors.UnknownGeoCodeTypeName.name(), geoCodeTypeName);
                 }
             } else {
-                GeoCode geoCode = geoControl.getGeoCodeByName(geoCodeName);
+                var geoCode = geoControl.getGeoCodeByName(geoCodeName);
                 
                 if(geoCode == null) {
                     addExecutionError(ExecutionErrors.UnknownGeoCodeName.name(), geoCodeName);
@@ -93,8 +93,8 @@ public class GetGeoCodeAliasTypeChoicesCommand
             }
 
             if(geoCodeType != null) {
-                String defaultGeoCodeAliasTypeChoice = form.getDefaultGeoCodeAliasTypeChoice();
-                boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+                var defaultGeoCodeAliasTypeChoice = form.getDefaultGeoCodeAliasTypeChoice();
+                var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 
                 result.setGeoCodeAliasTypeChoices(geoControl.getGeoCodeAliasTypeChoices(defaultGeoCodeAliasTypeChoice, getPreferredLanguage(), allowNullChoice,
                         geoCodeType));

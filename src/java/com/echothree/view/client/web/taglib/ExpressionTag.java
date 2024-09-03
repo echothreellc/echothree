@@ -50,14 +50,14 @@ public class ExpressionTag
     @Override
     public int doStartTag()
             throws JspException {
-        TransferPropertiesHolder currentTransferPropertiesHolder = (TransferPropertiesHolder)pageContext.getAttribute(WebConstants.Attribute_TRANSFER_PROPERTIES_HOLDER, PageContext.REQUEST_SCOPE);
-        Class clazz = currentTransferPropertiesHolder == null ? null : currentTransferPropertiesHolder.getClazz();
+        var currentTransferPropertiesHolder = (TransferPropertiesHolder)pageContext.getAttribute(WebConstants.Attribute_TRANSFER_PROPERTIES_HOLDER, PageContext.REQUEST_SCOPE);
+        var clazz = currentTransferPropertiesHolder == null ? null : currentTransferPropertiesHolder.getClazz();
 
         if(clazz == null) {
             throw new JspException("expression may only be used inside the body of a class tag.");
         } else {
             // Add to the current one and all its parents.
-            for(TransferPropertiesHolder transferPropertiesHolder = currentTransferPropertiesHolder ; transferPropertiesHolder != null ; transferPropertiesHolder = transferPropertiesHolder.getPreviousTransferPropertiesHolder()) {
+            for(var transferPropertiesHolder = currentTransferPropertiesHolder; transferPropertiesHolder != null ; transferPropertiesHolder = transferPropertiesHolder.getPreviousTransferPropertiesHolder()) {
                 currentTransferPropertiesHolder.getTransferProperties().addCollectionFilter(clazz, expression);
             }
         }

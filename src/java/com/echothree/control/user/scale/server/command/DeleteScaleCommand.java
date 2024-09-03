@@ -49,8 +49,8 @@ public class DeleteScaleCommand
    @Override
     protected BaseResult execute() {
         var scaleControl = Session.getModelController(ScaleControl.class);
-        String scaleName = form.getScaleName();
-        Scale scale = scaleControl.getScaleByNameForUpdate(scaleName);
+       var scaleName = form.getScaleName();
+       var scale = scaleControl.getScaleByNameForUpdate(scaleName);
         
         if(scale != null) {
             scaleControl.deleteScale(scale, getPartyPK());

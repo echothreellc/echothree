@@ -60,7 +60,7 @@ public class GetTerminationTypesCommand
     
     @Override
     protected BaseResult execute() {
-        GetTerminationTypesResult result = EmployeeResultFactory.getGetTerminationTypesResult();
+        var result = EmployeeResultFactory.getGetTerminationTypesResult();
         var employeeControl = Session.getModelController(EmployeeControl.class);
         
         result.setTerminationTypes(employeeControl.getTerminationTypeTransfers(getUserVisit()));

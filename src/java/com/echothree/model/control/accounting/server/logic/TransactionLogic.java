@@ -64,7 +64,7 @@ public class TransactionLogic {
     public TransactionGlEntry createTransactionGlEntryUsingNames(final Transaction transaction, final Party groupParty, final String transactionGlAccountCategoryName,
             final GlAccount glAccount, final Currency originalCurrency, final Long originalAmount, final BasePK createdBy) {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        TransactionDetail transactionDetail = transaction.getLastDetail();
+        var transactionDetail = transaction.getLastDetail();
         
         return createTransactionGlEntry(transaction, groupParty == null? transactionDetail.getGroupParty(): groupParty,
                 accountingControl.getTransactionGlAccountCategoryByName(transactionDetail.getTransactionType(), transactionGlAccountCategoryName), glAccount, originalCurrency, originalAmount,
@@ -73,7 +73,7 @@ public class TransactionLogic {
     
     private GlAccount getGlAccount(final AccountingControl accountingControl, final TransactionGlAccountCategory transactionGlAccountCategory, GlAccount glAccount) {
         if(glAccount == null) {
-            TransactionGlAccount transactionGlAccount = accountingControl.getTransactionGlAccount(transactionGlAccountCategory);
+            var transactionGlAccount = accountingControl.getTransactionGlAccount(transactionGlAccountCategory);
             
             if(transactionGlAccount == null) {
                 throw new IllegalArgumentException("glAccount is a required parameter");
@@ -86,7 +86,7 @@ public class TransactionLogic {
     }
     
     private Integer getTransactionGlEntrySequence(final AccountingControl accountingControl, final Transaction transaction) {
-        TransactionStatus transactionStatus = accountingControl.getTransactionStatusForUpdate(transaction);
+        var transactionStatus = accountingControl.getTransactionStatusForUpdate(transaction);
         Integer transactionGlEntrySequence = transactionStatus.getTransactionGlEntrySequence() + 1;
         
         transactionStatus.setTransactionGlEntrySequence(transactionGlEntrySequence);
@@ -95,7 +95,7 @@ public class TransactionLogic {
     }
     
     private Long getAmount(final GlAccount glAccount, final Currency originalCurrency, final Long originalAmount) {
-        Currency currency = glAccount.getLastDetail().getCurrency();
+        var currency = glAccount.getLastDetail().getCurrency();
         
         Long amount = null;
         if(originalCurrency.equals(currency)) {
@@ -112,8 +112,8 @@ public class TransactionLogic {
         var accountingControl = Session.getModelController(AccountingControl.class);
         
         glAccount = getGlAccount(accountingControl, transactionGlAccountCategory, glAccount);
-        
-        Long amount = getAmount(glAccount, originalCurrency, originalAmount);
+
+        var amount = getAmount(glAccount, originalCurrency, originalAmount);
         
         return accountingControl.createTransactionGlEntry(transaction, getTransactionGlEntrySequence(accountingControl, transaction), null, groupParty, transactionGlAccountCategory, glAccount,
                 originalCurrency, originalAmount, amount, createdBy);
@@ -122,7 +122,7 @@ public class TransactionLogic {
     public TransactionEntityRole createTransactionEntityRoleUsingNames(final Transaction transaction, final String transactionEntityRoleTypeName, final BasePK pk,
             final BasePK createdBy) {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        TransactionEntityRoleType transactionEntityRoleType = accountingControl.getTransactionEntityRoleTypeByName(transaction.getLastDetail().getTransactionType(),
+        var transactionEntityRoleType = accountingControl.getTransactionEntityRoleTypeByName(transaction.getLastDetail().getTransactionType(),
                 transactionEntityRoleTypeName);
         
         return createTransactionEntityRole(transaction, transactionEntityRoleType, pk, createdBy);
@@ -132,7 +132,7 @@ public class TransactionLogic {
             final BasePK createdBy) {
         var accountingControl = Session.getModelController(AccountingControl.class);
         var coreControl = Session.getModelController(CoreControl.class);
-        EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(pk);
+        var entityInstance = coreControl.getEntityInstanceByBasePK(pk);
         
         if(!transactionEntityRoleType.getLastDetail().getEntityType().equals(entityInstance.getEntityType())) {
             throw new IllegalArgumentException("entityInstance is not of the required EntityType");
@@ -152,12 +152,12 @@ public class TransactionLogic {
     public void testTransaction(final Session session, final BasePK testedBy) {
         var accountingControl = Session.getModelController(AccountingControl.class);
         var partyControl = Session.getModelController(PartyControl.class);
-        Party companyParty = partyControl.getDefaultPartyCompany().getParty();
-        Party divisionParty = partyControl.getDefaultPartyDivision(companyParty).getParty();
-        Party departmentParty = partyControl.getDefaultPartyDepartment(divisionParty).getParty();
-        Currency originalCurrency = accountingControl.getDefaultCurrency();
-        
-        Transaction transaction = createTransactionUsingNames(session, departmentParty, "TEST", null, testedBy);
+        var companyParty = partyControl.getDefaultPartyCompany().getParty();
+        var divisionParty = partyControl.getDefaultPartyDivision(companyParty).getParty();
+        var departmentParty = partyControl.getDefaultPartyDepartment(divisionParty).getParty();
+        var originalCurrency = accountingControl.getDefaultCurrency();
+
+        var transaction = createTransactionUsingNames(session, departmentParty, "TEST", null, testedBy);
         createTransactionGlEntryUsingNames(transaction, null, "TEST_ACCOUNT_A", null, originalCurrency, 1999L, testedBy);
         createTransactionGlEntryUsingNames(transaction, null, "TEST_ACCOUNT_B", null, originalCurrency, -1999L, testedBy);
         createTransactionEntityRoleUsingNames(transaction, "TEST_ENTITY_INSTANCE_ROLE_TYPE", testedBy, testedBy);

@@ -89,13 +89,13 @@ public class EditSubscriptionKindDescriptionCommand
     public SubscriptionKindDescription getEntity(EditSubscriptionKindDescriptionResult result) {
         var subscriptionControl = Session.getModelController(SubscriptionControl.class);
         SubscriptionKindDescription subscriptionKindDescription = null;
-        String subscriptionKindName = spec.getSubscriptionKindName();
-        SubscriptionKind subscriptionKind = subscriptionControl.getSubscriptionKindByName(subscriptionKindName);
+        var subscriptionKindName = spec.getSubscriptionKindName();
+        var subscriptionKind = subscriptionControl.getSubscriptionKindByName(subscriptionKindName);
 
         if(subscriptionKind != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -137,7 +137,7 @@ public class EditSubscriptionKindDescriptionCommand
     @Override
     public void doUpdate(SubscriptionKindDescription subscriptionKindDescription) {
         var subscriptionControl = Session.getModelController(SubscriptionControl.class);
-        SubscriptionKindDescriptionValue subscriptionKindDescriptionValue = subscriptionControl.getSubscriptionKindDescriptionValue(subscriptionKindDescription);
+        var subscriptionKindDescriptionValue = subscriptionControl.getSubscriptionKindDescriptionValue(subscriptionKindDescription);
 
         subscriptionKindDescriptionValue.setDescription(edit.getDescription());
 

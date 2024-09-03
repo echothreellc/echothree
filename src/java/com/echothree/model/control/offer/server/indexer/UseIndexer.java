@@ -57,8 +57,8 @@ public class UseIndexer
     
     @Override
     protected Document convertToDocument(final EntityInstance entityInstance, final Use use) {
-        UseDetail useDetail = use.getLastDetail();
-        String description = useControl.getBestUseDescription(use, language);
+        var useDetail = use.getLastDetail();
+        var description = useControl.getBestUseDescription(use, language);
 
         var document = newDocumentWithEntityInstanceFields(entityInstance, use.getPrimaryKey());
 

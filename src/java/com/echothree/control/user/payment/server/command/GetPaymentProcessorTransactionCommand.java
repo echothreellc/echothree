@@ -69,7 +69,7 @@ public class GetPaymentProcessorTransactionCommand
     
     @Override
     protected PaymentProcessorTransaction getEntity() {
-        PaymentProcessorTransaction paymentProcessorTransaction = PaymentProcessorTransactionLogic.getInstance().getPaymentProcessorTransactionByUniversalSpec(this, form);
+        var paymentProcessorTransaction = PaymentProcessorTransactionLogic.getInstance().getPaymentProcessorTransactionByUniversalSpec(this, form);
 
         if(paymentProcessorTransaction != null) {
             sendEvent(paymentProcessorTransaction.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -81,7 +81,7 @@ public class GetPaymentProcessorTransactionCommand
     @Override
     protected BaseResult getResult(PaymentProcessorTransaction paymentProcessorTransaction) {
         var paymentProcessorTransactionControl = Session.getModelController(PaymentProcessorTransactionControl.class);
-        GetPaymentProcessorTransactionResult result = PaymentResultFactory.getGetPaymentProcessorTransactionResult();
+        var result = PaymentResultFactory.getGetPaymentProcessorTransactionResult();
 
         if(paymentProcessorTransaction != null) {
             result.setPaymentProcessorTransaction(paymentProcessorTransactionControl.getPaymentProcessorTransactionTransfer(getUserVisit(), paymentProcessorTransaction));

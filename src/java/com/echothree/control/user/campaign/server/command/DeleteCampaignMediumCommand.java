@@ -63,8 +63,8 @@ public class DeleteCampaignMediumCommand
     @Override
     protected BaseResult execute() {
         var campaignControl = Session.getModelController(CampaignControl.class);
-        String campaignMediumName = form.getCampaignMediumName();
-        CampaignMedium campaignMedium = campaignControl.getCampaignMediumByNameForUpdate(campaignMediumName);
+        var campaignMediumName = form.getCampaignMediumName();
+        var campaignMedium = campaignControl.getCampaignMediumByNameForUpdate(campaignMediumName);
         
         if(campaignMedium != null) {
             campaignControl.deleteCampaignMedium(campaignMedium, getPartyPK());

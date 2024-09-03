@@ -73,73 +73,73 @@ public class CreatePartyTypePasswordStringPolicyCommand
     
     @Override
     protected BaseResult execute() {
-        String rawMinimumPasswordLifetime = form.getMinimumPasswordLifetime();
-        String minimumPasswordLifetimeUnitOfMeasureTypeName = form.getMinimumPasswordLifetimeUnitOfMeasureTypeName();
-        int minimumPasswordLifetimeParameterCount = (rawMinimumPasswordLifetime == null ? 0 : 1) + (minimumPasswordLifetimeUnitOfMeasureTypeName == null ? 0 : 1);
-        String rawMaximumPasswordLifetime = form.getMaximumPasswordLifetime();
-        String maximumPasswordLifetimeUnitOfMeasureTypeName = form.getMaximumPasswordLifetimeUnitOfMeasureTypeName();
-        int maximumPasswordLifetimeParameterCount = (rawMaximumPasswordLifetime == null ? 0 : 1) + (maximumPasswordLifetimeUnitOfMeasureTypeName == null ? 0 : 1);
-        String rawExpirationWarningTime = form.getExpirationWarningTime();
-        String expirationWarningTimeUnitOfMeasureTypeName = form.getExpirationWarningTimeUnitOfMeasureTypeName();
-        int expirationWarningTimeParameterCount = (rawExpirationWarningTime == null ? 0 : 1) + (expirationWarningTimeUnitOfMeasureTypeName == null ? 0 : 1);
+        var rawMinimumPasswordLifetime = form.getMinimumPasswordLifetime();
+        var minimumPasswordLifetimeUnitOfMeasureTypeName = form.getMinimumPasswordLifetimeUnitOfMeasureTypeName();
+        var minimumPasswordLifetimeParameterCount = (rawMinimumPasswordLifetime == null ? 0 : 1) + (minimumPasswordLifetimeUnitOfMeasureTypeName == null ? 0 : 1);
+        var rawMaximumPasswordLifetime = form.getMaximumPasswordLifetime();
+        var maximumPasswordLifetimeUnitOfMeasureTypeName = form.getMaximumPasswordLifetimeUnitOfMeasureTypeName();
+        var maximumPasswordLifetimeParameterCount = (rawMaximumPasswordLifetime == null ? 0 : 1) + (maximumPasswordLifetimeUnitOfMeasureTypeName == null ? 0 : 1);
+        var rawExpirationWarningTime = form.getExpirationWarningTime();
+        var expirationWarningTimeUnitOfMeasureTypeName = form.getExpirationWarningTimeUnitOfMeasureTypeName();
+        var expirationWarningTimeParameterCount = (rawExpirationWarningTime == null ? 0 : 1) + (expirationWarningTimeUnitOfMeasureTypeName == null ? 0 : 1);
         
         if((minimumPasswordLifetimeParameterCount == 0 || minimumPasswordLifetimeParameterCount == 2) &&
                 (maximumPasswordLifetimeParameterCount == 0 || maximumPasswordLifetimeParameterCount == 2) &&
                 (expirationWarningTimeParameterCount == 0 || expirationWarningTimeParameterCount == 2)) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String partyTypeName = form.getPartyTypeName();
-            PartyType partyType = partyControl.getPartyTypeByName(partyTypeName);
+            var partyTypeName = form.getPartyTypeName();
+            var partyType = partyControl.getPartyTypeByName(partyTypeName);
             
             if(partyType != null) {
                 if(partyType.getAllowUserLogins()) {
-                    PartyTypePasswordStringPolicy partyTypePasswordStringPolicy = partyControl.getPartyTypePasswordStringPolicy(partyType);
+                    var partyTypePasswordStringPolicy = partyControl.getPartyTypePasswordStringPolicy(partyType);
 
                     if(partyTypePasswordStringPolicy == null) {
                         var uomControl = Session.getModelController(UomControl.class);
-                        UnitOfMeasureKind timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
+                        var timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
 
                         if(timeUnitOfMeasureKind != null) {
-                            UnitOfMeasureType minimumPasswordLifetimeUnitOfMeasureType = minimumPasswordLifetimeUnitOfMeasureTypeName == null? null: uomControl.getUnitOfMeasureTypeByName(timeUnitOfMeasureKind,
+                            var minimumPasswordLifetimeUnitOfMeasureType = minimumPasswordLifetimeUnitOfMeasureTypeName == null? null: uomControl.getUnitOfMeasureTypeByName(timeUnitOfMeasureKind,
                                     minimumPasswordLifetimeUnitOfMeasureTypeName);
 
                             if(minimumPasswordLifetimeUnitOfMeasureTypeName == null || minimumPasswordLifetimeUnitOfMeasureType != null) {
-                                UnitOfMeasureType maximumPasswordLifetimeUnitOfMeasureType = maximumPasswordLifetimeUnitOfMeasureTypeName == null? null: uomControl.getUnitOfMeasureTypeByName(timeUnitOfMeasureKind,
+                                var maximumPasswordLifetimeUnitOfMeasureType = maximumPasswordLifetimeUnitOfMeasureTypeName == null? null: uomControl.getUnitOfMeasureTypeByName(timeUnitOfMeasureKind,
                                         maximumPasswordLifetimeUnitOfMeasureTypeName);
 
                                 if(maximumPasswordLifetimeUnitOfMeasureTypeName == null || maximumPasswordLifetimeUnitOfMeasureType != null) {
-                                    UnitOfMeasureType expirationWarningTimeUnitOfMeasureType = expirationWarningTimeUnitOfMeasureTypeName == null? null: uomControl.getUnitOfMeasureTypeByName(timeUnitOfMeasureKind,
+                                    var expirationWarningTimeUnitOfMeasureType = expirationWarningTimeUnitOfMeasureTypeName == null? null: uomControl.getUnitOfMeasureTypeByName(timeUnitOfMeasureKind,
                                             expirationWarningTimeUnitOfMeasureTypeName);
 
                                     if(expirationWarningTimeUnitOfMeasureTypeName == null || expirationWarningTimeUnitOfMeasureType != null) {
-                                        Boolean forceChangeAfterCreate = Boolean.valueOf(form.getForceChangeAfterCreate());
-                                        Boolean forceChangeAfterReset = Boolean.valueOf(form.getForceChangeAfterReset());
-                                        Boolean allowChange = Boolean.valueOf(form.getAllowChange());
-                                        String rawPasswordHistory = form.getPasswordHistory();
-                                        Integer passwordHistory = rawPasswordHistory == null? null: Integer.valueOf(rawPasswordHistory);
-                                        Long minimumPasswordLifetime = rawMinimumPasswordLifetime == null? null: Long.valueOf(rawMinimumPasswordLifetime);
-                                        Conversion minimumPasswordLifetimeConversion = minimumPasswordLifetime == null? null: new Conversion(uomControl, minimumPasswordLifetimeUnitOfMeasureType, minimumPasswordLifetime).convertToLowestUnitOfMeasureType();
-                                        Long maximumPasswordLifetime = rawMaximumPasswordLifetime == null? null: Long.valueOf(rawMaximumPasswordLifetime);
-                                        Conversion maximumPasswordLifetimeConversion = maximumPasswordLifetime == null? null: new Conversion(uomControl, maximumPasswordLifetimeUnitOfMeasureType, maximumPasswordLifetime).convertToLowestUnitOfMeasureType();
-                                        Long expirationWarningTime = rawExpirationWarningTime == null? null: Long.valueOf(rawExpirationWarningTime);
-                                        Conversion expirationWarningTimeConversion = expirationWarningTime == null? null: new Conversion(uomControl, expirationWarningTimeUnitOfMeasureType, expirationWarningTime).convertToLowestUnitOfMeasureType();
-                                        String rawExpiredLoginsPermitted = form.getExpiredLoginsPermitted();
-                                        Integer expiredLoginsPermitted = rawExpiredLoginsPermitted == null? null: Integer.valueOf(rawExpiredLoginsPermitted);
-                                        String rawMinimumLength = form.getMinimumLength();
-                                        Integer minimumLength = rawMinimumLength == null? null: Integer.valueOf(rawMinimumLength);
-                                        String rawMaximumLength = form.getMaximumLength();
-                                        Integer maximumLength = rawMaximumLength == null? null: Integer.valueOf(rawMaximumLength);
-                                        String rawRequiredDigitCount = form.getRequiredDigitCount();
-                                        Integer requiredDigitCount = rawRequiredDigitCount == null? null: Integer.valueOf(rawRequiredDigitCount);
-                                        String rawRequiredLetterCount = form.getRequiredLetterCount();
-                                        Integer requiredLetterCount = rawRequiredLetterCount == null? null: Integer.valueOf(rawRequiredLetterCount);
-                                        String rawRequiredUpperCaseCount = form.getRequiredUpperCaseCount();
-                                        Integer requiredUpperCaseCount = rawRequiredUpperCaseCount == null? null: Integer.valueOf(rawRequiredUpperCaseCount);
-                                        String rawRequiredLowerCaseCount = form.getRequiredLowerCaseCount();
-                                        Integer requiredLowerCaseCount = rawRequiredLowerCaseCount == null? null: Integer.valueOf(rawRequiredLowerCaseCount);
-                                        String rawMaximumRepeated = form.getMaximumRepeated();
-                                        Integer maximumRepeated = rawMaximumRepeated == null? null: Integer.valueOf(rawMaximumRepeated);
-                                        String rawMinimumCharacterTypes = form.getMinimumCharacterTypes();
-                                        Integer minimumCharacterTypes = rawMinimumCharacterTypes == null? null: Integer.valueOf(rawMinimumCharacterTypes);
+                                        var forceChangeAfterCreate = Boolean.valueOf(form.getForceChangeAfterCreate());
+                                        var forceChangeAfterReset = Boolean.valueOf(form.getForceChangeAfterReset());
+                                        var allowChange = Boolean.valueOf(form.getAllowChange());
+                                        var rawPasswordHistory = form.getPasswordHistory();
+                                        var passwordHistory = rawPasswordHistory == null? null: Integer.valueOf(rawPasswordHistory);
+                                        var minimumPasswordLifetime = rawMinimumPasswordLifetime == null? null: Long.valueOf(rawMinimumPasswordLifetime);
+                                        var minimumPasswordLifetimeConversion = minimumPasswordLifetime == null? null: new Conversion(uomControl, minimumPasswordLifetimeUnitOfMeasureType, minimumPasswordLifetime).convertToLowestUnitOfMeasureType();
+                                        var maximumPasswordLifetime = rawMaximumPasswordLifetime == null? null: Long.valueOf(rawMaximumPasswordLifetime);
+                                        var maximumPasswordLifetimeConversion = maximumPasswordLifetime == null? null: new Conversion(uomControl, maximumPasswordLifetimeUnitOfMeasureType, maximumPasswordLifetime).convertToLowestUnitOfMeasureType();
+                                        var expirationWarningTime = rawExpirationWarningTime == null? null: Long.valueOf(rawExpirationWarningTime);
+                                        var expirationWarningTimeConversion = expirationWarningTime == null? null: new Conversion(uomControl, expirationWarningTimeUnitOfMeasureType, expirationWarningTime).convertToLowestUnitOfMeasureType();
+                                        var rawExpiredLoginsPermitted = form.getExpiredLoginsPermitted();
+                                        var expiredLoginsPermitted = rawExpiredLoginsPermitted == null? null: Integer.valueOf(rawExpiredLoginsPermitted);
+                                        var rawMinimumLength = form.getMinimumLength();
+                                        var minimumLength = rawMinimumLength == null? null: Integer.valueOf(rawMinimumLength);
+                                        var rawMaximumLength = form.getMaximumLength();
+                                        var maximumLength = rawMaximumLength == null? null: Integer.valueOf(rawMaximumLength);
+                                        var rawRequiredDigitCount = form.getRequiredDigitCount();
+                                        var requiredDigitCount = rawRequiredDigitCount == null? null: Integer.valueOf(rawRequiredDigitCount);
+                                        var rawRequiredLetterCount = form.getRequiredLetterCount();
+                                        var requiredLetterCount = rawRequiredLetterCount == null? null: Integer.valueOf(rawRequiredLetterCount);
+                                        var rawRequiredUpperCaseCount = form.getRequiredUpperCaseCount();
+                                        var requiredUpperCaseCount = rawRequiredUpperCaseCount == null? null: Integer.valueOf(rawRequiredUpperCaseCount);
+                                        var rawRequiredLowerCaseCount = form.getRequiredLowerCaseCount();
+                                        var requiredLowerCaseCount = rawRequiredLowerCaseCount == null? null: Integer.valueOf(rawRequiredLowerCaseCount);
+                                        var rawMaximumRepeated = form.getMaximumRepeated();
+                                        var maximumRepeated = rawMaximumRepeated == null? null: Integer.valueOf(rawMaximumRepeated);
+                                        var rawMinimumCharacterTypes = form.getMinimumCharacterTypes();
+                                        var minimumCharacterTypes = rawMinimumCharacterTypes == null? null: Integer.valueOf(rawMinimumCharacterTypes);
 
                                         partyControl.createPartyTypePasswordStringPolicy(partyType, forceChangeAfterCreate, forceChangeAfterReset, allowChange,
                                                 passwordHistory, minimumPasswordLifetimeConversion == null? null: minimumPasswordLifetimeConversion.getQuantity(),

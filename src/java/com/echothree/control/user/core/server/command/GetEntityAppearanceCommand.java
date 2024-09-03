@@ -64,12 +64,12 @@ public class GetEntityAppearanceCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        GetEntityAppearanceResult result = CoreResultFactory.getGetEntityAppearanceResult();
-        String entityRef = form.getEntityRef();
-        EntityInstance entityInstance = coreControl.getEntityInstanceByEntityRef(entityRef);
+        var result = CoreResultFactory.getGetEntityAppearanceResult();
+        var entityRef = form.getEntityRef();
+        var entityInstance = coreControl.getEntityInstanceByEntityRef(entityRef);
 
         if(entityInstance != null) {
-            EntityAppearance entityAppearance = coreControl.getEntityAppearance(entityInstance);
+            var entityAppearance = coreControl.getEntityAppearance(entityInstance);
 
             if(entityAppearance != null) {
                 result.setEntityAppearance(coreControl.getEntityAppearanceTransfer(getUserVisit(), entityAppearance));

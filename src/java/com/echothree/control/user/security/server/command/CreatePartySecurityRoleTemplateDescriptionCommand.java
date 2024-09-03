@@ -68,16 +68,16 @@ public class CreatePartySecurityRoleTemplateDescriptionCommand
     @Override
     protected BaseResult execute() {
         var securityControl = Session.getModelController(SecurityControl.class);
-        String partySecurityRoleTemplateName = form.getPartySecurityRoleTemplateName();
-        PartySecurityRoleTemplate partySecurityRoleTemplate = securityControl.getPartySecurityRoleTemplateByName(partySecurityRoleTemplateName);
+        var partySecurityRoleTemplateName = form.getPartySecurityRoleTemplateName();
+        var partySecurityRoleTemplate = securityControl.getPartySecurityRoleTemplateByName(partySecurityRoleTemplateName);
         
         if(partySecurityRoleTemplate != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                PartySecurityRoleTemplateDescription partySecurityRoleTemplateDescription = securityControl.getPartySecurityRoleTemplateDescription(partySecurityRoleTemplate, language);
+                var partySecurityRoleTemplateDescription = securityControl.getPartySecurityRoleTemplateDescription(partySecurityRoleTemplate, language);
                 
                 if(partySecurityRoleTemplateDescription == null) {
                     var description = form.getDescription();

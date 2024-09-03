@@ -63,8 +63,8 @@ public class DeleteLetterSourceCommand
     @Override
     protected BaseResult execute() {
         var letterControl = Session.getModelController(LetterControl.class);
-        String letterSourceName = form.getLetterSourceName();
-        LetterSource letterSource = letterControl.getLetterSourceByNameForUpdate(letterSourceName);
+        var letterSourceName = form.getLetterSourceName();
+        var letterSource = letterControl.getLetterSourceByNameForUpdate(letterSourceName);
         
         if(letterSource != null) {
             letterControl.deleteLetterSource(letterSource, getPartyPK());

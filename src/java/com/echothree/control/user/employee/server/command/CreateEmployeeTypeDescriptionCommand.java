@@ -68,16 +68,16 @@ public class CreateEmployeeTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var employeeControl = Session.getModelController(EmployeeControl.class);
-        String employeeTypeName = form.getEmployeeTypeName();
-        EmployeeType employeeType = employeeControl.getEmployeeTypeByName(employeeTypeName);
+        var employeeTypeName = form.getEmployeeTypeName();
+        var employeeType = employeeControl.getEmployeeTypeByName(employeeTypeName);
         
         if(employeeType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                EmployeeTypeDescription employeeTypeDescription = employeeControl.getEmployeeTypeDescription(employeeType, language);
+                var employeeTypeDescription = employeeControl.getEmployeeTypeDescription(employeeType, language);
                 
                 if(employeeTypeDescription == null) {
                     var description = form.getDescription();

@@ -53,12 +53,12 @@ public class MessageUtils {
         if((string == null) || (string.indexOf('\'') < 0)) {
             return string;
         }
+
+        var n = string.length();
+        var sb = new StringBuilder(n);
         
-        int n = string.length();
-        StringBuilder sb = new StringBuilder(n);
-        
-        for (int i = 0; i < n; i++) {
-            char ch = string.charAt(i);
+        for (var i = 0; i < n; i++) {
+            var ch = string.charAt(i);
             
             if (ch == '\'') {
                 sb.append('\'');
@@ -76,12 +76,12 @@ public class MessageUtils {
      * method if no resource bundle has been configured.
      */
     protected void fillInMessage(CoreControl coreControl, Language language, CommandMessageType commandMessageType, Message message) {
-        String key = message.getKey();
-        CommandMessage commandMessage = coreControl.getCommandMessageByKey(commandMessageType, key);
+        var key = message.getKey();
+        var commandMessage = coreControl.getCommandMessageByKey(commandMessageType, key);
         String translation = null;
         
         if(commandMessage != null) {
-            CommandMessageTranslation commandMessageTranslation = coreControl.getBestCommandMessageTranslation(commandMessage, language);
+            var commandMessageTranslation = coreControl.getBestCommandMessageTranslation(commandMessage, language);
 
             if(commandMessageTranslation != null) {
                 translation = commandMessageTranslation.getTranslation();
@@ -98,10 +98,10 @@ public class MessageUtils {
     public void fillInMessages(Language language, String commandMessageTypeName, Messages messages) {
         if(messages != null) {
             var coreControl = Session.getModelController(CoreControl.class);
-            CommandMessageType commandMessageType = coreControl.getCommandMessageTypeByName(commandMessageTypeName);
+            var commandMessageType = coreControl.getCommandMessageTypeByName(commandMessageTypeName);
             
             if(commandMessageType != null) {
-                Iterator<Message> iter = messages.get();
+                var iter = messages.get();
                 
                 while(iter.hasNext()) {
                     fillInMessage(coreControl, language, commandMessageType, iter.next());
@@ -113,13 +113,13 @@ public class MessageUtils {
     // The language used in the Exceptions will always be the default Language (typically English).
     public String getExceptionMessage(String commandMessageTypeName, Message message) {
         var coreControl = Session.getModelController(CoreControl.class);
-        CommandMessageType commandMessageType = coreControl.getCommandMessageTypeByName(commandMessageTypeName);
+        var commandMessageType = coreControl.getCommandMessageTypeByName(commandMessageTypeName);
         
         if(commandMessageType == null) {
             throw new UnknownCommandMessageTypeNameException(new Message(ExecutionErrors.UnknownCommandMessageTypeName.name(), commandMessageTypeName));
         } else {
             var partyControl = Session.getModelController(PartyControl.class);
-            Language language = partyControl.getDefaultLanguage();
+            var language = partyControl.getDefaultLanguage();
             
             fillInMessage(coreControl, language, commandMessageType, message);
         }

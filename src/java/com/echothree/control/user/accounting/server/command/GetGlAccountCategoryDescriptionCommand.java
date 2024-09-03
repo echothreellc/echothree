@@ -69,17 +69,17 @@ public class GetGlAccountCategoryDescriptionCommand
     @Override
     protected BaseResult execute() {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        GetGlAccountCategoryDescriptionResult result = AccountingResultFactory.getGetGlAccountCategoryDescriptionResult();
-        String glAccountCategoryName = form.getGlAccountCategoryName();
-        GlAccountCategory glAccountCategory = accountingControl.getGlAccountCategoryByName(glAccountCategoryName);
+        var result = AccountingResultFactory.getGetGlAccountCategoryDescriptionResult();
+        var glAccountCategoryName = form.getGlAccountCategoryName();
+        var glAccountCategory = accountingControl.getGlAccountCategoryByName(glAccountCategoryName);
         
         if(glAccountCategory != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                GlAccountCategoryDescription glAccountCategoryDescription = accountingControl.getGlAccountCategoryDescription(glAccountCategory, language);
+                var glAccountCategoryDescription = accountingControl.getGlAccountCategoryDescription(glAccountCategory, language);
                 
                 if(glAccountCategoryDescription != null) {
                     result.setGlAccountCategoryDescription(accountingControl.getGlAccountCategoryDescriptionTransfer(getUserVisit(), glAccountCategoryDescription));

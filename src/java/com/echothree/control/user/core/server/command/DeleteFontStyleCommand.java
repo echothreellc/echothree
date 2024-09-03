@@ -61,8 +61,8 @@ public class DeleteFontStyleCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String fontStyleName = form.getFontStyleName();
-        FontStyle fontStyle = coreControl.getFontStyleByNameForUpdate(fontStyleName);
+        var fontStyleName = form.getFontStyleName();
+        var fontStyle = coreControl.getFontStyleByNameForUpdate(fontStyleName);
         
         if(fontStyle != null) {
             coreControl.deleteFontStyle(fontStyle, getPartyPK());

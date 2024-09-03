@@ -89,13 +89,13 @@ public class EditContactMechanismAliasTypeDescriptionCommand
     public ContactMechanismAliasTypeDescription getEntity(EditContactMechanismAliasTypeDescriptionResult result) {
         var contactControl = Session.getModelController(ContactControl.class);
         ContactMechanismAliasTypeDescription contactMechanismAliasTypeDescription = null;
-        String contactMechanismAliasTypeName = spec.getContactMechanismAliasTypeName();
-        ContactMechanismAliasType contactMechanismAliasType = contactControl.getContactMechanismAliasTypeByName(contactMechanismAliasTypeName);
+        var contactMechanismAliasTypeName = spec.getContactMechanismAliasTypeName();
+        var contactMechanismAliasType = contactControl.getContactMechanismAliasTypeByName(contactMechanismAliasTypeName);
 
         if(contactMechanismAliasType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -137,7 +137,7 @@ public class EditContactMechanismAliasTypeDescriptionCommand
     @Override
     public void doUpdate(ContactMechanismAliasTypeDescription contactMechanismAliasTypeDescription) {
         var contactControl = Session.getModelController(ContactControl.class);
-        ContactMechanismAliasTypeDescriptionValue contactMechanismAliasTypeDescriptionValue = contactControl.getContactMechanismAliasTypeDescriptionValue(contactMechanismAliasTypeDescription);
+        var contactMechanismAliasTypeDescriptionValue = contactControl.getContactMechanismAliasTypeDescriptionValue(contactMechanismAliasTypeDescription);
         
         contactMechanismAliasTypeDescriptionValue.setDescription(edit.getDescription());
         

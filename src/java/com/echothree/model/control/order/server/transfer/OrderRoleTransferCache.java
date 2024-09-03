@@ -39,11 +39,11 @@ public class OrderRoleTransferCache
     }
     
     public OrderRoleTransfer getOrderRoleTransfer(OrderRole orderRole) {
-        OrderRoleTransfer orderRoleTransfer = get(orderRole);
+        var orderRoleTransfer = get(orderRole);
         
         if(orderRoleTransfer == null) {
-            PartyTransfer party = partyControl.getPartyTransfer(userVisit, orderRole.getParty());
-            OrderRoleTypeTransfer orderRoleType = orderRoleControl.getOrderRoleTypeTransfer(userVisit, orderRole.getOrderRoleType());
+            var party = partyControl.getPartyTransfer(userVisit, orderRole.getParty());
+            var orderRoleType = orderRoleControl.getOrderRoleTypeTransfer(userVisit, orderRole.getOrderRoleType());
 
             orderRoleTransfer = new OrderRoleTransfer(party, orderRoleType);
             put(orderRole, orderRoleTransfer);

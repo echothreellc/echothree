@@ -75,32 +75,32 @@ public class CreateSecurityRolePartyTypeCommand
     @Override
     protected BaseResult execute() {
         var securityControl = Session.getModelController(SecurityControl.class);
-        String securityRoleGroupName = form.getSecurityRoleGroupName();
-        SecurityRoleGroup securityRoleGroup = securityControl.getSecurityRoleGroupByName(securityRoleGroupName);
+        var securityRoleGroupName = form.getSecurityRoleGroupName();
+        var securityRoleGroup = securityControl.getSecurityRoleGroupByName(securityRoleGroupName);
         
         if(securityRoleGroup != null) {
-            String securityRoleName = form.getSecurityRoleName();
-            SecurityRole securityRole = securityControl.getSecurityRoleByName(securityRoleGroup, securityRoleName);
+            var securityRoleName = form.getSecurityRoleName();
+            var securityRole = securityControl.getSecurityRoleByName(securityRoleGroup, securityRoleName);
             
             if(securityRole != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String partyTypeName = form.getPartyTypeName();
-                PartyType partyType = partyControl.getPartyTypeByName(partyTypeName);
+                var partyTypeName = form.getPartyTypeName();
+                var partyType = partyControl.getPartyTypeByName(partyTypeName);
                 
                 if(partyType != null) {
-                    SecurityRolePartyType securityRolePartyType = securityControl.getSecurityRolePartyType(securityRole, partyType);
+                    var securityRolePartyType = securityControl.getSecurityRolePartyType(securityRole, partyType);
                     
                     if(securityRolePartyType == null) {
-                        String partySelectorName = form.getPartySelectorName();
+                        var partySelectorName = form.getPartySelectorName();
                         Selector partySelector = null;
                         
                         if(partySelectorName != null) {
                             if(partyType.getAllowUserLogins()) {
                                 var selectorControl = Session.getModelController(SelectorControl.class);
-                                SelectorKind selectorKind = selectorControl.getSelectorKindByName(partyTypeName);
+                                var selectorKind = selectorControl.getSelectorKindByName(partyTypeName);
 
                                 if(selectorKind != null) {
-                                    SelectorType selectorType = selectorControl.getSelectorTypeByName(selectorKind,
+                                    var selectorType = selectorControl.getSelectorTypeByName(selectorKind,
                                             SelectorTypes.SECURITY_ROLE.name());
                                     
                                     if(selectorType != null) {

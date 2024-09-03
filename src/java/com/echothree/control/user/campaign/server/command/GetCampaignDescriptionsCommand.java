@@ -65,9 +65,9 @@ public class GetCampaignDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var campaignControl = Session.getModelController(CampaignControl.class);
-        GetCampaignDescriptionsResult result = CampaignResultFactory.getGetCampaignDescriptionsResult();
-        String campaignName = form.getCampaignName();
-        Campaign campaign = campaignControl.getCampaignByName(campaignName);
+        var result = CampaignResultFactory.getGetCampaignDescriptionsResult();
+        var campaignName = form.getCampaignName();
+        var campaign = campaignControl.getCampaignByName(campaignName);
         
         if(campaign != null) {
             result.setCampaign(campaignControl.getCampaignTransfer(getUserVisit(), campaign));

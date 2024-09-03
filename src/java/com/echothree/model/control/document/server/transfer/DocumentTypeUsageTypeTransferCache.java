@@ -33,14 +33,14 @@ public class DocumentTypeUsageTypeTransferCache
     }
     
     public DocumentTypeUsageTypeTransfer getDocumentTypeUsageTypeTransfer(DocumentTypeUsageType documentTypeUsageType) {
-        DocumentTypeUsageTypeTransfer documentTypeUsageTypeTransfer = get(documentTypeUsageType);
+        var documentTypeUsageTypeTransfer = get(documentTypeUsageType);
         
         if(documentTypeUsageTypeTransfer == null) {
-            DocumentTypeUsageTypeDetail documentTypeUsageTypeDetail = documentTypeUsageType.getLastDetail();
-            String documentTypeUsageTypeName = documentTypeUsageTypeDetail.getDocumentTypeUsageTypeName();
-            Boolean isDefault = documentTypeUsageTypeDetail.getIsDefault();
-            Integer sortOrder = documentTypeUsageTypeDetail.getSortOrder();
-            String description = documentControl.getBestDocumentTypeUsageTypeDescription(documentTypeUsageType, getLanguage());
+            var documentTypeUsageTypeDetail = documentTypeUsageType.getLastDetail();
+            var documentTypeUsageTypeName = documentTypeUsageTypeDetail.getDocumentTypeUsageTypeName();
+            var isDefault = documentTypeUsageTypeDetail.getIsDefault();
+            var sortOrder = documentTypeUsageTypeDetail.getSortOrder();
+            var description = documentControl.getBestDocumentTypeUsageTypeDescription(documentTypeUsageType, getLanguage());
             
             documentTypeUsageTypeTransfer = new DocumentTypeUsageTypeTransfer(documentTypeUsageTypeName, isDefault, sortOrder, description);
             put(documentTypeUsageType, documentTypeUsageTypeTransfer);

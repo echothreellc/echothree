@@ -50,14 +50,14 @@ public class SetWebAddressStatusCommand
     @Override
     protected BaseResult execute() {
         var contactControl = Session.getModelController(ContactControl.class);
-        String contactMechanismName = form.getContactMechanismName();
-        ContactMechanism contactMechanism = contactControl.getContactMechanismByName(contactMechanismName);
+        var contactMechanismName = form.getContactMechanismName();
+        var contactMechanism = contactControl.getContactMechanismByName(contactMechanismName);
 
         if(contactMechanism != null) {
-            String contactMechanismTypeName = contactMechanism.getLastDetail().getContactMechanismType().getContactMechanismTypeName();
+            var contactMechanismTypeName = contactMechanism.getLastDetail().getContactMechanismType().getContactMechanismTypeName();
 
             if(contactMechanismTypeName.equals(ContactMechanismTypes.WEB_ADDRESS.name())) {
-                String contactMechanismStatusChoice = form.getWebAddressStatusChoice();
+                var contactMechanismStatusChoice = form.getWebAddressStatusChoice();
 
                 contactControl.setWebAddressStatus(this, contactMechanism, contactMechanismStatusChoice, getPartyPK());
             } else {

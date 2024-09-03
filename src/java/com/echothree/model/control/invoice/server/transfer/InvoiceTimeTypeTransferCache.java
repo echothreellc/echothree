@@ -33,14 +33,14 @@ public class InvoiceTimeTypeTransferCache
     }
     
     public InvoiceTimeTypeTransfer getInvoiceTimeTypeTransfer(InvoiceTimeType invoiceTimeType) {
-        InvoiceTimeTypeTransfer invoiceTimeTypeTransfer = get(invoiceTimeType);
+        var invoiceTimeTypeTransfer = get(invoiceTimeType);
         
         if(invoiceTimeTypeTransfer == null) {
-            InvoiceTimeTypeDetail invoiceTimeTypeDetail = invoiceTimeType.getLastDetail();
-            String invoiceTimeTypeName = invoiceTimeTypeDetail.getInvoiceTimeTypeName();
-            Boolean isDefault = invoiceTimeTypeDetail.getIsDefault();
-            Integer sortOrder = invoiceTimeTypeDetail.getSortOrder();
-            String description = invoiceControl.getBestInvoiceTimeTypeDescription(invoiceTimeType, getLanguage());
+            var invoiceTimeTypeDetail = invoiceTimeType.getLastDetail();
+            var invoiceTimeTypeName = invoiceTimeTypeDetail.getInvoiceTimeTypeName();
+            var isDefault = invoiceTimeTypeDetail.getIsDefault();
+            var sortOrder = invoiceTimeTypeDetail.getSortOrder();
+            var description = invoiceControl.getBestInvoiceTimeTypeDescription(invoiceTimeType, getLanguage());
             
             invoiceTimeTypeTransfer = new InvoiceTimeTypeTransfer(invoiceTimeTypeName, isDefault, sortOrder, description);
             put(invoiceTimeType, invoiceTimeTypeTransfer);

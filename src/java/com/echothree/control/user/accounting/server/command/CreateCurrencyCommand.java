@@ -82,32 +82,32 @@ public class CreateCurrencyCommand
     @Override
     protected BaseResult execute() {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        String currencyIsoName = form.getCurrencyIsoName();
-        Currency currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
+        var currencyIsoName = form.getCurrencyIsoName();
+        var currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
         
         if(currency == null) {
-            SymbolPosition symbolPosition = SymbolPositionLogic.getInstance().getSymbolPositionByName(this, form.getSymbolPositionName());
+            var symbolPosition = SymbolPositionLogic.getInstance().getSymbolPositionByName(this, form.getSymbolPositionName());
             
             if(!hasExecutionErrors()) {
-                String groupingSeparator = form.getGroupingSeparator();
-                Integer groupingSize = Integer.valueOf(form.getGroupingSize());
-                String minusSign = form.getMinusSign();
+                var groupingSeparator = form.getGroupingSeparator();
+                var groupingSize = Integer.valueOf(form.getGroupingSize());
+                var minusSign = form.getMinusSign();
                 var isDefault = Boolean.valueOf(form.getIsDefault());
                 var sortOrder = Integer.valueOf(form.getSortOrder());
-                String symbol = form.getSymbol();
-                Boolean symbolOnListStart = symbol == null? null: Boolean.valueOf(form.getSymbolOnListStart());
-                Boolean symbolOnListMember = symbol == null? null: Boolean.valueOf(form.getSymbolOnListMember());
-                Boolean symbolOnSubtotal = symbol == null? null: Boolean.valueOf(form.getSymbolOnSubtotal());
-                Boolean symbolOnTotal = symbol == null? null: Boolean.valueOf(form.getSymbolOnTotal());
+                var symbol = form.getSymbol();
+                var symbolOnListStart = symbol == null? null: Boolean.valueOf(form.getSymbolOnListStart());
+                var symbolOnListMember = symbol == null? null: Boolean.valueOf(form.getSymbolOnListMember());
+                var symbolOnSubtotal = symbol == null? null: Boolean.valueOf(form.getSymbolOnSubtotal());
+                var symbolOnTotal = symbol == null? null: Boolean.valueOf(form.getSymbolOnTotal());
 
                 if(symbol == null || (symbol != null && symbolOnListStart != null && symbolOnListMember != null
                         && symbolOnSubtotal != null && symbolOnTotal != null)) {
-                    String fractionSeparator = form.getFractionSeparator();
-                    Integer defaultFractionDigits = fractionSeparator == null? null: Integer.valueOf(form.getDefaultFractionDigits());
-                    Integer priceUnitFractionDigits = fractionSeparator == null? null: Integer.valueOf(form.getPriceUnitFractionDigits());
-                    Integer priceLineFractionDigits = fractionSeparator == null? null: Integer.valueOf(form.getPriceLineFractionDigits());
-                    Integer costUnitFractionDigits = fractionSeparator == null? null: Integer.valueOf(form.getCostUnitFractionDigits());
-                    Integer costLineFractionDigits = fractionSeparator == null? null: Integer.valueOf(form.getCostLineFractionDigits());
+                    var fractionSeparator = form.getFractionSeparator();
+                    var defaultFractionDigits = fractionSeparator == null? null: Integer.valueOf(form.getDefaultFractionDigits());
+                    var priceUnitFractionDigits = fractionSeparator == null? null: Integer.valueOf(form.getPriceUnitFractionDigits());
+                    var priceLineFractionDigits = fractionSeparator == null? null: Integer.valueOf(form.getPriceLineFractionDigits());
+                    var costUnitFractionDigits = fractionSeparator == null? null: Integer.valueOf(form.getCostUnitFractionDigits());
+                    var costLineFractionDigits = fractionSeparator == null? null: Integer.valueOf(form.getCostLineFractionDigits());
 
                     if(fractionSeparator == null || (defaultFractionDigits != null && priceUnitFractionDigits != null
                             && priceLineFractionDigits != null && costUnitFractionDigits != null && costLineFractionDigits != null)) {

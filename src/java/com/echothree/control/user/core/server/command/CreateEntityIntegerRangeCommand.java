@@ -73,30 +73,30 @@ public class CreateEntityIntegerRangeCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String componentVendorName = form.getComponentVendorName();
-        ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+        var componentVendorName = form.getComponentVendorName();
+        var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
         
         if(componentVendor != null) {
-            String entityTypeName = form.getEntityTypeName();
-            EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+            var entityTypeName = form.getEntityTypeName();
+            var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
             
             if(entityType != null) {
-                String entityAttributeName = form.getEntityAttributeName();
-                EntityAttribute entityAttribute = coreControl.getEntityAttributeByName(entityType, entityAttributeName);
+                var entityAttributeName = form.getEntityAttributeName();
+                var entityAttribute = coreControl.getEntityAttributeByName(entityType, entityAttributeName);
                 
                 if(entityAttribute != null) {
-                    String entityAttributeTypeName = entityAttribute.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
+                    var entityAttributeTypeName = entityAttribute.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
                     
                     if(entityAttributeTypeName.equals(EntityAttributeTypes.INTEGER.name())) {
-                        String entityIntegerRangeName = form.getEntityIntegerRangeName();
-                        EntityIntegerRange entityIntegerRange = coreControl.getEntityIntegerRangeByName(entityAttribute, entityIntegerRangeName);
+                        var entityIntegerRangeName = form.getEntityIntegerRangeName();
+                        var entityIntegerRange = coreControl.getEntityIntegerRangeByName(entityAttribute, entityIntegerRangeName);
 
                         if(entityIntegerRange == null) {
                             var partyPK = getPartyPK();
-                            String strMinimumIntegerValue = form.getMinimumIntegerValue();
-                            Integer minimumIntegerValue = strMinimumIntegerValue == null ? null : Integer.valueOf(strMinimumIntegerValue);
-                            String strMaximumIntegerValue = form.getMaximumIntegerValue();
-                            Integer maximumIntegerValue = strMaximumIntegerValue == null ? null : Integer.valueOf(strMaximumIntegerValue);
+                            var strMinimumIntegerValue = form.getMinimumIntegerValue();
+                            var minimumIntegerValue = strMinimumIntegerValue == null ? null : Integer.valueOf(strMinimumIntegerValue);
+                            var strMaximumIntegerValue = form.getMaximumIntegerValue();
+                            var maximumIntegerValue = strMaximumIntegerValue == null ? null : Integer.valueOf(strMaximumIntegerValue);
                             var isDefault = Boolean.valueOf(form.getIsDefault());
                             var sortOrder = Integer.valueOf(form.getSortOrder());
                             var description = form.getDescription();

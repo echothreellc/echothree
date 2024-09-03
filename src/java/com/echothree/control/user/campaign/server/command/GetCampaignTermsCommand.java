@@ -61,7 +61,7 @@ public class GetCampaignTermsCommand
     @Override
     protected BaseResult execute() {
         var campaignControl = Session.getModelController(CampaignControl.class);
-        GetCampaignTermsResult result = CampaignResultFactory.getGetCampaignTermsResult();
+        var result = CampaignResultFactory.getGetCampaignTermsResult();
         
         result.setCampaignTerms(campaignControl.getCampaignTermTransfers(getUserVisit()));
         

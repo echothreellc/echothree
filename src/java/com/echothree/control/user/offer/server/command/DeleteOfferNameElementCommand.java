@@ -60,8 +60,8 @@ public class DeleteOfferNameElementCommand
     
     @Override
     protected BaseResult execute() {
-        String offerNameElementName = form.getOfferNameElementName();
-        OfferNameElement offerNameElement = OfferNameElementLogic.getInstance().getOfferNameElementByNameForUpdate(this, offerNameElementName);
+        var offerNameElementName = form.getOfferNameElementName();
+        var offerNameElement = OfferNameElementLogic.getInstance().getOfferNameElementByNameForUpdate(this, offerNameElementName);
         
         if(!hasExecutionErrors()) {
             OfferNameElementLogic.getInstance().deleteOfferNameElement(this, offerNameElement, getPartyPK());

@@ -68,18 +68,18 @@ public class GetCustomerTypeContactListsCommand
     
     @Override
     protected BaseResult execute() {
-        GetCustomerTypeContactListsResult result = ContactListResultFactory.getGetCustomerTypeContactListsResult();
-        String customerTypeName = form.getCustomerTypeName();
-        String contactListName = form.getContactListName();
+        var result = ContactListResultFactory.getGetCustomerTypeContactListsResult();
+        var customerTypeName = form.getCustomerTypeName();
+        var contactListName = form.getContactListName();
         var parameterCount = (customerTypeName != null? 1: 0) + (contactListName != null? 1: 0);
         
         if(parameterCount == 1) {
             var contactListControl = Session.getModelController(ContactListControl.class);
-            UserVisit userVisit = getUserVisit();
+            var userVisit = getUserVisit();
             
             if(customerTypeName != null) {
                 var customerControl = Session.getModelController(CustomerControl.class);
-                CustomerType customerType = customerControl.getCustomerTypeByName(customerTypeName);
+                var customerType = customerControl.getCustomerTypeByName(customerTypeName);
                 
                 if(customerType != null) {
                     result.setCustomerType(customerControl.getCustomerTypeTransfer(userVisit, customerType));
@@ -88,7 +88,7 @@ public class GetCustomerTypeContactListsCommand
                     addExecutionError(ExecutionErrors.UnknownCustomerTypeName.name(), customerTypeName);
                 }
             } else if(contactListName != null) {
-                ContactList contactList = contactListControl.getContactListByName(contactListName);
+                var contactList = contactListControl.getContactListByName(contactListName);
                 
                 if(contactList != null) {
                     result.setContactList(contactListControl.getContactListTransfer(userVisit, contactList));

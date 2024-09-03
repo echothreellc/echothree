@@ -100,18 +100,18 @@ public class EditTrainingClassSectionTranslationCommand
     public TrainingClassSectionTranslation getEntity(EditTrainingClassSectionTranslationResult result) {
         var trainingControl = Session.getModelController(TrainingControl.class);
         TrainingClassSectionTranslation trainingClassSectionTranslation = null;
-        String trainingClassName = spec.getTrainingClassName();
+        var trainingClassName = spec.getTrainingClassName();
         
         trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
 
         if(trainingClass != null) {
-            String trainingClassSectionName = spec.getTrainingClassSectionName();
-            TrainingClassSection trainingClassSection = trainingControl.getTrainingClassSectionByName(trainingClass, trainingClassSectionName);
+            var trainingClassSectionName = spec.getTrainingClassSectionName();
+            var trainingClassSection = trainingControl.getTrainingClassSectionByName(trainingClass, trainingClassSectionName);
 
             if(trainingClassSection != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = spec.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = spec.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                 if(language != null) {
                     if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -165,17 +165,17 @@ public class EditTrainingClassSectionTranslationCommand
 
     @Override
     protected void canUpdate(TrainingClassSectionTranslation trainingClassSectionTranslation) {
-        MimeTypeLogic mimeTypeLogic = MimeTypeLogic.getInstance();
-        String overviewMimeTypeName = edit.getOverviewMimeTypeName();
-        String overview = edit.getOverview();
+        var mimeTypeLogic = MimeTypeLogic.getInstance();
+        var overviewMimeTypeName = edit.getOverviewMimeTypeName();
+        var overview = edit.getOverview();
         
         overviewMimeType = mimeTypeLogic.checkMimeType(this, overviewMimeTypeName, overview, MimeTypeUsageTypes.TEXT.name(),
                 ExecutionErrors.MissingRequiredOverviewMimeTypeName.name(), ExecutionErrors.MissingRequiredOverview.name(),
                 ExecutionErrors.UnknownOverviewMimeTypeName.name(), ExecutionErrors.UnknownOverviewMimeTypeUsage.name());
         
         if(!hasExecutionErrors()) {
-            String introductionMimeTypeName = edit.getIntroductionMimeTypeName();
-            String introduction = edit.getIntroduction();
+            var introductionMimeTypeName = edit.getIntroductionMimeTypeName();
+            var introduction = edit.getIntroduction();
 
             introductionMimeType = mimeTypeLogic.checkMimeType(this, introductionMimeTypeName, introduction, MimeTypeUsageTypes.TEXT.name(),
                     ExecutionErrors.MissingRequiredIntroductionMimeTypeName.name(), ExecutionErrors.MissingRequiredIntroduction.name(),
@@ -186,7 +186,7 @@ public class EditTrainingClassSectionTranslationCommand
     @Override
     public void doUpdate(TrainingClassSectionTranslation trainingClassSectionTranslation) {
         var trainingControl = Session.getModelController(TrainingControl.class);
-        TrainingClassSectionTranslationValue trainingClassSectionTranslationValue = trainingControl.getTrainingClassSectionTranslationValue(trainingClassSectionTranslation);
+        var trainingClassSectionTranslationValue = trainingControl.getTrainingClassSectionTranslationValue(trainingClassSectionTranslation);
         
         trainingClassSectionTranslationValue.setDescription(edit.getDescription());
         trainingClassSectionTranslationValue.setOverviewMimeTypePK(overviewMimeType == null? null: overviewMimeType.getPrimaryKey());

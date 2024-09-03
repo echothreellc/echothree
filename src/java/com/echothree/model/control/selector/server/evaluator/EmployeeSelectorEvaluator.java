@@ -50,7 +50,7 @@ public class EmployeeSelectorEvaluator
     Long addPartyEntitiesToSelector(CachedSelectorWithTime cachedSelectorWithTime, List<EntityTime> entityTimes, long remainingTime) {
         if(BaseSelectorEvaluatorDebugFlags.EmployeeSelectorEvaluator)
             log.info(">>> EmployeeSelectorEvaluator.addPartyEntitiesToSelector");
-        long startTime = System.currentTimeMillis();
+        var startTime = System.currentTimeMillis();
         long entityCount = 0;
         Long selectionTime = null;
         
@@ -60,23 +60,23 @@ public class EmployeeSelectorEvaluator
                 if((System.currentTimeMillis() - startTime) > remainingTime)
                     break;
             }
-            
-            EntityInstance entityInstance = entityTime.getEntityInstance();
-            Party party = PartyLogic.getInstance().getPartyFromEntityInstance(entityInstance);
+
+            var entityInstance = entityTime.getEntityInstance();
+            var party = PartyLogic.getInstance().getPartyFromEntityInstance(entityInstance);
             if(party == null) {
                 log.error("--- EmployeeSelectorEvaluator.addPartyEntitiesToSelector found null Party: " + entityInstance);
             } else {
-                PartyDetail partyDetail = party.getLastDetail();
+                var partyDetail = party.getLastDetail();
                 
                 selectionTime = entityTime.getCreatedTime();
                 
                 if(partyDetail.getPartyType().equals(partyType)) {
                     if(entityTime.getDeletedTime() == null) {
-                        Boolean selected = isPartySelected(cachedSelectorWithTime, entityInstance, party);
-                        Selector employeeSelector = cachedSelectorWithTime.getSelector();
+                        var selected = isPartySelected(cachedSelectorWithTime, entityInstance, party);
+                        var employeeSelector = cachedSelectorWithTime.getSelector();
                         
                         if(selected) {
-                            SelectorParty selectorParty = selectorControl.getSelectorParty(employeeSelector, party);
+                            var selectorParty = selectorControl.getSelectorParty(employeeSelector, party);
                             
                             if(selectorParty == null) {
                                 selectorControl.createSelectorParty(employeeSelector, party, evaluatedBy);
@@ -95,7 +95,7 @@ public class EmployeeSelectorEvaluator
     Long updatePartyEntitiesInSelector(CachedSelectorWithTime cachedSelectorWithTime, List<EntityTime> entityTimes, long remainingTime) {
         if(BaseSelectorEvaluatorDebugFlags.EmployeeSelectorEvaluator)
             log.info(">>> EmployeeSelectorEvaluator.updatePartyEntitiesInSelector");
-        long startTime = System.currentTimeMillis();
+        var startTime = System.currentTimeMillis();
         long entityCount = 0;
         Long selectionTime = null;
         
@@ -105,29 +105,29 @@ public class EmployeeSelectorEvaluator
                 if((System.currentTimeMillis() - startTime) > remainingTime)
                     break;
             }
-            
-            EntityInstance entityInstance = entityTime.getEntityInstance();
-            Party party = PartyLogic.getInstance().getPartyFromEntityInstance(entityInstance);
+
+            var entityInstance = entityTime.getEntityInstance();
+            var party = PartyLogic.getInstance().getPartyFromEntityInstance(entityInstance);
             if(party == null) {
                 log.error("--- EmployeeSelectorEvaluator.updatePartyEntitiesInSelector found null Party: " + entityInstance);
             } else {
-                PartyDetail partyDetail = party.getLastDetail();
+                var partyDetail = party.getLastDetail();
                 
                 selectionTime = entityTime.getModifiedTime();
                 
                 if(partyDetail.getPartyType().equals(partyType)) {
                     if(entityTime.getDeletedTime() == null) {
-                        Boolean selected = isPartySelected(cachedSelectorWithTime, entityInstance, party);
-                        Selector employeeSelector = cachedSelectorWithTime.getSelector();
+                        var selected = isPartySelected(cachedSelectorWithTime, entityInstance, party);
+                        var employeeSelector = cachedSelectorWithTime.getSelector();
                         
                         if(selected) {
-                            SelectorParty selectorParty = selectorControl.getSelectorParty(employeeSelector, party);
+                            var selectorParty = selectorControl.getSelectorParty(employeeSelector, party);
                             
                             if(selectorParty == null) {
                                 selectorControl.createSelectorParty(employeeSelector, party, evaluatedBy);
                             }
                         } else {
-                            SelectorParty selectorParty = selectorControl.getSelectorPartyForUpdate(employeeSelector, party);
+                            var selectorParty = selectorControl.getSelectorPartyForUpdate(employeeSelector, party);
                             
                             if(selectorParty != null) {
                                 selectorControl.deleteSelectorParty(selectorParty, evaluatedBy);
@@ -146,7 +146,7 @@ public class EmployeeSelectorEvaluator
     Long removePartyEntitiesFromSelector(Selector employeeSelector, List<EntityTime> entityTimes, long remainingTime) {
         if(BaseSelectorEvaluatorDebugFlags.EmployeeSelectorEvaluator)
             log.info(">>> EmployeeSelectorEvaluator.removeItemEntitiesFromOffer");
-        long startTime = System.currentTimeMillis();
+        var startTime = System.currentTimeMillis();
         long entityCount = 0;
         Long selectionTime = null;
         
@@ -156,18 +156,18 @@ public class EmployeeSelectorEvaluator
                 if((System.currentTimeMillis() - startTime) > remainingTime)
                     break;
             }
-            
-            EntityInstance entityInstance = entityTime.getEntityInstance();
-            Party party = PartyLogic.getInstance().getPartyFromEntityInstance(entityInstance);
+
+            var entityInstance = entityTime.getEntityInstance();
+            var party = PartyLogic.getInstance().getPartyFromEntityInstance(entityInstance);
             if(party == null) {
                 log.error("--- EmployeeSelectorEvaluator.removePartyEntitiesFromSelector found null Party: " + entityInstance);
             } else {
-                PartyDetail partyDetail = party.getLastDetail();
+                var partyDetail = party.getLastDetail();
                 
                 selectionTime = entityTime.getDeletedTime();
                 
                 if(partyDetail.getPartyType().equals(partyType)) {
-                    SelectorParty selectorParty = selectorControl.getSelectorPartyForUpdate(employeeSelector, party);
+                    var selectorParty = selectorControl.getSelectorPartyForUpdate(employeeSelector, party);
                     
                     if(selectorParty != null) {
                         selectorControl.deleteSelectorParty(selectorParty, evaluatedBy);
@@ -186,14 +186,14 @@ public class EmployeeSelectorEvaluator
             log.info(">>> EmployeeSelectorEvaluator.evaluate");
         
         long remainingTime = maximumTime;
-        ComponentVendor componentVendor = coreControl.getComponentVendorByName(ComponentVendors.ECHO_THREE.name());
+        var componentVendor = coreControl.getComponentVendorByName(ComponentVendors.ECHO_THREE.name());
         
         if(componentVendor != null) {
-            EntityType entityType = coreControl.getEntityTypeByName(componentVendor, EntityTypes.Party.name());
+            var entityType = coreControl.getEntityTypeByName(componentVendor, EntityTypes.Party.name());
             
             if(entityType != null) {
-                SelectorKind selectorKind = selectorControl.getSelectorKindByName(SelectorKinds.EMPLOYEE.name());
-                List<Selector> employeeSelectors = selectorControl.getSelectorsBySelectorKind(selectorKind);
+                var selectorKind = selectorControl.getSelectorKindByName(SelectorKinds.EMPLOYEE.name());
+                var employeeSelectors = selectorControl.getSelectorsBySelectorKind(selectorKind);
                 
                 for(var employeeSelector : employeeSelectors) {
                     CachedSelectorWithTime cachedSelectorWithTime = new CachedSelectorWithTime(employeeSelector);
@@ -201,13 +201,13 @@ public class EmployeeSelectorEvaluator
                     if(BaseSelectorEvaluatorDebugFlags.EmployeeSelectorEvaluator) {
                         log.info("--- employeeSelector = " + employeeSelector);
                     }
-                    
-                    EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(employeeSelector.getPrimaryKey());
-                    EntityTime entityTime = coreControl.getEntityTime(entityInstance);
-                    Long entityCreatedTime = entityTime.getCreatedTime();
-                    Long entityModifiedTime = entityTime.getModifiedTime();
-                    Long lastModifiedTime = entityModifiedTime != null? entityModifiedTime: entityCreatedTime;
-                    Long lastEvaluationTime = cachedSelectorWithTime.getLastEvaluationTime();
+
+                    var entityInstance = coreControl.getEntityInstanceByBasePK(employeeSelector.getPrimaryKey());
+                    var entityTime = coreControl.getEntityTime(entityInstance);
+                    var entityCreatedTime = entityTime.getCreatedTime();
+                    var entityModifiedTime = entityTime.getModifiedTime();
+                    var lastModifiedTime = entityModifiedTime != null? entityModifiedTime: entityCreatedTime;
+                    var lastEvaluationTime = cachedSelectorWithTime.getLastEvaluationTime();
                     
                     if(lastEvaluationTime != null) {
                         if(lastModifiedTime > lastEvaluationTime) {
@@ -221,8 +221,8 @@ public class EmployeeSelectorEvaluator
                             cachedSelectorWithTime.setMaxEntityDeletedTime(null);
                         }
                     }
-                    
-                    Long selectionTime = cachedSelectorWithTime.getMaxEntityCreatedTime();
+
+                    var selectionTime = cachedSelectorWithTime.getMaxEntityCreatedTime();
                     
                     List<EntityTime> entityTimes;
                     if(selectionTime == null) {
@@ -234,8 +234,8 @@ public class EmployeeSelectorEvaluator
                     if(entityTimes != null) {
                         if(BaseSelectorEvaluatorDebugFlags.EmployeeSelectorEvaluator)
                             log.info("--- entityTimes.size() = " + entityTimes.size());
-                        
-                        long indexingStartTime = System.currentTimeMillis();
+
+                        var indexingStartTime = System.currentTimeMillis();
                         selectionTime = addPartyEntitiesToSelector(cachedSelectorWithTime, entityTimes, remainingTime);
                         remainingTime -= System.currentTimeMillis() - indexingStartTime;
                     }
@@ -255,8 +255,8 @@ public class EmployeeSelectorEvaluator
                         if(entityTimes != null) {
                             if(BaseSelectorEvaluatorDebugFlags.EmployeeSelectorEvaluator)
                                 log.info("--- entityTimes.size() = " + entityTimes.size());
-                            
-                            long indexingStartTime = System.currentTimeMillis();
+
+                            var indexingStartTime = System.currentTimeMillis();
                             selectionTime = updatePartyEntitiesInSelector(cachedSelectorWithTime, entityTimes, remainingTime);
                             remainingTime -= System.currentTimeMillis() - indexingStartTime;
                         }
@@ -277,8 +277,8 @@ public class EmployeeSelectorEvaluator
                         if(entityTimes != null) {
                             if(BaseSelectorEvaluatorDebugFlags.EmployeeSelectorEvaluator)
                                 log.info("--- entityTimes.size() = " + entityTimes.size());
-                            
-                            long indexingStartTime = System.currentTimeMillis();
+
+                            var indexingStartTime = System.currentTimeMillis();
                             selectionTime = removePartyEntitiesFromSelector(employeeSelector, entityTimes, remainingTime);
                             remainingTime -= System.currentTimeMillis() - indexingStartTime;
                         }

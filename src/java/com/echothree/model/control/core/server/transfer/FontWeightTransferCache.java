@@ -36,14 +36,14 @@ public class FontWeightTransferCache
     }
 
     public FontWeightTransfer getFontWeightTransfer(FontWeight fontWeight) {
-        FontWeightTransfer fontWeightTransfer = get(fontWeight);
+        var fontWeightTransfer = get(fontWeight);
 
         if(fontWeightTransfer == null) {
-            FontWeightDetail fontWeightDetail = fontWeight.getLastDetail();
-            String fontWeightName = fontWeightDetail.getFontWeightName();
-            Boolean isDefault = fontWeightDetail.getIsDefault();
-            Integer sortOrder = fontWeightDetail.getSortOrder();
-            String description = coreControl.getBestFontWeightDescription(fontWeight, getLanguage());
+            var fontWeightDetail = fontWeight.getLastDetail();
+            var fontWeightName = fontWeightDetail.getFontWeightName();
+            var isDefault = fontWeightDetail.getIsDefault();
+            var sortOrder = fontWeightDetail.getSortOrder();
+            var description = coreControl.getBestFontWeightDescription(fontWeight, getLanguage());
 
             fontWeightTransfer = new FontWeightTransfer(fontWeightName, isDefault, sortOrder, description);
             put(fontWeight, fontWeightTransfer);

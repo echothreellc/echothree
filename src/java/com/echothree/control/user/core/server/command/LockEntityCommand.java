@@ -61,7 +61,7 @@ public class LockEntityCommand
             
             if(partyPK != null) {
                 var entityLockControl = Session.getModelController(EntityLockControl.class);
-                BasePK basePK = PersistenceUtils.getInstance().getBasePKFromEntityInstance(entityInstance);
+                var basePK = PersistenceUtils.getInstance().getBasePKFromEntityInstance(entityInstance);
 
                 if(entityLockControl.lockEntity(basePK, partyPK) == 0) {
                     addExecutionError(ExecutionErrors.EntityLockFailed.name());

@@ -52,17 +52,17 @@ public class AddEmployeeToCompanyCommand
     
     @Override
     protected BaseResult execute() {
-        String employeeName = form.getEmployeeName();
-        String partyName = form.getPartyName();
-        PartyEmployee partyEmployee = EmployeeLogic.getInstance().getPartyEmployeeByName(this, employeeName, partyName);
+        var employeeName = form.getEmployeeName();
+        var partyName = form.getPartyName();
+        var partyEmployee = EmployeeLogic.getInstance().getPartyEmployeeByName(this, employeeName, partyName);
         
         if(!hasExecutionErrors()) {
-            String companyName = form.getCompanyName();
-            PartyCompany partyCompany = CompanyLogic.getInstance().getPartyCompanyByName(this, companyName, null, null, true);
+            var companyName = form.getCompanyName();
+            var partyCompany = CompanyLogic.getInstance().getPartyCompanyByName(this, companyName, null, null, true);
 
             if(!hasExecutionErrors()) {
-                Party companyParty = partyCompany.getParty();
-                Party employeeParty = partyEmployee.getParty();
+                var companyParty = partyCompany.getParty();
+                var employeeParty = partyEmployee.getParty();
 
                 PartyRelationshipLogic.getInstance().addEmployeeToCompany(this, companyParty, employeeParty, getPartyPK());
             }

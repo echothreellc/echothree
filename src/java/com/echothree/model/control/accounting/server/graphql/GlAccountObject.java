@@ -62,7 +62,7 @@ public class GlAccountObject
     @GraphQLField
     @GraphQLDescription("parent gl account")
     public GlAccountObject getParentGlAccount() {
-        GlAccount parentGlAccount = getGlAccountDetail().getParentGlAccount();
+        var parentGlAccount = getGlAccountDetail().getParentGlAccount();
         
         return parentGlAccount == null ? null : new GlAccountObject(parentGlAccount);
     }

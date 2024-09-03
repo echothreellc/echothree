@@ -35,11 +35,11 @@ public class UseTypeDescriptionTransferCache
     }
     
     public UseTypeDescriptionTransfer getUseTypeDescriptionTransfer(UseTypeDescription useTypeDescription) {
-        UseTypeDescriptionTransfer useTypeDescriptionTransfer = get(useTypeDescription);
+        var useTypeDescriptionTransfer = get(useTypeDescription);
         
         if(useTypeDescriptionTransfer == null) {
-            UseTypeTransfer useTypeTransfer = useTypeControl.getUseTypeTransfer(userVisit, useTypeDescription.getUseType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, useTypeDescription.getLanguage());
+            var useTypeTransfer = useTypeControl.getUseTypeTransfer(userVisit, useTypeDescription.getUseType());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, useTypeDescription.getLanguage());
             
             useTypeDescriptionTransfer = new UseTypeDescriptionTransfer(languageTransfer, useTypeTransfer, useTypeDescription.getDescription());
             put(useTypeDescription, useTypeDescriptionTransfer);

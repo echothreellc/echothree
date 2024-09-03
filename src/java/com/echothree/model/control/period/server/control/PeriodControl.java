@@ -109,20 +109,20 @@ public class PeriodControl
     // --------------------------------------------------------------------------------
     
     public PeriodKind createPeriodKind(String periodKindName, WorkflowEntrance workflowEntrance, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        PeriodKind defaultPeriodKind = getDefaultPeriodKind();
-        boolean defaultFound = defaultPeriodKind != null;
+        var defaultPeriodKind = getDefaultPeriodKind();
+        var defaultFound = defaultPeriodKind != null;
         
         if(defaultFound && isDefault) {
-            PeriodKindDetailValue defaultPeriodKindDetailValue = getDefaultPeriodKindDetailValueForUpdate();
+            var defaultPeriodKindDetailValue = getDefaultPeriodKindDetailValueForUpdate();
             
             defaultPeriodKindDetailValue.setIsDefault(Boolean.FALSE);
             updatePeriodKindFromValue(defaultPeriodKindDetailValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        PeriodKind periodKind = PeriodKindFactory.getInstance().create();
-        PeriodKindDetail periodKindDetail = PeriodKindDetailFactory.getInstance().create(periodKind, periodKindName, workflowEntrance, isDefault, sortOrder, session.START_TIME_LONG,
+
+        var periodKind = PeriodKindFactory.getInstance().create();
+        var periodKindDetail = PeriodKindDetailFactory.getInstance().create(periodKind, periodKindName, workflowEntrance, isDefault, sortOrder, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -153,8 +153,8 @@ public class PeriodControl
                         "WHERE prdk_activedetailid = prdkdt_periodkinddetailid AND prdkdt_periodkindname = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PeriodKindFactory.getInstance().prepareStatement(query);
+
+            var ps = PeriodKindFactory.getInstance().prepareStatement(query);
             
             ps.setString(1, periodKindName);
             
@@ -195,8 +195,8 @@ public class PeriodControl
                     "WHERE prdk_activedetailid = prdkdt_periodkinddetailid AND prdkdt_isdefault = 1 " +
                     "FOR UPDATE";
         }
-        
-        PreparedStatement ps = PeriodKindFactory.getInstance().prepareStatement(query);
+
+        var ps = PeriodKindFactory.getInstance().prepareStatement(query);
         
         return PeriodKindFactory.getInstance().getEntityFromQuery(entityPermission, ps);
     }
@@ -227,8 +227,8 @@ public class PeriodControl
                     "WHERE prdk_activedetailid = prdkdt_periodkinddetailid " +
                     "FOR UPDATE";
         }
-        
-        PreparedStatement ps = PeriodKindFactory.getInstance().prepareStatement(query);
+
+        var ps = PeriodKindFactory.getInstance().prepareStatement(query);
         
         return PeriodKindFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
     }
@@ -242,7 +242,7 @@ public class PeriodControl
     }
     
     public PeriodKindChoicesBean getPeriodKindChoices(String defaultPeriodKindChoice, Language language, boolean allowNullChoice) {
-        List<PeriodKind> periodKinds = getPeriodKinds();
+        var periodKinds = getPeriodKinds();
         var size = periodKinds.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -258,7 +258,7 @@ public class PeriodControl
         }
         
         for(var periodKind : periodKinds) {
-            PeriodKindDetail periodKindDetail = periodKind.getLastDetail();
+            var periodKindDetail = periodKind.getLastDetail();
             
             var label = getBestPeriodKindDescription(periodKind, language);
             var value = periodKindDetail.getPeriodKindName();
@@ -280,9 +280,9 @@ public class PeriodControl
     }
     
     public List<PeriodKindTransfer> getPeriodKindTransfers(UserVisit userVisit) {
-        List<PeriodKind> periodKinds = getPeriodKinds();
+        var periodKinds = getPeriodKinds();
         List<PeriodKindTransfer> periodKindTransfers = new ArrayList<>(periodKinds.size());
-        PeriodKindTransferCache periodKindTransferCache = getPeriodTransferCaches(userVisit).getPeriodKindTransferCache();
+        var periodKindTransferCache = getPeriodTransferCaches(userVisit).getPeriodKindTransferCache();
         
         periodKinds.forEach((periodKind) ->
                 periodKindTransfers.add(periodKindTransferCache.getPeriodKindTransfer(periodKind))
@@ -292,25 +292,25 @@ public class PeriodControl
     }
     
     private void updatePeriodKindFromValue(PeriodKindDetailValue periodKindDetailValue, boolean checkDefault, BasePK updatedBy) {
-        PeriodKind periodKind = PeriodKindFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, periodKindDetailValue.getPeriodKindPK());
-        PeriodKindDetail periodKindDetail = periodKind.getActiveDetailForUpdate();
+        var periodKind = PeriodKindFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, periodKindDetailValue.getPeriodKindPK());
+        var periodKindDetail = periodKind.getActiveDetailForUpdate();
         
         periodKindDetail.setThruTime(session.START_TIME_LONG);
         periodKindDetail.store();
-        
-        PeriodKindPK periodKindPK = periodKindDetail.getPeriodKindPK();
-        String periodKindName = periodKindDetailValue.getPeriodKindName();
-        WorkflowEntrancePK workflowEntrancePK = periodKindDetailValue.getWorkflowEntrancePK();
-        Boolean isDefault = periodKindDetailValue.getIsDefault();
-        Integer sortOrder = periodKindDetailValue.getSortOrder();
+
+        var periodKindPK = periodKindDetail.getPeriodKindPK();
+        var periodKindName = periodKindDetailValue.getPeriodKindName();
+        var workflowEntrancePK = periodKindDetailValue.getWorkflowEntrancePK();
+        var isDefault = periodKindDetailValue.getIsDefault();
+        var sortOrder = periodKindDetailValue.getSortOrder();
         
         if(checkDefault) {
-            PeriodKind defaultPeriodKind = getDefaultPeriodKind();
-            boolean defaultFound = defaultPeriodKind != null && !defaultPeriodKind.equals(periodKind);
+            var defaultPeriodKind = getDefaultPeriodKind();
+            var defaultFound = defaultPeriodKind != null && !defaultPeriodKind.equals(periodKind);
             
             if(isDefault && defaultFound) {
                 // If I'm the default, and a default already existed...
-                PeriodKindDetailValue defaultPeriodKindDetailValue = getDefaultPeriodKindDetailValueForUpdate();
+                var defaultPeriodKindDetailValue = getDefaultPeriodKindDetailValueForUpdate();
                 
                 defaultPeriodKindDetailValue.setIsDefault(Boolean.FALSE);
                 updatePeriodKindFromValue(defaultPeriodKindDetailValue, false, updatedBy);
@@ -337,23 +337,23 @@ public class PeriodControl
     public void deletePeriodKind(PeriodKind periodKind, BasePK deletedBy) {
         deletePeriodTypesByPeriodKind(periodKind, deletedBy);
         deletePeriodKindDescriptionsByPeriodKind(periodKind, deletedBy);
-        
-        PeriodKindDetail periodKindDetail = periodKind.getLastDetailForUpdate();
+
+        var periodKindDetail = periodKind.getLastDetailForUpdate();
         periodKindDetail.setThruTime(session.START_TIME_LONG);
         periodKind.setActiveDetail(null);
         periodKind.store();
         
         // Check for default, and pick one if necessary
-        PeriodKind defaultPeriodKind = getDefaultPeriodKind();
+        var defaultPeriodKind = getDefaultPeriodKind();
         if(defaultPeriodKind == null) {
-            List<PeriodKind> periodKinds = getPeriodKindsForUpdate();
+            var periodKinds = getPeriodKindsForUpdate();
             
             if(!periodKinds.isEmpty()) {
-                Iterator<PeriodKind> iter = periodKinds.iterator();
+                var iter = periodKinds.iterator();
                 if(iter.hasNext()) {
                     defaultPeriodKind = iter.next();
                 }
-                PeriodKindDetailValue periodKindDetailValue = Objects.requireNonNull(defaultPeriodKind).getLastDetailForUpdate().getPeriodKindDetailValue().clone();
+                var periodKindDetailValue = Objects.requireNonNull(defaultPeriodKind).getLastDetailForUpdate().getPeriodKindDetailValue().clone();
                 
                 periodKindDetailValue.setIsDefault(Boolean.TRUE);
                 updatePeriodKindFromValue(periodKindDetailValue, false, deletedBy);
@@ -369,7 +369,7 @@ public class PeriodControl
     
     public PeriodKindDescription createPeriodKindDescription(PeriodKind periodKind, Language language, String description,
             BasePK createdBy) {
-        PeriodKindDescription periodKindDescription = PeriodKindDescriptionFactory.getInstance().create(periodKind,
+        var periodKindDescription = PeriodKindDescriptionFactory.getInstance().create(periodKind,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(periodKind.getPrimaryKey(), EventTypes.MODIFY, periodKindDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -393,8 +393,8 @@ public class PeriodControl
                         "WHERE prdkd_prdk_periodkindid = ? AND prdkd_lang_languageid = ? AND prdkd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PeriodKindDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = PeriodKindDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, periodKind.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -441,8 +441,8 @@ public class PeriodControl
                         "WHERE prdkd_prdk_periodkindid = ? AND prdkd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PeriodKindDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = PeriodKindDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, periodKind.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -465,7 +465,7 @@ public class PeriodControl
     
     public String getBestPeriodKindDescription(PeriodKind periodKind, Language language) {
         String description;
-        PeriodKindDescription periodKindDescription = getPeriodKindDescription(periodKind, language);
+        var periodKindDescription = getPeriodKindDescription(periodKind, language);
         
         if(periodKindDescription == null && !language.getIsDefault()) {
             periodKindDescription = getPeriodKindDescription(periodKind, getPartyControl().getDefaultLanguage());
@@ -485,7 +485,7 @@ public class PeriodControl
     }
     
     public List<PeriodKindDescriptionTransfer> getPeriodKindDescriptionTransfersByPeriodKind(UserVisit userVisit, PeriodKind periodKind) {
-        List<PeriodKindDescription> periodKindDescriptions = getPeriodKindDescriptionsByPeriodKind(periodKind);
+        var periodKindDescriptions = getPeriodKindDescriptionsByPeriodKind(periodKind);
         List<PeriodKindDescriptionTransfer> periodKindDescriptionTransfers = new ArrayList<>(periodKindDescriptions.size());
         
         periodKindDescriptions.forEach((periodKindDescription) -> {
@@ -497,15 +497,15 @@ public class PeriodControl
     
     public void updatePeriodKindDescriptionFromValue(PeriodKindDescriptionValue periodKindDescriptionValue, BasePK updatedBy) {
         if(periodKindDescriptionValue.hasBeenModified()) {
-            PeriodKindDescription periodKindDescription = PeriodKindDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var periodKindDescription = PeriodKindDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      periodKindDescriptionValue.getPrimaryKey());
             
             periodKindDescription.setThruTime(session.START_TIME_LONG);
             periodKindDescription.store();
-            
-            PeriodKind periodKind = periodKindDescription.getPeriodKind();
-            Language language = periodKindDescription.getLanguage();
-            String description = periodKindDescriptionValue.getDescription();
+
+            var periodKind = periodKindDescription.getPeriodKind();
+            var language = periodKindDescription.getLanguage();
+            var description = periodKindDescriptionValue.getDescription();
             
             periodKindDescription = PeriodKindDescriptionFactory.getInstance().create(periodKind, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -522,7 +522,7 @@ public class PeriodControl
     }
     
     public void deletePeriodKindDescriptionsByPeriodKind(PeriodKind periodKind, BasePK deletedBy) {
-        List<PeriodKindDescription> periodKindDescriptions = getPeriodKindDescriptionsByPeriodKindForUpdate(periodKind);
+        var periodKindDescriptions = getPeriodKindDescriptionsByPeriodKindForUpdate(periodKind);
         
         periodKindDescriptions.forEach((periodKindDescription) -> 
                 deletePeriodKindDescription(periodKindDescription, deletedBy)
@@ -535,20 +535,20 @@ public class PeriodControl
     
     public PeriodType createPeriodType(PeriodKind periodKind, String periodTypeName, PeriodType parentPeriodType, WorkflowEntrance workflowEntrance, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
-        PeriodType defaultPeriodType = getDefaultPeriodType(periodKind);
-        boolean defaultFound = defaultPeriodType != null;
+        var defaultPeriodType = getDefaultPeriodType(periodKind);
+        var defaultFound = defaultPeriodType != null;
         
         if(defaultFound && isDefault) {
-            PeriodTypeDetailValue defaultPeriodTypeDetailValue = getDefaultPeriodTypeDetailValueForUpdate(periodKind);
+            var defaultPeriodTypeDetailValue = getDefaultPeriodTypeDetailValueForUpdate(periodKind);
             
             defaultPeriodTypeDetailValue.setIsDefault(Boolean.FALSE);
             updatePeriodTypeFromValue(defaultPeriodTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        PeriodType periodType = PeriodTypeFactory.getInstance().create();
-        PeriodTypeDetail periodTypeDetail = PeriodTypeDetailFactory.getInstance().create(periodType, periodKind, periodTypeName, parentPeriodType, workflowEntrance, isDefault, sortOrder,
+
+        var periodType = PeriodTypeFactory.getInstance().create();
+        var periodTypeDetail = PeriodTypeDetailFactory.getInstance().create(periodType, periodKind, periodTypeName, parentPeriodType, workflowEntrance, isDefault, sortOrder,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -580,8 +580,8 @@ public class PeriodControl
                         "WHERE prdt_activedetailid = prdtdt_periodtypedetailid AND prdtdt_prdk_periodkindid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PeriodTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = PeriodTypeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, periodKind.getPrimaryKey().getEntityId());
             
@@ -619,8 +619,8 @@ public class PeriodControl
                         "AND prdtdt_prdk_periodkindid = ? AND prdtdt_isdefault = 1 " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PeriodTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = PeriodTypeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, periodKind.getPrimaryKey().getEntityId());
             
@@ -662,8 +662,8 @@ public class PeriodControl
                         "AND prdtdt_prdk_periodkindid = ? AND prdtdt_periodtypename = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PeriodTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = PeriodTypeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, periodKind.getPrimaryKey().getEntityId());
             ps.setString(2, periodTypeName);
@@ -694,7 +694,7 @@ public class PeriodControl
     
     public PeriodTypeChoicesBean getPeriodTypeChoices(String defaultPeriodTypeChoice, Language language,
             boolean allowNullChoice, PeriodKind periodKind) {
-        List<PeriodType> periodTypes = getPeriodTypes(periodKind);
+        var periodTypes = getPeriodTypes(periodKind);
         var size = periodTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -710,7 +710,7 @@ public class PeriodControl
         }
         
         for(var periodType : periodTypes) {
-            PeriodTypeDetail periodTypeDetail = periodType.getLastDetail();
+            var periodTypeDetail = periodType.getLastDetail();
             var label = getBestPeriodTypeDescription(periodType, language);
             var value = periodTypeDetail.getPeriodTypeName();
             
@@ -727,7 +727,7 @@ public class PeriodControl
     }
     
     public boolean isParentPeriodTypeSafe(PeriodType periodType, PeriodType parentPeriodType) {
-        boolean safe = true;
+        var safe = true;
         
         if(parentPeriodType != null) {
             Set<PeriodType> parentItemPurchasingCategories = new HashSet<>();
@@ -752,9 +752,9 @@ public class PeriodControl
     }
     
     public List<PeriodTypeTransfer> getPeriodTypeTransfersByPeriodKind(UserVisit userVisit, PeriodKind periodKind) {
-        List<PeriodType> periodTypes = getPeriodTypes(periodKind);
+        var periodTypes = getPeriodTypes(periodKind);
         List<PeriodTypeTransfer> periodTypeTransfers = new ArrayList<>(periodTypes.size());
-        PeriodTypeTransferCache periodTypeTransferCache = getPeriodTransferCaches(userVisit).getPeriodTypeTransferCache();
+        var periodTypeTransferCache = getPeriodTransferCaches(userVisit).getPeriodTypeTransferCache();
         
         periodTypes.forEach((periodType) ->
                 periodTypeTransfers.add(periodTypeTransferCache.getPeriodTypeTransfer(periodType))
@@ -766,28 +766,28 @@ public class PeriodControl
     private void updatePeriodTypeFromValue(PeriodTypeDetailValue periodTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(periodTypeDetailValue.hasBeenModified()) {
-            PeriodType periodType = PeriodTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, periodTypeDetailValue.getPeriodTypePK());
-            PeriodTypeDetail periodTypeDetail = periodType.getActiveDetailForUpdate();
+            var periodType = PeriodTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, periodTypeDetailValue.getPeriodTypePK());
+            var periodTypeDetail = periodType.getActiveDetailForUpdate();
             
             periodTypeDetail.setThruTime(session.START_TIME_LONG);
             periodTypeDetail.store();
-            
-            PeriodTypePK periodTypePK = periodTypeDetail.getPeriodTypePK();
-            PeriodKind periodKind = periodTypeDetail.getPeriodKind();
-            PeriodKindPK periodKindPK = periodKind.getPrimaryKey();
-            String periodTypeName = periodTypeDetailValue.getPeriodTypeName();
-            PeriodTypePK parentPeriodTypePK = periodTypeDetailValue.getPeriodTypePK();
-            WorkflowEntrancePK workflowEntrancePK = periodTypeDetailValue.getWorkflowEntrancePK();
-            Boolean isDefault = periodTypeDetailValue.getIsDefault();
-            Integer sortOrder = periodTypeDetailValue.getSortOrder();
+
+            var periodTypePK = periodTypeDetail.getPeriodTypePK();
+            var periodKind = periodTypeDetail.getPeriodKind();
+            var periodKindPK = periodKind.getPrimaryKey();
+            var periodTypeName = periodTypeDetailValue.getPeriodTypeName();
+            var parentPeriodTypePK = periodTypeDetailValue.getPeriodTypePK();
+            var workflowEntrancePK = periodTypeDetailValue.getWorkflowEntrancePK();
+            var isDefault = periodTypeDetailValue.getIsDefault();
+            var sortOrder = periodTypeDetailValue.getSortOrder();
             
             if(checkDefault) {
-                PeriodType defaultPeriodType = getDefaultPeriodType(periodKind);
-                boolean defaultFound = defaultPeriodType != null && !defaultPeriodType.equals(periodType);
+                var defaultPeriodType = getDefaultPeriodType(periodKind);
+                var defaultFound = defaultPeriodType != null && !defaultPeriodType.equals(periodType);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    PeriodTypeDetailValue defaultPeriodTypeDetailValue = getDefaultPeriodTypeDetailValueForUpdate(periodKind);
+                    var defaultPeriodTypeDetailValue = getDefaultPeriodTypeDetailValueForUpdate(periodKind);
                     
                     defaultPeriodTypeDetailValue.setIsDefault(Boolean.FALSE);
                     updatePeriodTypeFromValue(defaultPeriodTypeDetailValue, false, updatedBy);
@@ -814,24 +814,24 @@ public class PeriodControl
     public void deletePeriodType(PeriodType periodType, BasePK deletedBy) {
         deletePeriodsByPeriodType(periodType, deletedBy);
         deletePeriodTypeDescriptionsByPeriodType(periodType, deletedBy);
-        
-        PeriodTypeDetail periodTypeDetail = periodType.getLastDetailForUpdate();
+
+        var periodTypeDetail = periodType.getLastDetailForUpdate();
         periodTypeDetail.setThruTime(session.START_TIME_LONG);
         periodType.setActiveDetail(null);
         periodType.store();
         
         // Check for default, and pick one if necessary
-        PeriodKind periodKind = periodTypeDetail.getPeriodKind();
-        PeriodType defaultPeriodType = getDefaultPeriodType(periodKind);
+        var periodKind = periodTypeDetail.getPeriodKind();
+        var defaultPeriodType = getDefaultPeriodType(periodKind);
         if(defaultPeriodType == null) {
-            List<PeriodType> periodTypes = getPeriodTypesForUpdate(periodKind);
+            var periodTypes = getPeriodTypesForUpdate(periodKind);
             
             if(!periodTypes.isEmpty()) {
-                Iterator<PeriodType> iter = periodTypes.iterator();
+                var iter = periodTypes.iterator();
                 if(iter.hasNext()) {
                     defaultPeriodType = iter.next();
                 }
-                PeriodTypeDetailValue periodTypeDetailValue = Objects.requireNonNull(defaultPeriodType).getLastDetailForUpdate().getPeriodTypeDetailValue().clone();
+                var periodTypeDetailValue = Objects.requireNonNull(defaultPeriodType).getLastDetailForUpdate().getPeriodTypeDetailValue().clone();
                 
                 periodTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updatePeriodTypeFromValue(periodTypeDetailValue, false, deletedBy);
@@ -842,7 +842,7 @@ public class PeriodControl
     }
     
     public void deletePeriodTypesByPeriodKind(PeriodKind periodKind, BasePK deletedBy) {
-        List<PeriodType> periodTypes = getPeriodTypesForUpdate(periodKind);
+        var periodTypes = getPeriodTypesForUpdate(periodKind);
         
         periodTypes.forEach((periodType) -> 
                 deletePeriodType(periodType, deletedBy)
@@ -855,7 +855,7 @@ public class PeriodControl
     
     public PeriodTypeDescription createPeriodTypeDescription(PeriodType periodType, Language language, String description,
             BasePK createdBy) {
-        PeriodTypeDescription periodTypeDescription = PeriodTypeDescriptionFactory.getInstance().create(periodType,
+        var periodTypeDescription = PeriodTypeDescriptionFactory.getInstance().create(periodType,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(periodType.getPrimaryKey(), EventTypes.MODIFY, periodTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -879,8 +879,8 @@ public class PeriodControl
                         "WHERE prdtd_prdt_periodtypeid = ? AND prdtd_lang_languageid = ? AND prdtd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PeriodTypeDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = PeriodTypeDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, periodType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -927,8 +927,8 @@ public class PeriodControl
                         "WHERE prdtd_prdt_periodtypeid = ? AND prdtd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PeriodTypeDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = PeriodTypeDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, periodType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -951,7 +951,7 @@ public class PeriodControl
     
     public String getBestPeriodTypeDescription(PeriodType periodType, Language language) {
         String description;
-        PeriodTypeDescription periodTypeDescription = getPeriodTypeDescription(periodType, language);
+        var periodTypeDescription = getPeriodTypeDescription(periodType, language);
         
         if(periodTypeDescription == null && !language.getIsDefault()) {
             periodTypeDescription = getPeriodTypeDescription(periodType, getPartyControl().getDefaultLanguage());
@@ -971,7 +971,7 @@ public class PeriodControl
     }
     
     public List<PeriodTypeDescriptionTransfer> getPeriodTypeDescriptionTransfersByPeriodType(UserVisit userVisit, PeriodType periodType) {
-        List<PeriodTypeDescription> periodTypeDescriptions = getPeriodTypeDescriptionsByPeriodType(periodType);
+        var periodTypeDescriptions = getPeriodTypeDescriptionsByPeriodType(periodType);
         List<PeriodTypeDescriptionTransfer> periodTypeDescriptionTransfers = new ArrayList<>(periodTypeDescriptions.size());
         
         periodTypeDescriptions.forEach((periodTypeDescription) -> {
@@ -983,15 +983,15 @@ public class PeriodControl
     
     public void updatePeriodTypeDescriptionFromValue(PeriodTypeDescriptionValue periodTypeDescriptionValue, BasePK updatedBy) {
         if(periodTypeDescriptionValue.hasBeenModified()) {
-            PeriodTypeDescription periodTypeDescription = PeriodTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var periodTypeDescription = PeriodTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      periodTypeDescriptionValue.getPrimaryKey());
             
             periodTypeDescription.setThruTime(session.START_TIME_LONG);
             periodTypeDescription.store();
-            
-            PeriodType periodType = periodTypeDescription.getPeriodType();
-            Language language = periodTypeDescription.getLanguage();
-            String description = periodTypeDescriptionValue.getDescription();
+
+            var periodType = periodTypeDescription.getPeriodType();
+            var language = periodTypeDescription.getLanguage();
+            var description = periodTypeDescriptionValue.getDescription();
             
             periodTypeDescription = PeriodTypeDescriptionFactory.getInstance().create(periodType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1007,7 +1007,7 @@ public class PeriodControl
     }
     
     public void deletePeriodTypeDescriptionsByPeriodType(PeriodType periodType, BasePK deletedBy) {
-        List<PeriodTypeDescription> periodTypeDescriptions = getPeriodTypeDescriptionsByPeriodTypeForUpdate(periodType);
+        var periodTypeDescriptions = getPeriodTypeDescriptionsByPeriodTypeForUpdate(periodType);
         
         periodTypeDescriptions.forEach((periodTypeDescription) -> 
                 deletePeriodTypeDescription(periodTypeDescription, deletedBy)
@@ -1019,8 +1019,8 @@ public class PeriodControl
     // --------------------------------------------------------------------------------
     
     public Period createPeriod(PeriodKind periodKind, String periodName, Period parentPeriod, PeriodType periodType, Long startTime, Long endTime, BasePK createdBy) {
-        Period period = PeriodFactory.getInstance().create();
-        PeriodDetail periodDetail = PeriodDetailFactory.getInstance().create(period, periodKind, periodName, parentPeriod, periodType, startTime,
+        var period = PeriodFactory.getInstance().create();
+        var periodDetail = PeriodDetailFactory.getInstance().create(period, periodKind, periodName, parentPeriod, periodType, startTime,
                 endTime, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -1056,8 +1056,8 @@ public class PeriodControl
                         "AND prddt_starttime <= ? AND prddt_endtime >= ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PeriodFactory.getInstance().prepareStatement(query);
+
+            var ps = PeriodFactory.getInstance().prepareStatement(query);
             
             ps.setString(1, periodKindName);
             ps.setLong(2, time);
@@ -1096,8 +1096,8 @@ public class PeriodControl
                         "WHERE prd_activedetailid = prddt_perioddetailid AND prddt_prdt_periodtypeid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PeriodFactory.getInstance().prepareStatement(query);
+
+            var ps = PeriodFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, periodType.getPrimaryKey().getEntityId());
             
@@ -1134,8 +1134,8 @@ public class PeriodControl
                         "WHERE prd_activedetailid = prddt_perioddetailid AND prddt_parentperiodid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PeriodFactory.getInstance().prepareStatement(query);
+
+            var ps = PeriodFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, parentPeriod.getPrimaryKey().getEntityId());
             
@@ -1156,7 +1156,7 @@ public class PeriodControl
     }
     
     public List<Period> getPeriodsContainedByPeriod(Period period) {
-        List<Period> newPeriods = getPeriodsByParentPeriod(period);
+        var newPeriods = getPeriodsByParentPeriod(period);
         List<Period> periods = new ArrayList<>(newPeriods);
 
         newPeriods.forEach((newPeriod) -> {
@@ -1184,8 +1184,8 @@ public class PeriodControl
                         "AND prddt_prdk_periodkindid = ? AND prddt_periodname = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PeriodFactory.getInstance().prepareStatement(query);
+
+            var ps = PeriodFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, periodKind.getPrimaryKey().getEntityId());
             ps.setString(2, periodName);
@@ -1215,7 +1215,7 @@ public class PeriodControl
     }
     
     public boolean isParentPeriodSafe(Period period, Period parentPeriod) {
-        boolean safe = true;
+        var safe = true;
         
         if(parentPeriod != null) {
             Set<Period> parentItemPurchasingCategories = new HashSet<>();
@@ -1240,9 +1240,9 @@ public class PeriodControl
     }
     
     public List<PeriodTransfer> getPeriodTransfersByPeriodType(UserVisit userVisit, PeriodType periodType) {
-        List<Period> periods = getPeriods(periodType);
+        var periods = getPeriods(periodType);
         List<PeriodTransfer> periodTransfers = new ArrayList<>(periods.size());
-        PeriodTransferCache periodTransferCache = getPeriodTransferCaches(userVisit).getPeriodTransferCache();
+        var periodTransferCache = getPeriodTransferCaches(userVisit).getPeriodTransferCache();
         
         periods.forEach((period) ->
                 periodTransfers.add(periodTransferCache.getPeriodTransfer(period))
@@ -1253,19 +1253,19 @@ public class PeriodControl
     
     public void updatePeriodFromValue(PeriodDetailValue periodDetailValue, BasePK updatedBy) {
         if(periodDetailValue.hasBeenModified()) {
-            Period period = PeriodFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, periodDetailValue.getPeriodPK());
-            PeriodDetail periodDetail = period.getActiveDetailForUpdate();
+            var period = PeriodFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, periodDetailValue.getPeriodPK());
+            var periodDetail = period.getActiveDetailForUpdate();
             
             periodDetail.setThruTime(session.START_TIME_LONG);
             periodDetail.store();
-            
-            PeriodPK periodPK = periodDetail.getPeriodPK(); // Not updated
-            PeriodKindPK periodKindPK = periodDetail.getPeriodKindPK(); // Not updated
-            String periodName = periodDetailValue.getPeriodName();
-            PeriodPK parentPeriodPK = periodDetailValue.getPeriodPK();
-            PeriodTypePK periodTypePK = periodDetailValue.getPeriodTypePK();
-            Long startTime = periodDetailValue.getStartTime();
-            Long endTime = periodDetailValue.getEndTime();
+
+            var periodPK = periodDetail.getPeriodPK(); // Not updated
+            var periodKindPK = periodDetail.getPeriodKindPK(); // Not updated
+            var periodName = periodDetailValue.getPeriodName();
+            var parentPeriodPK = periodDetailValue.getPeriodPK();
+            var periodTypePK = periodDetailValue.getPeriodTypePK();
+            var startTime = periodDetailValue.getStartTime();
+            var endTime = periodDetailValue.getEndTime();
             
             periodDetail = PeriodDetailFactory.getInstance().create(periodPK, periodKindPK, periodName, parentPeriodPK, periodTypePK, startTime,
                     endTime, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1280,8 +1280,8 @@ public class PeriodControl
     public void deletePeriod(Period period, BasePK deletedBy) {
         deletePeriodsByParentPeriod(period, deletedBy);
         deletePeriodDescriptionsByPeriod(period, deletedBy);
-        
-        PeriodDetail periodDetail = period.getLastDetailForUpdate();
+
+        var periodDetail = period.getLastDetailForUpdate();
         periodDetail.setThruTime(session.START_TIME_LONG);
         period.setActiveDetail(null);
         period.store();
@@ -1300,7 +1300,7 @@ public class PeriodControl
     }
 
     public void deletePeriodsByPeriodType(PeriodType periodType, BasePK deletedBy) {
-        List<Period> periods = getPeriodsForUpdate(periodType);
+        var periods = getPeriodsForUpdate(periodType);
         
         periods.forEach((period) -> 
                 deletePeriod(period, deletedBy)
@@ -1313,7 +1313,7 @@ public class PeriodControl
     
     public PeriodDescription createPeriodDescription(Period period, Language language, String description,
             BasePK createdBy) {
-        PeriodDescription periodDescription = PeriodDescriptionFactory.getInstance().create(period,
+        var periodDescription = PeriodDescriptionFactory.getInstance().create(period,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(period.getPrimaryKey(), EventTypes.MODIFY, periodDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1337,8 +1337,8 @@ public class PeriodControl
                         "WHERE prdd_prd_periodid = ? AND prdd_lang_languageid = ? AND prdd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PeriodDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = PeriodDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, period.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -1385,8 +1385,8 @@ public class PeriodControl
                         "WHERE prdd_prd_periodid = ? AND prdd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PeriodDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = PeriodDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, period.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1409,7 +1409,7 @@ public class PeriodControl
     
     public String getBestPeriodDescription(Period period, Language language) {
         String description;
-        PeriodDescription periodDescription = getPeriodDescription(period, language);
+        var periodDescription = getPeriodDescription(period, language);
         
         if(periodDescription == null && !language.getIsDefault()) {
             periodDescription = getPeriodDescription(period, getPartyControl().getDefaultLanguage());
@@ -1429,7 +1429,7 @@ public class PeriodControl
     }
     
     public List<PeriodDescriptionTransfer> getPeriodDescriptionTransfersByPeriod(UserVisit userVisit, Period period) {
-        List<PeriodDescription> periodDescriptions = getPeriodDescriptionsByPeriod(period);
+        var periodDescriptions = getPeriodDescriptionsByPeriod(period);
         List<PeriodDescriptionTransfer> periodDescriptionTransfers = new ArrayList<>(periodDescriptions.size());
         
         periodDescriptions.forEach((periodDescription) -> {
@@ -1441,15 +1441,15 @@ public class PeriodControl
     
     public void updatePeriodDescriptionFromValue(PeriodDescriptionValue periodDescriptionValue, BasePK updatedBy) {
         if(periodDescriptionValue.hasBeenModified()) {
-            PeriodDescription periodDescription = PeriodDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var periodDescription = PeriodDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      periodDescriptionValue.getPrimaryKey());
             
             periodDescription.setThruTime(session.START_TIME_LONG);
             periodDescription.store();
-            
-            Period period = periodDescription.getPeriod();
-            Language language = periodDescription.getLanguage();
-            String description = periodDescriptionValue.getDescription();
+
+            var period = periodDescription.getPeriod();
+            var language = periodDescription.getLanguage();
+            var description = periodDescriptionValue.getDescription();
             
             periodDescription = PeriodDescriptionFactory.getInstance().create(period, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1465,7 +1465,7 @@ public class PeriodControl
     }
     
     public void deletePeriodDescriptionsByPeriod(Period period, BasePK deletedBy) {
-        List<PeriodDescription> periodDescriptions = getPeriodDescriptionsByPeriodForUpdate(period);
+        var periodDescriptions = getPeriodDescriptionsByPeriodForUpdate(period);
         
         periodDescriptions.forEach((periodDescription) -> 
                 deletePeriodDescription(periodDescription, deletedBy)
@@ -1485,8 +1485,8 @@ public class PeriodControl
             workflowControl.getWorkflowEntranceChoices(fiscalPeriodStatusChoicesBean, defaultFiscalPeriodStatusChoice, language, allowNullChoice,
                     workflowControl.getWorkflowByName(FiscalPeriodStatusConstants.Workflow_FISCAL_PERIOD_STATUS), partyPK);
         } else {
-            EntityInstance entityInstance = getCoreControl().getEntityInstanceByBasePK(period.getPrimaryKey());
-            WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(FiscalPeriodStatusConstants.Workflow_FISCAL_PERIOD_STATUS,
+            var entityInstance = getCoreControl().getEntityInstanceByBasePK(period.getPrimaryKey());
+            var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(FiscalPeriodStatusConstants.Workflow_FISCAL_PERIOD_STATUS,
                     entityInstance);
             
             workflowControl.getWorkflowDestinationChoices(fiscalPeriodStatusChoicesBean, defaultFiscalPeriodStatusChoice, language, allowNullChoice,
@@ -1498,10 +1498,10 @@ public class PeriodControl
     
     public void setFiscalPeriodStatus(ExecutionErrorAccumulator eea, Period period, String fiscalPeriodStatusChoice, PartyPK modifiedBy) {
         var workflowControl = getWorkflowControl();
-        EntityInstance entityInstance = getEntityInstanceByBaseEntity(period);
-        WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(FiscalPeriodStatusConstants.Workflow_FISCAL_PERIOD_STATUS,
+        var entityInstance = getEntityInstanceByBaseEntity(period);
+        var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(FiscalPeriodStatusConstants.Workflow_FISCAL_PERIOD_STATUS,
                 entityInstance);
-        WorkflowDestination workflowDestination = fiscalPeriodStatusChoice == null? null:
+        var workflowDestination = fiscalPeriodStatusChoice == null? null:
             workflowControl.getWorkflowDestinationByName(workflowEntityStatus.getWorkflowStep(), fiscalPeriodStatusChoice);
         
         if(workflowDestination != null || fiscalPeriodStatusChoice == null) {

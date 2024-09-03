@@ -63,8 +63,8 @@ public class DeleteLotTimeTypeCommand
     @Override
     protected BaseResult execute() {
         var lotTimeControl = Session.getModelController(LotTimeControl.class);
-        String lotTimeTypeName = form.getLotTimeTypeName();
-        LotTimeType lotTimeType = lotTimeControl.getLotTimeTypeByNameForUpdate(lotTimeTypeName);
+        var lotTimeTypeName = form.getLotTimeTypeName();
+        var lotTimeType = lotTimeControl.getLotTimeTypeByNameForUpdate(lotTimeTypeName);
 
         if(lotTimeType != null) {
             lotTimeControl.deleteLotTimeType(lotTimeType, getPartyPK());

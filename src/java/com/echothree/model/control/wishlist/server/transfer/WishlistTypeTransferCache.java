@@ -33,14 +33,14 @@ public class WishlistTypeTransferCache
     }
     
     public WishlistTypeTransfer getWishlistTypeTransfer(WishlistType wishlistType) {
-        WishlistTypeTransfer wishlistTypeTransfer = get(wishlistType);
+        var wishlistTypeTransfer = get(wishlistType);
         
         if(wishlistTypeTransfer == null) {
-            WishlistTypeDetail wishlistTypeDetail = wishlistType.getLastDetail();
-            String wishlistTypeName = wishlistTypeDetail.getWishlistTypeName();
-            Boolean isDefault = wishlistTypeDetail.getIsDefault();
-            Integer sortOrder = wishlistTypeDetail.getSortOrder();
-            String description = wishlistControl.getBestWishlistTypeDescription(wishlistType, getLanguage());
+            var wishlistTypeDetail = wishlistType.getLastDetail();
+            var wishlistTypeName = wishlistTypeDetail.getWishlistTypeName();
+            var isDefault = wishlistTypeDetail.getIsDefault();
+            var sortOrder = wishlistTypeDetail.getSortOrder();
+            var description = wishlistControl.getBestWishlistTypeDescription(wishlistType, getLanguage());
             
             wishlistTypeTransfer = new WishlistTypeTransfer(wishlistTypeName, isDefault, sortOrder, description);
             put(wishlistType, wishlistTypeTransfer);

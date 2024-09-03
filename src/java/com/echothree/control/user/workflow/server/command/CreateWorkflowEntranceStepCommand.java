@@ -69,23 +69,23 @@ public class CreateWorkflowEntranceStepCommand
     @Override
     protected BaseResult execute() {
         var workflowControl = Session.getModelController(WorkflowControl.class);
-        String workflowName = form.getWorkflowName();
+        var workflowName = form.getWorkflowName();
         var workflow = workflowControl.getWorkflowByName(workflowName);
         
         if(workflow != null) {
-            String workflowEntranceName = form.getWorkflowEntranceName();
-            WorkflowEntrance workflowEntrance = workflowControl.getWorkflowEntranceByName(workflow, workflowEntranceName);
+            var workflowEntranceName = form.getWorkflowEntranceName();
+            var workflowEntrance = workflowControl.getWorkflowEntranceByName(workflow, workflowEntranceName);
             
             if(workflowEntrance != null) {
-                String entranceWorkflowName = form.getEntranceWorkflowName();
-                Workflow entranceWorkflow = workflowControl.getWorkflowByName(entranceWorkflowName);
+                var entranceWorkflowName = form.getEntranceWorkflowName();
+                var entranceWorkflow = workflowControl.getWorkflowByName(entranceWorkflowName);
                 
                 if(entranceWorkflow != null) {
-                    String entranceWorkflowStepName = form.getEntranceWorkflowStepName();
-                    WorkflowStep entranceWorkflowStep = workflowControl.getWorkflowStepByName(entranceWorkflow, entranceWorkflowStepName);
+                    var entranceWorkflowStepName = form.getEntranceWorkflowStepName();
+                    var entranceWorkflowStep = workflowControl.getWorkflowStepByName(entranceWorkflow, entranceWorkflowStepName);
                     
                     if(entranceWorkflowStep != null) {
-                        WorkflowEntranceStep workflowEntranceStep = workflowControl.getWorkflowEntranceStep(workflowEntrance, entranceWorkflowStep);
+                        var workflowEntranceStep = workflowControl.getWorkflowEntranceStep(workflowEntrance, entranceWorkflowStep);
                         
                         if(workflowEntranceStep == null) {
                             workflowControl.createWorkflowEntranceStep(workflowEntrance, entranceWorkflowStep, getPartyPK());

@@ -65,8 +65,8 @@ public class DeleteOfferCommand
     
     @Override
     protected BaseResult execute() {
-        String offerName = form.getOfferName();
-        Offer offer = OfferLogic.getInstance().getOfferByNameForUpdate(this, offerName);
+        var offerName = form.getOfferName();
+        var offer = OfferLogic.getInstance().getOfferByNameForUpdate(this, offerName);
 
         if(!hasExecutionErrors()) {
             OfferLogic.getInstance().deleteOffer(this, offer, getPartyPK());

@@ -53,15 +53,15 @@ public class CreatePartyTypeUseCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        String partyTypeUseTypeName = form.getPartyTypeUseTypeName();
-        PartyTypeUseType partyTypeUseType = partyControl.getPartyTypeUseTypeByName(partyTypeUseTypeName);
+        var partyTypeUseTypeName = form.getPartyTypeUseTypeName();
+        var partyTypeUseType = partyControl.getPartyTypeUseTypeByName(partyTypeUseTypeName);
         
         if(partyTypeUseType != null) {
-            String partyTypeName = form.getPartyTypeName();
-            PartyType partyType = partyControl.getPartyTypeByName(partyTypeName);
+            var partyTypeName = form.getPartyTypeName();
+            var partyType = partyControl.getPartyTypeByName(partyTypeName);
             
             if(partyType != null) {
-                PartyTypeUse partyTypeUse = partyControl.getPartyTypeUse(partyTypeUseType, partyType);
+                var partyTypeUse = partyControl.getPartyTypeUse(partyTypeUseType, partyType);
                 
                 if(partyTypeUse == null) {
                     var isDefault = Boolean.valueOf(form.getIsDefault());

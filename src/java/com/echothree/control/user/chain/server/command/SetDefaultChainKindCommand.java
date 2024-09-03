@@ -62,8 +62,8 @@ public class SetDefaultChainKindCommand
     @Override
     protected BaseResult execute() {
         var chainControl = Session.getModelController(ChainControl.class);
-        String chainKindName = form.getChainKindName();
-        ChainKindDetailValue chainKindDetailValue = chainControl.getChainKindDetailValueByNameForUpdate(chainKindName);
+        var chainKindName = form.getChainKindName();
+        var chainKindDetailValue = chainControl.getChainKindDetailValueByNameForUpdate(chainKindName);
         
         if(chainKindDetailValue != null) {
             chainKindDetailValue.setIsDefault(Boolean.TRUE);

@@ -54,22 +54,22 @@ public class AppearanceTransferCache
     }
 
     public AppearanceTransfer getAppearanceTransfer(Appearance appearance) {
-        AppearanceTransfer appearanceTransfer = get(appearance);
+        var appearanceTransfer = get(appearance);
 
         if(appearanceTransfer == null) {
-            AppearanceDetail appearanceDetail = appearance.getLastDetail();
-            String appearanceName = appearanceDetail.getAppearanceName();
-            Color textColor = appearanceDetail.getTextColor();
-            ColorTransfer textColorTransfer = textColor == null ? null : coreControl.getColorTransfer(userVisit, textColor);
-            Color backgroundColor = appearanceDetail.getBackgroundColor();
-            ColorTransfer backgroundColorTransfer = backgroundColor == null ? null : coreControl.getColorTransfer(userVisit, backgroundColor);
-            FontStyle fontStyle = appearanceDetail.getFontStyle();
-            FontStyleTransfer fontStyleTransfer = fontStyle == null ? null : coreControl.getFontStyleTransfer(userVisit, fontStyle);
-            FontWeight fontWeight = appearanceDetail.getFontWeight();
-            FontWeightTransfer fontWeightTransfer = fontWeight == null ? null : coreControl.getFontWeightTransfer(userVisit, fontWeight);
-            Boolean isDefault = appearanceDetail.getIsDefault();
-            Integer sortOrder = appearanceDetail.getSortOrder();
-            String description = coreControl.getBestAppearanceDescription(appearance, getLanguage());
+            var appearanceDetail = appearance.getLastDetail();
+            var appearanceName = appearanceDetail.getAppearanceName();
+            var textColor = appearanceDetail.getTextColor();
+            var textColorTransfer = textColor == null ? null : coreControl.getColorTransfer(userVisit, textColor);
+            var backgroundColor = appearanceDetail.getBackgroundColor();
+            var backgroundColorTransfer = backgroundColor == null ? null : coreControl.getColorTransfer(userVisit, backgroundColor);
+            var fontStyle = appearanceDetail.getFontStyle();
+            var fontStyleTransfer = fontStyle == null ? null : coreControl.getFontStyleTransfer(userVisit, fontStyle);
+            var fontWeight = appearanceDetail.getFontWeight();
+            var fontWeightTransfer = fontWeight == null ? null : coreControl.getFontWeightTransfer(userVisit, fontWeight);
+            var isDefault = appearanceDetail.getIsDefault();
+            var sortOrder = appearanceDetail.getSortOrder();
+            var description = coreControl.getBestAppearanceDescription(appearance, getLanguage());
 
             appearanceTransfer = new AppearanceTransfer(appearanceName, textColorTransfer, backgroundColorTransfer, fontStyleTransfer, fontWeightTransfer,
                     isDefault, sortOrder, description);

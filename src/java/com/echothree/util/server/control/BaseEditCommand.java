@@ -75,7 +75,7 @@ public abstract class BaseEditCommand<S extends BaseSpec, E extends BaseEdit>
     }
     
     protected ValidationResult validateLock() {
-        Validator validator = new Validator(this);
+        var validator = new Validator(this);
         
         setupValidatorForSpec(validator);
         
@@ -87,7 +87,7 @@ public abstract class BaseEditCommand<S extends BaseSpec, E extends BaseEdit>
     }
     
     protected ValidationResult validateUpdate() {
-        Validator validator = new Validator(this);
+        var validator = new Validator(this);
         ValidationResult validationResult;
         BaseForm specForm = spec;
         

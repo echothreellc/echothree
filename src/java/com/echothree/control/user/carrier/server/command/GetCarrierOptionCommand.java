@@ -68,14 +68,14 @@ public class GetCarrierOptionCommand
     @Override
     protected BaseResult execute() {
         var carrierControl = Session.getModelController(CarrierControl.class);
-        GetCarrierOptionResult result = CarrierResultFactory.getGetCarrierOptionResult();
-        String carrierName = form.getCarrierName();
-        Carrier carrier = carrierControl.getCarrierByName(carrierName);
+        var result = CarrierResultFactory.getGetCarrierOptionResult();
+        var carrierName = form.getCarrierName();
+        var carrier = carrierControl.getCarrierByName(carrierName);
         
         if(carrier != null) {
-            Party carrierParty = carrier.getParty();
-            String carrierOptionName = form.getCarrierOptionName();
-            CarrierOption carrierOption = carrierControl.getCarrierOptionByName(carrierParty, carrierOptionName);
+            var carrierParty = carrier.getParty();
+            var carrierOptionName = form.getCarrierOptionName();
+            var carrierOption = carrierControl.getCarrierOptionByName(carrierParty, carrierOptionName);
             
             if(carrierOption != null) {
                 result.setCarrierOption(carrierControl.getCarrierOptionTransfer(getUserVisit(), carrierOption));

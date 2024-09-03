@@ -68,18 +68,18 @@ public class GetPartyTypeContactListsCommand
     
     @Override
     protected BaseResult execute() {
-        GetPartyTypeContactListsResult result = ContactListResultFactory.getGetPartyTypeContactListsResult();
-        String partyTypeName = form.getPartyTypeName();
-        String contactListName = form.getContactListName();
+        var result = ContactListResultFactory.getGetPartyTypeContactListsResult();
+        var partyTypeName = form.getPartyTypeName();
+        var contactListName = form.getContactListName();
         var parameterCount = (partyTypeName != null? 1: 0) + (contactListName != null? 1: 0);
         
         if(parameterCount == 1) {
             var contactListControl = Session.getModelController(ContactListControl.class);
-            UserVisit userVisit = getUserVisit();
+            var userVisit = getUserVisit();
             
             if(partyTypeName != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                PartyType partyType = partyControl.getPartyTypeByName(partyTypeName);
+                var partyType = partyControl.getPartyTypeByName(partyTypeName);
                 
                 if(partyType != null) {
                     result.setPartyType(partyControl.getPartyTypeTransfer(userVisit, partyType));
@@ -88,7 +88,7 @@ public class GetPartyTypeContactListsCommand
                     addExecutionError(ExecutionErrors.UnknownPartyTypeName.name(), partyTypeName);
                 }
             } else if(contactListName != null) {
-                ContactList contactList = contactListControl.getContactListByName(contactListName);
+                var contactList = contactListControl.getContactListByName(contactListName);
                 
                 if(contactList != null) {
                     result.setContactList(contactListControl.getContactListTransfer(userVisit, contactList));

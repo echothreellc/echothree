@@ -79,24 +79,24 @@ public class EditUseDescriptionCommand
     @Override
     protected BaseResult execute() {
         var useControl = Session.getModelController(UseControl.class);
-        EditUseDescriptionResult result = OfferResultFactory.getEditUseDescriptionResult();
-        String useName = spec.getUseName();
-        Use use = useControl.getUseByName(useName);
+        var result = OfferResultFactory.getEditUseDescriptionResult();
+        var useName = spec.getUseName();
+        var use = useControl.getUseByName(useName);
         
         if(use != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK)) {
-                    UseDescription useDescription = useControl.getUseDescription(use, language);
+                    var useDescription = useControl.getUseDescription(use, language);
                     
                     if(useDescription != null) {
                         result.setUseDescription(useControl.getUseDescriptionTransfer(getUserVisit(), useDescription));
                         
                         if(lockEntity(use)) {
-                            UseDescriptionEdit edit = OfferEditFactory.getUseDescriptionEdit();
+                            var edit = OfferEditFactory.getUseDescriptionEdit();
                             
                             result.setEdit(edit);
                             edit.setDescription(useDescription.getDescription());
@@ -109,12 +109,12 @@ public class EditUseDescriptionCommand
                         addExecutionError(ExecutionErrors.UnknownUseDescription.name());
                     }
                 } else if(editMode.equals(EditMode.UPDATE)) {
-                    UseDescriptionValue useDescriptionValue = useControl.getUseDescriptionValueForUpdate(use, language);
+                    var useDescriptionValue = useControl.getUseDescriptionValueForUpdate(use, language);
                     
                     if(useDescriptionValue != null) {
                         if(lockEntityForUpdate(use)) {
                             try {
-                                String description = edit.getDescription();
+                                var description = edit.getDescription();
                                 
                                 useDescriptionValue.setDescription(description);
                                 

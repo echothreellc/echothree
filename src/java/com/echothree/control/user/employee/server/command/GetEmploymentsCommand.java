@@ -53,13 +53,13 @@ public class GetEmploymentsCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        GetEmploymentsResult result = EmployeeResultFactory.getGetEmploymentsResult();
-        String partyName = form.getPartyName();
-        Party party = partyControl.getPartyByName(partyName);
+        var result = EmployeeResultFactory.getGetEmploymentsResult();
+        var partyName = form.getPartyName();
+        var party = partyControl.getPartyByName(partyName);
 
         if(party != null) {
             var employeeControl = Session.getModelController(EmployeeControl.class);
-            UserVisit userVisit = getUserVisit();
+            var userVisit = getUserVisit();
 
             result.setParty(partyControl.getPartyTransfer(userVisit, party));
             result.setEmployments(employeeControl.getEmploymentTransfersByParty(userVisit, party));

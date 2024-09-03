@@ -59,22 +59,22 @@ public class GetForumMessageAttachmentDescriptionCommand
     @Override
     protected BaseResult execute() {
         var forumControl = Session.getModelController(ForumControl.class);
-        GetForumMessageAttachmentDescriptionResult result = ForumResultFactory.getGetForumMessageAttachmentDescriptionResult();
-        String forumMessageName = form.getForumMessageName();
-        ForumMessage forumMessage = forumControl.getForumMessageByNameForUpdate(forumMessageName);
+        var result = ForumResultFactory.getGetForumMessageAttachmentDescriptionResult();
+        var forumMessageName = form.getForumMessageName();
+        var forumMessage = forumControl.getForumMessageByNameForUpdate(forumMessageName);
 
         if(forumMessage != null) {
             if(ForumLogic.getInstance().isForumRoleTypePermitted(this, forumMessage, getParty(), ForumConstants.ForumRoleType_READER)) {
-                Integer forumMessageAttachmentSequence = Integer.valueOf(form.getForumMessageAttachmentSequence());
-                ForumMessageAttachment forumMessageAttachment = forumControl.getForumMessageAttachmentBySequence(forumMessage, forumMessageAttachmentSequence);
+                var forumMessageAttachmentSequence = Integer.valueOf(form.getForumMessageAttachmentSequence());
+                var forumMessageAttachment = forumControl.getForumMessageAttachmentBySequence(forumMessage, forumMessageAttachmentSequence);
 
                 if(forumMessageAttachment != null) {
                     var partyControl = Session.getModelController(PartyControl.class);
-                    String languageIsoName = form.getLanguageIsoName();
-                    Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                    var languageIsoName = form.getLanguageIsoName();
+                    var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                     if(language != null) {
-                        ForumMessageAttachmentDescription forumMessageAttachmentDescription = forumControl.getForumMessageAttachmentDescription(forumMessageAttachment, language);
+                        var forumMessageAttachmentDescription = forumControl.getForumMessageAttachmentDescription(forumMessageAttachment, language);
 
                         if(forumMessageAttachmentDescription != null) {
                             result.setForumMessageAttachmentDescription(forumControl.getForumMessageAttachmentDescriptionTransfer(getUserVisit(), forumMessageAttachmentDescription));

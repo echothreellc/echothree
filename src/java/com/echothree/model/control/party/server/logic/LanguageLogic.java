@@ -50,7 +50,7 @@ public class LanguageLogic
     public Language getLanguageByName(final ExecutionErrorAccumulator eea, final String languageIsoName,
             final EntityPermission entityPermission) {
         var partyControl = Session.getModelController(PartyControl.class);
-        Language language = partyControl.getLanguageByIsoName(languageIsoName, entityPermission);
+        var language = partyControl.getLanguageByIsoName(languageIsoName, entityPermission);
 
         if(language == null) {
             handleExecutionError(UnknownLanguageIsoNameException.class, eea, ExecutionErrors.UnknownLanguageIsoName.name(), languageIsoName);
@@ -93,8 +93,8 @@ public class LanguageLogic
     public Language getLanguage(final ExecutionErrorAccumulator eea, final LanguageSpec spec, final LanguageUlid ulid,
             final EntityPermission entityPermission) {
         Language language = null;
-        String languageIsoName = spec.getLanguageIsoName();
-        String languageUlid = ulid.getLanguageUlid();
+        var languageIsoName = spec.getLanguageIsoName();
+        var languageUlid = ulid.getLanguageUlid();
         var parameterCount = (languageIsoName == null ? 0 : 1) + (languageUlid == null ? 0 : 1);
 
         if (parameterCount == 1) {

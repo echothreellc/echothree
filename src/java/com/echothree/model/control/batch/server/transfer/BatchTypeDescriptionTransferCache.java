@@ -33,11 +33,11 @@ public class BatchTypeDescriptionTransferCache
     
     @Override
     public BatchTypeDescriptionTransfer getTransfer(BatchTypeDescription batchTypeDescription) {
-        BatchTypeDescriptionTransfer batchTypeDescriptionTransfer = get(batchTypeDescription);
+        var batchTypeDescriptionTransfer = get(batchTypeDescription);
         
         if(batchTypeDescriptionTransfer == null) {
-            BatchTypeTransfer batchTypeTransfer = batchControl.getBatchTypeTransfer(userVisit, batchTypeDescription.getBatchType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, batchTypeDescription.getLanguage());
+            var batchTypeTransfer = batchControl.getBatchTypeTransfer(userVisit, batchTypeDescription.getBatchType());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, batchTypeDescription.getLanguage());
             
             batchTypeDescriptionTransfer = new BatchTypeDescriptionTransfer(languageTransfer, batchTypeTransfer, batchTypeDescription.getDescription());
             put(batchTypeDescription, batchTypeDescriptionTransfer);

@@ -46,8 +46,8 @@ public class DeleteSalesOrderTimeCommand
     
     @Override
     protected BaseResult execute() {
-        String orderName = form.getOrderName();
-        String orderTimeTypeName = form.getOrderTimeTypeName();
+        var orderName = form.getOrderName();
+        var orderTimeTypeName = form.getOrderTimeTypeName();
         
         SalesOrderTimeLogic.getInstance().deleteOrderTime(this, orderName, orderTimeTypeName, getPartyPK());
         

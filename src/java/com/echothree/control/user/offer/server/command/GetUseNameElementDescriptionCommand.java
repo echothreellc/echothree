@@ -69,17 +69,17 @@ public class GetUseNameElementDescriptionCommand
     @Override
     protected BaseResult execute() {
         var useNameElementControl = Session.getModelController(UseNameElementControl.class);
-        GetUseNameElementDescriptionResult result = OfferResultFactory.getGetUseNameElementDescriptionResult();
-        String useNameElementName = form.getUseNameElementName();
-        UseNameElement useNameElement = useNameElementControl.getUseNameElementByName(useNameElementName);
+        var result = OfferResultFactory.getGetUseNameElementDescriptionResult();
+        var useNameElementName = form.getUseNameElementName();
+        var useNameElement = useNameElementControl.getUseNameElementByName(useNameElementName);
         
         if(useNameElement != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                UseNameElementDescription useNameElementDescription = useNameElementControl.getUseNameElementDescription(useNameElement, language);
+                var useNameElementDescription = useNameElementControl.getUseNameElementDescription(useNameElement, language);
                 
                 if(useNameElementDescription != null) {
                     result.setUseNameElementDescription(useNameElementControl.getUseNameElementDescriptionTransfer(getUserVisit(), useNameElementDescription));

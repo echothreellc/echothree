@@ -86,7 +86,7 @@ public class EditEmploymentCommand
     public Employment getEntity(EditEmploymentResult result) {
         var employeeControl = Session.getModelController(EmployeeControl.class);
         Employment employment = null;
-        String employmentName = spec.getEmploymentName();
+        var employmentName = spec.getEmploymentName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
             employment = employeeControl.getEmploymentByName(employmentName);
@@ -119,8 +119,8 @@ public class EditEmploymentCommand
     @Override
     public void doLock(EmploymentEdit edit, Employment employment) {
         var partyControl = Session.getModelController(PartyControl.class);
-        EmploymentDetail employmentDetail = employment.getLastDetail();
-        Long endTime = employmentDetail.getEndTime();
+        var employmentDetail = employment.getLastDetail();
+        var endTime = employmentDetail.getEndTime();
 
         terminationType = employmentDetail.getTerminationType();
         terminationReason = employmentDetail.getTerminationReason();
@@ -137,18 +137,18 @@ public class EditEmploymentCommand
     @Override
     public void canUpdate(Employment employment) {
         var partyControl = Session.getModelController(PartyControl.class);
-        String companyName = edit.getCompanyName();
+        var companyName = edit.getCompanyName();
 
         partyCompany = partyControl.getPartyCompanyByName(companyName);
 
         if(partyCompany != null) {
             var employeeControl = Session.getModelController(EmployeeControl.class);
-            String terminationTypeName = edit.getTerminationTypeName();
+            var terminationTypeName = edit.getTerminationTypeName();
 
             terminationType = employeeControl.getTerminationTypeByName(terminationTypeName);
 
             if(terminationTypeName == null || terminationType != null) {
-                String terminationReasonName = edit.getTerminationReasonName();
+                var terminationReasonName = edit.getTerminationReasonName();
 
                 terminationReason = employeeControl.getTerminationReasonByName(terminationReasonName);
 
@@ -166,8 +166,8 @@ public class EditEmploymentCommand
     @Override
     public void doUpdate(Employment employment) {
         var employeeControl = Session.getModelController(EmployeeControl.class);
-        EmploymentDetailValue employmentDetailValue = employeeControl.getEmploymentDetailValueForUpdate(employment);
-        String strEndTime = edit.getEndTime();
+        var employmentDetailValue = employeeControl.getEmploymentDetailValueForUpdate(employment);
+        var strEndTime = edit.getEndTime();
 
         employmentDetailValue.setCompanyPartyPK(partyCompany.getPartyPK());
         employmentDetailValue.setStartTime(Long.valueOf(edit.getStartTime()));

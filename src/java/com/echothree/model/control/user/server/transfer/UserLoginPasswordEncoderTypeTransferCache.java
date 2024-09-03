@@ -30,11 +30,11 @@ public class UserLoginPasswordEncoderTypeTransferCache
     }
     
     public UserLoginPasswordEncoderTypeTransfer getUserLoginPasswordEncoderTypeTransfer(UserLoginPasswordEncoderType userLoginPasswordEncoderType) {
-        UserLoginPasswordEncoderTypeTransfer userLoginPasswordEncoderTypeTransfer = get(userLoginPasswordEncoderType);
+        var userLoginPasswordEncoderTypeTransfer = get(userLoginPasswordEncoderType);
         
         if(userLoginPasswordEncoderTypeTransfer == null) {
-            String userLoginPasswordEncoderTypeName = userLoginPasswordEncoderType.getUserLoginPasswordEncoderTypeName();
-            String description = userControl.getBestUserLoginPasswordEncoderTypeDescription(userLoginPasswordEncoderType, getLanguage());
+            var userLoginPasswordEncoderTypeName = userLoginPasswordEncoderType.getUserLoginPasswordEncoderTypeName();
+            var description = userControl.getBestUserLoginPasswordEncoderTypeDescription(userLoginPasswordEncoderType, getLanguage());
             
             userLoginPasswordEncoderTypeTransfer = new UserLoginPasswordEncoderTypeTransfer(userLoginPasswordEncoderTypeName, description);
             put(userLoginPasswordEncoderType, userLoginPasswordEncoderTypeTransfer);

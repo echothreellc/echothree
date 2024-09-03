@@ -30,7 +30,7 @@ public class PartyUtil {
     public static PartyLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
 
             cachedLocal = (PartyLocal)ctx.lookup("ejb:echothree/echothree-server/PartyBean!com.echothree.control.user.party.server.PartyLocal");
         }
@@ -42,7 +42,7 @@ public class PartyUtil {
     public static PartyRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
             
             cachedRemote = (PartyRemote)ctx.lookup("ejb:echothree/echothree-server/PartyBean!com.echothree.control.user.party.common.PartyRemote");
         }

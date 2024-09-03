@@ -41,14 +41,14 @@ public class SearchResultActionTypeTransferCache
     }
 
     public SearchResultActionTypeTransfer getSearchResultActionTypeTransfer(SearchResultActionType searchResultActionType) {
-        SearchResultActionTypeTransfer searchResultActionTypeTransfer = get(searchResultActionType);
+        var searchResultActionTypeTransfer = get(searchResultActionType);
 
         if(searchResultActionTypeTransfer == null) {
-            SearchResultActionTypeDetail searchResultActionTypeDetail = searchResultActionType.getLastDetail();
-            String searchResultActionTypeName = searchResultActionTypeDetail.getSearchResultActionTypeName();
-            Boolean isDefault = searchResultActionTypeDetail.getIsDefault();
-            Integer sortOrder = searchResultActionTypeDetail.getSortOrder();
-            String description = searchControl.getBestSearchResultActionTypeDescription(searchResultActionType, getLanguage());
+            var searchResultActionTypeDetail = searchResultActionType.getLastDetail();
+            var searchResultActionTypeName = searchResultActionTypeDetail.getSearchResultActionTypeName();
+            var isDefault = searchResultActionTypeDetail.getIsDefault();
+            var sortOrder = searchResultActionTypeDetail.getSortOrder();
+            var description = searchControl.getBestSearchResultActionTypeDescription(searchResultActionType, getLanguage());
 
             searchResultActionTypeTransfer = new SearchResultActionTypeTransfer(searchResultActionTypeName, isDefault, sortOrder, description);
             put(searchResultActionType, searchResultActionTypeTransfer);

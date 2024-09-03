@@ -64,16 +64,16 @@ public class DeletePartyAliasCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        String partyName = form.getPartyName();
-        Party party = partyControl.getPartyByName(partyName);
+        var partyName = form.getPartyName();
+        var party = partyControl.getPartyByName(partyName);
 
         if(party != null) {
-            PartyType partyType = party.getLastDetail().getPartyType();
-            String partyAliasTypeName = form.getPartyAliasTypeName();
-            PartyAliasType partyAliasType = partyControl.getPartyAliasTypeByName(partyType, partyAliasTypeName);
+            var partyType = party.getLastDetail().getPartyType();
+            var partyAliasTypeName = form.getPartyAliasTypeName();
+            var partyAliasType = partyControl.getPartyAliasTypeByName(partyType, partyAliasTypeName);
 
             if(partyAliasType != null) {
-                PartyAlias partyAlias = partyControl.getPartyAliasForUpdate(party, partyAliasType);
+                var partyAlias = partyControl.getPartyAliasForUpdate(party, partyAliasType);
 
                 if(partyAlias != null) {
                     partyControl.deletePartyAlias(partyAlias, getPartyPK());

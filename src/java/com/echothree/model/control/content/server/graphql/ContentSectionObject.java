@@ -110,7 +110,7 @@ public class ContentSectionObject
     @GraphQLDescription("content pages")
     public List<ContentPageObject> getContentPages(final DataFetchingEnvironment env) {
         var contentControl = Session.getModelController(ContentControl.class);
-        List<ContentPage> entities = ContentSecurityUtils.getHasContentPagesAccess(env) ? contentControl.getContentPagesByContentSection(contentSection) : null;
+        var entities = ContentSecurityUtils.getHasContentPagesAccess(env) ? contentControl.getContentPagesByContentSection(contentSection) : null;
         List<ContentPageObject> contentPages = entities == null ? null : new ArrayList<>(entities.size());
         
         if(entities != null) {

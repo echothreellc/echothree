@@ -89,13 +89,13 @@ public class EditSearchDefaultOperatorDescriptionCommand
     public SearchDefaultOperatorDescription getEntity(EditSearchDefaultOperatorDescriptionResult result) {
         var searchControl = Session.getModelController(SearchControl.class);
         SearchDefaultOperatorDescription searchDefaultOperatorDescription = null;
-        String searchDefaultOperatorName = spec.getSearchDefaultOperatorName();
-        SearchDefaultOperator searchDefaultOperator = searchControl.getSearchDefaultOperatorByName(searchDefaultOperatorName);
+        var searchDefaultOperatorName = spec.getSearchDefaultOperatorName();
+        var searchDefaultOperator = searchControl.getSearchDefaultOperatorByName(searchDefaultOperatorName);
 
         if(searchDefaultOperator != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -137,7 +137,7 @@ public class EditSearchDefaultOperatorDescriptionCommand
     @Override
     public void doUpdate(SearchDefaultOperatorDescription searchDefaultOperatorDescription) {
         var searchControl = Session.getModelController(SearchControl.class);
-        SearchDefaultOperatorDescriptionValue searchDefaultOperatorDescriptionValue = searchControl.getSearchDefaultOperatorDescriptionValue(searchDefaultOperatorDescription);
+        var searchDefaultOperatorDescriptionValue = searchControl.getSearchDefaultOperatorDescriptionValue(searchDefaultOperatorDescription);
         searchDefaultOperatorDescriptionValue.setDescription(edit.getDescription());
 
         searchControl.updateSearchDefaultOperatorDescriptionFromValue(searchDefaultOperatorDescriptionValue, getPartyPK());

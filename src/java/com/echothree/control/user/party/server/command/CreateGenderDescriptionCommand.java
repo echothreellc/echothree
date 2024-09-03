@@ -53,15 +53,15 @@ public class CreateGenderDescriptionCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        String genderName = form.getGenderName();
-        Gender gender = partyControl.getGenderByName(genderName);
+        var genderName = form.getGenderName();
+        var gender = partyControl.getGenderByName(genderName);
         
         if(gender != null) {
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                GenderDescription genderDescription = partyControl.getGenderDescription(gender, language);
+                var genderDescription = partyControl.getGenderDescription(gender, language);
                 
                 if(genderDescription == null) {
                     var description = form.getDescription();

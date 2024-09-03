@@ -73,8 +73,8 @@ public class GetCampaignTermCommand
     
     @Override
     protected BaseResult execute() {
-        GetCampaignTermResult result = CampaignResultFactory.getGetCampaignTermResult();
-        String campaignTermName = form.getCampaignTermName();
+        var result = CampaignResultFactory.getGetCampaignTermResult();
+        var campaignTermName = form.getCampaignTermName();
         var parameterCount = (campaignTermName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {

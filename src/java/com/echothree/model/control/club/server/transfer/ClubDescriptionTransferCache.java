@@ -32,11 +32,11 @@ public class ClubDescriptionTransferCache
     }
     
     public ClubDescriptionTransfer getClubDescriptionTransfer(ClubDescription clubDescription) {
-        ClubDescriptionTransfer clubDescriptionTransfer = get(clubDescription);
+        var clubDescriptionTransfer = get(clubDescription);
         
         if(clubDescriptionTransfer == null) {
-            ClubTransfer clubTransfer = clubControl.getClubTransfer(userVisit, clubDescription.getClub());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, clubDescription.getLanguage());
+            var clubTransfer = clubControl.getClubTransfer(userVisit, clubDescription.getClub());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, clubDescription.getLanguage());
             
             clubDescriptionTransfer = new ClubDescriptionTransfer(languageTransfer, clubTransfer, clubDescription.getDescription());
             put(clubDescription, clubDescriptionTransfer);

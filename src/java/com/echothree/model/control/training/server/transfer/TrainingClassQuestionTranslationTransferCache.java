@@ -37,13 +37,13 @@ public class TrainingClassQuestionTranslationTransferCache
     }
     
     public TrainingClassQuestionTranslationTransfer getTrainingClassQuestionTranslationTransfer(TrainingClassQuestionTranslation trainingClassQuestionTranslation) {
-        TrainingClassQuestionTranslationTransfer trainingClassQuestionTranslationTransfer = get(trainingClassQuestionTranslation);
+        var trainingClassQuestionTranslationTransfer = get(trainingClassQuestionTranslation);
         
         if(trainingClassQuestionTranslationTransfer == null) {
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, trainingClassQuestionTranslation.getLanguage());
-            TrainingClassQuestionTransfer trainingClassQuestionTransfer = trainingControl.getTrainingClassQuestionTransfer(userVisit, trainingClassQuestionTranslation.getTrainingClassQuestion());
-            MimeTypeTransfer questionMimeTypeTransfer = coreControl.getMimeTypeTransfer(userVisit, trainingClassQuestionTranslation.getQuestionMimeType());
-            String question = trainingClassQuestionTranslation.getQuestion();
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, trainingClassQuestionTranslation.getLanguage());
+            var trainingClassQuestionTransfer = trainingControl.getTrainingClassQuestionTransfer(userVisit, trainingClassQuestionTranslation.getTrainingClassQuestion());
+            var questionMimeTypeTransfer = coreControl.getMimeTypeTransfer(userVisit, trainingClassQuestionTranslation.getQuestionMimeType());
+            var question = trainingClassQuestionTranslation.getQuestion();
             
             trainingClassQuestionTranslationTransfer = new TrainingClassQuestionTranslationTransfer(trainingClassQuestionTransfer, languageTransfer,
                     questionMimeTypeTransfer, question);

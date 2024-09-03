@@ -92,7 +92,7 @@ public class EditPaymentProcessorCommand
     public PaymentProcessor getEntity(EditPaymentProcessorResult result) {
         var paymentProcessorControl = Session.getModelController(PaymentProcessorControl.class);
         PaymentProcessor paymentProcessor = null;
-        String paymentProcessorName = spec.getPaymentProcessorName();
+        var paymentProcessorName = spec.getPaymentProcessorName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
             paymentProcessor = paymentProcessorControl.getPaymentProcessorByName(paymentProcessorName);
@@ -124,8 +124,8 @@ public class EditPaymentProcessorCommand
     @Override
     public void doLock(PaymentProcessorEdit edit, PaymentProcessor paymentProcessor) {
         var paymentProcessorControl = Session.getModelController(PaymentProcessorControl.class);
-        PaymentProcessorDescription paymentProcessorDescription = paymentProcessorControl.getPaymentProcessorDescription(paymentProcessor, getPreferredLanguage());
-        PaymentProcessorDetail paymentProcessorDetail = paymentProcessor.getLastDetail();
+        var paymentProcessorDescription = paymentProcessorControl.getPaymentProcessorDescription(paymentProcessor, getPreferredLanguage());
+        var paymentProcessorDetail = paymentProcessor.getLastDetail();
 
         edit.setPaymentProcessorName(paymentProcessorDetail.getPaymentProcessorName());
         edit.setIsDefault(paymentProcessorDetail.getIsDefault().toString());
@@ -139,8 +139,8 @@ public class EditPaymentProcessorCommand
     @Override
     public void canUpdate(PaymentProcessor paymentProcessor) {
         var paymentProcessorControl = Session.getModelController(PaymentProcessorControl.class);
-        String paymentProcessorName = edit.getPaymentProcessorName();
-        PaymentProcessor duplicatePaymentProcessor = paymentProcessorControl.getPaymentProcessorByName(paymentProcessorName);
+        var paymentProcessorName = edit.getPaymentProcessorName();
+        var duplicatePaymentProcessor = paymentProcessorControl.getPaymentProcessorByName(paymentProcessorName);
 
         if(duplicatePaymentProcessor != null && !paymentProcessor.equals(duplicatePaymentProcessor)) {
             addExecutionError(ExecutionErrors.DuplicatePaymentProcessorName.name(), paymentProcessorName);
@@ -151,9 +151,9 @@ public class EditPaymentProcessorCommand
     public void doUpdate(PaymentProcessor paymentProcessor) {
         var paymentProcessorControl = Session.getModelController(PaymentProcessorControl.class);
         var partyPK = getPartyPK();
-        PaymentProcessorDetailValue paymentProcessorDetailValue = paymentProcessorControl.getPaymentProcessorDetailValueForUpdate(paymentProcessor);
-        PaymentProcessorDescription paymentProcessorDescription = paymentProcessorControl.getPaymentProcessorDescriptionForUpdate(paymentProcessor, getPreferredLanguage());
-        String description = edit.getDescription();
+        var paymentProcessorDetailValue = paymentProcessorControl.getPaymentProcessorDetailValueForUpdate(paymentProcessor);
+        var paymentProcessorDescription = paymentProcessorControl.getPaymentProcessorDescriptionForUpdate(paymentProcessor, getPreferredLanguage());
+        var description = edit.getDescription();
 
         paymentProcessorDetailValue.setPaymentProcessorName(edit.getPaymentProcessorName());
         paymentProcessorDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
@@ -166,7 +166,7 @@ public class EditPaymentProcessorCommand
         } else if(paymentProcessorDescription != null && description == null) {
             paymentProcessorControl.deletePaymentProcessorDescription(paymentProcessorDescription, partyPK);
         } else if(paymentProcessorDescription != null && description != null) {
-            PaymentProcessorDescriptionValue paymentProcessorDescriptionValue = paymentProcessorControl.getPaymentProcessorDescriptionValue(paymentProcessorDescription);
+            var paymentProcessorDescriptionValue = paymentProcessorControl.getPaymentProcessorDescriptionValue(paymentProcessorDescription);
 
             paymentProcessorDescriptionValue.setDescription(description);
             paymentProcessorControl.updatePaymentProcessorDescriptionFromValue(paymentProcessorDescriptionValue, partyPK);

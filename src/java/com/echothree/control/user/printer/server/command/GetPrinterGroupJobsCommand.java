@@ -55,17 +55,17 @@ public class GetPrinterGroupJobsCommand
     
    @Override
     protected BaseResult execute() {
-        GetPrinterGroupJobsResult result = PrinterResultFactory.getGetPrinterGroupJobsResult();
-        String printerGroupName = form.getPrinterGroupName();
-        String printerGroupJobStatusChoice = form.getPrinterGroupJobStatusChoice();
+       var result = PrinterResultFactory.getGetPrinterGroupJobsResult();
+       var printerGroupName = form.getPrinterGroupName();
+       var printerGroupJobStatusChoice = form.getPrinterGroupJobStatusChoice();
         var parameterCount = (printerGroupName == null ? 0 : 1) + (printerGroupJobStatusChoice == null ? 0 : 1);
 
         if(parameterCount == 1) {
             var printerControl = Session.getModelController(PrinterControl.class);
-            UserVisit userVisit = getUserVisit();
+            var userVisit = getUserVisit();
 
             if(printerGroupName != null) {
-                PrinterGroup printerGroup = printerControl.getPrinterGroupByName(printerGroupName);
+                var printerGroup = printerControl.getPrinterGroupByName(printerGroupName);
 
                 if(printerGroup != null) {
                     result.setPrinterGroup(printerControl.getPrinterGroupTransfer(userVisit, printerGroup));

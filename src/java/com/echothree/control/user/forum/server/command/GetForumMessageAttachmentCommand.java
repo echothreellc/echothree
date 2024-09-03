@@ -56,18 +56,18 @@ public class GetForumMessageAttachmentCommand
     
     @Override
     protected BaseResult execute() {
-        GetForumMessageAttachmentResult result = ForumResultFactory.getGetForumMessageAttachmentResult();
+        var result = ForumResultFactory.getGetForumMessageAttachmentResult();
         ContentLogic.getInstance().checkReferrer(this, form.getReferrer());
 
         if(!hasExecutionErrors()) {
             var forumControl = Session.getModelController(ForumControl.class);
-            String forumMessageName = form.getForumMessageName();
-            ForumMessage forumMessage = forumControl.getForumMessageByNameForUpdate(forumMessageName);
+            var forumMessageName = form.getForumMessageName();
+            var forumMessage = forumControl.getForumMessageByNameForUpdate(forumMessageName);
 
             if(forumMessage != null) {
                 if(ForumLogic.getInstance().isForumRoleTypePermitted(this, forumMessage, getParty(), ForumConstants.ForumRoleType_READER)) {
-                    Integer forumMessageAttachmentSequence = Integer.valueOf(form.getForumMessageAttachmentSequence());
-                    ForumMessageAttachment forumMessageAttachment = forumControl.getForumMessageAttachmentBySequence(forumMessage, forumMessageAttachmentSequence);
+                    var forumMessageAttachmentSequence = Integer.valueOf(form.getForumMessageAttachmentSequence());
+                    var forumMessageAttachment = forumControl.getForumMessageAttachmentBySequence(forumMessage, forumMessageAttachmentSequence);
 
                     if(forumMessageAttachment != null) {
                         result.setForumMessageAttachment(forumControl.getForumMessageAttachmentTransfer(getUserVisit(), forumMessageAttachment));

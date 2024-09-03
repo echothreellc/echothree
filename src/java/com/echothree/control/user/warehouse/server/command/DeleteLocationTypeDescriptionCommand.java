@@ -70,21 +70,21 @@ public class DeleteLocationTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var warehouseControl = Session.getModelController(WarehouseControl.class);
-        String warehouseName = form.getWarehouseName();
-        Warehouse warehouse = warehouseControl.getWarehouseByName(warehouseName);
+        var warehouseName = form.getWarehouseName();
+        var warehouse = warehouseControl.getWarehouseByName(warehouseName);
         
         if(warehouse != null) {
-            Party warehouseParty = warehouse.getParty();
-            String locationTypeName = form.getLocationTypeName();
-            LocationType locationType = warehouseControl.getLocationTypeByName(warehouseParty, locationTypeName);
+            var warehouseParty = warehouse.getParty();
+            var locationTypeName = form.getLocationTypeName();
+            var locationType = warehouseControl.getLocationTypeByName(warehouseParty, locationTypeName);
             
             if(locationType != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = form.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = form.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
                 
                 if(language != null) {
-                    LocationTypeDescription locationTypeDescription = warehouseControl.getLocationTypeDescriptionForUpdate(locationType, language);
+                    var locationTypeDescription = warehouseControl.getLocationTypeDescriptionForUpdate(locationType, language);
                     
                     if(locationTypeDescription != null) {
                         warehouseControl.deleteLocationTypeDescription(locationTypeDescription, getPartyPK());

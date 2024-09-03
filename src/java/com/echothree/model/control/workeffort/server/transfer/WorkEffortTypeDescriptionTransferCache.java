@@ -32,12 +32,12 @@ public class WorkEffortTypeDescriptionTransferCache
     }
     
     public WorkEffortTypeDescriptionTransfer getWorkEffortTypeDescriptionTransfer(WorkEffortTypeDescription workEffortTypeDescription) {
-        WorkEffortTypeDescriptionTransfer workEffortTypeDescriptionTransfer = get(workEffortTypeDescription);
+        var workEffortTypeDescriptionTransfer = get(workEffortTypeDescription);
         
         if(workEffortTypeDescriptionTransfer == null) {
-            WorkEffortTypeTransfer workEffortTypeTransfer = workEffortControl.getWorkEffortTypeTransfer(userVisit, workEffortTypeDescription.getWorkEffortType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, workEffortTypeDescription.getLanguage());
-            String description = workEffortTypeDescription.getDescription();
+            var workEffortTypeTransfer = workEffortControl.getWorkEffortTypeTransfer(userVisit, workEffortTypeDescription.getWorkEffortType());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, workEffortTypeDescription.getLanguage());
+            var description = workEffortTypeDescription.getDescription();
             
             workEffortTypeDescriptionTransfer = new WorkEffortTypeDescriptionTransfer(languageTransfer, workEffortTypeTransfer,
                     description);

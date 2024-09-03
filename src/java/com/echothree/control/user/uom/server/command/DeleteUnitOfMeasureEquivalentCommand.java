@@ -53,22 +53,22 @@ public class DeleteUnitOfMeasureEquivalentCommand
     @Override
     protected BaseResult execute() {
         var uomControl = Session.getModelController(UomControl.class);
-        String unitOfMeasureKindName = form.getUnitOfMeasureKindName();
-        UnitOfMeasureKind unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);
+        var unitOfMeasureKindName = form.getUnitOfMeasureKindName();
+        var unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);
         
         if(unitOfMeasureKind != null) {
-            String fromUnitOfMeasureTypeName = form.getFromUnitOfMeasureTypeName();
-            UnitOfMeasureType fromUnitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, fromUnitOfMeasureTypeName);
+            var fromUnitOfMeasureTypeName = form.getFromUnitOfMeasureTypeName();
+            var fromUnitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, fromUnitOfMeasureTypeName);
             
             if(fromUnitOfMeasureType != null) {
-                String toUnitOfMeasureTypeName = form.getToUnitOfMeasureTypeName();
-                UnitOfMeasureType toUnitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, toUnitOfMeasureTypeName);
+                var toUnitOfMeasureTypeName = form.getToUnitOfMeasureTypeName();
+                var toUnitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, toUnitOfMeasureTypeName);
                 
                 if(toUnitOfMeasureType != null) {
-                    UnitOfMeasureEquivalent unitOfMeasureEquivalent = uomControl.getUnitOfMeasureEquivalentForUpdate(fromUnitOfMeasureType, toUnitOfMeasureType);
+                    var unitOfMeasureEquivalent = uomControl.getUnitOfMeasureEquivalentForUpdate(fromUnitOfMeasureType, toUnitOfMeasureType);
                     
                     if(unitOfMeasureEquivalent != null) {
-                        boolean inUseError = uomControl.countUnitOfMeasureKindUsesByUnitOfMeasureKind(unitOfMeasureKind) != 0;
+                        var inUseError = uomControl.countUnitOfMeasureKindUsesByUnitOfMeasureKind(unitOfMeasureKind) != 0;
                         
                         if(!inUseError) {
                             uomControl.deleteUnitOfMeasureEquivalent(unitOfMeasureEquivalent, getPartyPK());

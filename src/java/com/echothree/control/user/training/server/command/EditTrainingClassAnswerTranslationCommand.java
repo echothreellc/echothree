@@ -103,26 +103,26 @@ public class EditTrainingClassAnswerTranslationCommand
     public TrainingClassAnswerTranslation getEntity(EditTrainingClassAnswerTranslationResult result) {
         var trainingControl = Session.getModelController(TrainingControl.class);
         TrainingClassAnswerTranslation trainingClassAnswerTranslation = null;
-        String trainingClassName = spec.getTrainingClassName();
-        TrainingClass trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
+        var trainingClassName = spec.getTrainingClassName();
+        var trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
 
         if(trainingClass != null) {
-            String trainingClassSectionName = spec.getTrainingClassSectionName();
-            TrainingClassSection trainingClassSection = trainingControl.getTrainingClassSectionByName(trainingClass, trainingClassSectionName);
+            var trainingClassSectionName = spec.getTrainingClassSectionName();
+            var trainingClassSection = trainingControl.getTrainingClassSectionByName(trainingClass, trainingClassSectionName);
 
             if(trainingClassSection != null) {
-                String trainingClassQuestionName = spec.getTrainingClassQuestionName();
+                var trainingClassQuestionName = spec.getTrainingClassQuestionName();
                 
                 trainingClassQuestion = trainingControl.getTrainingClassQuestionByName(trainingClassSection, trainingClassQuestionName);
 
                 if(trainingClassQuestion != null) {
-                    String trainingClassAnswerName = spec.getTrainingClassAnswerName();
-                    TrainingClassAnswer trainingClassAnswer = trainingControl.getTrainingClassAnswerByName(trainingClassQuestion, trainingClassAnswerName);
+                    var trainingClassAnswerName = spec.getTrainingClassAnswerName();
+                    var trainingClassAnswer = trainingControl.getTrainingClassAnswerByName(trainingClassQuestion, trainingClassAnswerName);
 
                     if(trainingClassAnswer != null) {
                         var partyControl = Session.getModelController(PartyControl.class);
-                        String languageIsoName = spec.getLanguageIsoName();
-                        Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                        var languageIsoName = spec.getLanguageIsoName();
+                        var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                         if(language != null) {
                             if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -184,17 +184,17 @@ public class EditTrainingClassAnswerTranslationCommand
 
     @Override
     protected void canUpdate(TrainingClassAnswerTranslation trainingClassAnswerTranslation) {
-        MimeTypeLogic mimeTypeLogic = MimeTypeLogic.getInstance();
-        String answerMimeTypeName = edit.getAnswerMimeTypeName();
-        String answer = edit.getAnswer();
+        var mimeTypeLogic = MimeTypeLogic.getInstance();
+        var answerMimeTypeName = edit.getAnswerMimeTypeName();
+        var answer = edit.getAnswer();
         
         answerMimeType = mimeTypeLogic.checkMimeType(this, answerMimeTypeName, answer, MimeTypeUsageTypes.TEXT.name(),
                 ExecutionErrors.MissingRequiredAnswerMimeTypeName.name(), ExecutionErrors.MissingRequiredAnswer.name(),
                 ExecutionErrors.UnknownAnswerMimeTypeName.name(), ExecutionErrors.UnknownAnswerMimeTypeUsage.name());
         
         if(!hasExecutionErrors()) {
-            String selectedMimeTypeName = edit.getSelectedMimeTypeName();
-            String selected = edit.getSelected();
+            var selectedMimeTypeName = edit.getSelectedMimeTypeName();
+            var selected = edit.getSelected();
 
             selectedMimeType = mimeTypeLogic.checkMimeType(this, selectedMimeTypeName, selected, MimeTypeUsageTypes.TEXT.name(),
                     ExecutionErrors.MissingRequiredSelectedMimeTypeName.name(), ExecutionErrors.MissingRequiredSelected.name(),
@@ -205,7 +205,7 @@ public class EditTrainingClassAnswerTranslationCommand
     @Override
     public void doUpdate(TrainingClassAnswerTranslation trainingClassAnswerTranslation) {
         var trainingControl = Session.getModelController(TrainingControl.class);
-        TrainingClassAnswerTranslationValue trainingClassAnswerTranslationValue = trainingControl.getTrainingClassAnswerTranslationValue(trainingClassAnswerTranslation);
+        var trainingClassAnswerTranslationValue = trainingControl.getTrainingClassAnswerTranslationValue(trainingClassAnswerTranslation);
         
         trainingClassAnswerTranslationValue.setAnswerMimeTypePK(answerMimeType == null? null: answerMimeType.getPrimaryKey());
         trainingClassAnswerTranslationValue.setAnswer(edit.getAnswer());

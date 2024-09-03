@@ -76,11 +76,11 @@ public class CreateShipmentTypeCommand
     @Override
     protected BaseResult execute() {
         var shipmentControl = Session.getModelController(ShipmentControl.class);
-        String shipmentTypeName = form.getShipmentTypeName();
-        ShipmentType shipmentType = shipmentControl.getShipmentTypeByName(shipmentTypeName);
+        var shipmentTypeName = form.getShipmentTypeName();
+        var shipmentType = shipmentControl.getShipmentTypeByName(shipmentTypeName);
 
         if(shipmentType == null) {
-            String parentShipmentTypeName = form.getParentShipmentTypeName();
+            var parentShipmentTypeName = form.getParentShipmentTypeName();
             ShipmentType parentShipmentType = null;
 
             if(parentShipmentTypeName != null) {
@@ -89,23 +89,23 @@ public class CreateShipmentTypeCommand
 
             if(parentShipmentTypeName == null || parentShipmentType != null) {
                 var sequenceControl = Session.getModelController(SequenceControl.class);
-                String shipmentSequenceTypeName = form.getShipmentSequenceTypeName();
-                SequenceType shipmentSequenceType = sequenceControl.getSequenceTypeByName(shipmentSequenceTypeName);
+                var shipmentSequenceTypeName = form.getShipmentSequenceTypeName();
+                var shipmentSequenceType = sequenceControl.getSequenceTypeByName(shipmentSequenceTypeName);
 
                 if(shipmentSequenceTypeName == null || shipmentSequenceType != null) {
-                    String shipmentPackageSequenceTypeName = form.getShipmentPackageSequenceTypeName();
-                    SequenceType shipmentPackageSequenceType = sequenceControl.getSequenceTypeByName(shipmentPackageSequenceTypeName);
+                    var shipmentPackageSequenceTypeName = form.getShipmentPackageSequenceTypeName();
+                    var shipmentPackageSequenceType = sequenceControl.getSequenceTypeByName(shipmentPackageSequenceTypeName);
 
                     if(shipmentPackageSequenceTypeName == null || shipmentPackageSequenceType != null) {
                         var workflowControl = Session.getModelController(WorkflowControl.class);
-                        String shipmentWorkflowName = form.getShipmentWorkflowName();
-                        Workflow shipmentWorkflow = shipmentWorkflowName == null ? null : workflowControl.getWorkflowByName(shipmentWorkflowName);
+                        var shipmentWorkflowName = form.getShipmentWorkflowName();
+                        var shipmentWorkflow = shipmentWorkflowName == null ? null : workflowControl.getWorkflowByName(shipmentWorkflowName);
 
                         if(shipmentWorkflowName == null || shipmentWorkflow != null) {
-                            String shipmentWorkflowEntranceName = form.getShipmentWorkflowEntranceName();
+                            var shipmentWorkflowEntranceName = form.getShipmentWorkflowEntranceName();
 
                             if(shipmentWorkflowEntranceName == null || (shipmentWorkflow != null && shipmentWorkflowEntranceName != null)) {
-                                WorkflowEntrance shipmentWorkflowEntrance = shipmentWorkflowEntranceName == null ? null : workflowControl.getWorkflowEntranceByName(shipmentWorkflow, shipmentWorkflowEntranceName);
+                                var shipmentWorkflowEntrance = shipmentWorkflowEntranceName == null ? null : workflowControl.getWorkflowEntranceByName(shipmentWorkflow, shipmentWorkflowEntranceName);
 
                                 if(shipmentWorkflowEntranceName == null || shipmentWorkflowEntrance != null) {
                                     var partyPK = getPartyPK();

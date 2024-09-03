@@ -67,16 +67,16 @@ public class DeleteSearchKindDescriptionCommand
     @Override
     protected BaseResult execute() {
         var searchControl = Session.getModelController(SearchControl.class);
-        String searchKindName = form.getSearchKindName();
-        SearchKind searchKind = searchControl.getSearchKindByName(searchKindName);
+        var searchKindName = form.getSearchKindName();
+        var searchKind = searchControl.getSearchKindByName(searchKindName);
         
         if(searchKind != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                SearchKindDescription searchKindDescription = searchControl.getSearchKindDescriptionForUpdate(searchKind, language);
+                var searchKindDescription = searchControl.getSearchKindDescriptionForUpdate(searchKind, language);
                 
                 if(searchKindDescription != null) {
                     searchControl.deleteSearchKindDescription(searchKindDescription, getPartyPK());

@@ -68,9 +68,9 @@ public class GetItemTaxClassificationsCommand
     
     @Override
     protected BaseResult execute() {
-        GetItemTaxClassificationsResult result = TaxResultFactory.getGetItemTaxClassificationsResult();
-        String itemName = form.getItemName();
-        String countryName = form.getCountryName();
+        var result = TaxResultFactory.getGetItemTaxClassificationsResult();
+        var itemName = form.getItemName();
+        var countryName = form.getCountryName();
         var parameterCount = (itemName == null ? 0 : 1) + (countryName == null ? 0 : 1);
 
         if(parameterCount == 1) {
@@ -78,7 +78,7 @@ public class GetItemTaxClassificationsCommand
 
             if(itemName != null) {
                 var itemControl = Session.getModelController(ItemControl.class);
-                Item item = itemControl.getItemByName(itemName);
+                var item = itemControl.getItemByName(itemName);
 
                 if(item != null) {
                     result.setItem(itemControl.getItemTransfer(getUserVisit(), item));
@@ -88,7 +88,7 @@ public class GetItemTaxClassificationsCommand
                 }
             } else {
                 var geoControl = Session.getModelController(GeoControl.class);
-                GeoCode countryGeoCode = geoControl.getCountryByAlias(countryName);
+                var countryGeoCode = geoControl.getCountryByAlias(countryName);
 
                 if(countryGeoCode != null) {
                     result.setCountry(geoControl.getCountryTransfer(getUserVisit(), countryGeoCode));

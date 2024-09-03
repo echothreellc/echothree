@@ -222,7 +222,7 @@ public class EditVendorTypeCommand
                                                         vendorControl.deleteVendorTypeDescription(vendorTypeDescription, partyPK);
                                                     } else {
                                                         if(vendorTypeDescription != null && description != null) {
-                                                            VendorTypeDescriptionValue vendorTypeDescriptionValue = vendorControl.getVendorTypeDescriptionValue(vendorTypeDescription);
+                                                            var vendorTypeDescriptionValue = vendorControl.getVendorTypeDescriptionValue(vendorTypeDescription);
 
                                                             vendorTypeDescriptionValue.setDescription(description);
                                                             vendorControl.updateVendorTypeDescriptionFromValue(vendorTypeDescriptionValue, partyPK);

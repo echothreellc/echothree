@@ -79,24 +79,24 @@ public class EditTerminationTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var employeeControl = Session.getModelController(EmployeeControl.class);
-        EditTerminationTypeDescriptionResult result = EmployeeResultFactory.getEditTerminationTypeDescriptionResult();
-        String terminationTypeName = spec.getTerminationTypeName();
-        TerminationType terminationType = employeeControl.getTerminationTypeByName(terminationTypeName);
+        var result = EmployeeResultFactory.getEditTerminationTypeDescriptionResult();
+        var terminationTypeName = spec.getTerminationTypeName();
+        var terminationType = employeeControl.getTerminationTypeByName(terminationTypeName);
         
         if(terminationType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK)) {
-                    TerminationTypeDescription terminationTypeDescription = employeeControl.getTerminationTypeDescription(terminationType, language);
+                    var terminationTypeDescription = employeeControl.getTerminationTypeDescription(terminationType, language);
                     
                     if(terminationTypeDescription != null) {
                         result.setTerminationTypeDescription(employeeControl.getTerminationTypeDescriptionTransfer(getUserVisit(), terminationTypeDescription));
                         
                         if(lockEntity(terminationType)) {
-                            TerminationTypeDescriptionEdit edit = EmployeeEditFactory.getTerminationTypeDescriptionEdit();
+                            var edit = EmployeeEditFactory.getTerminationTypeDescriptionEdit();
                             
                             result.setEdit(edit);
                             edit.setDescription(terminationTypeDescription.getDescription());
@@ -109,12 +109,12 @@ public class EditTerminationTypeDescriptionCommand
                         addExecutionError(ExecutionErrors.UnknownTerminationTypeDescription.name());
                     }
                 } else if(editMode.equals(EditMode.UPDATE)) {
-                    TerminationTypeDescriptionValue terminationTypeDescriptionValue = employeeControl.getTerminationTypeDescriptionValueForUpdate(terminationType, language);
+                    var terminationTypeDescriptionValue = employeeControl.getTerminationTypeDescriptionValueForUpdate(terminationType, language);
                     
                     if(terminationTypeDescriptionValue != null) {
                         if(lockEntityForUpdate(terminationType)) {
                             try {
-                                String description = edit.getDescription();
+                                var description = edit.getDescription();
                                 
                                 terminationTypeDescriptionValue.setDescription(description);
                                 

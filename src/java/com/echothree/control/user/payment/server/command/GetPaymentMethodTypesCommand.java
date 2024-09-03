@@ -56,7 +56,7 @@ public class GetPaymentMethodTypesCommand
     
     @Override
     protected BaseResult getResult(Collection<PaymentMethodType> entities) {
-        GetPaymentMethodTypesResult result = PaymentResultFactory.getGetPaymentMethodTypesResult();
+        var result = PaymentResultFactory.getGetPaymentMethodTypesResult();
         var paymentMethodTypeControl = Session.getModelController(PaymentMethodTypeControl.class);
         
         result.setPaymentMethodTypes(paymentMethodTypeControl.getPaymentMethodTypeTransfers(getUserVisit(), entities));

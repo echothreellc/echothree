@@ -66,13 +66,13 @@ public class GetPartyAliasTypeChoicesCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        GetPartyAliasTypeChoicesResult result = PartyResultFactory.getGetPartyAliasTypeChoicesResult();
-        String partyTypeName = form.getPartyTypeName();
-        PartyType partyType = partyControl.getPartyTypeByName(partyTypeName);
+        var result = PartyResultFactory.getGetPartyAliasTypeChoicesResult();
+        var partyTypeName = form.getPartyTypeName();
+        var partyType = partyControl.getPartyTypeByName(partyTypeName);
 
         if(partyType != null) {
-            String defaultPartyAliasTypeChoice = form.getDefaultPartyAliasTypeChoice();
-            boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+            var defaultPartyAliasTypeChoice = form.getDefaultPartyAliasTypeChoice();
+            var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 
             result.setPartyAliasTypeChoices(partyControl.getPartyAliasTypeChoices(defaultPartyAliasTypeChoice, getPreferredLanguage(), allowNullChoice,
                     partyType));

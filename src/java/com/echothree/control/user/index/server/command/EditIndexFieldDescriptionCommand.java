@@ -90,17 +90,17 @@ public class EditIndexFieldDescriptionCommand
     public IndexFieldDescription getEntity(EditIndexFieldDescriptionResult result) {
         var indexControl = Session.getModelController(IndexControl.class);
         IndexFieldDescription indexFieldDescription = null;
-        String indexTypeName = spec.getIndexTypeName();
-        IndexType indexType = indexControl.getIndexTypeByName(indexTypeName);
+        var indexTypeName = spec.getIndexTypeName();
+        var indexType = indexControl.getIndexTypeByName(indexTypeName);
 
         if(indexType != null) {
-            String indexFieldName = spec.getIndexFieldName();
-            IndexField indexField = indexControl.getIndexFieldByName(indexType, indexFieldName);
+            var indexFieldName = spec.getIndexFieldName();
+            var indexField = indexControl.getIndexFieldByName(indexType, indexFieldName);
 
             if(indexField != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = spec.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = spec.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                 if(language != null) {
                     if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -145,7 +145,7 @@ public class EditIndexFieldDescriptionCommand
     @Override
     public void doUpdate(IndexFieldDescription indexFieldDescription) {
         var indexControl = Session.getModelController(IndexControl.class);
-        IndexFieldDescriptionValue indexFieldDescriptionValue = indexControl.getIndexFieldDescriptionValue(indexFieldDescription);
+        var indexFieldDescriptionValue = indexControl.getIndexFieldDescriptionValue(indexFieldDescription);
 
         indexFieldDescriptionValue.setDescription(edit.getDescription());
 

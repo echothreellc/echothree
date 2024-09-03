@@ -70,21 +70,21 @@ public class GetChainActionSetChoicesCommand
     @Override
     protected BaseResult execute() {
         var chainControl = Session.getModelController(ChainControl.class);
-        GetChainActionSetChoicesResult result = ChainResultFactory.getGetChainActionSetChoicesResult();
-        String chainKindName = form.getChainKindName();
-        ChainKind chainKind = chainControl.getChainKindByName(chainKindName);
+        var result = ChainResultFactory.getGetChainActionSetChoicesResult();
+        var chainKindName = form.getChainKindName();
+        var chainKind = chainControl.getChainKindByName(chainKindName);
         
         if(chainKind != null) {
-            String chainTypeName = form.getChainTypeName();
-            ChainType chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
+            var chainTypeName = form.getChainTypeName();
+            var chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
 
             if(chainType != null) {
-                String chainName = form.getChainName();
-                Chain chain = chainControl.getChainByName(chainType, chainName);
+                var chainName = form.getChainName();
+                var chain = chainControl.getChainByName(chainType, chainName);
 
                 if(chain != null) {
-                    String defaultChainActionSetChoice = form.getDefaultChainActionSetChoice();
-                    boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+                    var defaultChainActionSetChoice = form.getDefaultChainActionSetChoice();
+                    var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 
                     result.setChainActionSetChoices(chainControl.getChainActionSetChoices(defaultChainActionSetChoice, getPreferredLanguage(), allowNullChoice, chain));
                 } else {

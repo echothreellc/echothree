@@ -70,20 +70,20 @@ public class CreateSecurityRoleDescriptionCommand
     @Override
     protected BaseResult execute() {
         var securityControl = Session.getModelController(SecurityControl.class);
-        String securityRoleGroupName = form.getSecurityRoleGroupName();
-        SecurityRoleGroup securityRoleGroup = securityControl.getSecurityRoleGroupByName(securityRoleGroupName);
+        var securityRoleGroupName = form.getSecurityRoleGroupName();
+        var securityRoleGroup = securityControl.getSecurityRoleGroupByName(securityRoleGroupName);
         
         if(securityRoleGroup != null) {
-            String securityRoleName = form.getSecurityRoleName();
-            SecurityRole securityRole = securityControl.getSecurityRoleByName(securityRoleGroup, securityRoleName);
+            var securityRoleName = form.getSecurityRoleName();
+            var securityRole = securityControl.getSecurityRoleByName(securityRoleGroup, securityRoleName);
             
             if(securityRole != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = form.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = form.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
                 
                 if(language != null) {
-                    SecurityRoleDescription securityRoleDescription = securityControl.getSecurityRoleDescription(securityRole, language);
+                    var securityRoleDescription = securityControl.getSecurityRoleDescription(securityRole, language);
                     
                     if(securityRoleDescription == null) {
                         var description = form.getDescription();

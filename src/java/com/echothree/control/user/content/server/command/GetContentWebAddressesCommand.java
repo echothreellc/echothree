@@ -70,7 +70,7 @@ public class GetContentWebAddressesCommand
     @Override
     protected BaseResult getResult(Collection<ContentWebAddress> entities) {
         var contentControl = Session.getModelController(ContentControl.class);
-        GetContentWebAddressesResult result = ContentResultFactory.getGetContentWebAddressesResult();
+        var result = ContentResultFactory.getGetContentWebAddressesResult();
         
         if(entities != null) {
             result.setContentWebAddresses(contentControl.getContentWebAddressTransfers(getUserVisit(), entities));

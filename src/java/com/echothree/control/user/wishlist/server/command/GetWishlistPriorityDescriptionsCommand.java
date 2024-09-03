@@ -67,13 +67,13 @@ public class GetWishlistPriorityDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var wishlistControl = Session.getModelController(WishlistControl.class);
-        GetWishlistPriorityDescriptionsResult result = WishlistResultFactory.getGetWishlistPriorityDescriptionsResult();
-        String wishlistTypeName = form.getWishlistTypeName();
-        WishlistType wishlistType = wishlistControl.getWishlistTypeByName(wishlistTypeName);
+        var result = WishlistResultFactory.getGetWishlistPriorityDescriptionsResult();
+        var wishlistTypeName = form.getWishlistTypeName();
+        var wishlistType = wishlistControl.getWishlistTypeByName(wishlistTypeName);
         
         if(wishlistType != null) {
-            String wishlistPriorityName = form.getWishlistPriorityName();
-            WishlistPriority wishlistPriority = wishlistControl.getWishlistPriorityByName(wishlistType, wishlistPriorityName);
+            var wishlistPriorityName = form.getWishlistPriorityName();
+            var wishlistPriority = wishlistControl.getWishlistPriorityByName(wishlistType, wishlistPriorityName);
             
             if(wishlistPriority != null) {
                 result.setWishlistPriority(wishlistControl.getWishlistPriorityTransfer(getUserVisit(), wishlistPriority));

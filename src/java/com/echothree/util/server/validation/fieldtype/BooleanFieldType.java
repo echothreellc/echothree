@@ -34,9 +34,9 @@ public class BooleanFieldType
     
     @Override
     public String validate() {
-        boolean hadErrors = false;
-        
-        Matcher m = Patterns.Boolean.matcher(fieldValue);
+        var hadErrors = false;
+
+        var m = Patterns.Boolean.matcher(fieldValue);
         if(!m.matches()) {
             validationMessages.add(fieldName, new Message(Validator.ERROR_INVALID_FORMAT));
             hadErrors = true;

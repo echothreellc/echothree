@@ -30,13 +30,13 @@ public class SequenceChecksumTypeTransferCache
     }
     
     public SequenceChecksumTypeTransfer getSequenceChecksumTypeTransfer(SequenceChecksumType sequenceChecksumType) {
-        SequenceChecksumTypeTransfer sequenceChecksumTypeTransfer = get(sequenceChecksumType);
+        var sequenceChecksumTypeTransfer = get(sequenceChecksumType);
         
         if(sequenceChecksumTypeTransfer == null) {
-            String sequenceChecksumTypeName = sequenceChecksumType.getSequenceChecksumTypeName();
-            Boolean isDefault = sequenceChecksumType.getIsDefault();
-            Integer sortOrder = sequenceChecksumType.getSortOrder();
-            String description = sequenceControl.getBestSequenceChecksumTypeDescription(sequenceChecksumType, getLanguage());
+            var sequenceChecksumTypeName = sequenceChecksumType.getSequenceChecksumTypeName();
+            var isDefault = sequenceChecksumType.getIsDefault();
+            var sortOrder = sequenceChecksumType.getSortOrder();
+            var description = sequenceControl.getBestSequenceChecksumTypeDescription(sequenceChecksumType, getLanguage());
             
             sequenceChecksumTypeTransfer = new SequenceChecksumTypeTransfer(sequenceChecksumTypeName, isDefault, sortOrder, description);
             put(sequenceChecksumType, sequenceChecksumTypeTransfer);

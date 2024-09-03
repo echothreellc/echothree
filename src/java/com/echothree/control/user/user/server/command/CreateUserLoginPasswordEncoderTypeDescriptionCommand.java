@@ -52,17 +52,17 @@ public class CreateUserLoginPasswordEncoderTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        UserControl userControl = getUserControl();
-        String userLoginPasswordEncoderTypeName = form.getUserLoginPasswordEncoderTypeName();
-        UserLoginPasswordEncoderType userLoginPasswordEncoderType = userControl.getUserLoginPasswordEncoderTypeByName(userLoginPasswordEncoderTypeName);
+        var userControl = getUserControl();
+        var userLoginPasswordEncoderTypeName = form.getUserLoginPasswordEncoderTypeName();
+        var userLoginPasswordEncoderType = userControl.getUserLoginPasswordEncoderTypeByName(userLoginPasswordEncoderTypeName);
         
         if(userLoginPasswordEncoderType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                UserLoginPasswordEncoderTypeDescription userLoginPasswordEncoderTypeDescription = userControl.getUserLoginPasswordEncoderTypeDescription(userLoginPasswordEncoderType, language);
+                var userLoginPasswordEncoderTypeDescription = userControl.getUserLoginPasswordEncoderTypeDescription(userLoginPasswordEncoderType, language);
                 
                 if(userLoginPasswordEncoderTypeDescription == null) {
                     var description = form.getDescription();

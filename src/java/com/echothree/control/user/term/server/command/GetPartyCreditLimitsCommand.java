@@ -53,13 +53,13 @@ public class GetPartyCreditLimitsCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        GetPartyCreditLimitsResult result = TermResultFactory.getGetPartyCreditLimitsResult();
-        String partyName = form.getPartyName();
-        Party party = partyControl.getPartyByName(partyName);
+        var result = TermResultFactory.getGetPartyCreditLimitsResult();
+        var partyName = form.getPartyName();
+        var party = partyControl.getPartyByName(partyName);
         
         if(party != null) {
             var termControl = Session.getModelController(TermControl.class);
-            UserVisit userVisit = getUserVisit();
+            var userVisit = getUserVisit();
             
             result.setParty(partyControl.getPartyTransfer(userVisit, party));
             result.setPartyCreditLimits(termControl.getPartyCreditLimitTransfersByParty(getUserVisit(), party));

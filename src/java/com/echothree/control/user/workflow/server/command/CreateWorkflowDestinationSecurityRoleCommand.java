@@ -76,35 +76,35 @@ public class CreateWorkflowDestinationSecurityRoleCommand
     @Override
     protected BaseResult execute() {
         var workflowControl = Session.getModelController(WorkflowControl.class);
-        String workflowName = form.getWorkflowName();
+        var workflowName = form.getWorkflowName();
         var workflow = workflowControl.getWorkflowByName(workflowName);
         
         if(workflow != null) {
-            String workflowStepName = form.getWorkflowStepName();
+            var workflowStepName = form.getWorkflowStepName();
             var workflowStep = workflowControl.getWorkflowStepByName(workflow, workflowStepName);
             
             if(workflowStep != null) {
-                String workflowDestinationName = form.getWorkflowDestinationName();
-                WorkflowDestination workflowDestination = workflowControl.getWorkflowDestinationByName(workflowStep, workflowDestinationName);
+                var workflowDestinationName = form.getWorkflowDestinationName();
+                var workflowDestination = workflowControl.getWorkflowDestinationByName(workflowStep, workflowDestinationName);
                 
                 if(workflowDestination != null) {
                     var partyControl = Session.getModelController(PartyControl.class);
-                    String partyTypeName = form.getPartyTypeName();
-                    PartyType partyType = partyControl.getPartyTypeByName(partyTypeName);
+                    var partyTypeName = form.getPartyTypeName();
+                    var partyType = partyControl.getPartyTypeByName(partyTypeName);
                     
                     if(partyType != null) {
-                        WorkflowDestinationPartyType workflowDestinationPartyType = workflowControl.getWorkflowDestinationPartyType(workflowDestination, partyType);
+                        var workflowDestinationPartyType = workflowControl.getWorkflowDestinationPartyType(workflowDestination, partyType);
                         
                         if(workflowDestinationPartyType != null) {
-                            SecurityRoleGroup securityRoleGroup = workflow.getLastDetail().getSecurityRoleGroup();
+                            var securityRoleGroup = workflow.getLastDetail().getSecurityRoleGroup();
                             
                             if(securityRoleGroup != null) {
                                 var securityControl = Session.getModelController(SecurityControl.class);
-                                String securityRoleName = form.getSecurityRoleName();
-                                SecurityRole securityRole = securityControl.getSecurityRoleByName(securityRoleGroup, securityRoleName);
+                                var securityRoleName = form.getSecurityRoleName();
+                                var securityRole = securityControl.getSecurityRoleByName(securityRoleGroup, securityRoleName);
                                 
                                 if(securityRole != null) {
-                                    WorkflowDestinationSecurityRole workflowDestinationSecurityRole = workflowControl.getWorkflowDestinationSecurityRole(workflowDestinationPartyType, securityRole);
+                                    var workflowDestinationSecurityRole = workflowControl.getWorkflowDestinationSecurityRole(workflowDestinationPartyType, securityRole);
                                     
                                     if(workflowDestinationSecurityRole == null) {
                                         workflowControl.createWorkflowDestinationSecurityRole(workflowDestinationPartyType, securityRole,

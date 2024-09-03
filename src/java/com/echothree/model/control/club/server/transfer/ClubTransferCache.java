@@ -46,19 +46,19 @@ public class ClubTransferCache
     }
     
     public ClubTransfer getClubTransfer(Club club) {
-        ClubTransfer clubTransfer = get(club);
+        var clubTransfer = get(club);
         
         if(clubTransfer == null) {
-            ClubDetail clubDetail = club.getLastDetail();
-            String clubName = clubDetail.getClubName();
-            SubscriptionTypeTransfer subscriptionTypeTransfer = subscriptionControl.getSubscriptionTypeTransfer(userVisit, clubDetail.getSubscriptionType());
-            Filter clubPriceFilter = clubDetail.getClubPriceFilter();
-            FilterTransfer clubPriceFilterTransfer = clubPriceFilter == null? null: filterControl.getFilterTransfer(userVisit, clubPriceFilter);
-            Currency currency = clubDetail.getCurrency();
-            CurrencyTransfer currencyTransfer = currency == null? null: accountingControl.getCurrencyTransfer(userVisit, currency);
-            Boolean isDefault = clubDetail.getIsDefault();
-            Integer sortOrder = clubDetail.getSortOrder();
-            String description = clubControl.getBestClubDescription(club, getLanguage());
+            var clubDetail = club.getLastDetail();
+            var clubName = clubDetail.getClubName();
+            var subscriptionTypeTransfer = subscriptionControl.getSubscriptionTypeTransfer(userVisit, clubDetail.getSubscriptionType());
+            var clubPriceFilter = clubDetail.getClubPriceFilter();
+            var clubPriceFilterTransfer = clubPriceFilter == null? null: filterControl.getFilterTransfer(userVisit, clubPriceFilter);
+            var currency = clubDetail.getCurrency();
+            var currencyTransfer = currency == null? null: accountingControl.getCurrencyTransfer(userVisit, currency);
+            var isDefault = clubDetail.getIsDefault();
+            var sortOrder = clubDetail.getSortOrder();
+            var description = clubControl.getBestClubDescription(club, getLanguage());
             
             clubTransfer = new ClubTransfer(clubName, subscriptionTypeTransfer, clubPriceFilterTransfer, currencyTransfer, isDefault, sortOrder, description);
             put(club, clubTransfer);

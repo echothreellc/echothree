@@ -42,17 +42,17 @@ public class PartyInventoryLevelTransferCache
     
     @Override
     public PartyInventoryLevelTransfer getTransfer(PartyInventoryLevel partyInventoryLevel) {
-        PartyInventoryLevelTransfer partyInventoryLevelTransfer = get(partyInventoryLevel);
+        var partyInventoryLevelTransfer = get(partyInventoryLevel);
         
         if(partyInventoryLevelTransfer == null) {
-            PartyTransfer partyTransfer = partyControl.getPartyTransfer(userVisit, partyInventoryLevel.getParty());
-            Item item = partyInventoryLevel.getItem();
-            ItemTransfer itemTransfer = itemControl.getItemTransfer(userVisit, item);
-            InventoryConditionTransfer inventoryConditionTransfer = inventoryControl.getInventoryConditionTransfer(userVisit, partyInventoryLevel.getInventoryCondition());
-            UnitOfMeasureKind unitOfMeasureKind = item.getLastDetail().getUnitOfMeasureKind();
-            String minimumInventory = formatUnitOfMeasure(unitOfMeasureKind, partyInventoryLevel.getMinimumInventory());
-            String maximumInventory = formatUnitOfMeasure(unitOfMeasureKind, partyInventoryLevel.getMaximumInventory());
-            String reorderQuantity = formatUnitOfMeasure(unitOfMeasureKind, partyInventoryLevel.getReorderQuantity());
+            var partyTransfer = partyControl.getPartyTransfer(userVisit, partyInventoryLevel.getParty());
+            var item = partyInventoryLevel.getItem();
+            var itemTransfer = itemControl.getItemTransfer(userVisit, item);
+            var inventoryConditionTransfer = inventoryControl.getInventoryConditionTransfer(userVisit, partyInventoryLevel.getInventoryCondition());
+            var unitOfMeasureKind = item.getLastDetail().getUnitOfMeasureKind();
+            var minimumInventory = formatUnitOfMeasure(unitOfMeasureKind, partyInventoryLevel.getMinimumInventory());
+            var maximumInventory = formatUnitOfMeasure(unitOfMeasureKind, partyInventoryLevel.getMaximumInventory());
+            var reorderQuantity = formatUnitOfMeasure(unitOfMeasureKind, partyInventoryLevel.getReorderQuantity());
             
             partyInventoryLevelTransfer = new PartyInventoryLevelTransfer(partyTransfer, itemTransfer, inventoryConditionTransfer,
                     minimumInventory, maximumInventory, reorderQuantity);

@@ -57,32 +57,32 @@ public class CreatePartyTypeAuditPolicyCommand
     
     @Override
     protected BaseResult execute() {
-        String rawRetainUserVisitsTime = form.getRetainUserVisitsTime();
-        String lockoutInactiveTimeUnitOfMeasureTypeName = form.getRetainUserVisitsTimeUnitOfMeasureTypeName();
-        int lockoutInactiveTimeParameterCount = (rawRetainUserVisitsTime == null ? 0 : 1) + (lockoutInactiveTimeUnitOfMeasureTypeName == null ? 0 : 1);
+        var rawRetainUserVisitsTime = form.getRetainUserVisitsTime();
+        var lockoutInactiveTimeUnitOfMeasureTypeName = form.getRetainUserVisitsTimeUnitOfMeasureTypeName();
+        var lockoutInactiveTimeParameterCount = (rawRetainUserVisitsTime == null ? 0 : 1) + (lockoutInactiveTimeUnitOfMeasureTypeName == null ? 0 : 1);
 
         if(lockoutInactiveTimeParameterCount == 0 || lockoutInactiveTimeParameterCount == 2) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String partyTypeName = form.getPartyTypeName();
-            PartyType partyType = partyControl.getPartyTypeByName(partyTypeName);
+            var partyTypeName = form.getPartyTypeName();
+            var partyType = partyControl.getPartyTypeByName(partyTypeName);
 
             if(partyType != null) {
                 if(partyType.getAllowUserLogins()) {
-                    PartyTypeAuditPolicy partyTypeAuditPolicy = partyControl.getPartyTypeAuditPolicy(partyType);
+                    var partyTypeAuditPolicy = partyControl.getPartyTypeAuditPolicy(partyType);
 
                     if(partyTypeAuditPolicy == null) {
                         var uomControl = Session.getModelController(UomControl.class);
-                        UnitOfMeasureKind timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
+                        var timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
 
                         if(timeUnitOfMeasureKind != null) {
-                            UnitOfMeasureType lockoutInactiveTimeUnitOfMeasureType = lockoutInactiveTimeUnitOfMeasureTypeName == null ? null
+                            var lockoutInactiveTimeUnitOfMeasureType = lockoutInactiveTimeUnitOfMeasureTypeName == null ? null
                                     : uomControl.getUnitOfMeasureTypeByName(timeUnitOfMeasureKind, lockoutInactiveTimeUnitOfMeasureTypeName);
 
                             if(lockoutInactiveTimeUnitOfMeasureTypeName == null || lockoutInactiveTimeUnitOfMeasureType != null) {
-                                String rawAuditCommands = form.getAuditCommands();
-                                Boolean auditCommands = rawAuditCommands == null ? null : Boolean.valueOf(rawAuditCommands);
-                                Long lockoutInactiveTime = rawRetainUserVisitsTime == null ? null : Long.valueOf(rawRetainUserVisitsTime);
-                                Conversion lockoutInactiveTimeConversion = lockoutInactiveTime == null ? null
+                                var rawAuditCommands = form.getAuditCommands();
+                                var auditCommands = rawAuditCommands == null ? null : Boolean.valueOf(rawAuditCommands);
+                                var lockoutInactiveTime = rawRetainUserVisitsTime == null ? null : Long.valueOf(rawRetainUserVisitsTime);
+                                var lockoutInactiveTimeConversion = lockoutInactiveTime == null ? null
                                         : new Conversion(uomControl, lockoutInactiveTimeUnitOfMeasureType, lockoutInactiveTime).convertToLowestUnitOfMeasureType();
 
                                 partyControl.createPartyTypeAuditPolicy(partyType, auditCommands, lockoutInactiveTimeConversion == null ? null : lockoutInactiveTimeConversion.getQuantity(), getPartyPK());

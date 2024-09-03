@@ -69,33 +69,33 @@ public class EditRatingTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        EditRatingTypeDescriptionResult result = RatingResultFactory.getEditRatingTypeDescriptionResult();
-        String componentVendorName = spec.getComponentVendorName();
-        ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+        var result = RatingResultFactory.getEditRatingTypeDescriptionResult();
+        var componentVendorName = spec.getComponentVendorName();
+        var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
         
         if(componentVendor != null) {
-            String entityTypeName = spec.getEntityTypeName();
-            EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+            var entityTypeName = spec.getEntityTypeName();
+            var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
             
             if(entityType != null) {
                 var ratingControl = Session.getModelController(RatingControl.class);
-                String ratingTypeName = spec.getRatingTypeName();
-                RatingType ratingType = ratingControl.getRatingTypeByName(entityType, ratingTypeName);
+                var ratingTypeName = spec.getRatingTypeName();
+                var ratingType = ratingControl.getRatingTypeByName(entityType, ratingTypeName);
                 
                 if(ratingType != null) {
                     var partyControl = Session.getModelController(PartyControl.class);
-                    String languageIsoName = spec.getLanguageIsoName();
-                    Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                    var languageIsoName = spec.getLanguageIsoName();
+                    var language = partyControl.getLanguageByIsoName(languageIsoName);
                     
                     if(language != null) {
                         if(editMode.equals(EditMode.LOCK)) {
-                            RatingTypeDescription ratingTypeDescription = ratingControl.getRatingTypeDescription(ratingType, language);
+                            var ratingTypeDescription = ratingControl.getRatingTypeDescription(ratingType, language);
                             
                             if(ratingTypeDescription != null) {
                                 result.setRatingTypeDescription(ratingControl.getRatingTypeDescriptionTransfer(getUserVisit(), ratingTypeDescription));
                                 
                                 if(lockEntity(ratingType)) {
-                                    RatingTypeDescriptionEdit edit = RatingEditFactory.getRatingTypeDescriptionEdit();
+                                    var edit = RatingEditFactory.getRatingTypeDescriptionEdit();
                                     
                                     result.setEdit(edit);
                                     edit.setDescription(ratingTypeDescription.getDescription());
@@ -108,12 +108,12 @@ public class EditRatingTypeDescriptionCommand
                                 addExecutionError(ExecutionErrors.UnknownRatingTypeDescription.name());
                             }
                         } else if(editMode.equals(EditMode.UPDATE)) {
-                            RatingTypeDescriptionValue ratingTypeDescriptionValue = ratingControl.getRatingTypeDescriptionValueForUpdate(ratingType, language);
+                            var ratingTypeDescriptionValue = ratingControl.getRatingTypeDescriptionValueForUpdate(ratingType, language);
                             
                             if(ratingTypeDescriptionValue != null) {
                                 if(lockEntityForUpdate(ratingType)) {
                                     try {
-                                        String description = edit.getDescription();
+                                        var description = edit.getDescription();
                                         
                                         ratingTypeDescriptionValue.setDescription(description);
                                         

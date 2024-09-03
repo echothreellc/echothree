@@ -67,16 +67,16 @@ public class DeleteContentForumCommand
     @Override
     protected BaseResult execute() {
         var contentControl = Session.getModelController(ContentControl.class);
-        String contentCollectionName = form.getContentCollectionName();
-        ContentCollection contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
+        var contentCollectionName = form.getContentCollectionName();
+        var contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
         
         if(contentCollection != null) {
             var forumControl = Session.getModelController(ForumControl.class);
-            String forumName = form.getForumName();
-            Forum forum = forumControl.getForumByName(forumName);
+            var forumName = form.getForumName();
+            var forum = forumControl.getForumByName(forumName);
             
             if(forum != null) {
-                ContentForum contentForum = contentControl.getContentForumForUpdate(contentCollection, forum);
+                var contentForum = contentControl.getContentForumForUpdate(contentCollection, forum);
                 
                 if(contentForum != null) {
                     contentControl.deleteContentForum(contentForum, getPartyPK());

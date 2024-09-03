@@ -72,16 +72,16 @@ public class DeleteOrderAliasCommand
 
         if(orderType != null) {
             var orderControl = Session.getModelController(OrderControl.class);
-            String orderName = form.getOrderName();
-            Order order = orderControl.getOrderByName(orderType, orderName);
+            var orderName = form.getOrderName();
+            var order = orderControl.getOrderByName(orderType, orderName);
 
             if(order != null) {
                 var orderAliasControl = Session.getModelController(OrderAliasControl.class);
-                String orderAliasTypeName = form.getOrderAliasTypeName();
-                OrderAliasType orderAliasType = orderAliasControl.getOrderAliasTypeByName(orderType, orderAliasTypeName);
+                var orderAliasTypeName = form.getOrderAliasTypeName();
+                var orderAliasType = orderAliasControl.getOrderAliasTypeByName(orderType, orderAliasTypeName);
 
                 if(orderAliasType != null) {
-                    OrderAlias orderAlias = orderAliasControl.getOrderAliasForUpdate(order, orderAliasType);
+                    var orderAlias = orderAliasControl.getOrderAliasForUpdate(order, orderAliasType);
 
                     if(orderAlias != null) {
                         orderAliasControl.deleteOrderAlias(orderAlias, getPartyPK());

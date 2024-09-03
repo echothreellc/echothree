@@ -69,17 +69,17 @@ public class GetChainKindDescriptionCommand
     @Override
     protected BaseResult execute() {
         var chainControl = Session.getModelController(ChainControl.class);
-        GetChainKindDescriptionResult result = ChainResultFactory.getGetChainKindDescriptionResult();
-        String chainKindName = form.getChainKindName();
-        ChainKind chainKind = chainControl.getChainKindByName(chainKindName);
+        var result = ChainResultFactory.getGetChainKindDescriptionResult();
+        var chainKindName = form.getChainKindName();
+        var chainKind = chainControl.getChainKindByName(chainKindName);
         
         if(chainKind != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                ChainKindDescription chainKindDescription = chainControl.getChainKindDescription(chainKind, language);
+                var chainKindDescription = chainControl.getChainKindDescription(chainKind, language);
                 
                 if(chainKindDescription != null) {
                     result.setChainKindDescription(chainControl.getChainKindDescriptionTransfer(getUserVisit(), chainKindDescription));

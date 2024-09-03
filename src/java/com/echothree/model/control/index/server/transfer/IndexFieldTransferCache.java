@@ -34,15 +34,15 @@ public class IndexFieldTransferCache
     }
     
     public IndexFieldTransfer getIndexFieldTransfer(IndexField indexField) {
-        IndexFieldTransfer indexFieldTransfer = get(indexField);
+        var indexFieldTransfer = get(indexField);
         
         if(indexFieldTransfer == null) {
-            IndexFieldDetail indexFieldDetail = indexField.getLastDetail();
-            IndexTypeTransfer indexTypeTransfer = indexControl.getIndexTypeTransfer(userVisit, indexFieldDetail.getIndexType());
-            String indexFieldName = indexFieldDetail.getIndexFieldName();
-            Boolean isDefault = indexFieldDetail.getIsDefault();
-            Integer sortOrder = indexFieldDetail.getSortOrder();
-            String description = indexControl.getBestIndexFieldDescription(indexField, getLanguage());
+            var indexFieldDetail = indexField.getLastDetail();
+            var indexTypeTransfer = indexControl.getIndexTypeTransfer(userVisit, indexFieldDetail.getIndexType());
+            var indexFieldName = indexFieldDetail.getIndexFieldName();
+            var isDefault = indexFieldDetail.getIsDefault();
+            var sortOrder = indexFieldDetail.getSortOrder();
+            var description = indexControl.getBestIndexFieldDescription(indexField, getLanguage());
             
             indexFieldTransfer = new IndexFieldTransfer(indexTypeTransfer, indexFieldName, isDefault, sortOrder, description);
             put(indexField, indexFieldTransfer);

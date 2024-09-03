@@ -63,9 +63,9 @@ public class GetHarmonizedTariffScheduleCodeUnitChoicesCommand
     @Override
     protected BaseResult execute() {
         var itemControl = Session.getModelController(ItemControl.class);
-        GetHarmonizedTariffScheduleCodeUnitChoicesResult result = ItemResultFactory.getGetHarmonizedTariffScheduleCodeUnitChoicesResult();
-        String defaultHarmonizedTariffScheduleCodeUnitChoice = form.getDefaultHarmonizedTariffScheduleCodeUnitChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = ItemResultFactory.getGetHarmonizedTariffScheduleCodeUnitChoicesResult();
+        var defaultHarmonizedTariffScheduleCodeUnitChoice = form.getDefaultHarmonizedTariffScheduleCodeUnitChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setHarmonizedTariffScheduleCodeUnitChoices(itemControl.getHarmonizedTariffScheduleCodeUnitChoices(defaultHarmonizedTariffScheduleCodeUnitChoice, getPreferredLanguage(),
                 allowNullChoice));

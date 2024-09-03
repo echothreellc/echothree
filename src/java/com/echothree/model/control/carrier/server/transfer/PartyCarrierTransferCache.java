@@ -38,11 +38,11 @@ public class PartyCarrierTransferCache
     }
     
     public PartyCarrierTransfer getPartyCarrierTransfer(PartyCarrier partyCarrier) {
-        PartyCarrierTransfer partyCarrierTransfer = get(partyCarrier);
+        var partyCarrierTransfer = get(partyCarrier);
         
         if(partyCarrierTransfer == null) {
-            PartyTransfer party = partyControl.getPartyTransfer(userVisit, partyCarrier.getParty());
-            CarrierTransfer carrier = carrierControl.getCarrierTransfer(userVisit, partyCarrier.getCarrierParty());
+            var party = partyControl.getPartyTransfer(userVisit, partyCarrier.getParty());
+            var carrier = carrierControl.getCarrierTransfer(userVisit, partyCarrier.getCarrierParty());
             
             partyCarrierTransfer = new PartyCarrierTransfer(party, carrier);
             put(partyCarrier, partyCarrierTransfer);

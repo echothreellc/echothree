@@ -53,16 +53,16 @@ public class DeleteCommunicationSourceDescriptionCommand
     @Override
     protected BaseResult execute() {
         var communicationControl = Session.getModelController(CommunicationControl.class);
-        String communicationSourceName = form.getCommunicationSourceName();
-        CommunicationSource communicationSource = communicationControl.getCommunicationSourceByName(communicationSourceName);
+        var communicationSourceName = form.getCommunicationSourceName();
+        var communicationSource = communicationControl.getCommunicationSourceByName(communicationSourceName);
         
         if(communicationSource != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                CommunicationSourceDescription communicationSourceDescription = communicationControl.getCommunicationSourceDescriptionForUpdate(communicationSource, language);
+                var communicationSourceDescription = communicationControl.getCommunicationSourceDescriptionForUpdate(communicationSource, language);
                 
                 if(communicationSourceDescription != null) {
                     communicationControl.deleteCommunicationSourceDescription(communicationSourceDescription, getPartyPK());

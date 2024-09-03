@@ -68,18 +68,18 @@ public class GetCustomerTypeContactListGroupsCommand
     
     @Override
     protected BaseResult execute() {
-        GetCustomerTypeContactListGroupsResult result = ContactListResultFactory.getGetCustomerTypeContactListGroupsResult();
-        String customerTypeName = form.getCustomerTypeName();
-        String contactListGroupName = form.getContactListGroupName();
+        var result = ContactListResultFactory.getGetCustomerTypeContactListGroupsResult();
+        var customerTypeName = form.getCustomerTypeName();
+        var contactListGroupName = form.getContactListGroupName();
         var parameterCount = (customerTypeName != null? 1: 0) + (contactListGroupName != null? 1: 0);
         
         if(parameterCount == 1) {
             var contactListControl = Session.getModelController(ContactListControl.class);
-            UserVisit userVisit = getUserVisit();
+            var userVisit = getUserVisit();
             
             if(customerTypeName != null) {
                 var customerControl = Session.getModelController(CustomerControl.class);
-                CustomerType customerType = customerControl.getCustomerTypeByName(customerTypeName);
+                var customerType = customerControl.getCustomerTypeByName(customerTypeName);
                 
                 if(customerType != null) {
                     result.setCustomerType(customerControl.getCustomerTypeTransfer(userVisit, customerType));
@@ -88,7 +88,7 @@ public class GetCustomerTypeContactListGroupsCommand
                     addExecutionError(ExecutionErrors.UnknownCustomerTypeName.name(), customerTypeName);
                 }
             } else if(contactListGroupName != null) {
-                ContactListGroup contactListGroup = contactListControl.getContactListGroupByName(contactListGroupName);
+                var contactListGroup = contactListControl.getContactListGroupByName(contactListGroupName);
                 
                 if(contactListGroup != null) {
                     result.setContactListGroup(contactListControl.getContactListGroupTransfer(userVisit, contactListGroup));

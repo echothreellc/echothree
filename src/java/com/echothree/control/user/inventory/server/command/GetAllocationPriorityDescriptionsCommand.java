@@ -65,9 +65,9 @@ public class GetAllocationPriorityDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var inventoryControl = Session.getModelController(InventoryControl.class);
-        GetAllocationPriorityDescriptionsResult result = InventoryResultFactory.getGetAllocationPriorityDescriptionsResult();
-        String allocationPriorityName = form.getAllocationPriorityName();
-        AllocationPriority allocationPriority = inventoryControl.getAllocationPriorityByName(allocationPriorityName);
+        var result = InventoryResultFactory.getGetAllocationPriorityDescriptionsResult();
+        var allocationPriorityName = form.getAllocationPriorityName();
+        var allocationPriority = inventoryControl.getAllocationPriorityByName(allocationPriorityName);
 
         if(allocationPriority != null) {
             result.setAllocationPriority(inventoryControl.getAllocationPriorityTransfer(getUserVisit(), allocationPriority));

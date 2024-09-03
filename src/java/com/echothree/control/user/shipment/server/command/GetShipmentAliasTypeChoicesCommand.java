@@ -66,13 +66,13 @@ public class GetShipmentAliasTypeChoicesCommand
     @Override
     protected BaseResult execute() {
         var shipmentControl = Session.getModelController(ShipmentControl.class);
-        GetShipmentAliasTypeChoicesResult result = ShipmentResultFactory.getGetShipmentAliasTypeChoicesResult();
-        String shipmentTypeName = form.getShipmentTypeName();
-        ShipmentType shipmentType = shipmentControl.getShipmentTypeByName(shipmentTypeName);
+        var result = ShipmentResultFactory.getGetShipmentAliasTypeChoicesResult();
+        var shipmentTypeName = form.getShipmentTypeName();
+        var shipmentType = shipmentControl.getShipmentTypeByName(shipmentTypeName);
 
         if(shipmentType != null) {
-            String defaultShipmentAliasTypeChoice = form.getDefaultShipmentAliasTypeChoice();
-            boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+            var defaultShipmentAliasTypeChoice = form.getDefaultShipmentAliasTypeChoice();
+            var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 
             result.setShipmentAliasTypeChoices(shipmentControl.getShipmentAliasTypeChoices(defaultShipmentAliasTypeChoice, getPreferredLanguage(), allowNullChoice,
                     shipmentType));

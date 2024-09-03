@@ -65,13 +65,13 @@ public class SetDefaultCarrierServiceCommand
     @Override
     protected BaseResult execute() {
         var carrierControl = Session.getModelController(CarrierControl.class);
-        String carrierName = form.getCarrierName();
-        Carrier carrier = carrierControl.getCarrierByName(carrierName);
+        var carrierName = form.getCarrierName();
+        var carrier = carrierControl.getCarrierByName(carrierName);
         
         if(carrier != null) {
-            Party carrierParty = carrier.getParty();
-            String carrierServiceName = form.getCarrierServiceName();
-            CarrierServiceDetailValue carrierServiceDetailValue = carrierControl.getCarrierServiceDetailValueByNameForUpdate(carrierParty, carrierServiceName);
+            var carrierParty = carrier.getParty();
+            var carrierServiceName = form.getCarrierServiceName();
+            var carrierServiceDetailValue = carrierControl.getCarrierServiceDetailValueByNameForUpdate(carrierParty, carrierServiceName);
             
             if(carrierServiceDetailValue != null) {
                 carrierServiceDetailValue.setIsDefault(Boolean.TRUE);

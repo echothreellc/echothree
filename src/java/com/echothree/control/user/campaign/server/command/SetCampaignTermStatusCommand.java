@@ -65,11 +65,11 @@ public class SetCampaignTermStatusCommand
     @Override
     protected BaseResult execute() {
         var campaignControl = Session.getModelController(CampaignControl.class);
-        String campaignTermName = form.getCampaignTermName();
-        CampaignTerm campaignTerm = campaignControl.getCampaignTermByName(campaignTermName);
+        var campaignTermName = form.getCampaignTermName();
+        var campaignTerm = campaignControl.getCampaignTermByName(campaignTermName);
         
         if(campaignTerm != null) {
-            String campaignTermStatusChoice = form.getCampaignTermStatusChoice();
+            var campaignTermStatusChoice = form.getCampaignTermStatusChoice();
             
             CampaignTermLogic.getInstance().setCampaignTermStatus(session, this, campaignTerm, campaignTermStatusChoice, getPartyPK());
         } else {

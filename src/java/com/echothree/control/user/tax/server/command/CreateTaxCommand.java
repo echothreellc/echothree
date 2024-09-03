@@ -64,28 +64,28 @@ public class CreateTaxCommand
     @Override
     protected BaseResult execute() {
         var taxControl = Session.getModelController(TaxControl.class);
-        String taxName = form.getTaxName();
-        Tax tax = taxControl.getTaxByName(taxName);
+        var taxName = form.getTaxName();
+        var tax = taxControl.getTaxByName(taxName);
         
         if(tax == null) {
             var contactControl = Session.getModelController(ContactControl.class);
-            String contactMechanismPurposeName = form.getContactMechanismPurposeName();
-            ContactMechanismPurpose contactMechanismPurpose = contactControl.getContactMechanismPurposeByName(contactMechanismPurposeName);
+            var contactMechanismPurposeName = form.getContactMechanismPurposeName();
+            var contactMechanismPurpose = contactControl.getContactMechanismPurposeByName(contactMechanismPurposeName);
             
             if(contactMechanismPurpose != null) {
-                ContactMechanismType contactMechanismType = contactControl.getContactMechanismTypeByName(ContactMechanismTypes.POSTAL_ADDRESS.name());
+                var contactMechanismType = contactControl.getContactMechanismTypeByName(ContactMechanismTypes.POSTAL_ADDRESS.name());
                 
                 if(contactMechanismPurpose.getContactMechanismType().equals(contactMechanismType)) {
                     var accountingControl = Session.getModelController(AccountingControl.class);
-                    String glAccountName = form.getGlAccountName();
-                    GlAccount glAccount = accountingControl.getGlAccountByName(glAccountName);
+                    var glAccountName = form.getGlAccountName();
+                    var glAccount = accountingControl.getGlAccountByName(glAccountName);
                     
                     if(glAccount != null) {
                         var partyPK = getPartyPK();
-                        Boolean includeShippingCharge = Boolean.valueOf(form.getIncludeShippingCharge());
-                        Boolean includeProcessingCharge = Boolean.valueOf(form.getIncludeProcessingCharge());
-                        Boolean includeInsuranceCharge = Boolean.valueOf(form.getIncludeInsuranceCharge());
-                        Integer percent = Integer.valueOf(form.getPercent());
+                        var includeShippingCharge = Boolean.valueOf(form.getIncludeShippingCharge());
+                        var includeProcessingCharge = Boolean.valueOf(form.getIncludeProcessingCharge());
+                        var includeInsuranceCharge = Boolean.valueOf(form.getIncludeInsuranceCharge());
+                        var percent = Integer.valueOf(form.getPercent());
                         var isDefault = Boolean.valueOf(form.getIsDefault());
                         var sortOrder = Integer.valueOf(form.getSortOrder());
                         var description = form.getDescription();

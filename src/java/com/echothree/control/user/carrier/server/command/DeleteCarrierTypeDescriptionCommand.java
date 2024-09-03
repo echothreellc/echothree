@@ -67,16 +67,16 @@ public class DeleteCarrierTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var carrierControl = Session.getModelController(CarrierControl.class);
-        String carrierTypeName = form.getCarrierTypeName();
-        CarrierType carrierType = carrierControl.getCarrierTypeByName(carrierTypeName);
+        var carrierTypeName = form.getCarrierTypeName();
+        var carrierType = carrierControl.getCarrierTypeByName(carrierTypeName);
         
         if(carrierType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                CarrierTypeDescription carrierTypeDescription = carrierControl.getCarrierTypeDescriptionForUpdate(carrierType, language);
+                var carrierTypeDescription = carrierControl.getCarrierTypeDescriptionForUpdate(carrierType, language);
                 
                 if(carrierTypeDescription != null) {
                     carrierControl.deleteCarrierTypeDescription(carrierTypeDescription, getPartyPK());

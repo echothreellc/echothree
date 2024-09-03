@@ -37,15 +37,15 @@ public class UserVisitTrackTransferCache
     }
 
     public UserVisitTrackTransfer getUserVisitTrackTransfer(UserVisitTrack userVisitTrack) {
-        UserVisitTrackTransfer userVisitTrackTransfer = get(userVisitTrack);
+        var userVisitTrackTransfer = get(userVisitTrack);
 
         if(userVisitTrackTransfer == null) {
-            UserVisitTransfer userVisitTransfer = userControl.getUserVisitTransfer(userVisit, userVisit);
-            Integer userVisitTrackSequence = userVisitTrack.getUserVisitTrackSequence();
-            Long unformattedTime = userVisitTrack.getTime();
-            String time = formatTypicalDateTime(unformattedTime);
-            Track track = userVisitTrack.getTrack();
-            TrackTransfer trackTransfer = track == null ? null : trackControl.getTrackTransfer(userVisit, track);
+            var userVisitTransfer = userControl.getUserVisitTransfer(userVisit, userVisit);
+            var userVisitTrackSequence = userVisitTrack.getUserVisitTrackSequence();
+            var unformattedTime = userVisitTrack.getTime();
+            var time = formatTypicalDateTime(unformattedTime);
+            var track = userVisitTrack.getTrack();
+            var trackTransfer = track == null ? null : trackControl.getTrackTransfer(userVisit, track);
 
             userVisitTrackTransfer = new UserVisitTrackTransfer(userVisitTransfer, userVisitTrackSequence, unformattedTime, time, trackTransfer);
             put(userVisitTrack, userVisitTrackTransfer);

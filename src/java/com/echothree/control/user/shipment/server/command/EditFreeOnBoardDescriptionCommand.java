@@ -79,25 +79,25 @@ public class EditFreeOnBoardDescriptionCommand
     @Override
     protected BaseResult execute() {
         var freeOnBoardControl = Session.getModelController(FreeOnBoardControl.class);
-        EditFreeOnBoardDescriptionResult result = ShipmentResultFactory.getEditFreeOnBoardDescriptionResult();
-        String freeOnBoardName = spec.getFreeOnBoardName();
-        FreeOnBoard freeOnBoard = freeOnBoardControl.getFreeOnBoardByName(freeOnBoardName);
+        var result = ShipmentResultFactory.getEditFreeOnBoardDescriptionResult();
+        var freeOnBoardName = spec.getFreeOnBoardName();
+        var freeOnBoard = freeOnBoardControl.getFreeOnBoardByName(freeOnBoardName);
         
         if(freeOnBoard != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                    FreeOnBoardDescription freeOnBoardDescription = freeOnBoardControl.getFreeOnBoardDescription(freeOnBoard, language);
+                    var freeOnBoardDescription = freeOnBoardControl.getFreeOnBoardDescription(freeOnBoard, language);
                     
                     if(freeOnBoardDescription != null) {
                         if(editMode.equals(EditMode.LOCK)) {
                             result.setFreeOnBoardDescription(freeOnBoardControl.getFreeOnBoardDescriptionTransfer(getUserVisit(), freeOnBoardDescription));
 
                             if(lockEntity(freeOnBoard)) {
-                                FreeOnBoardDescriptionEdit edit = ShipmentEditFactory.getFreeOnBoardDescriptionEdit();
+                                var edit = ShipmentEditFactory.getFreeOnBoardDescriptionEdit();
 
                                 result.setEdit(edit);
                                 edit.setDescription(freeOnBoardDescription.getDescription());
@@ -113,12 +113,12 @@ public class EditFreeOnBoardDescriptionCommand
                         addExecutionError(ExecutionErrors.UnknownFreeOnBoardDescription.name());
                     }
                 } else if(editMode.equals(EditMode.UPDATE)) {
-                    FreeOnBoardDescriptionValue freeOnBoardDescriptionValue = freeOnBoardControl.getFreeOnBoardDescriptionValueForUpdate(freeOnBoard, language);
+                    var freeOnBoardDescriptionValue = freeOnBoardControl.getFreeOnBoardDescriptionValueForUpdate(freeOnBoard, language);
                     
                     if(freeOnBoardDescriptionValue != null) {
                         if(lockEntityForUpdate(freeOnBoard)) {
                             try {
-                                String description = edit.getDescription();
+                                var description = edit.getDescription();
                                 
                                 freeOnBoardDescriptionValue.setDescription(description);
                                 

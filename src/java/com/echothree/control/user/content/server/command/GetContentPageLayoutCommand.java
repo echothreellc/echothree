@@ -56,7 +56,7 @@ public class GetContentPageLayoutCommand
     
     @Override
     protected ContentPageLayout getEntity() {
-        ContentPageLayout contentPageLayout = ContentPageLayoutLogic.getInstance().getContentPageLayoutByUniversalSpec(this, form, true);
+        var contentPageLayout = ContentPageLayoutLogic.getInstance().getContentPageLayoutByUniversalSpec(this, form, true);
 
         if(contentPageLayout != null) {
             sendEvent(contentPageLayout.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -68,7 +68,7 @@ public class GetContentPageLayoutCommand
     @Override
     protected BaseResult getResult(ContentPageLayout contentPageLayout) {
         var contentControl = Session.getModelController(ContentControl.class);
-        GetContentPageLayoutResult result = ContentResultFactory.getGetContentPageLayoutResult();
+        var result = ContentResultFactory.getGetContentPageLayoutResult();
 
         if(contentPageLayout != null) {
             result.setContentPageLayout(contentControl.getContentPageLayoutTransfer(getUserVisit(), contentPageLayout));

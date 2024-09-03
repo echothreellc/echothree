@@ -54,7 +54,7 @@ public class PaymentProcessorTypeLogic
             final Boolean isDefault, final Integer sortOrder, final Language language, final String description,
             final BasePK createdBy) {
         var paymentProcessorTypeControl = Session.getModelController(PaymentProcessorTypeControl.class);
-        PaymentProcessorType paymentProcessorType = paymentProcessorTypeControl.getPaymentProcessorTypeByName(paymentProcessorTypeName);
+        var paymentProcessorType = paymentProcessorTypeControl.getPaymentProcessorTypeByName(paymentProcessorTypeName);
 
         if(paymentProcessorType == null) {
             paymentProcessorType = paymentProcessorTypeControl.createPaymentProcessorType(paymentProcessorTypeName, isDefault, sortOrder, createdBy);
@@ -72,7 +72,7 @@ public class PaymentProcessorTypeLogic
     public PaymentProcessorType getPaymentProcessorTypeByName(final ExecutionErrorAccumulator eea, final String paymentProcessorTypeName,
             final EntityPermission entityPermission) {
         var paymentProcessorTypeControl = Session.getModelController(PaymentProcessorTypeControl.class);
-        PaymentProcessorType paymentProcessorType = paymentProcessorTypeControl.getPaymentProcessorTypeByName(paymentProcessorTypeName, entityPermission);
+        var paymentProcessorType = paymentProcessorTypeControl.getPaymentProcessorTypeByName(paymentProcessorTypeName, entityPermission);
 
         if(paymentProcessorType == null) {
             handleExecutionError(UnknownPaymentProcessorTypeNameException.class, eea, ExecutionErrors.UnknownPaymentProcessorTypeName.name(), paymentProcessorTypeName);
@@ -93,7 +93,7 @@ public class PaymentProcessorTypeLogic
             final PaymentProcessorTypeUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
         PaymentProcessorType paymentProcessorType = null;
         var paymentProcessorTypeControl = Session.getModelController(PaymentProcessorTypeControl.class);
-        String paymentProcessorTypeName = universalSpec.getPaymentProcessorTypeName();
+        var paymentProcessorTypeName = universalSpec.getPaymentProcessorTypeName();
         var parameterCount = (paymentProcessorTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {

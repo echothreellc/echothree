@@ -35,11 +35,11 @@ public class AppearanceTextTransformationTransferCache
     }
 
     public AppearanceTextTransformationTransfer getAppearanceTextTransformationTransfer(AppearanceTextTransformation appearanceTextTransformation) {
-        AppearanceTextTransformationTransfer appearanceTextTransformationTransfer = get(appearanceTextTransformation);
+        var appearanceTextTransformationTransfer = get(appearanceTextTransformation);
 
         if(appearanceTextTransformationTransfer == null) {
-            AppearanceTransfer appearance = coreControl.getAppearanceTransfer(userVisit, appearanceTextTransformation.getAppearance());
-            TextTransformationTransfer textTransformation = coreControl.getTextTransformationTransfer(userVisit, appearanceTextTransformation.getTextTransformation());
+            var appearance = coreControl.getAppearanceTransfer(userVisit, appearanceTextTransformation.getAppearance());
+            var textTransformation = coreControl.getTextTransformationTransfer(userVisit, appearanceTextTransformation.getTextTransformation());
 
             appearanceTextTransformationTransfer = new AppearanceTextTransformationTransfer(appearance, textTransformation);
             put(appearanceTextTransformation, appearanceTextTransformationTransfer);

@@ -69,7 +69,7 @@ public class GetUseNameElementCommand
     
     @Override
     protected UseNameElement getEntity() {
-        UseNameElement useNameElement = UseNameElementLogic.getInstance().getUseNameElementByUniversalSpec(this, form);
+        var useNameElement = UseNameElementLogic.getInstance().getUseNameElementByUniversalSpec(this, form);
 
         if(useNameElement != null) {
             sendEvent(useNameElement.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -81,7 +81,7 @@ public class GetUseNameElementCommand
     @Override
     protected BaseResult getResult(UseNameElement useNameElement) {
         var useNameElementControl = Session.getModelController(UseNameElementControl.class);
-        GetUseNameElementResult result = OfferResultFactory.getGetUseNameElementResult();
+        var result = OfferResultFactory.getGetUseNameElementResult();
 
         if(useNameElement != null) {
             result.setUseNameElement(useNameElementControl.getUseNameElementTransfer(getUserVisit(), useNameElement));

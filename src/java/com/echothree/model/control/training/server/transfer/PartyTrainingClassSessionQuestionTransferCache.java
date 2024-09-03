@@ -45,13 +45,13 @@ public class PartyTrainingClassSessionQuestionTransferCache
     }
     
     public PartyTrainingClassSessionQuestionTransfer getPartyTrainingClassSessionQuestionTransfer(PartyTrainingClassSessionQuestion partyTrainingClassSessionQuestion) {
-        PartyTrainingClassSessionQuestionTransfer partyTrainingClassSessionQuestionTransfer = get(partyTrainingClassSessionQuestion);
+        var partyTrainingClassSessionQuestionTransfer = get(partyTrainingClassSessionQuestion);
         
         if(partyTrainingClassSessionQuestionTransfer == null) {
-            PartyTrainingClassSessionQuestionDetail partyTrainingClassSessionQuestionDetail = partyTrainingClassSessionQuestion.getLastDetail();
-            PartyTrainingClassSessionTransfer partyTrainingClassSessionTransfer = trainingControl.getPartyTrainingClassSessionTransfer(userVisit, partyTrainingClassSessionQuestionDetail.getPartyTrainingClassSession());
-            TrainingClassQuestionTransfer trainingClassQuestionTransfer = trainingControl.getTrainingClassQuestionTransfer(userVisit, partyTrainingClassSessionQuestionDetail.getTrainingClassQuestion());
-            Integer sortOrder = partyTrainingClassSessionQuestionDetail.getSortOrder();
+            var partyTrainingClassSessionQuestionDetail = partyTrainingClassSessionQuestion.getLastDetail();
+            var partyTrainingClassSessionTransfer = trainingControl.getPartyTrainingClassSessionTransfer(userVisit, partyTrainingClassSessionQuestionDetail.getPartyTrainingClassSession());
+            var trainingClassQuestionTransfer = trainingControl.getTrainingClassQuestionTransfer(userVisit, partyTrainingClassSessionQuestionDetail.getTrainingClassQuestion());
+            var sortOrder = partyTrainingClassSessionQuestionDetail.getSortOrder();
 
             partyTrainingClassSessionQuestionTransfer = new PartyTrainingClassSessionQuestionTransfer(partyTrainingClassSessionTransfer,
                     trainingClassQuestionTransfer, sortOrder);

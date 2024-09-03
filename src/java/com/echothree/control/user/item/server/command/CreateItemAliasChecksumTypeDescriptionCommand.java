@@ -68,16 +68,16 @@ public class CreateItemAliasChecksumTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var itemControl = Session.getModelController(ItemControl.class);
-        String itemAliasChecksumTypeName = form.getItemAliasChecksumTypeName();
-        ItemAliasChecksumType itemAliasChecksumType = itemControl.getItemAliasChecksumTypeByName(itemAliasChecksumTypeName);
+        var itemAliasChecksumTypeName = form.getItemAliasChecksumTypeName();
+        var itemAliasChecksumType = itemControl.getItemAliasChecksumTypeByName(itemAliasChecksumTypeName);
         
         if(itemAliasChecksumType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                ItemAliasChecksumTypeDescription itemAliasChecksumTypeDescription = itemControl.getItemAliasChecksumTypeDescription(itemAliasChecksumType, language);
+                var itemAliasChecksumTypeDescription = itemControl.getItemAliasChecksumTypeDescription(itemAliasChecksumType, language);
                 
                 if(itemAliasChecksumTypeDescription == null) {
                     var description = form.getDescription();

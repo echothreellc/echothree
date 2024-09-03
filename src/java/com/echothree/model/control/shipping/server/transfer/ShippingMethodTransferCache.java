@@ -52,17 +52,17 @@ public class ShippingMethodTransferCache
     }
     
     public ShippingMethodTransfer getShippingMethodTransfer(ShippingMethod shippingMethod) {
-        ShippingMethodTransfer shippingMethodTransfer = get(shippingMethod);
+        var shippingMethodTransfer = get(shippingMethod);
 
         if(shippingMethodTransfer == null) {
-            ShippingMethodDetail shippingMethodDetail = shippingMethod.getLastDetail();
-            String shippingMethodName = shippingMethodDetail.getShippingMethodName();
-            Selector geoCodeSelector = shippingMethodDetail.getGeoCodeSelector();
-            SelectorTransfer geoCodeSelectorTransfer = geoCodeSelector == null ? null : selectorControl.getSelectorTransfer(userVisit, geoCodeSelector);
-            Selector itemSelector = shippingMethodDetail.getItemSelector();
-            SelectorTransfer itemSelectorTransfer = itemSelector == null ? null : selectorControl.getSelectorTransfer(userVisit, itemSelector);
-            Integer sortOrder = shippingMethodDetail.getSortOrder();
-            String description = shippingControl.getBestShippingMethodDescription(shippingMethod, getLanguage());
+            var shippingMethodDetail = shippingMethod.getLastDetail();
+            var shippingMethodName = shippingMethodDetail.getShippingMethodName();
+            var geoCodeSelector = shippingMethodDetail.getGeoCodeSelector();
+            var geoCodeSelectorTransfer = geoCodeSelector == null ? null : selectorControl.getSelectorTransfer(userVisit, geoCodeSelector);
+            var itemSelector = shippingMethodDetail.getItemSelector();
+            var itemSelectorTransfer = itemSelector == null ? null : selectorControl.getSelectorTransfer(userVisit, itemSelector);
+            var sortOrder = shippingMethodDetail.getSortOrder();
+            var description = shippingControl.getBestShippingMethodDescription(shippingMethod, getLanguage());
 
             shippingMethodTransfer = new ShippingMethodTransfer(shippingMethodName, geoCodeSelectorTransfer, itemSelectorTransfer, sortOrder, description);
             put(shippingMethod, shippingMethodTransfer);

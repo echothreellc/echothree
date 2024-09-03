@@ -37,12 +37,12 @@ public class CommandMessageTranslationTransferCache
     }
     
     public CommandMessageTranslationTransfer getCommandMessageTranslationTransfer(CommandMessageTranslation commandMessageTranslation) {
-        CommandMessageTranslationTransfer commandMessageTranslationTransfer = get(commandMessageTranslation);
+        var commandMessageTranslationTransfer = get(commandMessageTranslation);
         
         if(commandMessageTranslationTransfer == null) {
-            CommandMessageTransfer commandMessage = coreControl.getCommandMessageTransfer(userVisit, commandMessageTranslation.getCommandMessage());
-            LanguageTransfer language = partyControl.getLanguageTransfer(userVisit, commandMessageTranslation.getLanguage());
-            String translation = commandMessageTranslation.getTranslation();
+            var commandMessage = coreControl.getCommandMessageTransfer(userVisit, commandMessageTranslation.getCommandMessage());
+            var language = partyControl.getLanguageTransfer(userVisit, commandMessageTranslation.getLanguage());
+            var translation = commandMessageTranslation.getTranslation();
             
             commandMessageTranslationTransfer = new CommandMessageTranslationTransfer(commandMessage, language, translation);
             put(commandMessageTranslation, commandMessageTranslationTransfer);

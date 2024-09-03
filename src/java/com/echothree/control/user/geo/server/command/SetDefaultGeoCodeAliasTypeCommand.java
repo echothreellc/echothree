@@ -64,12 +64,12 @@ public class SetDefaultGeoCodeAliasTypeCommand
     @Override
     protected BaseResult execute() {
         var geoControl = Session.getModelController(GeoControl.class);
-        String geoCodeTypeName = form.getGeoCodeTypeName();
-        GeoCodeType geoCodeType = geoControl.getGeoCodeTypeByName(geoCodeTypeName);
+        var geoCodeTypeName = form.getGeoCodeTypeName();
+        var geoCodeType = geoControl.getGeoCodeTypeByName(geoCodeTypeName);
 
         if(geoCodeType != null) {
-            String geoAliasTypeName = form.getGeoCodeAliasTypeName();
-            GeoCodeAliasTypeDetailValue geoAliasTypeDetailValue = geoControl.getGeoCodeAliasTypeDetailValueByNameForUpdate(geoCodeType, geoAliasTypeName);
+            var geoAliasTypeName = form.getGeoCodeAliasTypeName();
+            var geoAliasTypeDetailValue = geoControl.getGeoCodeAliasTypeDetailValueByNameForUpdate(geoCodeType, geoAliasTypeName);
 
             if(geoAliasTypeDetailValue != null) {
                 geoAliasTypeDetailValue.setIsDefault(Boolean.TRUE);

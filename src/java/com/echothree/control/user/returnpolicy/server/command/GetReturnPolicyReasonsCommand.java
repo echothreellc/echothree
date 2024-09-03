@@ -69,18 +69,18 @@ public class GetReturnPolicyReasonsCommand
     @Override
     protected BaseResult execute() {
         var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
-        GetReturnPolicyReasonsResult result = ReturnPolicyResultFactory.getGetReturnPolicyReasonsResult();
-        String returnPolicyName = form.getReturnPolicyName();
-        String returnReasonName = form.getReturnReasonName();
+        var result = ReturnPolicyResultFactory.getGetReturnPolicyReasonsResult();
+        var returnPolicyName = form.getReturnPolicyName();
+        var returnReasonName = form.getReturnReasonName();
         var parameterCount = (returnReasonName != null? 1: 0) + (returnPolicyName != null? 1: 0);
         
         if(parameterCount == 1) {
-            String returnKindName = form.getReturnKindName();
-            ReturnKind returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
+            var returnKindName = form.getReturnKindName();
+            var returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
             
             if(returnKind != null) {
                 if(returnPolicyName != null) {
-                    ReturnPolicy returnPolicy = returnPolicyControl.getReturnPolicyByName(returnKind, returnPolicyName);
+                    var returnPolicy = returnPolicyControl.getReturnPolicyByName(returnKind, returnPolicyName);
                     
                     if(returnPolicy != null) {
                         result.setReturnPolicy(returnPolicyControl.getReturnPolicyTransfer(getUserVisit(), returnPolicy));
@@ -89,7 +89,7 @@ public class GetReturnPolicyReasonsCommand
                         addExecutionError(ExecutionErrors.UnknownReturnPolicyName.name(), returnPolicyName);
                     }
                 } else if(returnKindName != null && returnReasonName != null) {
-                    ReturnReason returnReason = returnPolicyControl.getReturnReasonByName(returnKind, returnReasonName);
+                    var returnReason = returnPolicyControl.getReturnReasonByName(returnKind, returnReasonName);
                     
                     if(returnReason != null) {
                         result.setReturnReason(returnPolicyControl.getReturnReasonTransfer(getUserVisit(), returnReason));

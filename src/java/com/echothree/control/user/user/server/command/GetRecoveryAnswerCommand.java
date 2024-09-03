@@ -63,16 +63,16 @@ public class GetRecoveryAnswerCommand
     
     @Override
     protected BaseResult execute() {
-        GetRecoveryAnswerResult result = UserResultFactory.getGetRecoveryAnswerResult();
-        String partyName = form.getPartyName();
-        String employeeName = form.getEmployeeName();
-        String customerName = form.getCustomerName();
-        String vendorName = form.getVendorName();
+        var result = UserResultFactory.getGetRecoveryAnswerResult();
+        var partyName = form.getPartyName();
+        var employeeName = form.getEmployeeName();
+        var customerName = form.getCustomerName();
+        var vendorName = form.getVendorName();
         var parameterCount = (partyName == null ? 0 : 1) + (employeeName == null ? 0 : 1) + (customerName == null ? 0 : 1) + (vendorName == null ? 0 : 1);
         
         if(parameterCount < 2) {
-            UserControl userControl = getUserControl();
-            Party self = getParty();
+            var userControl = getUserControl();
+            var self = getParty();
             Party party = null;
             
             if(partyName != null) {
@@ -84,7 +84,7 @@ public class GetRecoveryAnswerCommand
                 }
             } else if(employeeName != null) {
                 var employeeControl = Session.getModelController(EmployeeControl.class);
-                PartyEmployee partyEmployee = employeeControl.getPartyEmployeeByName(employeeName);
+                var partyEmployee = employeeControl.getPartyEmployeeByName(employeeName);
                 
                 if(partyEmployee != null) {
                     party = partyEmployee.getParty();
@@ -93,7 +93,7 @@ public class GetRecoveryAnswerCommand
                 }
             } else if(customerName != null) {
                 var customerControl = Session.getModelController(CustomerControl.class);
-                Customer customer = customerControl.getCustomerByName(customerName);
+                var customer = customerControl.getCustomerByName(customerName);
                 
                 if(customer != null) {
                     party = customer.getParty();
@@ -102,7 +102,7 @@ public class GetRecoveryAnswerCommand
                 }
             } else if(vendorName != null) {
                 var vendorControl = Session.getModelController(VendorControl.class);
-                Vendor vendor = vendorControl.getVendorByName(vendorName);
+                var vendor = vendorControl.getVendorByName(vendorName);
                 
                 if(vendor != null) {
                     party = vendor.getParty();
@@ -118,7 +118,7 @@ public class GetRecoveryAnswerCommand
             }
             
             if(!hasExecutionErrors()) {
-                RecoveryAnswer recoveryAnswer = userControl.getRecoveryAnswer(party);
+                var recoveryAnswer = userControl.getRecoveryAnswer(party);
                 
                 if(recoveryAnswer != null) {
                     result.setRecoveryAnswer(userControl.getRecoveryAnswerTransfer(getUserVisit(), recoveryAnswer));

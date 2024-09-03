@@ -33,14 +33,14 @@ public class ChainKindTransferCache
     }
     
     public ChainKindTransfer getChainKindTransfer(ChainKind chainKind) {
-        ChainKindTransfer chainKindTransfer = get(chainKind);
+        var chainKindTransfer = get(chainKind);
         
         if(chainKindTransfer == null) {
-            ChainKindDetail chainKindDetail = chainKind.getLastDetail();
-            String chainKindName = chainKindDetail.getChainKindName();
-            Boolean isDefault = chainKindDetail.getIsDefault();
-            Integer sortOrder = chainKindDetail.getSortOrder();
-            String description = chainControl.getBestChainKindDescription(chainKind, getLanguage());
+            var chainKindDetail = chainKind.getLastDetail();
+            var chainKindName = chainKindDetail.getChainKindName();
+            var isDefault = chainKindDetail.getIsDefault();
+            var sortOrder = chainKindDetail.getSortOrder();
+            var description = chainControl.getBestChainKindDescription(chainKind, getLanguage());
             
             chainKindTransfer = new ChainKindTransfer(chainKindName, isDefault, sortOrder, description);
             put(chainKind, chainKindTransfer);

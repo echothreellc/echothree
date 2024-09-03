@@ -156,7 +156,7 @@ public class VendorControl
         var defaultFound = defaultVendorType != null;
         
         if(defaultFound && isDefault) {
-            VendorTypeDetailValue defaultVendorTypeDetailValue = getDefaultVendorTypeDetailValueForUpdate();
+            var defaultVendorTypeDetailValue = getDefaultVendorTypeDetailValueForUpdate();
             
             defaultVendorTypeDetailValue.setIsDefault(Boolean.FALSE);
             updateVendorTypeFromValue(defaultVendorTypeDetailValue, false, createdBy);
@@ -220,8 +220,8 @@ public class VendorControl
                     + "WHERE vndrty_activedetailid = vndrtydt_vendortypedetailid "
                     + "FOR UPDATE";
         }
-        
-        PreparedStatement ps = VendorTypeFactory.getInstance().prepareStatement(query);
+
+        var ps = VendorTypeFactory.getInstance().prepareStatement(query);
         
         return VendorTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
     }
@@ -247,8 +247,8 @@ public class VendorControl
                     "WHERE vndrty_activedetailid = vndrtydt_vendortypedetailid AND vndrtydt_isdefault = 1 " +
                     "FOR UPDATE";
         }
-        
-        PreparedStatement ps = VendorTypeFactory.getInstance().prepareStatement(query);
+
+        var ps = VendorTypeFactory.getInstance().prepareStatement(query);
         
         return VendorTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
     }
@@ -281,8 +281,8 @@ public class VendorControl
                         "WHERE vndrty_activedetailid = vndrtydt_vendortypedetailid AND vndrtydt_vendortypename = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = VendorTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = VendorTypeFactory.getInstance().prepareStatement(query);
             
             ps.setString(1, vendorTypeName);
             
@@ -312,7 +312,7 @@ public class VendorControl
     
     public VendorTypeChoicesBean getVendorTypeChoices(String defaultVendorTypeChoice, Language language,
             boolean allowNullChoice) {
-        List<VendorType> vendorTypes = getVendorTypes();
+        var vendorTypes = getVendorTypes();
         var size = vendorTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -328,7 +328,7 @@ public class VendorControl
         }
         
         for(var vendorType : vendorTypes) {
-            VendorTypeDetail vendorTypeDetail = vendorType.getLastDetail();
+            var vendorTypeDetail = vendorType.getLastDetail();
             var label = getBestVendorTypeDescription(vendorType, language);
             var value = vendorTypeDetail.getVendorTypeName();
             
@@ -352,7 +352,7 @@ public class VendorControl
         List<VendorTypeTransfer> vendorTypeTransfers = null;
 
         if(vendorTypes != null) {
-            VendorTypeTransferCache vendorTypeTransferCache = getVendorTransferCaches(userVisit).getVendorTypeTransferCache();
+            var vendorTypeTransferCache = getVendorTransferCaches(userVisit).getVendorTypeTransferCache();
 
             vendorTypeTransfers = new ArrayList<>(vendorTypes.size());
 
@@ -396,12 +396,12 @@ public class VendorControl
             var sortOrder = vendorTypeDetailValue.getSortOrder();
             
             if(checkDefault) {
-                VendorType defaultVendorType = getDefaultVendorType();
-                boolean defaultFound = defaultVendorType != null && !defaultVendorType.equals(vendorType);
+                var defaultVendorType = getDefaultVendorType();
+                var defaultFound = defaultVendorType != null && !defaultVendorType.equals(vendorType);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    VendorTypeDetailValue defaultVendorTypeDetailValue = getDefaultVendorTypeDetailValueForUpdate();
+                    var defaultVendorTypeDetailValue = getDefaultVendorTypeDetailValueForUpdate();
                     
                     defaultVendorTypeDetailValue.setIsDefault(Boolean.FALSE);
                     updateVendorTypeFromValue(defaultVendorTypeDetailValue, false, updatedBy);
@@ -430,23 +430,23 @@ public class VendorControl
     
     public void deleteVendorType(VendorType vendorType, BasePK deletedBy) {
         deleteVendorTypeDescriptionsByVendorType(vendorType, deletedBy);
-        
-        VendorTypeDetail vendorTypeDetail = vendorType.getLastDetailForUpdate();
+
+        var vendorTypeDetail = vendorType.getLastDetailForUpdate();
         vendorTypeDetail.setThruTime(session.START_TIME_LONG);
         vendorType.setActiveDetail(null);
         vendorType.store();
         
         // Check for default, and pick one if necessary
-        VendorType defaultVendorType = getDefaultVendorType();
+        var defaultVendorType = getDefaultVendorType();
         if(defaultVendorType == null) {
-            List<VendorType> vendorTypes = getVendorTypesForUpdate();
+            var vendorTypes = getVendorTypesForUpdate();
             
             if(!vendorTypes.isEmpty()) {
-                Iterator<VendorType> iter = vendorTypes.iterator();
+                var iter = vendorTypes.iterator();
                 if(iter.hasNext()) {
                     defaultVendorType = iter.next();
                 }
-                VendorTypeDetailValue vendorTypeDetailValue = Objects.requireNonNull(defaultVendorType).getLastDetailForUpdate().getVendorTypeDetailValue().clone();
+                var vendorTypeDetailValue = Objects.requireNonNull(defaultVendorType).getLastDetailForUpdate().getVendorTypeDetailValue().clone();
                 
                 vendorTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateVendorTypeFromValue(vendorTypeDetailValue, false, deletedBy);
@@ -462,7 +462,7 @@ public class VendorControl
     
     public VendorTypeDescription createVendorTypeDescription(VendorType vendorType, Language language, String description,
             BasePK createdBy) {
-        VendorTypeDescription vendorTypeDescription = VendorTypeDescriptionFactory.getInstance().create(vendorType,
+        var vendorTypeDescription = VendorTypeDescriptionFactory.getInstance().create(vendorType,
                 language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
@@ -488,8 +488,8 @@ public class VendorControl
                         "WHERE vndrtyd_vndrty_vendortypeid = ? AND vndrtyd_lang_languageid = ? AND vndrtyd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = VendorTypeDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = VendorTypeDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, vendorType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -537,8 +537,8 @@ public class VendorControl
                         + "WHERE vndrtyd_vndrty_vendortypeid = ? AND vndrtyd_thrutime = ? "
                         + "FOR UPDATE";
             }
-            
-            PreparedStatement ps = VendorTypeDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = VendorTypeDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, vendorType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -561,7 +561,7 @@ public class VendorControl
     
     public String getBestVendorTypeDescription(VendorType vendorType, Language language) {
         String description;
-        VendorTypeDescription vendorTypeDescription = getVendorTypeDescription(vendorType, language);
+        var vendorTypeDescription = getVendorTypeDescription(vendorType, language);
         
         if(vendorTypeDescription == null && !language.getIsDefault()) {
             vendorTypeDescription = getVendorTypeDescription(vendorType, getPartyControl().getDefaultLanguage());
@@ -581,11 +581,11 @@ public class VendorControl
     }
     
     public List<VendorTypeDescriptionTransfer> getVendorTypeDescriptionTransfers(UserVisit userVisit, VendorType vendorType) {
-        List<VendorTypeDescription> vendorTypeDescriptions = getVendorTypeDescriptionsByVendorType(vendorType);
+        var vendorTypeDescriptions = getVendorTypeDescriptionsByVendorType(vendorType);
         List<VendorTypeDescriptionTransfer> vendorTypeDescriptionTransfers = null;
         
         if(vendorTypeDescriptions != null) {
-            VendorTypeDescriptionTransferCache vendorTypeDescriptionTransferCache = getVendorTransferCaches(userVisit).getVendorTypeDescriptionTransferCache();
+            var vendorTypeDescriptionTransferCache = getVendorTransferCaches(userVisit).getVendorTypeDescriptionTransferCache();
             
             vendorTypeDescriptionTransfers = new ArrayList<>(vendorTypeDescriptions.size());
             
@@ -599,15 +599,15 @@ public class VendorControl
     
     public void updateVendorTypeDescriptionFromValue(VendorTypeDescriptionValue vendorTypeDescriptionValue, BasePK updatedBy) {
         if(vendorTypeDescriptionValue.hasBeenModified()) {
-            VendorTypeDescription vendorTypeDescription = VendorTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var vendorTypeDescription = VendorTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      vendorTypeDescriptionValue.getPrimaryKey());
             
             vendorTypeDescription.setThruTime(session.START_TIME_LONG);
             vendorTypeDescription.store();
-            
-            VendorType vendorType = vendorTypeDescription.getVendorType();
-            Language language = vendorTypeDescription.getLanguage();
-            String description = vendorTypeDescriptionValue.getDescription();
+
+            var vendorType = vendorTypeDescription.getVendorType();
+            var language = vendorTypeDescription.getLanguage();
+            var description = vendorTypeDescriptionValue.getDescription();
             
             vendorTypeDescription = VendorTypeDescriptionFactory.getInstance().create(vendorType, language,
                     description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -625,7 +625,7 @@ public class VendorControl
     }
     
     public void deleteVendorTypeDescriptionsByVendorType(VendorType vendorType, BasePK deletedBy) {
-        List<VendorTypeDescription> vendorTypeDescriptions = getVendorTypeDescriptionsByVendorTypeForUpdate(vendorType);
+        var vendorTypeDescriptions = getVendorTypeDescriptionsByVendorTypeForUpdate(vendorType);
         
         vendorTypeDescriptions.forEach((vendorTypeDescription) -> 
                 deleteVendorTypeDescription(vendorTypeDescription, deletedBy)
@@ -689,7 +689,7 @@ public class VendorControl
                         "FOR UPDATE";
             }
 
-            PreparedStatement ps = VendorFactory.getInstance().prepareStatement(query);
+            var ps = VendorFactory.getInstance().prepareStatement(query);
 
             ps.setLong(1, Session.MAX_TIME);
 
@@ -725,8 +725,8 @@ public class VendorControl
                         "WHERE vndr_par_partyid = ? AND vndr_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = VendorFactory.getInstance().prepareStatement(query);
+
+            var ps = VendorFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, party.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -763,8 +763,8 @@ public class VendorControl
                         "WHERE vndr_vendorname = ? AND vndr_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = VendorFactory.getInstance().prepareStatement(query);
+
+            var ps = VendorFactory.getInstance().prepareStatement(query);
             
             ps.setString(1, vendorName);
             ps.setLong(2, Session.MAX_TIME);
@@ -802,8 +802,8 @@ public class VendorControl
                         + "WHERE vndr_defaultitemaliastypeid = ? AND vndr_thrutime = ? "
                         + "FOR UPDATE";
             }
-            
-            PreparedStatement ps = VendorFactory.getInstance().prepareStatement(query);
+
+            var ps = VendorFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, defaultItemAliasType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -841,8 +841,8 @@ public class VendorControl
             workflowControl.getWorkflowEntranceChoices(vendorStatusChoicesBean, defaultVendorStatusChoice, language, allowNullChoice,
                     workflowControl.getWorkflowByName(VendorStatusConstants.Workflow_VENDOR_STATUS), partyPK);
         } else {
-            EntityInstance entityInstance = getCoreControl().getEntityInstanceByBasePK(vendorParty.getPrimaryKey());
-            WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(VendorStatusConstants.Workflow_VENDOR_STATUS,
+            var entityInstance = getCoreControl().getEntityInstanceByBasePK(vendorParty.getPrimaryKey());
+            var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(VendorStatusConstants.Workflow_VENDOR_STATUS,
                     entityInstance);
 
             workflowControl.getWorkflowDestinationChoices(vendorStatusChoicesBean, defaultVendorStatusChoice, language, allowNullChoice,
@@ -854,10 +854,10 @@ public class VendorControl
 
     public void setVendorStatus(ExecutionErrorAccumulator eea, Party party, String vendorStatusChoice, PartyPK modifiedBy) {
         var workflowControl = getWorkflowControl();
-        EntityInstance entityInstance = getEntityInstanceByBaseEntity(party);
-        WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(VendorStatusConstants.Workflow_VENDOR_STATUS,
+        var entityInstance = getEntityInstanceByBaseEntity(party);
+        var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(VendorStatusConstants.Workflow_VENDOR_STATUS,
                 entityInstance);
-        WorkflowDestination workflowDestination = vendorStatusChoice == null? null:
+        var workflowDestination = vendorStatusChoice == null? null:
             workflowControl.getWorkflowDestinationByName(workflowEntityStatus.getWorkflowStep(), vendorStatusChoice);
 
         if(workflowDestination != null || vendorStatusChoice == null) {
@@ -892,32 +892,32 @@ public class VendorControl
 
     public void updateVendorFromValue(VendorValue vendorValue, BasePK updatedBy) {
         if(vendorValue.hasBeenModified()) {
-            Vendor vendor = VendorFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, vendorValue.getPrimaryKey());
+            var vendor = VendorFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, vendorValue.getPrimaryKey());
             
             vendor.setThruTime(session.START_TIME_LONG);
             vendor.store();
-            
-            PartyPK partyPK = vendor.getPartyPK(); // Not updated
-            String vendorName = vendorValue.getVendorName();
-            VendorTypePK vendorTypePK = vendorValue.getVendorTypePK();
-            Integer minimumPurchaseOrderLines = vendorValue.getMinimumPurchaseOrderLines();
-            Integer maximumPurchaseOrderLines = vendorValue.getMaximumPurchaseOrderLines();
-            Long minimumPurchaseOrderAmount = vendorValue.getMinimumPurchaseOrderAmount();
-            Long maximumPurchaseOrderAmount = vendorValue.getMaximumPurchaseOrderAmount();
-            Boolean useItemPurchasingCategories = vendorValue.getUseItemPurchasingCategories();
-            ItemAliasTypePK defaultItemAliasTypePK = vendorValue.getDefaultItemAliasTypePK();
-            CancellationPolicyPK cancellationPolicyPK = vendorValue.getCancellationPolicyPK();
-            ReturnPolicyPK returnPolicyPK = vendorValue.getReturnPolicyPK();
-            GlAccountPK apGlAccountPK = vendorValue.getApGlAccountPK();
-            Boolean holdUntilComplete = vendorValue.getHoldUntilComplete();
-            Boolean allowBackorders = vendorValue.getAllowBackorders();
-            Boolean allowSubstitutions = vendorValue.getAllowSubstitutions();
-            Boolean allowCombiningShipments = vendorValue.getAllowCombiningShipments();
-            Boolean requireReference = vendorValue.getRequireReference();
-            Boolean allowReferenceDuplicates = vendorValue.getAllowReferenceDuplicates();
-            String referenceValidationPattern = vendorValue.getReferenceValidationPattern();
-            SelectorPK vendorItemSelectorPK = vendorValue.getVendorItemSelectorPK();
-            FilterPK vendorItemCostFilterPK = vendorValue.getVendorItemCostFilterPK();
+
+            var partyPK = vendor.getPartyPK(); // Not updated
+            var vendorName = vendorValue.getVendorName();
+            var vendorTypePK = vendorValue.getVendorTypePK();
+            var minimumPurchaseOrderLines = vendorValue.getMinimumPurchaseOrderLines();
+            var maximumPurchaseOrderLines = vendorValue.getMaximumPurchaseOrderLines();
+            var minimumPurchaseOrderAmount = vendorValue.getMinimumPurchaseOrderAmount();
+            var maximumPurchaseOrderAmount = vendorValue.getMaximumPurchaseOrderAmount();
+            var useItemPurchasingCategories = vendorValue.getUseItemPurchasingCategories();
+            var defaultItemAliasTypePK = vendorValue.getDefaultItemAliasTypePK();
+            var cancellationPolicyPK = vendorValue.getCancellationPolicyPK();
+            var returnPolicyPK = vendorValue.getReturnPolicyPK();
+            var apGlAccountPK = vendorValue.getApGlAccountPK();
+            var holdUntilComplete = vendorValue.getHoldUntilComplete();
+            var allowBackorders = vendorValue.getAllowBackorders();
+            var allowSubstitutions = vendorValue.getAllowSubstitutions();
+            var allowCombiningShipments = vendorValue.getAllowCombiningShipments();
+            var requireReference = vendorValue.getRequireReference();
+            var allowReferenceDuplicates = vendorValue.getAllowReferenceDuplicates();
+            var referenceValidationPattern = vendorValue.getReferenceValidationPattern();
+            var vendorItemSelectorPK = vendorValue.getVendorItemSelectorPK();
+            var vendorItemCostFilterPK = vendorValue.getVendorItemCostFilterPK();
             
             vendor = VendorFactory.getInstance().create(partyPK, vendorName, vendorTypePK, minimumPurchaseOrderLines, maximumPurchaseOrderLines,
                     minimumPurchaseOrderAmount, maximumPurchaseOrderAmount, useItemPurchasingCategories, defaultItemAliasTypePK, cancellationPolicyPK,
@@ -935,8 +935,8 @@ public class VendorControl
     
     public VendorItem createVendorItem(Item item, Party vendorParty, String vendorItemName, String description, Integer priority,
             CancellationPolicy cancellationPolicy, ReturnPolicy returnPolicy, BasePK createdBy) {
-        VendorItem vendorItem = VendorItemFactory.getInstance().create();
-        VendorItemDetail vendorItemDetail = VendorItemDetailFactory.getInstance().create(vendorItem, item, vendorParty,
+        var vendorItem = VendorItemFactory.getInstance().create();
+        var vendorItemDetail = VendorItemDetailFactory.getInstance().create(vendorItem, item, vendorParty,
                 vendorItemName, description, priority, cancellationPolicy, returnPolicy, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
@@ -1020,8 +1020,8 @@ public class VendorControl
                         "AND vndritmdt_vendoritemname = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = VendorItemFactory.getInstance().prepareStatement(query);
+
+            var ps = VendorItemFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, vendorParty.getPrimaryKey().getEntityId());
             ps.setString(2, vendorItemName);
@@ -1070,7 +1070,7 @@ public class VendorControl
                         + "AND vndritmdt_vendorpartyid = vndr_par_partyid AND vndr_thrutime = ? "
                         + "FOR UPDATE";
             }
-            PreparedStatement ps = VendorItemFactory.getInstance().prepareStatement(query);
+            var ps = VendorItemFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, item.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1111,7 +1111,7 @@ public class VendorControl
                         + "AND vndritmdt_itm_itemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid "
                         + "FOR UPDATE";
             }
-            PreparedStatement ps = VendorItemFactory.getInstance().prepareStatement(query);
+            var ps = VendorItemFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, vendorParty.getPrimaryKey().getEntityId());
             
@@ -1152,8 +1152,8 @@ public class VendorControl
                         + "AND vndritmdt_vendoritemname = ? "
                         + "FOR UPDATE";
             }
-            
-            PreparedStatement ps = VendorItemFactory.getInstance().prepareStatement(query);
+
+            var ps = VendorItemFactory.getInstance().prepareStatement(query);
             
             ps.setString(1, vendorItemName);
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
@@ -1185,8 +1185,8 @@ public class VendorControl
             workflowControl.getWorkflowEntranceChoices(vendorItemStatusChoicesBean, defaultVendorItemStatusChoice, language, allowNullChoice,
                     workflowControl.getWorkflowByName(VendorItemStatusConstants.Workflow_VENDOR_ITEM_STATUS), partyPK);
         } else {
-            EntityInstance entityInstance = getCoreControl().getEntityInstanceByBasePK(vendorItem.getPrimaryKey());
-            WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(VendorItemStatusConstants.Workflow_VENDOR_ITEM_STATUS,
+            var entityInstance = getCoreControl().getEntityInstanceByBasePK(vendorItem.getPrimaryKey());
+            var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(VendorItemStatusConstants.Workflow_VENDOR_ITEM_STATUS,
                     entityInstance);
 
             workflowControl.getWorkflowDestinationChoices(vendorItemStatusChoicesBean, defaultVendorItemStatusChoice, language, allowNullChoice,
@@ -1198,10 +1198,10 @@ public class VendorControl
 
     public void setVendorItemStatus(ExecutionErrorAccumulator eea, VendorItem vendorItem, String vendorItemStatusChoice, PartyPK modifiedBy) {
         var workflowControl = getWorkflowControl();
-        EntityInstance entityInstance = getEntityInstanceByBaseEntity(vendorItem);
-        WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(VendorItemStatusConstants.Workflow_VENDOR_ITEM_STATUS,
+        var entityInstance = getEntityInstanceByBaseEntity(vendorItem);
+        var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(VendorItemStatusConstants.Workflow_VENDOR_ITEM_STATUS,
                 entityInstance);
-        WorkflowDestination workflowDestination = vendorItemStatusChoice == null? null:
+        var workflowDestination = vendorItemStatusChoice == null? null:
             workflowControl.getWorkflowDestinationByName(workflowEntityStatus.getWorkflowStep(), vendorItemStatusChoice);
 
         if(workflowDestination != null || vendorItemStatusChoice == null) {
@@ -1217,7 +1217,7 @@ public class VendorControl
     
     public List<VendorItemTransfer> getVendorItemTransfers(UserVisit userVisit, Collection<VendorItem> vendorItems) {
         List<VendorItemTransfer> vendorItemTransfers = new ArrayList<>(vendorItems.size());
-        VendorItemTransferCache vendorItemTransferCache = getVendorTransferCaches(userVisit).getVendorItemTransferCache();
+        var vendorItemTransferCache = getVendorTransferCaches(userVisit).getVendorItemTransferCache();
         
         vendorItems.forEach((vendorItem) ->
                 vendorItemTransfers.add(vendorItemTransferCache.getVendorItemTransfer(vendorItem))
@@ -1236,21 +1236,21 @@ public class VendorControl
     
     public void updateVendorItemFromValue(VendorItemDetailValue vendorItemDetailValue, BasePK updatedBy) {
         if(vendorItemDetailValue.hasBeenModified()) {
-            VendorItem vendorItem = VendorItemFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var vendorItem = VendorItemFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      vendorItemDetailValue.getVendorItemPK());
-            VendorItemDetail vendorItemDetail = vendorItem.getActiveDetailForUpdate();
+            var vendorItemDetail = vendorItem.getActiveDetailForUpdate();
             
             vendorItemDetail.setThruTime(session.START_TIME_LONG);
             vendorItemDetail.store();
-            
-            VendorItemPK vendorItemPK = vendorItemDetail.getVendorItemPK(); // Not updated
-            ItemPK itemPK = vendorItemDetail.getItemPK(); // Not updated
-            PartyPK vendorPartyPK = vendorItemDetail.getVendorPartyPK(); // Not updated
-            String vendorItemName = vendorItemDetailValue.getVendorItemName();
-            String description = vendorItemDetailValue.getDescription();
-            Integer priority = vendorItemDetailValue.getPriority();
-            CancellationPolicyPK cancellationPolicyPK = vendorItemDetailValue.getCancellationPolicyPK();
-            ReturnPolicyPK returnPolicyPK = vendorItemDetailValue.getReturnPolicyPK();
+
+            var vendorItemPK = vendorItemDetail.getVendorItemPK(); // Not updated
+            var itemPK = vendorItemDetail.getItemPK(); // Not updated
+            var vendorPartyPK = vendorItemDetail.getVendorPartyPK(); // Not updated
+            var vendorItemName = vendorItemDetailValue.getVendorItemName();
+            var description = vendorItemDetailValue.getDescription();
+            var priority = vendorItemDetailValue.getPriority();
+            var cancellationPolicyPK = vendorItemDetailValue.getCancellationPolicyPK();
+            var returnPolicyPK = vendorItemDetailValue.getReturnPolicyPK();
             
             vendorItemDetail = VendorItemDetailFactory.getInstance().create(vendorItemPK, itemPK, vendorPartyPK,
                     vendorItemName, description, priority, cancellationPolicyPK, returnPolicyPK, session.START_TIME_LONG,
@@ -1265,8 +1265,8 @@ public class VendorControl
     
     public void deleteVendorItem(VendorItem vendorItem, BasePK deletedBy) {
         deleteVendorItemCostsByVendorItem(vendorItem, deletedBy);
-        
-        VendorItemDetail vendorItemDetail = vendorItem.getLastDetailForUpdate();
+
+        var vendorItemDetail = vendorItem.getLastDetailForUpdate();
         vendorItemDetail.setThruTime(session.START_TIME_LONG);
         vendorItem.setActiveDetail(null);
         vendorItem.store();
@@ -1294,7 +1294,7 @@ public class VendorControl
     
     public VendorItemCost createVendorItemCost(VendorItem vendorItem, InventoryCondition inventoryCondition,
             UnitOfMeasureType unitOfMeasureType, Long unitCost, BasePK createdBy) {
-        VendorItemCost vendorItemCost = VendorItemCostFactory.getInstance().create(vendorItem, inventoryCondition,
+        var vendorItemCost = VendorItemCostFactory.getInstance().create(vendorItem, inventoryCondition,
                 unitOfMeasureType, unitCost, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(vendorItem.getPrimaryKey(), EventTypes.MODIFY, vendorItemCost.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1360,8 +1360,8 @@ public class VendorControl
                         "AND vndritmc_uomt_unitofmeasuretypeid = ? AND vndritmc_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = VendorItemCostFactory.getInstance().prepareStatement(query);
+
+            var ps = VendorItemCostFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, vendorItem.getPrimaryKey().getEntityId());
             ps.setLong(2, inventoryCondition.getPrimaryKey().getEntityId());
@@ -1417,8 +1417,8 @@ public class VendorControl
                         + "AND vndritmc_uomt_unitofmeasuretypeid = uomt_unitofmeasuretypeid AND uomt_lastdetailid = uomtdt_unitofmeasuretypedetailid "
                         + "FOR UPDATE";
             }
-            
-            PreparedStatement ps = VendorItemCostFactory.getInstance().prepareStatement(query);
+
+            var ps = VendorItemCostFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, vendorItem.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1443,7 +1443,7 @@ public class VendorControl
         List<VendorItemCost> vendorItemCosts;
         
         try {
-            PreparedStatement ps = VendorItemCostFactory.getInstance().prepareStatement(
+            var ps = VendorItemCostFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM vendoritemcosts " +
                     "WHERE vndritmc_invcon_inventoryconditionid = ? AND vndritmc_thrutime = ? " +
@@ -1464,7 +1464,7 @@ public class VendorControl
         List<VendorItemCost> vendorItemCosts;
         
         try {
-            PreparedStatement ps = VendorItemCostFactory.getInstance().prepareStatement(
+            var ps = VendorItemCostFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM vendoritemcosts " +
                     "WHERE vndritmc_uomt_unitofmeasuretypeid = ? AND vndritmc_thrutime = ? " +
@@ -1485,7 +1485,7 @@ public class VendorControl
         List<VendorItemCost> vendorItemCosts;
         
         try {
-            PreparedStatement ps = VendorItemCostFactory.getInstance().prepareStatement(
+            var ps = VendorItemCostFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM vendoritems, vendoritemdetails, vendoritemcosts " +
                     "WHERE vndritm_activedetailid = vndritmdt_vendoritemdetailid AND vndritmdt_itm_itemid = ? " +
@@ -1510,7 +1510,7 @@ public class VendorControl
     
     public List<VendorItemCostTransfer> getVendorItemCostTransfers(UserVisit userVisit, Collection<VendorItemCost> vendorItemCosts) {
         List<VendorItemCostTransfer> vendorItemCostTransfers = vendorItemCostTransfers = new ArrayList<>(vendorItemCosts.size());
-        VendorItemCostTransferCache vendorItemCostTransferCache = getVendorTransferCaches(userVisit).getVendorItemCostTransferCache();
+        var vendorItemCostTransferCache = getVendorTransferCaches(userVisit).getVendorItemCostTransferCache();
         
         for(var vendorItemCost : vendorItemCosts) {
             vendorItemCostTransfers.add(vendorItemCostTransferCache.getVendorItemCostTransfer(vendorItemCost));
@@ -1525,16 +1525,16 @@ public class VendorControl
     
     public void updateVendorItemCostFromValue(VendorItemCostValue vendorItemCostValue, BasePK updatedBy) {
         if(vendorItemCostValue.hasBeenModified()) {
-            VendorItemCost vendorItemCost = VendorItemCostFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var vendorItemCost = VendorItemCostFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      vendorItemCostValue.getPrimaryKey());
             
             vendorItemCost.setThruTime(session.START_TIME_LONG);
             vendorItemCost.store();
-            
-            VendorItemPK vendorItemPK = vendorItemCost.getVendorItemPK();
-            InventoryConditionPK inventoryConditionPK = vendorItemCost.getInventoryConditionPK();
-            UnitOfMeasureTypePK unitOfMeasureTypePK = vendorItemCost.getUnitOfMeasureTypePK();
-            Long unitCost = vendorItemCostValue.getUnitCost();
+
+            var vendorItemPK = vendorItemCost.getVendorItemPK();
+            var inventoryConditionPK = vendorItemCost.getInventoryConditionPK();
+            var unitOfMeasureTypePK = vendorItemCost.getUnitOfMeasureTypePK();
+            var unitCost = vendorItemCostValue.getUnitCost();
             
             vendorItemCost = VendorItemCostFactory.getInstance().create(vendorItemPK, inventoryConditionPK,
                     unitOfMeasureTypePK, unitCost, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1577,20 +1577,20 @@ public class VendorControl
     
     public ItemPurchasingCategory createItemPurchasingCategory(String itemPurchasingCategoryName,
             ItemPurchasingCategory parentItemPurchasingCategory, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        ItemPurchasingCategory defaultItemPurchasingCategory = getDefaultItemPurchasingCategory();
-        boolean defaultFound = defaultItemPurchasingCategory != null;
+        var defaultItemPurchasingCategory = getDefaultItemPurchasingCategory();
+        var defaultFound = defaultItemPurchasingCategory != null;
         
         if(defaultFound && isDefault) {
-            ItemPurchasingCategoryDetailValue defaultItemPurchasingCategoryDetailValue = getDefaultItemPurchasingCategoryDetailValueForUpdate();
+            var defaultItemPurchasingCategoryDetailValue = getDefaultItemPurchasingCategoryDetailValueForUpdate();
             
             defaultItemPurchasingCategoryDetailValue.setIsDefault(Boolean.FALSE);
             updateItemPurchasingCategoryFromValue(defaultItemPurchasingCategoryDetailValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        ItemPurchasingCategory itemPurchasingCategory = ItemPurchasingCategoryFactory.getInstance().create();
-        ItemPurchasingCategoryDetail itemPurchasingCategoryDetail = ItemPurchasingCategoryDetailFactory.getInstance().create(session,
+
+        var itemPurchasingCategory = ItemPurchasingCategoryFactory.getInstance().create();
+        var itemPurchasingCategoryDetail = ItemPurchasingCategoryDetailFactory.getInstance().create(session,
                 itemPurchasingCategory, itemPurchasingCategoryName, parentItemPurchasingCategory, isDefault,
                 sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
@@ -1787,7 +1787,7 @@ public class VendorControl
 
     public ItemPurchasingCategoryChoicesBean getItemPurchasingCategoryChoices(String defaultItemPurchasingCategoryChoice,
             Language language, boolean allowNullChoice) {
-        List<ItemPurchasingCategory> itemPurchasingCategories = getItemPurchasingCategories();
+        var itemPurchasingCategories = getItemPurchasingCategories();
         var size = itemPurchasingCategories.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -1803,7 +1803,7 @@ public class VendorControl
         }
         
         for(var itemPurchasingCategory : itemPurchasingCategories) {
-            ItemPurchasingCategoryDetail itemPurchasingCategoryDetail = itemPurchasingCategory.getLastDetail();
+            var itemPurchasingCategoryDetail = itemPurchasingCategory.getLastDetail();
             
             var label = getBestItemPurchasingCategoryDescription(itemPurchasingCategory, language);
             var value = itemPurchasingCategoryDetail.getItemPurchasingCategoryName();
@@ -1822,7 +1822,7 @@ public class VendorControl
     
     public boolean isParentItemPurchasingCategorySafe(ItemPurchasingCategory itemPurchasingCategory,
             ItemPurchasingCategory parentItemPurchasingCategory) {
-        boolean safe = true;
+        var safe = true;
         
         if(parentItemPurchasingCategory != null) {
             Set<ItemPurchasingCategory> parentItemPurchasingCategories = new HashSet<>();
@@ -1845,26 +1845,26 @@ public class VendorControl
     private void updateItemPurchasingCategoryFromValue(ItemPurchasingCategoryDetailValue itemPurchasingCategoryDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(itemPurchasingCategoryDetailValue.hasBeenModified()) {
-            ItemPurchasingCategory itemPurchasingCategory = ItemPurchasingCategoryFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var itemPurchasingCategory = ItemPurchasingCategoryFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      itemPurchasingCategoryDetailValue.getItemPurchasingCategoryPK());
-            ItemPurchasingCategoryDetail itemPurchasingCategoryDetail = itemPurchasingCategory.getActiveDetailForUpdate();
+            var itemPurchasingCategoryDetail = itemPurchasingCategory.getActiveDetailForUpdate();
             
             itemPurchasingCategoryDetail.setThruTime(session.START_TIME_LONG);
             itemPurchasingCategoryDetail.store();
-            
-            ItemPurchasingCategoryPK itemPurchasingCategoryPK = itemPurchasingCategoryDetail.getItemPurchasingCategoryPK();
-            String itemPurchasingCategoryName = itemPurchasingCategoryDetailValue.getItemPurchasingCategoryName();
-            ItemPurchasingCategoryPK parentItemPurchasingCategoryPK = itemPurchasingCategoryDetailValue.getParentItemPurchasingCategoryPK();
-            Boolean isDefault = itemPurchasingCategoryDetailValue.getIsDefault();
-            Integer sortOrder = itemPurchasingCategoryDetailValue.getSortOrder();
+
+            var itemPurchasingCategoryPK = itemPurchasingCategoryDetail.getItemPurchasingCategoryPK();
+            var itemPurchasingCategoryName = itemPurchasingCategoryDetailValue.getItemPurchasingCategoryName();
+            var parentItemPurchasingCategoryPK = itemPurchasingCategoryDetailValue.getParentItemPurchasingCategoryPK();
+            var isDefault = itemPurchasingCategoryDetailValue.getIsDefault();
+            var sortOrder = itemPurchasingCategoryDetailValue.getSortOrder();
             
             if(checkDefault) {
-                ItemPurchasingCategory defaultItemPurchasingCategory = getDefaultItemPurchasingCategory();
-                boolean defaultFound = defaultItemPurchasingCategory != null && !defaultItemPurchasingCategory.equals(itemPurchasingCategory);
+                var defaultItemPurchasingCategory = getDefaultItemPurchasingCategory();
+                var defaultFound = defaultItemPurchasingCategory != null && !defaultItemPurchasingCategory.equals(itemPurchasingCategory);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    ItemPurchasingCategoryDetailValue defaultItemPurchasingCategoryDetailValue = getDefaultItemPurchasingCategoryDetailValueForUpdate();
+                    var defaultItemPurchasingCategoryDetailValue = getDefaultItemPurchasingCategoryDetailValueForUpdate();
                     
                     defaultItemPurchasingCategoryDetailValue.setIsDefault(Boolean.FALSE);
                     updateItemPurchasingCategoryFromValue(defaultItemPurchasingCategoryDetailValue, false, updatedBy);
@@ -1890,7 +1890,7 @@ public class VendorControl
     }
     
     private void deleteItemPurchasingCategory(ItemPurchasingCategory itemPurchasingCategory, boolean checkDefault, BasePK deletedBy) {
-        ItemPurchasingCategoryDetail itemPurchasingCategoryDetail = itemPurchasingCategory.getLastDetailForUpdate();
+        var itemPurchasingCategoryDetail = itemPurchasingCategory.getLastDetailForUpdate();
 
         deleteItemPurchasingCategoriesByParentItemPurchasingCategory(itemPurchasingCategory, deletedBy);
         deleteItemPurchasingCategoryDescriptionsByItemPurchasingCategory(itemPurchasingCategory, deletedBy);
@@ -1901,17 +1901,17 @@ public class VendorControl
 
         if(checkDefault) {
             // Check for default, and pick one if necessary
-            ItemPurchasingCategory defaultItemPurchasingCategory = getDefaultItemPurchasingCategory();
+            var defaultItemPurchasingCategory = getDefaultItemPurchasingCategory();
 
             if(defaultItemPurchasingCategory == null) {
-                List<ItemPurchasingCategory> itemPurchasingCategories = getItemPurchasingCategoriesForUpdate();
+                var itemPurchasingCategories = getItemPurchasingCategoriesForUpdate();
 
                 if(!itemPurchasingCategories.isEmpty()) {
-                    Iterator<ItemPurchasingCategory> iter = itemPurchasingCategories.iterator();
+                    var iter = itemPurchasingCategories.iterator();
                     if(iter.hasNext()) {
                         defaultItemPurchasingCategory = iter.next();
                     }
-                    ItemPurchasingCategoryDetailValue itemPurchasingCategoryDetailValue = Objects.requireNonNull(defaultItemPurchasingCategory).getLastDetailForUpdate().getItemPurchasingCategoryDetailValue().clone();
+                    var itemPurchasingCategoryDetailValue = Objects.requireNonNull(defaultItemPurchasingCategory).getLastDetailForUpdate().getItemPurchasingCategoryDetailValue().clone();
 
                     itemPurchasingCategoryDetailValue.setIsDefault(Boolean.TRUE);
                     updateItemPurchasingCategoryFromValue(itemPurchasingCategoryDetailValue, false, deletedBy);
@@ -1943,7 +1943,7 @@ public class VendorControl
     // --------------------------------------------------------------------------------
     
     public ItemPurchasingCategoryDescription createItemPurchasingCategoryDescription(ItemPurchasingCategory itemPurchasingCategory, Language language, String description, BasePK createdBy) {
-        ItemPurchasingCategoryDescription itemPurchasingCategoryDescription = ItemPurchasingCategoryDescriptionFactory.getInstance().create(itemPurchasingCategory, language, description, session.START_TIME_LONG,
+        var itemPurchasingCategoryDescription = ItemPurchasingCategoryDescriptionFactory.getInstance().create(itemPurchasingCategory, language, description, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
         sendEvent(itemPurchasingCategory.getPrimaryKey(), EventTypes.MODIFY, itemPurchasingCategoryDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1967,8 +1967,8 @@ public class VendorControl
                         "WHERE iprchcd_iprchc_itempurchasingcategoryid = ? AND iprchcd_lang_languageid = ? AND iprchcd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ItemPurchasingCategoryDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = ItemPurchasingCategoryDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, itemPurchasingCategory.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -2016,8 +2016,8 @@ public class VendorControl
                         + "WHERE iprchcd_iprchc_itempurchasingcategoryid = ? AND iprchcd_thrutime = ? "
                         + "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ItemPurchasingCategoryDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = ItemPurchasingCategoryDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, itemPurchasingCategory.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -2040,7 +2040,7 @@ public class VendorControl
     
     public String getBestItemPurchasingCategoryDescription(ItemPurchasingCategory itemPurchasingCategory, Language language) {
         String description;
-        ItemPurchasingCategoryDescription itemPurchasingCategoryDescription = getItemPurchasingCategoryDescription(itemPurchasingCategory, language);
+        var itemPurchasingCategoryDescription = getItemPurchasingCategoryDescription(itemPurchasingCategory, language);
         
         if(itemPurchasingCategoryDescription == null && !language.getIsDefault()) {
             itemPurchasingCategoryDescription = getItemPurchasingCategoryDescription(itemPurchasingCategory, getPartyControl().getDefaultLanguage());
@@ -2060,9 +2060,9 @@ public class VendorControl
     }
     
     public List<ItemPurchasingCategoryDescriptionTransfer> getItemPurchasingCategoryDescriptionTransfersByItemPurchasingCategory(UserVisit userVisit, ItemPurchasingCategory itemPurchasingCategory) {
-        List<ItemPurchasingCategoryDescription> itemPurchasingCategoryDescriptions = getItemPurchasingCategoryDescriptionsByItemPurchasingCategory(itemPurchasingCategory);
+        var itemPurchasingCategoryDescriptions = getItemPurchasingCategoryDescriptionsByItemPurchasingCategory(itemPurchasingCategory);
         List<ItemPurchasingCategoryDescriptionTransfer> itemPurchasingCategoryDescriptionTransfers = new ArrayList<>(itemPurchasingCategoryDescriptions.size());
-        ItemPurchasingCategoryDescriptionTransferCache itemPurchasingCategoryDescriptionTransferCache = getVendorTransferCaches(userVisit).getItemPurchasingCategoryDescriptionTransferCache();
+        var itemPurchasingCategoryDescriptionTransferCache = getVendorTransferCaches(userVisit).getItemPurchasingCategoryDescriptionTransferCache();
         
         itemPurchasingCategoryDescriptions.forEach((itemPurchasingCategoryDescription) ->
                 itemPurchasingCategoryDescriptionTransfers.add(itemPurchasingCategoryDescriptionTransferCache.getItemPurchasingCategoryDescriptionTransfer(itemPurchasingCategoryDescription))
@@ -2073,14 +2073,14 @@ public class VendorControl
     
     public void updateItemPurchasingCategoryDescriptionFromValue(ItemPurchasingCategoryDescriptionValue itemPurchasingCategoryDescriptionValue, BasePK updatedBy) {
         if(itemPurchasingCategoryDescriptionValue.hasBeenModified()) {
-            ItemPurchasingCategoryDescription itemPurchasingCategoryDescription = ItemPurchasingCategoryDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, itemPurchasingCategoryDescriptionValue.getPrimaryKey());
+            var itemPurchasingCategoryDescription = ItemPurchasingCategoryDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, itemPurchasingCategoryDescriptionValue.getPrimaryKey());
             
             itemPurchasingCategoryDescription.setThruTime(session.START_TIME_LONG);
             itemPurchasingCategoryDescription.store();
-            
-            ItemPurchasingCategory itemPurchasingCategory = itemPurchasingCategoryDescription.getItemPurchasingCategory();
-            Language language = itemPurchasingCategoryDescription.getLanguage();
-            String description = itemPurchasingCategoryDescriptionValue.getDescription();
+
+            var itemPurchasingCategory = itemPurchasingCategoryDescription.getItemPurchasingCategory();
+            var language = itemPurchasingCategoryDescription.getLanguage();
+            var description = itemPurchasingCategoryDescriptionValue.getDescription();
             
             itemPurchasingCategoryDescription = ItemPurchasingCategoryDescriptionFactory.getInstance().create(itemPurchasingCategory, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -2097,7 +2097,7 @@ public class VendorControl
     }
     
     public void deleteItemPurchasingCategoryDescriptionsByItemPurchasingCategory(ItemPurchasingCategory itemPurchasingCategory, BasePK deletedBy) {
-        List<ItemPurchasingCategoryDescription> itemPurchasingCategoryDescriptions = getItemPurchasingCategoryDescriptionsByItemPurchasingCategoryForUpdate(itemPurchasingCategory);
+        var itemPurchasingCategoryDescriptions = getItemPurchasingCategoryDescriptionsByItemPurchasingCategoryForUpdate(itemPurchasingCategory);
         
         itemPurchasingCategoryDescriptions.forEach((itemPurchasingCategoryDescription) -> 
                 deleteItemPurchasingCategoryDescription(itemPurchasingCategoryDescription, deletedBy)
@@ -2118,7 +2118,7 @@ public class VendorControl
             includeVendor = options.contains(SearchOptions.VendorResultIncludeVendor);
         }
 
-        try (ResultSet rs = searchControl.getUserVisitSearchResultSet(userVisitSearch)) {
+        try (var rs = searchControl.getUserVisitSearchResultSet(userVisitSearch)) {
             var vendorControl = Session.getModelController(VendorControl.class);
 
             while(rs.next()) {

@@ -82,66 +82,66 @@ public class SearchForumMessagesCommand
     
     @Override
     protected BaseResult execute() {
-        SearchForumMessagesResult result = SearchResultFactory.getSearchForumMessagesResult();
-        SearchLogic searchLogic = SearchLogic.getInstance();
-        SearchKind searchKind = searchLogic.getSearchKindByName(null, SearchKinds.FORUM_MESSAGE.name());
+        var result = SearchResultFactory.getSearchForumMessagesResult();
+        var searchLogic = SearchLogic.getInstance();
+        var searchKind = searchLogic.getSearchKindByName(null, SearchKinds.FORUM_MESSAGE.name());
 
         if(!hasExecutionErrors()) {
-            String searchTypeName = form.getSearchTypeName();
-            SearchType searchType = searchLogic.getSearchTypeByName(this, searchKind, searchTypeName);
+            var searchTypeName = form.getSearchTypeName();
+            var searchType = searchLogic.getSearchTypeByName(this, searchKind, searchTypeName);
 
             if(!hasExecutionErrors()) {
-                String languageIsoName = form.getLanguageIsoName();
-                Language language = languageIsoName == null ? null : LanguageLogic.getInstance().getLanguageByName(this, languageIsoName);
+                var languageIsoName = form.getLanguageIsoName();
+                var language = languageIsoName == null ? null : LanguageLogic.getInstance().getLanguageByName(this, languageIsoName);
                 
                 if(!hasExecutionErrors()) {
                     var searchControl = Session.getModelController(SearchControl.class);
-                    PartySearchTypePreference partySearchTypePreference = getPartySearchTypePreference(searchControl, searchType);
-                    PartySearchTypePreferenceDetail partySearchTypePreferenceDetail = partySearchTypePreference == null ? null : partySearchTypePreference.getLastDetail();
+                    var partySearchTypePreference = getPartySearchTypePreference(searchControl, searchType);
+                    var partySearchTypePreferenceDetail = partySearchTypePreference == null ? null : partySearchTypePreference.getLastDetail();
                     boolean rememberPreferences = Boolean.valueOf(form.getRememberPreferences());
-                    String searchDefaultOperatorName = form.getSearchDefaultOperatorName();
-                    SearchDefaultOperator searchDefaultOperator = searchDefaultOperatorName == null 
+                    var searchDefaultOperatorName = form.getSearchDefaultOperatorName();
+                    var searchDefaultOperator = searchDefaultOperatorName == null
                             ? getDefaultSearchDefaultOperator(searchLogic, rememberPreferences, partySearchTypePreferenceDetail)
                             : searchLogic.getSearchDefaultOperatorByName(this, searchDefaultOperatorName);
 
                     if(!hasExecutionErrors()) {
-                        String searchSortOrderName = form.getSearchSortOrderName();
-                        SearchSortOrder searchSortOrder = searchSortOrderName == null
+                        var searchSortOrderName = form.getSearchSortOrderName();
+                        var searchSortOrder = searchSortOrderName == null
                                 ? getDefaultSearchSortOrder(searchLogic, rememberPreferences, searchKind, partySearchTypePreferenceDetail)
                                 : searchLogic.getSearchSortOrderByName(this, searchKind, searchSortOrderName);
 
                         if(!hasExecutionErrors()) {
-                            String searchSortDirectionName = form.getSearchSortDirectionName();
-                            SearchSortDirection searchSortDirection = searchSortDirectionName == null
+                            var searchSortDirectionName = form.getSearchSortDirectionName();
+                            var searchSortDirection = searchSortDirectionName == null
                                     ? getDefaultSearchSortDirection(searchLogic, rememberPreferences, partySearchTypePreferenceDetail)
                                     : searchLogic.getSearchSortDirectionByName(this, searchSortDirectionName);
 
                             if(!hasExecutionErrors()) {
-                                String searchUseTypeName = form.getSearchUseTypeName();
-                                SearchUseType searchUseType = searchUseTypeName == null ? null : SearchLogic.getInstance().getSearchUseTypeByName(this, searchUseTypeName);
+                                var searchUseTypeName = form.getSearchUseTypeName();
+                                var searchUseType = searchUseTypeName == null ? null : SearchLogic.getInstance().getSearchUseTypeByName(this, searchUseTypeName);
 
                                 if(!hasExecutionErrors()) {
                                     var forumControl = Session.getModelController(ForumControl.class);
-                                    String forumName = form.getForumName();
-                                    Forum forum = forumControl.getForumByName(forumName);
+                                    var forumName = form.getForumName();
+                                    var forum = forumControl.getForumByName(forumName);
 
                                     if(forum != null) {
                                         if(ForumLogic.getInstance().isForumRoleTypePermitted(this, forum, getParty(), ForumConstants.ForumRoleType_READER)) {
-                                            String forumMessageTypeName = form.getForumMessageTypeName();
-                                            ForumMessageType forumMessageType = forumMessageTypeName == null ? null : forumControl.getForumMessageTypeByName(forumMessageTypeName);
+                                            var forumMessageTypeName = form.getForumMessageTypeName();
+                                            var forumMessageType = forumMessageTypeName == null ? null : forumControl.getForumMessageTypeByName(forumMessageTypeName);
 
                                             if(forumMessageTypeName == null || forumMessageType != null) {
-                                                ForumType forumType = forum.getLastDetail().getForumType();
-                                                ForumTypeMessageType forumTypeMessageType = forumMessageType == null ? forumControl.getDefaultForumTypeMessageType(forumType)
+                                                var forumType = forum.getLastDetail().getForumType();
+                                                var forumTypeMessageType = forumMessageType == null ? forumControl.getDefaultForumTypeMessageType(forumType)
                                                         : forumControl.getForumTypeMessageType(forumType, forumMessageType);
 
                                                 if(forumTypeMessageType != null) {
-                                                    ForumMessageSearchEvaluator forumMessageSearchEvaluator = new ForumMessageSearchEvaluator(getUserVisit(),
+                                                    var forumMessageSearchEvaluator = new ForumMessageSearchEvaluator(getUserVisit(),
                                                             language, searchType, searchDefaultOperator, searchSortOrder, searchSortDirection, searchUseType,
                                                             forum, forumTypeMessageType.getForumMessageType());
-                                                    String createdSince = form.getCreatedSince();
-                                                    String modifiedSince = form.getModifiedSince();
-                                                    String fields = form.getFields();
+                                                    var createdSince = form.getCreatedSince();
+                                                    var modifiedSince = form.getModifiedSince();
+                                                    var fields = form.getFields();
 
                                                     forumMessageSearchEvaluator.setIncludeFutureForumThreads(Boolean.parseBoolean(form.getIncludeFutureForumThreads()));
                                                     forumMessageSearchEvaluator.setQ(this, form.getQ());

@@ -32,12 +32,12 @@ public class LeaveReasonDescriptionTransferCache
     }
     
     public LeaveReasonDescriptionTransfer getLeaveReasonDescriptionTransfer(LeaveReasonDescription leaveReasonDescription) {
-        LeaveReasonDescriptionTransfer leaveReasonDescriptionTransfer = get(leaveReasonDescription);
+        var leaveReasonDescriptionTransfer = get(leaveReasonDescription);
         
         if(leaveReasonDescriptionTransfer == null) {
-            LeaveReasonTransfer leaveReasonTransfer = employeeControl.getLeaveReasonTransfer(userVisit,
+            var leaveReasonTransfer = employeeControl.getLeaveReasonTransfer(userVisit,
                     leaveReasonDescription.getLeaveReason());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, leaveReasonDescription.getLanguage());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, leaveReasonDescription.getLanguage());
             
             leaveReasonDescriptionTransfer = new LeaveReasonDescriptionTransfer(languageTransfer, leaveReasonTransfer, leaveReasonDescription.getDescription());
             put(leaveReasonDescription, leaveReasonDescriptionTransfer);

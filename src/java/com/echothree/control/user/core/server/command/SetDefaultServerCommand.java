@@ -61,8 +61,8 @@ public class SetDefaultServerCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String serverName = form.getServerName();
-        ServerDetailValue serverDetailValue = coreControl.getServerDetailValueByNameForUpdate(serverName);
+        var serverName = form.getServerName();
+        var serverDetailValue = coreControl.getServerDetailValueByNameForUpdate(serverName);
         
         if(serverDetailValue != null) {
             serverDetailValue.setIsDefault(Boolean.TRUE);

@@ -49,8 +49,8 @@ public class SetDefaultClubCommand
     @Override
     protected BaseResult execute() {
         var clubControl = Session.getModelController(ClubControl.class);
-        String clubName = form.getClubName();
-        ClubDetailValue clubDetailValue = clubControl.getClubDetailValueByNameForUpdate(clubName);
+        var clubName = form.getClubName();
+        var clubDetailValue = clubControl.getClubDetailValueByNameForUpdate(clubName);
         
         if(clubDetailValue != null) {
             clubDetailValue.setIsDefault(Boolean.TRUE);

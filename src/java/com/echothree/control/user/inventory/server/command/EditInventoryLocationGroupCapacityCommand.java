@@ -70,33 +70,33 @@ public class EditInventoryLocationGroupCapacityCommand
     @Override
     protected BaseResult execute() {
         var warehouseControl = Session.getModelController(WarehouseControl.class);
-        EditInventoryLocationGroupCapacityResult result = InventoryResultFactory.getEditInventoryLocationGroupCapacityResult();
-        String warehouseName = spec.getWarehouseName();
-        Warehouse warehouse = warehouseControl.getWarehouseByName(warehouseName);
+        var result = InventoryResultFactory.getEditInventoryLocationGroupCapacityResult();
+        var warehouseName = spec.getWarehouseName();
+        var warehouse = warehouseControl.getWarehouseByName(warehouseName);
         
         if(warehouse != null) {
             var inventoryControl = Session.getModelController(InventoryControl.class);
-            String inventoryLocationGroupName = spec.getInventoryLocationGroupName();
-            InventoryLocationGroup inventoryLocationGroup = inventoryControl.getInventoryLocationGroupByName(warehouse.getParty(), inventoryLocationGroupName);
+            var inventoryLocationGroupName = spec.getInventoryLocationGroupName();
+            var inventoryLocationGroup = inventoryControl.getInventoryLocationGroupByName(warehouse.getParty(), inventoryLocationGroupName);
             
             if(inventoryLocationGroup != null) {
                 var uomControl = Session.getModelController(UomControl.class);
-                String unitOfMeasureKindName = spec.getUnitOfMeasureKindName();
-                UnitOfMeasureKind unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);
+                var unitOfMeasureKindName = spec.getUnitOfMeasureKindName();
+                var unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);
                 
                 if(unitOfMeasureKind != null) {
-                    String unitOfMeasureTypeName = spec.getUnitOfMeasureTypeName();
-                    UnitOfMeasureType unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
+                    var unitOfMeasureTypeName = spec.getUnitOfMeasureTypeName();
+                    var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
                     
                     if(unitOfMeasureType != null) {
                         if(editMode.equals(EditMode.LOCK)) {
-                            InventoryLocationGroupCapacity inventoryLocationGroupCapacity = inventoryControl.getInventoryLocationGroupCapacity(inventoryLocationGroup, unitOfMeasureType);
+                            var inventoryLocationGroupCapacity = inventoryControl.getInventoryLocationGroupCapacity(inventoryLocationGroup, unitOfMeasureType);
                             
                             if(inventoryLocationGroupCapacity != null) {
                                 result.setInventoryLocationGroupCapacity(inventoryControl.getInventoryLocationGroupCapacityTransfer(getUserVisit(), inventoryLocationGroupCapacity));
                                 
                                 if(lockEntity(inventoryLocationGroup)) {
-                                    InventoryLocationGroupCapacityEdit edit = InventoryEditFactory.getInventoryLocationGroupCapacityEdit();
+                                    var edit = InventoryEditFactory.getInventoryLocationGroupCapacityEdit();
                                     
                                     result.setEdit(edit);
                                     edit.setCapacity(inventoryLocationGroupCapacity.getCapacity().toString());
@@ -109,7 +109,7 @@ public class EditInventoryLocationGroupCapacityCommand
                                 addExecutionError(ExecutionErrors.UnknownInventoryLocationGroupCapacity.name());
                             }
                         } else if(editMode.equals(EditMode.UPDATE)) {
-                            InventoryLocationGroupCapacityValue inventoryLocationGroupCapacityValue = inventoryControl.getInventoryLocationGroupCapacityValueForUpdate(inventoryLocationGroup, unitOfMeasureType);
+                            var inventoryLocationGroupCapacityValue = inventoryControl.getInventoryLocationGroupCapacityValueForUpdate(inventoryLocationGroup, unitOfMeasureType);
                             
                             if(inventoryLocationGroupCapacityValue != null) {
                                 if(lockEntityForUpdate(inventoryLocationGroup)) {

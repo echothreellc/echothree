@@ -63,8 +63,8 @@ public class DeleteContactListGroupCommand
     @Override
     protected BaseResult execute() {
         var contactListControl = Session.getModelController(ContactListControl.class);
-        String contactListGroupName = form.getContactListGroupName();
-        ContactListGroup contactListGroup = contactListControl.getContactListGroupByNameForUpdate(contactListGroupName);
+        var contactListGroupName = form.getContactListGroupName();
+        var contactListGroup = contactListControl.getContactListGroupByNameForUpdate(contactListGroupName);
         
         if(contactListGroup != null) {
             contactListControl.deleteContactListGroup(contactListGroup, getPartyPK());

@@ -60,7 +60,7 @@ public class ContactListLogic
     
     public ContactList getContactListByName(final ExecutionErrorAccumulator eea, final String contactListName) {
         var contactListControl = Session.getModelController(ContactListControl.class);
-        ContactList contactList = contactListControl.getContactListByName(contactListName);
+        var contactList = contactListControl.getContactListByName(contactListName);
 
         if(contactList == null) {
             handleExecutionError(UnknownContactListNameException.class, eea, ExecutionErrors.UnknownContactListName.name(), contactListName);
@@ -72,7 +72,7 @@ public class ContactListLogic
     public ContactListContactMechanismPurpose getContactListContactMechanismPurpose(final ExecutionErrorAccumulator eea, final ContactList contactList,
             final ContactMechanismPurpose contactMechanismPurpose) {
         var contactListControl = Session.getModelController(ContactListControl.class);
-        ContactListContactMechanismPurpose contactListContactMechanismPurpose = contactListControl.getContactListContactMechanismPurpose(contactList, contactMechanismPurpose);
+        var contactListContactMechanismPurpose = contactListControl.getContactListContactMechanismPurpose(contactList, contactMechanismPurpose);
         
         if(contactListContactMechanismPurpose == null) {
             handleExecutionError(UnknownContactListContactMechanismPurposeException.class, eea, ExecutionErrors.UnknownContactListContactMechanismPurpose.name(),
@@ -93,10 +93,10 @@ public class ContactListLogic
         var contactListControl = Session.getModelController(ContactListControl.class);
         var coreControl = Session.getModelController(CoreControl.class);
         var workflowControl = Session.getModelController(WorkflowControl.class);
-        PartyContactList partyContactList = contactListControl.createPartyContactList(party, contactList, preferredContactListContactMechanismPurpose, createdBy);
-        EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(partyContactList.getPrimaryKey());
-        WorkflowEntrance workflowEntrance = contactList.getLastDetail().getDefaultPartyContactListStatus();
-        String workflowEntranceName = workflowEntrance.getLastDetail().getWorkflowEntranceName();
+        var partyContactList = contactListControl.createPartyContactList(party, contactList, preferredContactListContactMechanismPurpose, createdBy);
+        var entityInstance = coreControl.getEntityInstanceByBasePK(partyContactList.getPrimaryKey());
+        var workflowEntrance = contactList.getLastDetail().getDefaultPartyContactListStatus();
+        var workflowEntranceName = workflowEntrance.getLastDetail().getWorkflowEntranceName();
         
         workflowControl.addEntityToWorkflow(workflowEntrance, entityInstance, null, null, createdBy);
         
@@ -111,9 +111,9 @@ public class ContactListLogic
         var contactListControl = Session.getModelController(ContactListControl.class);
         var coreControl = Session.getModelController(CoreControl.class);
         var workflowControl = Session.getModelController(WorkflowControl.class);
-        EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(partyContactList.getPrimaryKey());
-        WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(PartyContactListStatusConstants.Workflow_PARTY_CONTACT_LIST_STATUS, entityInstance);
-        String workflowStepName = workflowEntityStatus.getWorkflowStep().getLastDetail().getWorkflowStepName();
+        var entityInstance = coreControl.getEntityInstanceByBasePK(partyContactList.getPrimaryKey());
+        var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(PartyContactListStatusConstants.Workflow_PARTY_CONTACT_LIST_STATUS, entityInstance);
+        var workflowStepName = workflowEntityStatus.getWorkflowStep().getLastDetail().getWorkflowStepName();
         
         if(workflowStepName.equals(PartyContactListStatusConstants.WorkflowStep_ACTIVE)) {
             ContactListChainLogic.getInstance().createContactListUnsubscribeChainInstance(eea, partyContactList.getLastDetail().getParty(), partyContactList, deletedBy);
@@ -125,7 +125,7 @@ public class ContactListLogic
     
     public void setupInitialContactLists(final ExecutionErrorAccumulator eea, final Party party, final BasePK createdBy) {
         var contactListControl = Session.getModelController(ContactListControl.class);
-        PartyType partyType = party.getLastDetail().getPartyType();
+        var partyType = party.getLastDetail().getPartyType();
         Set<ContactList> contactLists = new HashSet<>();
 
         contactListControl.getPartyTypeContactListsByPartyType(partyType).stream().filter((partyTypeContactList) -> partyTypeContactList.getAddWhenCreated()).map((partyTypeContactList) -> partyTypeContactList.getContactList()).forEach((contactList) -> {
@@ -137,7 +137,7 @@ public class ContactListLogic
 
         if(PartyLogic.getInstance().isPartyType(party, PartyTypes.CUSTOMER.name())) {
             var customerControl = Session.getModelController(CustomerControl.class);
-            CustomerType customerType = customerControl.getCustomer(party).getCustomerType();
+            var customerType = customerControl.getCustomer(party).getCustomerType();
 
             contactListControl.getCustomerTypeContactListsByCustomerType(customerType).stream().filter((customerTypeContactList) -> customerTypeContactList.getAddWhenCreated()).map((customerTypeContactList) -> customerTypeContactList.getContactList()).forEach((contactList) -> {
                 contactLists.add(contactList);

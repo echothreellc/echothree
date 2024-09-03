@@ -68,20 +68,20 @@ public class DeletePartyEntityTypeCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        String partyName = form.getPartyName();
-        Party party = partyName == null ? getParty() : partyControl.getPartyByName(partyName);
+        var partyName = form.getPartyName();
+        var party = partyName == null ? getParty() : partyControl.getPartyByName(partyName);
 
         if(party != null) {
             var coreControl = getCoreControl();
-            String componentVendorName = form.getComponentVendorName();
-            ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+            var componentVendorName = form.getComponentVendorName();
+            var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
 
             if(componentVendor != null) {
-                String entityTypeName = form.getEntityTypeName();
-                EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+                var entityTypeName = form.getEntityTypeName();
+                var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
 
                 if(entityType != null) {
-                    PartyEntityType partyEntityType = coreControl.getPartyEntityTypeForUpdate(party, entityType);
+                    var partyEntityType = coreControl.getPartyEntityTypeForUpdate(party, entityType);
 
                     if(partyEntityType != null) {
                         coreControl.deletePartyEntityType(partyEntityType, getPartyPK());

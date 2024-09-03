@@ -63,9 +63,9 @@ public class GetGeoCodeTypeChoicesCommand
     @Override
     protected BaseResult execute() {
         var geoControl = Session.getModelController(GeoControl.class);
-        GetGeoCodeTypeChoicesResult result = GeoResultFactory.getGetGeoCodeTypeChoicesResult();
-        String defaultGeoCodeTypeChoice = form.getDefaultGeoCodeTypeChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = GeoResultFactory.getGetGeoCodeTypeChoicesResult();
+        var defaultGeoCodeTypeChoice = form.getDefaultGeoCodeTypeChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setGeoCodeTypeChoices(geoControl.getGeoCodeTypeChoices(defaultGeoCodeTypeChoice,
                 getPreferredLanguage(), allowNullChoice));

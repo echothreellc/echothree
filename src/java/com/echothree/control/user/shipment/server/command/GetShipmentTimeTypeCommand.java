@@ -68,13 +68,13 @@ public class GetShipmentTimeTypeCommand
     @Override
     protected BaseResult execute() {
         var shipmentControl = Session.getModelController(ShipmentControl.class);
-        GetShipmentTimeTypeResult result = ShipmentResultFactory.getGetShipmentTimeTypeResult();
-        String shipmentTypeName = form.getShipmentTypeName();
-        ShipmentType shipmentType = shipmentControl.getShipmentTypeByName(shipmentTypeName);
+        var result = ShipmentResultFactory.getGetShipmentTimeTypeResult();
+        var shipmentTypeName = form.getShipmentTypeName();
+        var shipmentType = shipmentControl.getShipmentTypeByName(shipmentTypeName);
 
         if(shipmentType != null) {
-            String shipmentTimeTypeName = form.getShipmentTimeTypeName();
-            ShipmentTimeType shipmentTimeType = shipmentControl.getShipmentTimeTypeByName(shipmentType, shipmentTimeTypeName);
+            var shipmentTimeTypeName = form.getShipmentTimeTypeName();
+            var shipmentTimeType = shipmentControl.getShipmentTimeTypeByName(shipmentType, shipmentTimeTypeName);
 
             if(shipmentTimeType != null) {
                 result.setShipmentTimeType(shipmentControl.getShipmentTimeTypeTransfer(getUserVisit(), shipmentTimeType));

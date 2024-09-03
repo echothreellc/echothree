@@ -52,12 +52,12 @@ public class GetItemPackCheckRequirementsCommand
     @Override
     protected BaseResult execute() {
         var itemControl = Session.getModelController(ItemControl.class);
-        GetItemPackCheckRequirementsResult result = ItemResultFactory.getGetItemPackCheckRequirementsResult();
-        String itemName = form.getItemName();
-        Item item = itemControl.getItemByName(itemName);
+        var result = ItemResultFactory.getGetItemPackCheckRequirementsResult();
+        var itemName = form.getItemName();
+        var item = itemControl.getItemByName(itemName);
         
         if(item != null) {
-            UserVisit userVisit = getUserVisit();
+            var userVisit = getUserVisit();
             
             result.setItem(itemControl.getItemTransfer(userVisit, item));
             result.setItemPackCheckRequirements(itemControl.getItemPackCheckRequirementTransfersByItem(userVisit, item));

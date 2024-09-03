@@ -62,11 +62,11 @@ public class DeleteEntityAppearanceCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String entityRef = form.getEntityRef();
-        EntityInstance entityInstance = coreControl.getEntityInstanceByEntityRef(entityRef);
+        var entityRef = form.getEntityRef();
+        var entityInstance = coreControl.getEntityInstanceByEntityRef(entityRef);
 
         if(entityInstance != null) {
-            EntityAppearance entityAppearance = coreControl.getEntityAppearanceForUpdate(entityInstance);
+            var entityAppearance = coreControl.getEntityAppearanceForUpdate(entityInstance);
 
             if(entityAppearance != null) {
                 coreControl.deleteEntityAppearance(entityAppearance, getPartyPK());

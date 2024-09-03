@@ -61,7 +61,7 @@ public class PartyTrainingClassLogic
     
     public PartyTrainingClass getPartyTrainingClassByName(final ExecutionErrorAccumulator eea, final String partyTrainingClassName) {
         var trainingControl = Session.getModelController(TrainingControl.class);
-        PartyTrainingClass partyTrainingClass = trainingControl.getPartyTrainingClassByName(partyTrainingClassName);
+        var partyTrainingClass = trainingControl.getPartyTrainingClassByName(partyTrainingClassName);
 
         if(partyTrainingClass == null) {
             handleExecutionError(UnknownPartyTrainingClassNameException.class, eea, ExecutionErrors.UnknownPartyTrainingClassName.name(), partyTrainingClassName);
@@ -73,7 +73,7 @@ public class PartyTrainingClassLogic
     private void insertPartyTrainingClassIntoWorkflow(final EntityInstance entityInstance, final Long completedTime, final Long validUntilTime,
             final BasePK partyPK) {
         var workflowControl = Session.getModelController(WorkflowControl.class);
-        String workflowEntranceName = completedTime == null ? PartyTrainingClassStatusConstants.WorkflowEntrance_NEW_ASSIGNED : PartyTrainingClassStatusConstants.WorkflowEntrance_NEW_PASSED;
+        var workflowEntranceName = completedTime == null ? PartyTrainingClassStatusConstants.WorkflowEntrance_NEW_ASSIGNED : PartyTrainingClassStatusConstants.WorkflowEntrance_NEW_PASSED;
         
         workflowControl.addEntityToWorkflowUsingNames(null, PartyTrainingClassStatusConstants.Workflow_PARTY_TRAINING_CLASS_STATUS, workflowEntranceName,
                 entityInstance, null, validUntilTime, partyPK);
@@ -139,15 +139,15 @@ public class PartyTrainingClassLogic
         preparedPartyTrainingClass.setValidUntilTime(validUntilTime);
 
         if(completedTime == null) {
-            WorkEffortScope workEffortScope = trainingClass.getLastDetail().getWorkEffortScope();
+            var workEffortScope = trainingClass.getLastDetail().getWorkEffortScope();
 
             if(workEffortScope != null) {
-                TrainingClassDetail trainingClassDetail = trainingClass.getLastDetail();
-                Long estimatedReadingTime = trainingClassDetail.getEstimatedReadingTime();
-                Long readingTimeAllowed = trainingClassDetail.getReadingTimeAllowed();
-                Long estimatedTestingTime = trainingClassDetail.getEstimatedTestingTime();
-                Long testingTimeAllowed = trainingClassDetail.getTestingTimeAllowed();
-                Long requiredCompletionTime = trainingClassDetail.getRequiredCompletionTime();
+                var trainingClassDetail = trainingClass.getLastDetail();
+                var estimatedReadingTime = trainingClassDetail.getEstimatedReadingTime();
+                var readingTimeAllowed = trainingClassDetail.getReadingTimeAllowed();
+                var estimatedTestingTime = trainingClassDetail.getEstimatedTestingTime();
+                var testingTimeAllowed = trainingClassDetail.getTestingTimeAllowed();
+                var requiredCompletionTime = trainingClassDetail.getRequiredCompletionTime();
 
                 if(estimatedReadingTime == null) {
                     eea.addExecutionError(ExecutionErrors.MissingEstimatedReadingTime.name(), trainingClassDetail.getTrainingClassName());
@@ -182,21 +182,21 @@ public class PartyTrainingClassLogic
             final BasePK createdBy) {
         var coreControl = Session.getModelController(CoreControl.class);
         var trainingControl = Session.getModelController(TrainingControl.class);
-        Party party = preparedPartyTrainingClass.getParty();
-        TrainingClass trainingClass = preparedPartyTrainingClass.getTrainingClass();
-        Long completedTime = preparedPartyTrainingClass.getCompletedTime();
+        var party = preparedPartyTrainingClass.getParty();
+        var trainingClass = preparedPartyTrainingClass.getTrainingClass();
+        var completedTime = preparedPartyTrainingClass.getCompletedTime();
         WorkEffort workEffort = null;
 
-        PartyTrainingClass partyTrainingClass = trainingControl.createPartyTrainingClass(preparedPartyTrainingClass.getParty(), trainingClass,
+        var partyTrainingClass = trainingControl.createPartyTrainingClass(preparedPartyTrainingClass.getParty(), trainingClass,
                 preparedPartyTrainingClass.completedTime, preparedPartyTrainingClass.getValidUntilTime(), createdBy);
-        EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(partyTrainingClass.getPrimaryKey());
+        var entityInstance = coreControl.getEntityInstanceByBasePK(partyTrainingClass.getPrimaryKey());
 
         if(completedTime == null) {
-            PreparedWorkEffort preparedWorkEffort = preparedPartyTrainingClass.getPreparedWorkEffort();
+            var preparedWorkEffort = preparedPartyTrainingClass.getPreparedWorkEffort();
 
             if(preparedWorkEffort != null) {
-                Long requiredCompletionTime = trainingClass.getLastDetail().getRequiredCompletionTime();
-                Long requiredTime = requiredCompletionTime == null ? null : session.START_TIME + requiredCompletionTime;
+                var requiredCompletionTime = trainingClass.getLastDetail().getRequiredCompletionTime();
+                var requiredTime = requiredCompletionTime == null ? null : session.START_TIME + requiredCompletionTime;
 
                 workEffort = WorkEffortLogic.getInstance().createWorkEffort(preparedWorkEffort, entityInstance, createdBy);
 
@@ -209,7 +209,7 @@ public class PartyTrainingClassLogic
                 createdBy);
 
         if(completedTime == null) {
-            List<TrainingClassSection> trainingClassSections = trainingControl.getTrainingClassSections(trainingClass);
+            var trainingClassSections = trainingControl.getTrainingClassSections(trainingClass);
 
             // If there are Pages to read, or Questions to answer, then setup a PartyTrainingClassSession for them.
             if(trainingControl.countTrainingClassPages(trainingClassSections) != 0 || trainingControl.countTrainingClassQuestions(trainingClassSections) != 0) {
@@ -225,16 +225,16 @@ public class PartyTrainingClassLogic
      * status for requesting the information.
      */
     public void checkPartyTrainingClassStatus(final ExecutionErrorAccumulator eea, final PartyTrainingClass partyTrainingClass, final PartyPK modifiedBy) {
-        PartyTrainingClassDetail partyTrainingClassDetail = partyTrainingClass.getLastDetail();
-        boolean invalidPartyTrainingClass = false;
+        var partyTrainingClassDetail = partyTrainingClass.getLastDetail();
+        var invalidPartyTrainingClass = false;
 
         if(modifiedBy.equals(partyTrainingClassDetail.getPartyPK())) {
             var coreControl = Session.getModelController(CoreControl.class);
-            EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(partyTrainingClass.getPrimaryKey());
+            var entityInstance = coreControl.getEntityInstanceByBasePK(partyTrainingClass.getPrimaryKey());
             var workflowControl = Session.getModelController(WorkflowControl.class);
-            WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(PartyTrainingClassStatusConstants.Workflow_PARTY_TRAINING_CLASS_STATUS,
+            var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(PartyTrainingClassStatusConstants.Workflow_PARTY_TRAINING_CLASS_STATUS,
                     entityInstance);
-            String workflowStepName = workflowEntityStatus.getWorkflowStep().getLastDetail().getWorkflowStepName();
+            var workflowStepName = workflowEntityStatus.getWorkflowStep().getLastDetail().getWorkflowStepName();
 
             // Check to see if its ASSIGNED. If it is, move it to TRAINING.
             if(workflowStepName.equals(PartyTrainingClassStatusConstants.WorkflowStep_ASSIGNED)) {

@@ -54,13 +54,13 @@ public class GetWishlistPriorityChoicesCommand
     @Override
     protected BaseResult execute() {
         var wishlistControl = Session.getModelController(WishlistControl.class);
-        GetWishlistPriorityChoicesResult result = WishlistResultFactory.getGetWishlistPriorityChoicesResult();
-        String wishlistTypeName = form.getWishlistTypeName();
-        WishlistType wishlistType = wishlistControl.getWishlistTypeByName(wishlistTypeName);
+        var result = WishlistResultFactory.getGetWishlistPriorityChoicesResult();
+        var wishlistTypeName = form.getWishlistTypeName();
+        var wishlistType = wishlistControl.getWishlistTypeByName(wishlistTypeName);
         
         if(wishlistType != null) {
-            String defaultWishlistPriorityChoice = form.getDefaultWishlistPriorityChoice();
-            boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+            var defaultWishlistPriorityChoice = form.getDefaultWishlistPriorityChoice();
+            var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
             
             result.setWishlistPriorityChoices(wishlistControl.getWishlistPriorityChoices(defaultWishlistPriorityChoice,
                     getPreferredLanguage(), allowNullChoice, wishlistType));

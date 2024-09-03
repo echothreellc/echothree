@@ -32,12 +32,12 @@ public class ChainActionTypeUseTransferCache
     }
     
     public ChainActionTypeUseTransfer getChainActionTypeUseTransfer(ChainActionTypeUse chainActionTypeUse) {
-        ChainActionTypeUseTransfer chainActionTypeUseTransfer = get(chainActionTypeUse);
+        var chainActionTypeUseTransfer = get(chainActionTypeUse);
         
         if(chainActionTypeUseTransfer == null) {
-            ChainKindTransfer chainKind = chainControl.getChainKindTransfer(userVisit, chainActionTypeUse.getChainKind());
+            var chainKind = chainControl.getChainKindTransfer(userVisit, chainActionTypeUse.getChainKind());
             ChainActionTypeTransfer chainActionType = null; // TODO: chainControl.getChainActionTypeTransfer(userVisit, chainActionTypeUse.getChainActionType());
-            Boolean isDefault = chainActionTypeUse.getIsDefault();
+            var isDefault = chainActionTypeUse.getIsDefault();
             
             chainActionTypeUseTransfer = new ChainActionTypeUseTransfer(chainKind, chainActionType, isDefault);
             put(chainActionTypeUse, chainActionTypeUseTransfer);

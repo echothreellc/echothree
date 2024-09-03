@@ -68,16 +68,16 @@ public class GetLocationCapacitiesCommand
     @Override
     protected BaseResult execute() {
         var warehouseControl = Session.getModelController(WarehouseControl.class);
-        GetLocationCapacitiesResult result = WarehouseResultFactory.getGetLocationCapacitiesResult();
-        String warehouseName = form.getWarehouseName();
-        Warehouse warehouse = warehouseControl.getWarehouseByName(warehouseName);
+        var result = WarehouseResultFactory.getGetLocationCapacitiesResult();
+        var warehouseName = form.getWarehouseName();
+        var warehouse = warehouseControl.getWarehouseByName(warehouseName);
         
         if(warehouse != null) {
-            String locationName = form.getLocationName();
-            Location location = warehouseControl.getLocationByName(warehouse.getParty(), locationName);
+            var locationName = form.getLocationName();
+            var location = warehouseControl.getLocationByName(warehouse.getParty(), locationName);
             
             if(location != null) {
-                UserVisit userVisit = getUserVisit();
+                var userVisit = getUserVisit();
                 
                 result.setLocation(warehouseControl.getLocationTransfer(userVisit, location));
                 result.setLocationCapacities(warehouseControl.getLocationCapacityTransfersByLocation(userVisit, location));

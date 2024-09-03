@@ -40,16 +40,16 @@ public class TaxClassificationTransferCache
     
     @Override
     public TaxClassificationTransfer getTransfer(TaxClassification taxClassification) {
-        TaxClassificationTransfer taxClassificationTransfer = get(taxClassification);
+        var taxClassificationTransfer = get(taxClassification);
         
         if(taxClassificationTransfer == null) {
-            TaxClassificationDetail taxClassificationDetail = taxClassification.getLastDetail();
-            CountryTransfer countryTransfer = geoControl.getCountryTransfer(userVisit, taxClassificationDetail.getCountryGeoCode());
-            String taxClassificationName = taxClassificationDetail.getTaxClassificationName();
-            Boolean isDefault = taxClassificationDetail.getIsDefault();
-            Integer sortOrder = taxClassificationDetail.getSortOrder();
-            TaxClassificationTranslation taxClassificationTranslation = taxControl.getBestTaxClassificationTranslation(taxClassification, getLanguage());
-            String description = taxClassificationTranslation == null ? taxClassificationName : taxClassificationTranslation.getDescription();
+            var taxClassificationDetail = taxClassification.getLastDetail();
+            var countryTransfer = geoControl.getCountryTransfer(userVisit, taxClassificationDetail.getCountryGeoCode());
+            var taxClassificationName = taxClassificationDetail.getTaxClassificationName();
+            var isDefault = taxClassificationDetail.getIsDefault();
+            var sortOrder = taxClassificationDetail.getSortOrder();
+            var taxClassificationTranslation = taxControl.getBestTaxClassificationTranslation(taxClassification, getLanguage());
+            var description = taxClassificationTranslation == null ? taxClassificationName : taxClassificationTranslation.getDescription();
             
             taxClassificationTransfer = new TaxClassificationTransfer(countryTransfer, taxClassificationName, isDefault, sortOrder, description);
             put(taxClassification, taxClassificationTransfer);

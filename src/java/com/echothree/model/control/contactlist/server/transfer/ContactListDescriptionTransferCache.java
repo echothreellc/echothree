@@ -32,11 +32,11 @@ public class ContactListDescriptionTransferCache
     }
     
     public ContactListDescriptionTransfer getContactListDescriptionTransfer(ContactListDescription contactListDescription) {
-        ContactListDescriptionTransfer contactListDescriptionTransfer = get(contactListDescription);
+        var contactListDescriptionTransfer = get(contactListDescription);
         
         if(contactListDescriptionTransfer == null) {
-            ContactListTransfer contactListTransfer = contactListControl.getContactListTransfer(userVisit, contactListDescription.getContactList());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, contactListDescription.getLanguage());
+            var contactListTransfer = contactListControl.getContactListTransfer(userVisit, contactListDescription.getContactList());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, contactListDescription.getLanguage());
             
             contactListDescriptionTransfer = new ContactListDescriptionTransfer(languageTransfer, contactListTransfer, contactListDescription.getDescription());
             put(contactListDescription, contactListDescriptionTransfer);

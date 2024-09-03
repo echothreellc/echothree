@@ -66,9 +66,9 @@ public class GetDocumentTypeUsageTypeCommand
     @Override
     protected BaseResult execute() {
         var documentControl = Session.getModelController(DocumentControl.class);
-        GetDocumentTypeUsageTypeResult result = DocumentResultFactory.getGetDocumentTypeUsageTypeResult();
-        String documentTypeUsageTypeName = form.getDocumentTypeUsageTypeName();
-        DocumentTypeUsageType documentTypeUsageType = documentControl.getDocumentTypeUsageTypeByName(documentTypeUsageTypeName);
+        var result = DocumentResultFactory.getGetDocumentTypeUsageTypeResult();
+        var documentTypeUsageTypeName = form.getDocumentTypeUsageTypeName();
+        var documentTypeUsageType = documentControl.getDocumentTypeUsageTypeByName(documentTypeUsageTypeName);
         
         if(documentTypeUsageType != null) {
             result.setDocumentTypeUsageType(documentControl.getDocumentTypeUsageTypeTransfer(getUserVisit(), documentTypeUsageType));

@@ -49,8 +49,8 @@ public class DeleteCompanyCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        String companyName = form.getCompanyName();
-        PartyCompany partyCompany = partyControl.getPartyCompanyByNameForUpdate(companyName);
+        var companyName = form.getCompanyName();
+        var partyCompany = partyControl.getPartyCompanyByNameForUpdate(companyName);
         
         if(partyCompany != null) {
             getLog().error("unimplemented deleteCompany called");

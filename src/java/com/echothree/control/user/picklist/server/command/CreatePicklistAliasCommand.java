@@ -68,25 +68,25 @@ public class CreatePicklistAliasCommand
     @Override
     protected BaseResult execute() {
         var picklistControl = Session.getModelController(PicklistControl.class);
-        String picklistTypeName = form.getPicklistTypeName();
-        PicklistType picklistType = picklistControl.getPicklistTypeByName(picklistTypeName);
+        var picklistTypeName = form.getPicklistTypeName();
+        var picklistType = picklistControl.getPicklistTypeByName(picklistTypeName);
 
         if(picklistType != null) {
-            String picklistName = form.getPicklistName();
-            Picklist picklist = picklistControl.getPicklistByName(picklistType, picklistName);
+            var picklistName = form.getPicklistName();
+            var picklist = picklistControl.getPicklistByName(picklistType, picklistName);
 
             if(picklist != null) {
-                String picklistAliasTypeName = form.getPicklistAliasTypeName();
-                PicklistAliasType picklistAliasType = picklistControl.getPicklistAliasTypeByName(picklistType, picklistAliasTypeName);
+                var picklistAliasTypeName = form.getPicklistAliasTypeName();
+                var picklistAliasType = picklistControl.getPicklistAliasTypeByName(picklistType, picklistAliasTypeName);
 
                 if(picklistAliasType != null) {
-                    PicklistAliasTypeDetail picklistAliasTypeDetail = picklistAliasType.getLastDetail();
-                    String validationPattern = picklistAliasTypeDetail.getValidationPattern();
-                    String alias = form.getAlias();
+                    var picklistAliasTypeDetail = picklistAliasType.getLastDetail();
+                    var validationPattern = picklistAliasTypeDetail.getValidationPattern();
+                    var alias = form.getAlias();
 
                     if(validationPattern != null) {
-                        Pattern pattern = Pattern.compile(validationPattern);
-                        Matcher m = pattern.matcher(alias);
+                        var pattern = Pattern.compile(validationPattern);
+                        var m = pattern.matcher(alias);
 
                         if(!m.matches()) {
                             addExecutionError(ExecutionErrors.InvalidAlias.name(), alias);

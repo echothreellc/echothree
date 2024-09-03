@@ -30,7 +30,7 @@ public class ScaleUtil {
     public static ScaleLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
 
             cachedLocal = (ScaleLocal)ctx.lookup("ejb:echothree/echothree-server/ScaleBean!com.echothree.control.user.scale.server.ScaleLocal");
         }
@@ -42,7 +42,7 @@ public class ScaleUtil {
     public static ScaleRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
             
             cachedRemote = (ScaleRemote)ctx.lookup("ejb:echothree/echothree-server/ScaleBean!com.echothree.control.user.scale.common.ScaleRemote");
         }

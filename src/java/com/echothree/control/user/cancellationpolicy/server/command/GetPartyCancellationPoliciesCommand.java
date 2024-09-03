@@ -70,16 +70,16 @@ public class GetPartyCancellationPoliciesCommand
     @Override
     protected BaseResult execute() {
         var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
-        GetPartyCancellationPoliciesResult result = CancellationPolicyResultFactory.getGetPartyCancellationPoliciesResult();
-        String partyName = form.getPartyName();
-        String cancellationKindName = form.getCancellationKindName();
-        String cancellationPolicyName = form.getCancellationPolicyName();
+        var result = CancellationPolicyResultFactory.getGetPartyCancellationPoliciesResult();
+        var partyName = form.getPartyName();
+        var cancellationKindName = form.getCancellationKindName();
+        var cancellationPolicyName = form.getCancellationPolicyName();
         var parameterCount = (partyName != null ? 1 : 0) + (cancellationKindName != null && cancellationPolicyName != null ? 1 : 0);
 
         if(parameterCount == 1) {
             if(partyName != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                Party party = partyControl.getPartyByName(partyName);
+                var party = partyControl.getPartyByName(partyName);
 
                 if(party != null) {
                     result.setPartyCancellationPolicies(cancellationPolicyControl.getPartyCancellationPolicyTransfersByParty(getUserVisit(), party));
@@ -87,10 +87,10 @@ public class GetPartyCancellationPoliciesCommand
                     addExecutionError(ExecutionErrors.UnknownPartyName.name(), partyName);
                 }
             } else {
-                CancellationKind cancellationKind = cancellationPolicyControl.getCancellationKindByName(cancellationKindName);
+                var cancellationKind = cancellationPolicyControl.getCancellationKindByName(cancellationKindName);
 
                 if(cancellationKind != null) {
-                    CancellationPolicy cancellationPolicy = cancellationPolicyControl.getCancellationPolicyByName(cancellationKind, cancellationPolicyName);
+                    var cancellationPolicy = cancellationPolicyControl.getCancellationPolicyByName(cancellationKind, cancellationPolicyName);
 
                     if(cancellationPolicy != null) {
                         result.setPartyCancellationPolicies(cancellationPolicyControl.getPartyCancellationPolicyTransfersByCancellationPolicy(getUserVisit(), cancellationPolicy));

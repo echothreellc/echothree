@@ -62,8 +62,8 @@ public class SetDefaultShipmentTypeCommand
     @Override
     protected BaseResult execute() {
         var shipmentControl = Session.getModelController(ShipmentControl.class);
-        String shipmentTypeName = form.getShipmentTypeName();
-        ShipmentTypeDetailValue shipmentTypeDetailValue = shipmentControl.getShipmentTypeDetailValueByNameForUpdate(shipmentTypeName);
+        var shipmentTypeName = form.getShipmentTypeName();
+        var shipmentTypeDetailValue = shipmentControl.getShipmentTypeDetailValueByNameForUpdate(shipmentTypeName);
         
         if(shipmentTypeDetailValue != null) {
             shipmentTypeDetailValue.setIsDefault(Boolean.TRUE);

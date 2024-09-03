@@ -35,11 +35,11 @@ public class FilterStepDestinationTransferCache
 
     @Override
     public FilterStepDestinationTransfer getTransfer(FilterStepDestination filterStepDestination) {
-        FilterStepDestinationTransfer filterStepDestinationTransfer = get(filterStepDestination);
+        var filterStepDestinationTransfer = get(filterStepDestination);
         
         if(filterStepDestinationTransfer == null) {
-            FilterStepTransfer fromFilterStep = filterControl.getFilterStepTransfer(userVisit, filterStepDestination.getFromFilterStep());
-            FilterStepTransfer toFilterStep = filterControl.getFilterStepTransfer(userVisit, filterStepDestination.getToFilterStep());
+            var fromFilterStep = filterControl.getFilterStepTransfer(userVisit, filterStepDestination.getFromFilterStep());
+            var toFilterStep = filterControl.getFilterStepTransfer(userVisit, filterStepDestination.getToFilterStep());
             
             filterStepDestinationTransfer = new FilterStepDestinationTransfer(fromFilterStep, toFilterStep);
             put(filterStepDestination, filterStepDestinationTransfer);

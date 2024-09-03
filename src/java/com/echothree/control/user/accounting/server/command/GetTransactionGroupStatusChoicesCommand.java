@@ -53,13 +53,13 @@ public class GetTransactionGroupStatusChoicesCommand
     @Override
     protected BaseResult execute() {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        GetTransactionGroupStatusChoicesResult result = AccountingResultFactory.getGetTransactionGroupStatusChoicesResult();
-        String transactionGroupName = form.getTransactionGroupName();
-        TransactionGroup transactionGroup = accountingControl.getTransactionGroupByName(transactionGroupName);
+        var result = AccountingResultFactory.getGetTransactionGroupStatusChoicesResult();
+        var transactionGroupName = form.getTransactionGroupName();
+        var transactionGroup = accountingControl.getTransactionGroupByName(transactionGroupName);
         
         if(transactionGroupName == null || transactionGroup != null) {
-            String defaultTransactionGroupStatusChoice = form.getDefaultTransactionGroupStatusChoice();
-            boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+            var defaultTransactionGroupStatusChoice = form.getDefaultTransactionGroupStatusChoice();
+            var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
             
             result.setTransactionGroupStatusChoices(accountingControl.getTransactionGroupStatusChoices(defaultTransactionGroupStatusChoice,
                     getPreferredLanguage(), allowNullChoice, transactionGroup, getPartyPK()));

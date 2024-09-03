@@ -36,11 +36,11 @@ public class FilterStepElementDescriptionTransferCache
 
     @Override
     public FilterStepElementDescriptionTransfer getTransfer(FilterStepElementDescription filterStepElementDescription) {
-        FilterStepElementDescriptionTransfer filterStepElementDescriptionTransfer = get(filterStepElementDescription);
+        var filterStepElementDescriptionTransfer = get(filterStepElementDescription);
         
         if(filterStepElementDescriptionTransfer == null) {
-            FilterStepElementTransfer filterStepElementTransfer = filterControl.getFilterStepElementTransfer(userVisit, filterStepElementDescription.getFilterStepElement());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, filterStepElementDescription.getLanguage());
+            var filterStepElementTransfer = filterControl.getFilterStepElementTransfer(userVisit, filterStepElementDescription.getFilterStepElement());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, filterStepElementDescription.getLanguage());
             
             filterStepElementDescriptionTransfer = new FilterStepElementDescriptionTransfer(languageTransfer, filterStepElementTransfer, filterStepElementDescription.getDescription());
             put(filterStepElementDescription, filterStepElementDescriptionTransfer);

@@ -51,12 +51,12 @@ public class DeleteWorkEffortScopeCommand
     @Override
     protected BaseResult execute() {
         var workEffortControl = Session.getModelController(WorkEffortControl.class);
-        String workEffortTypeName = form.getWorkEffortTypeName();
-        WorkEffortType workEffortType = workEffortControl.getWorkEffortTypeByNameForUpdate(workEffortTypeName);
+        var workEffortTypeName = form.getWorkEffortTypeName();
+        var workEffortType = workEffortControl.getWorkEffortTypeByNameForUpdate(workEffortTypeName);
         
         if(workEffortType != null) {
-            String workEffortScopeName = form.getWorkEffortScopeName();
-            WorkEffortScope workEffortScope = workEffortControl.getWorkEffortScopeByNameForUpdate(workEffortType, workEffortScopeName);
+            var workEffortScopeName = form.getWorkEffortScopeName();
+            var workEffortScope = workEffortControl.getWorkEffortScopeByNameForUpdate(workEffortType, workEffortScopeName);
             
             if(workEffortScope != null) {
                 workEffortControl.deleteWorkEffortScope(workEffortScope, getPartyPK());

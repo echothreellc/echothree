@@ -53,16 +53,16 @@ public class DeleteTermDescriptionCommand
     @Override
     protected BaseResult execute() {
         var termControl = Session.getModelController(TermControl.class);
-        String termName = form.getTermName();
-        Term term = termControl.getTermByName(termName);
+        var termName = form.getTermName();
+        var term = termControl.getTermByName(termName);
         
         if(term != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                TermDescription termDescription = termControl.getTermDescriptionForUpdate(term, language);
+                var termDescription = termControl.getTermDescriptionForUpdate(term, language);
                 
                 if(termDescription != null) {
                     termControl.deleteTermDescription(termDescription, getPartyPK());

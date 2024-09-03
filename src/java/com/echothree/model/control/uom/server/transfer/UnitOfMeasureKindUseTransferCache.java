@@ -32,13 +32,13 @@ public class UnitOfMeasureKindUseTransferCache
     }
     
     public UnitOfMeasureKindUseTransfer getUnitOfMeasureKindUseTransfer(UnitOfMeasureKindUse unitOfMeasureKindUse) {
-        UnitOfMeasureKindUseTransfer unitOfMeasureKindUseTransfer = get(unitOfMeasureKindUse);
+        var unitOfMeasureKindUseTransfer = get(unitOfMeasureKindUse);
         
         if(unitOfMeasureKindUseTransfer == null) {
-            UnitOfMeasureKindUseTypeTransfer unitOfMeasureKindUseType = uomControl.getUnitOfMeasureKindUseTypeTransfer(userVisit, unitOfMeasureKindUse.getUnitOfMeasureKindUseType());
-            UnitOfMeasureKindTransfer unitOfMeasureKind = uomControl.getUnitOfMeasureKindTransfer(userVisit, unitOfMeasureKindUse.getUnitOfMeasureKind());
-            Boolean isDefault = unitOfMeasureKindUse.getIsDefault();
-            Integer sortOrder = unitOfMeasureKindUse.getSortOrder();
+            var unitOfMeasureKindUseType = uomControl.getUnitOfMeasureKindUseTypeTransfer(userVisit, unitOfMeasureKindUse.getUnitOfMeasureKindUseType());
+            var unitOfMeasureKind = uomControl.getUnitOfMeasureKindTransfer(userVisit, unitOfMeasureKindUse.getUnitOfMeasureKind());
+            var isDefault = unitOfMeasureKindUse.getIsDefault();
+            var sortOrder = unitOfMeasureKindUse.getSortOrder();
             
             unitOfMeasureKindUseTransfer = new UnitOfMeasureKindUseTransfer(unitOfMeasureKindUseType, unitOfMeasureKind, isDefault,
                     sortOrder);

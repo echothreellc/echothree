@@ -63,7 +63,7 @@ public class GetDateTimeFormatCommand
     protected DateTimeFormat getEntity() {
         var partyControl = Session.getModelController(PartyControl.class);
         DateTimeFormat dateTimeFormat = null;
-        String dateTimeFormatName = form.getDateTimeFormatName();
+        var dateTimeFormatName = form.getDateTimeFormatName();
         var parameterCount = (dateTimeFormatName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         switch(parameterCount) {
@@ -97,7 +97,7 @@ public class GetDateTimeFormatCommand
     @Override
     protected BaseResult getResult(DateTimeFormat dateTimeFormat) {
         var partyControl = Session.getModelController(PartyControl.class);
-        GetDateTimeFormatResult result = PartyResultFactory.getGetDateTimeFormatResult();
+        var result = PartyResultFactory.getGetDateTimeFormatResult();
 
         if(dateTimeFormat != null) {
             result.setDateTimeFormat(partyControl.getDateTimeFormatTransfer(getUserVisit(), dateTimeFormat));

@@ -67,16 +67,16 @@ public class DeleteContentCategoryCommand
     @Override
     protected BaseResult execute() {
         var contentControl = Session.getModelController(ContentControl.class);
-        String contentCollectionName = form.getContentCollectionName();
-        ContentCollection contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
+        var contentCollectionName = form.getContentCollectionName();
+        var contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
         
         if(contentCollection != null) {
-            String contentCatalogName = form.getContentCatalogName();
-            ContentCatalog contentCatalog = contentControl.getContentCatalogByName(contentCollection, contentCatalogName);
+            var contentCatalogName = form.getContentCatalogName();
+            var contentCatalog = contentControl.getContentCatalogByName(contentCollection, contentCatalogName);
             
             if(contentCatalog != null) {
-                String contentCategoryName = form.getContentCategoryName();
-                ContentCategory contentCategory = contentControl.getContentCategoryByNameForUpdate(contentCatalog, contentCategoryName);
+                var contentCategoryName = form.getContentCategoryName();
+                var contentCategory = contentControl.getContentCategoryByNameForUpdate(contentCatalog, contentCategoryName);
                 
                 if(contentCategory != null) {
                     contentControl.deleteContentCategory(contentCategory, getPartyPK());

@@ -36,11 +36,11 @@ public class PartySecurityRoleTemplateTrainingClassTransferCache
     }
     
     public PartySecurityRoleTemplateTrainingClassTransfer getPartySecurityRoleTemplateTrainingClassTransfer(PartySecurityRoleTemplateTrainingClass partySecurityRoleTemplateTrainingClass) {
-        PartySecurityRoleTemplateTrainingClassTransfer partySecurityRoleTemplateTrainingClassTransfer = get(partySecurityRoleTemplateTrainingClass);
+        var partySecurityRoleTemplateTrainingClassTransfer = get(partySecurityRoleTemplateTrainingClass);
         
         if(partySecurityRoleTemplateTrainingClassTransfer == null) {
-            PartySecurityRoleTemplateTransfer partySecurityRoleTemplate = securityControl.getPartySecurityRoleTemplateTransfer(userVisit, partySecurityRoleTemplateTrainingClass.getPartySecurityRoleTemplate());
-            TrainingClassTransfer trainingClass = trainingControl.getTrainingClassTransfer(userVisit, partySecurityRoleTemplateTrainingClass.getTrainingClass());
+            var partySecurityRoleTemplate = securityControl.getPartySecurityRoleTemplateTransfer(userVisit, partySecurityRoleTemplateTrainingClass.getPartySecurityRoleTemplate());
+            var trainingClass = trainingControl.getTrainingClassTransfer(userVisit, partySecurityRoleTemplateTrainingClass.getTrainingClass());
             
             partySecurityRoleTemplateTrainingClassTransfer = new PartySecurityRoleTemplateTrainingClassTransfer(partySecurityRoleTemplate, trainingClass);
             put(partySecurityRoleTemplateTrainingClass, partySecurityRoleTemplateTrainingClassTransfer);

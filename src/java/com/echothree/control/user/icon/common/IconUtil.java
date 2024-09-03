@@ -30,7 +30,7 @@ public class IconUtil {
     public static IconLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
 
             cachedLocal = (IconLocal)ctx.lookup("ejb:echothree/echothree-server/IconBean!com.echothree.control.user.icon.server.IconLocal");
         }
@@ -42,7 +42,7 @@ public class IconUtil {
     public static IconRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
             
             cachedRemote = (IconRemote)ctx.lookup("ejb:echothree/echothree-server/IconBean!com.echothree.control.user.icon.common.IconRemote");
         }

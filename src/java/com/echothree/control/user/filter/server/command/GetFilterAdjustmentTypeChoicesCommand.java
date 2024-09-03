@@ -63,8 +63,8 @@ public class GetFilterAdjustmentTypeChoicesCommand
     @Override
     protected BaseResult execute() {
         var filterControl = Session.getModelController(FilterControl.class);
-        GetFilterAdjustmentTypeChoicesResult result = FilterResultFactory.getGetFilterAdjustmentTypeChoicesResult();
-        String defaultFilterAdjustmentTypeChoice = form.getDefaultFilterAdjustmentTypeChoice();
+        var result = FilterResultFactory.getGetFilterAdjustmentTypeChoicesResult();
+        var defaultFilterAdjustmentTypeChoice = form.getDefaultFilterAdjustmentTypeChoice();
         
         result.setFilterAdjustmentTypeChoices(filterControl.getFilterAdjustmentTypeChoices(defaultFilterAdjustmentTypeChoice, getPreferredLanguage()));
         

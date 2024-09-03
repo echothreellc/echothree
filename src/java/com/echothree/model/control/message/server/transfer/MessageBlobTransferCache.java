@@ -43,13 +43,13 @@ public class MessageBlobTransferCache
     }
     
     public MessageBlobTransfer getMessageBlobTransfer(MessageBlob messageBlob) {
-        MessageBlobTransfer messageBlobTransfer = get(messageBlob);
+        var messageBlobTransfer = get(messageBlob);
         
         if(messageBlobTransfer == null) {
-            MessageTransfer message = messageControl.getMessageTransfer(userVisit, messageBlob.getMessage());
-            LanguageTransfer language = partyControl.getLanguageTransfer(userVisit, messageBlob.getLanguage());
-            MimeTypeTransfer mimeType = coreControl.getMimeTypeTransfer(userVisit, messageBlob.getMimeType());
-            ByteArray blob = messageBlob.getBlob();
+            var message = messageControl.getMessageTransfer(userVisit, messageBlob.getMessage());
+            var language = partyControl.getLanguageTransfer(userVisit, messageBlob.getLanguage());
+            var mimeType = coreControl.getMimeTypeTransfer(userVisit, messageBlob.getMimeType());
+            var blob = messageBlob.getBlob();
             
             messageBlobTransfer = new MessageBlobTransfer(message, language, mimeType, blob);
             put(messageBlob, messageBlobTransfer);

@@ -68,25 +68,25 @@ public class CreateBatchAliasCommand
     @Override
     protected BaseResult execute() {
         var batchControl = Session.getModelController(BatchControl.class);
-        String batchTypeName = form.getBatchTypeName();
-        BatchType batchType = batchControl.getBatchTypeByName(batchTypeName);
+        var batchTypeName = form.getBatchTypeName();
+        var batchType = batchControl.getBatchTypeByName(batchTypeName);
 
         if(batchType != null) {
-            String batchName = form.getBatchName();
-            Batch batch = batchControl.getBatchByName(batchType, batchName);
+            var batchName = form.getBatchName();
+            var batch = batchControl.getBatchByName(batchType, batchName);
 
             if(batch != null) {
-                String batchAliasTypeName = form.getBatchAliasTypeName();
-                BatchAliasType batchAliasType = batchControl.getBatchAliasTypeByName(batchType, batchAliasTypeName);
+                var batchAliasTypeName = form.getBatchAliasTypeName();
+                var batchAliasType = batchControl.getBatchAliasTypeByName(batchType, batchAliasTypeName);
 
                 if(batchAliasType != null) {
-                    BatchAliasTypeDetail batchAliasTypeDetail = batchAliasType.getLastDetail();
-                    String validationPattern = batchAliasTypeDetail.getValidationPattern();
-                    String alias = form.getAlias();
+                    var batchAliasTypeDetail = batchAliasType.getLastDetail();
+                    var validationPattern = batchAliasTypeDetail.getValidationPattern();
+                    var alias = form.getAlias();
 
                     if(validationPattern != null) {
-                        Pattern pattern = Pattern.compile(validationPattern);
-                        Matcher m = pattern.matcher(alias);
+                        var pattern = Pattern.compile(validationPattern);
+                        var m = pattern.matcher(alias);
 
                         if(!m.matches()) {
                             addExecutionError(ExecutionErrors.InvalidAlias.name(), alias);

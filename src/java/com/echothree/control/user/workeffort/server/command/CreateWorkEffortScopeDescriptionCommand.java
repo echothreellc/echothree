@@ -56,20 +56,20 @@ public class CreateWorkEffortScopeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var workEffortControl = Session.getModelController(WorkEffortControl.class);
-        String workEffortTypeName = form.getWorkEffortTypeName();
-        WorkEffortType workEffortType = workEffortControl.getWorkEffortTypeByName(workEffortTypeName);
+        var workEffortTypeName = form.getWorkEffortTypeName();
+        var workEffortType = workEffortControl.getWorkEffortTypeByName(workEffortTypeName);
         
         if(workEffortType != null) {
-            String workEffortScopeName = form.getWorkEffortScopeName();
-            WorkEffortScope workEffortScope = workEffortControl.getWorkEffortScopeByName(workEffortType, workEffortScopeName);
+            var workEffortScopeName = form.getWorkEffortScopeName();
+            var workEffortScope = workEffortControl.getWorkEffortScopeByName(workEffortType, workEffortScopeName);
             
             if(workEffortScope != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = form.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = form.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
                 
                 if(language != null) {
-                    WorkEffortScopeDescription workEffortScopeDescription = workEffortControl.getWorkEffortScopeDescription(workEffortScope, language);
+                    var workEffortScopeDescription = workEffortControl.getWorkEffortScopeDescription(workEffortScope, language);
                     
                     if(workEffortScopeDescription == null) {
                         var description = form.getDescription();

@@ -116,8 +116,8 @@ public class MessageControl
     
     public MessageType createMessageType(EntityType entityType, String messageTypeName, MimeTypeUsageType mimeTypeUsageType,
             Integer sortOrder, BasePK createdBy) {
-        MessageType messageType = MessageTypeFactory.getInstance().create();
-        MessageTypeDetail messageTypeDetail = MessageTypeDetailFactory.getInstance().create(messageType, entityType,
+        var messageType = MessageTypeFactory.getInstance().create();
+        var messageTypeDetail = MessageTypeDetailFactory.getInstance().create(messageType, entityType,
                 messageTypeName, mimeTypeUsageType, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -149,8 +149,8 @@ public class MessageControl
                         "WHERE mssgtyp_activedetailid = mssgtypdt_messagetypedetailid AND mssgtypdt_ent_entitytypeid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = MessageTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = MessageTypeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, entityType.getPrimaryKey().getEntityId());
             
@@ -188,8 +188,8 @@ public class MessageControl
                         "AND mssgtypdt_messagetypename = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = MessageTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = MessageTypeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, entityType.getPrimaryKey().getEntityId());
             ps.setString(2, messageTypeName);
@@ -223,9 +223,9 @@ public class MessageControl
     }
     
     public List<MessageTypeTransfer> getMessageTypeTransfers(UserVisit userVisit, EntityType entityType) {
-        List<MessageType> messageTypes = getMessageTypes(entityType);
+        var messageTypes = getMessageTypes(entityType);
         List<MessageTypeTransfer> messageTypeTransfers = new ArrayList<>(messageTypes.size());
-        MessageTypeTransferCache messageTypeTransferCache = getMessageTransferCaches(userVisit).getMessageTypeTransferCache();
+        var messageTypeTransferCache = getMessageTransferCaches(userVisit).getMessageTypeTransferCache();
         
         messageTypes.forEach((messageType) ->
                 messageTypeTransfers.add(messageTypeTransferCache.getMessageTypeTransfer(messageType))
@@ -236,18 +236,18 @@ public class MessageControl
     
     public void updateMessageTypeFromValue(MessageTypeDetailValue messageTypeDetailValue, BasePK updatedBy) {
         if(messageTypeDetailValue.hasBeenModified()) {
-            MessageType messageType = MessageTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var messageType = MessageTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      messageTypeDetailValue.getMessageTypePK());
-            MessageTypeDetail messageTypeDetail = messageType.getActiveDetailForUpdate();
+            var messageTypeDetail = messageType.getActiveDetailForUpdate();
             
             messageTypeDetail.setThruTime(session.START_TIME_LONG);
             messageTypeDetail.store();
-            
-            MessageTypePK messageTypePK = messageTypeDetail.getMessageTypePK(); // Not updated
-            EntityTypePK entityTypePK = messageTypeDetail.getEntityTypePK(); // Not updated
-            String messageTypeName = messageTypeDetailValue.getMessageTypeName();
-            MimeTypeUsageTypePK mimeTypeUsageTypePK = messageTypeDetail.getMimeTypeUsageTypePK(); // Not updated
-            Integer sortOrder = messageTypeDetailValue.getSortOrder();
+
+            var messageTypePK = messageTypeDetail.getMessageTypePK(); // Not updated
+            var entityTypePK = messageTypeDetail.getEntityTypePK(); // Not updated
+            var messageTypeName = messageTypeDetailValue.getMessageTypeName();
+            var mimeTypeUsageTypePK = messageTypeDetail.getMimeTypeUsageTypePK(); // Not updated
+            var sortOrder = messageTypeDetailValue.getSortOrder();
             
             messageTypeDetail = MessageTypeDetailFactory.getInstance().create(messageTypePK, entityTypePK, messageTypeName,
                     mimeTypeUsageTypePK, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -261,8 +261,8 @@ public class MessageControl
     
     public void deleteMessageType(MessageType messageType, BasePK deletedBy) {
         deleteMessageTypeDescriptionsByMessageType(messageType, deletedBy);
-        
-        MessageTypeDetail messageTypeDetail = messageType.getLastDetailForUpdate();
+
+        var messageTypeDetail = messageType.getLastDetailForUpdate();
         messageTypeDetail.setThruTime(session.START_TIME_LONG);
         messageType.setActiveDetail(null);
         messageType.store();
@@ -286,7 +286,7 @@ public class MessageControl
     
     public MessageTypeDescription createMessageTypeDescription(MessageType messageType, Language language, String description,
             BasePK createdBy) {
-        MessageTypeDescription messageTypeDescription = MessageTypeDescriptionFactory.getInstance().create(messageType,
+        var messageTypeDescription = MessageTypeDescriptionFactory.getInstance().create(messageType,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(messageType.getPrimaryKey(), EventTypes.MODIFY, messageTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -310,8 +310,8 @@ public class MessageControl
                         "WHERE mssgtypd_mssgtyp_messagetypeid = ? AND mssgtypd_lang_languageid = ? AND mssgtypd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = MessageTypeDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = MessageTypeDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, messageType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -358,8 +358,8 @@ public class MessageControl
                         "WHERE mssgtypd_mssgtyp_messagetypeid = ? AND mssgtypd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = MessageTypeDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = MessageTypeDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, messageType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -382,7 +382,7 @@ public class MessageControl
     
     public String getBestMessageTypeDescription(MessageType messageType, Language language) {
         String description;
-        MessageTypeDescription messageTypeDescription = getMessageTypeDescription(messageType, language);
+        var messageTypeDescription = getMessageTypeDescription(messageType, language);
         
         if(messageTypeDescription == null && !language.getIsDefault()) {
             messageTypeDescription = getMessageTypeDescription(messageType, getPartyControl().getDefaultLanguage());
@@ -402,9 +402,9 @@ public class MessageControl
     }
     
     public List<MessageTypeDescriptionTransfer> getMessageTypeDescriptionTransfers(UserVisit userVisit, MessageType messageType) {
-        List<MessageTypeDescription> messageTypeDescriptions = getMessageTypeDescriptionsByMessageType(messageType);
+        var messageTypeDescriptions = getMessageTypeDescriptionsByMessageType(messageType);
         List<MessageTypeDescriptionTransfer> messageTypeDescriptionTransfers = new ArrayList<>(messageTypeDescriptions.size());
-        MessageTypeDescriptionTransferCache messageTypeDescriptionTransferCache = getMessageTransferCaches(userVisit).getMessageTypeDescriptionTransferCache();
+        var messageTypeDescriptionTransferCache = getMessageTransferCaches(userVisit).getMessageTypeDescriptionTransferCache();
         
         messageTypeDescriptions.forEach((messageTypeDescription) ->
                 messageTypeDescriptionTransfers.add(messageTypeDescriptionTransferCache.getMessageTypeDescriptionTransfer(messageTypeDescription))
@@ -415,15 +415,15 @@ public class MessageControl
     
     public void updateMessageTypeDescriptionFromValue(MessageTypeDescriptionValue messageTypeDescriptionValue, BasePK updatedBy) {
         if(messageTypeDescriptionValue.hasBeenModified()) {
-            MessageTypeDescription messageTypeDescription = MessageTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var messageTypeDescription = MessageTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      messageTypeDescriptionValue.getPrimaryKey());
             
             messageTypeDescription.setThruTime(session.START_TIME_LONG);
             messageTypeDescription.store();
-            
-            MessageType messageType = messageTypeDescription.getMessageType();
-            Language language = messageTypeDescription.getLanguage();
-            String description = messageTypeDescriptionValue.getDescription();
+
+            var messageType = messageTypeDescription.getMessageType();
+            var language = messageTypeDescription.getLanguage();
+            var description = messageTypeDescriptionValue.getDescription();
             
             messageTypeDescription = MessageTypeDescriptionFactory.getInstance().create(messageType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -440,7 +440,7 @@ public class MessageControl
     }
     
     public void deleteMessageTypeDescriptionsByMessageType(MessageType messageType, BasePK deletedBy) {
-        List<MessageTypeDescription> messageTypeDescriptions = getMessageTypeDescriptionsByMessageTypeForUpdate(messageType);
+        var messageTypeDescriptions = getMessageTypeDescriptionsByMessageTypeForUpdate(messageType);
         
         messageTypeDescriptions.forEach((messageTypeDescription) -> 
                 deleteMessageTypeDescription(messageTypeDescription, deletedBy)
@@ -453,20 +453,20 @@ public class MessageControl
     
     public Message createMessage(MessageType messageType, String messageName, Boolean includeByDefault, Boolean isDefault,
             Integer sortOrder, BasePK createdBy) {
-        Message defaultMessage = getDefaultMessage(messageType);
-        boolean defaultFound = defaultMessage != null;
+        var defaultMessage = getDefaultMessage(messageType);
+        var defaultFound = defaultMessage != null;
         
         if(defaultFound && isDefault) {
-            MessageDetailValue defaultMessageDetailValue = getDefaultMessageDetailValueForUpdate(messageType);
+            var defaultMessageDetailValue = getDefaultMessageDetailValueForUpdate(messageType);
             
             defaultMessageDetailValue.setIsDefault(Boolean.FALSE);
             updateMessageFromValue(defaultMessageDetailValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        Message message = MessageFactory.getInstance().create();
-        MessageDetail messageDetail = MessageDetailFactory.getInstance().create(message, messageType, messageName,
+
+        var message = MessageFactory.getInstance().create();
+        var messageDetail = MessageDetailFactory.getInstance().create(message, messageType, messageName,
                 includeByDefault, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -498,8 +498,8 @@ public class MessageControl
                         "WHERE mssg_activedetailid = mssgdt_messagedetailid AND mssgdt_mssgtyp_messagetypeid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = MessageFactory.getInstance().prepareStatement(query);
+
+            var ps = MessageFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, messageType.getPrimaryKey().getEntityId());
             
@@ -537,8 +537,8 @@ public class MessageControl
                         "AND mssgdt_mssgtyp_messagetypeid = ? AND mssgdt_isdefault = 1 " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = MessageFactory.getInstance().prepareStatement(query);
+
+            var ps = MessageFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, messageType.getPrimaryKey().getEntityId());
             
@@ -580,8 +580,8 @@ public class MessageControl
                         "AND mssgdt_messagename = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = MessageFactory.getInstance().prepareStatement(query);
+
+            var ps = MessageFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, messageType.getPrimaryKey().getEntityId());
             ps.setString(2, messageName);
@@ -612,7 +612,7 @@ public class MessageControl
     
     public MessageChoicesBean getMessageChoices(String defaultMessageChoice, Language language,
             boolean allowNullChoice, MessageType messageType) {
-        List<Message> messages = getMessagesByMessageType(messageType);
+        var messages = getMessagesByMessageType(messageType);
         var size = messages.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -628,7 +628,7 @@ public class MessageControl
         }
         
         for(var message : messages) {
-            MessageDetail messageDetail = message.getLastDetail();
+            var messageDetail = message.getLastDetail();
             var label = getBestMessageDescription(message, language);
             var value = messageDetail.getMessageName();
             
@@ -649,9 +649,9 @@ public class MessageControl
     }
     
     public List<MessageTransfer> getMessageTransfers(UserVisit userVisit, MessageType messageType) {
-        List<Message> messages = getMessagesByMessageType(messageType);
+        var messages = getMessagesByMessageType(messageType);
         List<MessageTransfer> messageTransfers = new ArrayList<>(messages.size());
-        MessageTransferCache messageTransferCache = getMessageTransferCaches(userVisit).getMessageTransferCache();
+        var messageTransferCache = getMessageTransferCaches(userVisit).getMessageTransferCache();
         
         messages.forEach((message) ->
                 messageTransfers.add(messageTransferCache.getMessageTransfer(message))
@@ -663,28 +663,28 @@ public class MessageControl
     private void updateMessageFromValue(MessageDetailValue messageDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(messageDetailValue.hasBeenModified()) {
-            Message message = MessageFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var message = MessageFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     messageDetailValue.getMessagePK());
-            MessageDetail messageDetail = message.getActiveDetailForUpdate();
+            var messageDetail = message.getActiveDetailForUpdate();
             
             messageDetail.setThruTime(session.START_TIME_LONG);
             messageDetail.store();
-            
-            MessagePK messagePK = messageDetail.getMessagePK();
-            MessageType messageType = messageDetail.getMessageType();
-            MessageTypePK messageTypePK = messageType.getPrimaryKey();
-            String messageName = messageDetailValue.getMessageName();
-            Boolean includeByDefault = messageDetailValue.getIncludeByDefault();
-            Boolean isDefault = messageDetailValue.getIsDefault();
-            Integer sortOrder = messageDetailValue.getSortOrder();
+
+            var messagePK = messageDetail.getMessagePK();
+            var messageType = messageDetail.getMessageType();
+            var messageTypePK = messageType.getPrimaryKey();
+            var messageName = messageDetailValue.getMessageName();
+            var includeByDefault = messageDetailValue.getIncludeByDefault();
+            var isDefault = messageDetailValue.getIsDefault();
+            var sortOrder = messageDetailValue.getSortOrder();
             
             if(checkDefault) {
-                Message defaultMessage = getDefaultMessage(messageType);
-                boolean defaultFound = defaultMessage != null && !defaultMessage.equals(message);
+                var defaultMessage = getDefaultMessage(messageType);
+                var defaultFound = defaultMessage != null && !defaultMessage.equals(message);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    MessageDetailValue defaultMessageDetailValue = getDefaultMessageDetailValueForUpdate(messageType);
+                    var defaultMessageDetailValue = getDefaultMessageDetailValueForUpdate(messageType);
                     
                     defaultMessageDetailValue.setIsDefault(Boolean.FALSE);
                     updateMessageFromValue(defaultMessageDetailValue, false, updatedBy);
@@ -715,23 +715,23 @@ public class MessageControl
         deleteMessageBlobsByMessage(message, deletedBy);
         deleteMessageClobsByMessage(message, deletedBy);
 
-        MessageDetail messageDetail = message.getLastDetailForUpdate();
+        var messageDetail = message.getLastDetailForUpdate();
         messageDetail.setThruTime(session.START_TIME_LONG);
         message.setActiveDetail(null);
         message.store();
         
         // Check for default, and pick one if necessary
-        MessageType messageType = messageDetail.getMessageType();
-        Message defaultMessage = getDefaultMessage(messageType);
+        var messageType = messageDetail.getMessageType();
+        var defaultMessage = getDefaultMessage(messageType);
         if(defaultMessage == null) {
-            List<Message> messages = getMessagesByMessageTypeForUpdate(messageType);
+            var messages = getMessagesByMessageTypeForUpdate(messageType);
             
             if(!messages.isEmpty()) {
-                Iterator<Message> iter = messages.iterator();
+                var iter = messages.iterator();
                 if(iter.hasNext()) {
                     defaultMessage = iter.next();
                 }
-                MessageDetailValue messageDetailValue = Objects.requireNonNull(defaultMessage).getLastDetailForUpdate().getMessageDetailValue().clone();
+                var messageDetailValue = Objects.requireNonNull(defaultMessage).getLastDetailForUpdate().getMessageDetailValue().clone();
                 
                 messageDetailValue.setIsDefault(Boolean.TRUE);
                 updateMessageFromValue(messageDetailValue, false, deletedBy);
@@ -756,7 +756,7 @@ public class MessageControl
     // --------------------------------------------------------------------------------
     
     public MessageDescription createMessageDescription(Message message, Language language, String description, BasePK createdBy) {
-        MessageDescription messageDescription = MessageDescriptionFactory.getInstance().create(message,
+        var messageDescription = MessageDescriptionFactory.getInstance().create(message,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(message.getPrimaryKey(), EventTypes.MODIFY, messageDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -780,8 +780,8 @@ public class MessageControl
                         "WHERE mssgd_mssg_messageid = ? AND mssgd_lang_languageid = ? AND mssgd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = MessageDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = MessageDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, message.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -828,8 +828,8 @@ public class MessageControl
                         "WHERE mssgd_mssg_messageid = ? AND mssgd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = MessageDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = MessageDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, message.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -852,7 +852,7 @@ public class MessageControl
     
     public String getBestMessageDescription(Message message, Language language) {
         String description;
-        MessageDescription messageDescription = getMessageDescription(message, language);
+        var messageDescription = getMessageDescription(message, language);
         
         if(messageDescription == null && !language.getIsDefault()) {
             messageDescription = getMessageDescription(message, getPartyControl().getDefaultLanguage());
@@ -872,9 +872,9 @@ public class MessageControl
     }
     
     public List<MessageDescriptionTransfer> getMessageDescriptionTransfers(UserVisit userVisit, Message message) {
-        List<MessageDescription> messageDescriptions = getMessageDescriptionsByMessage(message);
+        var messageDescriptions = getMessageDescriptionsByMessage(message);
         List<MessageDescriptionTransfer> messageDescriptionTransfers = new ArrayList<>(messageDescriptions.size());
-        MessageDescriptionTransferCache messageDescriptionTransferCache = getMessageTransferCaches(userVisit).getMessageDescriptionTransferCache();
+        var messageDescriptionTransferCache = getMessageTransferCaches(userVisit).getMessageDescriptionTransferCache();
         
         messageDescriptions.forEach((messageDescription) ->
                 messageDescriptionTransfers.add(messageDescriptionTransferCache.getMessageDescriptionTransfer(messageDescription))
@@ -885,14 +885,14 @@ public class MessageControl
     
     public void updateMessageDescriptionFromValue(MessageDescriptionValue messageDescriptionValue, BasePK updatedBy) {
         if(messageDescriptionValue.hasBeenModified()) {
-            MessageDescription messageDescription = MessageDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, messageDescriptionValue.getPrimaryKey());
+            var messageDescription = MessageDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, messageDescriptionValue.getPrimaryKey());
             
             messageDescription.setThruTime(session.START_TIME_LONG);
             messageDescription.store();
-            
-            Message message = messageDescription.getMessage();
-            Language language = messageDescription.getLanguage();
-            String description = messageDescriptionValue.getDescription();
+
+            var message = messageDescription.getMessage();
+            var language = messageDescription.getLanguage();
+            var description = messageDescriptionValue.getDescription();
             
             messageDescription = MessageDescriptionFactory.getInstance().create(message, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
@@ -908,7 +908,7 @@ public class MessageControl
     }
     
     public void deleteMessageDescriptionsByMessage(Message message, BasePK deletedBy) {
-        List<MessageDescription> messageDescriptions = getMessageDescriptionsByMessageForUpdate(message);
+        var messageDescriptions = getMessageDescriptionsByMessageForUpdate(message);
         
         messageDescriptions.forEach((messageDescription) -> 
                 deleteMessageDescription(messageDescription, deletedBy)
@@ -920,7 +920,7 @@ public class MessageControl
     // --------------------------------------------------------------------------------
     
     public MessageString createMessageString(Message message, Language language, String string, BasePK createdBy) {
-        MessageString messageString = MessageStringFactory.getInstance().create(message, language, string,
+        var messageString = MessageStringFactory.getInstance().create(message, language, string,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(messageString.getMessagePK(), EventTypes.MODIFY, messageString.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -946,8 +946,8 @@ public class MessageControl
                         "WHERE mssgs_mssg_messageid = ? AND mssgs_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = MessageStringFactory.getInstance().prepareStatement(query);
+
+            var ps = MessageStringFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, message.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -984,8 +984,8 @@ public class MessageControl
                         "WHERE mssgs_mssg_messageid = ? AND mssgs_lang_languageid = ? AND mssgs_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = MessageStringFactory.getInstance().prepareStatement(query);
+
+            var ps = MessageStringFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, message.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -1012,14 +1012,14 @@ public class MessageControl
     }
     
     public MessageStringValue getMessageStringValueForUpdate(Message message, Language language) {
-        MessageString messageString = getMessageStringForUpdate(message, language);
+        var messageString = getMessageStringForUpdate(message, language);
         
         return messageString == null? null: getMessageStringValue(messageString);
     }
     
     public List<MessageStringTransfer> getMessageStringTransfers(UserVisit userVisit, Collection<MessageString> messageStrings) {
         List<MessageStringTransfer> messageStringTransfers = new ArrayList<>(messageStrings.size());
-        MessageStringTransferCache messageStringTransferCache = getMessageTransferCaches(userVisit).getMessageStringTransferCache();
+        var messageStringTransferCache = getMessageTransferCaches(userVisit).getMessageStringTransferCache();
         
         messageStrings.forEach((messageString) ->
                 messageStringTransfers.add(messageStringTransferCache.getMessageStringTransfer(messageString))
@@ -1034,15 +1034,15 @@ public class MessageControl
     
     public void updateMessageStringFromValue(MessageStringValue messageStringValue, BasePK updatedBy) {
         if(messageStringValue.hasBeenModified()) {
-            MessageString messageString = MessageStringFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var messageString = MessageStringFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     messageStringValue.getPrimaryKey());
             
             messageString.setThruTime(session.START_TIME_LONG);
             messageString.store();
-            
-            MessagePK messagePK = messageString.getMessagePK(); // Not updated
-            LanguagePK languagePK = messageString.getLanguagePK(); // Not updated
-            String string = messageStringValue.getString();
+
+            var messagePK = messageString.getMessagePK(); // Not updated
+            var languagePK = messageString.getLanguagePK(); // Not updated
+            var string = messageStringValue.getString();
             
             messageString = MessageStringFactory.getInstance().create(messagePK, languagePK, string,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1072,7 +1072,7 @@ public class MessageControl
     // --------------------------------------------------------------------------------
     
     public MessageBlob createMessageBlob(Message message, Language language, MimeType mimeType, ByteArray blob, BasePK createdBy) {
-        MessageBlob messageBlob = MessageBlobFactory.getInstance().create(message, language, mimeType, blob,
+        var messageBlob = MessageBlobFactory.getInstance().create(message, language, mimeType, blob,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(messageBlob.getMessagePK(), EventTypes.MODIFY, messageBlob.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1098,8 +1098,8 @@ public class MessageControl
                         "WHERE mssgb_mssg_messageid = ? AND mssgb_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = MessageBlobFactory.getInstance().prepareStatement(query);
+
+            var ps = MessageBlobFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, message.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1136,8 +1136,8 @@ public class MessageControl
                         "WHERE mssgb_mssg_messageid = ? AND mssgb_lang_languageid = ? AND mssgb_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = MessageBlobFactory.getInstance().prepareStatement(query);
+
+            var ps = MessageBlobFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, message.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -1164,14 +1164,14 @@ public class MessageControl
     }
     
     public MessageBlobValue getMessageBlobValueForUpdate(Message message, Language language) {
-        MessageBlob messageBlob = getMessageBlobForUpdate(message, language);
+        var messageBlob = getMessageBlobForUpdate(message, language);
         
         return messageBlob == null? null: getMessageBlobValue(messageBlob);
     }
     
     public List<MessageBlobTransfer> getMessageBlobTransfers(UserVisit userVisit, Collection<MessageBlob> messageBlobs) {
         List<MessageBlobTransfer> messageBlobTransfers = new ArrayList<>(messageBlobs.size());
-        MessageBlobTransferCache messageBlobTransferCache = getMessageTransferCaches(userVisit).getMessageBlobTransferCache();
+        var messageBlobTransferCache = getMessageTransferCaches(userVisit).getMessageBlobTransferCache();
         
         messageBlobs.forEach((messageBlob) ->
                 messageBlobTransfers.add(messageBlobTransferCache.getMessageBlobTransfer(messageBlob))
@@ -1186,16 +1186,16 @@ public class MessageControl
     
     public void updateMessageBlobFromValue(MessageBlobValue messageBlobValue, BasePK updatedBy) {
         if(messageBlobValue.hasBeenModified()) {
-            MessageBlob messageBlob = MessageBlobFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var messageBlob = MessageBlobFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     messageBlobValue.getPrimaryKey());
             
             messageBlob.setThruTime(session.START_TIME_LONG);
             messageBlob.store();
-            
-            MessagePK messagePK = messageBlob.getMessagePK(); // Not updated
-            LanguagePK languagePK = messageBlob.getLanguagePK(); // Not updated
-            MimeTypePK mimeTypePK = messageBlobValue.getMimeTypePK();
-            ByteArray blob = messageBlobValue.getBlob();
+
+            var messagePK = messageBlob.getMessagePK(); // Not updated
+            var languagePK = messageBlob.getLanguagePK(); // Not updated
+            var mimeTypePK = messageBlobValue.getMimeTypePK();
+            var blob = messageBlobValue.getBlob();
             
             messageBlob = MessageBlobFactory.getInstance().create(messagePK, languagePK, mimeTypePK, blob,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1225,7 +1225,7 @@ public class MessageControl
     // --------------------------------------------------------------------------------
     
     public MessageClob createMessageClob(Message message, Language language, MimeType mimeType, String clob, BasePK createdBy) {
-        MessageClob messageClob = MessageClobFactory.getInstance().create(message, language, mimeType, clob,
+        var messageClob = MessageClobFactory.getInstance().create(message, language, mimeType, clob,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(messageClob.getMessagePK(), EventTypes.MODIFY, messageClob.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1251,8 +1251,8 @@ public class MessageControl
                         "WHERE mssgc_mssg_messageid = ? AND mssgc_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = MessageClobFactory.getInstance().prepareStatement(query);
+
+            var ps = MessageClobFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, message.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1289,8 +1289,8 @@ public class MessageControl
                         "WHERE mssgc_mssg_messageid = ? AND mssgc_lang_languageid = ? AND mssgc_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = MessageClobFactory.getInstance().prepareStatement(query);
+
+            var ps = MessageClobFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, message.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -1317,14 +1317,14 @@ public class MessageControl
     }
     
     public MessageClobValue getMessageClobValueForUpdate(Message message, Language language) {
-        MessageClob messageClob = getMessageClobForUpdate(message, language);
+        var messageClob = getMessageClobForUpdate(message, language);
         
         return messageClob == null? null: getMessageClobValue(messageClob);
     }
     
     public List<MessageClobTransfer> getMessageClobTransfers(UserVisit userVisit, Collection<MessageClob> messageClobs) {
         List<MessageClobTransfer> messageClobTransfers = new ArrayList<>(messageClobs.size());
-        MessageClobTransferCache messageClobTransferCache = getMessageTransferCaches(userVisit).getMessageClobTransferCache();
+        var messageClobTransferCache = getMessageTransferCaches(userVisit).getMessageClobTransferCache();
         
         messageClobs.forEach((messageClob) ->
                 messageClobTransfers.add(messageClobTransferCache.getMessageClobTransfer(messageClob))
@@ -1339,16 +1339,16 @@ public class MessageControl
     
     public void updateMessageClobFromValue(MessageClobValue messageClobValue, BasePK updatedBy) {
         if(messageClobValue.hasBeenModified()) {
-            MessageClob messageClob = MessageClobFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var messageClob = MessageClobFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     messageClobValue.getPrimaryKey());
             
             messageClob.setThruTime(session.START_TIME_LONG);
             messageClob.store();
-            
-            MessagePK messagePK = messageClob.getMessagePK(); // Not updated
-            LanguagePK languagePK = messageClob.getLanguagePK(); // Not updated
-            MimeTypePK mimeTypePK = messageClobValue.getMimeTypePK();
-            String clob = messageClobValue.getClob();
+
+            var messagePK = messageClob.getMessagePK(); // Not updated
+            var languagePK = messageClob.getLanguagePK(); // Not updated
+            var mimeTypePK = messageClobValue.getMimeTypePK();
+            var clob = messageClobValue.getClob();
             
             messageClob = MessageClobFactory.getInstance().create(messagePK, languagePK, mimeTypePK, clob,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1378,7 +1378,7 @@ public class MessageControl
     // --------------------------------------------------------------------------------
     
     public EntityMessage createEntityMessage(EntityInstance entityInstance, Message message, BasePK createdBy) {
-        EntityMessage entityMessage = EntityMessageFactory.getInstance().create(entityInstance, message,
+        var entityMessage = EntityMessageFactory.getInstance().create(entityInstance, message,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(message.getPrimaryKey(), EventTypes.MODIFY, entityMessage.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1402,8 +1402,8 @@ public class MessageControl
                         "WHERE emssg_eni_entityinstanceid = ? AND emssg_mssg_messageid = ? AND emssg_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = EntityMessageFactory.getInstance().prepareStatement(query);
+
+            var ps = EntityMessageFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, entityInstance.getPrimaryKey().getEntityId());
             ps.setLong(2, message.getPrimaryKey().getEntityId());
@@ -1443,8 +1443,8 @@ public class MessageControl
                         "WHERE emssg_eni_entityinstanceid = ? AND emssg_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = EntityMessageFactory.getInstance().prepareStatement(query);
+
+            var ps = EntityMessageFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, entityInstance.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1482,8 +1482,8 @@ public class MessageControl
                         "WHERE emssg_mssg_messageid = ? AND emssg_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = EntityMessageFactory.getInstance().prepareStatement(query);
+
+            var ps = EntityMessageFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, message.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1510,7 +1510,7 @@ public class MessageControl
     
     public List<EntityMessageTransfer> getEntityMessageTransfers(UserVisit userVisit, Collection<EntityMessage> entityMessages) {
         List<EntityMessageTransfer> entityMessageTransfers = new ArrayList<>(entityMessages.size());
-        EntityMessageTransferCache entityMessageTransferCache = getMessageTransferCaches(userVisit).getEntityMessageTransferCache();
+        var entityMessageTransferCache = getMessageTransferCaches(userVisit).getEntityMessageTransferCache();
         
         entityMessages.forEach((entityMessage) ->
                 entityMessageTransfers.add(entityMessageTransferCache.getEntityMessageTransfer(entityMessage))

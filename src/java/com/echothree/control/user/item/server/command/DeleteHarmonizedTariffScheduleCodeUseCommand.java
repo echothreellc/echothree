@@ -69,20 +69,20 @@ public class DeleteHarmonizedTariffScheduleCodeUseCommand
     @Override
     protected BaseResult execute() {
         var geoControl = Session.getModelController(GeoControl.class);
-        String countryName = form.getCountryName();
-        GeoCode geoCode = geoControl.getCountryByAlias(countryName);
+        var countryName = form.getCountryName();
+        var geoCode = geoControl.getCountryByAlias(countryName);
         
         if(geoCode != null) {
             var itemControl = Session.getModelController(ItemControl.class);
-            String harmonizedTariffScheduleCodeName = form.getHarmonizedTariffScheduleCodeName();
-            HarmonizedTariffScheduleCode harmonizedTariffScheduleCode = itemControl.getHarmonizedTariffScheduleCodeByName(geoCode, harmonizedTariffScheduleCodeName);
+            var harmonizedTariffScheduleCodeName = form.getHarmonizedTariffScheduleCodeName();
+            var harmonizedTariffScheduleCode = itemControl.getHarmonizedTariffScheduleCodeByName(geoCode, harmonizedTariffScheduleCodeName);
             
             if(harmonizedTariffScheduleCode != null) {
-                String harmonizedTariffScheduleCodeUseTypeName = form.getHarmonizedTariffScheduleCodeUseTypeName();
-                HarmonizedTariffScheduleCodeUseType harmonizedTariffScheduleCodeUseType = itemControl.getHarmonizedTariffScheduleCodeUseTypeByName(harmonizedTariffScheduleCodeUseTypeName);
+                var harmonizedTariffScheduleCodeUseTypeName = form.getHarmonizedTariffScheduleCodeUseTypeName();
+                var harmonizedTariffScheduleCodeUseType = itemControl.getHarmonizedTariffScheduleCodeUseTypeByName(harmonizedTariffScheduleCodeUseTypeName);
 
                 if(harmonizedTariffScheduleCodeUseType != null) {
-                    HarmonizedTariffScheduleCodeUse harmonizedTariffScheduleCodeUse = itemControl.getHarmonizedTariffScheduleCodeUseForUpdate(harmonizedTariffScheduleCode, harmonizedTariffScheduleCodeUseType);
+                    var harmonizedTariffScheduleCodeUse = itemControl.getHarmonizedTariffScheduleCodeUseForUpdate(harmonizedTariffScheduleCode, harmonizedTariffScheduleCodeUseType);
                     
                     if(harmonizedTariffScheduleCodeUse != null) {
                         itemControl.deleteHarmonizedTariffScheduleCodeUse(harmonizedTariffScheduleCodeUse, getPartyPK());

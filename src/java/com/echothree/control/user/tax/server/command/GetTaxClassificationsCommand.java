@@ -67,9 +67,9 @@ public class GetTaxClassificationsCommand
     @Override
     protected BaseResult execute() {
         var geoControl = Session.getModelController(GeoControl.class);
-        GetTaxClassificationsResult result = TaxResultFactory.getGetTaxClassificationsResult();
-        String countryName = form.getCountryName();
-        GeoCode geoCode = geoControl.getCountryByAlias(countryName);
+        var result = TaxResultFactory.getGetTaxClassificationsResult();
+        var countryName = form.getCountryName();
+        var geoCode = geoControl.getCountryByAlias(countryName);
         
         if(geoCode != null) {
             var taxControl = Session.getModelController(TaxControl.class);

@@ -39,13 +39,13 @@ public class ItemUnitOfMeasureTypeTransferCache
     
     @Override
     public ItemUnitOfMeasureTypeTransfer getTransfer(ItemUnitOfMeasureType itemUnitOfMeasureType) {
-        ItemUnitOfMeasureTypeTransfer itemUnitOfMeasureTypeTransfer = get(itemUnitOfMeasureType);
+        var itemUnitOfMeasureTypeTransfer = get(itemUnitOfMeasureType);
         
         if(itemUnitOfMeasureTypeTransfer == null) {
-            ItemTransfer item = itemControl.getItemTransfer(userVisit, itemUnitOfMeasureType.getItem());
-            UnitOfMeasureTypeTransfer unitOfMeasureType = uomControl.getUnitOfMeasureTypeTransfer(userVisit, itemUnitOfMeasureType.getUnitOfMeasureType());
-            Boolean isDefault = itemUnitOfMeasureType.getIsDefault();
-            Integer sortOrder = itemUnitOfMeasureType.getSortOrder();
+            var item = itemControl.getItemTransfer(userVisit, itemUnitOfMeasureType.getItem());
+            var unitOfMeasureType = uomControl.getUnitOfMeasureTypeTransfer(userVisit, itemUnitOfMeasureType.getUnitOfMeasureType());
+            var isDefault = itemUnitOfMeasureType.getIsDefault();
+            var sortOrder = itemUnitOfMeasureType.getSortOrder();
             
             itemUnitOfMeasureTypeTransfer = new ItemUnitOfMeasureTypeTransfer(item, unitOfMeasureType, isDefault, sortOrder);
             put(itemUnitOfMeasureType, itemUnitOfMeasureTypeTransfer);

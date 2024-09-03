@@ -67,16 +67,16 @@ public class DeleteInvoiceTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var invoiceControl = Session.getModelController(InvoiceControl.class);
-        String invoiceTypeName = form.getInvoiceTypeName();
-        InvoiceType invoiceType = invoiceControl.getInvoiceTypeByName(invoiceTypeName);
+        var invoiceTypeName = form.getInvoiceTypeName();
+        var invoiceType = invoiceControl.getInvoiceTypeByName(invoiceTypeName);
         
         if(invoiceType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                InvoiceTypeDescription invoiceTypeDescription = invoiceControl.getInvoiceTypeDescriptionForUpdate(invoiceType, language);
+                var invoiceTypeDescription = invoiceControl.getInvoiceTypeDescriptionForUpdate(invoiceType, language);
                 
                 if(invoiceTypeDescription != null) {
                     invoiceControl.deleteInvoiceTypeDescription(invoiceTypeDescription, getPartyPK());

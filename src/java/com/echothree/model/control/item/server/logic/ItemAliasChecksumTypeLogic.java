@@ -118,8 +118,8 @@ public class ItemAliasChecksumTypeLogic
     }
 
     private int getDigit(String alias, int offset) {
-        int result = -1;
-        char digit = alias.charAt(offset);
+        var result = -1;
+        var digit = alias.charAt(offset);
 
         if(digit >= '0' && digit <= '9') {
             result = digit - '0';
@@ -129,8 +129,8 @@ public class ItemAliasChecksumTypeLogic
     }
 
     private int getIsbn10CheckDigit(String alias, int offset) {
-        int result = -1;
-        char digit = alias.charAt(offset);
+        var result = -1;
+        var digit = alias.charAt(offset);
 
         if(digit >= '0' && digit <= '9') {
             result = digit - '0';
@@ -143,12 +143,12 @@ public class ItemAliasChecksumTypeLogic
 
     private void checkIsbn10Checksum(final ExecutionErrorAccumulator eea, final String alias) {
         if(alias.length() == 10) {
-            boolean hasCharacterError = false;
-            int runningTotal = 0;
-            int checksum = 0;
+            var hasCharacterError = false;
+            var runningTotal = 0;
+            var checksum = 0;
             
-            for(int i = 0; i < 9; i++) {
-                int digit = getDigit(alias, i);
+            for(var i = 0; i < 9; i++) {
+                var digit = getDigit(alias, i);
 
                 if(digit == -1) {
                     hasCharacterError = true;
@@ -160,7 +160,7 @@ public class ItemAliasChecksumTypeLogic
             }
 
             if(!hasCharacterError) {
-                int checkDigit = getIsbn10CheckDigit(alias, 9);
+                var checkDigit = getIsbn10CheckDigit(alias, 9);
 
                 hasCharacterError = checkDigit == -1;
 
@@ -184,10 +184,10 @@ public class ItemAliasChecksumTypeLogic
 
     private void checkIsbn13Checksum(final ExecutionErrorAccumulator eea, final String alias) {
         if(alias.length() == 13) {
-            boolean hasCharacterError = false;
-            int checksum = 0;
-            for(int i = 0; i < 12; i += 2) {
-                int digit = getDigit(alias, i);
+            var hasCharacterError = false;
+            var checksum = 0;
+            for(var i = 0; i < 12; i += 2) {
+                var digit = getDigit(alias, i);
 
                 if(digit == -1) {
                     hasCharacterError = true;
@@ -198,8 +198,8 @@ public class ItemAliasChecksumTypeLogic
             }
 
             if(!hasCharacterError) {
-                for(int i = 1; i < 12; i += 2) {
-                    int digit = getDigit(alias, i);
+                for(var i = 1; i < 12; i += 2) {
+                    var digit = getDigit(alias, i);
 
                     if(digit == -1) {
                         hasCharacterError = true;
@@ -211,7 +211,7 @@ public class ItemAliasChecksumTypeLogic
             }
 
             if(!hasCharacterError) {
-                int checkDigit = getIsbn10CheckDigit(alias, 12);
+                var checkDigit = getIsbn10CheckDigit(alias, 12);
 
                 hasCharacterError = checkDigit == -1;
 
@@ -234,12 +234,12 @@ public class ItemAliasChecksumTypeLogic
 
     private void checkUpcAChecksum(final ExecutionErrorAccumulator eea, final String alias) {
         if(alias.length() == 12) {
-            boolean hasCharacterError = false;
-            int totalA = 0;
-            int totalB = 0;
+            var hasCharacterError = false;
+            var totalA = 0;
+            var totalB = 0;
 
-            for(int i = 0; i < 11; i++) {
-                int digit = getDigit(alias, i);
+            for(var i = 0; i < 11; i++) {
+                var digit = getDigit(alias, i);
 
                 if(digit == -1) {
                     hasCharacterError = true;
@@ -254,12 +254,12 @@ public class ItemAliasChecksumTypeLogic
             }
 
             if(!hasCharacterError) {
-                int checkDigit = getDigit(alias, 11);
+                var checkDigit = getDigit(alias, 11);
 
                 hasCharacterError = checkDigit == -1;
 
                 if(!hasCharacterError) {
-                    int intermediate = (10 - (totalA * 3 + totalB) % 10) % 10;
+                    var intermediate = (10 - (totalA * 3 + totalB) % 10) % 10;
 
                     if(intermediate != checkDigit) {
                         eea.addExecutionError(ExecutionErrors.IncorrectUpcAChecksum.name());
@@ -276,10 +276,10 @@ public class ItemAliasChecksumTypeLogic
     }
 
     public void checkItemAliasChecksum(final ExecutionErrorAccumulator eea, final ItemAliasType itemAliasType, final String alias) {
-        ItemAliasChecksumType itemAliasChecksumType = itemAliasType.getLastDetail().getItemAliasChecksumType();
+        var itemAliasChecksumType = itemAliasType.getLastDetail().getItemAliasChecksumType();
 
         if(itemAliasChecksumType != null) {
-            String itemAliasChecksumTypeName = itemAliasChecksumType.getItemAliasChecksumTypeName();
+            var itemAliasChecksumTypeName = itemAliasChecksumType.getItemAliasChecksumTypeName();
 
             if(itemAliasChecksumTypeName.equals(ItemConstants.ItemAliasChecksumType_ISBN_10)) {
                 checkIsbn10Checksum(eea, alias);

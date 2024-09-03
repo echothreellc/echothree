@@ -63,21 +63,21 @@ public class CreateRatingCommand
     
     @Override
     protected BaseResult execute() {
-        CreateRatingResult result = RatingResultFactory.getCreateRatingResult();
+        var result = RatingResultFactory.getCreateRatingResult();
         var coreControl = getCoreControl();
         String ratingName = null;
-        String entityRef = form.getEntityRef();
-        EntityInstance ratedEntityInstance = coreControl.getEntityInstanceByEntityRef(entityRef);
+        var entityRef = form.getEntityRef();
+        var ratedEntityInstance = coreControl.getEntityInstanceByEntityRef(entityRef);
         
         if(ratedEntityInstance != null) {
             var ratingControl = Session.getModelController(RatingControl.class);
             EntityInstance ratedByEntityInstance = null;
             BasePK createdBy = getPartyPK();
-            String ratedByUsername = form.getRatedByUsername();
+            var ratedByUsername = form.getRatedByUsername();
             
             if(ratedByUsername != null) {
-                UserControl userControl = getUserControl();
-                UserLogin userLogin = userControl.getUserLoginByUsername(ratedByUsername);
+                var userControl = getUserControl();
+                var userLogin = userControl.getUserLoginByUsername(ratedByUsername);
                 
                 if(userLogin != null) {
                     ratedByEntityInstance = coreControl.getEntityInstanceByBasePK(userLogin.getPartyPK());
@@ -89,20 +89,20 @@ public class CreateRatingCommand
             }
             
             if(!hasExecutionErrors()) {
-                Rating rating = ratingControl.getRating(ratedEntityInstance, ratedByEntityInstance);
+                var rating = ratingControl.getRating(ratedEntityInstance, ratedByEntityInstance);
                 
                 if(rating == null) {
-                    String ratingTypeName = form.getRatingTypeName();
-                    RatingType ratingType = ratingControl.getRatingTypeByName(ratedEntityInstance.getEntityType(),
+                    var ratingTypeName = form.getRatingTypeName();
+                    var ratingType = ratingControl.getRatingTypeByName(ratedEntityInstance.getEntityType(),
                             ratingTypeName);
                     
                     if(ratingType != null) {
-                        String ratingTypeListItemName = form.getRatingTypeListItemName();
-                        RatingTypeListItem ratingTypeListItem = ratingControl.getRatingTypeListItemByName(ratingType, ratingTypeListItemName);
+                        var ratingTypeListItemName = form.getRatingTypeListItemName();
+                        var ratingTypeListItem = ratingControl.getRatingTypeListItemByName(ratingType, ratingTypeListItemName);
                         
                         if(ratingTypeListItem != null) {
                             var sequenceControl = Session.getModelController(SequenceControl.class);
-                            Sequence ratingSequence = ratingType.getLastDetail().getRatingSequence();
+                            var ratingSequence = ratingType.getLastDetail().getRatingSequence();
                             
                             if(ratingSequence == null) {
                                 ratingSequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.RATING.name());

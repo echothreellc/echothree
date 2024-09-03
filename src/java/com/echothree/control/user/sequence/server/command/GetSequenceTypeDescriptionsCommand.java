@@ -65,9 +65,9 @@ public class GetSequenceTypeDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var sequenceControl = Session.getModelController(SequenceControl.class);
-        GetSequenceTypeDescriptionsResult result = SequenceResultFactory.getGetSequenceTypeDescriptionsResult();
-        String sequenceTypeName = form.getSequenceTypeName();
-        SequenceType sequenceType = sequenceControl.getSequenceTypeByName(sequenceTypeName);
+        var result = SequenceResultFactory.getGetSequenceTypeDescriptionsResult();
+        var sequenceTypeName = form.getSequenceTypeName();
+        var sequenceType = sequenceControl.getSequenceTypeByName(sequenceTypeName);
         
         if(sequenceType != null) {
             result.setSequenceType(sequenceControl.getSequenceTypeTransfer(getUserVisit(), sequenceType));

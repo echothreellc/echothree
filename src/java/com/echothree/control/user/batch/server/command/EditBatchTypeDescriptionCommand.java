@@ -89,13 +89,13 @@ public class EditBatchTypeDescriptionCommand
     public BatchTypeDescription getEntity(EditBatchTypeDescriptionResult result) {
         var batchControl = Session.getModelController(BatchControl.class);
         BatchTypeDescription batchTypeDescription = null;
-        String batchTypeName = spec.getBatchTypeName();
-        BatchType batchType = batchControl.getBatchTypeByName(batchTypeName);
+        var batchTypeName = spec.getBatchTypeName();
+        var batchType = batchControl.getBatchTypeByName(batchTypeName);
 
         if(batchType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -137,7 +137,7 @@ public class EditBatchTypeDescriptionCommand
     @Override
     public void doUpdate(BatchTypeDescription batchTypeDescription) {
         var batchControl = Session.getModelController(BatchControl.class);
-        BatchTypeDescriptionValue batchTypeDescriptionValue = batchControl.getBatchTypeDescriptionValue(batchTypeDescription);
+        var batchTypeDescriptionValue = batchControl.getBatchTypeDescriptionValue(batchTypeDescription);
         batchTypeDescriptionValue.setDescription(edit.getDescription());
 
         batchControl.updateBatchTypeDescriptionFromValue(batchTypeDescriptionValue, getPartyPK());

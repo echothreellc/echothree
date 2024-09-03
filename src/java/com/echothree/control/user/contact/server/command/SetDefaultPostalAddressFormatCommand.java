@@ -49,8 +49,8 @@ public class SetDefaultPostalAddressFormatCommand
     @Override
     protected BaseResult execute() {
         var contactControl = Session.getModelController(ContactControl.class);
-        String postalAddressFormatName = form.getPostalAddressFormatName();
-        PostalAddressFormatDetailValue postalAddressFormatDetailValue = contactControl.getPostalAddressFormatDetailValueByNameForUpdate(postalAddressFormatName);
+        var postalAddressFormatName = form.getPostalAddressFormatName();
+        var postalAddressFormatDetailValue = contactControl.getPostalAddressFormatDetailValueByNameForUpdate(postalAddressFormatName);
         
         if(postalAddressFormatDetailValue != null) {
             postalAddressFormatDetailValue.setIsDefault(Boolean.TRUE);

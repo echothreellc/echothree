@@ -89,13 +89,13 @@ public class EditGeoCodeTypeDescriptionCommand
     public GeoCodeTypeDescription getEntity(EditGeoCodeTypeDescriptionResult result) {
         var geoControl = Session.getModelController(GeoControl.class);
         GeoCodeTypeDescription geoCodeTypeDescription = null;
-        String geoCodeTypeName = spec.getGeoCodeTypeName();
-        GeoCodeType geoCodeType = geoControl.getGeoCodeTypeByName(geoCodeTypeName);
+        var geoCodeTypeName = spec.getGeoCodeTypeName();
+        var geoCodeType = geoControl.getGeoCodeTypeByName(geoCodeTypeName);
 
         if(geoCodeType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -137,7 +137,7 @@ public class EditGeoCodeTypeDescriptionCommand
     @Override
     public void doUpdate(GeoCodeTypeDescription geoCodeTypeDescription) {
         var geoControl = Session.getModelController(GeoControl.class);
-        GeoCodeTypeDescriptionValue geoCodeTypeDescriptionValue = geoControl.getGeoCodeTypeDescriptionValue(geoCodeTypeDescription);
+        var geoCodeTypeDescriptionValue = geoControl.getGeoCodeTypeDescriptionValue(geoCodeTypeDescription);
         geoCodeTypeDescriptionValue.setDescription(edit.getDescription());
 
         geoControl.updateGeoCodeTypeDescriptionFromValue(geoCodeTypeDescriptionValue, getPartyPK());

@@ -90,16 +90,16 @@ public class EditPartyAliasTypeDescriptionCommand
     public PartyAliasTypeDescription getEntity(EditPartyAliasTypeDescriptionResult result) {
         var partyControl = Session.getModelController(PartyControl.class);
         PartyAliasTypeDescription partyAliasTypeDescription = null;
-        String partyTypeName = spec.getPartyTypeName();
-        PartyType partyType = partyControl.getPartyTypeByName(partyTypeName);
+        var partyTypeName = spec.getPartyTypeName();
+        var partyType = partyControl.getPartyTypeByName(partyTypeName);
 
         if(partyType != null) {
-            String partyAliasTypeName = spec.getPartyAliasTypeName();
-            PartyAliasType partyAliasType = partyControl.getPartyAliasTypeByName(partyType, partyAliasTypeName);
+            var partyAliasTypeName = spec.getPartyAliasTypeName();
+            var partyAliasType = partyControl.getPartyAliasTypeByName(partyType, partyAliasTypeName);
 
             if(partyAliasType != null) {
-                String languageIsoName = spec.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = spec.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                 if(language != null) {
                     if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -144,7 +144,7 @@ public class EditPartyAliasTypeDescriptionCommand
     @Override
     public void doUpdate(PartyAliasTypeDescription partyAliasTypeDescription) {
         var partyControl = Session.getModelController(PartyControl.class);
-        PartyAliasTypeDescriptionValue partyAliasTypeDescriptionValue = partyControl.getPartyAliasTypeDescriptionValue(partyAliasTypeDescription);
+        var partyAliasTypeDescriptionValue = partyControl.getPartyAliasTypeDescriptionValue(partyAliasTypeDescription);
         
         partyAliasTypeDescriptionValue.setDescription(edit.getDescription());
         

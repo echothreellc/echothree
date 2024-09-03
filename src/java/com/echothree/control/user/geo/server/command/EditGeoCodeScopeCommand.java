@@ -91,7 +91,7 @@ public class EditGeoCodeScopeCommand
     public GeoCodeScope getEntity(EditGeoCodeScopeResult result) {
         var geoControl = Session.getModelController(GeoControl.class);
         GeoCodeScope geoCodeScope = null;
-        String geoCodeScopeName = spec.getGeoCodeScopeName();
+        var geoCodeScopeName = spec.getGeoCodeScopeName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
             geoCodeScope = geoControl.getGeoCodeScopeByName(geoCodeScopeName);
@@ -123,8 +123,8 @@ public class EditGeoCodeScopeCommand
     @Override
     public void doLock(GeoCodeScopeEdit edit, GeoCodeScope geoCodeScope) {
         var geoControl = Session.getModelController(GeoControl.class);
-        GeoCodeScopeDescription geoCodeScopeDescription = geoControl.getGeoCodeScopeDescription(geoCodeScope, getPreferredLanguage());
-        GeoCodeScopeDetail geoCodeScopeDetail = geoCodeScope.getLastDetail();
+        var geoCodeScopeDescription = geoControl.getGeoCodeScopeDescription(geoCodeScope, getPreferredLanguage());
+        var geoCodeScopeDetail = geoCodeScope.getLastDetail();
 
         edit.setGeoCodeScopeName(geoCodeScopeDetail.getGeoCodeScopeName());
         edit.setIsDefault(geoCodeScopeDetail.getIsDefault().toString());
@@ -138,8 +138,8 @@ public class EditGeoCodeScopeCommand
     @Override
     public void canUpdate(GeoCodeScope geoCodeScope) {
         var geoControl = Session.getModelController(GeoControl.class);
-        String geoCodeScopeName = edit.getGeoCodeScopeName();
-        GeoCodeScope duplicateGeoCodeScope = geoControl.getGeoCodeScopeByName(geoCodeScopeName);
+        var geoCodeScopeName = edit.getGeoCodeScopeName();
+        var duplicateGeoCodeScope = geoControl.getGeoCodeScopeByName(geoCodeScopeName);
 
         if(duplicateGeoCodeScope != null && geoCodeScope.equals(duplicateGeoCodeScope)) {
             addExecutionError(ExecutionErrors.DuplicateGeoCodeScopeName.name(), geoCodeScopeName);
@@ -150,9 +150,9 @@ public class EditGeoCodeScopeCommand
     public void doUpdate(GeoCodeScope geoCodeScope) {
         var geoControl = Session.getModelController(GeoControl.class);
         var partyPK = getPartyPK();
-        GeoCodeScopeDetailValue geoCodeScopeDetailValue = geoControl.getGeoCodeScopeDetailValueForUpdate(geoCodeScope);
-        GeoCodeScopeDescription geoCodeScopeDescription = geoControl.getGeoCodeScopeDescriptionForUpdate(geoCodeScope, getPreferredLanguage());
-        String description = edit.getDescription();
+        var geoCodeScopeDetailValue = geoControl.getGeoCodeScopeDetailValueForUpdate(geoCodeScope);
+        var geoCodeScopeDescription = geoControl.getGeoCodeScopeDescriptionForUpdate(geoCodeScope, getPreferredLanguage());
+        var description = edit.getDescription();
 
         geoCodeScopeDetailValue.setGeoCodeScopeName(edit.getGeoCodeScopeName());
         geoCodeScopeDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
@@ -167,7 +167,7 @@ public class EditGeoCodeScopeCommand
                 geoControl.deleteGeoCodeScopeDescription(geoCodeScopeDescription, partyPK);
             } else {
                 if(geoCodeScopeDescription != null && description != null) {
-                    GeoCodeScopeDescriptionValue geoCodeScopeDescriptionValue = geoControl.getGeoCodeScopeDescriptionValue(geoCodeScopeDescription);
+                    var geoCodeScopeDescriptionValue = geoControl.getGeoCodeScopeDescriptionValue(geoCodeScopeDescription);
 
                     geoCodeScopeDescriptionValue.setDescription(description);
                     geoControl.updateGeoCodeScopeDescriptionFromValue(geoCodeScopeDescriptionValue, partyPK);

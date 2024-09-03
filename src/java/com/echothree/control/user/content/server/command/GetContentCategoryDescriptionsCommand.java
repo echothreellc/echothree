@@ -69,19 +69,19 @@ public class GetContentCategoryDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var contentControl = Session.getModelController(ContentControl.class);
-        GetContentCategoryDescriptionsResult result = ContentResultFactory.getGetContentCategoryDescriptionsResult();
-        String contentCollectionName = form.getContentCollectionName();
-        ContentCollection contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
+        var result = ContentResultFactory.getGetContentCategoryDescriptionsResult();
+        var contentCollectionName = form.getContentCollectionName();
+        var contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
         
         if(contentCollection != null) {
-            String contentCatalogName = form.getContentCatalogName();
-            ContentCatalog contentCatalog = contentControl.getContentCatalogByName(contentCollection, contentCatalogName);
+            var contentCatalogName = form.getContentCatalogName();
+            var contentCatalog = contentControl.getContentCatalogByName(contentCollection, contentCatalogName);
             
             result.setContentCollection(contentControl.getContentCollectionTransfer(getUserVisit(), contentCollection));
             
             if(contentCatalog != null) {
-                String contentCategoryName = form.getContentCategoryName();
-                ContentCategory contentCategory = contentControl.getContentCategoryByName(contentCatalog, contentCategoryName);
+                var contentCategoryName = form.getContentCategoryName();
+                var contentCategory = contentControl.getContentCategoryByName(contentCatalog, contentCategoryName);
                 
                 result.setContentCatalog(contentControl.getContentCatalogTransfer(getUserVisit(), contentCatalog));
                 

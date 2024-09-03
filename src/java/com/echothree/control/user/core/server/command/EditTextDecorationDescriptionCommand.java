@@ -88,13 +88,13 @@ public class EditTextDecorationDescriptionCommand
     public TextDecorationDescription getEntity(EditTextDecorationDescriptionResult result) {
         var coreControl = getCoreControl();
         TextDecorationDescription textDecorationDescription = null;
-        String textDecorationName = spec.getTextDecorationName();
-        TextDecoration textDecoration = coreControl.getTextDecorationByName(textDecorationName);
+        var textDecorationName = spec.getTextDecorationName();
+        var textDecoration = coreControl.getTextDecorationByName(textDecorationName);
 
         if(textDecoration != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -136,7 +136,7 @@ public class EditTextDecorationDescriptionCommand
     @Override
     public void doUpdate(TextDecorationDescription textDecorationDescription) {
         var coreControl = getCoreControl();
-        TextDecorationDescriptionValue textDecorationDescriptionValue = coreControl.getTextDecorationDescriptionValue(textDecorationDescription);
+        var textDecorationDescriptionValue = coreControl.getTextDecorationDescriptionValue(textDecorationDescription);
         textDecorationDescriptionValue.setDescription(edit.getDescription());
 
         coreControl.updateTextDecorationDescriptionFromValue(textDecorationDescriptionValue, getPartyPK());

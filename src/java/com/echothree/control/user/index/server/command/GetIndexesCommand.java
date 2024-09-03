@@ -61,7 +61,7 @@ public class GetIndexesCommand
     @Override
     protected BaseResult execute() {
         var indexControl = Session.getModelController(IndexControl.class);
-        GetIndexesResult result = IndexResultFactory.getGetIndexesResult();
+        var result = IndexResultFactory.getGetIndexesResult();
         
         result.setIndexes(indexControl.getIndexTransfers(getUserVisit()));
         

@@ -65,9 +65,9 @@ public class GetPrinterGroupJobCommand
     @Override
     protected BaseResult execute() {
         var printerControl = Session.getModelController(PrinterControl.class);
-        GetPrinterGroupJobResult result = PrinterResultFactory.getGetPrinterGroupJobResult();
-        String printerGroupJobName = form.getPrinterGroupJobName();
-        PrinterGroupJob printerGroupJob = printerControl.getPrinterGroupJobByName(printerGroupJobName);
+        var result = PrinterResultFactory.getGetPrinterGroupJobResult();
+        var printerGroupJobName = form.getPrinterGroupJobName();
+        var printerGroupJob = printerControl.getPrinterGroupJobByName(printerGroupJobName);
         
         if(printerGroupJob != null) {
             result.setPrinterGroupJob(printerControl.getPrinterGroupJobTransfer(getUserVisit(), printerGroupJob));

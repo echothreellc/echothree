@@ -40,15 +40,15 @@ public class LocationCapacityTransferCache
     }
     
     public LocationCapacityTransfer getLocationCapacityTransfer(LocationCapacity locationCapacity) {
-        LocationCapacityTransfer locationCapacityTransfer = get(locationCapacity);
+        var locationCapacityTransfer = get(locationCapacity);
         
         if(locationCapacityTransfer == null) {
-            LocationTransferCache locationTransferCache = warehouseControl.getWarehouseTransferCaches(userVisit).getLocationTransferCache();
-            LocationTransfer locationTransfer = locationTransferCache.getLocationTransfer(locationCapacity.getLocation());
-            UnitOfMeasureTypeTransferCache unitOfMeasureTypeTransferCache = uomControl.getUomTransferCaches(userVisit).getUnitOfMeasureTypeTransferCache();
-            UnitOfMeasureType unitOfMeasureType = locationCapacity.getUnitOfMeasureType();
-            UnitOfMeasureTypeTransfer unitOfMeasureTypeTransfer = unitOfMeasureTypeTransferCache.getUnitOfMeasureTypeTransfer(unitOfMeasureType);
-            Long capacity = locationCapacity.getCapacity();
+            var locationTransferCache = warehouseControl.getWarehouseTransferCaches(userVisit).getLocationTransferCache();
+            var locationTransfer = locationTransferCache.getLocationTransfer(locationCapacity.getLocation());
+            var unitOfMeasureTypeTransferCache = uomControl.getUomTransferCaches(userVisit).getUnitOfMeasureTypeTransferCache();
+            var unitOfMeasureType = locationCapacity.getUnitOfMeasureType();
+            var unitOfMeasureTypeTransfer = unitOfMeasureTypeTransferCache.getUnitOfMeasureTypeTransfer(unitOfMeasureType);
+            var capacity = locationCapacity.getCapacity();
             
             locationCapacityTransfer = new LocationCapacityTransfer(locationTransfer, unitOfMeasureTypeTransfer, capacity);
             put(locationCapacity, locationCapacityTransfer);

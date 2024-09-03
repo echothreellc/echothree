@@ -62,16 +62,16 @@ public class CreateInvoiceRoleTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var invoiceControl = Session.getModelController(InvoiceControl.class);
-        String invoiceRoleTypeName = form.getInvoiceRoleTypeName();
-        InvoiceRoleType invoiceRoleType = invoiceControl.getInvoiceRoleTypeByName(invoiceRoleTypeName);
+        var invoiceRoleTypeName = form.getInvoiceRoleTypeName();
+        var invoiceRoleType = invoiceControl.getInvoiceRoleTypeByName(invoiceRoleTypeName);
         
         if(invoiceRoleType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                InvoiceRoleTypeDescription invoiceRoleTypeDescription = invoiceControl.getInvoiceRoleTypeDescription(invoiceRoleType, language);
+                var invoiceRoleTypeDescription = invoiceControl.getInvoiceRoleTypeDescription(invoiceRoleType, language);
                 
                 if(invoiceRoleTypeDescription == null) {
                     var description = form.getDescription();

@@ -63,8 +63,8 @@ public class GetContentCollectionChoicesCommand
     @Override
     protected BaseResult execute() {
         var contentControl = Session.getModelController(ContentControl.class);
-        GetContentCollectionChoicesResult result = ContentResultFactory.getGetContentCollectionChoicesResult();
-        String defaultContentCollectionChoice = form.getDefaultContentCollectionChoice();
+        var result = ContentResultFactory.getGetContentCollectionChoicesResult();
+        var defaultContentCollectionChoice = form.getDefaultContentCollectionChoice();
         
         result.setContentCollectionChoices(contentControl.getContentCollectionChoices(defaultContentCollectionChoice, getPreferredLanguage()));
         

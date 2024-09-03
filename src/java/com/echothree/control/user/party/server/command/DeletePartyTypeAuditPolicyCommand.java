@@ -50,11 +50,11 @@ public class DeletePartyTypeAuditPolicyCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        String partyTypeName = form.getPartyTypeName();
-        PartyType partyType = partyControl.getPartyTypeByName(partyTypeName);
+        var partyTypeName = form.getPartyTypeName();
+        var partyType = partyControl.getPartyTypeByName(partyTypeName);
         
         if(partyType != null) {
-            PartyTypeAuditPolicy partyTypeAuditPolicy = partyControl.getPartyTypeAuditPolicyForUpdate(partyType);
+            var partyTypeAuditPolicy = partyControl.getPartyTypeAuditPolicyForUpdate(partyType);
             
             if(partyTypeAuditPolicy != null) {
                 partyControl.deletePartyTypeAuditPolicy(partyTypeAuditPolicy, getPartyPK());

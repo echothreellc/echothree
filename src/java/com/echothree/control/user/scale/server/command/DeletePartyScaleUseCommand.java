@@ -66,7 +66,7 @@ public class DeletePartyScaleUseCommand
     
     @Override
     protected BaseResult execute() {
-        String partyName = form.getPartyName();
+        var partyName = form.getPartyName();
         Party party = null;
 
         if(partyName != null) {
@@ -82,11 +82,11 @@ public class DeletePartyScaleUseCommand
 
         if(!hasExecutionErrors()) {
             var scaleControl = Session.getModelController(ScaleControl.class);
-            String scaleUseTypeName = form.getScaleUseTypeName();
-            ScaleUseType scaleUseType = scaleControl.getScaleUseTypeByName(scaleUseTypeName);
+            var scaleUseTypeName = form.getScaleUseTypeName();
+            var scaleUseType = scaleControl.getScaleUseTypeByName(scaleUseTypeName);
 
             if(scaleUseType != null) {
-                PartyScaleUse partyScaleUse = scaleControl.getPartyScaleUseForUpdate(party, scaleUseType);
+                var partyScaleUse = scaleControl.getPartyScaleUseForUpdate(party, scaleUseType);
 
                 if(partyScaleUse != null) {
                     scaleControl.deletePartyScaleUse(partyScaleUse, getPartyPK());

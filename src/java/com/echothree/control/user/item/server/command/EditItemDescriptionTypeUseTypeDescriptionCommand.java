@@ -89,13 +89,13 @@ public class EditItemDescriptionTypeUseTypeDescriptionCommand
     public ItemDescriptionTypeUseTypeDescription getEntity(EditItemDescriptionTypeUseTypeDescriptionResult result) {
         var itemControl = Session.getModelController(ItemControl.class);
         ItemDescriptionTypeUseTypeDescription itemDescriptionTypeUseTypeDescription = null;
-        String itemDescriptionTypeUseTypeName = spec.getItemDescriptionTypeUseTypeName();
-        ItemDescriptionTypeUseType itemDescriptionTypeUseType = itemControl.getItemDescriptionTypeUseTypeByName(itemDescriptionTypeUseTypeName);
+        var itemDescriptionTypeUseTypeName = spec.getItemDescriptionTypeUseTypeName();
+        var itemDescriptionTypeUseType = itemControl.getItemDescriptionTypeUseTypeByName(itemDescriptionTypeUseTypeName);
 
         if(itemDescriptionTypeUseType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -137,7 +137,7 @@ public class EditItemDescriptionTypeUseTypeDescriptionCommand
     @Override
     public void doUpdate(ItemDescriptionTypeUseTypeDescription itemDescriptionTypeUseTypeDescription) {
         var itemControl = Session.getModelController(ItemControl.class);
-        ItemDescriptionTypeUseTypeDescriptionValue itemDescriptionTypeUseTypeDescriptionValue = itemControl.getItemDescriptionTypeUseTypeDescriptionValue(itemDescriptionTypeUseTypeDescription);
+        var itemDescriptionTypeUseTypeDescriptionValue = itemControl.getItemDescriptionTypeUseTypeDescriptionValue(itemDescriptionTypeUseTypeDescription);
         
         itemDescriptionTypeUseTypeDescriptionValue.setDescription(edit.getDescription());
         

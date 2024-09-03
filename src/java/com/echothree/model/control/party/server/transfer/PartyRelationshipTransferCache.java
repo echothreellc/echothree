@@ -32,13 +32,13 @@ public class PartyRelationshipTransferCache
     }
     
     public PartyRelationshipTransfer getPartyRelationshipTransfer(PartyRelationship partyRelationship) {
-        PartyRelationshipTransfer partyRelationshipTransfer = get(partyRelationship);
+        var partyRelationshipTransfer = get(partyRelationship);
         
         if(partyRelationshipTransfer == null) {
-            PartyTransfer fromParty = partyControl.getPartyTransfer(userVisit, partyRelationship.getFromParty());
-            RoleTypeTransfer fromRoleType = partyControl.getRoleTypeTransfer(userVisit, partyRelationship.getFromRoleType());
-            PartyTransfer toParty = partyControl.getPartyTransfer(userVisit, partyRelationship.getToParty());
-            RoleTypeTransfer toRoleType = partyControl.getRoleTypeTransfer(userVisit, partyRelationship.getFromRoleType());
+            var fromParty = partyControl.getPartyTransfer(userVisit, partyRelationship.getFromParty());
+            var fromRoleType = partyControl.getRoleTypeTransfer(userVisit, partyRelationship.getFromRoleType());
+            var toParty = partyControl.getPartyTransfer(userVisit, partyRelationship.getToParty());
+            var toRoleType = partyControl.getRoleTypeTransfer(userVisit, partyRelationship.getFromRoleType());
             
             partyRelationshipTransfer = new PartyRelationshipTransfer(fromParty, fromRoleType, toParty, toRoleType);
             put(partyRelationship, partyRelationshipTransfer);

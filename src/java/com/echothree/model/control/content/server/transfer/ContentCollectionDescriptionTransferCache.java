@@ -32,11 +32,11 @@ public class ContentCollectionDescriptionTransferCache
     }
     
     public ContentCollectionDescriptionTransfer getContentCollectionDescriptionTransfer(ContentCollectionDescription contentCollectionDescription) {
-        ContentCollectionDescriptionTransfer contentCollectionDescriptionTransfer = get(contentCollectionDescription);
+        var contentCollectionDescriptionTransfer = get(contentCollectionDescription);
         
         if(contentCollectionDescriptionTransfer == null) {
-            ContentCollectionTransfer contentCollectionTransfer = contentControl.getContentCollectionTransfer(userVisit, contentCollectionDescription.getContentCollection());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, contentCollectionDescription.getLanguage());
+            var contentCollectionTransfer = contentControl.getContentCollectionTransfer(userVisit, contentCollectionDescription.getContentCollection());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, contentCollectionDescription.getLanguage());
             
             contentCollectionDescriptionTransfer = new ContentCollectionDescriptionTransfer(languageTransfer, contentCollectionTransfer, contentCollectionDescription.getDescription());
             put(contentCollectionDescription, contentCollectionDescriptionTransfer);

@@ -38,15 +38,15 @@ public class CancellationPolicyTranslationTransferCache
     }
     
     public CancellationPolicyTranslationTransfer getCancellationPolicyTranslationTransfer(CancellationPolicyTranslation cancellationPolicyTranslation) {
-        CancellationPolicyTranslationTransfer cancellationPolicyTranslationTransfer = get(cancellationPolicyTranslation);
+        var cancellationPolicyTranslationTransfer = get(cancellationPolicyTranslation);
         
         if(cancellationPolicyTranslationTransfer == null) {
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, cancellationPolicyTranslation.getLanguage());
-            CancellationPolicyTransfer cancellationPolicyTransfer = cancellationPolicyControl.getCancellationPolicyTransfer(userVisit, cancellationPolicyTranslation.getCancellationPolicy());
-            String description = cancellationPolicyTranslation.getDescription();
-            MimeType policyMimeType = cancellationPolicyTranslation.getPolicyMimeType();
-            MimeTypeTransfer policyMimeTypeTransfer = policyMimeType == null? null: coreControl.getMimeTypeTransfer(userVisit, policyMimeType);
-            String policy = cancellationPolicyTranslation.getPolicy();
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, cancellationPolicyTranslation.getLanguage());
+            var cancellationPolicyTransfer = cancellationPolicyControl.getCancellationPolicyTransfer(userVisit, cancellationPolicyTranslation.getCancellationPolicy());
+            var description = cancellationPolicyTranslation.getDescription();
+            var policyMimeType = cancellationPolicyTranslation.getPolicyMimeType();
+            var policyMimeTypeTransfer = policyMimeType == null? null: coreControl.getMimeTypeTransfer(userVisit, policyMimeType);
+            var policy = cancellationPolicyTranslation.getPolicy();
             
             cancellationPolicyTranslationTransfer = new CancellationPolicyTranslationTransfer(cancellationPolicyTransfer, languageTransfer, description,
                     policyMimeTypeTransfer, policy);

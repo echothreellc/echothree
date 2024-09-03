@@ -95,7 +95,7 @@ public class PaymentProcessorTypeCodeLogic
             final PaymentProcessorTypeCodeType paymentProcessorTypeCodeType, final String paymentProcessorTypeCodeName,
             final EntityPermission entityPermission) {
         var paymentProcessorTypeCodeControl = Session.getModelController(PaymentProcessorTypeCodeControl.class);
-        PaymentProcessorTypeCode paymentProcessorTypeCode = paymentProcessorTypeCodeControl.getPaymentProcessorTypeCodeByName(paymentProcessorTypeCodeType,
+        var paymentProcessorTypeCode = paymentProcessorTypeCodeControl.getPaymentProcessorTypeCodeByName(paymentProcessorTypeCodeType,
                 paymentProcessorTypeCodeName, entityPermission);
 
         if(paymentProcessorTypeCode == null) {

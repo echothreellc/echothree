@@ -35,15 +35,15 @@ public class TrainingClassPageTransferCache
     }
     
     public TrainingClassPageTransfer getTrainingClassPageTransfer(TrainingClassPage trainingClassPage) {
-        TrainingClassPageTransfer trainingClassPageTransfer = get(trainingClassPage);
+        var trainingClassPageTransfer = get(trainingClassPage);
         
         if(trainingClassPageTransfer == null) {
-            TrainingClassPageDetail trainingClassPageDetail = trainingClassPage.getLastDetail();
-            TrainingClassSectionTransfer trainingClassSection = trainingControl.getTrainingClassSectionTransfer(userVisit, trainingClassPageDetail.getTrainingClassSection());
-            String trainingClassPageName = trainingClassPageDetail.getTrainingClassPageName();
-            Integer sortOrder = trainingClassPageDetail.getSortOrder();
-            TrainingClassPageTranslation trainingClassPageTranslation = trainingControl.getBestTrainingClassPageTranslation(trainingClassPage, getLanguage());
-            String description = trainingClassPageTranslation == null ? trainingClassPageName : trainingClassPageTranslation.getDescription();
+            var trainingClassPageDetail = trainingClassPage.getLastDetail();
+            var trainingClassSection = trainingControl.getTrainingClassSectionTransfer(userVisit, trainingClassPageDetail.getTrainingClassSection());
+            var trainingClassPageName = trainingClassPageDetail.getTrainingClassPageName();
+            var sortOrder = trainingClassPageDetail.getSortOrder();
+            var trainingClassPageTranslation = trainingControl.getBestTrainingClassPageTranslation(trainingClassPage, getLanguage());
+            var description = trainingClassPageTranslation == null ? trainingClassPageName : trainingClassPageTranslation.getDescription();
             
             trainingClassPageTransfer = new TrainingClassPageTransfer(trainingClassSection, trainingClassPageName, sortOrder, description);
             put(trainingClassPage, trainingClassPageTransfer);

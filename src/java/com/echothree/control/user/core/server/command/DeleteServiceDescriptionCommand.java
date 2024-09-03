@@ -66,16 +66,16 @@ public class DeleteServiceDescriptionCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String serviceName = form.getServiceName();
-        Service service = coreControl.getServiceByName(serviceName);
+        var serviceName = form.getServiceName();
+        var service = coreControl.getServiceByName(serviceName);
         
         if(service != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                ServiceDescription serviceDescription = coreControl.getServiceDescriptionForUpdate(service, language);
+                var serviceDescription = coreControl.getServiceDescriptionForUpdate(service, language);
                 
                 if(serviceDescription != null) {
                     coreControl.deleteServiceDescription(serviceDescription, getPartyPK());

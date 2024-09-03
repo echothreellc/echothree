@@ -67,7 +67,7 @@ public class CreateMessageCommand
     protected Message createMessage(MessageControl messageControl, MessageType messageType, String messageName,
             Boolean includeByDefault, Boolean isDefault, Integer sortOrder, MimeType mimeType, ByteArray blobMessage,
             String clobMessage, String stringMessage, BasePK createdBy) {
-        Message message = messageControl.createMessage(messageType, messageName, includeByDefault, isDefault, sortOrder,
+        var message = messageControl.createMessage(messageType, messageName, includeByDefault, isDefault, sortOrder,
                 createdBy);
         
         if(blobMessage != null) {
@@ -84,32 +84,32 @@ public class CreateMessageCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String componentVendorName = form.getComponentVendorName();
-        ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+        var componentVendorName = form.getComponentVendorName();
+        var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
         
         if(componentVendor != null) {
-            String entityTypeName = form.getEntityTypeName();
-            EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+            var entityTypeName = form.getEntityTypeName();
+            var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
             
             if(entityType != null) {
                 var messageControl = Session.getModelController(MessageControl.class);
-                String messageTypeName = form.getMessageTypeName();
-                MessageType messageType = messageControl.getMessageTypeByName(entityType, messageTypeName);
+                var messageTypeName = form.getMessageTypeName();
+                var messageType = messageControl.getMessageTypeByName(entityType, messageTypeName);
                 
                 if(messageType != null) {
-                    String messageName = form.getMessageName();
-                    Message message = messageControl.getMessageByName(messageType, messageName);
+                    var messageName = form.getMessageName();
+                    var message = messageControl.getMessageByName(messageType, messageName);
                     
                     if(message == null) {
-                        String mimeTypeName = form.getMimeTypeName();
-                        Boolean includeByDefault = Boolean.valueOf(form.getIncludeByDefault());
+                        var mimeTypeName = form.getMimeTypeName();
+                        var includeByDefault = Boolean.valueOf(form.getIncludeByDefault());
                         var isDefault = Boolean.valueOf(form.getIsDefault());
                         var sortOrder = Integer.valueOf(form.getSortOrder());
                         var description = form.getDescription();
                         BasePK createdBy = getPartyPK();
                         
                         if(mimeTypeName == null) {
-                            String messageString = form.getStringMessage();
+                            var messageString = form.getStringMessage();
                             
                             if(messageString != null) {
                                 message = createMessage(messageControl, messageType, messageName, includeByDefault, isDefault,
@@ -118,14 +118,14 @@ public class CreateMessageCommand
                                 addExecutionError(ExecutionErrors.MissingStringMessage.name());
                             }
                         } else {
-                            MimeType mimeType = coreControl.getMimeTypeByName(mimeTypeName);
+                            var mimeType = coreControl.getMimeTypeByName(mimeTypeName);
                             
                             if(mimeType != null) {
-                                EntityAttributeType entityAttributeType = mimeType.getLastDetail().getEntityAttributeType();
-                                String entityAttributeTypeName = entityAttributeType.getEntityAttributeTypeName();
+                                var entityAttributeType = mimeType.getLastDetail().getEntityAttributeType();
+                                var entityAttributeTypeName = entityAttributeType.getEntityAttributeTypeName();
                                 
                                 if(entityAttributeTypeName.equals(EntityAttributeTypes.BLOB.name())) {
-                                    ByteArray blobMessage = form.getBlobMessage();
+                                    var blobMessage = form.getBlobMessage();
                                     
                                     if(blobMessage != null) {
                                         message = createMessage(messageControl, messageType, messageName, includeByDefault,
@@ -134,7 +134,7 @@ public class CreateMessageCommand
                                         addExecutionError(ExecutionErrors.MissingBlobMessage.name());
                                     }
                                 } else if(entityAttributeTypeName.equals(EntityAttributeTypes.CLOB.name())) {
-                                    String clobMessage = form.getClobMessage();
+                                    var clobMessage = form.getClobMessage();
                                     
                                     if(clobMessage != null) {
                                         message = createMessage(messageControl, messageType, messageName, includeByDefault,

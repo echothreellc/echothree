@@ -30,7 +30,7 @@ public class ChainUtil {
     public static ChainLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
 
             cachedLocal = (ChainLocal)ctx.lookup("ejb:echothree/echothree-server/ChainBean!com.echothree.control.user.chain.server.ChainLocal");
         }
@@ -42,7 +42,7 @@ public class ChainUtil {
     public static ChainRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
             
             cachedRemote = (ChainRemote)ctx.lookup("ejb:echothree/echothree-server/ChainBean!com.echothree.control.user.chain.common.ChainRemote");
         }

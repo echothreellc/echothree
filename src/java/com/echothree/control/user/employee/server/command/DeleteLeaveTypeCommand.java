@@ -63,8 +63,8 @@ public class DeleteLeaveTypeCommand
    @Override
     protected BaseResult execute() {
         var employeeControl = Session.getModelController(EmployeeControl.class);
-        String leaveTypeName = form.getLeaveTypeName();
-        LeaveType leaveType = employeeControl.getLeaveTypeByNameForUpdate(leaveTypeName);
+       var leaveTypeName = form.getLeaveTypeName();
+       var leaveType = employeeControl.getLeaveTypeByNameForUpdate(leaveTypeName);
         
         if(leaveType != null) {
             employeeControl.deleteLeaveType(leaveType, getPartyPK());

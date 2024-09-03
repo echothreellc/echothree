@@ -67,16 +67,16 @@ public class DeleteLeaveTypeDescriptionCommand
    @Override
     protected BaseResult execute() {
         var employeeControl = Session.getModelController(EmployeeControl.class);
-        String leaveTypeName = form.getLeaveTypeName();
-        LeaveType leaveType = employeeControl.getLeaveTypeByName(leaveTypeName);
+       var leaveTypeName = form.getLeaveTypeName();
+       var leaveType = employeeControl.getLeaveTypeByName(leaveTypeName);
         
         if(leaveType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                LeaveTypeDescription leaveTypeDescription = employeeControl.getLeaveTypeDescriptionForUpdate(leaveType, language);
+                var leaveTypeDescription = employeeControl.getLeaveTypeDescriptionForUpdate(leaveType, language);
                 
                 if(leaveTypeDescription != null) {
                     employeeControl.deleteLeaveTypeDescription(leaveTypeDescription, getPartyPK());

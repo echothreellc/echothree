@@ -68,16 +68,16 @@ public class CreateCampaignDescriptionCommand
     @Override
     protected BaseResult execute() {
         var campaignControl = Session.getModelController(CampaignControl.class);
-        String campaignName = form.getCampaignName();
-        Campaign campaign = campaignControl.getCampaignByName(campaignName);
+        var campaignName = form.getCampaignName();
+        var campaign = campaignControl.getCampaignByName(campaignName);
         
         if(campaign != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                CampaignDescription campaignDescription = campaignControl.getCampaignDescription(campaign, language);
+                var campaignDescription = campaignControl.getCampaignDescription(campaign, language);
                 
                 if(campaignDescription == null) {
                     var description = form.getDescription();

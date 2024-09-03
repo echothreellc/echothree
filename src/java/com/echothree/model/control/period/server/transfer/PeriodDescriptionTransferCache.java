@@ -32,11 +32,11 @@ public class PeriodDescriptionTransferCache
     }
     
     public PeriodDescriptionTransfer getPeriodDescriptionTransfer(PeriodDescription periodDescription) {
-        PeriodDescriptionTransfer periodDescriptionTransfer = get(periodDescription);
+        var periodDescriptionTransfer = get(periodDescription);
         
         if(periodDescriptionTransfer == null) {
-            PeriodTransfer periodTransfer = periodControl.getPeriodTransfer(userVisit, periodDescription.getPeriod());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, periodDescription.getLanguage());
+            var periodTransfer = periodControl.getPeriodTransfer(userVisit, periodDescription.getPeriod());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, periodDescription.getLanguage());
             
             periodDescriptionTransfer = new PeriodDescriptionTransfer(languageTransfer, periodTransfer, periodDescription.getDescription());
             put(periodDescription, periodDescriptionTransfer);

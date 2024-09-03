@@ -55,7 +55,7 @@ public class HtmlWriter
     /** Print entity. */
     @Override
     protected void printEntity(String entity) {
-        String translatedEntity = entityTranslations.get(entity);
+        var translatedEntity = entityTranslations.get(entity);
         
         if(translatedEntity == null) {
             super.printEntity(entity);

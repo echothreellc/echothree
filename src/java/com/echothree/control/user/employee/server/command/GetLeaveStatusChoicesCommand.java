@@ -66,13 +66,13 @@ public class GetLeaveStatusChoicesCommand
     @Override
     protected BaseResult execute() {
         var employeeControl = Session.getModelController(EmployeeControl.class);
-        GetLeaveStatusChoicesResult result = EmployeeResultFactory.getGetLeaveStatusChoicesResult();
-        String leaveName = form.getLeaveName();
-        Leave leave = leaveName == null ? null : employeeControl.getLeaveByName(leaveName);
+        var result = EmployeeResultFactory.getGetLeaveStatusChoicesResult();
+        var leaveName = form.getLeaveName();
+        var leave = leaveName == null ? null : employeeControl.getLeaveByName(leaveName);
 
         if(leaveName == null || leave != null) {
-            String defaultLeaveStatusChoice = form.getDefaultLeaveStatusChoice();
-            boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+            var defaultLeaveStatusChoice = form.getDefaultLeaveStatusChoice();
+            var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 
             result.setLeaveStatusChoices(employeeControl.getLeaveStatusChoices(defaultLeaveStatusChoice, getPreferredLanguage(), allowNullChoice, leave,
                     getPartyPK()));

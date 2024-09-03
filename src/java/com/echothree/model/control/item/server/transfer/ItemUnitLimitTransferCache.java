@@ -41,16 +41,16 @@ public class ItemUnitLimitTransferCache
     
     @Override
     public ItemUnitLimitTransfer getTransfer(ItemUnitLimit itemUnitLimit) {
-        ItemUnitLimitTransfer itemUnitLimitTransfer = get(itemUnitLimit);
+        var itemUnitLimitTransfer = get(itemUnitLimit);
         
         if(itemUnitLimitTransfer == null) {
-            ItemTransfer item = itemControl.getItemTransfer(userVisit, itemUnitLimit.getItem());
-            InventoryConditionTransfer inventoryCondition = inventoryControl.getInventoryConditionTransfer(userVisit, itemUnitLimit.getInventoryCondition());
-            UnitOfMeasureTypeTransfer unitOfMeasureType = uomControl.getUnitOfMeasureTypeTransfer(userVisit, itemUnitLimit.getUnitOfMeasureType());
-            Long longMinimumQuantity = itemUnitLimit.getMinimumQuantity();
-            String minimumQuantity = longMinimumQuantity == null ? null : longMinimumQuantity.toString();
-            Long longMaximumQuantity = itemUnitLimit.getMaximumQuantity();
-            String maximumQuantity = longMaximumQuantity == null ? null : longMaximumQuantity.toString();
+            var item = itemControl.getItemTransfer(userVisit, itemUnitLimit.getItem());
+            var inventoryCondition = inventoryControl.getInventoryConditionTransfer(userVisit, itemUnitLimit.getInventoryCondition());
+            var unitOfMeasureType = uomControl.getUnitOfMeasureTypeTransfer(userVisit, itemUnitLimit.getUnitOfMeasureType());
+            var longMinimumQuantity = itemUnitLimit.getMinimumQuantity();
+            var minimumQuantity = longMinimumQuantity == null ? null : longMinimumQuantity.toString();
+            var longMaximumQuantity = itemUnitLimit.getMaximumQuantity();
+            var maximumQuantity = longMaximumQuantity == null ? null : longMaximumQuantity.toString();
 
             itemUnitLimitTransfer = new ItemUnitLimitTransfer(item, inventoryCondition, unitOfMeasureType, minimumQuantity, maximumQuantity);
             put(itemUnitLimit, itemUnitLimitTransfer);

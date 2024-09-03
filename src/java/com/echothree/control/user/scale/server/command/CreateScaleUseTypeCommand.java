@@ -54,19 +54,19 @@ public class CreateScaleUseTypeCommand
    @Override
     protected BaseResult execute() {
         var scaleControl = Session.getModelController(ScaleControl.class);
-        String scaleUseTypeName = form.getScaleUseTypeName();
-        ScaleUseType scaleUseType = scaleControl.getScaleUseTypeByName(scaleUseTypeName);
+       var scaleUseTypeName = form.getScaleUseTypeName();
+       var scaleUseType = scaleControl.getScaleUseTypeByName(scaleUseTypeName);
         
         if(scaleUseType == null) {
             var isDefault = Boolean.valueOf(form.getIsDefault());
             var sortOrder = Integer.valueOf(form.getSortOrder());
             var description = form.getDescription();
-            PartyPK createdBy = getPartyPK();
+            var createdBy = getPartyPK();
 
             scaleUseType = scaleControl.createScaleUseType(scaleUseTypeName, isDefault, sortOrder, createdBy);
 
             if(description != null) {
-                Language language = getPreferredLanguage();
+                var language = getPreferredLanguage();
 
                 scaleControl.createScaleUseTypeDescription(scaleUseType, language, description, createdBy);
             }

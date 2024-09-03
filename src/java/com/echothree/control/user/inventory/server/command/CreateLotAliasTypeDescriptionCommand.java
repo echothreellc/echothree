@@ -68,16 +68,16 @@ public class CreateLotAliasTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var lotAliasControl = Session.getModelController(LotAliasControl.class);
-        String lotAliasTypeName = form.getLotAliasTypeName();
-        LotAliasType lotAliasType = lotAliasControl.getLotAliasTypeByName(lotAliasTypeName);
+        var lotAliasTypeName = form.getLotAliasTypeName();
+        var lotAliasType = lotAliasControl.getLotAliasTypeByName(lotAliasTypeName);
 
         if(lotAliasType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
-                LotAliasTypeDescription lotAliasTypeDescription = lotAliasControl.getLotAliasTypeDescription(lotAliasType, language);
+                var lotAliasTypeDescription = lotAliasControl.getLotAliasTypeDescription(lotAliasType, language);
 
                 if(lotAliasTypeDescription == null) {
                     var description = form.getDescription();

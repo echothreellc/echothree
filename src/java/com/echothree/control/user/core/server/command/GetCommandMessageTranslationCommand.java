@@ -55,21 +55,21 @@ public class GetCommandMessageTranslationCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        GetCommandMessageTranslationResult result = CoreResultFactory.getGetCommandMessageTranslationResult();
-        String commandMessageTypeName = form.getCommandMessageTypeName();
-        CommandMessageType commandMessageType = coreControl.getCommandMessageTypeByName(commandMessageTypeName);
+        var result = CoreResultFactory.getGetCommandMessageTranslationResult();
+        var commandMessageTypeName = form.getCommandMessageTypeName();
+        var commandMessageType = coreControl.getCommandMessageTypeByName(commandMessageTypeName);
 
         if(commandMessageType != null) {
-            String commandMessageKey = form.getCommandMessageKey();
-            CommandMessage commandMessage = coreControl.getCommandMessageByKey(commandMessageType, commandMessageKey);
+            var commandMessageKey = form.getCommandMessageKey();
+            var commandMessage = coreControl.getCommandMessageByKey(commandMessageType, commandMessageKey);
 
             if(commandMessage != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = form.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = form.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                 if(language != null) {
-                    CommandMessageTranslation commandMessageTranslation = coreControl.getCommandMessageTranslation(commandMessage, language);
+                    var commandMessageTranslation = coreControl.getCommandMessageTranslation(commandMessage, language);
 
                     if(commandMessageTranslation != null) {
                         result.setCommandMessageTranslation(coreControl.getCommandMessageTranslationTransfer(getUserVisit(), commandMessageTranslation));

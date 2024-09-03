@@ -35,11 +35,11 @@ public class HarmonizedTariffScheduleCodeUseTransferCache
     
     @Override
     public HarmonizedTariffScheduleCodeUseTransfer getTransfer(HarmonizedTariffScheduleCodeUse harmonizedTariffScheduleCodeUse) {
-        HarmonizedTariffScheduleCodeUseTransfer harmonizedTariffScheduleCodeUseTransfer = get(harmonizedTariffScheduleCodeUse);
+        var harmonizedTariffScheduleCodeUseTransfer = get(harmonizedTariffScheduleCodeUse);
         
         if(harmonizedTariffScheduleCodeUseTransfer == null) {
-            HarmonizedTariffScheduleCodeTransfer harmonizedTariffScheduleCode = itemControl.getHarmonizedTariffScheduleCodeTransfer(userVisit, harmonizedTariffScheduleCodeUse.getHarmonizedTariffScheduleCode());
-            HarmonizedTariffScheduleCodeUseTypeTransfer harmonizedTariffScheduleCodeUseType = itemControl.getHarmonizedTariffScheduleCodeUseTypeTransfer(userVisit, harmonizedTariffScheduleCodeUse.getHarmonizedTariffScheduleCodeUseType());
+            var harmonizedTariffScheduleCode = itemControl.getHarmonizedTariffScheduleCodeTransfer(userVisit, harmonizedTariffScheduleCodeUse.getHarmonizedTariffScheduleCode());
+            var harmonizedTariffScheduleCodeUseType = itemControl.getHarmonizedTariffScheduleCodeUseTypeTransfer(userVisit, harmonizedTariffScheduleCodeUse.getHarmonizedTariffScheduleCodeUseType());
             
             harmonizedTariffScheduleCodeUseTransfer = new HarmonizedTariffScheduleCodeUseTransfer(harmonizedTariffScheduleCode, harmonizedTariffScheduleCodeUseType);
             put(harmonizedTariffScheduleCodeUse, harmonizedTariffScheduleCodeUseTransfer);

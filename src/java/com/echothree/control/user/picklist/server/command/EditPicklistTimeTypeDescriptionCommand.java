@@ -91,17 +91,17 @@ public class EditPicklistTimeTypeDescriptionCommand
     public PicklistTimeTypeDescription getEntity(EditPicklistTimeTypeDescriptionResult result) {
         var picklistControl = Session.getModelController(PicklistControl.class);
         PicklistTimeTypeDescription picklistTimeTypeDescription = null;
-        String picklistTypeName = spec.getPicklistTypeName();
-        PicklistType picklistType = picklistControl.getPicklistTypeByName(picklistTypeName);
+        var picklistTypeName = spec.getPicklistTypeName();
+        var picklistType = picklistControl.getPicklistTypeByName(picklistTypeName);
 
         if(picklistType != null) {
-            String picklistTimeTypeName = spec.getPicklistTimeTypeName();
-            PicklistTimeType picklistTimeType = picklistControl.getPicklistTimeTypeByName(picklistType, picklistTimeTypeName);
+            var picklistTimeTypeName = spec.getPicklistTimeTypeName();
+            var picklistTimeType = picklistControl.getPicklistTimeTypeByName(picklistType, picklistTimeTypeName);
 
             if(picklistTimeType != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = spec.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = spec.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                 if(language != null) {
                     if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -146,7 +146,7 @@ public class EditPicklistTimeTypeDescriptionCommand
     @Override
     public void doUpdate(PicklistTimeTypeDescription picklistTimeTypeDescription) {
         var picklistControl = Session.getModelController(PicklistControl.class);
-        PicklistTimeTypeDescriptionValue picklistTimeTypeDescriptionValue = picklistControl.getPicklistTimeTypeDescriptionValue(picklistTimeTypeDescription);
+        var picklistTimeTypeDescriptionValue = picklistControl.getPicklistTimeTypeDescriptionValue(picklistTimeTypeDescription);
         picklistTimeTypeDescriptionValue.setDescription(edit.getDescription());
 
         picklistControl.updatePicklistTimeTypeDescriptionFromValue(picklistTimeTypeDescriptionValue, getPartyPK());

@@ -68,16 +68,16 @@ public class GetTrainingClassQuestionsCommand
     @Override
     protected BaseResult execute() {
         var trainingControl = Session.getModelController(TrainingControl.class);
-        GetTrainingClassQuestionsResult result = TrainingResultFactory.getGetTrainingClassQuestionsResult();
-        String trainingClassName = form.getTrainingClassName();
-        TrainingClass trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
+        var result = TrainingResultFactory.getGetTrainingClassQuestionsResult();
+        var trainingClassName = form.getTrainingClassName();
+        var trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
 
         if(trainingClass != null) {
-            String trainingClassSectionName = form.getTrainingClassSectionName();
-            TrainingClassSection trainingClassSection = trainingControl.getTrainingClassSectionByName(trainingClass, trainingClassSectionName);
+            var trainingClassSectionName = form.getTrainingClassSectionName();
+            var trainingClassSection = trainingControl.getTrainingClassSectionByName(trainingClass, trainingClassSectionName);
 
             if(trainingClassSection != null) {
-                UserVisit userVisit = getUserVisit();
+                var userVisit = getUserVisit();
                 
                 result.setTrainingClassSection(trainingControl.getTrainingClassSectionTransfer(userVisit, trainingClassSection));
                 result.setTrainingClassQuestions(trainingControl.getTrainingClassQuestionTransfers(getUserVisit(), trainingClassSection));

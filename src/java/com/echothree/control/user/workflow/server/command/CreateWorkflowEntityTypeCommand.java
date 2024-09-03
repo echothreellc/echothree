@@ -68,20 +68,20 @@ public class CreateWorkflowEntityTypeCommand
     @Override
     protected BaseResult execute() {
         var workflowControl = Session.getModelController(WorkflowControl.class);
-        String workflowName = form.getWorkflowName();
+        var workflowName = form.getWorkflowName();
         var workflow = workflowControl.getWorkflowByName(workflowName);
         
         if(workflow != null) {
             var coreControl = getCoreControl();
-            String componentVendorName = form.getComponentVendorName();
-            ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+            var componentVendorName = form.getComponentVendorName();
+            var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
             
             if(componentVendor != null) {
-                String entityTypeName = form.getEntityTypeName();
-                EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+                var entityTypeName = form.getEntityTypeName();
+                var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
                 
                 if(entityType != null) {
-                    WorkflowEntityType workflowEntityType = workflowControl.getWorkflowEntityType(workflow, entityType);
+                    var workflowEntityType = workflowControl.getWorkflowEntityType(workflow, entityType);
                     
                     if(workflowEntityType == null) {
                         workflowControl.createWorkflowEntityType(workflow, entityType, getPartyPK());

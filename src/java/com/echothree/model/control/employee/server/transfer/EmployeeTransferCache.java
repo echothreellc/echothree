@@ -131,33 +131,33 @@ public class EmployeeTransferCache
     }
 
     public EmployeeTransfer getTransfer(Party party) {
-        EmployeeTransfer employeeTransfer = get(party);
+        var employeeTransfer = get(party);
 
         if(employeeTransfer == null) {
-            PartyDetail partyDetail = party.getLastDetail();
-            String partyName = partyDetail.getPartyName();
-            PartyTypeTransfer partyTypeTransfer = partyControl.getPartyTypeTransfer(userVisit, partyDetail.getPartyType());
-            Language preferredLanguage = partyDetail.getPreferredLanguage();
-            LanguageTransfer preferredLanguageTransfer = preferredLanguage == null ? null : partyControl.getLanguageTransfer(userVisit, preferredLanguage);
-            Currency preferredCurrency = partyDetail.getPreferredCurrency();
-            CurrencyTransfer preferredCurrencyTransfer = preferredCurrency == null ? null : accountingControl.getCurrencyTransfer(userVisit, preferredCurrency);
-            TimeZone preferredTimeZone = partyDetail.getPreferredTimeZone();
-            TimeZoneTransfer preferredTimeZoneTransfer = preferredTimeZone == null ? null : partyControl.getTimeZoneTransfer(userVisit, preferredTimeZone);
-            DateTimeFormat preferredDateTimeFormat = partyDetail.getPreferredDateTimeFormat();
-            DateTimeFormatTransfer preferredDateTimeFormatTransfer = preferredDateTimeFormat == null ? null : partyControl.getDateTimeFormatTransfer(userVisit, preferredDateTimeFormat);
-            PartyEmployee partyEmployee = employeeControl.getPartyEmployee(party);
-            Person person = partyControl.getPerson(party);
-            PersonTransfer personTransfer = person == null ? null : partyControl.getPersonTransfer(userVisit, person);
-            Profile profile = partyControl.getProfile(party);
-            ProfileTransfer profileTransfer = profile == null ? null : partyControl.getProfileTransfer(userVisit, profile);
+            var partyDetail = party.getLastDetail();
+            var partyName = partyDetail.getPartyName();
+            var partyTypeTransfer = partyControl.getPartyTypeTransfer(userVisit, partyDetail.getPartyType());
+            var preferredLanguage = partyDetail.getPreferredLanguage();
+            var preferredLanguageTransfer = preferredLanguage == null ? null : partyControl.getLanguageTransfer(userVisit, preferredLanguage);
+            var preferredCurrency = partyDetail.getPreferredCurrency();
+            var preferredCurrencyTransfer = preferredCurrency == null ? null : accountingControl.getCurrencyTransfer(userVisit, preferredCurrency);
+            var preferredTimeZone = partyDetail.getPreferredTimeZone();
+            var preferredTimeZoneTransfer = preferredTimeZone == null ? null : partyControl.getTimeZoneTransfer(userVisit, preferredTimeZone);
+            var preferredDateTimeFormat = partyDetail.getPreferredDateTimeFormat();
+            var preferredDateTimeFormatTransfer = preferredDateTimeFormat == null ? null : partyControl.getDateTimeFormatTransfer(userVisit, preferredDateTimeFormat);
+            var partyEmployee = employeeControl.getPartyEmployee(party);
+            var person = partyControl.getPerson(party);
+            var personTransfer = person == null ? null : partyControl.getPersonTransfer(userVisit, person);
+            var profile = partyControl.getProfile(party);
+            var profileTransfer = profile == null ? null : partyControl.getProfileTransfer(userVisit, profile);
 
-            String employeeName = partyEmployee.getPartyEmployeeName();
-            EmployeeTypeTransfer employeeType = employeeControl.getEmployeeTypeTransfer(userVisit, partyEmployee.getEmployeeType());
+            var employeeName = partyEmployee.getPartyEmployeeName();
+            var employeeType = employeeControl.getEmployeeTypeTransfer(userVisit, partyEmployee.getEmployeeType());
 
-            EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(party.getPrimaryKey());
-            WorkflowEntityStatusTransfer employeeStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
+            var entityInstance = coreControl.getEntityInstanceByBasePK(party.getPrimaryKey());
+            var employeeStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
                     EmployeeStatusConstants.Workflow_EMPLOYEE_STATUS, entityInstance);
-            WorkflowEntityStatusTransfer employeeAvailabilityTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
+            var employeeAvailabilityTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
                     EmployeeAvailabilityConstants.Workflow_EMPLOYEE_AVAILABILITY, entityInstance);
 
             employeeTransfer = new EmployeeTransfer(partyName, partyTypeTransfer, preferredLanguageTransfer, preferredCurrencyTransfer, preferredTimeZoneTransfer, preferredDateTimeFormatTransfer,

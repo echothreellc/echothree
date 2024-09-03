@@ -63,8 +63,8 @@ public class DeleteBatchTypeCommand
     @Override
     protected BaseResult execute() {
         var batchControl = Session.getModelController(BatchControl.class);
-        String batchTypeName = form.getBatchTypeName();
-        BatchType batchType = batchControl.getBatchTypeByNameForUpdate(batchTypeName);
+        var batchTypeName = form.getBatchTypeName();
+        var batchType = batchControl.getBatchTypeByNameForUpdate(batchTypeName);
         
         if(batchType != null) {
             batchControl.deleteBatchType(batchType, getPartyPK());

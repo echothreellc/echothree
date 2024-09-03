@@ -32,11 +32,11 @@ public class SearchResultActionTypeDescriptionTransferCache
     }
     
     public SearchResultActionTypeDescriptionTransfer getSearchResultActionTypeDescriptionTransfer(SearchResultActionTypeDescription searchResultActionTypeDescription) {
-        SearchResultActionTypeDescriptionTransfer searchResultActionTypeDescriptionTransfer = get(searchResultActionTypeDescription);
+        var searchResultActionTypeDescriptionTransfer = get(searchResultActionTypeDescription);
         
         if(searchResultActionTypeDescriptionTransfer == null) {
-            SearchResultActionTypeTransfer searchResultActionTypeTransfer = searchControl.getSearchResultActionTypeTransfer(userVisit, searchResultActionTypeDescription.getSearchResultActionType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, searchResultActionTypeDescription.getLanguage());
+            var searchResultActionTypeTransfer = searchControl.getSearchResultActionTypeTransfer(userVisit, searchResultActionTypeDescription.getSearchResultActionType());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, searchResultActionTypeDescription.getLanguage());
             
             searchResultActionTypeDescriptionTransfer = new SearchResultActionTypeDescriptionTransfer(languageTransfer, searchResultActionTypeTransfer, searchResultActionTypeDescription.getDescription());
             put(searchResultActionTypeDescription, searchResultActionTypeDescriptionTransfer);

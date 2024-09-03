@@ -38,11 +38,11 @@ public class WorkflowSelectorKindTransferCache
     }
     
     public WorkflowSelectorKindTransfer getWorkflowSelectorKindTransfer(WorkflowSelectorKind workflowSelectorKind) {
-        WorkflowSelectorKindTransfer workflowSelectorKindTransfer = get(workflowSelectorKind);
+        var workflowSelectorKindTransfer = get(workflowSelectorKind);
         
         if(workflowSelectorKindTransfer == null) {
-            WorkflowTransfer workflow = workflowControl.getWorkflowTransfer(userVisit, workflowSelectorKind.getWorkflow());
-            SelectorKindTransfer selectorKind = selectorControl.getSelectorKindTransfer(userVisit, workflowSelectorKind.getSelectorKind());
+            var workflow = workflowControl.getWorkflowTransfer(userVisit, workflowSelectorKind.getWorkflow());
+            var selectorKind = selectorControl.getSelectorKindTransfer(userVisit, workflowSelectorKind.getSelectorKind());
             
             workflowSelectorKindTransfer = new WorkflowSelectorKindTransfer(workflow, selectorKind);
             put(workflowSelectorKind, workflowSelectorKindTransfer);

@@ -47,7 +47,7 @@ public class GetTransactionGroupsCommand
     @Override
     protected BaseResult execute() {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        GetTransactionGroupsResult result = AccountingResultFactory.getGetTransactionGroupsResult();
+        var result = AccountingResultFactory.getGetTransactionGroupsResult();
         
         result.setTransactionGroups(accountingControl.getTransactionGroupTransfers(getUserVisit()));
         

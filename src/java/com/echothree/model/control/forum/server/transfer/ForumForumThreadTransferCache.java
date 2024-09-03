@@ -32,13 +32,13 @@ public class ForumForumThreadTransferCache
     }
     
     public ForumForumThreadTransfer getForumForumThreadTransfer(ForumForumThread forumForumThread) {
-        ForumForumThreadTransfer forumForumThreadTransfer = get(forumForumThread);
+        var forumForumThreadTransfer = get(forumForumThread);
         
         if(forumForumThreadTransfer == null) {
-            ForumTransfer forum = forumControl.getForumTransfer(userVisit, forumForumThread.getForum());
-            ForumThreadTransfer forumThread = forumControl.getForumThreadTransfer(userVisit, forumForumThread.getForumThread());
-            Boolean isDefault = forumForumThread.getIsDefault();
-            Integer sortOrder = forumForumThread.getSortOrder();
+            var forum = forumControl.getForumTransfer(userVisit, forumForumThread.getForum());
+            var forumThread = forumControl.getForumThreadTransfer(userVisit, forumForumThread.getForumThread());
+            var isDefault = forumForumThread.getIsDefault();
+            var sortOrder = forumForumThread.getSortOrder();
             
             forumForumThreadTransfer = new ForumForumThreadTransfer(forum, forumThread, isDefault, sortOrder);
             put(forumForumThread, forumForumThreadTransfer);

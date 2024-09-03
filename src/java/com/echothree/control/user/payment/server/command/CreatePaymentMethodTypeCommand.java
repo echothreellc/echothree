@@ -65,13 +65,13 @@ public class CreatePaymentMethodTypeCommand
     
     @Override
     protected BaseResult execute() {
-        CreatePaymentMethodTypeResult result = PaymentResultFactory.getCreatePaymentMethodTypeResult();
-        String paymentMethodTypeName = form.getPaymentMethodTypeName();
+        var result = PaymentResultFactory.getCreatePaymentMethodTypeResult();
+        var paymentMethodTypeName = form.getPaymentMethodTypeName();
         var isDefault = Boolean.valueOf(form.getIsDefault());
         var sortOrder = Integer.valueOf(form.getSortOrder());
         var description = form.getDescription();
 
-        PaymentMethodType paymentMethodType = PaymentMethodTypeLogic.getInstance().createPaymentMethodType(this,
+        var paymentMethodType = PaymentMethodTypeLogic.getInstance().createPaymentMethodType(this,
                 paymentMethodTypeName, isDefault, sortOrder, getPreferredLanguage(), description, getPartyPK());
 
         if(paymentMethodType != null && !hasExecutionErrors()) {

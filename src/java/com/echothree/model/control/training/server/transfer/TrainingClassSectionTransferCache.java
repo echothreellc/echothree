@@ -48,18 +48,18 @@ public class TrainingClassSectionTransferCache
     }
     
     public TrainingClassSectionTransfer getTrainingClassSectionTransfer(TrainingClassSection trainingClassSection) {
-        TrainingClassSectionTransfer trainingClassSectionTransfer = get(trainingClassSection);
+        var trainingClassSectionTransfer = get(trainingClassSection);
         
         if(trainingClassSectionTransfer == null) {
-            TrainingClassSectionDetail trainingClassSectionDetail = trainingClassSection.getLastDetail();
-            TrainingClassTransfer trainingClass = trainingControl.getTrainingClassTransfer(userVisit, trainingClassSectionDetail.getTrainingClass());
-            String trainingClassSectionName = trainingClassSectionDetail.getTrainingClassSectionName();
-            Integer unformattedPercentageToPass = trainingClassSectionDetail.getPercentageToPass();
-            String percentageToPass = PercentUtils.getInstance().formatFractionalPercent(unformattedPercentageToPass);
-            Integer questionCount = trainingClassSectionDetail.getQuestionCount();
-            Integer sortOrder = trainingClassSectionDetail.getSortOrder();
-            TrainingClassSectionTranslation trainingClassSectionTranslation = trainingControl.getBestTrainingClassSectionTranslation(trainingClassSection, getLanguage());
-            String description = trainingClassSectionTranslation == null ? trainingClassSectionName : trainingClassSectionTranslation.getDescription();
+            var trainingClassSectionDetail = trainingClassSection.getLastDetail();
+            var trainingClass = trainingControl.getTrainingClassTransfer(userVisit, trainingClassSectionDetail.getTrainingClass());
+            var trainingClassSectionName = trainingClassSectionDetail.getTrainingClassSectionName();
+            var unformattedPercentageToPass = trainingClassSectionDetail.getPercentageToPass();
+            var percentageToPass = PercentUtils.getInstance().formatFractionalPercent(unformattedPercentageToPass);
+            var questionCount = trainingClassSectionDetail.getQuestionCount();
+            var sortOrder = trainingClassSectionDetail.getSortOrder();
+            var trainingClassSectionTranslation = trainingControl.getBestTrainingClassSectionTranslation(trainingClassSection, getLanguage());
+            var description = trainingClassSectionTranslation == null ? trainingClassSectionName : trainingClassSectionTranslation.getDescription();
             
             trainingClassSectionTransfer = new TrainingClassSectionTransfer(trainingClass, trainingClassSectionName, unformattedPercentageToPass,
                     percentageToPass, questionCount, sortOrder, description);

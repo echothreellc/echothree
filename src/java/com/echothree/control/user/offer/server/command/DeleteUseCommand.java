@@ -60,8 +60,8 @@ public class DeleteUseCommand
     
     @Override
     protected BaseResult execute() {
-        String useName = form.getUseName();
-        Use use = UseLogic.getInstance().getUseByNameForUpdate(this, useName);
+        var useName = form.getUseName();
+        var use = UseLogic.getInstance().getUseByNameForUpdate(this, useName);
 
         if(!hasExecutionErrors()) {
             UseLogic.getInstance().deleteUse(this, use, getPartyPK());

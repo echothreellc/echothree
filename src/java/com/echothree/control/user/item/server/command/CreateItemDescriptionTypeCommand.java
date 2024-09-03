@@ -90,10 +90,10 @@ public class CreateItemDescriptionTypeCommand
     @Override
     protected ValidationResult validate() {
         Validator validator = new Validator(this);
-        ValidationResult validationResult = validator.validate(form, FORM_FIELD_DEFINITIONS);
+        var validationResult = validator.validate(form, FORM_FIELD_DEFINITIONS);
 
         if(!validationResult.getHasErrors()) {
-            String mimeTypeUsageTypeName = form.getMimeTypeUsageTypeName();
+            var mimeTypeUsageTypeName = form.getMimeTypeUsageTypeName();
 
             if(mimeTypeUsageTypeName != null) {
                 if(mimeTypeUsageTypeName.equals(MimeTypeUsageTypes.IMAGE.name())) {

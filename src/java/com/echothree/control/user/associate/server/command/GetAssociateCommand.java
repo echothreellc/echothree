@@ -53,13 +53,13 @@ public class GetAssociateCommand
     @Override
     protected BaseResult execute() {
         var associateControl = Session.getModelController(AssociateControl.class);
-        GetAssociateResult result = AssociateResultFactory.getGetAssociateResult();
-        String associateProgramName = form.getAssociateProgramName();
-        AssociateProgram associateProgram = associateControl.getAssociateProgramByName(associateProgramName);
+        var result = AssociateResultFactory.getGetAssociateResult();
+        var associateProgramName = form.getAssociateProgramName();
+        var associateProgram = associateControl.getAssociateProgramByName(associateProgramName);
         
         if(associateProgram != null) {
-            String associateName = form.getAssociateName();
-            Associate associate = associateControl.getAssociateByName(associateProgram, associateName);
+            var associateName = form.getAssociateName();
+            var associate = associateControl.getAssociateByName(associateProgram, associateName);
             
             if(associate != null) {
                 result.setAssociate(associateControl.getAssociateTransfer(getUserVisit(), associate));

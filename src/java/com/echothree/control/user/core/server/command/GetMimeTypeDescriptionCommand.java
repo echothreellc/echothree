@@ -68,17 +68,17 @@ public class GetMimeTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        GetMimeTypeDescriptionResult result = CoreResultFactory.getGetMimeTypeDescriptionResult();
-        String mimeTypeName = form.getMimeTypeName();
-        MimeType mimeType = coreControl.getMimeTypeByName(mimeTypeName);
+        var result = CoreResultFactory.getGetMimeTypeDescriptionResult();
+        var mimeTypeName = form.getMimeTypeName();
+        var mimeType = coreControl.getMimeTypeByName(mimeTypeName);
         
         if(mimeType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                MimeTypeDescription mimeTypeDescription = coreControl.getMimeTypeDescription(mimeType, language);
+                var mimeTypeDescription = coreControl.getMimeTypeDescription(mimeType, language);
                 
                 if(mimeTypeDescription != null) {
                     result.setMimeTypeDescription(coreControl.getMimeTypeDescriptionTransfer(getUserVisit(), mimeTypeDescription));

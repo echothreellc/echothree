@@ -32,11 +32,11 @@ public class InvoiceTypeDescriptionTransferCache
     }
     
     public InvoiceTypeDescriptionTransfer getInvoiceTypeDescriptionTransfer(InvoiceTypeDescription invoiceTypeDescription) {
-        InvoiceTypeDescriptionTransfer invoiceTypeDescriptionTransfer = get(invoiceTypeDescription);
+        var invoiceTypeDescriptionTransfer = get(invoiceTypeDescription);
         
         if(invoiceTypeDescriptionTransfer == null) {
-            InvoiceTypeTransfer invoiceTypeTransfer = invoiceControl.getInvoiceTypeTransfer(userVisit, invoiceTypeDescription.getInvoiceType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, invoiceTypeDescription.getLanguage());
+            var invoiceTypeTransfer = invoiceControl.getInvoiceTypeTransfer(userVisit, invoiceTypeDescription.getInvoiceType());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, invoiceTypeDescription.getLanguage());
             
             invoiceTypeDescriptionTransfer = new InvoiceTypeDescriptionTransfer(languageTransfer, invoiceTypeTransfer, invoiceTypeDescription.getDescription());
             put(invoiceTypeDescription, invoiceTypeDescriptionTransfer);

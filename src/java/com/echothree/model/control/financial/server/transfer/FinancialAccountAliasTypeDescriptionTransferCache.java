@@ -32,11 +32,11 @@ public class FinancialAccountAliasTypeDescriptionTransferCache
     }
     
     public FinancialAccountAliasTypeDescriptionTransfer getFinancialAccountAliasTypeDescriptionTransfer(FinancialAccountAliasTypeDescription financialAccountAliasTypeDescription) {
-        FinancialAccountAliasTypeDescriptionTransfer financialAccountAliasTypeDescriptionTransfer = get(financialAccountAliasTypeDescription);
+        var financialAccountAliasTypeDescriptionTransfer = get(financialAccountAliasTypeDescription);
         
         if(financialAccountAliasTypeDescriptionTransfer == null) {
-            FinancialAccountAliasTypeTransfer financialAccountAliasTypeTransfer = financialControl.getFinancialAccountAliasTypeTransfer(userVisit, financialAccountAliasTypeDescription.getFinancialAccountAliasType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, financialAccountAliasTypeDescription.getLanguage());
+            var financialAccountAliasTypeTransfer = financialControl.getFinancialAccountAliasTypeTransfer(userVisit, financialAccountAliasTypeDescription.getFinancialAccountAliasType());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, financialAccountAliasTypeDescription.getLanguage());
             
             financialAccountAliasTypeDescriptionTransfer = new FinancialAccountAliasTypeDescriptionTransfer(languageTransfer, financialAccountAliasTypeTransfer, financialAccountAliasTypeDescription.getDescription());
             put(financialAccountAliasTypeDescription, financialAccountAliasTypeDescriptionTransfer);

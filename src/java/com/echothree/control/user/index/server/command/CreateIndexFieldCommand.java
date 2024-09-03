@@ -68,12 +68,12 @@ public class CreateIndexFieldCommand
     @Override
     protected BaseResult execute() {
         var indexControl = Session.getModelController(IndexControl.class);
-        String indexTypeName = form.getIndexTypeName();
-        IndexType indexType = indexControl.getIndexTypeByName(indexTypeName);
+        var indexTypeName = form.getIndexTypeName();
+        var indexType = indexControl.getIndexTypeByName(indexTypeName);
         
         if(indexType != null) {
-            String indexFieldName = form.getIndexFieldName();
-            IndexField indexField = indexControl.getIndexFieldByName(indexType, indexFieldName);
+            var indexFieldName = form.getIndexFieldName();
+            var indexField = indexControl.getIndexFieldByName(indexType, indexFieldName);
             
             if(indexField == null) {
                 var partyPK = getPartyPK();

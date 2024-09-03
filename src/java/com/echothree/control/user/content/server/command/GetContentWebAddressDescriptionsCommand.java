@@ -65,9 +65,9 @@ public class GetContentWebAddressDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var contentControl = Session.getModelController(ContentControl.class);
-        GetContentWebAddressDescriptionsResult result = ContentResultFactory.getGetContentWebAddressDescriptionsResult();
-        String contentWebAddressName = form.getContentWebAddressName();
-        ContentWebAddress contentWebAddress = contentControl.getContentWebAddressByName(contentWebAddressName);
+        var result = ContentResultFactory.getGetContentWebAddressDescriptionsResult();
+        var contentWebAddressName = form.getContentWebAddressName();
+        var contentWebAddress = contentControl.getContentWebAddressByName(contentWebAddressName);
         
         if(contentWebAddress != null) {
             result.setContentWebAddress(contentControl.getContentWebAddressTransfer(getUserVisit(), contentWebAddress));

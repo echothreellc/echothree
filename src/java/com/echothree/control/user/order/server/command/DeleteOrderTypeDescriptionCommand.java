@@ -71,11 +71,11 @@ public class DeleteOrderTypeDescriptionCommand
         
         if(orderType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                OrderTypeDescription orderTypeDescription = orderTypeControl.getOrderTypeDescriptionForUpdate(orderType, language);
+                var orderTypeDescription = orderTypeControl.getOrderTypeDescriptionForUpdate(orderType, language);
                 
                 if(orderTypeDescription != null) {
                     orderTypeControl.deleteOrderTypeDescription(orderTypeDescription, getPartyPK());

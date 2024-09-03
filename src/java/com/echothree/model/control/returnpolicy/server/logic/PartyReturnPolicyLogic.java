@@ -62,18 +62,18 @@ public class PartyReturnPolicyLogic
 
     public WorkflowEntrance insertPartyReturnPolicyIntoWorkflow(PartyReturnPolicy partyReturnPolicy, BasePK createdBy) {
         var coreControl = Session.getModelController(CoreControl.class);
-        EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(partyReturnPolicy.getPrimaryKey());
+        var entityInstance = coreControl.getEntityInstanceByBasePK(partyReturnPolicy.getPrimaryKey());
 
         return insertPartyReturnPolicyIntoWorkflow(entityInstance, createdBy);
     }
 
     public WorkflowEntityStatus getPartyReturnPolicyStatus(EntityInstance entityInstance, BasePK createdBy) {
         var workflowControl = Session.getModelController(WorkflowControl.class);
-        WorkflowEntityStatus partyReturnPolicyStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(
+        var partyReturnPolicyStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(
                 PartyReturnPolicyStatusConstants.Workflow_PARTY_RETURN_POLICY_STATUS, entityInstance);
 
         if(partyReturnPolicyStatus == null) {
-            WorkflowEntrance workflowEntrance = PartyReturnPolicyLogic.getInstance().insertPartyReturnPolicyIntoWorkflow(entityInstance, createdBy);
+            var workflowEntrance = PartyReturnPolicyLogic.getInstance().insertPartyReturnPolicyIntoWorkflow(entityInstance, createdBy);
 
             if(workflowEntrance != null) {
                 partyReturnPolicyStatus = getPartyReturnPolicyStatus(entityInstance, null);
@@ -85,21 +85,21 @@ public class PartyReturnPolicyLogic
 
     public WorkflowEntityStatus getPartyReturnPolicyStatus(PartyReturnPolicy partyReturnPolicy, BasePK createdBy) {
         var coreControl = Session.getModelController(CoreControl.class);
-        EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(partyReturnPolicy.getPrimaryKey());
+        var entityInstance = coreControl.getEntityInstanceByBasePK(partyReturnPolicy.getPrimaryKey());
 
         return getPartyReturnPolicyStatus(entityInstance, createdBy);
     }
 
     public WorkflowEntityStatusTransfer getPartyReturnPolicyStatusTransfer(UserVisit userVisit, EntityInstance entityInstance, BasePK createdBy) {
         var workflowControl = Session.getModelController(WorkflowControl.class);
-        WorkflowEntityStatus partyReturnPolicyStatus = getPartyReturnPolicyStatus(entityInstance, createdBy);
+        var partyReturnPolicyStatus = getPartyReturnPolicyStatus(entityInstance, createdBy);
 
         return partyReturnPolicyStatus == null ? null : workflowControl.getWorkflowEntityStatusTransfer(userVisit, partyReturnPolicyStatus);
     }
 
     public PartyReturnPolicy createPartyReturnPolicy(Party party, ReturnPolicy returnPolicy, BasePK createdBy) {
         var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
-        PartyReturnPolicy partyReturnPolicy = returnPolicyControl.createPartyReturnPolicy(party, returnPolicy, createdBy);
+        var partyReturnPolicy = returnPolicyControl.createPartyReturnPolicy(party, returnPolicy, createdBy);
 
         insertPartyReturnPolicyIntoWorkflow(partyReturnPolicy, createdBy);
 
@@ -116,8 +116,8 @@ public class PartyReturnPolicyLogic
                     workflowControl.getWorkflowByName(PartyReturnPolicyStatusConstants.Workflow_PARTY_RETURN_POLICY_STATUS), partyPK);
         } else {
             var coreControl = Session.getModelController(CoreControl.class);
-            EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(partyReturnPolicy.getPrimaryKey());
-            WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(PartyReturnPolicyStatusConstants.Workflow_PARTY_RETURN_POLICY_STATUS, entityInstance);
+            var entityInstance = coreControl.getEntityInstanceByBasePK(partyReturnPolicy.getPrimaryKey());
+            var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(PartyReturnPolicyStatusConstants.Workflow_PARTY_RETURN_POLICY_STATUS, entityInstance);
 
             workflowControl.getWorkflowDestinationChoices(partyReturnPolicyStatusChoicesBean, defaultOrderStatusChoice, language, allowNullChoice, workflowEntityStatus.getWorkflowStep(), partyPK);
         }
@@ -128,10 +128,10 @@ public class PartyReturnPolicyLogic
     public void setPartyReturnPolicyStatus(final ExecutionErrorAccumulator eea, final PartyReturnPolicy partyReturnPolicy, final String orderStatusChoice, final PartyPK modifiedBy) {
         var coreControl = Session.getModelController(CoreControl.class);
         var workflowControl = Session.getModelController(WorkflowControl.class);
-        EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(partyReturnPolicy.getPrimaryKey());
-        WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(PartyReturnPolicyStatusConstants.Workflow_PARTY_RETURN_POLICY_STATUS,
+        var entityInstance = coreControl.getEntityInstanceByBasePK(partyReturnPolicy.getPrimaryKey());
+        var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(PartyReturnPolicyStatusConstants.Workflow_PARTY_RETURN_POLICY_STATUS,
                 entityInstance);
-        WorkflowDestination workflowDestination = orderStatusChoice == null? null: workflowControl.getWorkflowDestinationByName(workflowEntityStatus.getWorkflowStep(), orderStatusChoice);
+        var workflowDestination = orderStatusChoice == null? null: workflowControl.getWorkflowDestinationByName(workflowEntityStatus.getWorkflowStep(), orderStatusChoice);
 
         if(workflowDestination != null || orderStatusChoice == null) {
             workflowControl.transitionEntityInWorkflow(eea, workflowEntityStatus, workflowDestination, null, modifiedBy);

@@ -59,11 +59,11 @@ public class SetJobStatusCommand
     @Override
     protected BaseResult execute() {
         var jobControl = Session.getModelController(JobControl.class);
-        String jobName = form.getJobName();
-        Job job = jobControl.getJobByName(jobName);
+        var jobName = form.getJobName();
+        var job = jobControl.getJobByName(jobName);
         
         if(job != null) {
-            String jobStatusChoice = form.getJobStatusChoice();
+            var jobStatusChoice = form.getJobStatusChoice();
             
             jobControl.setJobStatus(this, job, jobStatusChoice, getPartyPK());
         } else {

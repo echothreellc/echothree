@@ -67,16 +67,16 @@ public class DeleteWorkflowSelectorKindCommand
     @Override
     protected BaseResult execute() {
         var workflowControl = Session.getModelController(WorkflowControl.class);
-        String workflowName = form.getWorkflowName();
+        var workflowName = form.getWorkflowName();
         var workflow = workflowControl.getWorkflowByName(workflowName);
         
         if(workflow != null) {
             var selectorControl = Session.getModelController(SelectorControl.class);
-            String selectorKindName = form.getSelectorKindName();
-            SelectorKind selectorKind = selectorControl.getSelectorKindByName(selectorKindName);
+            var selectorKindName = form.getSelectorKindName();
+            var selectorKind = selectorControl.getSelectorKindByName(selectorKindName);
             
             if(selectorKind != null) {
-                WorkflowSelectorKind workflowSelectorKind = workflowControl.getWorkflowSelectorKindForUpdate(workflow, selectorKind);
+                var workflowSelectorKind = workflowControl.getWorkflowSelectorKindForUpdate(workflow, selectorKind);
                 
                 if(workflowSelectorKind != null) {
                     workflowControl.deleteWorkflowSelectorKind(workflowSelectorKind, getPartyPK());

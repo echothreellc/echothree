@@ -34,16 +34,16 @@ public class FinancialAccountAliasTypeTransferCache
     }
     
     public FinancialAccountAliasTypeTransfer getFinancialAccountAliasTypeTransfer(FinancialAccountAliasType financialAccountAliasType) {
-        FinancialAccountAliasTypeTransfer financialAccountAliasTypeTransfer = get(financialAccountAliasType);
+        var financialAccountAliasTypeTransfer = get(financialAccountAliasType);
         
         if(financialAccountAliasTypeTransfer == null) {
-            FinancialAccountAliasTypeDetail financialAccountAliasTypeDetail = financialAccountAliasType.getLastDetail();
-            FinancialAccountTypeTransfer financialAccountType = financialControl.getFinancialAccountTypeTransfer(userVisit, financialAccountAliasTypeDetail.getFinancialAccountType());
-            String financialAccountAliasTypeName = financialAccountAliasTypeDetail.getFinancialAccountAliasTypeName();
-            String validationPattern = financialAccountAliasTypeDetail.getValidationPattern();
-            Boolean isDefault = financialAccountAliasTypeDetail.getIsDefault();
-            Integer sortOrder = financialAccountAliasTypeDetail.getSortOrder();
-            String description = financialControl.getBestFinancialAccountAliasTypeDescription(financialAccountAliasType, getLanguage());
+            var financialAccountAliasTypeDetail = financialAccountAliasType.getLastDetail();
+            var financialAccountType = financialControl.getFinancialAccountTypeTransfer(userVisit, financialAccountAliasTypeDetail.getFinancialAccountType());
+            var financialAccountAliasTypeName = financialAccountAliasTypeDetail.getFinancialAccountAliasTypeName();
+            var validationPattern = financialAccountAliasTypeDetail.getValidationPattern();
+            var isDefault = financialAccountAliasTypeDetail.getIsDefault();
+            var sortOrder = financialAccountAliasTypeDetail.getSortOrder();
+            var description = financialControl.getBestFinancialAccountAliasTypeDescription(financialAccountAliasType, getLanguage());
             
             financialAccountAliasTypeTransfer = new FinancialAccountAliasTypeTransfer(financialAccountType, financialAccountAliasTypeName, validationPattern, isDefault, sortOrder, description);
             put(financialAccountAliasType, financialAccountAliasTypeTransfer);

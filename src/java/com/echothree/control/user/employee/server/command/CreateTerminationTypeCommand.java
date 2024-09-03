@@ -67,11 +67,11 @@ public class CreateTerminationTypeCommand
     @Override
     protected BaseResult execute() {
         var employeeControl = Session.getModelController(EmployeeControl.class);
-        String terminationTypeName = form.getTerminationTypeName();
-        TerminationType terminationType = employeeControl.getTerminationTypeByName(terminationTypeName);
+        var terminationTypeName = form.getTerminationTypeName();
+        var terminationType = employeeControl.getTerminationTypeByName(terminationTypeName);
         
         if(terminationType == null) {
-            PartyPK createdBy = getPartyPK();
+            var createdBy = getPartyPK();
             var isDefault = Boolean.valueOf(form.getIsDefault());
             var sortOrder = Integer.valueOf(form.getSortOrder());
             var description = form.getDescription();

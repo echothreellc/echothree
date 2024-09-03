@@ -119,8 +119,8 @@ public abstract class BaseLoginCommand<F extends BaseForm>
                         
                         if(session.START_TIME > warningTime) {
                             var uomControl = Session.getModelController(UomControl.class);
-                            UnitOfMeasureKind timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
-                            String remainingTime = UnitOfMeasureUtils.getInstance().formatUnitOfMeasure(getUserVisit(), timeUnitOfMeasureKind, Long.valueOf(expirationTime - session.START_TIME));
+                            var timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
+                            var remainingTime = UnitOfMeasureUtils.getInstance().formatUnitOfMeasure(getUserVisit(), timeUnitOfMeasureKind, Long.valueOf(expirationTime - session.START_TIME));
                             
                             addExecutionWarning(ExecutionWarnings.PasswordExpiration.name(), remainingTime);
                         }

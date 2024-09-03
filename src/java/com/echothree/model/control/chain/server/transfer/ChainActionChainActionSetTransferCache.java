@@ -38,14 +38,14 @@ public class ChainActionChainActionSetTransferCache
     }
     
     public ChainActionChainActionSetTransfer getChainActionChainActionSetTransfer(ChainActionChainActionSet chainActionChainActionSet) {
-        ChainActionChainActionSetTransfer chainActionChainActionSetTransfer = get(chainActionChainActionSet);
+        var chainActionChainActionSetTransfer = get(chainActionChainActionSet);
         
         if(chainActionChainActionSetTransfer == null) {
-            ChainActionTransfer chainAction = chainControl.getChainActionTransfer(userVisit, chainActionChainActionSet.getChainAction());
-            ChainActionSetTransfer nextChainActionSet = chainControl.getChainActionSetTransfer(userVisit, chainActionChainActionSet.getNextChainActionSet());
-            Long unformattedDelayTime = chainActionChainActionSet.getDelayTime();
-            UnitOfMeasureKind timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
-            String delayTime = formatUnitOfMeasure(timeUnitOfMeasureKind, unformattedDelayTime);
+            var chainAction = chainControl.getChainActionTransfer(userVisit, chainActionChainActionSet.getChainAction());
+            var nextChainActionSet = chainControl.getChainActionSetTransfer(userVisit, chainActionChainActionSet.getNextChainActionSet());
+            var unformattedDelayTime = chainActionChainActionSet.getDelayTime();
+            var timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
+            var delayTime = formatUnitOfMeasure(timeUnitOfMeasureKind, unformattedDelayTime);
             
             chainActionChainActionSetTransfer = new ChainActionChainActionSetTransfer(chainAction, nextChainActionSet, unformattedDelayTime, delayTime);
             put(chainActionChainActionSet, chainActionChainActionSetTransfer);

@@ -92,15 +92,15 @@ public class ForumTag
     public int doStartTag()
             throws JspException {
         try {
-            GetForumForm commandForm = ForumUtil.getHome().getGetForumForm();
+            var commandForm = ForumUtil.getHome().getGetForumForm();
             
             commandForm.setForumName(forumName);
             
             setOptions(options, null, commandForm);
 
             commandForm.setTransferProperties(transferProperties);
-            
-            CommandResult commandResult = ForumUtil.getHome().getForum(getUserVisitPK(), commandForm);
+
+            var commandResult = ForumUtil.getHome().getForum(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -108,8 +108,8 @@ public class ForumTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetForumResult result = (GetForumResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetForumResult)executionResult.getResult();
 
                 pageContext.setAttribute(var, result.getForum(), scope);
             }

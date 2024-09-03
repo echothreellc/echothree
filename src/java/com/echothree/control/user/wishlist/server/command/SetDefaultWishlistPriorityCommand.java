@@ -65,12 +65,12 @@ public class SetDefaultWishlistPriorityCommand
     @Override
     protected BaseResult execute() {
         var wishlistControl = Session.getModelController(WishlistControl.class);
-        String wishlistTypeName = form.getWishlistTypeName();
-        WishlistType wishlistType = wishlistControl.getWishlistTypeByName(wishlistTypeName);
+        var wishlistTypeName = form.getWishlistTypeName();
+        var wishlistType = wishlistControl.getWishlistTypeByName(wishlistTypeName);
         
         if(wishlistType != null) {
-            String wishlistPriorityName = form.getWishlistPriorityName();
-            WishlistPriorityDetailValue wishlistPriorityDetailValue = wishlistControl.getWishlistPriorityDetailValueByNameForUpdate(wishlistType, wishlistPriorityName);
+            var wishlistPriorityName = form.getWishlistPriorityName();
+            var wishlistPriorityDetailValue = wishlistControl.getWishlistPriorityDetailValueByNameForUpdate(wishlistType, wishlistPriorityName);
             
             if(wishlistPriorityDetailValue != null) {
                 wishlistPriorityDetailValue.setIsDefault(Boolean.TRUE);

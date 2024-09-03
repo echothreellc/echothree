@@ -53,16 +53,16 @@ public class SetDefaultAssociatePartyContactMechanismCommand
     @Override
     protected BaseResult execute() {
         var associateControl = Session.getModelController(AssociateControl.class);
-        String associateProgramName = form.getAssociateProgramName();
-        AssociateProgram associateProgram = associateControl.getAssociateProgramByName(associateProgramName);
+        var associateProgramName = form.getAssociateProgramName();
+        var associateProgram = associateControl.getAssociateProgramByName(associateProgramName);
         
         if(associateProgram != null) {
-            String associateName = form.getAssociateName();
-            Associate associate = associateControl.getAssociateByName(associateProgram, associateName);
+            var associateName = form.getAssociateName();
+            var associate = associateControl.getAssociateByName(associateProgram, associateName);
             
             if(associate != null) {
-                String associatePartyContactMechanismName = form.getAssociatePartyContactMechanismName();
-                AssociatePartyContactMechanismDetailValue associatePartyContactMechanismDetailValue = associateControl.getAssociatePartyContactMechanismDetailValueByNameForUpdate(associate,
+                var associatePartyContactMechanismName = form.getAssociatePartyContactMechanismName();
+                var associatePartyContactMechanismDetailValue = associateControl.getAssociatePartyContactMechanismDetailValueByNameForUpdate(associate,
                         associatePartyContactMechanismName);
                 
                 if(associatePartyContactMechanismDetailValue != null) {

@@ -55,17 +55,17 @@ public class GetAssociatePartyContactMechanismCommand
     @Override
     protected BaseResult execute() {
         var associateControl = Session.getModelController(AssociateControl.class);
-        GetAssociatePartyContactMechanismResult result = AssociateResultFactory.getGetAssociatePartyContactMechanismResult();
-        String associateProgramName = form.getAssociateProgramName();
-        AssociateProgram associateProgram = associateControl.getAssociateProgramByName(associateProgramName);
+        var result = AssociateResultFactory.getGetAssociatePartyContactMechanismResult();
+        var associateProgramName = form.getAssociateProgramName();
+        var associateProgram = associateControl.getAssociateProgramByName(associateProgramName);
         
         if(associateProgram != null) {
-            String associateName = form.getAssociateName();
-            Associate associate = associateControl.getAssociateByName(associateProgram, associateName);
+            var associateName = form.getAssociateName();
+            var associate = associateControl.getAssociateByName(associateProgram, associateName);
             
             if(associate != null) {
-                String associatePartyContactMechanismName = form.getAssociatePartyContactMechanismName();
-                AssociatePartyContactMechanism associatePartyContactMechanism = associateControl.getAssociatePartyContactMechanismByName(associate, associatePartyContactMechanismName);
+                var associatePartyContactMechanismName = form.getAssociatePartyContactMechanismName();
+                var associatePartyContactMechanism = associateControl.getAssociatePartyContactMechanismByName(associate, associatePartyContactMechanismName);
                 
                 if(associatePartyContactMechanism != null) {
                     result.setAssociatePartyContactMechanism(associateControl.getAssociatePartyContactMechanismTransfer(getUserVisit(), associatePartyContactMechanism));

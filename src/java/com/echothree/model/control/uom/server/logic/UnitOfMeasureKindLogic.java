@@ -47,7 +47,7 @@ public class UnitOfMeasureKindLogic
 
     public UnitOfMeasureKind getUnitOfMeasureKindByName(final ExecutionErrorAccumulator eea, final String unitOfMeasureKindName) {
         var uomControl = Session.getModelController(UomControl.class);
-        UnitOfMeasureKind unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);
+        var unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);
 
         if(unitOfMeasureKind == null) {
             handleExecutionError(UnknownUnitOfMeasureKindNameException.class, eea, ExecutionErrors.UnknownUnitOfMeasureKindName.name(), unitOfMeasureKindName);

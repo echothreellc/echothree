@@ -52,9 +52,9 @@ public class GetRatingCommand
     @Override
     protected BaseResult execute() {
         var ratingControl = Session.getModelController(RatingControl.class);
-        GetRatingResult result = RatingResultFactory.getGetRatingResult();
-        String ratingName = form.getRatingName();
-        Rating rating = ratingControl.getRatingByName(ratingName);
+        var result = RatingResultFactory.getGetRatingResult();
+        var ratingName = form.getRatingName();
+        var rating = ratingControl.getRatingByName(ratingName);
 
         if(rating != null) {
             result.setRating(ratingControl.getRatingTransfer(getUserVisit(), rating));

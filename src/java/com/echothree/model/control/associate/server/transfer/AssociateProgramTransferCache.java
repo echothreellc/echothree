@@ -41,22 +41,22 @@ public class AssociateProgramTransferCache
     
     @Override
     public AssociateProgramTransfer getTransfer(AssociateProgram associateProgram) {
-        AssociateProgramTransfer associateProgramTransfer = get(associateProgram);
+        var associateProgramTransfer = get(associateProgram);
         
         if(associateProgramTransfer == null) {
-            AssociateProgramDetail associateProgramDetail = associateProgram.getLastDetail();
-            String associateProgramName = associateProgramDetail.getAssociateProgramName();
-            Sequence associateSequence = associateProgramDetail.getAssociateSequence();
-            SequenceTransfer associateSequenceTransfer = associateSequence == null? null: sequenceControl.getSequenceTransfer(userVisit, associateSequence);
-            Sequence associatePartyContactMechanismSequence = associateProgramDetail.getAssociatePartyContactMechanismSequence();
-            SequenceTransfer associatePartyContactMechanismSequenceTransfer = associatePartyContactMechanismSequence == null? null: sequenceControl.getSequenceTransfer(userVisit, associatePartyContactMechanismSequence);
-            Sequence associateReferralSequence = associateProgramDetail.getAssociateReferralSequence();
-            SequenceTransfer associateReferralSequenceTransfer = associateReferralSequence == null? null: sequenceControl.getSequenceTransfer(userVisit, associateReferralSequence);
-            String itemIndirectSalePercent = PercentUtils.getInstance().formatFractionalPercent(associateProgramDetail.getItemIndirectSalePercent());
-            String itemDirectSalePercent = PercentUtils.getInstance().formatFractionalPercent(associateProgramDetail.getItemDirectSalePercent());
-            Boolean isDefault = associateProgramDetail.getIsDefault();
-            Integer sortOrder = associateProgramDetail.getSortOrder();
-            String description = associateControl.getBestAssociateProgramDescription(associateProgram, getLanguage());
+            var associateProgramDetail = associateProgram.getLastDetail();
+            var associateProgramName = associateProgramDetail.getAssociateProgramName();
+            var associateSequence = associateProgramDetail.getAssociateSequence();
+            var associateSequenceTransfer = associateSequence == null? null: sequenceControl.getSequenceTransfer(userVisit, associateSequence);
+            var associatePartyContactMechanismSequence = associateProgramDetail.getAssociatePartyContactMechanismSequence();
+            var associatePartyContactMechanismSequenceTransfer = associatePartyContactMechanismSequence == null? null: sequenceControl.getSequenceTransfer(userVisit, associatePartyContactMechanismSequence);
+            var associateReferralSequence = associateProgramDetail.getAssociateReferralSequence();
+            var associateReferralSequenceTransfer = associateReferralSequence == null? null: sequenceControl.getSequenceTransfer(userVisit, associateReferralSequence);
+            var itemIndirectSalePercent = PercentUtils.getInstance().formatFractionalPercent(associateProgramDetail.getItemIndirectSalePercent());
+            var itemDirectSalePercent = PercentUtils.getInstance().formatFractionalPercent(associateProgramDetail.getItemDirectSalePercent());
+            var isDefault = associateProgramDetail.getIsDefault();
+            var sortOrder = associateProgramDetail.getSortOrder();
+            var description = associateControl.getBestAssociateProgramDescription(associateProgram, getLanguage());
             
             associateProgramTransfer = new AssociateProgramTransfer(associateProgramName, associateSequenceTransfer,
                     associatePartyContactMechanismSequenceTransfer, associateReferralSequenceTransfer, itemIndirectSalePercent,

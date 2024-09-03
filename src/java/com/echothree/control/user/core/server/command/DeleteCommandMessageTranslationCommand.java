@@ -54,20 +54,20 @@ public class DeleteCommandMessageTranslationCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String commandMessageTypeName = form.getCommandMessageTypeName();
-        CommandMessageType commandMessageType = coreControl.getCommandMessageTypeByName(commandMessageTypeName);
+        var commandMessageTypeName = form.getCommandMessageTypeName();
+        var commandMessageType = coreControl.getCommandMessageTypeByName(commandMessageTypeName);
         
         if(commandMessageType != null) {
-            String commandMessageKey = form.getCommandMessageKey();
-            CommandMessage commandMessage = coreControl.getCommandMessageByKey(commandMessageType, commandMessageKey);
+            var commandMessageKey = form.getCommandMessageKey();
+            var commandMessage = coreControl.getCommandMessageByKey(commandMessageType, commandMessageKey);
             
             if(commandMessage != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = form.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = form.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
                 
                 if(language != null) {
-                    CommandMessageTranslation commandMessageTranslation = coreControl.getCommandMessageTranslationForUpdate(commandMessage, language);
+                    var commandMessageTranslation = coreControl.getCommandMessageTranslationForUpdate(commandMessage, language);
                     
                     if(commandMessageTranslation != null) {
                         coreControl.deleteCommandMessageTranslation(commandMessageTranslation, getPartyPK());

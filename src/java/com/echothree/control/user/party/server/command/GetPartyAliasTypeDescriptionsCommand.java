@@ -67,13 +67,13 @@ public class GetPartyAliasTypeDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        GetPartyAliasTypeDescriptionsResult result = PartyResultFactory.getGetPartyAliasTypeDescriptionsResult();
-        String partyTypeName = form.getPartyTypeName();
-        PartyType partyType = partyControl.getPartyTypeByName(partyTypeName);
+        var result = PartyResultFactory.getGetPartyAliasTypeDescriptionsResult();
+        var partyTypeName = form.getPartyTypeName();
+        var partyType = partyControl.getPartyTypeByName(partyTypeName);
 
         if(partyType != null) {
-            String partyAliasTypeName = form.getPartyAliasTypeName();
-            PartyAliasType partyAliasType = partyControl.getPartyAliasTypeByName(partyType, partyAliasTypeName);
+            var partyAliasTypeName = form.getPartyAliasTypeName();
+            var partyAliasType = partyControl.getPartyAliasTypeByName(partyType, partyAliasTypeName);
 
             if(partyAliasType != null) {
                 result.setPartyAliasType(partyControl.getPartyAliasTypeTransfer(getUserVisit(), partyAliasType));

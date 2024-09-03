@@ -54,12 +54,12 @@ public class CreateUnitOfMeasureKindCommand
     @Override
     protected BaseResult execute() {
         var uomControl = Session.getModelController(UomControl.class);
-        String unitOfMeasureKindName = form.getUnitOfMeasureKindName();
-        UnitOfMeasureKind unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);
+        var unitOfMeasureKindName = form.getUnitOfMeasureKindName();
+        var unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);
         
         if(unitOfMeasureKind == null) {
             var partyPK = getPartyPK();
-            Integer fractionDigits = Integer.valueOf(form.getFractionDigits());
+            var fractionDigits = Integer.valueOf(form.getFractionDigits());
             var isDefault = Boolean.valueOf(form.getIsDefault());
             var sortOrder = Integer.valueOf(form.getSortOrder());
             var description = form.getDescription();
@@ -67,7 +67,7 @@ public class CreateUnitOfMeasureKindCommand
             unitOfMeasureKind = uomControl.createUnitOfMeasureKind(unitOfMeasureKindName, fractionDigits, isDefault, sortOrder, partyPK);
             
             if(description != null) {
-                Language language = getPreferredLanguage();
+                var language = getPreferredLanguage();
                 
                 uomControl.createUnitOfMeasureKindDescription(unitOfMeasureKind, language, description, partyPK);
             }

@@ -81,18 +81,18 @@ public class EditTransactionTypeCommand
     @Override
     protected BaseResult execute() {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        EditTransactionTypeResult result = AccountingResultFactory.getEditTransactionTypeResult();
-        String transactionTypeName = spec.getTransactionTypeName();
+        var result = AccountingResultFactory.getEditTransactionTypeResult();
+        var transactionTypeName = spec.getTransactionTypeName();
         
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-            TransactionType transactionType = accountingControl.getTransactionTypeByName(transactionTypeName);
+            var transactionType = accountingControl.getTransactionTypeByName(transactionTypeName);
             
             if(transactionType != null) {
                 if(editMode.equals(EditMode.LOCK)) {
                     if(lockEntity(transactionType)) {
-                        TransactionTypeDescription transactionTypeDescription = accountingControl.getTransactionTypeDescription(transactionType, getPreferredLanguage());
-                        TransactionTypeEdit edit = AccountingEditFactory.getTransactionTypeEdit();
-                        TransactionTypeDetail transactionTypeDetail = transactionType.getLastDetail();
+                        var transactionTypeDescription = accountingControl.getTransactionTypeDescription(transactionType, getPreferredLanguage());
+                        var edit = AccountingEditFactory.getTransactionTypeEdit();
+                        var transactionTypeDetail = transactionType.getLastDetail();
 
                         result.setTransactionType(accountingControl.getTransactionTypeTransfer(getUserVisit(), transactionType));
 
@@ -115,19 +115,19 @@ public class EditTransactionTypeCommand
                 addExecutionError(ExecutionErrors.UnknownTransactionTypeName.name(), transactionTypeName);
             }
         } else if(editMode.equals(EditMode.UPDATE)) {
-            TransactionType transactionType = accountingControl.getTransactionTypeByNameForUpdate(transactionTypeName);
+            var transactionType = accountingControl.getTransactionTypeByNameForUpdate(transactionTypeName);
             
             if(transactionType != null) {
                 transactionTypeName = edit.getTransactionTypeName();
-                TransactionType duplicateTransactionType = accountingControl.getTransactionTypeByName(transactionTypeName);
+                var duplicateTransactionType = accountingControl.getTransactionTypeByName(transactionTypeName);
                 
                 if(duplicateTransactionType == null || transactionType.equals(duplicateTransactionType)) {
                     if(lockEntityForUpdate(transactionType)) {
                         try {
                             var partyPK = getPartyPK();
-                            TransactionTypeDetailValue transactionTypeDetailValue = accountingControl.getTransactionTypeDetailValueForUpdate(transactionType);
-                            TransactionTypeDescription transactionTypeDescription = accountingControl.getTransactionTypeDescriptionForUpdate(transactionType, getPreferredLanguage());
-                            String description = edit.getDescription();
+                            var transactionTypeDetailValue = accountingControl.getTransactionTypeDetailValueForUpdate(transactionType);
+                            var transactionTypeDescription = accountingControl.getTransactionTypeDescriptionForUpdate(transactionType, getPreferredLanguage());
+                            var description = edit.getDescription();
 
                             transactionTypeDetailValue.setTransactionTypeName(edit.getTransactionTypeName());
                             transactionTypeDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
@@ -139,7 +139,7 @@ public class EditTransactionTypeCommand
                             } else if(transactionTypeDescription != null && description == null) {
                                 accountingControl.deleteTransactionTypeDescription(transactionTypeDescription, partyPK);
                             } else if(transactionTypeDescription != null && description != null) {
-                                TransactionTypeDescriptionValue transactionTypeDescriptionValue = accountingControl.getTransactionTypeDescriptionValue(transactionTypeDescription);
+                                var transactionTypeDescriptionValue = accountingControl.getTransactionTypeDescriptionValue(transactionTypeDescription);
 
                                 transactionTypeDescriptionValue.setDescription(description);
                                 accountingControl.updateTransactionTypeDescriptionFromValue(transactionTypeDescriptionValue, partyPK);

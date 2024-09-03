@@ -68,16 +68,16 @@ public class CreateTerminationTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var employeeControl = Session.getModelController(EmployeeControl.class);
-        String terminationTypeName = form.getTerminationTypeName();
-        TerminationType terminationType = employeeControl.getTerminationTypeByName(terminationTypeName);
+        var terminationTypeName = form.getTerminationTypeName();
+        var terminationType = employeeControl.getTerminationTypeByName(terminationTypeName);
         
         if(terminationType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                TerminationTypeDescription terminationTypeDescription = employeeControl.getTerminationTypeDescription(terminationType, language);
+                var terminationTypeDescription = employeeControl.getTerminationTypeDescription(terminationType, language);
                 
                 if(terminationTypeDescription == null) {
                     var description = form.getDescription();

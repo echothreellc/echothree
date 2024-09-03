@@ -69,20 +69,20 @@ public class DeleteBatchAliasTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var batchControl = Session.getModelController(BatchControl.class);
-        String batchTypeName = form.getBatchTypeName();
-        BatchType batchType = batchControl.getBatchTypeByName(batchTypeName);
+        var batchTypeName = form.getBatchTypeName();
+        var batchType = batchControl.getBatchTypeByName(batchTypeName);
 
         if(batchType != null) {
-            String batchAliasTypeName = form.getBatchAliasTypeName();
-            BatchAliasType batchAliasType = batchControl.getBatchAliasTypeByName(batchType, batchAliasTypeName);
+            var batchAliasTypeName = form.getBatchAliasTypeName();
+            var batchAliasType = batchControl.getBatchAliasTypeByName(batchType, batchAliasTypeName);
 
             if(batchAliasType != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = form.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = form.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                 if(language != null) {
-                    BatchAliasTypeDescription batchAliasTypeDescription = batchControl.getBatchAliasTypeDescriptionForUpdate(batchAliasType, language);
+                    var batchAliasTypeDescription = batchControl.getBatchAliasTypeDescriptionForUpdate(batchAliasType, language);
 
                     if(batchAliasTypeDescription != null) {
                         batchControl.deleteBatchAliasTypeDescription(batchAliasTypeDescription, getPartyPK());

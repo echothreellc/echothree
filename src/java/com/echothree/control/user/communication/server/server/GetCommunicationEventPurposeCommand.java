@@ -52,9 +52,9 @@ public class GetCommunicationEventPurposeCommand
     @Override
     protected BaseResult execute() {
         var communicationControl = Session.getModelController(CommunicationControl.class);
-        GetCommunicationEventPurposeResult result = CommunicationResultFactory.getGetCommunicationEventPurposeResult();
-        String communicationEventPurposeName = form.getCommunicationEventPurposeName();
-        CommunicationEventPurpose communicationEventPurpose = communicationControl.getCommunicationEventPurposeByName(communicationEventPurposeName);
+        var result = CommunicationResultFactory.getGetCommunicationEventPurposeResult();
+        var communicationEventPurposeName = form.getCommunicationEventPurposeName();
+        var communicationEventPurpose = communicationControl.getCommunicationEventPurposeByName(communicationEventPurposeName);
         
         if(communicationEventPurpose != null) {
             result.setCommunicationEventPurpose(communicationControl.getCommunicationEventPurposeTransfer(getUserVisit(), communicationEventPurpose));

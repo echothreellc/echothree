@@ -72,18 +72,18 @@ public class CreateWorkflowStepCommand
     protected BaseResult execute() {
         var result = WorkflowResultFactory.getCreateWorkflowStepResult();
         var workflowControl = Session.getModelController(WorkflowControl.class);
-        String workflowName = form.getWorkflowName();
+        var workflowName = form.getWorkflowName();
         var workflow = workflowControl.getWorkflowByName(workflowName);
         WorkflowStep workflowStep = null;
         
         if(workflow != null) {
-            String workflowStepName = form.getWorkflowStepName();
+            var workflowStepName = form.getWorkflowStepName();
 
             workflowStep = workflowControl.getWorkflowStepByName(workflow, workflowStepName);
             
             if(workflowStep == null) {
-                String workflowStepTypeName = form.getWorkflowStepTypeName();
-                WorkflowStepType workflowStepType = workflowControl.getWorkflowStepTypeByName(workflowStepTypeName);
+                var workflowStepTypeName = form.getWorkflowStepTypeName();
+                var workflowStepType = workflowControl.getWorkflowStepTypeByName(workflowStepTypeName);
                 
                 if(workflowStepType != null) {
                     var partyPK = getPartyPK();

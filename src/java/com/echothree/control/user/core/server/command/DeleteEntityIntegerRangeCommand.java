@@ -67,20 +67,20 @@ public class DeleteEntityIntegerRangeCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String componentVendorName = form.getComponentVendorName();
-        ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+        var componentVendorName = form.getComponentVendorName();
+        var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
         
         if(componentVendor != null) {
-            String entityTypeName = form.getEntityTypeName();
-            EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+            var entityTypeName = form.getEntityTypeName();
+            var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
             
             if(entityType != null) {
-                String entityAttributeName = form.getEntityAttributeName();
-                EntityAttribute entityAttribute = coreControl.getEntityAttributeByName(entityType, entityAttributeName);
+                var entityAttributeName = form.getEntityAttributeName();
+                var entityAttribute = coreControl.getEntityAttributeByName(entityType, entityAttributeName);
                 
                 if(entityAttribute != null) {
-                    String entityIntegerRangeName = form.getEntityIntegerRangeName();
-                    EntityIntegerRange entityIntegerRange = coreControl.getEntityIntegerRangeByNameForUpdate(entityAttribute, entityIntegerRangeName);
+                    var entityIntegerRangeName = form.getEntityIntegerRangeName();
+                    var entityIntegerRange = coreControl.getEntityIntegerRangeByNameForUpdate(entityAttribute, entityIntegerRangeName);
                     
                     if(entityIntegerRange != null) {
                         coreControl.deleteEntityIntegerRange(entityIntegerRange, getPartyPK());

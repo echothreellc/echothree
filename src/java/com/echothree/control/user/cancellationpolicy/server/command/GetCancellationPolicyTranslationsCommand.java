@@ -67,13 +67,13 @@ public class GetCancellationPolicyTranslationsCommand
     @Override
     protected BaseResult execute() {
         var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
-        GetCancellationPolicyTranslationsResult result = CancellationPolicyResultFactory.getGetCancellationPolicyTranslationsResult();
-        String cancellationKindName = form.getCancellationKindName();
-        CancellationKind cancellationKind = cancellationPolicyControl.getCancellationKindByName(cancellationKindName);
+        var result = CancellationPolicyResultFactory.getGetCancellationPolicyTranslationsResult();
+        var cancellationKindName = form.getCancellationKindName();
+        var cancellationKind = cancellationPolicyControl.getCancellationKindByName(cancellationKindName);
 
         if(cancellationKind != null) {
-            String cancellationPolicyName = form.getCancellationPolicyName();
-            CancellationPolicy cancellationPolicy = cancellationPolicyControl.getCancellationPolicyByName(cancellationKind, cancellationPolicyName);
+            var cancellationPolicyName = form.getCancellationPolicyName();
+            var cancellationPolicy = cancellationPolicyControl.getCancellationPolicyByName(cancellationKind, cancellationPolicyName);
 
             if(cancellationPolicy != null) {
                 result.setCancellationPolicy(cancellationPolicyControl.getCancellationPolicyTransfer(getUserVisit(), cancellationPolicy));

@@ -66,13 +66,13 @@ public class GetReturnPolicyChoicesCommand
     @Override
     protected BaseResult execute() {
         var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
-        GetReturnPolicyChoicesResult result = ReturnPolicyResultFactory.getGetReturnPolicyChoicesResult();
-        String returnKindName = form.getReturnKindName();
-        ReturnKind returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
+        var result = ReturnPolicyResultFactory.getGetReturnPolicyChoicesResult();
+        var returnKindName = form.getReturnKindName();
+        var returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
         
         if(returnKind != null) {
-            String defaultReturnPolicyChoice = form.getDefaultReturnPolicyChoice();
-            boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+            var defaultReturnPolicyChoice = form.getDefaultReturnPolicyChoice();
+            var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
             
             result.setReturnPolicyChoices(returnPolicyControl.getReturnPolicyChoices(defaultReturnPolicyChoice, getPreferredLanguage(),
                     allowNullChoice, returnKind));

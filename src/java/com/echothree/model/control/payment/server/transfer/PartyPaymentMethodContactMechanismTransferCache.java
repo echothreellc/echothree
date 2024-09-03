@@ -47,16 +47,16 @@ public class PartyPaymentMethodContactMechanismTransferCache
 
     @Override
     public PartyPaymentMethodContactMechanismTransfer getTransfer(PartyPaymentMethodContactMechanism partyPaymentMethodContactMechanism) {
-        PartyPaymentMethodContactMechanismTransfer partyPaymentMethodContactMechanismTransfer = get(partyPaymentMethodContactMechanism);
+        var partyPaymentMethodContactMechanismTransfer = get(partyPaymentMethodContactMechanism);
         
         if(partyPaymentMethodContactMechanismTransfer == null) {
-            PartyPaymentMethod partyPaymentMethod = partyPaymentMethodContactMechanism.getPartyPaymentMethod();
-            PartyPaymentMethodTransfer partyPaymentMethodTransfer = partyPaymentMethodControl.getPartyPaymentMethodTransfer(userVisit, partyPaymentMethod);
-            PartyContactMechanismPurposeTransfer partyContactMechanismPurposeTransfer = contactControl.getPartyContactMechanismPurposeTransfer(userVisit, partyPaymentMethodContactMechanism.getPartyContactMechanismPurpose());
+            var partyPaymentMethod = partyPaymentMethodContactMechanism.getPartyPaymentMethod();
+            var partyPaymentMethodTransfer = partyPaymentMethodControl.getPartyPaymentMethodTransfer(userVisit, partyPaymentMethod);
+            var partyContactMechanismPurposeTransfer = contactControl.getPartyContactMechanismPurposeTransfer(userVisit, partyPaymentMethodContactMechanism.getPartyContactMechanismPurpose());
             WorkflowEntityStatusTransfer partyPaymentMethodContactMechanismStatusTransfer = null;
-            
-            String paymentMethodTypeName = partyPaymentMethod.getLastDetail().getPaymentMethod().getLastDetail().getPaymentMethodType().getLastDetail().getPaymentMethodTypeName();
-            EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(partyPaymentMethodContactMechanism.getPrimaryKey());
+
+            var paymentMethodTypeName = partyPaymentMethod.getLastDetail().getPaymentMethod().getLastDetail().getPaymentMethodType().getLastDetail().getPaymentMethodTypeName();
+            var entityInstance = coreControl.getEntityInstanceByBasePK(partyPaymentMethodContactMechanism.getPrimaryKey());
             if(paymentMethodTypeName.equals(PaymentMethodTypes.CREDIT_CARD.name())) {
                     partyPaymentMethodContactMechanismStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
                             Workflow_CUSTOMER_CREDIT_CARD_CONTACT_MECHANISM, entityInstance);

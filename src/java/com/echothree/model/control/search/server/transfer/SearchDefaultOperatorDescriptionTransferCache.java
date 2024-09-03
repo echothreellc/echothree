@@ -32,11 +32,11 @@ public class SearchDefaultOperatorDescriptionTransferCache
     }
     
     public SearchDefaultOperatorDescriptionTransfer getSearchDefaultOperatorDescriptionTransfer(SearchDefaultOperatorDescription searchDefaultOperatorDescription) {
-        SearchDefaultOperatorDescriptionTransfer searchDefaultOperatorDescriptionTransfer = get(searchDefaultOperatorDescription);
+        var searchDefaultOperatorDescriptionTransfer = get(searchDefaultOperatorDescription);
         
         if(searchDefaultOperatorDescriptionTransfer == null) {
-            SearchDefaultOperatorTransfer searchDefaultOperatorTransfer = searchControl.getSearchDefaultOperatorTransfer(userVisit, searchDefaultOperatorDescription.getSearchDefaultOperator());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, searchDefaultOperatorDescription.getLanguage());
+            var searchDefaultOperatorTransfer = searchControl.getSearchDefaultOperatorTransfer(userVisit, searchDefaultOperatorDescription.getSearchDefaultOperator());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, searchDefaultOperatorDescription.getLanguage());
             
             searchDefaultOperatorDescriptionTransfer = new SearchDefaultOperatorDescriptionTransfer(languageTransfer, searchDefaultOperatorTransfer, searchDefaultOperatorDescription.getDescription());
             put(searchDefaultOperatorDescription, searchDefaultOperatorDescriptionTransfer);

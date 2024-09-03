@@ -67,13 +67,13 @@ public class GetFilterAdjustmentChoicesCommand
     @Override
     protected BaseResult execute() {
         var filterControl = Session.getModelController(FilterControl.class);
-        GetFilterAdjustmentChoicesResult result = FilterResultFactory.getGetFilterAdjustmentChoicesResult();
-        String filterKindName = form.getFilterKindName();
-        FilterKind filterKind = filterControl.getFilterKindByName(filterKindName);
+        var result = FilterResultFactory.getGetFilterAdjustmentChoicesResult();
+        var filterKindName = form.getFilterKindName();
+        var filterKind = filterControl.getFilterKindByName(filterKindName);
         
         if(filterKind != null) {
-            String defaultFilterAdjustmentChoice = form.getDefaultFilterAdjustmentChoice();
-            boolean initialAdjustmentsOnly = Boolean.parseBoolean(form.getInitialAdjustmentsOnly());
+            var defaultFilterAdjustmentChoice = form.getDefaultFilterAdjustmentChoice();
+            var initialAdjustmentsOnly = Boolean.parseBoolean(form.getInitialAdjustmentsOnly());
             
             result.setFilterAdjustmentChoices(filterControl.getFilterAdjustmentChoices(defaultFilterAdjustmentChoice, getPreferredLanguage(), filterKind, initialAdjustmentsOnly));
         } else {

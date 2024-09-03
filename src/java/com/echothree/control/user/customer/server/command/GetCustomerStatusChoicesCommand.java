@@ -66,13 +66,13 @@ public class GetCustomerStatusChoicesCommand
     @Override
     protected BaseResult execute() {
         var customerControl = Session.getModelController(CustomerControl.class);
-        GetCustomerStatusChoicesResult result = CustomerResultFactory.getGetCustomerStatusChoicesResult();
-        String customerName = form.getCustomerName();
-        Customer customer = customerName == null? null: customerControl.getCustomerByName(customerName);
+        var result = CustomerResultFactory.getGetCustomerStatusChoicesResult();
+        var customerName = form.getCustomerName();
+        var customer = customerName == null? null: customerControl.getCustomerByName(customerName);
         
         if(customerName == null || customer != null) {
-            String defaultCustomerStatusChoice = form.getDefaultCustomerStatusChoice();
-            boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+            var defaultCustomerStatusChoice = form.getDefaultCustomerStatusChoice();
+            var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
             
             result.setCustomerStatusChoices(customerControl.getCustomerStatusChoices(defaultCustomerStatusChoice,
                     getPreferredLanguage(), allowNullChoice, customer == null? null: customer.getParty(), getPartyPK()));

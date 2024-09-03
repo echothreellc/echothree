@@ -64,8 +64,8 @@ public class DeleteSequenceTypeCommand
     @Override
     protected BaseResult execute() {
         var sequenceControl = Session.getModelController(SequenceControl.class);
-        String sequenceTypeName = form.getSequenceTypeName();
-        SequenceType sequenceType = sequenceControl.getSequenceTypeByNameForUpdate(sequenceTypeName);
+        var sequenceTypeName = form.getSequenceTypeName();
+        var sequenceType = sequenceControl.getSequenceTypeByNameForUpdate(sequenceTypeName);
         
         if(sequenceType != null) {
             sequenceControl.deleteSequenceType(sequenceType, getPartyPK());

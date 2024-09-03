@@ -57,17 +57,17 @@ public class GetSubscriptionsCommand
     @Override
     protected BaseResult execute() {
         var subscriptionControl = Session.getModelController(SubscriptionControl.class);
-        GetSubscriptionsResult result = SubscriptionResultFactory.getGetSubscriptionsResult();
-        String subscriptionKindName = form.getSubscriptionKindName();
-        String subscriptionTypeName = form.getSubscriptionTypeName();
-        String partyName = form.getPartyName();
-        UserVisit userVisit = getUserVisit();
+        var result = SubscriptionResultFactory.getGetSubscriptionsResult();
+        var subscriptionKindName = form.getSubscriptionKindName();
+        var subscriptionTypeName = form.getSubscriptionTypeName();
+        var partyName = form.getPartyName();
+        var userVisit = getUserVisit();
         
         if(subscriptionKindName != null && subscriptionTypeName != null && partyName == null) {
-            SubscriptionKind subscriptionKind = subscriptionControl.getSubscriptionKindByName(subscriptionKindName);
+            var subscriptionKind = subscriptionControl.getSubscriptionKindByName(subscriptionKindName);
             
             if(subscriptionKind != null) {
-                SubscriptionType subscriptionType = subscriptionControl.getSubscriptionTypeByName(subscriptionKind, subscriptionTypeName);
+                var subscriptionType = subscriptionControl.getSubscriptionTypeByName(subscriptionKind, subscriptionTypeName);
                 
                 result.setSubscriptionKind(subscriptionControl.getSubscriptionKindTransfer(userVisit, subscriptionKind));
                 
@@ -82,7 +82,7 @@ public class GetSubscriptionsCommand
             }
         } else if(subscriptionKindName == null && subscriptionTypeName == null && partyName != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            Party party = partyControl.getPartyByName(partyName);
+            var party = partyControl.getPartyByName(partyName);
             
             if(party != null) {
                 result.setParty(partyControl.getPartyTransfer(userVisit, party));

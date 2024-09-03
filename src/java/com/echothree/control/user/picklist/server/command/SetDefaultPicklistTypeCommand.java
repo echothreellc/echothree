@@ -62,8 +62,8 @@ public class SetDefaultPicklistTypeCommand
     @Override
     protected BaseResult execute() {
         var picklistControl = Session.getModelController(PicklistControl.class);
-        String picklistTypeName = form.getPicklistTypeName();
-        PicklistTypeDetailValue picklistTypeDetailValue = picklistControl.getPicklistTypeDetailValueByNameForUpdate(picklistTypeName);
+        var picklistTypeName = form.getPicklistTypeName();
+        var picklistTypeDetailValue = picklistControl.getPicklistTypeDetailValueByNameForUpdate(picklistTypeName);
         
         if(picklistTypeDetailValue != null) {
             picklistTypeDetailValue.setIsDefault(Boolean.TRUE);

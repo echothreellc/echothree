@@ -62,27 +62,27 @@ public class GetContentPageAreaCommand
     @Override
     protected ContentPageArea getEntity() {
         var contentControl = Session.getModelController(ContentControl.class);
-        String contentCollectionName = form.getContentCollectionName();
-        ContentCollection contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
+        var contentCollectionName = form.getContentCollectionName();
+        var contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
         ContentPageArea contentPageArea = null;
 
         if(contentCollection != null) {
-            String contentSectionName = form.getContentSectionName();
-            ContentSection contentSection = contentControl.getContentSectionByName(contentCollection, contentSectionName);
+            var contentSectionName = form.getContentSectionName();
+            var contentSection = contentControl.getContentSectionByName(contentCollection, contentSectionName);
             
             if(contentSection != null) {
-                String contentPageName = form.getContentPageName();
-                ContentPage contentPage = contentControl.getContentPageByName(contentSection, contentPageName);
+                var contentPageName = form.getContentPageName();
+                var contentPage = contentControl.getContentPageByName(contentSection, contentPageName);
                 
                 if(contentPage != null) {
                     var sortOrder = Integer.valueOf(form.getSortOrder());
-                    ContentPageLayout contentPageLayout = contentPage.getLastDetail().getContentPageLayout();
-                    ContentPageLayoutArea contentPageLayoutArea = contentControl.getContentPageLayoutArea(contentPageLayout, sortOrder);
+                    var contentPageLayout = contentPage.getLastDetail().getContentPageLayout();
+                    var contentPageLayoutArea = contentControl.getContentPageLayoutArea(contentPageLayout, sortOrder);
                     
                     if(contentPageLayoutArea != null) {
                         var partyControl = Session.getModelController(PartyControl.class);
-                        String languageIsoName = form.getLanguageIsoName();
-                        Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                        var languageIsoName = form.getLanguageIsoName();
+                        var language = partyControl.getLanguageByIsoName(languageIsoName);
                         
                         if(language != null) {
                             contentPageArea = contentControl.getContentPageArea(contentPage, contentPageLayoutArea, language);
@@ -113,7 +113,7 @@ public class GetContentPageAreaCommand
     
     @Override
     protected BaseResult getResult(ContentPageArea contentPageArea) {
-        GetContentPageAreaResult result = ContentResultFactory.getGetContentPageAreaResult();
+        var result = ContentResultFactory.getGetContentPageAreaResult();
 
         if (contentPageArea != null) {
             var contentControl = Session.getModelController(ContentControl.class);

@@ -62,22 +62,22 @@ public class PartyContactListTransferCache
     }
     
     public PartyContactListTransfer getPartyContactListTransfer(PartyContactList partyContactList) {
-        PartyContactListTransfer partyContactListTransfer = get(partyContactList);
+        var partyContactListTransfer = get(partyContactList);
         
         if(partyContactListTransfer == null) {
-            PartyContactListDetail partyContactListDetail = partyContactList.getLastDetail();
-            PartyTransfer partyTransfer = partyControl.getPartyTransfer(userVisit, partyContactListDetail.getParty());
-            ContactList contactList = partyContactListDetail.getContactList();
-            ContactListTransfer contactListTransfer = contactListControl.getContactListTransfer(userVisit, contactList);
-            ContactListContactMechanismPurpose preferredContactListContactMechanismPurpose = partyContactListDetail.getPreferredContactListContactMechanismPurpose();
-            ContactListContactMechanismPurposeTransfer preferredContactListContactMechanismPurposeTransfer = preferredContactListContactMechanismPurpose == null ? null : contactListControl.getContactListContactMechanismPurposeTransfer(userVisit, preferredContactListContactMechanismPurpose);
-            EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(partyContactList.getPrimaryKey());
+            var partyContactListDetail = partyContactList.getLastDetail();
+            var partyTransfer = partyControl.getPartyTransfer(userVisit, partyContactListDetail.getParty());
+            var contactList = partyContactListDetail.getContactList();
+            var contactListTransfer = contactListControl.getContactListTransfer(userVisit, contactList);
+            var preferredContactListContactMechanismPurpose = partyContactListDetail.getPreferredContactListContactMechanismPurpose();
+            var preferredContactListContactMechanismPurposeTransfer = preferredContactListContactMechanismPurpose == null ? null : contactListControl.getContactListContactMechanismPurposeTransfer(userVisit, preferredContactListContactMechanismPurpose);
+            var entityInstance = coreControl.getEntityInstanceByBasePK(partyContactList.getPrimaryKey());
             
             partyContactListTransfer = new PartyContactListTransfer(partyTransfer, contactListTransfer, preferredContactListContactMechanismPurposeTransfer);
             put(partyContactList, partyContactListTransfer, entityInstance);
             
             if(includeStatus) {
-                Workflow workflow = contactList.getLastDetail().getDefaultPartyContactListStatus().getLastDetail().getWorkflow();
+                var workflow = contactList.getLastDetail().getDefaultPartyContactListStatus().getLastDetail().getWorkflow();
                 
                 if(workflow != null) {
                     partyContactListTransfer.setPartyContactListStatus(workflowControl.getWorkflowEntityStatusTransferByEntityInstance(userVisit, workflow,

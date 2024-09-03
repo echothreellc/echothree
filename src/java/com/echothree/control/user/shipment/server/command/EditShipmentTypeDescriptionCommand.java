@@ -89,13 +89,13 @@ public class EditShipmentTypeDescriptionCommand
     public ShipmentTypeDescription getEntity(EditShipmentTypeDescriptionResult result) {
         var shipmentControl = Session.getModelController(ShipmentControl.class);
         ShipmentTypeDescription shipmentTypeDescription = null;
-        String shipmentTypeName = spec.getShipmentTypeName();
-        ShipmentType shipmentType = shipmentControl.getShipmentTypeByName(shipmentTypeName);
+        var shipmentTypeName = spec.getShipmentTypeName();
+        var shipmentType = shipmentControl.getShipmentTypeByName(shipmentTypeName);
 
         if(shipmentType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -137,7 +137,7 @@ public class EditShipmentTypeDescriptionCommand
     @Override
     public void doUpdate(ShipmentTypeDescription shipmentTypeDescription) {
         var shipmentControl = Session.getModelController(ShipmentControl.class);
-        ShipmentTypeDescriptionValue shipmentTypeDescriptionValue = shipmentControl.getShipmentTypeDescriptionValue(shipmentTypeDescription);
+        var shipmentTypeDescriptionValue = shipmentControl.getShipmentTypeDescriptionValue(shipmentTypeDescription);
         shipmentTypeDescriptionValue.setDescription(edit.getDescription());
 
         shipmentControl.updateShipmentTypeDescriptionFromValue(shipmentTypeDescriptionValue, getPartyPK());

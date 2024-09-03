@@ -74,7 +74,7 @@ public class EmployeeLogic
                 }
             } else {
                 var partyControl = Session.getModelController(PartyControl.class);
-                Party party = partyControl.getPartyByName(partyName);
+                var party = partyControl.getPartyByName(partyName);
 
                 if(party != null) {
                     PartyLogic.getInstance().checkPartyType(eea, party, PartyTypes.EMPLOYEE.name());
@@ -95,14 +95,14 @@ public class EmployeeLogic
         var coreControl = Session.getModelController(CoreControl.class);
         var workflowControl = Session.getModelController(WorkflowControl.class);
         var workflow = WorkflowLogic.getInstance().getWorkflowByName(eea, EmployeeStatusConstants.Workflow_EMPLOYEE_STATUS);
-        EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(party.getPrimaryKey());
-        WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdate(workflow, entityInstance);
-        WorkflowDestination workflowDestination = employeeStatusChoice == null ? null : workflowControl.getWorkflowDestinationByName(workflowEntityStatus.getWorkflowStep(), employeeStatusChoice);
+        var entityInstance = coreControl.getEntityInstanceByBasePK(party.getPrimaryKey());
+        var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdate(workflow, entityInstance);
+        var workflowDestination = employeeStatusChoice == null ? null : workflowControl.getWorkflowDestinationByName(workflowEntityStatus.getWorkflowStep(), employeeStatusChoice);
 
         if(workflowDestination != null || employeeStatusChoice == null) {
             var workflowDestinationLogic = WorkflowDestinationLogic.getInstance();
-            String currentWorkflowStepName = workflowEntityStatus.getWorkflowStep().getLastDetail().getWorkflowStepName();
-            Map<String, Set<String>> map = workflowDestinationLogic.getWorkflowDestinationsAsMap(workflowDestination);
+            var currentWorkflowStepName = workflowEntityStatus.getWorkflowStep().getLastDetail().getWorkflowStepName();
+            var map = workflowDestinationLogic.getWorkflowDestinationsAsMap(workflowDestination);
             Long triggerTime = null;
 
             if(currentWorkflowStepName.equals(EmployeeStatusConstants.WorkflowStep_ACTIVE)) {

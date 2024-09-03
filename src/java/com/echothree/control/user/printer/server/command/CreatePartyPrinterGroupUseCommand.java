@@ -68,7 +68,7 @@ public class CreatePartyPrinterGroupUseCommand
     
     @Override
     protected BaseResult execute() {
-        String partyName = form.getPartyName();
+        var partyName = form.getPartyName();
         Party party = null;
 
         if(partyName != null) {
@@ -85,15 +85,15 @@ public class CreatePartyPrinterGroupUseCommand
 
         if(!hasExecutionErrors()) {
             var printerControl = Session.getModelController(PrinterControl.class);
-            String printerGroupUseTypeName = form.getPrinterGroupUseTypeName();
-            PrinterGroupUseType printerGroupUseType = printerControl.getPrinterGroupUseTypeByName(printerGroupUseTypeName);
+            var printerGroupUseTypeName = form.getPrinterGroupUseTypeName();
+            var printerGroupUseType = printerControl.getPrinterGroupUseTypeByName(printerGroupUseTypeName);
 
             if(printerGroupUseType != null) {
-                PartyPrinterGroupUse partyPrinterGroupUse = printerControl.getPartyPrinterGroupUse(party, printerGroupUseType);
+                var partyPrinterGroupUse = printerControl.getPartyPrinterGroupUse(party, printerGroupUseType);
 
                 if(partyPrinterGroupUse == null) {
-                    String printerGroupName = form.getPrinterGroupName();
-                    PrinterGroup printerGroup = printerControl.getPrinterGroupByName(printerGroupName);
+                    var printerGroupName = form.getPrinterGroupName();
+                    var printerGroup = printerControl.getPrinterGroupByName(printerGroupName);
 
                     if(printerGroup != null) {
                         printerControl.createPartyPrinterGroupUse(party, printerGroupUseType, printerGroup, getPartyPK());

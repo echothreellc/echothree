@@ -66,15 +66,15 @@ public class DeleteReturnPolicyCommand
     @Override
     protected BaseResult execute() {
         var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
-        String returnKindName = form.getReturnKindName();
-        ReturnKind returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
+        var returnKindName = form.getReturnKindName();
+        var returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
         
         if(returnKind != null) {
-            String returnPolicyName = form.getReturnPolicyName();
-            ReturnPolicy returnPolicy = returnPolicyControl.getReturnPolicyByNameForUpdate(returnKind, returnPolicyName);
+            var returnPolicyName = form.getReturnPolicyName();
+            var returnPolicy = returnPolicyControl.getReturnPolicyByNameForUpdate(returnKind, returnPolicyName);
             
             if(returnPolicy != null) {
-                ReturnPolicyLogic returnPolicyLogic = ReturnPolicyLogic.getInstance();
+                var returnPolicyLogic = ReturnPolicyLogic.getInstance();
 
                 returnPolicyLogic.checkDeleteReturnPolicy(this, returnPolicy);
 

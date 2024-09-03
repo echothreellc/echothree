@@ -65,9 +65,9 @@ public class GetContentCollectionDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var contentControl = Session.getModelController(ContentControl.class);
-        GetContentCollectionDescriptionsResult result = ContentResultFactory.getGetContentCollectionDescriptionsResult();
-        String contentCollectionName = form.getContentCollectionName();
-        ContentCollection contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
+        var result = ContentResultFactory.getGetContentCollectionDescriptionsResult();
+        var contentCollectionName = form.getContentCollectionName();
+        var contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
         
         if(contentCollection != null) {
             result.setContentCollection(contentControl.getContentCollectionTransfer(getUserVisit(), contentCollection));

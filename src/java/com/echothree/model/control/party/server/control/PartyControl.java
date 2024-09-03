@@ -298,7 +298,7 @@ public class PartyControl
     // --------------------------------------------------------------------------------
     
     public Language createLanguage(String languageIsoName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        Language language = LanguageFactory.getInstance().create(languageIsoName, isDefault, sortOrder);
+        var language = LanguageFactory.getInstance().create(languageIsoName, isDefault, sortOrder);
         
         sendEvent(language.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
@@ -328,7 +328,7 @@ public class PartyControl
 
     public Language getDefaultLanguage() {
         Language language;
-        PreparedStatement ps = LanguageFactory.getInstance().prepareStatement(
+        var ps = LanguageFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
                 "FROM languages " +
                 "WHERE lang_isdefault = 1");
@@ -369,7 +369,7 @@ public class PartyControl
     
     public List<Language> getLanguages() {
         List<Language> languages;
-        PreparedStatement ps = LanguageFactory.getInstance().prepareStatement(
+        var ps = LanguageFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
                 "FROM languages " +
                 "ORDER BY lang_sortorder, lang_languageisoname " +
@@ -381,7 +381,7 @@ public class PartyControl
     }
     
     public LanguageChoicesBean getLanguageChoices(String defaultLanguageChoice, Language descriptionLanguage, boolean allowNullChoice) {
-        List<Language> languages = getLanguages();
+        var languages = getLanguages();
         var size = languages.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -418,7 +418,7 @@ public class PartyControl
     
     public List<LanguageTransfer> getLanguageTransfers(UserVisit userVisit, Collection<Language> languages) {
         List<LanguageTransfer> languageTransfers = new ArrayList<>(languages.size());
-        LanguageTransferCache languageTransferCache = getPartyTransferCaches(userVisit).getLanguageTransferCache();
+        var languageTransferCache = getPartyTransferCaches(userVisit).getLanguageTransferCache();
         
         languages.forEach((language) ->
                 languageTransfers.add(languageTransferCache.getLanguageTransfer(language))
@@ -437,7 +437,7 @@ public class PartyControl
     
     public LanguageDescription createLanguageDescription(Language language, Language descriptionLanguage, String description,
             BasePK createdBy) {
-        LanguageDescription languageDescription = LanguageDescriptionFactory.getInstance().create(language, descriptionLanguage, description);
+        var languageDescription = LanguageDescriptionFactory.getInstance().create(language, descriptionLanguage, description);
         
         sendEvent(language.getPrimaryKey(), EventTypes.MODIFY, languageDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -448,7 +448,7 @@ public class PartyControl
         LanguageDescription languageDescription;
         
         try {
-            PreparedStatement ps = LanguageDescriptionFactory.getInstance().prepareStatement(
+            var ps = LanguageDescriptionFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM languagedescriptions " +
                     "WHERE langd_lang_languageid = ? AND langd_descriptionlanguageid = ?");
@@ -467,7 +467,7 @@ public class PartyControl
     
     public String getBestLanguageDescription(Language language, Language descriptionLanguage) {
         String description;
-        LanguageDescription languageDescription = getLanguageDescription(language, descriptionLanguage);
+        var languageDescription = getLanguageDescription(language, descriptionLanguage);
 
         if(languageDescription == null && !descriptionLanguage.getIsDefault()) {
             languageDescription = getLanguageDescription(language, getDefaultLanguage());
@@ -616,7 +616,7 @@ public class PartyControl
     }
 
     public PartyTypeChoicesBean getPartyTypeChoices(String defaultPartyTypeChoice, Language language, boolean allowNullChoice) {
-        List<PartyType> partyTypes = getPartyTypes();
+        var partyTypes = getPartyTypes();
         var size = partyTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -649,7 +649,7 @@ public class PartyControl
     
     public List<PartyTypeTransfer> getPartyTypeTransfers(UserVisit userVisit, Collection<PartyType> partyTypes) {
         List<PartyTypeTransfer> partyTypeTransfers = new ArrayList<>(partyTypes.size());
-        PartyTypeTransferCache partyTypeTransferCache = getPartyTransferCaches(userVisit).getPartyTypeTransferCache();
+        var partyTypeTransferCache = getPartyTransferCaches(userVisit).getPartyTypeTransferCache();
         
         partyTypes.forEach((partyType) ->
                 partyTypeTransfers.add(partyTypeTransferCache.getPartyTypeTransfer(partyType))
@@ -674,7 +674,7 @@ public class PartyControl
         PartyTypeDescription partyTypeDescription;
         
         try {
-            PreparedStatement ps = PartyTypeDescriptionFactory.getInstance().prepareStatement(
+            var ps = PartyTypeDescriptionFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM partytypedescriptions " +
                     "WHERE ptypd_ptyp_partytypeid = ? AND ptypd_lang_languageid = ?");
@@ -692,7 +692,7 @@ public class PartyControl
     
     public String getBestPartyTypeDescription(PartyType partyType, Language language) {
         String description;
-        PartyTypeDescription partyTypeDescription = getPartyTypeDescription(partyType, language);
+        var partyTypeDescription = getPartyTypeDescription(partyType, language);
         
         if(partyTypeDescription == null && !language.getIsDefault()) {
             partyTypeDescription = getPartyTypeDescription(partyType, getPartyControl().getDefaultLanguage());
@@ -719,7 +719,7 @@ public class PartyControl
         PartyTypeUseType partyTypeUseType;
         
         try {
-            PreparedStatement ps = PartyTypeUseTypeFactory.getInstance().prepareStatement(
+            var ps = PartyTypeUseTypeFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM partytypeusetypes " +
                     "WHERE ptyput_partytypeusetypename = ?");
@@ -747,7 +747,7 @@ public class PartyControl
         PartyTypeUseTypeDescription partyTypeUseTypeDescription;
         
         try {
-            PreparedStatement ps = PartyTypeUseTypeDescriptionFactory.getInstance().prepareStatement(
+            var ps = PartyTypeUseTypeDescriptionFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM partytypeusetypedescriptions " +
                     "WHERE ptyputd_ptyput_partytypeusetypeid = ? AND ptyputd_lang_languageid = ?");
@@ -766,7 +766,7 @@ public class PartyControl
     
     public String getBestPartyTypeUseTypeDescription(PartyTypeUseType partyTypeUseType, Language language) {
         String description;
-        PartyTypeUseTypeDescription partyTypeUseTypeDescription = getPartyTypeUseTypeDescription(partyTypeUseType, language);
+        var partyTypeUseTypeDescription = getPartyTypeUseTypeDescription(partyTypeUseType, language);
         
         if(partyTypeUseTypeDescription == null && !language.getIsDefault()) {
             partyTypeUseTypeDescription = getPartyTypeUseTypeDescription(partyTypeUseType, getPartyControl().getDefaultLanguage());
@@ -793,7 +793,7 @@ public class PartyControl
         PartyTypeUse partyTypeUse;
         
         try {
-            PreparedStatement ps = PartyTypeUseFactory.getInstance().prepareStatement(
+            var ps = PartyTypeUseFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM partytypeuses " +
                     "WHERE ptypu_ptyput_partytypeusetypeid = ? AND ptypu_ptyp_partytypeid = ?");
@@ -814,21 +814,21 @@ public class PartyControl
     // --------------------------------------------------------------------------------
     
     public PersonalTitle createPersonalTitle(String description, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        PersonalTitle defaultPersonalTitle = getDefaultPersonalTitle();
-        boolean defaultFound = defaultPersonalTitle != null;
+        var defaultPersonalTitle = getDefaultPersonalTitle();
+        var defaultFound = defaultPersonalTitle != null;
         
         if(defaultFound && isDefault) {
-            PersonalTitleDetailValue defaultPersonalTitleDetailValue = getDefaultPersonalTitleDetailValueForUpdate();
+            var defaultPersonalTitleDetailValue = getDefaultPersonalTitleDetailValueForUpdate();
             
             defaultPersonalTitleDetailValue.setIsDefault(Boolean.FALSE);
             updatePersonalTitleFromValue(defaultPersonalTitleDetailValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        PersonalTitle personalTitle = PersonalTitleFactory.getInstance().create((PersonalTitleDetailPK)null,
+
+        var personalTitle = PersonalTitleFactory.getInstance().create((PersonalTitleDetailPK)null,
                 (PersonalTitleDetailPK)null);
-        PersonalTitleDetail personalTitleDetail = PersonalTitleDetailFactory.getInstance().create(personalTitle,
+        var personalTitleDetail = PersonalTitleDetailFactory.getInstance().create(personalTitle,
                 description, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -881,8 +881,8 @@ public class PartyControl
                     "ORDER BY pertd_sortorder, pertd_description " +
                     "FOR UPDATE";
         }
-        
-        PreparedStatement ps = PersonalTitleFactory.getInstance().prepareStatement(query);
+
+        var ps = PersonalTitleFactory.getInstance().prepareStatement(query);
         
         return PersonalTitleFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
     }
@@ -896,7 +896,7 @@ public class PartyControl
     }
     
     public List<PersonalTitleDetail> getPersonalTitleDetails() {
-        PreparedStatement ps = PersonalTitleDetailFactory.getInstance().prepareStatement(
+        var ps = PersonalTitleDetailFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
                 "FROM personaltitles, personaltitledetails " +
                 "WHERE pert_activedetailid = pertd_personaltitledetailid " +
@@ -918,8 +918,8 @@ public class PartyControl
                     "WHERE pert_activedetailid = pertd_personaltitledetailid AND pertd_isdefault = 1 " +
                     "FOR UPDATE";
         }
-        
-        PreparedStatement ps = PersonalTitleFactory.getInstance().prepareStatement(query);
+
+        var ps = PersonalTitleFactory.getInstance().prepareStatement(query);
         
         return PersonalTitleFactory.getInstance().getEntityFromQuery(entityPermission, ps);
     }
@@ -937,7 +937,7 @@ public class PartyControl
     }
     
     public PersonalTitleChoicesBean getPersonalTitleChoices(String defaultPersonalTitleChoice, boolean allowNullChoice) {
-        List<PersonalTitleDetail> personalTitleDetails = getPersonalTitleDetails();
+        var personalTitleDetails = getPersonalTitleDetails();
         var size = personalTitleDetails.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -979,17 +979,17 @@ public class PartyControl
     }
     
     public PersonalTitle convertPersonalTitleIdToEntity(String personalTitleId, EntityPermission entityPermission) {
-        PersonalTitlePK personalTitlePK = convertPersonalTitleIdToPK(personalTitleId);
-        PersonalTitle personalTitle = personalTitlePK == null? null: PersonalTitleFactory.getInstance().getEntityFromPK(session,
+        var personalTitlePK = convertPersonalTitleIdToPK(personalTitleId);
+        var personalTitle = personalTitlePK == null? null: PersonalTitleFactory.getInstance().getEntityFromPK(session,
                 entityPermission, personalTitlePK);
         
         return personalTitle;
     }
     
     public PersonalTitleDetailValue getPersonalTitleDetailValueByPKForUpdate(PersonalTitlePK personalTitlePK) {
-        PersonalTitle personalTitle = PersonalTitleFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        var personalTitle = PersonalTitleFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                 personalTitlePK);
-        PersonalTitleDetail personalTitleDetail = personalTitle.getActiveDetailForUpdate();
+        var personalTitleDetail = personalTitle.getActiveDetailForUpdate();
         
         return personalTitleDetail.getPersonalTitleDetailValue().clone();
     }
@@ -997,24 +997,24 @@ public class PartyControl
     private void updatePersonalTitleFromValue(PersonalTitleDetailValue personalTitleDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(personalTitleDetailValue.hasBeenModified()) {
-            PersonalTitle personalTitle = PersonalTitleFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var personalTitle = PersonalTitleFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     personalTitleDetailValue.getPersonalTitlePK());
-            PersonalTitleDetail personalTitleDetail = personalTitle.getActiveDetailForUpdate();
+            var personalTitleDetail = personalTitle.getActiveDetailForUpdate();
             
             personalTitleDetail.setThruTime(session.START_TIME_LONG);
             personalTitleDetail.store();
-            
-            String description = personalTitleDetailValue.getDescription();
-            Integer sortOrder = personalTitleDetailValue.getSortOrder();
-            Boolean isDefault = personalTitleDetailValue.getIsDefault();
+
+            var description = personalTitleDetailValue.getDescription();
+            var sortOrder = personalTitleDetailValue.getSortOrder();
+            var isDefault = personalTitleDetailValue.getIsDefault();
             
             if(checkDefault) {
-                PersonalTitle defaultPersonalTitle = getDefaultPersonalTitle();
-                boolean defaultFound = defaultPersonalTitle != null && !defaultPersonalTitle.equals(personalTitle);
+                var defaultPersonalTitle = getDefaultPersonalTitle();
+                var defaultFound = defaultPersonalTitle != null && !defaultPersonalTitle.equals(personalTitle);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    PersonalTitleDetailValue defaultPersonalTitleDetailValue = getDefaultPersonalTitleDetailValueForUpdate();
+                    var defaultPersonalTitleDetailValue = getDefaultPersonalTitleDetailValueForUpdate();
                     
                     defaultPersonalTitleDetailValue.setIsDefault(Boolean.FALSE);
                     updatePersonalTitleFromValue(defaultPersonalTitleDetailValue, false, updatedBy);
@@ -1044,7 +1044,7 @@ public class PartyControl
     
     public List<PersonalTitleTransfer> getPersonalTitleTransfers(UserVisit userVisit, Collection<PersonalTitle> personalTitles) {
         List<PersonalTitleTransfer> personalTitleTransfers = new ArrayList<>(personalTitles.size());
-        PersonalTitleTransferCache personalTitleTransferCache = getPartyTransferCaches(userVisit).getPersonalTitleTransferCache();
+        var personalTitleTransferCache = getPartyTransferCaches(userVisit).getPersonalTitleTransferCache();
         
         personalTitles.forEach((personalTitle) ->
                 personalTitleTransfers.add(personalTitleTransferCache.getPersonalTitleTransfer(personalTitle))
@@ -1058,22 +1058,22 @@ public class PartyControl
     }
     
     public void deletePersonalTitle(PersonalTitle personalTitle, BasePK deletedBy) {
-        PersonalTitleDetail personalTitleDetail = personalTitle.getLastDetailForUpdate();
+        var personalTitleDetail = personalTitle.getLastDetailForUpdate();
         personalTitleDetail.setThruTime(session.START_TIME_LONG);
         personalTitle.setActiveDetail(null);
         personalTitle.store();
         
         // Check for default, and pick one if necessary
-        PersonalTitle defaultPersonalTitle = getDefaultPersonalTitle();
+        var defaultPersonalTitle = getDefaultPersonalTitle();
         if(defaultPersonalTitle == null) {
-            List<PersonalTitle> personalTitles = getPersonalTitlesForUpdate();
+            var personalTitles = getPersonalTitlesForUpdate();
             
             if(!personalTitles.isEmpty()) {
-                Iterator<PersonalTitle> iter = personalTitles.iterator();
+                var iter = personalTitles.iterator();
                 if(iter.hasNext()) {
                     defaultPersonalTitle = iter.next();
                 }
-                PersonalTitleDetailValue personalTitleDetailValue = Objects.requireNonNull(defaultPersonalTitle).getLastDetailForUpdate().getPersonalTitleDetailValue().clone();
+                var personalTitleDetailValue = Objects.requireNonNull(defaultPersonalTitle).getLastDetailForUpdate().getPersonalTitleDetailValue().clone();
                 
                 personalTitleDetailValue.setIsDefault(Boolean.TRUE);
                 updatePersonalTitleFromValue(personalTitleDetailValue, false, deletedBy);
@@ -1088,20 +1088,20 @@ public class PartyControl
     // --------------------------------------------------------------------------------
     
     public NameSuffix createNameSuffix(String description, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        NameSuffix defaultNameSuffix = getDefaultNameSuffix();
-        boolean defaultFound = defaultNameSuffix != null;
+        var defaultNameSuffix = getDefaultNameSuffix();
+        var defaultFound = defaultNameSuffix != null;
         
         if(defaultFound && isDefault) {
-            NameSuffixDetailValue defaultNameSuffixDetailValue = getDefaultNameSuffixDetailValueForUpdate();
+            var defaultNameSuffixDetailValue = getDefaultNameSuffixDetailValueForUpdate();
             
             defaultNameSuffixDetailValue.setIsDefault(Boolean.FALSE);
             updateNameSuffixFromValue(defaultNameSuffixDetailValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        NameSuffix nameSuffix = NameSuffixFactory.getInstance().create();
-        NameSuffixDetail nameSuffixDetail = NameSuffixDetailFactory.getInstance().create(nameSuffix, description,
+
+        var nameSuffix = NameSuffixFactory.getInstance().create();
+        var nameSuffixDetail = NameSuffixDetailFactory.getInstance().create(nameSuffix, description,
                 isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -1153,8 +1153,8 @@ public class PartyControl
                     "ORDER BY nsfxd_sortorder, nsfxd_description " +
                     "FOR UPDATE";
         }
-        
-        PreparedStatement ps = NameSuffixFactory.getInstance().prepareStatement(query);
+
+        var ps = NameSuffixFactory.getInstance().prepareStatement(query);
         
         return NameSuffixFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
     }
@@ -1168,7 +1168,7 @@ public class PartyControl
     }
     
     public List<NameSuffixDetail> getNameSuffixDetails() {
-        PreparedStatement ps = NameSuffixDetailFactory.getInstance().prepareStatement(
+        var ps = NameSuffixDetailFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
                 "FROM namesuffixes, namesuffixdetails " +
                 "WHERE nsfx_activedetailid = nsfxd_namesuffixdetailid " +
@@ -1190,8 +1190,8 @@ public class PartyControl
                     "WHERE nsfx_activedetailid = nsfxd_namesuffixdetailid AND nsfxd_isdefault = 1 " +
                     "FOR UPDATE";
         }
-        
-        PreparedStatement ps = NameSuffixFactory.getInstance().prepareStatement(query);
+
+        var ps = NameSuffixFactory.getInstance().prepareStatement(query);
         
         return NameSuffixFactory.getInstance().getEntityFromQuery(entityPermission, ps);
     }
@@ -1209,7 +1209,7 @@ public class PartyControl
     }
     
     public NameSuffixChoicesBean getNameSuffixChoices(String defaultNameSuffixChoice, boolean allowNullChoice) {
-        List<NameSuffixDetail> nameSuffixDetails = getNameSuffixDetails();
+        var nameSuffixDetails = getNameSuffixDetails();
         var size = nameSuffixDetails.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -1251,40 +1251,40 @@ public class PartyControl
     }
     
     public NameSuffix convertNameSuffixIdToEntity(String nameSuffixId, EntityPermission entityPermission) {
-        NameSuffixPK nameSuffixPK = convertNameSuffixIdToPK(nameSuffixId);
-        NameSuffix nameSuffix = nameSuffixPK == null? null: NameSuffixFactory.getInstance().getEntityFromPK(session,
+        var nameSuffixPK = convertNameSuffixIdToPK(nameSuffixId);
+        var nameSuffix = nameSuffixPK == null? null: NameSuffixFactory.getInstance().getEntityFromPK(session,
                 entityPermission, nameSuffixPK);
         
         return nameSuffix;
     }
     
     public NameSuffixDetailValue getNameSuffixDetailValueByPKForUpdate(NameSuffixPK nameSuffixPK) {
-        NameSuffix nameSuffix = NameSuffixFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, nameSuffixPK);
-        NameSuffixDetail nameSuffixDetail = nameSuffix.getActiveDetailForUpdate();
+        var nameSuffix = NameSuffixFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, nameSuffixPK);
+        var nameSuffixDetail = nameSuffix.getActiveDetailForUpdate();
         
         return nameSuffixDetail.getNameSuffixDetailValue().clone();
     }
     
     private void updateNameSuffixFromValue(NameSuffixDetailValue nameSuffixDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(nameSuffixDetailValue.hasBeenModified()) {
-            NameSuffix nameSuffix = NameSuffixFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var nameSuffix = NameSuffixFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     nameSuffixDetailValue.getNameSuffixPK());
-            NameSuffixDetail nameSuffixDetail = nameSuffix.getActiveDetailForUpdate();
+            var nameSuffixDetail = nameSuffix.getActiveDetailForUpdate();
             
             nameSuffixDetail.setThruTime(session.START_TIME_LONG);
             nameSuffixDetail.store();
-            
-            String description = nameSuffixDetailValue.getDescription();
-            Integer sortOrder = nameSuffixDetailValue.getSortOrder();
-            Boolean isDefault = nameSuffixDetailValue.getIsDefault();
+
+            var description = nameSuffixDetailValue.getDescription();
+            var sortOrder = nameSuffixDetailValue.getSortOrder();
+            var isDefault = nameSuffixDetailValue.getIsDefault();
             
             if(checkDefault) {
-                NameSuffix defaultNameSuffix = getDefaultNameSuffix();
-                boolean defaultFound = defaultNameSuffix != null && !defaultNameSuffix.equals(nameSuffix);
+                var defaultNameSuffix = getDefaultNameSuffix();
+                var defaultFound = defaultNameSuffix != null && !defaultNameSuffix.equals(nameSuffix);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    NameSuffixDetailValue defaultNameSuffixDetailValue = getDefaultNameSuffixDetailValueForUpdate();
+                    var defaultNameSuffixDetailValue = getDefaultNameSuffixDetailValueForUpdate();
                     
                     defaultNameSuffixDetailValue.setIsDefault(Boolean.FALSE);
                     updateNameSuffixFromValue(defaultNameSuffixDetailValue, false, updatedBy);
@@ -1314,7 +1314,7 @@ public class PartyControl
     
     public List<NameSuffixTransfer> getNameSuffixTransfers(UserVisit userVisit, Collection<NameSuffix> nameSuffixes) {
         List<NameSuffixTransfer> nameSuffixTransfers = new ArrayList<>(nameSuffixes.size());
-        NameSuffixTransferCache nameSuffixTransferCache = getPartyTransferCaches(userVisit).getNameSuffixTransferCache();
+        var nameSuffixTransferCache = getPartyTransferCaches(userVisit).getNameSuffixTransferCache();
         
         nameSuffixes.forEach((nameSuffix) ->
                 nameSuffixTransfers.add(nameSuffixTransferCache.getNameSuffixTransfer(nameSuffix))
@@ -1328,22 +1328,22 @@ public class PartyControl
     }
     
     public void deleteNameSuffix(NameSuffix nameSuffix, BasePK deletedBy) {
-        NameSuffixDetail nameSuffixDetail = nameSuffix.getLastDetailForUpdate();
+        var nameSuffixDetail = nameSuffix.getLastDetailForUpdate();
         nameSuffixDetail.setThruTime(session.START_TIME_LONG);
         nameSuffix.setActiveDetail(null);
         nameSuffix.store();
         
         // Check for default, and pick one if necessary
-        NameSuffix defaultNameSuffix = getDefaultNameSuffix();
+        var defaultNameSuffix = getDefaultNameSuffix();
         if(defaultNameSuffix == null) {
-            List<NameSuffix> nameSuffixes = getNameSuffixesForUpdate();
+            var nameSuffixes = getNameSuffixesForUpdate();
             
             if(!nameSuffixes.isEmpty()) {
-                Iterator<NameSuffix> iter = nameSuffixes.iterator();
+                var iter = nameSuffixes.iterator();
                 if(iter.hasNext()) {
                     defaultNameSuffix = iter.next();
                 }
-                NameSuffixDetailValue nameSuffixDetailValue = Objects.requireNonNull(defaultNameSuffix).getLastDetailForUpdate().getNameSuffixDetailValue().clone();
+                var nameSuffixDetailValue = Objects.requireNonNull(defaultNameSuffix).getLastDetailForUpdate().getNameSuffixDetailValue().clone();
                 
                 nameSuffixDetailValue.setIsDefault(Boolean.TRUE);
                 updateNameSuffixFromValue(nameSuffixDetailValue, false, deletedBy);
@@ -1359,9 +1359,9 @@ public class PartyControl
     
     public TimeZone createTimeZone(String javaTimeZoneName, String unixTimeZoneName, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
-        
-        TimeZone timeZone = TimeZoneFactory.getInstance().create();
-        TimeZoneDetail timeZoneDetail = TimeZoneDetailFactory.getInstance().create(timeZone, javaTimeZoneName,
+
+        var timeZone = TimeZoneFactory.getInstance().create();
+        var timeZoneDetail = TimeZoneDetailFactory.getInstance().create(timeZone, javaTimeZoneName,
                 unixTimeZoneName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -1401,7 +1401,7 @@ public class PartyControl
         List<TimeZone> timeZones;
         
         try {
-            PreparedStatement ps = TimeZoneFactory.getInstance().prepareStatement(
+            var ps = TimeZoneFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM timezones, timezonedetails " +
                     "WHERE tz_timezoneid = tzdt_tz_timezoneid AND tzdt_thrutime = ? " +
@@ -1422,7 +1422,7 @@ public class PartyControl
         TimeZone timeZone;
         
         try {
-            PreparedStatement ps = TimeZoneFactory.getInstance().prepareStatement(
+            var ps = TimeZoneFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM timezones, timezonedetails " +
                     "WHERE tz_timezoneid = tzdt_tz_timezoneid AND tzdt_isdefault = 1 AND tzdt_thrutime = ?");
@@ -1441,7 +1441,7 @@ public class PartyControl
         TimeZone timeZone;
         
         try {
-            PreparedStatement ps = TimeZoneFactory.getInstance().prepareStatement(
+            var ps = TimeZoneFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM timezones, timezonedetails " +
                     "WHERE tz_timezoneid = tzdt_tz_timezoneid AND tzdt_javatimezonename = ? AND tzdt_thrutime = ?");
@@ -1458,7 +1458,7 @@ public class PartyControl
     }
     
     public TimeZoneChoicesBean getTimeZoneChoices(String defaultTimeZoneChoice, Language language, boolean allowNullChoice) {
-        List<TimeZone> timeZones = getTimeZones();
+        var timeZones = getTimeZones();
         var size = timeZones.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -1474,7 +1474,7 @@ public class PartyControl
         }
         
         for(var timeZone : timeZones) {
-            TimeZoneDetail timeZoneDetail = timeZone.getLastDetail();
+            var timeZoneDetail = timeZone.getLastDetail();
             var value = timeZoneDetail.getJavaTimeZoneName();
             
             labels.add(getBestTimeZoneDescription(timeZone, language));
@@ -1495,7 +1495,7 @@ public class PartyControl
     
     public List<TimeZoneTransfer> getTimeZoneTransfers(UserVisit userVisit, Collection<TimeZone> timeZones) {
         List<TimeZoneTransfer> timeZoneTransfers = new ArrayList<>(timeZones.size());
-        TimeZoneTransferCache timeZoneTransferCache = getPartyTransferCaches(userVisit).getTimeZoneTransferCache();
+        var timeZoneTransferCache = getPartyTransferCaches(userVisit).getTimeZoneTransferCache();
         
         timeZones.forEach((timeZone) ->
                 timeZoneTransfers.add(timeZoneTransferCache.getTimeZoneTransfer(timeZone))
@@ -1513,7 +1513,7 @@ public class PartyControl
     // --------------------------------------------------------------------------------
     
     public TimeZoneDescription createTimeZoneDescription(TimeZone timeZone, Language language, String description, BasePK createdBy) {
-        TimeZoneDescription timeZoneDescription = TimeZoneDescriptionFactory.getInstance().create(timeZone, language,
+        var timeZoneDescription = TimeZoneDescriptionFactory.getInstance().create(timeZone, language,
                 description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(timeZone.getPrimaryKey(), EventTypes.MODIFY, timeZoneDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1539,8 +1539,8 @@ public class PartyControl
                         "WHERE tzd_tz_timezoneid = ? AND tzd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = TimeZoneDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = TimeZoneDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, timeZone.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1577,8 +1577,8 @@ public class PartyControl
                         "WHERE tzd_tz_timezoneid = ? AND tzd_lang_languageid = ? AND tzd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = TimeZoneDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = TimeZoneDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, timeZone.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -1610,7 +1610,7 @@ public class PartyControl
     
     public String getBestTimeZoneDescription(TimeZone timeZone, Language language) {
         String description;
-        TimeZoneDescription timeZoneDescription = getTimeZoneDescription(timeZone, language);
+        var timeZoneDescription = getTimeZoneDescription(timeZone, language);
         
         if(timeZoneDescription == null && !language.getIsDefault()) {
             timeZoneDescription = getTimeZoneDescription(timeZone, getPartyControl().getDefaultLanguage());
@@ -1630,9 +1630,9 @@ public class PartyControl
     }
     
     public List<TimeZoneDescriptionTransfer> getTimeZoneDescriptionTransfers(UserVisit userVisit, TimeZone timeZone) {
-        List<TimeZoneDescription> timeZoneDescriptions = getTimeZoneDescriptionsByTimeZone(timeZone);
+        var timeZoneDescriptions = getTimeZoneDescriptionsByTimeZone(timeZone);
         List<TimeZoneDescriptionTransfer> timeZoneDescriptionTransfers = new ArrayList<>(timeZoneDescriptions.size());
-        TimeZoneDescriptionTransferCache timeZoneDescriptionTransferCache = getPartyTransferCaches(userVisit).getTimeZoneDescriptionTransferCache();
+        var timeZoneDescriptionTransferCache = getPartyTransferCaches(userVisit).getTimeZoneDescriptionTransferCache();
         
         timeZoneDescriptions.forEach((timeZoneDescription) ->
                 timeZoneDescriptionTransfers.add(timeZoneDescriptionTransferCache.getTimeZoneDescriptionTransfer(timeZoneDescription))
@@ -1643,15 +1643,15 @@ public class PartyControl
     
     public void updateTimeZoneDescriptionFromValue(TimeZoneDescriptionValue timeZoneDescriptionValue, BasePK updatedBy) {
         if(timeZoneDescriptionValue.hasBeenModified()) {
-            TimeZoneDescription timeZoneDescription = TimeZoneDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var timeZoneDescription = TimeZoneDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      timeZoneDescriptionValue.getPrimaryKey());
             
             timeZoneDescription.setThruTime(session.START_TIME_LONG);
             timeZoneDescription.store();
-            
-            TimeZone timeZone = timeZoneDescription.getTimeZone();
-            Language language = timeZoneDescription.getLanguage();
-            String description = timeZoneDescriptionValue.getDescription();
+
+            var timeZone = timeZoneDescription.getTimeZone();
+            var language = timeZoneDescription.getLanguage();
+            var description = timeZoneDescriptionValue.getDescription();
             
             timeZoneDescription = TimeZoneDescriptionFactory.getInstance().create(timeZone, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1667,7 +1667,7 @@ public class PartyControl
     }
     
     public void deleteTimeZoneDescriptionsByTimeZone(TimeZone timeZone, BasePK deletedBy) {
-        List<TimeZoneDescription> timeZoneDescriptions = getTimeZoneDescriptionsByTimeZoneForUpdate(timeZone);
+        var timeZoneDescriptions = getTimeZoneDescriptionsByTimeZoneForUpdate(timeZone);
         
         timeZoneDescriptions.forEach((timeZoneDescription) -> 
                 deleteTimeZoneDescription(timeZoneDescription, deletedBy)
@@ -1684,9 +1684,9 @@ public class PartyControl
             String unixAbbrevDateFormatWeekday, String unixLongDateFormat, String unixLongDateFormatWeekday, String unixTimeFormat,
             String unixTimeFormatSeconds, String shortDateSeparator, String timeSeparator, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
-        DateTimeFormat dateTimeFormat = DateTimeFormatFactory.getInstance().create((DateTimeFormatDetailPK)null,
+        var dateTimeFormat = DateTimeFormatFactory.getInstance().create((DateTimeFormatDetailPK)null,
                 (DateTimeFormatDetailPK)null);
-        DateTimeFormatDetail dateTimeFormatDetail = DateTimeFormatDetailFactory.getInstance().create(dateTimeFormat,
+        var dateTimeFormatDetail = DateTimeFormatDetailFactory.getInstance().create(dateTimeFormat,
                 dateTimeFormatName, javaShortDateFormat, javaAbbrevDateFormat, javaAbbrevDateFormatWeekday, javaLongDateFormat,
                 javaLongDateFormatWeekday, javaTimeFormat, javaTimeFormatSeconds, unixShortDateFormat, unixAbbrevDateFormat,
                 unixAbbrevDateFormatWeekday, unixLongDateFormat, unixLongDateFormatWeekday, unixTimeFormat, unixTimeFormatSeconds,
@@ -1730,7 +1730,7 @@ public class PartyControl
         List<DateTimeFormat> dateTimeFormats;
         
         try {
-            PreparedStatement ps = DateTimeFormatFactory.getInstance().prepareStatement(
+            var ps = DateTimeFormatFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM datetimeformats, datetimeformatdetails " +
                     "WHERE dtf_datetimeformatid = dtfdt_dtf_datetimeformatid AND dtfdt_thrutime = ? " +
@@ -1751,7 +1751,7 @@ public class PartyControl
         DateTimeFormat dateTimeFormat;
         
         try {
-            PreparedStatement ps = DateTimeFormatFactory.getInstance().prepareStatement(
+            var ps = DateTimeFormatFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM datetimeformats, datetimeformatdetails " +
                     "WHERE dtf_datetimeformatid = dtfdt_dtf_datetimeformatid AND dtfdt_isdefault = 1 AND dtfdt_thrutime = ?");
@@ -1770,7 +1770,7 @@ public class PartyControl
         DateTimeFormat dateTimeFormat;
         
         try {
-            PreparedStatement ps = DateTimeFormatFactory.getInstance().prepareStatement(
+            var ps = DateTimeFormatFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM datetimeformats, datetimeformatdetails " +
                     "WHERE dtf_datetimeformatid = dtfdt_dtf_datetimeformatid AND dtfdt_datetimeformatname = ? AND dtfdt_thrutime = ?");
@@ -1787,7 +1787,7 @@ public class PartyControl
     }
     
     public DateTimeFormatChoicesBean getDateTimeFormatChoices(String defaultDateTimeFormatChoice, Language language, boolean allowNullChoice) {
-        List<DateTimeFormat> dateTimeFormats = getDateTimeFormats();
+        var dateTimeFormats = getDateTimeFormats();
         var size = dateTimeFormats.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -1803,7 +1803,7 @@ public class PartyControl
         }
         
         for(var dateTimeFormat : dateTimeFormats) {
-            DateTimeFormatDetail dateTimeFormatDetail = dateTimeFormat.getLastDetail();
+            var dateTimeFormatDetail = dateTimeFormat.getLastDetail();
             var value = dateTimeFormatDetail.getDateTimeFormatName();
             
             labels.add(getBestDateTimeFormatDescription(dateTimeFormat, language));
@@ -1824,7 +1824,7 @@ public class PartyControl
     
     public List<DateTimeFormatTransfer> getDateTimeFormatTransfers(UserVisit userVisit, Collection<DateTimeFormat> dateTimeFormats) {
         List<DateTimeFormatTransfer> dateTimeFormatTransfers = new ArrayList<>(dateTimeFormats.size());
-        DateTimeFormatTransferCache dateTimeFormatTransferCache = getPartyTransferCaches(userVisit).getDateTimeFormatTransferCache();
+        var dateTimeFormatTransferCache = getPartyTransferCaches(userVisit).getDateTimeFormatTransferCache();
         
         dateTimeFormats.forEach((dateTimeFormat) ->
                 dateTimeFormatTransfers.add(dateTimeFormatTransferCache.getDateTimeFormatTransfer(dateTimeFormat))
@@ -1843,7 +1843,7 @@ public class PartyControl
     
     public DateTimeFormatDescription createDateTimeFormatDescription(DateTimeFormat dateTimeFormat, Language language,
             String description, BasePK createdBy) {
-        DateTimeFormatDescription dateTimeFormatDescription = DateTimeFormatDescriptionFactory.getInstance().create(session,
+        var dateTimeFormatDescription = DateTimeFormatDescriptionFactory.getInstance().create(session,
                 dateTimeFormat, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(dateTimeFormat.getPrimaryKey(), EventTypes.MODIFY, dateTimeFormatDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1869,8 +1869,8 @@ public class PartyControl
                         "WHERE dtfd_dtf_datetimeformatid = ? AND dtfd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = DateTimeFormatDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = DateTimeFormatDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, dateTimeFormat.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1907,8 +1907,8 @@ public class PartyControl
                         "WHERE dtfd_dtf_datetimeformatid = ? AND dtfd_lang_languageid = ? AND dtfd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = DateTimeFormatDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = DateTimeFormatDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, dateTimeFormat.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -1940,7 +1940,7 @@ public class PartyControl
     
     public String getBestDateTimeFormatDescription(DateTimeFormat dateTimeFormat, Language language) {
         String description;
-        DateTimeFormatDescription dateTimeFormatDescription = getDateTimeFormatDescription(dateTimeFormat, language);
+        var dateTimeFormatDescription = getDateTimeFormatDescription(dateTimeFormat, language);
         
         if(dateTimeFormatDescription == null && !language.getIsDefault()) {
             dateTimeFormatDescription = getDateTimeFormatDescription(dateTimeFormat, getPartyControl().getDefaultLanguage());
@@ -1960,9 +1960,9 @@ public class PartyControl
     }
     
     public List<DateTimeFormatDescriptionTransfer> getDateTimeFormatDescriptionTransfers(UserVisit userVisit, DateTimeFormat dateTimeFormat) {
-        List<DateTimeFormatDescription> dateTimeFormatDescriptions = getDateTimeFormatDescriptionsByDateTimeFormat(dateTimeFormat);
+        var dateTimeFormatDescriptions = getDateTimeFormatDescriptionsByDateTimeFormat(dateTimeFormat);
         List<DateTimeFormatDescriptionTransfer> dateTimeFormatDescriptionTransfers = new ArrayList<>(dateTimeFormatDescriptions.size());
-        DateTimeFormatDescriptionTransferCache dateTimeFormatDescriptionTransferCache = getPartyTransferCaches(userVisit).getDateTimeFormatDescriptionTransferCache();
+        var dateTimeFormatDescriptionTransferCache = getPartyTransferCaches(userVisit).getDateTimeFormatDescriptionTransferCache();
         
         dateTimeFormatDescriptions.forEach((dateTimeFormatDescription) ->
                 dateTimeFormatDescriptionTransfers.add(dateTimeFormatDescriptionTransferCache.getDateTimeFormatDescriptionTransfer(dateTimeFormatDescription))
@@ -1973,15 +1973,15 @@ public class PartyControl
     
     public void updateDateTimeFormatDescriptionFromValue(DateTimeFormatDescriptionValue dateTimeFormatDescriptionValue, BasePK updatedBy) {
         if(dateTimeFormatDescriptionValue.hasBeenModified()) {
-            DateTimeFormatDescription dateTimeFormatDescription = DateTimeFormatDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var dateTimeFormatDescription = DateTimeFormatDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      dateTimeFormatDescriptionValue.getPrimaryKey());
             
             dateTimeFormatDescription.setThruTime(session.START_TIME_LONG);
             dateTimeFormatDescription.store();
-            
-            DateTimeFormat dateTimeFormat = dateTimeFormatDescription.getDateTimeFormat();
-            Language language = dateTimeFormatDescription.getLanguage();
-            String description = dateTimeFormatDescriptionValue.getDescription();
+
+            var dateTimeFormat = dateTimeFormatDescription.getDateTimeFormat();
+            var language = dateTimeFormatDescription.getLanguage();
+            var description = dateTimeFormatDescriptionValue.getDescription();
             
             dateTimeFormatDescription = DateTimeFormatDescriptionFactory.getInstance().create(dateTimeFormat, language,
                     description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1998,7 +1998,7 @@ public class PartyControl
     }
     
     public void deleteDateTimeFormatDescriptionsByDateTimeFormat(DateTimeFormat dateTimeFormat, BasePK deletedBy) {
-        List<DateTimeFormatDescription> dateTimeFormatDescriptions = getDateTimeFormatDescriptionsByDateTimeFormatForUpdate(dateTimeFormat);
+        var dateTimeFormatDescriptions = getDateTimeFormatDescriptionsByDateTimeFormatForUpdate(dateTimeFormat);
         
         dateTimeFormatDescriptions.forEach((dateTimeFormatDescription) -> 
                 deleteDateTimeFormatDescription(dateTimeFormatDescription, deletedBy)
@@ -2011,7 +2011,7 @@ public class PartyControl
     
     public Party createParty(String partyName, PartyType partyType, Language preferredLanguage, Currency preferredCurrency,
             TimeZone preferredTimeZone, DateTimeFormat preferredDateTimeFormat, BasePK createdBy) {
-        Party party = PartyFactory.getInstance().create();
+        var party = PartyFactory.getInstance().create();
         
         if(createdBy == null) {
             createdBy = party.getPrimaryKey();
@@ -2019,9 +2019,9 @@ public class PartyControl
         
         if(partyName == null) {
             var sequenceControl = Session.getModelController(SequenceControl.class);
-            SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.PARTY.name());
+            var sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.PARTY.name());
             if(sequenceType != null) {
-                Sequence sequence = sequenceControl.getDefaultSequence(sequenceType);
+                var sequence = sequenceControl.getDefaultSequence(sequenceType);
                 
                 if(sequence != null) {
                     partyName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
@@ -2033,7 +2033,7 @@ public class PartyControl
             party.remove();
             party = null;
         } else {
-            PartyDetail partyDetail = PartyDetailFactory.getInstance().create(party, partyName, partyType, preferredLanguage,
+            var partyDetail = PartyDetailFactory.getInstance().create(party, partyName, partyType, preferredLanguage,
                     preferredCurrency, preferredTimeZone, preferredDateTimeFormat, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
             // Convert to R/W
@@ -2109,8 +2109,8 @@ public class PartyControl
     }
     
     public PartyDetailValue getPartyDetailValueByPKForUpdate(PartyPK partyPK) {
-        Party party = PartyFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, partyPK);
-        PartyDetail partyDetail = party.getActiveDetailForUpdate();
+        var party = PartyFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, partyPK);
+        var partyDetail = party.getActiveDetailForUpdate();
         
         return partyDetail.getPartyDetailValue().clone();
     }
@@ -2162,7 +2162,7 @@ public class PartyControl
         List<Party> parties;
 
         try {
-            PreparedStatement ps = PartyFactory.getInstance().prepareStatement(
+            var ps = PartyFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM parties, partydetails " +
                     "WHERE par_partyid = pardt_par_partyid AND pardt_ptyp_partytypeid = ? AND pardt_thrutime = ? " +
@@ -2180,7 +2180,7 @@ public class PartyControl
     }
 
     public Language getPreferredLanguage(Party party) {
-        Language language = party.getLastDetail().getPreferredLanguage();
+        var language = party.getLastDetail().getPreferredLanguage();
         
         if(language == null) {
             language = getDefaultLanguage();
@@ -2190,7 +2190,7 @@ public class PartyControl
     }
     
     public Currency getPreferredCurrency(Party party) {
-        Currency currency = party.getLastDetail().getPreferredCurrency();
+        var currency = party.getLastDetail().getPreferredCurrency();
         
         if(currency == null) {
             var accountingControl = Session.getModelController(AccountingControl.class);
@@ -2202,7 +2202,7 @@ public class PartyControl
     }
     
     public TimeZone getPreferredTimeZone(Party party) {
-        TimeZone timeZone = party.getLastDetail().getPreferredTimeZone();
+        var timeZone = party.getLastDetail().getPreferredTimeZone();
         
         if(timeZone == null) {
             timeZone = getDefaultTimeZone();
@@ -2212,7 +2212,7 @@ public class PartyControl
     }
     
     public DateTimeFormat getPreferredDateTimeFormat(Party party) {
-        DateTimeFormat dateTimeFormat = party.getLastDetail().getPreferredDateTimeFormat();
+        var dateTimeFormat = party.getLastDetail().getPreferredDateTimeFormat();
         
         if(dateTimeFormat == null) {
             dateTimeFormat = getDefaultDateTimeFormat();
@@ -2242,19 +2242,19 @@ public class PartyControl
 
     public void updatePartyFromValue(PartyDetailValue partyDetailValue, BasePK updatedBy) {
         if(partyDetailValue.hasBeenModified()) {
-            PartyPK partyPK = partyDetailValue.getPartyPK();
-            Party party = PartyFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, partyPK);
-            PartyDetail partyDetail = party.getActiveDetailForUpdate();
+            var partyPK = partyDetailValue.getPartyPK();
+            var party = PartyFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, partyPK);
+            var partyDetail = party.getActiveDetailForUpdate();
             
             partyDetail.setThruTime(session.START_TIME_LONG);
             partyDetail.store();
-            
-            String partyName = partyDetailValue.getPartyName();
-            PartyTypePK partyTypePK = partyDetailValue.getPartyTypePK();
-            LanguagePK preferredLanguagePK = partyDetailValue.getPreferredLanguagePK();
-            CurrencyPK preferredCurrencyPK = partyDetailValue.getPreferredCurrencyPK();
-            TimeZonePK preferredTimeZonePK = partyDetailValue.getPreferredTimeZonePK();
-            DateTimeFormatPK preferredDateTimeFormatPK = partyDetailValue.getPreferredDateTimeFormatPK();
+
+            var partyName = partyDetailValue.getPartyName();
+            var partyTypePK = partyDetailValue.getPartyTypePK();
+            var preferredLanguagePK = partyDetailValue.getPreferredLanguagePK();
+            var preferredCurrencyPK = partyDetailValue.getPreferredCurrencyPK();
+            var preferredTimeZonePK = partyDetailValue.getPreferredTimeZonePK();
+            var preferredDateTimeFormatPK = partyDetailValue.getPreferredDateTimeFormatPK();
             
             partyDetail = PartyDetailFactory.getInstance().create(partyPK, partyName, partyTypePK, preferredLanguagePK,
                     preferredCurrencyPK, preferredTimeZonePK, preferredDateTimeFormatPK, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -2294,9 +2294,9 @@ public class PartyControl
         var securityControl = Session.getModelController(SecurityControl.class);
         var termControl = Session.getModelController(TermControl.class);
         var userControl = Session.getModelController(UserControl.class);
-        PartyDetail partyDetail = party.getLastDetailForUpdate();
-        PartyType partyType = partyDetail.getPartyType();
-        String partyTypeName = partyType.getPartyTypeName();
+        var partyDetail = party.getLastDetailForUpdate();
+        var partyType = partyDetail.getPartyType();
+        var partyTypeName = partyType.getPartyTypeName();
         
         // TODO: Doesn't clean up all relationships
         getCoreControl().deletePartyApplicationEditorUsesByParty(party, deletedBy);
@@ -2378,26 +2378,26 @@ public class PartyControl
         StringBuilder sb = new StringBuilder();
 
         if(party != null) {
-            PartyDetail partyDetail = party.getLastDetail();
-            PartyType originalPartyType = partyDetail.getPartyType();
-            PartyType partyType = originalPartyType;
+            var partyDetail = party.getLastDetail();
+            var originalPartyType = partyDetail.getPartyType();
+            var partyType = originalPartyType;
 
             while(partyType.getParentPartyTypePK() != null) {
                 partyType = partyType.getParentPartyType();
             }
 
-            String partyTypeName = partyType.getPartyTypeName();
+            var partyTypeName = partyType.getPartyTypeName();
             sb.append(getBestPartyTypeDescription(originalPartyType, language));
 
             if(partyTypeName.equals(PartyTypes.UTILITY.name())) {
                 // If its a UTILITY, description will be "partyTypeDescription.description, partyTypeName"
                 sb.append(", ").append(partyDetail.getPartyName());
             } else {
-                Person person = getPerson(party);
-                PartyGroup partyGroup = getPartyGroup(party);
-                String firstName = person == null? null: person.getFirstName();
-                String lastName = person == null? null: person.getLastName();
-                String name = partyGroup == null? null: partyGroup.getName();
+                var person = getPerson(party);
+                var partyGroup = getPartyGroup(party);
+                var firstName = person == null? null: person.getFirstName();
+                var lastName = person == null? null: person.getLastName();
+                var name = partyGroup == null? null: partyGroup.getName();
 
                 if((firstName != null || lastName != null || name != null)) {
                     sb.append(", ");
@@ -2482,13 +2482,13 @@ public class PartyControl
     }
 
     public PartyStatus getPartyStatus(Party party) {
-        PartyStatus partyStatus = getPartyStatus(party, EntityPermission.READ_ONLY);
+        var partyStatus = getPartyStatus(party, EntityPermission.READ_ONLY);
 
         return partyStatus == null ? createPartyStatus(party) : partyStatus;
     }
 
     public PartyStatus getPartyStatusForUpdate(Party party) {
-        PartyStatus partyStatus = getPartyStatus(party, EntityPermission.READ_WRITE);
+        var partyStatus = getPartyStatus(party, EntityPermission.READ_WRITE);
 
         return partyStatus == null
                 ? PartyStatusFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, createPartyStatus(party).getPrimaryKey())
@@ -2496,7 +2496,7 @@ public class PartyControl
     }
 
     public void removePartyStatusByParty(Party party) {
-        PartyStatus partyStatus = getPartyStatusForUpdate(party);
+        var partyStatus = getPartyStatusForUpdate(party);
 
         if(partyStatus != null) {
             partyStatus.remove();
@@ -2508,7 +2508,7 @@ public class PartyControl
     // --------------------------------------------------------------------------------
 
     public PartyAlias createPartyAlias(Party party, PartyAliasType partyAliasType, String alias, BasePK createdBy) {
-        PartyAlias partyAlias = PartyAliasFactory.getInstance().create(party, partyAliasType, alias, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        var partyAlias = PartyAliasFactory.getInstance().create(party, partyAliasType, alias, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partyAlias.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -2670,7 +2670,7 @@ public class PartyControl
 
     public List<PartyAliasTransfer> getPartyAliasTransfers(UserVisit userVisit, Collection<PartyAlias> partyaliases) {
         List<PartyAliasTransfer> partyAliasTransfers = new ArrayList<>(partyaliases.size());
-        PartyAliasTransferCache partyAliasTransferCache = getPartyTransferCaches(userVisit).getPartyAliasTransferCache();
+        var partyAliasTransferCache = getPartyTransferCaches(userVisit).getPartyAliasTransferCache();
 
         partyaliases.forEach((partyAlias) ->
                 partyAliasTransfers.add(partyAliasTransferCache.getPartyAliasTransfer(partyAlias))
@@ -2685,14 +2685,14 @@ public class PartyControl
 
     public void updatePartyAliasFromValue(PartyAliasValue partyAliasValue, BasePK updatedBy) {
         if(partyAliasValue.hasBeenModified()) {
-            PartyAlias partyAlias = PartyAliasFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, partyAliasValue.getPrimaryKey());
+            var partyAlias = PartyAliasFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, partyAliasValue.getPrimaryKey());
 
             partyAlias.setThruTime(session.START_TIME_LONG);
             partyAlias.store();
 
-            PartyPK partyPK = partyAlias.getPartyPK();
-            PartyAliasTypePK partyAliasTypePK = partyAlias.getPartyAliasTypePK();
-            String alias  = partyAliasValue.getAlias();
+            var partyPK = partyAlias.getPartyPK();
+            var partyAliasTypePK = partyAlias.getPartyAliasTypePK();
+            var alias  = partyAliasValue.getAlias();
 
             partyAlias = PartyAliasFactory.getInstance().create(partyPK, partyAliasTypePK, alias, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
@@ -2708,7 +2708,7 @@ public class PartyControl
     }
 
     public void deletePartyAliasesByPartyAliasType(PartyAliasType partyAliasType, BasePK deletedBy) {
-        List<PartyAlias> partyaliases = getPartyAliasesByPartyAliasTypeForUpdate(partyAliasType);
+        var partyaliases = getPartyAliasesByPartyAliasTypeForUpdate(partyAliasType);
 
         partyaliases.forEach((partyAlias) -> 
                 deletePartyAlias(partyAlias, deletedBy)
@@ -2716,7 +2716,7 @@ public class PartyControl
     }
 
     public void deletePartyAliasesByParty(Party party, BasePK deletedBy) {
-        List<PartyAlias> partyaliases = getPartyAliasesByPartyForUpdate(party);
+        var partyaliases = getPartyAliasesByPartyForUpdate(party);
 
         partyaliases.forEach((partyAlias) -> 
                 deletePartyAlias(partyAlias, deletedBy)
@@ -2735,7 +2735,7 @@ public class PartyControl
         PartyRelationshipType partyRelationshipType;
         
         try {
-            PreparedStatement ps = PartyRelationshipTypeFactory.getInstance().prepareStatement(
+            var ps = PartyRelationshipTypeFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM partyrelationshiptypes " +
                     "WHERE prt_partyrelationshiptypename = ?");
@@ -2764,7 +2764,7 @@ public class PartyControl
         PartyRelationshipTypeDescription partyRelationshipTypeDescription;
         
         try {
-            PreparedStatement ps = PartyRelationshipTypeDescriptionFactory.getInstance().prepareStatement(
+            var ps = PartyRelationshipTypeDescriptionFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM partyrelationshiptypedescriptions " +
                     "WHERE prtd_prt_partyrelationshiptypeid = ? AND prtd_lang_languageid = ?");
@@ -2804,11 +2804,11 @@ public class PartyControl
 
     public PartyAliasType createPartyAliasType(PartyType partyType, String partyAliasTypeName, String validationPattern, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
-        PartyAliasType defaultPartyAliasType = getDefaultPartyAliasType(partyType);
-        boolean defaultFound = defaultPartyAliasType != null;
+        var defaultPartyAliasType = getDefaultPartyAliasType(partyType);
+        var defaultFound = defaultPartyAliasType != null;
 
         if(defaultFound && isDefault) {
-            PartyAliasTypeDetailValue defaultPartyAliasTypeDetailValue = getDefaultPartyAliasTypeDetailValueForUpdate(partyType);
+            var defaultPartyAliasTypeDetailValue = getDefaultPartyAliasTypeDetailValueForUpdate(partyType);
 
             defaultPartyAliasTypeDetailValue.setIsDefault(Boolean.FALSE);
             updatePartyAliasTypeFromValue(defaultPartyAliasTypeDetailValue, false, createdBy);
@@ -2816,8 +2816,8 @@ public class PartyControl
             isDefault = Boolean.TRUE;
         }
 
-        PartyAliasType partyAliasType = PartyAliasTypeFactory.getInstance().create();
-        PartyAliasTypeDetail partyAliasTypeDetail = PartyAliasTypeDetailFactory.getInstance().create(partyAliasType, partyType, partyAliasTypeName,
+        var partyAliasType = PartyAliasTypeFactory.getInstance().create();
+        var partyAliasTypeDetail = PartyAliasTypeDetailFactory.getInstance().create(partyAliasType, partyType, partyAliasTypeName,
                 validationPattern, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -2967,7 +2967,7 @@ public class PartyControl
 
     public List<PartyAliasTypeTransfer> getPartyAliasTypeTransfers(UserVisit userVisit, Collection<PartyAliasType> partyAliasTypes) {
         List<PartyAliasTypeTransfer> partyAliasTypeTransfers = new ArrayList<>(partyAliasTypes.size());
-        PartyAliasTypeTransferCache partyAliasTypeTransferCache = getPartyTransferCaches(userVisit).getPartyAliasTypeTransferCache();
+        var partyAliasTypeTransferCache = getPartyTransferCaches(userVisit).getPartyAliasTypeTransferCache();
 
         partyAliasTypes.forEach((partyAliasType) ->
                 partyAliasTypeTransfers.add(partyAliasTypeTransferCache.getPartyAliasTypeTransfer(partyAliasType))
@@ -2982,7 +2982,7 @@ public class PartyControl
 
     public PartyAliasTypeChoicesBean getPartyAliasTypeChoices(String defaultPartyAliasTypeChoice, Language language,
             boolean allowNullChoice, PartyType partyType) {
-        List<PartyAliasType> partyAliasTypes = getPartyAliasTypes(partyType);
+        var partyAliasTypes = getPartyAliasTypes(partyType);
         var size = partyAliasTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -2998,7 +2998,7 @@ public class PartyControl
         }
 
         for(var partyAliasType : partyAliasTypes) {
-            PartyAliasTypeDetail partyAliasTypeDetail = partyAliasType.getLastDetail();
+            var partyAliasTypeDetail = partyAliasType.getLastDetail();
 
             var label = getBestPartyAliasTypeDescription(partyAliasType, language);
             var value = partyAliasTypeDetail.getPartyAliasTypeName();
@@ -3018,28 +3018,28 @@ public class PartyControl
     private void updatePartyAliasTypeFromValue(PartyAliasTypeDetailValue partyAliasTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(partyAliasTypeDetailValue.hasBeenModified()) {
-            PartyAliasType partyAliasType = PartyAliasTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var partyAliasType = PartyAliasTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     partyAliasTypeDetailValue.getPartyAliasTypePK());
-            PartyAliasTypeDetail partyAliasTypeDetail = partyAliasType.getActiveDetailForUpdate();
+            var partyAliasTypeDetail = partyAliasType.getActiveDetailForUpdate();
 
             partyAliasTypeDetail.setThruTime(session.START_TIME_LONG);
             partyAliasTypeDetail.store();
 
-            PartyAliasTypePK partyAliasTypePK = partyAliasTypeDetail.getPartyAliasTypePK();
-            PartyType partyType = partyAliasTypeDetail.getPartyType();
-            PartyTypePK partyTypePK = partyType.getPrimaryKey();
-            String partyAliasTypeName = partyAliasTypeDetailValue.getPartyAliasTypeName();
-            String validationPattern = partyAliasTypeDetailValue.getValidationPattern();
-            Boolean isDefault = partyAliasTypeDetailValue.getIsDefault();
-            Integer sortOrder = partyAliasTypeDetailValue.getSortOrder();
+            var partyAliasTypePK = partyAliasTypeDetail.getPartyAliasTypePK();
+            var partyType = partyAliasTypeDetail.getPartyType();
+            var partyTypePK = partyType.getPrimaryKey();
+            var partyAliasTypeName = partyAliasTypeDetailValue.getPartyAliasTypeName();
+            var validationPattern = partyAliasTypeDetailValue.getValidationPattern();
+            var isDefault = partyAliasTypeDetailValue.getIsDefault();
+            var sortOrder = partyAliasTypeDetailValue.getSortOrder();
 
             if(checkDefault) {
-                PartyAliasType defaultPartyAliasType = getDefaultPartyAliasType(partyType);
-                boolean defaultFound = defaultPartyAliasType != null && !defaultPartyAliasType.equals(partyAliasType);
+                var defaultPartyAliasType = getDefaultPartyAliasType(partyType);
+                var defaultFound = defaultPartyAliasType != null && !defaultPartyAliasType.equals(partyAliasType);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    PartyAliasTypeDetailValue defaultPartyAliasTypeDetailValue = getDefaultPartyAliasTypeDetailValueForUpdate(partyType);
+                    var defaultPartyAliasTypeDetailValue = getDefaultPartyAliasTypeDetailValueForUpdate(partyType);
 
                     defaultPartyAliasTypeDetailValue.setIsDefault(Boolean.FALSE);
                     updatePartyAliasTypeFromValue(defaultPartyAliasTypeDetailValue, false, updatedBy);
@@ -3067,23 +3067,23 @@ public class PartyControl
         deletePartyAliasesByPartyAliasType(partyAliasType, deletedBy);
         deletePartyAliasTypeDescriptionsByPartyAliasType(partyAliasType, deletedBy);
 
-        PartyAliasTypeDetail partyAliasTypeDetail = partyAliasType.getLastDetailForUpdate();
+        var partyAliasTypeDetail = partyAliasType.getLastDetailForUpdate();
         partyAliasTypeDetail.setThruTime(session.START_TIME_LONG);
         partyAliasType.setActiveDetail(null);
         partyAliasType.store();
 
         // Check for default, and pick one if necessary
-        PartyType partyType = partyAliasTypeDetail.getPartyType();
-        PartyAliasType defaultPartyAliasType = getDefaultPartyAliasType(partyType);
+        var partyType = partyAliasTypeDetail.getPartyType();
+        var defaultPartyAliasType = getDefaultPartyAliasType(partyType);
         if(defaultPartyAliasType == null) {
-            List<PartyAliasType> partyAliasTypes = getPartyAliasTypesForUpdate(partyType);
+            var partyAliasTypes = getPartyAliasTypesForUpdate(partyType);
 
             if(!partyAliasTypes.isEmpty()) {
-                Iterator<PartyAliasType> iter = partyAliasTypes.iterator();
+                var iter = partyAliasTypes.iterator();
                 if(iter.hasNext()) {
                     defaultPartyAliasType = iter.next();
                 }
-                PartyAliasTypeDetailValue partyAliasTypeDetailValue = Objects.requireNonNull(defaultPartyAliasType).getLastDetailForUpdate().getPartyAliasTypeDetailValue().clone();
+                var partyAliasTypeDetailValue = Objects.requireNonNull(defaultPartyAliasType).getLastDetailForUpdate().getPartyAliasTypeDetailValue().clone();
 
                 partyAliasTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updatePartyAliasTypeFromValue(partyAliasTypeDetailValue, false, deletedBy);
@@ -3108,7 +3108,7 @@ public class PartyControl
     // --------------------------------------------------------------------------------
 
     public PartyAliasTypeDescription createPartyAliasTypeDescription(PartyAliasType partyAliasType, Language language, String description, BasePK createdBy) {
-        PartyAliasTypeDescription partyAliasTypeDescription = PartyAliasTypeDescriptionFactory.getInstance().create(partyAliasType, language,
+        var partyAliasTypeDescription = PartyAliasTypeDescriptionFactory.getInstance().create(partyAliasType, language,
                 description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(partyAliasType.getPrimaryKey(), EventTypes.MODIFY, partyAliasTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -3188,7 +3188,7 @@ public class PartyControl
 
     public String getBestPartyAliasTypeDescription(PartyAliasType partyAliasType, Language language) {
         String description;
-        PartyAliasTypeDescription partyAliasTypeDescription = getPartyAliasTypeDescription(partyAliasType, language);
+        var partyAliasTypeDescription = getPartyAliasTypeDescription(partyAliasType, language);
 
         if(partyAliasTypeDescription == null && !language.getIsDefault()) {
             partyAliasTypeDescription = getPartyAliasTypeDescription(partyAliasType, getPartyControl().getDefaultLanguage());
@@ -3208,9 +3208,9 @@ public class PartyControl
     }
 
     public List<PartyAliasTypeDescriptionTransfer> getPartyAliasTypeDescriptionTransfersByPartyAliasType(UserVisit userVisit, PartyAliasType partyAliasType) {
-        List<PartyAliasTypeDescription> partyAliasTypeDescriptions = getPartyAliasTypeDescriptionsByPartyAliasType(partyAliasType);
+        var partyAliasTypeDescriptions = getPartyAliasTypeDescriptionsByPartyAliasType(partyAliasType);
         List<PartyAliasTypeDescriptionTransfer> partyAliasTypeDescriptionTransfers = new ArrayList<>(partyAliasTypeDescriptions.size());
-        PartyAliasTypeDescriptionTransferCache partyAliasTypeDescriptionTransferCache = getPartyTransferCaches(userVisit).getPartyAliasTypeDescriptionTransferCache();
+        var partyAliasTypeDescriptionTransferCache = getPartyTransferCaches(userVisit).getPartyAliasTypeDescriptionTransferCache();
 
         partyAliasTypeDescriptions.forEach((partyAliasTypeDescription) ->
                 partyAliasTypeDescriptionTransfers.add(partyAliasTypeDescriptionTransferCache.getPartyAliasTypeDescriptionTransfer(partyAliasTypeDescription))
@@ -3221,15 +3221,15 @@ public class PartyControl
 
     public void updatePartyAliasTypeDescriptionFromValue(PartyAliasTypeDescriptionValue partyAliasTypeDescriptionValue, BasePK updatedBy) {
         if(partyAliasTypeDescriptionValue.hasBeenModified()) {
-            PartyAliasTypeDescription partyAliasTypeDescription = PartyAliasTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var partyAliasTypeDescription = PartyAliasTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      partyAliasTypeDescriptionValue.getPrimaryKey());
 
             partyAliasTypeDescription.setThruTime(session.START_TIME_LONG);
             partyAliasTypeDescription.store();
 
-            PartyAliasType partyAliasType = partyAliasTypeDescription.getPartyAliasType();
-            Language language = partyAliasTypeDescription.getLanguage();
-            String description = partyAliasTypeDescriptionValue.getDescription();
+            var partyAliasType = partyAliasTypeDescription.getPartyAliasType();
+            var language = partyAliasTypeDescription.getLanguage();
+            var description = partyAliasTypeDescriptionValue.getDescription();
 
             partyAliasTypeDescription = PartyAliasTypeDescriptionFactory.getInstance().create(partyAliasType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -3246,7 +3246,7 @@ public class PartyControl
     }
 
     public void deletePartyAliasTypeDescriptionsByPartyAliasType(PartyAliasType partyAliasType, BasePK deletedBy) {
-        List<PartyAliasTypeDescription> partyAliasTypeDescriptions = getPartyAliasTypeDescriptionsByPartyAliasTypeForUpdate(partyAliasType);
+        var partyAliasTypeDescriptions = getPartyAliasTypeDescriptionsByPartyAliasTypeForUpdate(partyAliasType);
 
         partyAliasTypeDescriptions.forEach((partyAliasTypeDescription) -> 
                 deletePartyAliasTypeDescription(partyAliasTypeDescription, deletedBy)
@@ -3265,7 +3265,7 @@ public class PartyControl
         RoleType roleType;
         
         try {
-            PreparedStatement ps = RoleTypeFactory.getInstance().prepareStatement(
+            var ps = RoleTypeFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM roletypes " +
                     "WHERE rtyp_roletypename = ?");
@@ -3296,7 +3296,7 @@ public class PartyControl
         RoleTypeDescription roleTypeDescription;
         
         try {
-            PreparedStatement ps = RoleTypeDescriptionFactory.getInstance().prepareStatement(
+            var ps = RoleTypeDescriptionFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM roletypedescriptions " +
                     "WHERE rtypd_rtyp_roletypeid = ? AND rtypd_lang_languageid = ?");
@@ -3314,7 +3314,7 @@ public class PartyControl
     
     public String getBestRoleTypeDescription(RoleType roleType, Language language) {
         String description;
-        RoleTypeDescription roleTypeDescription = getRoleTypeDescription(roleType, language);
+        var roleTypeDescription = getRoleTypeDescription(roleType, language);
         
         if(roleTypeDescription == null && !language.getIsDefault()) {
             roleTypeDescription = getRoleTypeDescription(roleType, getPartyControl().getDefaultLanguage());
@@ -3334,7 +3334,7 @@ public class PartyControl
     // --------------------------------------------------------------------------------
     
     public PartyGroup createPartyGroup(Party party, String name, BasePK createdBy) {
-        PartyGroup partyGroup = PartyGroupFactory.getInstance().create(party, name, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        var partyGroup = PartyGroupFactory.getInstance().create(party, name, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partyGroup.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -3357,8 +3357,8 @@ public class PartyControl
                         "WHERE pgp_par_partyid = ? AND pgp_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PartyGroupFactory.getInstance().prepareStatement(query);
+
+            var ps = PartyGroupFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, party.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -3389,14 +3389,14 @@ public class PartyControl
     
     public void updatePartyGroupFromValue(PartyGroupValue partyGroupValue, BasePK updatedBy) {
         if(partyGroupValue.hasBeenModified()) {
-            PartyGroup partyGroup = PartyGroupFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var partyGroup = PartyGroupFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     partyGroupValue.getPrimaryKey());
             
             partyGroup.setThruTime(session.START_TIME_LONG);
             partyGroup.store();
-            
-            PartyPK partyPK = partyGroup.getPartyPK();
-            String name = partyGroupValue.getName();
+
+            var partyPK = partyGroup.getPartyPK();
+            var name = partyGroupValue.getName();
             
             partyGroup = PartyGroupFactory.getInstance().create(partyPK, name, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
@@ -3412,7 +3412,7 @@ public class PartyControl
     }
     
     public void deletePartyGroupByParty(Party party, BasePK deletedBy) {
-        PartyGroup partyGroup = getPartyGroupForUpdate(party);
+        var partyGroup = getPartyGroupForUpdate(party);
         
         if(partyGroup != null) {
             deletePartyGroup(partyGroup, deletedBy);
@@ -3429,19 +3429,19 @@ public class PartyControl
     
     public PartyCompany createPartyCompany(Party party, String partyCompanyName, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
-        PartyCompany defaultPartyCompany = getDefaultPartyCompany();
-        boolean defaultFound = defaultPartyCompany != null;
+        var defaultPartyCompany = getDefaultPartyCompany();
+        var defaultFound = defaultPartyCompany != null;
         
         if(defaultFound && isDefault) {
-            PartyCompanyValue defaultPartyCompanyValue = getDefaultPartyCompanyValueForUpdate();
+            var defaultPartyCompanyValue = getDefaultPartyCompanyValueForUpdate();
             
             defaultPartyCompanyValue.setIsDefault(Boolean.FALSE);
             updatePartyCompanyFromValue(defaultPartyCompanyValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        PartyCompany partyCompany = PartyCompanyFactory.getInstance().create(party, partyCompanyName, isDefault, sortOrder,
+
+        var partyCompany = PartyCompanyFactory.getInstance().create(party, partyCompanyName, isDefault, sortOrder,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partyCompany.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -3477,8 +3477,8 @@ public class PartyControl
                         "WHERE pcomp_par_partyid = ? AND pcomp_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PartyCompanyFactory.getInstance().prepareStatement(query);
+
+            var ps = PartyCompanyFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, party.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -3521,8 +3521,8 @@ public class PartyControl
                         "AND pardt_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PartyCompanyFactory.getInstance().prepareStatement(query);
+
+            var ps = PartyCompanyFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, Session.MAX_TIME);
             ps.setLong(2, Session.MAX_TIME);
@@ -3565,8 +3565,8 @@ public class PartyControl
                         "AND pardt_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PartyCompanyFactory.getInstance().prepareStatement(query);
+
+            var ps = PartyCompanyFactory.getInstance().prepareStatement(query);
             
             ps.setString(1, partyCompanyName);
             ps.setLong(2, Session.MAX_TIME);
@@ -3610,8 +3610,8 @@ public class PartyControl
                         "WHERE pcomp_thrutime = ? AND pcomp_par_partyid = pardt_par_partyid AND pardt_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PartyCompanyFactory.getInstance().prepareStatement(query);
+
+            var ps = PartyCompanyFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, Session.MAX_TIME);
             ps.setLong(2, Session.MAX_TIME);
@@ -3633,7 +3633,7 @@ public class PartyControl
     }
     
     public CompanyChoicesBean getCompanyChoices(String defaultCompanyChoice, boolean allowNullChoice) {
-        List<PartyCompany> partyCompanies = getCompanies();
+        var partyCompanies = getCompanies();
         var size = partyCompanies.size() + (allowNullChoice ? 1 : 0);
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -3649,7 +3649,7 @@ public class PartyControl
         }
         
         for(var partyCompany : partyCompanies) {
-            PartyGroup partyGroup = getPartyGroup(partyCompany.getParty());
+            var partyGroup = getPartyGroup(partyCompany.getParty());
             
             var label = partyGroup.getName();
             var value = partyCompany.getPartyCompanyName();
@@ -3668,7 +3668,7 @@ public class PartyControl
     
     public List<CompanyTransfer> getCompanyTransfers(UserVisit userVisit, Collection<PartyCompany> partyCompanies) {
         List<CompanyTransfer> companyTransfers = new ArrayList<>(partyCompanies.size());
-        CompanyTransferCache companyTransferCache = getPartyTransferCaches(userVisit).getCompanyTransferCache();
+        var companyTransferCache = getPartyTransferCaches(userVisit).getCompanyTransferCache();
         
         partyCompanies.forEach((partyCompany) ->
                 companyTransfers.add(companyTransferCache.getCompanyTransfer(partyCompany))
@@ -3691,24 +3691,24 @@ public class PartyControl
     
     private void updatePartyCompanyFromValue(PartyCompanyValue partyCompanyValue, boolean checkDefault, BasePK updatedBy) {
         if(partyCompanyValue.hasBeenModified()) {
-            PartyCompany partyCompany = PartyCompanyFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var partyCompany = PartyCompanyFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      partyCompanyValue.getPrimaryKey());
             
             partyCompany.setThruTime(session.START_TIME_LONG);
             partyCompany.store();
-            
-            PartyPK partyPK = partyCompanyValue.getPartyPK();
-            String partyCompanyName = partyCompanyValue.getPartyCompanyName();
-            Boolean isDefault = partyCompanyValue.getIsDefault();
-            Integer sortOrder = partyCompanyValue.getSortOrder();
+
+            var partyPK = partyCompanyValue.getPartyPK();
+            var partyCompanyName = partyCompanyValue.getPartyCompanyName();
+            var isDefault = partyCompanyValue.getIsDefault();
+            var sortOrder = partyCompanyValue.getSortOrder();
             
             if(checkDefault) {
-                PartyCompany defaultPartyCompany = getDefaultPartyCompany();
-                boolean defaultFound = defaultPartyCompany != null && !defaultPartyCompany.equals(partyCompany);
+                var defaultPartyCompany = getDefaultPartyCompany();
+                var defaultFound = defaultPartyCompany != null && !defaultPartyCompany.equals(partyCompany);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    PartyCompanyValue defaultPartyCompanyValue = getDefaultPartyCompanyValueForUpdate();
+                    var defaultPartyCompanyValue = getDefaultPartyCompanyValueForUpdate();
                     
                     defaultPartyCompanyValue.setIsDefault(Boolean.FALSE);
                     updatePartyCompanyFromValue(defaultPartyCompanyValue, false, updatedBy);
@@ -3735,19 +3735,19 @@ public class PartyControl
     
     public PartyDivision createPartyDivision(Party party, Party companyParty, String partyDivisionName, Boolean isDefault,
             Integer sortOrder, BasePK createdBy) {
-        PartyDivision defaultPartyDivision = getDefaultPartyDivision(companyParty);
-        boolean defaultFound = defaultPartyDivision != null;
+        var defaultPartyDivision = getDefaultPartyDivision(companyParty);
+        var defaultFound = defaultPartyDivision != null;
         
         if(defaultFound && isDefault) {
-            PartyDivisionValue defaultPartyDivisionValue = getDefaultPartyDivisionValueForUpdate(companyParty);
+            var defaultPartyDivisionValue = getDefaultPartyDivisionValueForUpdate(companyParty);
             
             defaultPartyDivisionValue.setIsDefault(Boolean.FALSE);
             updatePartyDivisionFromValue(defaultPartyDivisionValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        PartyDivision partyDivision = PartyDivisionFactory.getInstance().create(party, companyParty, partyDivisionName,
+
+        var partyDivision = PartyDivisionFactory.getInstance().create(party, companyParty, partyDivisionName,
                 isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partyDivision.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -3783,8 +3783,8 @@ public class PartyControl
                         "WHERE pdiv_par_partyid = ? AND pdiv_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PartyDivisionFactory.getInstance().prepareStatement(query);
+
+            var ps = PartyDivisionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, party.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -3827,8 +3827,8 @@ public class PartyControl
                         "AND pdiv_par_partyid = pardt_par_partyid AND pardt_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PartyDivisionFactory.getInstance().prepareStatement(query);
+
+            var ps = PartyDivisionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, companyParty.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -3872,8 +3872,8 @@ public class PartyControl
                         "AND pdiv_thrutime = ? AND pdiv_par_partyid = pardt_par_partyid AND pardt_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PartyDivisionFactory.getInstance().prepareStatement(query);
+
+            var ps = PartyDivisionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, companyParty.getPrimaryKey().getEntityId());
             ps.setString(2, partyDivisionName);
@@ -3921,7 +3921,7 @@ public class PartyControl
                         "FOR UPDATE";
             }
 
-            PreparedStatement ps = PartyDivisionFactory.getInstance().prepareStatement(query);
+            var ps = PartyDivisionFactory.getInstance().prepareStatement(query);
 
             ps.setLong(1, companyParty.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -3964,7 +3964,7 @@ public class PartyControl
                         "FOR UPDATE";
             }
 
-            PreparedStatement ps = PartyDivisionFactory.getInstance().prepareStatement(query);
+            var ps = PartyDivisionFactory.getInstance().prepareStatement(query);
 
             ps.setString(1, partyDivisionName);
             ps.setLong(2, Session.MAX_TIME);
@@ -3986,7 +3986,7 @@ public class PartyControl
     }
 
     public DivisionChoicesBean getDivisionChoices(Party companyParty, String defaultDivisionChoice, boolean allowNullChoice) {
-        List<PartyDivision> partyDivisions = getDivisionsByCompany(companyParty);
+        var partyDivisions = getDivisionsByCompany(companyParty);
         var size = partyDivisions.size() + (allowNullChoice ? 1 : 0);
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -4002,7 +4002,7 @@ public class PartyControl
         }
         
         for(var partyDivision : partyDivisions) {
-            PartyGroup partyGroup = getPartyGroup(partyDivision.getParty());
+            var partyGroup = getPartyGroup(partyDivision.getParty());
             
             var label = partyGroup.getName();
             var value = partyDivision.getPartyDivisionName();
@@ -4021,7 +4021,7 @@ public class PartyControl
     
     public List<DivisionTransfer> getDivisionTransfers(UserVisit userVisit, Collection<PartyDivision> partyDivisions) {
         List<DivisionTransfer> divisionTransfers = new ArrayList<>(partyDivisions.size());
-        DivisionTransferCache divisionTransferCache = getPartyTransferCaches(userVisit).getDivisionTransferCache();
+        var divisionTransferCache = getPartyTransferCaches(userVisit).getDivisionTransferCache();
         
         partyDivisions.forEach((partyDivision) ->
                 divisionTransfers.add(divisionTransferCache.getDivisionTransfer(partyDivision))
@@ -4044,25 +4044,25 @@ public class PartyControl
     
     private void updatePartyDivisionFromValue(PartyDivisionValue partyDivisionValue, boolean checkDefault, BasePK updatedBy) {
         if(partyDivisionValue.hasBeenModified()) {
-            PartyDivision partyDivision = PartyDivisionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var partyDivision = PartyDivisionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      partyDivisionValue.getPrimaryKey());
             
             partyDivision.setThruTime(session.START_TIME_LONG);
             partyDivision.store();
-            
-            PartyPK partyPK = partyDivisionValue.getPartyPK();
-            Party companyParty = partyDivision.getCompanyParty(); // Not Updated
-            String partyDivisionName = partyDivisionValue.getPartyDivisionName();
-            Boolean isDefault = partyDivisionValue.getIsDefault();
-            Integer sortOrder = partyDivisionValue.getSortOrder();
+
+            var partyPK = partyDivisionValue.getPartyPK();
+            var companyParty = partyDivision.getCompanyParty(); // Not Updated
+            var partyDivisionName = partyDivisionValue.getPartyDivisionName();
+            var isDefault = partyDivisionValue.getIsDefault();
+            var sortOrder = partyDivisionValue.getSortOrder();
             
             if(checkDefault) {
-                PartyDivision defaultPartyDivision = getDefaultPartyDivision(companyParty);
-                boolean defaultFound = defaultPartyDivision != null && !defaultPartyDivision.equals(partyDivision);
+                var defaultPartyDivision = getDefaultPartyDivision(companyParty);
+                var defaultFound = defaultPartyDivision != null && !defaultPartyDivision.equals(partyDivision);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    PartyDivisionValue defaultPartyDivisionValue = getDefaultPartyDivisionValueForUpdate(companyParty);
+                    var defaultPartyDivisionValue = getDefaultPartyDivisionValueForUpdate(companyParty);
                     
                     defaultPartyDivisionValue.setIsDefault(Boolean.FALSE);
                     updatePartyDivisionFromValue(defaultPartyDivisionValue, false, updatedBy);
@@ -4089,19 +4089,19 @@ public class PartyControl
     
     public PartyDepartment createPartyDepartment(Party party, Party divisionParty, String partyDepartmentName, Boolean isDefault,
             Integer sortOrder, BasePK createdBy) {
-        PartyDepartment defaultPartyDepartment = getDefaultPartyDepartment(divisionParty);
-        boolean defaultFound = defaultPartyDepartment != null;
+        var defaultPartyDepartment = getDefaultPartyDepartment(divisionParty);
+        var defaultFound = defaultPartyDepartment != null;
         
         if(defaultFound && isDefault) {
-            PartyDepartmentValue defaultPartyDepartmentValue = getDefaultPartyDepartmentValueForUpdate(divisionParty);
+            var defaultPartyDepartmentValue = getDefaultPartyDepartmentValueForUpdate(divisionParty);
             
             defaultPartyDepartmentValue.setIsDefault(Boolean.FALSE);
             updatePartyDepartmentFromValue(defaultPartyDepartmentValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        PartyDepartment partyDepartment = PartyDepartmentFactory.getInstance().create(party, divisionParty,
+
+        var partyDepartment = PartyDepartmentFactory.getInstance().create(party, divisionParty,
                 partyDepartmentName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partyDepartment.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -4137,8 +4137,8 @@ public class PartyControl
                         "WHERE pdept_par_partyid = ? AND pdept_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PartyDepartmentFactory.getInstance().prepareStatement(query);
+
+            var ps = PartyDepartmentFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, party.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -4181,8 +4181,8 @@ public class PartyControl
                         "AND pdept_par_partyid = pardt_par_partyid AND pardt_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PartyDepartmentFactory.getInstance().prepareStatement(query);
+
+            var ps = PartyDepartmentFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, divisionParty.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -4227,8 +4227,8 @@ public class PartyControl
                         "AND pdept_par_partyid = pardt_par_partyid AND pardt_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PartyDepartmentFactory.getInstance().prepareStatement(query);
+
+            var ps = PartyDepartmentFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, divisionParty.getPrimaryKey().getEntityId());
             ps.setString(2, partyDepartmentName);
@@ -4276,7 +4276,7 @@ public class PartyControl
                         "FOR UPDATE";
             }
 
-            PreparedStatement ps = PartyDepartmentFactory.getInstance().prepareStatement(query);
+            var ps = PartyDepartmentFactory.getInstance().prepareStatement(query);
 
             ps.setLong(1, divisionParty.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -4319,7 +4319,7 @@ public class PartyControl
                         "FOR UPDATE";
             }
 
-            PreparedStatement ps = PartyDepartmentFactory.getInstance().prepareStatement(query);
+            var ps = PartyDepartmentFactory.getInstance().prepareStatement(query);
 
             ps.setString(1, partyDepartmentName);
             ps.setLong(2, Session.MAX_TIME);
@@ -4341,7 +4341,7 @@ public class PartyControl
     }
 
     public DepartmentChoicesBean getDepartmentChoices(Party divisionParty, String defaultDepartmentChoice, boolean allowNullChoice) {
-        List<PartyDepartment> partyDepartments = getDepartmentsByDivision(divisionParty);
+        var partyDepartments = getDepartmentsByDivision(divisionParty);
         var size = partyDepartments.size() + (allowNullChoice ? 1 : 0);
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -4357,7 +4357,7 @@ public class PartyControl
         }
 
         for(var partyDepartment : partyDepartments) {
-            PartyGroup partyGroup = getPartyGroup(partyDepartment.getParty());
+            var partyGroup = getPartyGroup(partyDepartment.getParty());
             
             var label = partyGroup.getName();
             var value = partyDepartment.getPartyDepartmentName();
@@ -4376,7 +4376,7 @@ public class PartyControl
     
     public List<DepartmentTransfer> getDepartmentTransfers(UserVisit userVisit, Collection<PartyDepartment> partyDepartments) {
         List<DepartmentTransfer> departmentTransfers = new ArrayList<>(partyDepartments.size());
-        DepartmentTransferCache departmentTransferCache = getPartyTransferCaches(userVisit).getDepartmentTransferCache();
+        var departmentTransferCache = getPartyTransferCaches(userVisit).getDepartmentTransferCache();
         
         partyDepartments.forEach((partyDepartment) ->
                 departmentTransfers.add(departmentTransferCache.getDepartmentTransfer(partyDepartment))
@@ -4399,25 +4399,25 @@ public class PartyControl
     
     private void updatePartyDepartmentFromValue(PartyDepartmentValue partyDepartmentValue, boolean checkDefault, BasePK updatedBy) {
         if(partyDepartmentValue.hasBeenModified()) {
-            PartyDepartment partyDepartment = PartyDepartmentFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var partyDepartment = PartyDepartmentFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      partyDepartmentValue.getPrimaryKey());
             
             partyDepartment.setThruTime(session.START_TIME_LONG);
             partyDepartment.store();
-            
-            PartyPK partyPK = partyDepartmentValue.getPartyPK();
-            Party companyParty = partyDepartment.getDivisionParty(); // Not Updated
-            String partyDepartmentName = partyDepartmentValue.getPartyDepartmentName();
-            Boolean isDefault = partyDepartmentValue.getIsDefault();
-            Integer sortOrder = partyDepartmentValue.getSortOrder();
+
+            var partyPK = partyDepartmentValue.getPartyPK();
+            var companyParty = partyDepartment.getDivisionParty(); // Not Updated
+            var partyDepartmentName = partyDepartmentValue.getPartyDepartmentName();
+            var isDefault = partyDepartmentValue.getIsDefault();
+            var sortOrder = partyDepartmentValue.getSortOrder();
             
             if(checkDefault) {
-                PartyDepartment defaultPartyDepartment = getDefaultPartyDepartment(companyParty);
-                boolean defaultFound = defaultPartyDepartment != null && !defaultPartyDepartment.equals(partyDepartment);
+                var defaultPartyDepartment = getDefaultPartyDepartment(companyParty);
+                var defaultFound = defaultPartyDepartment != null && !defaultPartyDepartment.equals(partyDepartment);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    PartyDepartmentValue defaultPartyDepartmentValue = getDefaultPartyDepartmentValueForUpdate(companyParty);
+                    var defaultPartyDepartmentValue = getDefaultPartyDepartmentValueForUpdate(companyParty);
                     
                     defaultPartyDepartmentValue.setIsDefault(Boolean.FALSE);
                     updatePartyDepartmentFromValue(defaultPartyDepartmentValue, false, updatedBy);
@@ -4444,7 +4444,7 @@ public class PartyControl
     
     public Person createPerson(Party party, PersonalTitle personalTitle, String firstName, String firstNameSdx, String middleName, String middleNameSdx,
             String lastName, String lastNameSdx, NameSuffix nameSuffix, BasePK createdBy) {
-        Person person = PersonFactory.getInstance().create(party, personalTitle, firstName, firstNameSdx, middleName, middleNameSdx, lastName, lastNameSdx,
+        var person = PersonFactory.getInstance().create(party, personalTitle, firstName, firstNameSdx, middleName, middleNameSdx, lastName, lastNameSdx,
                 nameSuffix, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, person.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -4484,8 +4484,8 @@ public class PartyControl
                         "WHERE peop_par_partyid = ? AND peop_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PersonFactory.getInstance().prepareStatement(query);
+
+            var ps = PersonFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, party.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -4516,21 +4516,21 @@ public class PartyControl
     
     public void updatePersonFromValue(PersonValue personValue, BasePK updatedBy) {
         if(personValue.hasBeenModified()) {
-            Person person = PersonFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var person = PersonFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     personValue.getPrimaryKey());
             
             person.setThruTime(session.START_TIME_LONG);
             person.store();
-            
-            PartyPK partyPK = person.getPartyPK();
-            PersonalTitlePK personalTitlePK = personValue.getPersonalTitlePK();
-            String firstName = personValue.getFirstName();
-            String firstNameSdx = personValue.getFirstNameSdx();
-            String middleName = personValue.getMiddleName();
-            String middleNameSdx = personValue.getMiddleNameSdx();
-            String lastName = personValue.getLastName();
-            String lastNameSdx = personValue.getLastNameSdx();
-            NameSuffixPK nameSuffixPK = personValue.getNameSuffixPK();
+
+            var partyPK = person.getPartyPK();
+            var personalTitlePK = personValue.getPersonalTitlePK();
+            var firstName = personValue.getFirstName();
+            var firstNameSdx = personValue.getFirstNameSdx();
+            var middleName = personValue.getMiddleName();
+            var middleNameSdx = personValue.getMiddleNameSdx();
+            var lastName = personValue.getLastName();
+            var lastNameSdx = personValue.getLastNameSdx();
+            var nameSuffixPK = personValue.getNameSuffixPK();
             
             person = PersonFactory.getInstance().create(partyPK, personalTitlePK, firstName, firstNameSdx, middleName, middleNameSdx, lastName, lastNameSdx,
                     nameSuffixPK, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -4547,7 +4547,7 @@ public class PartyControl
     }
     
     public void deletePersonByParty(Party party, BasePK deletedBy) {
-        Person person = getPersonForUpdate(party);
+        var person = getPersonForUpdate(party);
         
         if(person != null) {
             deletePerson(person, deletedBy);
@@ -4564,7 +4564,7 @@ public class PartyControl
     
     public PartyRelationship createPartyRelationship(PartyRelationshipType partyRelationshipType, Party fromParty,
             RoleType fromRoleType, Party toParty, RoleType toRoleType, BasePK createdBy) {
-        PartyRelationship partyRelationship = PartyRelationshipFactory.getInstance().create(partyRelationshipType,
+        var partyRelationship = PartyRelationshipFactory.getInstance().create(partyRelationshipType,
                 fromParty, fromRoleType, toParty, toRoleType, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(fromParty.getPrimaryKey(), EventTypes.MODIFY, partyRelationship.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -4758,7 +4758,7 @@ public class PartyControl
     
     public List<PartyRelationshipTransfer> getPartyRelationshipTransfers(UserVisit userVisit, Collection<PartyRelationship> partyRelationships) {
         List<PartyRelationshipTransfer> partyRelationshipTransfers = new ArrayList<>(partyRelationships.size());
-        PartyRelationshipTransferCache partyRelationshipTransferCache = getPartyTransferCaches(userVisit).getPartyRelationshipTransferCache();
+        var partyRelationshipTransferCache = getPartyTransferCaches(userVisit).getPartyRelationshipTransferCache();
         
         partyRelationships.forEach((partyRelationship) ->
                 partyRelationshipTransfers.add(partyRelationshipTransferCache.getPartyRelationshipTransfer(partyRelationship))
@@ -4810,8 +4810,8 @@ public class PartyControl
     // --------------------------------------------------------------------------------
     
     public PartyTypeAuditPolicy createPartyTypeAuditPolicy(PartyType partyType, Boolean auditCommands, Long retainUserVisitsTime, BasePK createdBy) {
-        PartyTypeAuditPolicy partyTypeAuditPolicy = PartyTypeAuditPolicyFactory.getInstance().create();
-        PartyTypeAuditPolicyDetail partyTypeAuditPolicyDetail = PartyTypeAuditPolicyDetailFactory.getInstance().create(partyTypeAuditPolicy, partyType, auditCommands, retainUserVisitsTime,
+        var partyTypeAuditPolicy = PartyTypeAuditPolicyFactory.getInstance().create();
+        var partyTypeAuditPolicyDetail = PartyTypeAuditPolicyDetailFactory.getInstance().create(partyTypeAuditPolicy, partyType, auditCommands, retainUserVisitsTime,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -4841,8 +4841,8 @@ public class PartyControl
                         "WHERE ptypap_activedetailid = ptypapdt_partytypeauditpolicydetailid AND ptypapdt_ptyp_partytypeid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PartyTypeAuditPolicyFactory.getInstance().prepareStatement(query);
+
+            var ps = PartyTypeAuditPolicyFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, partyType.getPrimaryKey().getEntityId());
             
@@ -4880,17 +4880,17 @@ public class PartyControl
     
     public void updatePartyTypeAuditPolicyFromValue(PartyTypeAuditPolicyDetailValue partyTypeAuditPolicyDetailValue, BasePK updatedBy) {
         if(partyTypeAuditPolicyDetailValue.hasBeenModified()) {
-            PartyTypeAuditPolicy partyTypeAuditPolicy = PartyTypeAuditPolicyFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var partyTypeAuditPolicy = PartyTypeAuditPolicyFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     partyTypeAuditPolicyDetailValue.getPartyTypeAuditPolicyPK());
-            PartyTypeAuditPolicyDetail partyTypeAuditPolicyDetail = partyTypeAuditPolicy.getActiveDetailForUpdate();
+            var partyTypeAuditPolicyDetail = partyTypeAuditPolicy.getActiveDetailForUpdate();
 
             partyTypeAuditPolicyDetail.setThruTime(session.START_TIME_LONG);
             partyTypeAuditPolicyDetail.store();
 
-            PartyTypeAuditPolicyPK partyTypeAuditPolicyPK = partyTypeAuditPolicyDetail.getPartyTypeAuditPolicyPK();
-            PartyTypePK partyTypePK = partyTypeAuditPolicyDetail.getPartyTypePK(); // Not updated
-            Boolean auditCommands = partyTypeAuditPolicyDetail.getAuditCommands();
-            Long retainUserVisitsTime = partyTypeAuditPolicyDetail.getRetainUserVisitsTime();
+            var partyTypeAuditPolicyPK = partyTypeAuditPolicyDetail.getPartyTypeAuditPolicyPK();
+            var partyTypePK = partyTypeAuditPolicyDetail.getPartyTypePK(); // Not updated
+            var auditCommands = partyTypeAuditPolicyDetail.getAuditCommands();
+            var retainUserVisitsTime = partyTypeAuditPolicyDetail.getRetainUserVisitsTime();
 
             partyTypeAuditPolicyDetail = PartyTypeAuditPolicyDetailFactory.getInstance().create(partyTypeAuditPolicyPK, partyTypePK, auditCommands, retainUserVisitsTime,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -4903,7 +4903,7 @@ public class PartyControl
     }
     
     public void deletePartyTypeAuditPolicy(PartyTypeAuditPolicy partyTypeAuditPolicy, BasePK deletedBy) {
-        PartyTypeAuditPolicyDetail partyTypeAuditPolicyDetail = partyTypeAuditPolicy.getLastDetailForUpdate();
+        var partyTypeAuditPolicyDetail = partyTypeAuditPolicy.getLastDetailForUpdate();
         partyTypeAuditPolicyDetail.setThruTime(session.START_TIME_LONG);
         partyTypeAuditPolicy.setActiveDetail(null);
         partyTypeAuditPolicy.store();
@@ -4917,8 +4917,8 @@ public class PartyControl
     
     public PartyTypeLockoutPolicy createPartyTypeLockoutPolicy(PartyType partyType, Integer lockoutFailureCount,
             Long resetFailureCountTime, Boolean manualLockoutReset, Long lockoutInactiveTime, BasePK createdBy) {
-        PartyTypeLockoutPolicy partyTypeLockoutPolicy = PartyTypeLockoutPolicyFactory.getInstance().create();
-        PartyTypeLockoutPolicyDetail partyTypeLockoutPolicyDetail = PartyTypeLockoutPolicyDetailFactory.getInstance().create(session,
+        var partyTypeLockoutPolicy = PartyTypeLockoutPolicyFactory.getInstance().create();
+        var partyTypeLockoutPolicyDetail = PartyTypeLockoutPolicyDetailFactory.getInstance().create(session,
                 partyTypeLockoutPolicy, partyType, lockoutFailureCount, resetFailureCountTime, manualLockoutReset,
                 lockoutInactiveTime, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
@@ -4950,8 +4950,8 @@ public class PartyControl
                         "WHERE ptyplp_activedetailid = ptyplpdt_partytypelockoutpolicydetailid AND ptyplpdt_ptyp_partytypeid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PartyTypeLockoutPolicyFactory.getInstance().prepareStatement(query);
+
+            var ps = PartyTypeLockoutPolicyFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, partyType.getPrimaryKey().getEntityId());
             
@@ -4989,19 +4989,19 @@ public class PartyControl
     
     public void updatePartyTypeLockoutPolicyFromValue(PartyTypeLockoutPolicyDetailValue partyTypeLockoutPolicyDetailValue, BasePK updatedBy) {
         if(partyTypeLockoutPolicyDetailValue.hasBeenModified()) {
-            PartyTypeLockoutPolicy partyTypeLockoutPolicy = PartyTypeLockoutPolicyFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var partyTypeLockoutPolicy = PartyTypeLockoutPolicyFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      partyTypeLockoutPolicyDetailValue.getPartyTypeLockoutPolicyPK());
-            PartyTypeLockoutPolicyDetail partyTypeLockoutPolicyDetail = partyTypeLockoutPolicy.getActiveDetailForUpdate();
+            var partyTypeLockoutPolicyDetail = partyTypeLockoutPolicy.getActiveDetailForUpdate();
             
             partyTypeLockoutPolicyDetail.setThruTime(session.START_TIME_LONG);
             partyTypeLockoutPolicyDetail.store();
-            
-            PartyTypeLockoutPolicyPK partyTypeLockoutPolicyPK = partyTypeLockoutPolicyDetail.getPartyTypeLockoutPolicyPK();
-            PartyTypePK partyTypePK = partyTypeLockoutPolicyDetail.getPartyTypePK(); // Not updated
-            Integer lockoutFailureCount = partyTypeLockoutPolicyDetailValue.getLockoutFailureCount();
-            Long resetFailureCountTime = partyTypeLockoutPolicyDetailValue.getResetFailureCountTime();
-            Boolean manualLockoutReset = partyTypeLockoutPolicyDetailValue.getManualLockoutReset();
-            Long lockoutInactiveTime = partyTypeLockoutPolicyDetailValue.getLockoutInactiveTime();
+
+            var partyTypeLockoutPolicyPK = partyTypeLockoutPolicyDetail.getPartyTypeLockoutPolicyPK();
+            var partyTypePK = partyTypeLockoutPolicyDetail.getPartyTypePK(); // Not updated
+            var lockoutFailureCount = partyTypeLockoutPolicyDetailValue.getLockoutFailureCount();
+            var resetFailureCountTime = partyTypeLockoutPolicyDetailValue.getResetFailureCountTime();
+            var manualLockoutReset = partyTypeLockoutPolicyDetailValue.getManualLockoutReset();
+            var lockoutInactiveTime = partyTypeLockoutPolicyDetailValue.getLockoutInactiveTime();
             
             partyTypeLockoutPolicyDetail = PartyTypeLockoutPolicyDetailFactory.getInstance().create(session,
                     partyTypeLockoutPolicyPK, partyTypePK, lockoutFailureCount, resetFailureCountTime, manualLockoutReset,
@@ -5015,7 +5015,7 @@ public class PartyControl
     }
     
     public void deletePartyTypeLockoutPolicy(PartyTypeLockoutPolicy partyTypeLockoutPolicy, BasePK deletedBy) {
-        PartyTypeLockoutPolicyDetail partyTypeLockoutPolicyDetail = partyTypeLockoutPolicy.getLastDetailForUpdate();
+        var partyTypeLockoutPolicyDetail = partyTypeLockoutPolicy.getLastDetailForUpdate();
         partyTypeLockoutPolicyDetail.setThruTime(session.START_TIME_LONG);
         partyTypeLockoutPolicy.setActiveDetail(null);
         partyTypeLockoutPolicy.store();
@@ -5032,8 +5032,8 @@ public class PartyControl
             Long expirationWarningTime, Integer expiredLoginsPermitted, Integer minimumLength, Integer maximumLength,
             Integer requiredDigitCount, Integer requiredLetterCount, Integer requiredUpperCaseCount, Integer requiredLowerCaseCount,
             Integer maximumRepeated, Integer minimumCharacterTypes, BasePK createdBy) {
-        PartyTypePasswordStringPolicy partyTypePasswordStringPolicy = PartyTypePasswordStringPolicyFactory.getInstance().create();
-        PartyTypePasswordStringPolicyDetail partyTypePasswordStringPolicyDetail = PartyTypePasswordStringPolicyDetailFactory.getInstance().create(session,
+        var partyTypePasswordStringPolicy = PartyTypePasswordStringPolicyFactory.getInstance().create();
+        var partyTypePasswordStringPolicyDetail = PartyTypePasswordStringPolicyDetailFactory.getInstance().create(session,
                 partyTypePasswordStringPolicy, partyType, forceChangeAfterCreate, forceChangeAfterReset, allowChange, passwordHistory,
                 minimumPasswordLifetime, maximumPasswordLifetime, expirationWarningTime, expiredLoginsPermitted, minimumLength,
                 maximumLength, requiredDigitCount, requiredLetterCount, requiredUpperCaseCount, requiredLowerCaseCount,
@@ -5067,8 +5067,8 @@ public class PartyControl
                         "WHERE ptyppsp_activedetailid = ptyppspdt_partytypepasswordstringpolicydetailid AND ptyppspdt_ptyp_partytypeid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PartyTypePasswordStringPolicyFactory.getInstance().prepareStatement(query);
+
+            var ps = PartyTypePasswordStringPolicyFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, partyType.getPrimaryKey().getEntityId());
             
@@ -5106,31 +5106,31 @@ public class PartyControl
     
     public void updatePartyTypePasswordStringPolicyFromValue(PartyTypePasswordStringPolicyDetailValue partyTypePasswordStringPolicyDetailValue, BasePK updatedBy) {
         if(partyTypePasswordStringPolicyDetailValue.hasBeenModified()) {
-            PartyTypePasswordStringPolicy partyTypePasswordStringPolicy = PartyTypePasswordStringPolicyFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var partyTypePasswordStringPolicy = PartyTypePasswordStringPolicyFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      partyTypePasswordStringPolicyDetailValue.getPartyTypePasswordStringPolicyPK());
-            PartyTypePasswordStringPolicyDetail partyTypePasswordStringPolicyDetail = partyTypePasswordStringPolicy.getActiveDetailForUpdate();
+            var partyTypePasswordStringPolicyDetail = partyTypePasswordStringPolicy.getActiveDetailForUpdate();
             
             partyTypePasswordStringPolicyDetail.setThruTime(session.START_TIME_LONG);
             partyTypePasswordStringPolicyDetail.store();
-            
-            PartyTypePasswordStringPolicyPK partyTypePasswordStringPolicyPK = partyTypePasswordStringPolicyDetail.getPartyTypePasswordStringPolicyPK();
-            PartyTypePK partyTypePK = partyTypePasswordStringPolicyDetail.getPartyTypePK(); // Not updated
-            Boolean forceChangeAfterCreate = partyTypePasswordStringPolicyDetailValue.getForceChangeAfterCreate();
-            Boolean forceChangeAfterReset = partyTypePasswordStringPolicyDetailValue.getForceChangeAfterReset();
-            Boolean allowChange = partyTypePasswordStringPolicyDetailValue.getAllowChange();
-            Integer passwordHistory = partyTypePasswordStringPolicyDetailValue.getPasswordHistory();
-            Long minimumPasswordLifetime = partyTypePasswordStringPolicyDetailValue.getMinimumPasswordLifetime();
-            Long maximumPasswordLifetime = partyTypePasswordStringPolicyDetailValue.getMaximumPasswordLifetime();
-            Long expirationWarningTime = partyTypePasswordStringPolicyDetailValue.getExpirationWarningTime();
-            Integer expiredLoginsPermitted = partyTypePasswordStringPolicyDetailValue.getExpiredLoginsPermitted();
-            Integer minimumLength = partyTypePasswordStringPolicyDetailValue.getMinimumLength();
-            Integer maximumLength = partyTypePasswordStringPolicyDetailValue.getMaximumLength();
-            Integer requiredDigitCount = partyTypePasswordStringPolicyDetailValue.getRequiredDigitCount();
-            Integer requiredLetterCount = partyTypePasswordStringPolicyDetailValue.getRequiredLetterCount();
-            Integer requiredUpperCaseCount = partyTypePasswordStringPolicyDetailValue.getRequiredUpperCaseCount();
-            Integer requiredLowerCaseCount = partyTypePasswordStringPolicyDetailValue.getRequiredLowerCaseCount();
-            Integer maximumRepeated = partyTypePasswordStringPolicyDetailValue.getMaximumRepeated();
-            Integer minimumCharacterTypes = partyTypePasswordStringPolicyDetailValue.getMinimumCharacterTypes();
+
+            var partyTypePasswordStringPolicyPK = partyTypePasswordStringPolicyDetail.getPartyTypePasswordStringPolicyPK();
+            var partyTypePK = partyTypePasswordStringPolicyDetail.getPartyTypePK(); // Not updated
+            var forceChangeAfterCreate = partyTypePasswordStringPolicyDetailValue.getForceChangeAfterCreate();
+            var forceChangeAfterReset = partyTypePasswordStringPolicyDetailValue.getForceChangeAfterReset();
+            var allowChange = partyTypePasswordStringPolicyDetailValue.getAllowChange();
+            var passwordHistory = partyTypePasswordStringPolicyDetailValue.getPasswordHistory();
+            var minimumPasswordLifetime = partyTypePasswordStringPolicyDetailValue.getMinimumPasswordLifetime();
+            var maximumPasswordLifetime = partyTypePasswordStringPolicyDetailValue.getMaximumPasswordLifetime();
+            var expirationWarningTime = partyTypePasswordStringPolicyDetailValue.getExpirationWarningTime();
+            var expiredLoginsPermitted = partyTypePasswordStringPolicyDetailValue.getExpiredLoginsPermitted();
+            var minimumLength = partyTypePasswordStringPolicyDetailValue.getMinimumLength();
+            var maximumLength = partyTypePasswordStringPolicyDetailValue.getMaximumLength();
+            var requiredDigitCount = partyTypePasswordStringPolicyDetailValue.getRequiredDigitCount();
+            var requiredLetterCount = partyTypePasswordStringPolicyDetailValue.getRequiredLetterCount();
+            var requiredUpperCaseCount = partyTypePasswordStringPolicyDetailValue.getRequiredUpperCaseCount();
+            var requiredLowerCaseCount = partyTypePasswordStringPolicyDetailValue.getRequiredLowerCaseCount();
+            var maximumRepeated = partyTypePasswordStringPolicyDetailValue.getMaximumRepeated();
+            var minimumCharacterTypes = partyTypePasswordStringPolicyDetailValue.getMinimumCharacterTypes();
             
             partyTypePasswordStringPolicyDetail = PartyTypePasswordStringPolicyDetailFactory.getInstance().create(session,
                     partyTypePasswordStringPolicyPK, partyTypePK, forceChangeAfterCreate, forceChangeAfterReset, allowChange, passwordHistory,
@@ -5146,7 +5146,7 @@ public class PartyControl
     }
     
     public void deletePartyTypePasswordStringPolicy(PartyTypePasswordStringPolicy partyTypePasswordStringPolicy, BasePK deletedBy) {
-        PartyTypePasswordStringPolicyDetail partyTypePasswordStringPolicyDetail = partyTypePasswordStringPolicy.getLastDetailForUpdate();
+        var partyTypePasswordStringPolicyDetail = partyTypePasswordStringPolicy.getLastDetailForUpdate();
         partyTypePasswordStringPolicyDetail.setThruTime(session.START_TIME_LONG);
         partyTypePasswordStringPolicy.setActiveDetail(null);
         partyTypePasswordStringPolicy.store();
@@ -5159,20 +5159,20 @@ public class PartyControl
     // --------------------------------------------------------------------------------
     
     public Gender createGender(String genderName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        Gender defaultGender = getDefaultGender();
-        boolean defaultFound = defaultGender != null;
+        var defaultGender = getDefaultGender();
+        var defaultFound = defaultGender != null;
         
         if(defaultFound && isDefault) {
-            GenderDetailValue defaultGenderDetailValue = getDefaultGenderDetailValueForUpdate();
+            var defaultGenderDetailValue = getDefaultGenderDetailValueForUpdate();
             
             defaultGenderDetailValue.setIsDefault(Boolean.FALSE);
             updateGenderFromValue(defaultGenderDetailValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        Gender gender = GenderFactory.getInstance().create();
-        GenderDetail genderDetail = GenderDetailFactory.getInstance().create(gender, genderName, isDefault, sortOrder,
+
+        var gender = GenderFactory.getInstance().create();
+        var genderDetail = GenderDetailFactory.getInstance().create(gender, genderName, isDefault, sortOrder,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -5202,8 +5202,8 @@ public class PartyControl
                         "WHERE gndr_activedetailid = gndrdt_genderdetailid AND gndrdt_gendername = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = GenderFactory.getInstance().prepareStatement(query);
+
+            var ps = GenderFactory.getInstance().prepareStatement(query);
             
             ps.setString(1, genderName);
             
@@ -5244,8 +5244,8 @@ public class PartyControl
                     "WHERE gndr_activedetailid = gndrdt_genderdetailid AND gndrdt_isdefault = 1 " +
                     "FOR UPDATE";
         }
-        
-        PreparedStatement ps = GenderFactory.getInstance().prepareStatement(query);
+
+        var ps = GenderFactory.getInstance().prepareStatement(query);
         
         return GenderFactory.getInstance().getEntityFromQuery(entityPermission, ps);
     }
@@ -5277,8 +5277,8 @@ public class PartyControl
                     "WHERE gndr_activedetailid = gndrdt_genderdetailid " +
                     "FOR UPDATE";
         }
-        
-        PreparedStatement ps = GenderFactory.getInstance().prepareStatement(query);
+
+        var ps = GenderFactory.getInstance().prepareStatement(query);
         
         return GenderFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
     }
@@ -5292,7 +5292,7 @@ public class PartyControl
     }
     
     public GenderChoicesBean getGenderChoices(String defaultGenderChoice, Language language, boolean allowNullChoice) {
-        List<Gender> genders = getGenders();
+        var genders = getGenders();
         var size = genders.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -5308,7 +5308,7 @@ public class PartyControl
         }
         
         for(var gender : genders) {
-            GenderDetail genderDetail = gender.getLastDetail();
+            var genderDetail = gender.getLastDetail();
             
             var label = getBestGenderDescription(gender, language);
             var value = genderDetail.getGenderName();
@@ -5330,9 +5330,9 @@ public class PartyControl
     }
     
     public List<GenderTransfer> getGenderTransfers(UserVisit userVisit) {
-        List<Gender> genders = getGenders();
+        var genders = getGenders();
         List<GenderTransfer> genderTransfers = new ArrayList<>(genders.size());
-        GenderTransferCache genderTransferCache = getPartyTransferCaches(userVisit).getGenderTransferCache();
+        var genderTransferCache = getPartyTransferCaches(userVisit).getGenderTransferCache();
         
         genders.forEach((gender) ->
                 genderTransfers.add(genderTransferCache.getGenderTransfer(gender))
@@ -5342,25 +5342,25 @@ public class PartyControl
     }
     
     private void updateGenderFromValue(GenderDetailValue genderDetailValue, boolean checkDefault, BasePK updatedBy) {
-        Gender gender = GenderFactory.getInstance().getEntityFromPK(session,
+        var gender = GenderFactory.getInstance().getEntityFromPK(session,
                 EntityPermission.READ_WRITE, genderDetailValue.getGenderPK());
-        GenderDetail genderDetail = gender.getActiveDetailForUpdate();
+        var genderDetail = gender.getActiveDetailForUpdate();
         
         genderDetail.setThruTime(session.START_TIME_LONG);
         genderDetail.store();
-        
-        GenderPK genderPK = genderDetail.getGenderPK();
-        String genderName = genderDetailValue.getGenderName();
-        Boolean isDefault = genderDetailValue.getIsDefault();
-        Integer sortOrder = genderDetailValue.getSortOrder();
+
+        var genderPK = genderDetail.getGenderPK();
+        var genderName = genderDetailValue.getGenderName();
+        var isDefault = genderDetailValue.getIsDefault();
+        var sortOrder = genderDetailValue.getSortOrder();
         
         if(checkDefault) {
-            Gender defaultGender = getDefaultGender();
-            boolean defaultFound = defaultGender != null && !defaultGender.equals(gender);
+            var defaultGender = getDefaultGender();
+            var defaultFound = defaultGender != null && !defaultGender.equals(gender);
             
             if(isDefault && defaultFound) {
                 // If I'm the default, and a default already existed...
-                GenderDetailValue defaultGenderDetailValue = getDefaultGenderDetailValueForUpdate();
+                var defaultGenderDetailValue = getDefaultGenderDetailValueForUpdate();
                 
                 defaultGenderDetailValue.setIsDefault(Boolean.FALSE);
                 updateGenderFromValue(defaultGenderDetailValue, false, updatedBy);
@@ -5386,23 +5386,23 @@ public class PartyControl
     
     public void deleteGender(Gender gender, BasePK deletedBy) {
         deleteGenderDescriptionsByGender(gender, deletedBy);
-        
-        GenderDetail genderDetail = gender.getLastDetailForUpdate();
+
+        var genderDetail = gender.getLastDetailForUpdate();
         genderDetail.setThruTime(session.START_TIME_LONG);
         gender.setActiveDetail(null);
         gender.store();
         
         // Check for default, and pick one if necessary
-        Gender defaultGender = getDefaultGender();
+        var defaultGender = getDefaultGender();
         if(defaultGender == null) {
-            List<Gender> genders = getGendersForUpdate();
+            var genders = getGendersForUpdate();
             
             if(!genders.isEmpty()) {
-                Iterator<Gender> iter = genders.iterator();
+                var iter = genders.iterator();
                 if(iter.hasNext()) {
                     defaultGender = iter.next();
                 }
-                GenderDetailValue genderDetailValue = Objects.requireNonNull(defaultGender).getLastDetailForUpdate().getGenderDetailValue().clone();
+                var genderDetailValue = Objects.requireNonNull(defaultGender).getLastDetailForUpdate().getGenderDetailValue().clone();
                 
                 genderDetailValue.setIsDefault(Boolean.TRUE);
                 updateGenderFromValue(genderDetailValue, false, deletedBy);
@@ -5417,7 +5417,7 @@ public class PartyControl
     // --------------------------------------------------------------------------------
     
     public GenderDescription createGenderDescription(Gender gender, Language language, String description, BasePK createdBy) {
-        GenderDescription genderDescription = GenderDescriptionFactory.getInstance().create(gender, language, description,
+        var genderDescription = GenderDescriptionFactory.getInstance().create(gender, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(gender.getPrimaryKey(), EventTypes.MODIFY, genderDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -5441,8 +5441,8 @@ public class PartyControl
                         "WHERE gndrd_gndr_genderid = ? AND gndrd_lang_languageid = ? AND gndrd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = GenderDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = GenderDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, gender.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -5490,8 +5490,8 @@ public class PartyControl
                         "WHERE gndrd_gndr_genderid = ? AND gndrd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = GenderDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = GenderDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, gender.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -5514,7 +5514,7 @@ public class PartyControl
     
     public String getBestGenderDescription(Gender gender, Language language) {
         String description;
-        GenderDescription genderDescription = getGenderDescription(gender, language);
+        var genderDescription = getGenderDescription(gender, language);
         
         if(genderDescription == null && !language.getIsDefault()) {
             genderDescription = getGenderDescription(gender, getPartyControl().getDefaultLanguage());
@@ -5534,9 +5534,9 @@ public class PartyControl
     }
     
     public List<GenderDescriptionTransfer> getGenderDescriptionTransfersByGender(UserVisit userVisit, Gender gender) {
-        List<GenderDescription> genderDescriptions = getGenderDescriptionsByGender(gender);
+        var genderDescriptions = getGenderDescriptionsByGender(gender);
         List<GenderDescriptionTransfer> genderDescriptionTransfers = new ArrayList<>(genderDescriptions.size());
-        GenderDescriptionTransferCache genderDescriptionTransferCache = getPartyTransferCaches(userVisit).getGenderDescriptionTransferCache();
+        var genderDescriptionTransferCache = getPartyTransferCaches(userVisit).getGenderDescriptionTransferCache();
         
         genderDescriptions.forEach((genderDescription) ->
                 genderDescriptionTransfers.add(genderDescriptionTransferCache.getGenderDescriptionTransfer(genderDescription))
@@ -5547,15 +5547,15 @@ public class PartyControl
     
     public void updateGenderDescriptionFromValue(GenderDescriptionValue genderDescriptionValue, BasePK updatedBy) {
         if(genderDescriptionValue.hasBeenModified()) {
-            GenderDescription genderDescription = GenderDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var genderDescription = GenderDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      genderDescriptionValue.getPrimaryKey());
             
             genderDescription.setThruTime(session.START_TIME_LONG);
             genderDescription.store();
-            
-            Gender gender = genderDescription.getGender();
-            Language language = genderDescription.getLanguage();
-            String description = genderDescriptionValue.getDescription();
+
+            var gender = genderDescription.getGender();
+            var language = genderDescription.getLanguage();
+            var description = genderDescriptionValue.getDescription();
             
             genderDescription = GenderDescriptionFactory.getInstance().create(gender, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -5572,7 +5572,7 @@ public class PartyControl
     }
     
     public void deleteGenderDescriptionsByGender(Gender gender, BasePK deletedBy) {
-        List<GenderDescription> genderDescriptions = getGenderDescriptionsByGenderForUpdate(gender);
+        var genderDescriptions = getGenderDescriptionsByGenderForUpdate(gender);
         
         genderDescriptions.forEach((genderDescription) -> 
                 deleteGenderDescription(genderDescription, deletedBy)
@@ -5584,20 +5584,20 @@ public class PartyControl
     // --------------------------------------------------------------------------------
     
     public Mood createMood(String moodName, Icon icon, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        Mood defaultMood = getDefaultMood();
-        boolean defaultFound = defaultMood != null;
+        var defaultMood = getDefaultMood();
+        var defaultFound = defaultMood != null;
         
         if(defaultFound && isDefault) {
-            MoodDetailValue defaultMoodDetailValue = getDefaultMoodDetailValueForUpdate();
+            var defaultMoodDetailValue = getDefaultMoodDetailValueForUpdate();
             
             defaultMoodDetailValue.setIsDefault(Boolean.FALSE);
             updateMoodFromValue(defaultMoodDetailValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        Mood mood = MoodFactory.getInstance().create();
-        MoodDetail moodDetail = MoodDetailFactory.getInstance().create(mood, moodName, icon, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+
+        var mood = MoodFactory.getInstance().create();
+        var moodDetail = MoodDetailFactory.getInstance().create(mood, moodName, icon, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
         mood = MoodFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, mood.getPrimaryKey());
@@ -5626,8 +5626,8 @@ public class PartyControl
                         "WHERE md_activedetailid = mddt_mooddetailid AND mddt_moodname = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = MoodFactory.getInstance().prepareStatement(query);
+
+            var ps = MoodFactory.getInstance().prepareStatement(query);
             
             ps.setString(1, moodName);
             
@@ -5668,8 +5668,8 @@ public class PartyControl
                     "WHERE md_activedetailid = mddt_mooddetailid AND mddt_isdefault = 1 " +
                     "FOR UPDATE";
         }
-        
-        PreparedStatement ps = MoodFactory.getInstance().prepareStatement(query);
+
+        var ps = MoodFactory.getInstance().prepareStatement(query);
         
         return MoodFactory.getInstance().getEntityFromQuery(entityPermission, ps);
     }
@@ -5701,8 +5701,8 @@ public class PartyControl
                     "WHERE md_activedetailid = mddt_mooddetailid " +
                     "FOR UPDATE";
         }
-        
-        PreparedStatement ps = MoodFactory.getInstance().prepareStatement(query);
+
+        var ps = MoodFactory.getInstance().prepareStatement(query);
         
         return MoodFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
     }
@@ -5716,7 +5716,7 @@ public class PartyControl
     }
     
     public MoodChoicesBean getMoodChoices(String defaultMoodChoice, Language language, boolean allowNullChoice) {
-        List<Mood> moods = getMoods();
+        var moods = getMoods();
         var size = moods.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -5732,7 +5732,7 @@ public class PartyControl
         }
         
         for(var mood : moods) {
-            MoodDetail moodDetail = mood.getLastDetail();
+            var moodDetail = mood.getLastDetail();
             
             var label = getBestMoodDescription(mood, language);
             var value = moodDetail.getMoodName();
@@ -5754,9 +5754,9 @@ public class PartyControl
     }
     
     public List<MoodTransfer> getMoodTransfers(UserVisit userVisit) {
-        List<Mood> moods = getMoods();
+        var moods = getMoods();
         List<MoodTransfer> moodTransfers = new ArrayList<>(moods.size());
-        MoodTransferCache moodTransferCache = getPartyTransferCaches(userVisit).getMoodTransferCache();
+        var moodTransferCache = getPartyTransferCaches(userVisit).getMoodTransferCache();
         
         moods.forEach((mood) ->
                 moodTransfers.add(moodTransferCache.getMoodTransfer(mood))
@@ -5766,26 +5766,26 @@ public class PartyControl
     }
     
     private void updateMoodFromValue(MoodDetailValue moodDetailValue, boolean checkDefault, BasePK updatedBy) {
-        Mood mood = MoodFactory.getInstance().getEntityFromPK(session,
+        var mood = MoodFactory.getInstance().getEntityFromPK(session,
                 EntityPermission.READ_WRITE, moodDetailValue.getMoodPK());
-        MoodDetail moodDetail = mood.getActiveDetailForUpdate();
+        var moodDetail = mood.getActiveDetailForUpdate();
         
         moodDetail.setThruTime(session.START_TIME_LONG);
         moodDetail.store();
-        
-        MoodPK moodPK = moodDetail.getMoodPK();
-        String moodName = moodDetailValue.getMoodName();
-        IconPK iconPK = moodDetailValue.getIconPK();
-        Boolean isDefault = moodDetailValue.getIsDefault();
-        Integer sortOrder = moodDetailValue.getSortOrder();
+
+        var moodPK = moodDetail.getMoodPK();
+        var moodName = moodDetailValue.getMoodName();
+        var iconPK = moodDetailValue.getIconPK();
+        var isDefault = moodDetailValue.getIsDefault();
+        var sortOrder = moodDetailValue.getSortOrder();
         
         if(checkDefault) {
-            Mood defaultMood = getDefaultMood();
-            boolean defaultFound = defaultMood != null && !defaultMood.equals(mood);
+            var defaultMood = getDefaultMood();
+            var defaultFound = defaultMood != null && !defaultMood.equals(mood);
             
             if(isDefault && defaultFound) {
                 // If I'm the default, and a default already existed...
-                MoodDetailValue defaultMoodDetailValue = getDefaultMoodDetailValueForUpdate();
+                var defaultMoodDetailValue = getDefaultMoodDetailValueForUpdate();
                 
                 defaultMoodDetailValue.setIsDefault(Boolean.FALSE);
                 updateMoodFromValue(defaultMoodDetailValue, false, updatedBy);
@@ -5811,23 +5811,23 @@ public class PartyControl
     
     public void deleteMood(Mood mood, BasePK deletedBy) {
         deleteMoodDescriptionsByMood(mood, deletedBy);
-        
-        MoodDetail moodDetail = mood.getLastDetailForUpdate();
+
+        var moodDetail = mood.getLastDetailForUpdate();
         moodDetail.setThruTime(session.START_TIME_LONG);
         mood.setActiveDetail(null);
         mood.store();
         
         // Check for default, and pick one if necessary
-        Mood defaultMood = getDefaultMood();
+        var defaultMood = getDefaultMood();
         if(defaultMood == null) {
-            List<Mood> moods = getMoodsForUpdate();
+            var moods = getMoodsForUpdate();
             
             if(!moods.isEmpty()) {
-                Iterator<Mood> iter = moods.iterator();
+                var iter = moods.iterator();
                 if(iter.hasNext()) {
                     defaultMood = iter.next();
                 }
-                MoodDetailValue moodDetailValue = Objects.requireNonNull(defaultMood).getLastDetailForUpdate().getMoodDetailValue().clone();
+                var moodDetailValue = Objects.requireNonNull(defaultMood).getLastDetailForUpdate().getMoodDetailValue().clone();
                 
                 moodDetailValue.setIsDefault(Boolean.TRUE);
                 updateMoodFromValue(moodDetailValue, false, deletedBy);
@@ -5842,7 +5842,7 @@ public class PartyControl
     // --------------------------------------------------------------------------------
     
     public MoodDescription createMoodDescription(Mood mood, Language language, String description, BasePK createdBy) {
-        MoodDescription moodDescription = MoodDescriptionFactory.getInstance().create(mood, language, description,
+        var moodDescription = MoodDescriptionFactory.getInstance().create(mood, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(mood.getPrimaryKey(), EventTypes.MODIFY, moodDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -5866,8 +5866,8 @@ public class PartyControl
                         "WHERE mdd_md_moodid = ? AND mdd_lang_languageid = ? AND mdd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = MoodDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = MoodDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, mood.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -5915,8 +5915,8 @@ public class PartyControl
                         "WHERE mdd_md_moodid = ? AND mdd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = MoodDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = MoodDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, mood.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -5939,7 +5939,7 @@ public class PartyControl
     
     public String getBestMoodDescription(Mood mood, Language language) {
         String description;
-        MoodDescription moodDescription = getMoodDescription(mood, language);
+        var moodDescription = getMoodDescription(mood, language);
         
         if(moodDescription == null && !language.getIsDefault()) {
             moodDescription = getMoodDescription(mood, getPartyControl().getDefaultLanguage());
@@ -5959,9 +5959,9 @@ public class PartyControl
     }
     
     public List<MoodDescriptionTransfer> getMoodDescriptionTransfersByMood(UserVisit userVisit, Mood mood) {
-        List<MoodDescription> moodDescriptions = getMoodDescriptionsByMood(mood);
+        var moodDescriptions = getMoodDescriptionsByMood(mood);
         List<MoodDescriptionTransfer> moodDescriptionTransfers = new ArrayList<>(moodDescriptions.size());
-        MoodDescriptionTransferCache moodDescriptionTransferCache = getPartyTransferCaches(userVisit).getMoodDescriptionTransferCache();
+        var moodDescriptionTransferCache = getPartyTransferCaches(userVisit).getMoodDescriptionTransferCache();
         
         moodDescriptions.forEach((moodDescription) ->
                 moodDescriptionTransfers.add(moodDescriptionTransferCache.getMoodDescriptionTransfer(moodDescription))
@@ -5972,15 +5972,15 @@ public class PartyControl
     
     public void updateMoodDescriptionFromValue(MoodDescriptionValue moodDescriptionValue, BasePK updatedBy) {
         if(moodDescriptionValue.hasBeenModified()) {
-            MoodDescription moodDescription = MoodDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var moodDescription = MoodDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      moodDescriptionValue.getPrimaryKey());
             
             moodDescription.setThruTime(session.START_TIME_LONG);
             moodDescription.store();
-            
-            Mood mood = moodDescription.getMood();
-            Language language = moodDescription.getLanguage();
-            String description = moodDescriptionValue.getDescription();
+
+            var mood = moodDescription.getMood();
+            var language = moodDescription.getLanguage();
+            var description = moodDescriptionValue.getDescription();
             
             moodDescription = MoodDescriptionFactory.getInstance().create(mood, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -5997,7 +5997,7 @@ public class PartyControl
     }
     
     public void deleteMoodDescriptionsByMood(Mood mood, BasePK deletedBy) {
-        List<MoodDescription> moodDescriptions = getMoodDescriptionsByMoodForUpdate(mood);
+        var moodDescriptions = getMoodDescriptionsByMoodForUpdate(mood);
         
         moodDescriptions.forEach((moodDescription) -> 
                 deleteMoodDescription(moodDescription, deletedBy)
@@ -6009,11 +6009,11 @@ public class PartyControl
     // --------------------------------------------------------------------------------
 
     public BirthdayFormat createBirthdayFormat(String birthdayFormatName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        BirthdayFormat defaultBirthdayFormat = getDefaultBirthdayFormat();
-        boolean defaultFound = defaultBirthdayFormat != null;
+        var defaultBirthdayFormat = getDefaultBirthdayFormat();
+        var defaultFound = defaultBirthdayFormat != null;
 
         if(defaultFound && isDefault) {
-            BirthdayFormatDetailValue defaultBirthdayFormatDetailValue = getDefaultBirthdayFormatDetailValueForUpdate();
+            var defaultBirthdayFormatDetailValue = getDefaultBirthdayFormatDetailValueForUpdate();
 
             defaultBirthdayFormatDetailValue.setIsDefault(Boolean.FALSE);
             updateBirthdayFormatFromValue(defaultBirthdayFormatDetailValue, false, createdBy);
@@ -6021,8 +6021,8 @@ public class PartyControl
             isDefault = Boolean.TRUE;
         }
 
-        BirthdayFormat birthdayFormat = BirthdayFormatFactory.getInstance().create();
-        BirthdayFormatDetail birthdayFormatDetail = BirthdayFormatDetailFactory.getInstance().create(birthdayFormat,
+        var birthdayFormat = BirthdayFormatFactory.getInstance().create();
+        var birthdayFormatDetail = BirthdayFormatDetailFactory.getInstance().create(birthdayFormat,
                 birthdayFormatName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -6053,7 +6053,7 @@ public class PartyControl
                     "FOR UPDATE";
         }
 
-        PreparedStatement ps = BirthdayFormatFactory.getInstance().prepareStatement(query);
+        var ps = BirthdayFormatFactory.getInstance().prepareStatement(query);
 
         return BirthdayFormatFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
     }
@@ -6087,7 +6087,7 @@ public class PartyControl
                         "FOR UPDATE";
             }
 
-            PreparedStatement ps = BirthdayFormatFactory.getInstance().prepareStatement(query);
+            var ps = BirthdayFormatFactory.getInstance().prepareStatement(query);
 
             ps.setLong(1, entityType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -6122,7 +6122,7 @@ public class PartyControl
                     "FOR UPDATE";
         }
 
-        PreparedStatement ps = BirthdayFormatFactory.getInstance().prepareStatement(query);
+        var ps = BirthdayFormatFactory.getInstance().prepareStatement(query);
 
         return BirthdayFormatFactory.getInstance().getEntityFromQuery(entityPermission, ps);
     }
@@ -6156,7 +6156,7 @@ public class PartyControl
                         "FOR UPDATE";
             }
 
-            PreparedStatement ps = BirthdayFormatFactory.getInstance().prepareStatement(query);
+            var ps = BirthdayFormatFactory.getInstance().prepareStatement(query);
 
             ps.setString(1, birthdayFormatName);
 
@@ -6185,7 +6185,7 @@ public class PartyControl
     }
 
     public BirthdayFormatChoicesBean getBirthdayFormatChoices(String defaultBirthdayFormatChoice, Language language, boolean allowNullChoice) {
-        List<BirthdayFormat> birthdayFormats = getBirthdayFormats();
+        var birthdayFormats = getBirthdayFormats();
         var size = birthdayFormats.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -6201,7 +6201,7 @@ public class PartyControl
         }
 
         for(var birthdayFormat : birthdayFormats) {
-            BirthdayFormatDetail birthdayFormatDetail = birthdayFormat.getLastDetail();
+            var birthdayFormatDetail = birthdayFormat.getLastDetail();
             var label = getBestBirthdayFormatDescription(birthdayFormat, language);
             var value = birthdayFormatDetail.getBirthdayFormatName();
 
@@ -6223,7 +6223,7 @@ public class PartyControl
 
     public List<BirthdayFormatTransfer> getBirthdayFormatTransfers(UserVisit userVisit, Collection<BirthdayFormat> birthdayFormats) {
         List<BirthdayFormatTransfer> birthdayFormatTransfers = new ArrayList<>(birthdayFormats.size());
-        BirthdayFormatTransferCache birthdayFormatTransferCache = getPartyTransferCaches(userVisit).getBirthdayFormatTransferCache();
+        var birthdayFormatTransferCache = getPartyTransferCaches(userVisit).getBirthdayFormatTransferCache();
 
         birthdayFormats.forEach((birthdayFormat) ->
                 birthdayFormatTransfers.add(birthdayFormatTransferCache.getBirthdayFormatTransfer(birthdayFormat))
@@ -6242,25 +6242,25 @@ public class PartyControl
 
     private void updateBirthdayFormatFromValue(BirthdayFormatDetailValue birthdayFormatDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(birthdayFormatDetailValue.hasBeenModified()) {
-            BirthdayFormat birthdayFormat = BirthdayFormatFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var birthdayFormat = BirthdayFormatFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      birthdayFormatDetailValue.getBirthdayFormatPK());
-            BirthdayFormatDetail birthdayFormatDetail = birthdayFormat.getActiveDetailForUpdate();
+            var birthdayFormatDetail = birthdayFormat.getActiveDetailForUpdate();
 
             birthdayFormatDetail.setThruTime(session.START_TIME_LONG);
             birthdayFormatDetail.store();
 
-            BirthdayFormatPK birthdayFormatPK = birthdayFormatDetail.getBirthdayFormatPK();
-            String birthdayFormatName = birthdayFormatDetailValue.getBirthdayFormatName();
-            Boolean isDefault = birthdayFormatDetailValue.getIsDefault();
-            Integer sortOrder = birthdayFormatDetailValue.getSortOrder();
+            var birthdayFormatPK = birthdayFormatDetail.getBirthdayFormatPK();
+            var birthdayFormatName = birthdayFormatDetailValue.getBirthdayFormatName();
+            var isDefault = birthdayFormatDetailValue.getIsDefault();
+            var sortOrder = birthdayFormatDetailValue.getSortOrder();
 
             if(checkDefault) {
-                BirthdayFormat defaultBirthdayFormat = getDefaultBirthdayFormat();
-                boolean defaultFound = defaultBirthdayFormat != null && !defaultBirthdayFormat.equals(birthdayFormat);
+                var defaultBirthdayFormat = getDefaultBirthdayFormat();
+                var defaultFound = defaultBirthdayFormat != null && !defaultBirthdayFormat.equals(birthdayFormat);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    BirthdayFormatDetailValue defaultBirthdayFormatDetailValue = getDefaultBirthdayFormatDetailValueForUpdate();
+                    var defaultBirthdayFormatDetailValue = getDefaultBirthdayFormatDetailValueForUpdate();
 
                     defaultBirthdayFormatDetailValue.setIsDefault(Boolean.FALSE);
                     updateBirthdayFormatFromValue(defaultBirthdayFormatDetailValue, false, updatedBy);
@@ -6287,22 +6287,22 @@ public class PartyControl
     public void deleteBirthdayFormat(BirthdayFormat birthdayFormat, BasePK deletedBy) {
         deleteBirthdayFormatDescriptionsByBirthdayFormat(birthdayFormat, deletedBy);
 
-        BirthdayFormatDetail birthdayFormatDetail = birthdayFormat.getLastDetailForUpdate();
+        var birthdayFormatDetail = birthdayFormat.getLastDetailForUpdate();
         birthdayFormatDetail.setThruTime(session.START_TIME_LONG);
         birthdayFormat.setActiveDetail(null);
         birthdayFormat.store();
 
         // Check for default, and pick one if necessary
-        BirthdayFormat defaultBirthdayFormat = getDefaultBirthdayFormat();
+        var defaultBirthdayFormat = getDefaultBirthdayFormat();
         if(defaultBirthdayFormat == null) {
-            List<BirthdayFormat> birthdayFormats = getBirthdayFormatsForUpdate();
+            var birthdayFormats = getBirthdayFormatsForUpdate();
 
             if(!birthdayFormats.isEmpty()) {
-                Iterator<BirthdayFormat> iter = birthdayFormats.iterator();
+                var iter = birthdayFormats.iterator();
                 if(iter.hasNext()) {
                     defaultBirthdayFormat = iter.next();
                 }
-                BirthdayFormatDetailValue birthdayFormatDetailValue = Objects.requireNonNull(defaultBirthdayFormat).getLastDetailForUpdate().getBirthdayFormatDetailValue().clone();
+                var birthdayFormatDetailValue = Objects.requireNonNull(defaultBirthdayFormat).getLastDetailForUpdate().getBirthdayFormatDetailValue().clone();
 
                 birthdayFormatDetailValue.setIsDefault(Boolean.TRUE);
                 updateBirthdayFormatFromValue(birthdayFormatDetailValue, false, deletedBy);
@@ -6318,7 +6318,7 @@ public class PartyControl
 
     public BirthdayFormatDescription createBirthdayFormatDescription(BirthdayFormat birthdayFormat, Language language, String description,
             BasePK createdBy) {
-        BirthdayFormatDescription birthdayFormatDescription = BirthdayFormatDescriptionFactory.getInstance().create(birthdayFormat,
+        var birthdayFormatDescription = BirthdayFormatDescriptionFactory.getInstance().create(birthdayFormat,
                 language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
@@ -6344,7 +6344,7 @@ public class PartyControl
                         "FOR UPDATE";
             }
 
-            PreparedStatement ps = BirthdayFormatDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = BirthdayFormatDescriptionFactory.getInstance().prepareStatement(query);
 
             ps.setLong(1, birthdayFormat.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -6394,7 +6394,7 @@ public class PartyControl
                         "FOR UPDATE";
             }
 
-            PreparedStatement ps = BirthdayFormatDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = BirthdayFormatDescriptionFactory.getInstance().prepareStatement(query);
 
             ps.setLong(1, birthdayFormat.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -6417,7 +6417,7 @@ public class PartyControl
 
     public String getBestBirthdayFormatDescription(BirthdayFormat birthdayFormat, Language language) {
         String description;
-        BirthdayFormatDescription birthdayFormatDescription = getBirthdayFormatDescription(birthdayFormat, language);
+        var birthdayFormatDescription = getBirthdayFormatDescription(birthdayFormat, language);
 
         if(birthdayFormatDescription == null && !language.getIsDefault()) {
             birthdayFormatDescription = getBirthdayFormatDescription(birthdayFormat, getPartyControl().getDefaultLanguage());
@@ -6437,9 +6437,9 @@ public class PartyControl
     }
 
     public List<BirthdayFormatDescriptionTransfer> getBirthdayFormatDescriptionTransfers(UserVisit userVisit, BirthdayFormat birthdayFormat) {
-        List<BirthdayFormatDescription> birthdayFormatDescriptions = getBirthdayFormatDescriptionsByBirthdayFormat(birthdayFormat);
+        var birthdayFormatDescriptions = getBirthdayFormatDescriptionsByBirthdayFormat(birthdayFormat);
         List<BirthdayFormatDescriptionTransfer> birthdayFormatDescriptionTransfers = new ArrayList<>(birthdayFormatDescriptions.size());
-        BirthdayFormatDescriptionTransferCache birthdayFormatDescriptionTransferCache = getPartyTransferCaches(userVisit).getBirthdayFormatDescriptionTransferCache();
+        var birthdayFormatDescriptionTransferCache = getPartyTransferCaches(userVisit).getBirthdayFormatDescriptionTransferCache();
 
         birthdayFormatDescriptions.forEach((birthdayFormatDescription) ->
                 birthdayFormatDescriptionTransfers.add(birthdayFormatDescriptionTransferCache.getBirthdayFormatDescriptionTransfer(birthdayFormatDescription))
@@ -6450,15 +6450,15 @@ public class PartyControl
 
     public void updateBirthdayFormatDescriptionFromValue(BirthdayFormatDescriptionValue birthdayFormatDescriptionValue, BasePK updatedBy) {
         if(birthdayFormatDescriptionValue.hasBeenModified()) {
-            BirthdayFormatDescription birthdayFormatDescription = BirthdayFormatDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var birthdayFormatDescription = BirthdayFormatDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      birthdayFormatDescriptionValue.getPrimaryKey());
 
             birthdayFormatDescription.setThruTime(session.START_TIME_LONG);
             birthdayFormatDescription.store();
 
-            BirthdayFormat birthdayFormat = birthdayFormatDescription.getBirthdayFormat();
-            Language language = birthdayFormatDescription.getLanguage();
-            String description = birthdayFormatDescriptionValue.getDescription();
+            var birthdayFormat = birthdayFormatDescription.getBirthdayFormat();
+            var language = birthdayFormatDescription.getLanguage();
+            var description = birthdayFormatDescriptionValue.getDescription();
 
             birthdayFormatDescription = BirthdayFormatDescriptionFactory.getInstance().create(birthdayFormat, language,
                     description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -6474,7 +6474,7 @@ public class PartyControl
     }
 
     public void deleteBirthdayFormatDescriptionsByBirthdayFormat(BirthdayFormat birthdayFormat, BasePK deletedBy) {
-        List<BirthdayFormatDescription> birthdayFormatDescriptions = getBirthdayFormatDescriptionsByBirthdayFormatForUpdate(birthdayFormat);
+        var birthdayFormatDescriptions = getBirthdayFormatDescriptionsByBirthdayFormatForUpdate(birthdayFormat);
 
         birthdayFormatDescriptions.forEach((birthdayFormatDescription) -> 
                 deleteBirthdayFormatDescription(birthdayFormatDescription, deletedBy)
@@ -6488,7 +6488,7 @@ public class PartyControl
     public Profile createProfile(Party party, String nickname, Icon icon, String pronunciation, Gender gender, String pronouns,
             Integer birthday, BirthdayFormat birthdayFormat, String occupation, String hobbies, String location, MimeType bioMimeType,
             String bio, MimeType signatureMimeType, String signature, BasePK createdBy) {
-        Profile profile = ProfileFactory.getInstance().create(party, nickname, icon, pronunciation, gender, pronouns,
+        var profile = ProfileFactory.getInstance().create(party, nickname, icon, pronunciation, gender, pronouns,
                 birthday, birthdayFormat, occupation, hobbies, location, bioMimeType, bio, signatureMimeType, signature,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
@@ -6513,8 +6513,8 @@ public class PartyControl
                         "WHERE prfl_par_partyid = ? AND prfl_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ProfileFactory.getInstance().prepareStatement(query);
+
+            var ps = ProfileFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, party.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -6559,8 +6559,8 @@ public class PartyControl
                         "WHERE prfl_nickname = ? AND prfl_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ProfileFactory.getInstance().prepareStatement(query);
+
+            var ps = ProfileFactory.getInstance().prepareStatement(query);
             
             ps.setString(1, nickname);
             ps.setLong(2, Session.MAX_TIME);
@@ -6583,27 +6583,27 @@ public class PartyControl
     
     public void updateProfileFromValue(ProfileValue profileValue, BasePK updatedBy) {
         if(profileValue.hasBeenModified()) {
-            Profile profile = ProfileFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var profile = ProfileFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     profileValue.getPrimaryKey());
             
             profile.setThruTime(session.START_TIME_LONG);
             profile.store();
-            
-            PartyPK partyPK = profile.getPartyPK();
-            String nickname = profileValue.getNickname();
-            IconPK iconPK = profileValue.getIconPK();
-            String pronunciation = profileValue.getPronunciation();
-            GenderPK genderPK = profileValue.getGenderPK();
-            String pronouns = profileValue.getPronouns();
-            Integer birthday = profileValue.getBirthday();
-            BirthdayFormatPK birthdayFormatPK = profileValue.getBirthdayFormatPK();
-            String occupation = profileValue.getOccupation();
-            String hobbies = profileValue.getHobbies();
-            String location = profileValue.getLocation();
-            MimeTypePK bioMimeTypePK = profileValue.getBioMimeTypePK();
-            String bio = profileValue.getBio();
-            MimeTypePK signatureMimeTypePK = profileValue.getSignatureMimeTypePK();
-            String signature = profileValue.getSignature();
+
+            var partyPK = profile.getPartyPK();
+            var nickname = profileValue.getNickname();
+            var iconPK = profileValue.getIconPK();
+            var pronunciation = profileValue.getPronunciation();
+            var genderPK = profileValue.getGenderPK();
+            var pronouns = profileValue.getPronouns();
+            var birthday = profileValue.getBirthday();
+            var birthdayFormatPK = profileValue.getBirthdayFormatPK();
+            var occupation = profileValue.getOccupation();
+            var hobbies = profileValue.getHobbies();
+            var location = profileValue.getLocation();
+            var bioMimeTypePK = profileValue.getBioMimeTypePK();
+            var bio = profileValue.getBio();
+            var signatureMimeTypePK = profileValue.getSignatureMimeTypePK();
+            var signature = profileValue.getSignature();
             
             profile = ProfileFactory.getInstance().create(partyPK, nickname, iconPK, pronunciation, genderPK, pronouns,
                     birthday, birthdayFormatPK, occupation, hobbies, location, bioMimeTypePK, bio, signatureMimeTypePK,
@@ -6621,7 +6621,7 @@ public class PartyControl
     }
     
     public void deleteProfileByParty(Party party, BasePK deletedBy) {
-        Profile profile = getProfileForUpdate(party);
+        var profile = getProfileForUpdate(party);
         
         if(profile != null) {
             deleteProfile(profile, deletedBy);

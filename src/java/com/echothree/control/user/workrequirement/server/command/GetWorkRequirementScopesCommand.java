@@ -57,14 +57,14 @@ public class GetWorkRequirementScopesCommand
     @Override
     protected BaseResult execute() {
         var workEffortControl = Session.getModelController(WorkEffortControl.class);
-        GetWorkRequirementScopesResult result = WorkRequirementResultFactory.getGetWorkRequirementScopesResult();
-        String workEffortTypeName = form.getWorkEffortTypeName();
-        WorkEffortType workEffortType = workEffortControl.getWorkEffortTypeByName(workEffortTypeName);
+        var result = WorkRequirementResultFactory.getGetWorkRequirementScopesResult();
+        var workEffortTypeName = form.getWorkEffortTypeName();
+        var workEffortType = workEffortControl.getWorkEffortTypeByName(workEffortTypeName);
         
         if(workEffortType != null) {
-            UserVisit userVisit = getUserVisit();
-            String workEffortScopeName = form.getWorkEffortScopeName();
-            String workRequirementTypeName = form.getWorkRequirementTypeName();
+            var userVisit = getUserVisit();
+            var workEffortScopeName = form.getWorkEffortScopeName();
+            var workRequirementTypeName = form.getWorkRequirementTypeName();
             var parameterCount = (workEffortScopeName == null ? 0 : 1) + (workRequirementTypeName == null ? 0 : 1);
             
             result.setWorkEffortType(workEffortControl.getWorkEffortTypeTransfer(userVisit, workEffortType));
@@ -73,7 +73,7 @@ public class GetWorkRequirementScopesCommand
                 var workRequirementControl = Session.getModelController(WorkRequirementControl.class);
                 
                 if(workEffortScopeName != null) {
-                    WorkEffortScope workEffortScope = workEffortControl.getWorkEffortScopeByName(workEffortType, workEffortScopeName);
+                    var workEffortScope = workEffortControl.getWorkEffortScopeByName(workEffortType, workEffortScopeName);
                     
                     if(workEffortScope != null) {
                         result.setWorkEffortScope(workEffortControl.getWorkEffortScopeTransfer(userVisit, workEffortScope));
@@ -82,7 +82,7 @@ public class GetWorkRequirementScopesCommand
                         addExecutionError(ExecutionErrors.UnknownWorkEffortScopeName.name(), workEffortScopeName);
                     }
                 } else if(workRequirementTypeName != null) {
-                    WorkRequirementType workRequirementType = workRequirementControl.getWorkRequirementTypeByName(workEffortType, workRequirementTypeName);
+                    var workRequirementType = workRequirementControl.getWorkRequirementTypeByName(workEffortType, workRequirementTypeName);
                     
                     if(workRequirementType != null) {
                         result.setWorkRequirementType(workRequirementControl.getWorkRequirementTypeTransfer(userVisit, workRequirementType));

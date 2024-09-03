@@ -68,16 +68,16 @@ public class CreatePaymentMethodDescriptionCommand
     @Override
     protected BaseResult execute() {
         var paymentMethodControl = Session.getModelController(PaymentMethodControl.class);
-        String paymentMethodName = form.getPaymentMethodName();
-        PaymentMethod paymentMethod = paymentMethodControl.getPaymentMethodByName(paymentMethodName);
+        var paymentMethodName = form.getPaymentMethodName();
+        var paymentMethod = paymentMethodControl.getPaymentMethodByName(paymentMethodName);
         
         if(paymentMethod != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                PaymentMethodDescription paymentMethodDescription = paymentMethodControl.getPaymentMethodDescription(paymentMethod, language);
+                var paymentMethodDescription = paymentMethodControl.getPaymentMethodDescription(paymentMethod, language);
                 
                 if(paymentMethodDescription == null) {
                     var description = form.getDescription();

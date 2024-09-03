@@ -73,20 +73,20 @@ public class CreateContentPageCommand
     @Override
     protected BaseResult execute() {
         var contentControl = Session.getModelController(ContentControl.class);
-        String contentCollectionName = form.getContentCollectionName();
-        ContentCollection contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
+        var contentCollectionName = form.getContentCollectionName();
+        var contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
         
         if(contentCollection != null) {
-            String contentSectionName = form.getContentSectionName();
-            ContentSection contentSection = contentControl.getContentSectionByName(contentCollection, contentSectionName);
+            var contentSectionName = form.getContentSectionName();
+            var contentSection = contentControl.getContentSectionByName(contentCollection, contentSectionName);
             
             if(contentSection != null) {
-                String contentPageName = form.getContentPageName();
-                ContentPage contentPage = contentControl.getContentPageByName(contentSection, contentPageName);
+                var contentPageName = form.getContentPageName();
+                var contentPage = contentControl.getContentPageByName(contentSection, contentPageName);
                 
                 if(contentPage == null) {
-                    String contentPageLayoutName = form.getContentPageLayoutName();
-                    ContentPageLayout contentPageLayout = contentControl.getContentPageLayoutByName(contentPageLayoutName);
+                    var contentPageLayoutName = form.getContentPageLayoutName();
+                    var contentPageLayout = contentControl.getContentPageLayoutByName(contentPageLayoutName);
                     
                     if(contentPageLayout == null) {
                         addExecutionError(ExecutionErrors.UnknownContentPageLayoutName.name(), contentPageLayoutName);
@@ -99,7 +99,7 @@ public class CreateContentPageCommand
                         contentPage = contentControl.createContentPage(contentSection, contentPageName, contentPageLayout, isDefault, sortOrder, partyPK);
                         
                         if(description != null) {
-                            Language language = getPreferredLanguage();
+                            var language = getPreferredLanguage();
                             
                             contentControl.createContentPageDescription(contentPage, language, description, partyPK);
                         }

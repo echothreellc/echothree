@@ -65,12 +65,12 @@ public class DeleteContentCatalogCommand
     @Override
     protected BaseResult execute() {
         var contentControl = Session.getModelController(ContentControl.class);
-        String contentCollectionName = form.getContentCollectionName();
-        ContentCollection contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
+        var contentCollectionName = form.getContentCollectionName();
+        var contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
         
         if(contentCollection != null) {
-            String contentCatalogName = form.getContentCatalogName();
-            ContentCatalog contentCatalog = contentControl.getContentCatalogByNameForUpdate(contentCollection, contentCatalogName);
+            var contentCatalogName = form.getContentCatalogName();
+            var contentCatalog = contentControl.getContentCatalogByNameForUpdate(contentCollection, contentCatalogName);
             
             if(contentCatalog != null) {
                 contentControl.deleteContentCatalog(contentCatalog, getPartyPK());

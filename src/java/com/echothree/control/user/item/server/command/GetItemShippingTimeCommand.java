@@ -55,17 +55,17 @@ public class GetItemShippingTimeCommand
     @Override
     protected BaseResult execute() {
         var itemControl = Session.getModelController(ItemControl.class);
-        GetItemShippingTimeResult result = ItemResultFactory.getGetItemShippingTimeResult();
-        String itemName = form.getItemName();
-        Item item = itemControl.getItemByName(itemName);
+        var result = ItemResultFactory.getGetItemShippingTimeResult();
+        var itemName = form.getItemName();
+        var item = itemControl.getItemByName(itemName);
         
         if(item != null) {
             var customerControl = Session.getModelController(CustomerControl.class);
-            String customerTypeName = form.getCustomerTypeName();
-            CustomerType customerType = customerControl.getCustomerTypeByName(customerTypeName);
+            var customerTypeName = form.getCustomerTypeName();
+            var customerType = customerControl.getCustomerTypeByName(customerTypeName);
 
             if(customerType != null) {
-                ItemShippingTime itemShippingTime = itemControl.getItemShippingTime(item, customerType);
+                var itemShippingTime = itemControl.getItemShippingTime(item, customerType);
 
                 if(itemShippingTime != null) {
                     result.setItemShippingTime(itemControl.getItemShippingTimeTransfer(getUserVisit(), itemShippingTime));

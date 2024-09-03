@@ -71,22 +71,22 @@ public class GetOrderTimeTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var orderTypeControl = Session.getModelController(OrderTypeControl.class);
-        GetOrderTimeTypeDescriptionResult result = OrderResultFactory.getGetOrderTimeTypeDescriptionResult();
+        var result = OrderResultFactory.getGetOrderTimeTypeDescriptionResult();
         var orderTypeName = form.getOrderTypeName();
         var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
             var orderTimeControl = Session.getModelController(OrderTimeControl.class);
-            String orderTimeTypeName = form.getOrderTimeTypeName();
-            OrderTimeType orderTimeType = orderTimeControl.getOrderTimeTypeByName(orderType, orderTimeTypeName);
+            var orderTimeTypeName = form.getOrderTimeTypeName();
+            var orderTimeType = orderTimeControl.getOrderTimeTypeByName(orderType, orderTimeTypeName);
 
             if(orderTimeType != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = form.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = form.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                 if(language != null) {
-                    OrderTimeTypeDescription orderTimeTypeDescription = orderTimeControl.getOrderTimeTypeDescription(orderTimeType, language);
+                    var orderTimeTypeDescription = orderTimeControl.getOrderTimeTypeDescription(orderTimeType, language);
 
                     if(orderTimeTypeDescription != null) {
                         result.setOrderTimeTypeDescription(orderTimeControl.getOrderTimeTypeDescriptionTransfer(getUserVisit(), orderTimeTypeDescription));

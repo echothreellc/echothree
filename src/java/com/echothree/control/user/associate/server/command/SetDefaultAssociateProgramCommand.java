@@ -49,8 +49,8 @@ public class SetDefaultAssociateProgramCommand
     @Override
     protected BaseResult execute() {
         var associateControl = Session.getModelController(AssociateControl.class);
-        String associateProgramName = form.getAssociateProgramName();
-        AssociateProgramDetailValue associateProgramDetailValue = associateControl.getAssociateProgramDetailValueByNameForUpdate(associateProgramName);
+        var associateProgramName = form.getAssociateProgramName();
+        var associateProgramDetailValue = associateControl.getAssociateProgramDetailValueByNameForUpdate(associateProgramName);
         
         if(associateProgramDetailValue != null) {
             associateProgramDetailValue.setIsDefault(Boolean.TRUE);

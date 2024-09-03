@@ -64,8 +64,8 @@ public class CreateTextTransformationCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String textTransformationName = form.getTextTransformationName();
-        TextTransformation textTransformation = coreControl.getTextTransformationByName(textTransformationName);
+        var textTransformationName = form.getTextTransformationName();
+        var textTransformation = coreControl.getTextTransformationByName(textTransformationName);
         
         if(textTransformation == null) {
             var partyPK = getPartyPK();

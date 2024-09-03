@@ -65,9 +65,9 @@ public class GetOfferDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var offerControl = Session.getModelController(OfferControl.class);
-        GetOfferDescriptionsResult result = OfferResultFactory.getGetOfferDescriptionsResult();
-        String offerName = form.getOfferName();
-        Offer offer = offerControl.getOfferByName(offerName);
+        var result = OfferResultFactory.getGetOfferDescriptionsResult();
+        var offerName = form.getOfferName();
+        var offer = offerControl.getOfferByName(offerName);
         
         if(offer != null) {
             result.setOffer(offerControl.getOfferTransfer(getUserVisit(), offer));

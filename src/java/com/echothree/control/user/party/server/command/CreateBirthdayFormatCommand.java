@@ -67,11 +67,11 @@ public class CreateBirthdayFormatCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        String birthdayFormatName = form.getBirthdayFormatName();
-        BirthdayFormat birthdayFormat = partyControl.getBirthdayFormatByName(birthdayFormatName);
+        var birthdayFormatName = form.getBirthdayFormatName();
+        var birthdayFormat = partyControl.getBirthdayFormatByName(birthdayFormatName);
         
         if(birthdayFormat == null) {
-            PartyPK createdBy = getPartyPK();
+            var createdBy = getPartyPK();
             var isDefault = Boolean.valueOf(form.getIsDefault());
             var sortOrder = Integer.valueOf(form.getSortOrder());
             var description = form.getDescription();

@@ -65,13 +65,13 @@ public class SetDefaultHarmonizedTariffScheduleCodeCommand
     @Override
     protected BaseResult execute() {
         var geoControl = Session.getModelController(GeoControl.class);
-        String countryName = form.getCountryName();
-        GeoCode geoCode = geoControl.getCountryByAlias(countryName);
+        var countryName = form.getCountryName();
+        var geoCode = geoControl.getCountryByAlias(countryName);
         
         if(geoCode != null) {
             var itemControl = Session.getModelController(ItemControl.class);
-            String harmonizedTariffScheduleCodeName = form.getHarmonizedTariffScheduleCodeName();
-            HarmonizedTariffScheduleCodeDetailValue harmonizedTariffScheduleCodeDetailValue = itemControl.getHarmonizedTariffScheduleCodeDetailValueByNameForUpdate(geoCode,
+            var harmonizedTariffScheduleCodeName = form.getHarmonizedTariffScheduleCodeName();
+            var harmonizedTariffScheduleCodeDetailValue = itemControl.getHarmonizedTariffScheduleCodeDetailValueByNameForUpdate(geoCode,
                     harmonizedTariffScheduleCodeName);
             
             if(harmonizedTariffScheduleCodeDetailValue != null) {

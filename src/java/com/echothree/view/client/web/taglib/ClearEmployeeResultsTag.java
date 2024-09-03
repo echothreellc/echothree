@@ -74,11 +74,11 @@ public class ClearEmployeeResultsTag
     public int doStartTag()
             throws JspException {
         try {
-            ClearEmployeeResultsForm commandForm = SearchUtil.getHome().getClearEmployeeResultsForm();
+            var commandForm = SearchUtil.getHome().getClearEmployeeResultsForm();
 
             commandForm.setSearchTypeName(searchTypeName);
-            
-            CommandResult commandResult = SearchUtil.getHome().clearEmployeeResults(getUserVisitPK(), commandForm);
+
+            var commandResult = SearchUtil.getHome().clearEmployeeResults(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {

@@ -35,14 +35,14 @@ public class EmailAddressFieldType
     
     @Override
     public String validate() {
-        int length = fieldValue.length();
-        boolean hadErrors = false;
+        var length = fieldValue.length();
+        var hadErrors = false;
         
         if(length > 80) {
             validationMessages.add(fieldName, new Message(Validator.ERROR_MAXIMUM_LENGTH));
             hadErrors = true;
         } else {
-            Matcher m = Patterns.EmailAddress.matcher(fieldValue.toLowerCase(Locale.getDefault()));
+            var m = Patterns.EmailAddress.matcher(fieldValue.toLowerCase(Locale.getDefault()));
             if(!m.matches()) {
                 validationMessages.add(fieldName, new Message(Validator.ERROR_INVALID_FORMAT));
                 hadErrors = true;

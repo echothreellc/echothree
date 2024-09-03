@@ -171,7 +171,7 @@ public class EditItemAliasTypeCommand
         } else if(itemAliasTypeDescription != null && description == null) {
             itemControl.deleteItemAliasTypeDescription(itemAliasTypeDescription, partyPK);
         } else if(itemAliasTypeDescription != null && description != null) {
-            ItemAliasTypeDescriptionValue itemAliasTypeDescriptionValue = itemControl.getItemAliasTypeDescriptionValue(itemAliasTypeDescription);
+            var itemAliasTypeDescriptionValue = itemControl.getItemAliasTypeDescriptionValue(itemAliasTypeDescription);
 
             itemAliasTypeDescriptionValue.setDescription(description);
             itemControl.updateItemAliasTypeDescriptionFromValue(itemAliasTypeDescriptionValue, partyPK);

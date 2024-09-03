@@ -69,20 +69,20 @@ public class DeleteTrainingClassAnswerCommand
     @Override
     protected BaseResult execute() {
         var trainingControl = Session.getModelController(TrainingControl.class);
-        String trainingClassName = form.getTrainingClassName();
-        TrainingClass trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
+        var trainingClassName = form.getTrainingClassName();
+        var trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
 
         if(trainingClass != null) {
-            String trainingClassSectionName = form.getTrainingClassSectionName();
-            TrainingClassSection trainingClassSection = trainingControl.getTrainingClassSectionByName(trainingClass, trainingClassSectionName);
+            var trainingClassSectionName = form.getTrainingClassSectionName();
+            var trainingClassSection = trainingControl.getTrainingClassSectionByName(trainingClass, trainingClassSectionName);
 
             if(trainingClassSection != null) {
-                String trainingClassQuestionName = form.getTrainingClassQuestionName();
-                TrainingClassQuestion trainingClassQuestion = trainingControl.getTrainingClassQuestionByName(trainingClassSection, trainingClassQuestionName);
+                var trainingClassQuestionName = form.getTrainingClassQuestionName();
+                var trainingClassQuestion = trainingControl.getTrainingClassQuestionByName(trainingClassSection, trainingClassQuestionName);
 
                 if(trainingClassQuestion != null) {
-                    String trainingClassAnswerName = form.getTrainingClassAnswerName();
-                    TrainingClassAnswer trainingClassAnswer = trainingControl.getTrainingClassAnswerByNameForUpdate(trainingClassQuestion, trainingClassAnswerName);
+                    var trainingClassAnswerName = form.getTrainingClassAnswerName();
+                    var trainingClassAnswer = trainingControl.getTrainingClassAnswerByNameForUpdate(trainingClassQuestion, trainingClassAnswerName);
 
                     if(trainingClassAnswer != null) {
                         trainingControl.deleteTrainingClassAnswer(trainingClassAnswer, getPartyPK());

@@ -62,20 +62,20 @@ public class PaymentProcessorControl
     
     public PaymentProcessor createPaymentProcessor(String paymentProcessorName, PaymentProcessorType paymentProcessorType,
             Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        PaymentProcessor defaultPaymentProcessor = getDefaultPaymentProcessor();
-        boolean defaultFound = defaultPaymentProcessor != null;
+        var defaultPaymentProcessor = getDefaultPaymentProcessor();
+        var defaultFound = defaultPaymentProcessor != null;
         
         if(defaultFound && isDefault) {
-            PaymentProcessorDetailValue defaultPaymentProcessorDetailValue = getDefaultPaymentProcessorDetailValueForUpdate();
+            var defaultPaymentProcessorDetailValue = getDefaultPaymentProcessorDetailValueForUpdate();
             
             defaultPaymentProcessorDetailValue.setIsDefault(Boolean.FALSE);
             updatePaymentProcessorFromValue(defaultPaymentProcessorDetailValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        PaymentProcessor paymentProcessor = PaymentProcessorFactory.getInstance().create();
-        PaymentProcessorDetail paymentProcessorDetail = PaymentProcessorDetailFactory.getInstance().create(session,
+
+        var paymentProcessor = PaymentProcessorFactory.getInstance().create();
+        var paymentProcessorDetail = PaymentProcessorDetailFactory.getInstance().create(session,
                 paymentProcessor, paymentProcessorName, paymentProcessorType, isDefault, sortOrder, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
@@ -127,8 +127,8 @@ public class PaymentProcessorControl
                         "WHERE pprc_activedetailid = pprcdt_paymentprocessordetailid AND pprcdt_paymentprocessorname = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PaymentProcessorFactory.getInstance().prepareStatement(query);
+
+            var ps = PaymentProcessorFactory.getInstance().prepareStatement(query);
             
             ps.setString(1, paymentProcessorName);
             
@@ -166,8 +166,8 @@ public class PaymentProcessorControl
                     "WHERE pprc_activedetailid = pprcdt_paymentprocessordetailid " +
                     "FOR UPDATE";
         }
-        
-        PreparedStatement ps = PaymentProcessorFactory.getInstance().prepareStatement(query);
+
+        var ps = PaymentProcessorFactory.getInstance().prepareStatement(query);
         
         return PaymentProcessorFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
     }
@@ -193,8 +193,8 @@ public class PaymentProcessorControl
                     "WHERE pprc_activedetailid = pprcdt_paymentprocessordetailid AND pprcdt_isdefault = 1 " +
                     "FOR UPDATE";
         }
-        
-        PreparedStatement ps = PaymentProcessorFactory.getInstance().prepareStatement(query);
+
+        var ps = PaymentProcessorFactory.getInstance().prepareStatement(query);
         
         return PaymentProcessorFactory.getInstance().getEntityFromQuery(entityPermission, ps);
     }
@@ -213,7 +213,7 @@ public class PaymentProcessorControl
     
     public PaymentProcessorChoicesBean getPaymentProcessorChoices(String defaultPaymentProcessorChoice, Language language,
             boolean allowNullChoice) {
-        List<PaymentProcessor> paymentProcessors = getPaymentProcessors();
+        var paymentProcessors = getPaymentProcessors();
         var size = paymentProcessors.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -225,7 +225,7 @@ public class PaymentProcessorControl
         }
         
         for(var paymentProcessor : paymentProcessors) {
-            PaymentProcessorDetail paymentProcessorDetail = paymentProcessor.getLastDetail();
+            var paymentProcessorDetail = paymentProcessor.getLastDetail();
             var label = getBestPaymentProcessorDescription(paymentProcessor, language);
             var value = paymentProcessorDetail.getPaymentProcessorName();
             
@@ -246,7 +246,7 @@ public class PaymentProcessorControl
 
     public List<PaymentProcessorTransfer> getPaymentProcessorTransfers(UserVisit userVisit, Collection<PaymentProcessor> paymentProcessors) {
         List<PaymentProcessorTransfer> paymentProcessorTransfers = new ArrayList<>(paymentProcessors.size());
-        PaymentProcessorTransferCache paymentProcessorTransferCache = getPaymentTransferCaches(userVisit).getPaymentProcessorTransferCache();
+        var paymentProcessorTransferCache = getPaymentTransferCaches(userVisit).getPaymentProcessorTransferCache();
 
         paymentProcessors.forEach((paymentProcessor) ->
                 paymentProcessorTransfers.add(paymentProcessorTransferCache.getTransfer(paymentProcessor))
@@ -262,26 +262,26 @@ public class PaymentProcessorControl
     private void updatePaymentProcessorFromValue(PaymentProcessorDetailValue paymentProcessorDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(paymentProcessorDetailValue.hasBeenModified()) {
-            PaymentProcessor paymentProcessor = PaymentProcessorFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var paymentProcessor = PaymentProcessorFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      paymentProcessorDetailValue.getPaymentProcessorPK());
-            PaymentProcessorDetail paymentProcessorDetail = paymentProcessor.getActiveDetailForUpdate();
+            var paymentProcessorDetail = paymentProcessor.getActiveDetailForUpdate();
             
             paymentProcessorDetail.setThruTime(session.START_TIME_LONG);
             paymentProcessorDetail.store();
-            
-            PaymentProcessorPK paymentProcessorPK = paymentProcessorDetail.getPaymentProcessorPK(); // Not updated
-            String paymentProcessorName = paymentProcessorDetailValue.getPaymentProcessorName();
-            PaymentProcessorTypePK paymentProcessorTypePK = paymentProcessorDetail.getPaymentProcessorTypePK(); // Not updated
-            Boolean isDefault = paymentProcessorDetailValue.getIsDefault();
-            Integer sortOrder = paymentProcessorDetailValue.getSortOrder();
+
+            var paymentProcessorPK = paymentProcessorDetail.getPaymentProcessorPK(); // Not updated
+            var paymentProcessorName = paymentProcessorDetailValue.getPaymentProcessorName();
+            var paymentProcessorTypePK = paymentProcessorDetail.getPaymentProcessorTypePK(); // Not updated
+            var isDefault = paymentProcessorDetailValue.getIsDefault();
+            var sortOrder = paymentProcessorDetailValue.getSortOrder();
             
             if(checkDefault) {
-                PaymentProcessor defaultPaymentProcessor = getDefaultPaymentProcessor();
-                boolean defaultFound = defaultPaymentProcessor != null && !defaultPaymentProcessor.equals(paymentProcessor);
+                var defaultPaymentProcessor = getDefaultPaymentProcessor();
+                var defaultFound = defaultPaymentProcessor != null && !defaultPaymentProcessor.equals(paymentProcessor);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    PaymentProcessorDetailValue defaultPaymentProcessorDetailValue = getDefaultPaymentProcessorDetailValueForUpdate();
+                    var defaultPaymentProcessorDetailValue = getDefaultPaymentProcessorDetailValueForUpdate();
                     
                     defaultPaymentProcessorDetailValue.setIsDefault(Boolean.FALSE);
                     updatePaymentProcessorFromValue(defaultPaymentProcessorDetailValue, false, updatedBy);
@@ -315,23 +315,23 @@ public class PaymentProcessorControl
         paymentMethodControl.deletePaymentMethodsByPaymentProcessor(paymentProcessor, deletedBy);
         paymentProcessorTransactionControl.deletePaymentProcessorTransactionsByPaymentProcessor(paymentProcessor, deletedBy);
         deletePaymentProcessorDescriptionsByPaymentProcessor(paymentProcessor, deletedBy);
-        
-        PaymentProcessorDetail paymentProcessorDetail = paymentProcessor.getLastDetailForUpdate();
+
+        var paymentProcessorDetail = paymentProcessor.getLastDetailForUpdate();
         paymentProcessorDetail.setThruTime(session.START_TIME_LONG);
         paymentProcessorDetail.store();
         paymentProcessor.setActiveDetail(null);
         
         // Check for default, and pick one if necessary
-        PaymentProcessor defaultPaymentProcessor = getDefaultPaymentProcessor();
+        var defaultPaymentProcessor = getDefaultPaymentProcessor();
         if(defaultPaymentProcessor == null) {
-            List<PaymentProcessor> paymentProcessors = getPaymentProcessorsForUpdate();
+            var paymentProcessors = getPaymentProcessorsForUpdate();
             
             if(!paymentProcessors.isEmpty()) {
-                Iterator<PaymentProcessor> iter = paymentProcessors.iterator();
+                var iter = paymentProcessors.iterator();
                 if(iter.hasNext()) {
                     defaultPaymentProcessor = iter.next();
                 }
-                PaymentProcessorDetailValue paymentProcessorDetailValue = Objects.requireNonNull(defaultPaymentProcessor).getLastDetailForUpdate().getPaymentProcessorDetailValue().clone();
+                var paymentProcessorDetailValue = Objects.requireNonNull(defaultPaymentProcessor).getLastDetailForUpdate().getPaymentProcessorDetailValue().clone();
                 
                 paymentProcessorDetailValue.setIsDefault(Boolean.TRUE);
                 updatePaymentProcessorFromValue(paymentProcessorDetailValue, false, deletedBy);
@@ -347,7 +347,7 @@ public class PaymentProcessorControl
     
     public PaymentProcessorDescription createPaymentProcessorDescription(PaymentProcessor paymentProcessor, Language language,
             String description, BasePK createdBy) {
-        PaymentProcessorDescription paymentProcessorDescription = PaymentProcessorDescriptionFactory.getInstance().create(session,
+        var paymentProcessorDescription = PaymentProcessorDescriptionFactory.getInstance().create(session,
                 paymentProcessor, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(paymentProcessor.getPrimaryKey(), EventTypes.MODIFY, paymentProcessorDescription.getPrimaryKey(),
@@ -373,8 +373,8 @@ public class PaymentProcessorControl
                         "WHERE pprcd_pprc_paymentprocessorid = ? AND pprcd_lang_languageid = ? AND pprcd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PaymentProcessorDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = PaymentProcessorDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, paymentProcessor.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -421,8 +421,8 @@ public class PaymentProcessorControl
                         "WHERE pprcd_pprc_paymentprocessorid = ? AND pprcd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PaymentProcessorDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = PaymentProcessorDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, paymentProcessor.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -445,7 +445,7 @@ public class PaymentProcessorControl
     
     public String getBestPaymentProcessorDescription(PaymentProcessor paymentProcessor, Language language) {
         String description;
-        PaymentProcessorDescription paymentProcessorDescription = getPaymentProcessorDescription(paymentProcessor, language);
+        var paymentProcessorDescription = getPaymentProcessorDescription(paymentProcessor, language);
         
         if(paymentProcessorDescription == null && !language.getIsDefault()) {
             paymentProcessorDescription = getPaymentProcessorDescription(paymentProcessor, getPartyControl().getDefaultLanguage());
@@ -465,9 +465,9 @@ public class PaymentProcessorControl
     }
     
     public List<PaymentProcessorDescriptionTransfer> getPaymentProcessorDescriptionTransfers(UserVisit userVisit, PaymentProcessor paymentProcessor) {
-        List<PaymentProcessorDescription> paymentProcessorDescriptions = getPaymentProcessorDescriptions(paymentProcessor);
+        var paymentProcessorDescriptions = getPaymentProcessorDescriptions(paymentProcessor);
         List<PaymentProcessorDescriptionTransfer> paymentProcessorDescriptionTransfers = new ArrayList<>(paymentProcessorDescriptions.size());
-        PaymentProcessorDescriptionTransferCache paymentProcessorDescriptionTransferCache = getPaymentTransferCaches(userVisit).getPaymentProcessorDescriptionTransferCache();
+        var paymentProcessorDescriptionTransferCache = getPaymentTransferCaches(userVisit).getPaymentProcessorDescriptionTransferCache();
         
         paymentProcessorDescriptions.forEach((paymentProcessorDescription) ->
                 paymentProcessorDescriptionTransfers.add(paymentProcessorDescriptionTransferCache.getTransfer(paymentProcessorDescription))
@@ -478,15 +478,15 @@ public class PaymentProcessorControl
     
     public void updatePaymentProcessorDescriptionFromValue(PaymentProcessorDescriptionValue paymentProcessorDescriptionValue, BasePK updatedBy) {
         if(paymentProcessorDescriptionValue.hasBeenModified()) {
-            PaymentProcessorDescription paymentProcessorDescription = PaymentProcessorDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var paymentProcessorDescription = PaymentProcessorDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      paymentProcessorDescriptionValue.getPrimaryKey());
             
             paymentProcessorDescription.setThruTime(session.START_TIME_LONG);
             paymentProcessorDescription.store();
-            
-            PaymentProcessor paymentProcessor = paymentProcessorDescription.getPaymentProcessor();
-            Language language = paymentProcessorDescription.getLanguage();
-            String description = paymentProcessorDescriptionValue.getDescription();
+
+            var paymentProcessor = paymentProcessorDescription.getPaymentProcessor();
+            var language = paymentProcessorDescription.getLanguage();
+            var description = paymentProcessorDescriptionValue.getDescription();
             
             paymentProcessorDescription = PaymentProcessorDescriptionFactory.getInstance().create(paymentProcessor, language,
                     description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -504,7 +504,7 @@ public class PaymentProcessorControl
     }
     
     public void deletePaymentProcessorDescriptionsByPaymentProcessor(PaymentProcessor paymentProcessor, BasePK deletedBy) {
-        List<PaymentProcessorDescription> paymentProcessorDescriptions = getPaymentProcessorDescriptionsForUpdate(paymentProcessor);
+        var paymentProcessorDescriptions = getPaymentProcessorDescriptionsForUpdate(paymentProcessor);
         
         paymentProcessorDescriptions.forEach((paymentProcessorDescription) -> 
                 deletePaymentProcessorDescription(paymentProcessorDescription, deletedBy)

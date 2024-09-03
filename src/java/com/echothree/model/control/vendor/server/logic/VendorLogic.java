@@ -181,14 +181,14 @@ public class VendorLogic
         var coreControl = Session.getModelController(CoreControl.class);
         var workflowControl = Session.getModelController(WorkflowControl.class);
         var workflow = WorkflowLogic.getInstance().getWorkflowByName(eea, VendorStatusConstants.Workflow_VENDOR_STATUS);
-        EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(party.getPrimaryKey());
-        WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdate(workflow, entityInstance);
-        WorkflowDestination workflowDestination = vendorStatusChoice == null ? null : workflowControl.getWorkflowDestinationByName(workflowEntityStatus.getWorkflowStep(), vendorStatusChoice);
+        var entityInstance = coreControl.getEntityInstanceByBasePK(party.getPrimaryKey());
+        var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdate(workflow, entityInstance);
+        var workflowDestination = vendorStatusChoice == null ? null : workflowControl.getWorkflowDestinationByName(workflowEntityStatus.getWorkflowStep(), vendorStatusChoice);
 
         if(workflowDestination != null || vendorStatusChoice == null) {
             var workflowDestinationLogic = WorkflowDestinationLogic.getInstance();
-            String currentWorkflowStepName = workflowEntityStatus.getWorkflowStep().getLastDetail().getWorkflowStepName();
-            Map<String, Set<String>> map = workflowDestinationLogic.getWorkflowDestinationsAsMap(workflowDestination);
+            var currentWorkflowStepName = workflowEntityStatus.getWorkflowStep().getLastDetail().getWorkflowStepName();
+            var map = workflowDestinationLogic.getWorkflowDestinationsAsMap(workflowDestination);
             Long triggerTime = null;
 
             if(currentWorkflowStepName.equals(VendorStatusConstants.WorkflowStep_ACTIVE)) {

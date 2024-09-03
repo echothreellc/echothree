@@ -56,19 +56,19 @@ public class DeletePartyInventoryLevelCommand
     @Override
     protected BaseResult execute() {
         var inventoryControl = Session.getModelController(InventoryControl.class);
-        Party party = getParty(form);
+        var party = getParty(form);
         
         if(party != null) {
             var itemControl = Session.getModelController(ItemControl.class);
-            String itemName = form.getItemName();
-            Item item = itemControl.getItemByName(itemName);
+            var itemName = form.getItemName();
+            var item = itemControl.getItemByName(itemName);
             
             if(item != null) {
-                String inventoryConditionName = form.getInventoryConditionName();
-                InventoryCondition inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
+                var inventoryConditionName = form.getInventoryConditionName();
+                var inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
                 
                 if(inventoryCondition != null) {
-                    PartyInventoryLevel partyInventoryLevel = inventoryControl.getPartyInventoryLevelForUpdate(party, item, inventoryCondition);
+                    var partyInventoryLevel = inventoryControl.getPartyInventoryLevelForUpdate(party, item, inventoryCondition);
                     
                     if(partyInventoryLevel != null) {
                         inventoryControl.deletePartyInventoryLevel(partyInventoryLevel, getPartyPK());

@@ -32,11 +32,11 @@ public class ForumDescriptionTransferCache
     }
     
     public ForumDescriptionTransfer getForumDescriptionTransfer(ForumDescription forumDescription) {
-        ForumDescriptionTransfer forumDescriptionTransfer = get(forumDescription);
+        var forumDescriptionTransfer = get(forumDescription);
         
         if(forumDescriptionTransfer == null) {
-            ForumTransfer forumTransfer = forumControl.getForumTransfer(userVisit, forumDescription.getForum());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, forumDescription.getLanguage());
+            var forumTransfer = forumControl.getForumTransfer(userVisit, forumDescription.getForum());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, forumDescription.getLanguage());
             
             forumDescriptionTransfer = new ForumDescriptionTransfer(languageTransfer, forumTransfer, forumDescription.getDescription());
             put(forumDescription, forumDescriptionTransfer);

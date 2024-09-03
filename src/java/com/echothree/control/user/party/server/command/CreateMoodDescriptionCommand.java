@@ -53,15 +53,15 @@ public class CreateMoodDescriptionCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        String moodName = form.getMoodName();
-        Mood mood = partyControl.getMoodByName(moodName);
+        var moodName = form.getMoodName();
+        var mood = partyControl.getMoodByName(moodName);
         
         if(mood != null) {
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                MoodDescription moodDescription = partyControl.getMoodDescription(mood, language);
+                var moodDescription = partyControl.getMoodDescription(mood, language);
                 
                 if(moodDescription == null) {
                     var description = form.getDescription();

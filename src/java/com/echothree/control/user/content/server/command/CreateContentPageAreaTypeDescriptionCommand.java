@@ -67,17 +67,17 @@ public class CreateContentPageAreaTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        String contentPageAreaTypeName = form.getContentPageAreaTypeName();
+        var contentPageAreaTypeName = form.getContentPageAreaTypeName();
         var contentControl = Session.getModelController(ContentControl.class);
-        ContentPageAreaType contentPageAreaType = contentControl.getContentPageAreaTypeByName(contentPageAreaTypeName);
+        var contentPageAreaType = contentControl.getContentPageAreaTypeByName(contentPageAreaTypeName);
         
         if(contentPageAreaType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                ContentPageAreaTypeDescription contentPageAreaTypeDescription = contentControl.getContentPageAreaTypeDescription(contentPageAreaType, language);
+                var contentPageAreaTypeDescription = contentControl.getContentPageAreaTypeDescription(contentPageAreaType, language);
                 
                 if(contentPageAreaTypeDescription == null) {
                     var description = form.getDescription();

@@ -67,16 +67,16 @@ public class DeleteTransactionTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        String transactionTypeName = form.getTransactionTypeName();
-        TransactionType transactionType = accountingControl.getTransactionTypeByName(transactionTypeName);
+        var transactionTypeName = form.getTransactionTypeName();
+        var transactionType = accountingControl.getTransactionTypeByName(transactionTypeName);
         
         if(transactionType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                TransactionTypeDescription transactionTypeDescription = accountingControl.getTransactionTypeDescriptionForUpdate(transactionType, language);
+                var transactionTypeDescription = accountingControl.getTransactionTypeDescriptionForUpdate(transactionType, language);
                 
                 if(transactionTypeDescription != null) {
                     accountingControl.deleteTransactionTypeDescription(transactionTypeDescription, getPartyPK());

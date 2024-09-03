@@ -65,22 +65,22 @@ public class CreateForumCommand
     @Override
     protected BaseResult execute() {
         var forumControl = Session.getModelController(ForumControl.class);
-        String forumName = form.getForumName();
-        Forum forum = forumControl.getForumByName(forumName);
+        var forumName = form.getForumName();
+        var forum = forumControl.getForumByName(forumName);
         
         if(forum == null) {
-            String forumTypeName = form.getForumTypeName();
-            ForumType forumType = forumControl.getForumTypeByName(forumTypeName);
+            var forumTypeName = form.getForumTypeName();
+            var forumType = forumControl.getForumTypeByName(forumTypeName);
             
             if(forumType != null) {
                 var iconControl = Session.getModelController(IconControl.class);
-                String iconName = form.getIconName();
-                Icon icon = iconName == null? null: iconControl.getIconByName(iconName);
+                var iconName = form.getIconName();
+                var icon = iconName == null? null: iconControl.getIconByName(iconName);
                 
                 if(iconName == null || icon != null) {
                     if(icon != null) {
-                        IconUsageType iconUsageType = iconControl.getIconUsageTypeByName(IconConstants.IconUsageType_FORUM);
-                        IconUsage iconUsage = iconControl.getIconUsage(iconUsageType, icon);
+                        var iconUsageType = iconControl.getIconUsageTypeByName(IconConstants.IconUsageType_FORUM);
+                        var iconUsage = iconControl.getIconUsage(iconUsageType, icon);
                         
                         if(iconUsage == null) {
                             addExecutionError(ExecutionErrors.UnknownIconUsage.name());
@@ -89,15 +89,15 @@ public class CreateForumCommand
                     
                     if(!hasExecutionErrors()) {
                         SequenceControl sequenceControl = null;
-                        String forumThreadSequenceName = form.getForumThreadSequenceName();
+                        var forumThreadSequenceName = form.getForumThreadSequenceName();
                         Sequence forumThreadSequence = null;
-                        String forumMessageSequenceName = form.getForumMessageSequenceName();
+                        var forumMessageSequenceName = form.getForumMessageSequenceName();
                         
                         if(forumThreadSequenceName != null || forumMessageSequenceName != null) {
                             sequenceControl = Session.getModelController(SequenceControl.class);
                             
                             if(forumThreadSequenceName != null) {
-                                SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.FORUM_THREAD.name());
+                                var sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.FORUM_THREAD.name());
                                 forumThreadSequence = sequenceControl.getSequenceByName(sequenceType, forumThreadSequenceName);
                             }
                         }
@@ -106,7 +106,7 @@ public class CreateForumCommand
                             Sequence forumMessageSequence = null;
                             
                             if(forumMessageSequenceName != null) {
-                                SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.FORUM_MESSAGE.name());
+                                var sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.FORUM_MESSAGE.name());
                                 forumMessageSequence = sequenceControl.getSequenceByName(sequenceType, forumMessageSequenceName);
                             }
                             

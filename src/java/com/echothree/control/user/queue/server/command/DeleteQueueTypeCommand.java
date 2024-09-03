@@ -63,8 +63,8 @@ public class DeleteQueueTypeCommand
     @Override
     protected BaseResult execute() {
         var queueControl = Session.getModelController(QueueControl.class);
-        String queueTypeName = form.getQueueTypeName();
-        QueueType queueType = queueControl.getQueueTypeByNameForUpdate(queueTypeName);
+        var queueTypeName = form.getQueueTypeName();
+        var queueType = queueControl.getQueueTypeByNameForUpdate(queueTypeName);
         
         if(queueType != null) {
             queueControl.deleteQueueType(queueType, getPartyPK());

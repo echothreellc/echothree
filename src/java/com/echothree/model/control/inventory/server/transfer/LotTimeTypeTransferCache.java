@@ -38,14 +38,14 @@ public class LotTimeTypeTransferCache
     
     @Override
     public LotTimeTypeTransfer getTransfer(LotTimeType lotTimeType) {
-        LotTimeTypeTransfer lotTimeTypeTransfer = get(lotTimeType);
+        var lotTimeTypeTransfer = get(lotTimeType);
         
         if(lotTimeTypeTransfer == null) {
-            LotTimeTypeDetail lotTimeTypeDetail = lotTimeType.getLastDetail();
-            String lotTimeTypeName = lotTimeTypeDetail.getLotTimeTypeName();
-            Boolean isDefault = lotTimeTypeDetail.getIsDefault();
-            Integer sortOrder = lotTimeTypeDetail.getSortOrder();
-            String description = lotTimeControl.getBestLotTimeTypeDescription(lotTimeType, getLanguage());
+            var lotTimeTypeDetail = lotTimeType.getLastDetail();
+            var lotTimeTypeName = lotTimeTypeDetail.getLotTimeTypeName();
+            var isDefault = lotTimeTypeDetail.getIsDefault();
+            var sortOrder = lotTimeTypeDetail.getSortOrder();
+            var description = lotTimeControl.getBestLotTimeTypeDescription(lotTimeType, getLanguage());
             
             lotTimeTypeTransfer = new LotTimeTypeTransfer(lotTimeTypeName, isDefault, sortOrder, description);
             put(lotTimeType, lotTimeTypeTransfer);

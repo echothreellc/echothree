@@ -51,8 +51,8 @@ public class CreateLanguageCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        String languageIsoName = form.getLanguageIsoName();
-        Language language = partyControl.getLanguageByIsoName(languageIsoName);
+        var languageIsoName = form.getLanguageIsoName();
+        var language = partyControl.getLanguageByIsoName(languageIsoName);
 
         if(language == null) {
             var isDefault = Boolean.valueOf(form.getIsDefault());

@@ -50,15 +50,15 @@ public class GetCommunicationSourcesCommand
     
     @Override
     protected BaseResult execute() {
-        GetCommunicationSourcesResult result = CommunicationResultFactory.getGetCommunicationSourcesResult();
-        String communicationSourceTypeName = form.getCommunicationSourceTypeName();
+        var result = CommunicationResultFactory.getGetCommunicationSourcesResult();
+        var communicationSourceTypeName = form.getCommunicationSourceTypeName();
         var parameterCount = (communicationSourceTypeName == null ? 0 : 1);
         
         if(parameterCount < 2) {
             var communicationControl = Session.getModelController(CommunicationControl.class);
             
             if(communicationSourceTypeName != null) {
-                CommunicationSourceType communicationSourceType = communicationControl.getCommunicationSourceTypeByName(communicationSourceTypeName);
+                var communicationSourceType = communicationControl.getCommunicationSourceTypeByName(communicationSourceTypeName);
                 
                 if(communicationSourceType != null) {
                     result.setCommunicationSources(communicationControl.getCommunicationSourceTransfersByCommunicationSourceType(getUserVisit(),

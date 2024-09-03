@@ -51,8 +51,8 @@ public class CreateInventoryConditionUseTypeCommand
     @Override
     protected BaseResult execute() {
         var inventoryControl = Session.getModelController(InventoryControl.class);
-        String inventoryConditionUseTypeName = form.getInventoryConditionUseTypeName();
-        InventoryConditionUseType inventoryConditionUseType = inventoryControl.getInventoryConditionUseTypeByName(inventoryConditionUseTypeName);
+        var inventoryConditionUseTypeName = form.getInventoryConditionUseTypeName();
+        var inventoryConditionUseType = inventoryControl.getInventoryConditionUseTypeByName(inventoryConditionUseTypeName);
         
         if(inventoryConditionUseType == null) {
             var isDefault = Boolean.valueOf(form.getIsDefault());

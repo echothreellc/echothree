@@ -63,8 +63,8 @@ public class DeleteTransactionTypeCommand
     @Override
     protected BaseResult execute() {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        String transactionTypeName = form.getTransactionTypeName();
-        TransactionType transactionType = accountingControl.getTransactionTypeByNameForUpdate(transactionTypeName);
+        var transactionTypeName = form.getTransactionTypeName();
+        var transactionType = accountingControl.getTransactionTypeByNameForUpdate(transactionTypeName);
         
         if(transactionType != null) {
             accountingControl.deleteTransactionType(transactionType, getPartyPK());

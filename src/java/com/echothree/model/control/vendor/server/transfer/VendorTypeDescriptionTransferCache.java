@@ -32,11 +32,11 @@ public class VendorTypeDescriptionTransferCache
     }
     
     public VendorTypeDescriptionTransfer getVendorTypeDescriptionTransfer(VendorTypeDescription vendorTypeDescription) {
-        VendorTypeDescriptionTransfer vendorTypeDescriptionTransfer = get(vendorTypeDescription);
+        var vendorTypeDescriptionTransfer = get(vendorTypeDescription);
         
         if(vendorTypeDescriptionTransfer == null) {
-            VendorTypeTransfer vendorTypeTransfer = vendorControl.getVendorTypeTransfer(userVisit, vendorTypeDescription.getVendorType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, vendorTypeDescription.getLanguage());
+            var vendorTypeTransfer = vendorControl.getVendorTypeTransfer(userVisit, vendorTypeDescription.getVendorType());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, vendorTypeDescription.getLanguage());
             
             vendorTypeDescriptionTransfer = new VendorTypeDescriptionTransfer(languageTransfer, vendorTypeTransfer, vendorTypeDescription.getDescription());
             put(vendorTypeDescription, vendorTypeDescriptionTransfer);

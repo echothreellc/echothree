@@ -70,7 +70,7 @@ public class DeleteItemPurchasingCategoryCommand
     
     @Override
     protected BaseResult execute() {
-        String itemPurchasingCategoryName = form.getItemPurchasingCategoryName();
+        var itemPurchasingCategoryName = form.getItemPurchasingCategoryName();
         var parameterCount = (itemPurchasingCategoryName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {
@@ -89,7 +89,7 @@ public class DeleteItemPurchasingCategoryCommand
             }
 
             if(!hasExecutionErrors()) {
-                ItemPurchasingCategoryLogic itemPurchasingCategoryLogic = ItemPurchasingCategoryLogic.getInstance();
+                var itemPurchasingCategoryLogic = ItemPurchasingCategoryLogic.getInstance();
 
                 itemPurchasingCategoryLogic.checkDeleteItemPurchasingCategory(this, itemPurchasingCategory);
 

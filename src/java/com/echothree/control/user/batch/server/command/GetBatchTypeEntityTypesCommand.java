@@ -54,17 +54,17 @@ public class GetBatchTypeEntityTypesCommand
     
     @Override
     protected BaseResult execute() {
-        GetBatchTypeEntityTypesResult result = BatchResultFactory.getGetBatchTypeEntityTypesResult();
-        String batchTypeName = form.getBatchTypeName();
-        String componentVendorName = form.getComponentVendorName();
-        String entityTypeName = form.getEntityTypeName();
+        var result = BatchResultFactory.getGetBatchTypeEntityTypesResult();
+        var batchTypeName = form.getBatchTypeName();
+        var componentVendorName = form.getComponentVendorName();
+        var entityTypeName = form.getEntityTypeName();
         var parameterCount = (batchTypeName == null ? 0 : 1) + (componentVendorName == null && entityTypeName == null ? 0 : 1);
 
         if(parameterCount == 1) {
             var batchControl = Session.getModelController(BatchControl.class);
 
             if(batchTypeName != null) {
-                BatchType batchType = batchControl.getBatchTypeByName(batchTypeName);
+                var batchType = batchControl.getBatchTypeByName(batchTypeName);
 
                 if(batchType != null) {
                     result.setBatchType(batchControl.getBatchTypeTransfer(getUserVisit(), batchType));
@@ -74,10 +74,10 @@ public class GetBatchTypeEntityTypesCommand
                 }
             } else {
                 var coreControl = getCoreControl();
-                ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+                var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
 
                 if(componentVendor != null) {
-                    EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+                    var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
 
                     if(entityType != null) {
                         result.setEntityType(coreControl.getEntityTypeTransfer(getUserVisit(), entityType));

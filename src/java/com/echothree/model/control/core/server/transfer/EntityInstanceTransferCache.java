@@ -76,7 +76,7 @@ public class EntityInstanceTransferCache
 
     public EntityInstanceTransfer getEntityInstanceTransfer(EntityInstance entityInstance, boolean includeEntityAppearance,
             boolean includeEntityVisit, boolean includeNames, boolean includeKey, boolean includeGuid, boolean includeUlid) {
-        EntityInstanceTransfer entityInstanceTransfer = get(entityInstance);
+        var entityInstanceTransfer = get(entityInstance);
         
         if(entityInstanceTransfer == null) {
             var entityTypeTransfer = filterEntityType ? null : coreControl.getEntityTypeTransfer(userVisit, entityInstance.getEntityType());

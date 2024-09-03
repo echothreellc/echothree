@@ -63,8 +63,8 @@ public class DeleteGeoCodeScopeCommand
     @Override
     protected BaseResult execute() {
         var geoControl = Session.getModelController(GeoControl.class);
-        String geoCodeScopeName = form.getGeoCodeScopeName();
-        GeoCodeScope geoCodeScope = geoControl.getGeoCodeScopeByNameForUpdate(geoCodeScopeName);
+        var geoCodeScopeName = form.getGeoCodeScopeName();
+        var geoCodeScope = geoControl.getGeoCodeScopeByNameForUpdate(geoCodeScopeName);
         
         if(geoCodeScope != null) {
             geoControl.deleteGeoCodeScope(geoCodeScope, getPartyPK());

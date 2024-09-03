@@ -147,7 +147,7 @@ public class ReturnPolicyControl
     // --------------------------------------------------------------------------------
 
     public PartyReturnPolicy createPartyReturnPolicy(Party party, ReturnPolicy returnPolicy, BasePK createdBy) {
-        PartyReturnPolicy partyReturnPolicy = PartyReturnPolicyFactory.getInstance().create(party, returnPolicy, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        var partyReturnPolicy = PartyReturnPolicyFactory.getInstance().create(party, returnPolicy, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partyReturnPolicy.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -284,7 +284,7 @@ public class ReturnPolicyControl
 
     public List<PartyReturnPolicyTransfer> getPartyReturnPolicyTransfers(UserVisit userVisit, Collection<PartyReturnPolicy> returnPolicies) {
         List<PartyReturnPolicyTransfer> returnPolicyTransfers = new ArrayList<>(returnPolicies.size());
-        PartyReturnPolicyTransferCache returnPolicyTransferCache = getReturnPolicyTransferCaches(userVisit).getPartyReturnPolicyTransferCache();
+        var returnPolicyTransferCache = getReturnPolicyTransferCaches(userVisit).getPartyReturnPolicyTransferCache();
 
         returnPolicies.forEach((returnPolicy) ->
                 returnPolicyTransfers.add(returnPolicyTransferCache.getPartyReturnPolicyTransfer(returnPolicy))
@@ -332,20 +332,20 @@ public class ReturnPolicyControl
     
     public ReturnKind createReturnKind(String returnKindName, SequenceType returnSequenceType, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
-        ReturnKind defaultReturnKind = getDefaultReturnKind();
-        boolean defaultFound = defaultReturnKind != null;
+        var defaultReturnKind = getDefaultReturnKind();
+        var defaultFound = defaultReturnKind != null;
         
         if(defaultFound && isDefault) {
-            ReturnKindDetailValue defaultReturnKindDetailValue = getDefaultReturnKindDetailValueForUpdate();
+            var defaultReturnKindDetailValue = getDefaultReturnKindDetailValueForUpdate();
             
             defaultReturnKindDetailValue.setIsDefault(Boolean.FALSE);
             updateReturnKindFromValue(defaultReturnKindDetailValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        ReturnKind returnKind = ReturnKindFactory.getInstance().create();
-        ReturnKindDetail returnKindDetail = ReturnKindDetailFactory.getInstance().create(returnKind, returnKindName,
+
+        var returnKind = ReturnKindFactory.getInstance().create();
+        var returnKindDetail = ReturnKindDetailFactory.getInstance().create(returnKind, returnKindName,
                 returnSequenceType, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -485,7 +485,7 @@ public class ReturnPolicyControl
     }
     
     public ReturnKindChoicesBean getReturnKindChoices(String defaultReturnKindChoice, Language language, boolean allowNullChoice) {
-        List<ReturnKind> returnKinds = getReturnKinds();
+        var returnKinds = getReturnKinds();
         var size = returnKinds.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -501,7 +501,7 @@ public class ReturnPolicyControl
         }
         
         for(var returnKind : returnKinds) {
-            ReturnKindDetail returnKindDetail = returnKind.getLastDetail();
+            var returnKindDetail = returnKind.getLastDetail();
             
             var label = getBestReturnKindDescription(returnKind, language);
             var value = returnKindDetail.getReturnKindName();
@@ -538,26 +538,26 @@ public class ReturnPolicyControl
     }
 
     private void updateReturnKindFromValue(ReturnKindDetailValue returnKindDetailValue, boolean checkDefault, BasePK updatedBy) {
-        ReturnKind returnKind = ReturnKindFactory.getInstance().getEntityFromPK(session,
+        var returnKind = ReturnKindFactory.getInstance().getEntityFromPK(session,
                 EntityPermission.READ_WRITE, returnKindDetailValue.getReturnKindPK());
-        ReturnKindDetail returnKindDetail = returnKind.getActiveDetailForUpdate();
+        var returnKindDetail = returnKind.getActiveDetailForUpdate();
         
         returnKindDetail.setThruTime(session.START_TIME_LONG);
         returnKindDetail.store();
-        
-        ReturnKindPK returnKindPK = returnKindDetail.getReturnKindPK();
-        String returnKindName = returnKindDetailValue.getReturnKindName();
-        SequenceTypePK returnSequenceTypePK = returnKindDetailValue.getReturnSequenceTypePK();
-        Boolean isDefault = returnKindDetailValue.getIsDefault();
-        Integer sortOrder = returnKindDetailValue.getSortOrder();
+
+        var returnKindPK = returnKindDetail.getReturnKindPK();
+        var returnKindName = returnKindDetailValue.getReturnKindName();
+        var returnSequenceTypePK = returnKindDetailValue.getReturnSequenceTypePK();
+        var isDefault = returnKindDetailValue.getIsDefault();
+        var sortOrder = returnKindDetailValue.getSortOrder();
         
         if(checkDefault) {
-            ReturnKind defaultReturnKind = getDefaultReturnKind();
-            boolean defaultFound = defaultReturnKind != null && !defaultReturnKind.equals(returnKind);
+            var defaultReturnKind = getDefaultReturnKind();
+            var defaultFound = defaultReturnKind != null && !defaultReturnKind.equals(returnKind);
             
             if(isDefault && defaultFound) {
                 // If I'm the default, and a default already existed...
-                ReturnKindDetailValue defaultReturnKindDetailValue = getDefaultReturnKindDetailValueForUpdate();
+                var defaultReturnKindDetailValue = getDefaultReturnKindDetailValueForUpdate();
                 
                 defaultReturnKindDetailValue.setIsDefault(Boolean.FALSE);
                 updateReturnKindFromValue(defaultReturnKindDetailValue, false, updatedBy);
@@ -583,23 +583,23 @@ public class ReturnPolicyControl
     
     public void deleteReturnKind(ReturnKind returnKind, BasePK deletedBy) {
         deleteReturnKindDescriptionsByReturnKind(returnKind, deletedBy);
-        
-        ReturnKindDetail returnKindDetail = returnKind.getLastDetailForUpdate();
+
+        var returnKindDetail = returnKind.getLastDetailForUpdate();
         returnKindDetail.setThruTime(session.START_TIME_LONG);
         returnKind.setActiveDetail(null);
         returnKind.store();
         
         // Check for default, and pick one if necessary
-        ReturnKind defaultReturnKind = getDefaultReturnKind();
+        var defaultReturnKind = getDefaultReturnKind();
         if(defaultReturnKind == null) {
-            List<ReturnKind> returnKinds = getReturnKindsForUpdate();
+            var returnKinds = getReturnKindsForUpdate();
             
             if(!returnKinds.isEmpty()) {
-                Iterator<ReturnKind> iter = returnKinds.iterator();
+                var iter = returnKinds.iterator();
                 if(iter.hasNext()) {
                     defaultReturnKind = iter.next();
                 }
-                ReturnKindDetailValue returnKindDetailValue = Objects.requireNonNull(defaultReturnKind).getLastDetailForUpdate().getReturnKindDetailValue().clone();
+                var returnKindDetailValue = Objects.requireNonNull(defaultReturnKind).getLastDetailForUpdate().getReturnKindDetailValue().clone();
                 
                 returnKindDetailValue.setIsDefault(Boolean.TRUE);
                 updateReturnKindFromValue(returnKindDetailValue, false, deletedBy);
@@ -615,7 +615,7 @@ public class ReturnPolicyControl
     
     public ReturnKindDescription createReturnKindDescription(ReturnKind returnKind, Language language, String description,
             BasePK createdBy) {
-        ReturnKindDescription returnKindDescription = ReturnKindDescriptionFactory.getInstance().create(returnKind,
+        var returnKindDescription = ReturnKindDescriptionFactory.getInstance().create(returnKind,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(returnKind.getPrimaryKey(), EventTypes.MODIFY, returnKindDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -695,7 +695,7 @@ public class ReturnPolicyControl
     
     public String getBestReturnKindDescription(ReturnKind returnKind, Language language) {
         String description;
-        ReturnKindDescription returnKindDescription = getReturnKindDescription(returnKind, language);
+        var returnKindDescription = getReturnKindDescription(returnKind, language);
         
         if(returnKindDescription == null && !language.getIsDefault()) {
             returnKindDescription = getReturnKindDescription(returnKind, getPartyControl().getDefaultLanguage());
@@ -715,7 +715,7 @@ public class ReturnPolicyControl
     }
     
     public List<ReturnKindDescriptionTransfer> getReturnKindDescriptionTransfersByReturnKind(UserVisit userVisit, ReturnKind returnKind) {
-        List<ReturnKindDescription> returnKindDescriptions = getReturnKindDescriptionsByReturnKind(returnKind);
+        var returnKindDescriptions = getReturnKindDescriptionsByReturnKind(returnKind);
         List<ReturnKindDescriptionTransfer> returnKindDescriptionTransfers = new ArrayList<>(returnKindDescriptions.size());
         
         returnKindDescriptions.forEach((returnKindDescription) -> {
@@ -727,15 +727,15 @@ public class ReturnPolicyControl
     
     public void updateReturnKindDescriptionFromValue(ReturnKindDescriptionValue returnKindDescriptionValue, BasePK updatedBy) {
         if(returnKindDescriptionValue.hasBeenModified()) {
-            ReturnKindDescription returnKindDescription = ReturnKindDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var returnKindDescription = ReturnKindDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      returnKindDescriptionValue.getPrimaryKey());
             
             returnKindDescription.setThruTime(session.START_TIME_LONG);
             returnKindDescription.store();
-            
-            ReturnKind returnKind = returnKindDescription.getReturnKind();
-            Language language = returnKindDescription.getLanguage();
-            String description = returnKindDescriptionValue.getDescription();
+
+            var returnKind = returnKindDescription.getReturnKind();
+            var language = returnKindDescription.getLanguage();
+            var description = returnKindDescriptionValue.getDescription();
             
             returnKindDescription = ReturnKindDescriptionFactory.getInstance().create(returnKind, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -752,7 +752,7 @@ public class ReturnPolicyControl
     }
     
     public void deleteReturnKindDescriptionsByReturnKind(ReturnKind returnKind, BasePK deletedBy) {
-        List<ReturnKindDescription> returnKindDescriptions = getReturnKindDescriptionsByReturnKindForUpdate(returnKind);
+        var returnKindDescriptions = getReturnKindDescriptionsByReturnKindForUpdate(returnKind);
         
         returnKindDescriptions.forEach((returnKindDescription) -> 
                 deleteReturnKindDescription(returnKindDescription, deletedBy)
@@ -765,20 +765,20 @@ public class ReturnPolicyControl
     
     public ReturnPolicy createReturnPolicy(ReturnKind returnKind, String returnPolicyName, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
-        ReturnPolicy defaultReturnPolicy = getDefaultReturnPolicy(returnKind);
-        boolean defaultFound = defaultReturnPolicy != null;
+        var defaultReturnPolicy = getDefaultReturnPolicy(returnKind);
+        var defaultFound = defaultReturnPolicy != null;
         
         if(defaultFound && isDefault) {
-            ReturnPolicyDetailValue defaultReturnPolicyDetailValue = getDefaultReturnPolicyDetailValueForUpdate(returnKind);
+            var defaultReturnPolicyDetailValue = getDefaultReturnPolicyDetailValueForUpdate(returnKind);
             
             defaultReturnPolicyDetailValue.setIsDefault(Boolean.FALSE);
             updateReturnPolicyFromValue(defaultReturnPolicyDetailValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        ReturnPolicy returnPolicy = ReturnPolicyFactory.getInstance().create();
-        ReturnPolicyDetail returnPolicyDetail = ReturnPolicyDetailFactory.getInstance().create(session,
+
+        var returnPolicy = ReturnPolicyFactory.getInstance().create();
+        var returnPolicyDetail = ReturnPolicyDetailFactory.getInstance().create(session,
                 returnPolicy, returnKind, returnPolicyName, isDefault, sortOrder, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
@@ -835,8 +835,8 @@ public class ReturnPolicyControl
                         "WHERE rtnplcy_activedetailid = rtnplcydt_returnpolicydetailid AND rtnplcydt_rtnk_returnkindid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ReturnPolicyFactory.getInstance().prepareStatement(query);
+
+            var ps = ReturnPolicyFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, returnKind.getPrimaryKey().getEntityId());
             
@@ -874,8 +874,8 @@ public class ReturnPolicyControl
                         "AND rtnplcydt_rtnk_returnkindid = ? AND rtnplcydt_isdefault = 1 " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ReturnPolicyFactory.getInstance().prepareStatement(query);
+
+            var ps = ReturnPolicyFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, returnKind.getPrimaryKey().getEntityId());
             
@@ -917,8 +917,8 @@ public class ReturnPolicyControl
                         "AND rtnplcydt_rtnk_returnkindid = ? AND rtnplcydt_returnpolicyname = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ReturnPolicyFactory.getInstance().prepareStatement(query);
+
+            var ps = ReturnPolicyFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, returnKind.getPrimaryKey().getEntityId());
             ps.setString(2, returnPolicyName);
@@ -949,7 +949,7 @@ public class ReturnPolicyControl
     
     public ReturnPolicyChoicesBean getReturnPolicyChoices(String defaultReturnPolicyChoice, Language language,
             boolean allowNullChoice, ReturnKind returnKind) {
-        List<ReturnPolicy> returnPolicies = getReturnPolicies(returnKind);
+        var returnPolicies = getReturnPolicies(returnKind);
         var size = returnPolicies.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -965,9 +965,9 @@ public class ReturnPolicyControl
         }
         
         for(var returnPolicy : returnPolicies) {
-            ReturnPolicyDetail returnPolicyDetail = returnPolicy.getLastDetail();
-            String returnPolicyName = returnPolicyDetail.getReturnPolicyName();
-            ReturnPolicyTranslation returnPolicyTranslation = getBestReturnPolicyTranslation(returnPolicy, language);
+            var returnPolicyDetail = returnPolicy.getLastDetail();
+            var returnPolicyName = returnPolicyDetail.getReturnPolicyName();
+            var returnPolicyTranslation = getBestReturnPolicyTranslation(returnPolicy, language);
 
             var label = returnPolicyTranslation == null ? returnPolicyName : returnPolicyTranslation.getDescription();
             var value = returnPolicyName;
@@ -990,7 +990,7 @@ public class ReturnPolicyControl
 
     public List<ReturnPolicyTransfer> getReturnPolicyTransfers(UserVisit userVisit, Collection<ReturnPolicy> returnPolicies ) {
         List<ReturnPolicyTransfer> returnPolicyTransfers = new ArrayList<>(returnPolicies.size());
-        ReturnPolicyTransferCache returnPolicyTransferCache = getReturnPolicyTransferCaches(userVisit).getReturnPolicyTransferCache();
+        var returnPolicyTransferCache = getReturnPolicyTransferCaches(userVisit).getReturnPolicyTransferCache();
 
         returnPolicies.forEach((returnPolicy) ->
                 returnPolicyTransfers.add(returnPolicyTransferCache.getReturnPolicyTransfer(returnPolicy))
@@ -1006,27 +1006,27 @@ public class ReturnPolicyControl
     private void updateReturnPolicyFromValue(ReturnPolicyDetailValue returnPolicyDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(returnPolicyDetailValue.hasBeenModified()) {
-            ReturnPolicy returnPolicy = ReturnPolicyFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var returnPolicy = ReturnPolicyFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      returnPolicyDetailValue.getReturnPolicyPK());
-            ReturnPolicyDetail returnPolicyDetail = returnPolicy.getActiveDetailForUpdate();
+            var returnPolicyDetail = returnPolicy.getActiveDetailForUpdate();
             
             returnPolicyDetail.setThruTime(session.START_TIME_LONG);
             returnPolicyDetail.store();
-            
-            ReturnPolicyPK returnPolicyPK = returnPolicyDetail.getReturnPolicyPK();
-            ReturnKind returnKind = returnPolicyDetail.getReturnKind();
-            ReturnKindPK returnKindPK = returnKind.getPrimaryKey();
-            String returnPolicyName = returnPolicyDetailValue.getReturnPolicyName();
-            Boolean isDefault = returnPolicyDetailValue.getIsDefault();
-            Integer sortOrder = returnPolicyDetailValue.getSortOrder();
+
+            var returnPolicyPK = returnPolicyDetail.getReturnPolicyPK();
+            var returnKind = returnPolicyDetail.getReturnKind();
+            var returnKindPK = returnKind.getPrimaryKey();
+            var returnPolicyName = returnPolicyDetailValue.getReturnPolicyName();
+            var isDefault = returnPolicyDetailValue.getIsDefault();
+            var sortOrder = returnPolicyDetailValue.getSortOrder();
             
             if(checkDefault) {
-                ReturnPolicy defaultReturnPolicy = getDefaultReturnPolicy(returnKind);
-                boolean defaultFound = defaultReturnPolicy != null && !defaultReturnPolicy.equals(returnPolicy);
+                var defaultReturnPolicy = getDefaultReturnPolicy(returnKind);
+                var defaultFound = defaultReturnPolicy != null && !defaultReturnPolicy.equals(returnPolicy);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    ReturnPolicyDetailValue defaultReturnPolicyDetailValue = getDefaultReturnPolicyDetailValueForUpdate(returnKind);
+                    var defaultReturnPolicyDetailValue = getDefaultReturnPolicyDetailValueForUpdate(returnKind);
                     
                     defaultReturnPolicyDetailValue.setIsDefault(Boolean.FALSE);
                     updateReturnPolicyFromValue(defaultReturnPolicyDetailValue, false, updatedBy);
@@ -1054,24 +1054,24 @@ public class ReturnPolicyControl
         deletePartyReturnPoliciesByReturnPolicy(returnPolicy, deletedBy);
         deleteReturnPolicyReasonsByReturnPolicy(returnPolicy, deletedBy);
         deleteReturnPolicyTranslationsByReturnPolicy(returnPolicy, deletedBy);
-        
-        ReturnPolicyDetail returnPolicyDetail = returnPolicy.getLastDetailForUpdate();
+
+        var returnPolicyDetail = returnPolicy.getLastDetailForUpdate();
         returnPolicyDetail.setThruTime(session.START_TIME_LONG);
         returnPolicy.setActiveDetail(null);
         returnPolicy.store();
         
         // Check for default, and pick one if necessary
-        ReturnKind returnKind = returnPolicyDetail.getReturnKind();
-        ReturnPolicy defaultReturnPolicy = getDefaultReturnPolicy(returnKind);
+        var returnKind = returnPolicyDetail.getReturnKind();
+        var defaultReturnPolicy = getDefaultReturnPolicy(returnKind);
         if(defaultReturnPolicy == null) {
-            List<ReturnPolicy> returnPolicies = getReturnPoliciesForUpdate(returnKind);
+            var returnPolicies = getReturnPoliciesForUpdate(returnKind);
             
             if(!returnPolicies.isEmpty()) {
-                Iterator<ReturnPolicy> iter = returnPolicies.iterator();
+                var iter = returnPolicies.iterator();
                 if(iter.hasNext()) {
                     defaultReturnPolicy = iter.next();
                 }
-                ReturnPolicyDetailValue returnPolicyDetailValue = Objects.requireNonNull(defaultReturnPolicy).getLastDetailForUpdate().getReturnPolicyDetailValue().clone();
+                var returnPolicyDetailValue = Objects.requireNonNull(defaultReturnPolicy).getLastDetailForUpdate().getReturnPolicyDetailValue().clone();
                 
                 returnPolicyDetailValue.setIsDefault(Boolean.TRUE);
                 updateReturnPolicyFromValue(returnPolicyDetailValue, false, deletedBy);
@@ -1082,7 +1082,7 @@ public class ReturnPolicyControl
     }
     
     public void deleteReturnPoliciesByReturnKind(ReturnKind returnKind, BasePK deletedBy) {
-        List<ReturnPolicy> returnPolicies = getReturnPoliciesForUpdate(returnKind);
+        var returnPolicies = getReturnPoliciesForUpdate(returnKind);
         
         returnPolicies.forEach((returnPolicy) -> 
                 deleteReturnPolicy(returnPolicy, deletedBy)
@@ -1095,7 +1095,7 @@ public class ReturnPolicyControl
 
     public ReturnPolicyTranslation createReturnPolicyTranslation(ReturnPolicy returnPolicy, Language language,
             String description, MimeType overviewMimeType, String overview, BasePK createdBy) {
-        ReturnPolicyTranslation returnPolicyTranslation = ReturnPolicyTranslationFactory.getInstance().create(returnPolicy,
+        var returnPolicyTranslation = ReturnPolicyTranslationFactory.getInstance().create(returnPolicy,
                 language, description, overviewMimeType, overview, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(returnPolicy.getPrimaryKey(), EventTypes.MODIFY, returnPolicyTranslation.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1174,7 +1174,7 @@ public class ReturnPolicyControl
     }
 
     public ReturnPolicyTranslation getBestReturnPolicyTranslation(ReturnPolicy returnPolicy, Language language) {
-        ReturnPolicyTranslation returnPolicyTranslation = getReturnPolicyTranslation(returnPolicy, language);
+        var returnPolicyTranslation = getReturnPolicyTranslation(returnPolicy, language);
 
         if(returnPolicyTranslation == null && !language.getIsDefault()) {
             returnPolicyTranslation = getReturnPolicyTranslation(returnPolicy, getPartyControl().getDefaultLanguage());
@@ -1188,9 +1188,9 @@ public class ReturnPolicyControl
     }
 
     public List<ReturnPolicyTranslationTransfer> getReturnPolicyTranslationTransfers(UserVisit userVisit, ReturnPolicy returnPolicy) {
-        List<ReturnPolicyTranslation> returnPolicyTranslations = getReturnPolicyTranslationsByReturnPolicy(returnPolicy);
+        var returnPolicyTranslations = getReturnPolicyTranslationsByReturnPolicy(returnPolicy);
         List<ReturnPolicyTranslationTransfer> returnPolicyTranslationTransfers = new ArrayList<>(returnPolicyTranslations.size());
-        ReturnPolicyTranslationTransferCache returnPolicyTranslationTransferCache = getReturnPolicyTransferCaches(userVisit).getReturnPolicyTranslationTransferCache();
+        var returnPolicyTranslationTransferCache = getReturnPolicyTransferCaches(userVisit).getReturnPolicyTranslationTransferCache();
 
         returnPolicyTranslations.forEach((returnPolicyTranslation) ->
                 returnPolicyTranslationTransfers.add(returnPolicyTranslationTransferCache.getReturnPolicyTranslationTransfer(returnPolicyTranslation))
@@ -1201,17 +1201,17 @@ public class ReturnPolicyControl
 
     public void updateReturnPolicyTranslationFromValue(ReturnPolicyTranslationValue returnPolicyTranslationValue, BasePK updatedBy) {
         if(returnPolicyTranslationValue.hasBeenModified()) {
-            ReturnPolicyTranslation returnPolicyTranslation = ReturnPolicyTranslationFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var returnPolicyTranslation = ReturnPolicyTranslationFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     returnPolicyTranslationValue.getPrimaryKey());
 
             returnPolicyTranslation.setThruTime(session.START_TIME_LONG);
             returnPolicyTranslation.store();
 
-            ReturnPolicyPK returnPolicyPK = returnPolicyTranslation.getReturnPolicyPK();
-            LanguagePK languagePK = returnPolicyTranslation.getLanguagePK();
-            String description = returnPolicyTranslationValue.getDescription();
-            MimeTypePK policyMimeTypePK = returnPolicyTranslationValue.getPolicyMimeTypePK();
-            String policy = returnPolicyTranslationValue.getPolicy();
+            var returnPolicyPK = returnPolicyTranslation.getReturnPolicyPK();
+            var languagePK = returnPolicyTranslation.getLanguagePK();
+            var description = returnPolicyTranslationValue.getDescription();
+            var policyMimeTypePK = returnPolicyTranslationValue.getPolicyMimeTypePK();
+            var policy = returnPolicyTranslationValue.getPolicy();
 
             returnPolicyTranslation = ReturnPolicyTranslationFactory.getInstance().create(returnPolicyPK, languagePK, description,
                     policyMimeTypePK, policy, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1228,7 +1228,7 @@ public class ReturnPolicyControl
     }
 
     public void deleteReturnPolicyTranslationsByReturnPolicy(ReturnPolicy returnPolicy, BasePK deletedBy) {
-        List<ReturnPolicyTranslation> returnPolicyTranslations = getReturnPolicyTranslationsByReturnPolicyForUpdate(returnPolicy);
+        var returnPolicyTranslations = getReturnPolicyTranslationsByReturnPolicyForUpdate(returnPolicy);
 
         returnPolicyTranslations.forEach((returnPolicyTranslation) -> 
                 deleteReturnPolicyTranslation(returnPolicyTranslation, deletedBy)
@@ -1241,19 +1241,19 @@ public class ReturnPolicyControl
     
     public ReturnPolicyReason createReturnPolicyReason(ReturnPolicy returnPolicy, ReturnReason returnReason, Boolean isDefault,
             Integer sortOrder, BasePK createdBy) {
-        ReturnPolicyReason defaultReturnPolicyReason = getDefaultReturnPolicyReason(returnPolicy);
-        boolean defaultFound = defaultReturnPolicyReason != null;
+        var defaultReturnPolicyReason = getDefaultReturnPolicyReason(returnPolicy);
+        var defaultFound = defaultReturnPolicyReason != null;
         
         if(defaultFound && isDefault) {
-            ReturnPolicyReasonValue defaultReturnPolicyReasonValue = getDefaultReturnPolicyReasonValueForUpdate(returnPolicy);
+            var defaultReturnPolicyReasonValue = getDefaultReturnPolicyReasonValueForUpdate(returnPolicy);
             
             defaultReturnPolicyReasonValue.setIsDefault(Boolean.FALSE);
             updateReturnPolicyReasonFromValue(defaultReturnPolicyReasonValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        ReturnPolicyReason returnPolicyReason = ReturnPolicyReasonFactory.getInstance().create(returnPolicy, returnReason,
+
+        var returnPolicyReason = ReturnPolicyReasonFactory.getInstance().create(returnPolicy, returnReason,
                 isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(returnPolicy.getPrimaryKey(), EventTypes.MODIFY, returnPolicyReason.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1277,8 +1277,8 @@ public class ReturnPolicyControl
                         "WHERE rtnplcyrsn_rtnplcy_returnpolicyid = ? AND rtnplcyrsn_rtnrsn_returnreasonid = ? AND rtnplcyrsn_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ReturnPolicyReasonFactory.getInstance().prepareStatement(query);
+
+            var ps = ReturnPolicyReasonFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, returnPolicy.getPrimaryKey().getEntityId());
             ps.setLong(2, returnReason.getPrimaryKey().getEntityId());
@@ -1301,7 +1301,7 @@ public class ReturnPolicyControl
     }
     
     public ReturnPolicyReasonValue getReturnPolicyReasonValueForUpdate(ReturnPolicy returnPolicy, ReturnReason returnReason) {
-        ReturnPolicyReason returnPolicyReason = getReturnPolicyReasonForUpdate(returnPolicy, returnReason);
+        var returnPolicyReason = getReturnPolicyReasonForUpdate(returnPolicy, returnReason);
         
         return returnPolicyReason == null? null: returnPolicyReason.getReturnPolicyReasonValue().clone();
     }
@@ -1322,8 +1322,8 @@ public class ReturnPolicyControl
                         "WHERE rtnplcyrsn_rtnplcy_returnpolicyid = ? AND rtnplcyrsn_isdefault = 1 AND rtnplcyrsn_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ReturnPolicyReasonFactory.getInstance().prepareStatement(query);
+
+            var ps = ReturnPolicyReasonFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, returnPolicy.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1345,7 +1345,7 @@ public class ReturnPolicyControl
     }
     
     public ReturnPolicyReasonValue getDefaultReturnPolicyReasonValueForUpdate(ReturnPolicy returnPolicy) {
-        ReturnPolicyReason returnPolicyReason = getDefaultReturnPolicyReasonForUpdate(returnPolicy);
+        var returnPolicyReason = getDefaultReturnPolicyReasonForUpdate(returnPolicy);
         
         return returnPolicyReason == null? null: returnPolicyReason.getReturnPolicyReasonValue().clone();
     }
@@ -1369,8 +1369,8 @@ public class ReturnPolicyControl
                         "WHERE rtnplcyrsn_rtnplcy_returnpolicyid = ? AND rtnplcyrsn_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ReturnPolicyReasonFactory.getInstance().prepareStatement(query);
+
+            var ps = ReturnPolicyReasonFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, returnPolicy.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1410,8 +1410,8 @@ public class ReturnPolicyControl
                         "WHERE rtnplcyrsn_rtnrsn_returnreasonid = ? AND rtnplcyrsn_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ReturnPolicyReasonFactory.getInstance().prepareStatement(query);
+
+            var ps = ReturnPolicyReasonFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, returnReason.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1434,7 +1434,7 @@ public class ReturnPolicyControl
     
     public List<ReturnPolicyReasonTransfer> getReturnPolicyReasonTransfers(UserVisit userVisit, Collection<ReturnPolicyReason> returnPolicyReasons) {
         List<ReturnPolicyReasonTransfer> returnPolicyReasonTransfers = new ArrayList<>(returnPolicyReasons.size());
-        ReturnPolicyReasonTransferCache returnPolicyReasonTransferCache = getReturnPolicyTransferCaches(userVisit).getReturnPolicyReasonTransferCache();
+        var returnPolicyReasonTransferCache = getReturnPolicyTransferCaches(userVisit).getReturnPolicyReasonTransferCache();
         
         returnPolicyReasons.forEach((returnPolicyReason) ->
                 returnPolicyReasonTransfers.add(returnPolicyReasonTransferCache.getReturnPolicyReasonTransfer(returnPolicyReason))
@@ -1457,25 +1457,25 @@ public class ReturnPolicyControl
     
     private void updateReturnPolicyReasonFromValue(ReturnPolicyReasonValue returnPolicyReasonValue, boolean checkDefault, BasePK updatedBy) {
         if(returnPolicyReasonValue.hasBeenModified()) {
-            ReturnPolicyReason returnPolicyReason = ReturnPolicyReasonFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var returnPolicyReason = ReturnPolicyReasonFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      returnPolicyReasonValue.getPrimaryKey());
             
             returnPolicyReason.setThruTime(session.START_TIME_LONG);
             returnPolicyReason.store();
-            
-            ReturnPolicy returnPolicy = returnPolicyReason.getReturnPolicy(); // Not Updated
-            ReturnPolicyPK returnPolicyPK = returnPolicy.getPrimaryKey(); // Not Updated
-            ReturnReasonPK returnReasonPK = returnPolicyReason.getReturnReasonPK(); // Not Updated
-            Boolean isDefault = returnPolicyReasonValue.getIsDefault();
-            Integer sortOrder = returnPolicyReasonValue.getSortOrder();
+
+            var returnPolicy = returnPolicyReason.getReturnPolicy(); // Not Updated
+            var returnPolicyPK = returnPolicy.getPrimaryKey(); // Not Updated
+            var returnReasonPK = returnPolicyReason.getReturnReasonPK(); // Not Updated
+            var isDefault = returnPolicyReasonValue.getIsDefault();
+            var sortOrder = returnPolicyReasonValue.getSortOrder();
             
             if(checkDefault) {
-                ReturnPolicyReason defaultReturnPolicyReason = getDefaultReturnPolicyReason(returnPolicy);
-                boolean defaultFound = defaultReturnPolicyReason != null && !defaultReturnPolicyReason.equals(returnPolicyReason);
+                var defaultReturnPolicyReason = getDefaultReturnPolicyReason(returnPolicy);
+                var defaultFound = defaultReturnPolicyReason != null && !defaultReturnPolicyReason.equals(returnPolicyReason);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    ReturnPolicyReasonValue defaultReturnPolicyReasonValue = getDefaultReturnPolicyReasonValueForUpdate(returnPolicy);
+                    var defaultReturnPolicyReasonValue = getDefaultReturnPolicyReasonValueForUpdate(returnPolicy);
                     
                     defaultReturnPolicyReasonValue.setIsDefault(Boolean.FALSE);
                     updateReturnPolicyReasonFromValue(defaultReturnPolicyReasonValue, false, updatedBy);
@@ -1501,17 +1501,17 @@ public class ReturnPolicyControl
         returnPolicyReason.store();
         
         // Check for default, and pick one if necessary
-        ReturnPolicy returnPolicy = returnPolicyReason.getReturnPolicy();
-        ReturnPolicyReason defaultReturnPolicyReason = getDefaultReturnPolicyReason(returnPolicy);
+        var returnPolicy = returnPolicyReason.getReturnPolicy();
+        var defaultReturnPolicyReason = getDefaultReturnPolicyReason(returnPolicy);
         if(defaultReturnPolicyReason == null) {
-            List<ReturnPolicyReason> returnPolicyReasons = getReturnPolicyReasonsByReturnPolicyForUpdate(returnPolicy);
+            var returnPolicyReasons = getReturnPolicyReasonsByReturnPolicyForUpdate(returnPolicy);
             
             if(!returnPolicyReasons.isEmpty()) {
-                Iterator<ReturnPolicyReason> iter = returnPolicyReasons.iterator();
+                var iter = returnPolicyReasons.iterator();
                 if(iter.hasNext()) {
                     defaultReturnPolicyReason = iter.next();
                 }
-                ReturnPolicyReasonValue returnPolicyReasonValue = defaultReturnPolicyReason.getReturnPolicyReasonValue().clone();
+                var returnPolicyReasonValue = defaultReturnPolicyReason.getReturnPolicyReasonValue().clone();
                 
                 returnPolicyReasonValue.setIsDefault(Boolean.TRUE);
                 updateReturnPolicyReasonFromValue(returnPolicyReasonValue, false, deletedBy);
@@ -1541,20 +1541,20 @@ public class ReturnPolicyControl
     
     public ReturnReason createReturnReason(ReturnKind returnKind, String returnReasonName, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
-        ReturnReason defaultReturnReason = getDefaultReturnReason(returnKind);
-        boolean defaultFound = defaultReturnReason != null;
+        var defaultReturnReason = getDefaultReturnReason(returnKind);
+        var defaultFound = defaultReturnReason != null;
         
         if(defaultFound && isDefault) {
-            ReturnReasonDetailValue defaultReturnReasonDetailValue = getDefaultReturnReasonDetailValueForUpdate(returnKind);
+            var defaultReturnReasonDetailValue = getDefaultReturnReasonDetailValueForUpdate(returnKind);
             
             defaultReturnReasonDetailValue.setIsDefault(Boolean.FALSE);
             updateReturnReasonFromValue(defaultReturnReasonDetailValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        ReturnReason returnReason = ReturnReasonFactory.getInstance().create();
-        ReturnReasonDetail returnReasonDetail = ReturnReasonDetailFactory.getInstance().create(session,
+
+        var returnReason = ReturnReasonFactory.getInstance().create();
+        var returnReasonDetail = ReturnReasonDetailFactory.getInstance().create(session,
                 returnReason, returnKind, returnReasonName, isDefault, sortOrder, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
@@ -1588,8 +1588,8 @@ public class ReturnPolicyControl
                         "WHERE rtnrsn_activedetailid = rtnrsndt_returnreasondetailid AND rtnrsndt_rtnk_returnkindid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ReturnReasonFactory.getInstance().prepareStatement(query);
+
+            var ps = ReturnReasonFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, returnKind.getPrimaryKey().getEntityId());
             
@@ -1627,8 +1627,8 @@ public class ReturnPolicyControl
                         "AND rtnrsndt_rtnk_returnkindid = ? AND rtnrsndt_isdefault = 1 " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ReturnReasonFactory.getInstance().prepareStatement(query);
+
+            var ps = ReturnReasonFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, returnKind.getPrimaryKey().getEntityId());
             
@@ -1670,8 +1670,8 @@ public class ReturnPolicyControl
                         "AND rtnrsndt_rtnk_returnkindid = ? AND rtnrsndt_returnreasonname = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ReturnReasonFactory.getInstance().prepareStatement(query);
+
+            var ps = ReturnReasonFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, returnKind.getPrimaryKey().getEntityId());
             ps.setString(2, returnReasonName);
@@ -1702,7 +1702,7 @@ public class ReturnPolicyControl
     
     public ReturnReasonChoicesBean getReturnReasonChoices(String defaultReturnReasonChoice, Language language,
             boolean allowNullChoice, ReturnKind returnKind) {
-        List<ReturnReason> returnReasons = getReturnReasons(returnKind);
+        var returnReasons = getReturnReasons(returnKind);
         var size = returnReasons.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -1718,7 +1718,7 @@ public class ReturnPolicyControl
         }
         
         for(var returnReason : returnReasons) {
-            ReturnReasonDetail returnReasonDetail = returnReason.getLastDetail();
+            var returnReasonDetail = returnReason.getLastDetail();
             var label = getBestReturnReasonDescription(returnReason, language);
             var value = returnReasonDetail.getReturnReasonName();
             
@@ -1739,9 +1739,9 @@ public class ReturnPolicyControl
     }
     
     public List<ReturnReasonTransfer> getReturnReasonTransfersByReturnKind(UserVisit userVisit, ReturnKind returnKind) {
-        List<ReturnReason> returnReasons = getReturnReasons(returnKind);
+        var returnReasons = getReturnReasons(returnKind);
         List<ReturnReasonTransfer> returnReasonTransfers = new ArrayList<>(returnReasons.size());
-        ReturnReasonTransferCache returnReasonTransferCache = getReturnPolicyTransferCaches(userVisit).getReturnReasonTransferCache();
+        var returnReasonTransferCache = getReturnPolicyTransferCaches(userVisit).getReturnReasonTransferCache();
         
         returnReasons.forEach((returnReason) ->
                 returnReasonTransfers.add(returnReasonTransferCache.getReturnReasonTransfer(returnReason))
@@ -1753,27 +1753,27 @@ public class ReturnPolicyControl
     private void updateReturnReasonFromValue(ReturnReasonDetailValue returnReasonDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(returnReasonDetailValue.hasBeenModified()) {
-            ReturnReason returnReason = ReturnReasonFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var returnReason = ReturnReasonFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      returnReasonDetailValue.getReturnReasonPK());
-            ReturnReasonDetail returnReasonDetail = returnReason.getActiveDetailForUpdate();
+            var returnReasonDetail = returnReason.getActiveDetailForUpdate();
             
             returnReasonDetail.setThruTime(session.START_TIME_LONG);
             returnReasonDetail.store();
-            
-            ReturnReasonPK returnReasonPK = returnReasonDetail.getReturnReasonPK();
-            ReturnKind returnKind = returnReasonDetail.getReturnKind();
-            ReturnKindPK returnKindPK = returnKind.getPrimaryKey();
-            String returnReasonName = returnReasonDetailValue.getReturnReasonName();
-            Boolean isDefault = returnReasonDetailValue.getIsDefault();
-            Integer sortOrder = returnReasonDetailValue.getSortOrder();
+
+            var returnReasonPK = returnReasonDetail.getReturnReasonPK();
+            var returnKind = returnReasonDetail.getReturnKind();
+            var returnKindPK = returnKind.getPrimaryKey();
+            var returnReasonName = returnReasonDetailValue.getReturnReasonName();
+            var isDefault = returnReasonDetailValue.getIsDefault();
+            var sortOrder = returnReasonDetailValue.getSortOrder();
             
             if(checkDefault) {
-                ReturnReason defaultReturnReason = getDefaultReturnReason(returnKind);
-                boolean defaultFound = defaultReturnReason != null && !defaultReturnReason.equals(returnReason);
+                var defaultReturnReason = getDefaultReturnReason(returnKind);
+                var defaultFound = defaultReturnReason != null && !defaultReturnReason.equals(returnReason);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    ReturnReasonDetailValue defaultReturnReasonDetailValue = getDefaultReturnReasonDetailValueForUpdate(returnKind);
+                    var defaultReturnReasonDetailValue = getDefaultReturnReasonDetailValueForUpdate(returnKind);
                     
                     defaultReturnReasonDetailValue.setIsDefault(Boolean.FALSE);
                     updateReturnReasonFromValue(defaultReturnReasonDetailValue, false, updatedBy);
@@ -1801,24 +1801,24 @@ public class ReturnPolicyControl
         deleteReturnPolicyReasonsByReturnReason(returnReason, deletedBy);
         deleteReturnReasonTypesByReturnReason(returnReason, deletedBy);
         deleteReturnReasonDescriptionsByReturnReason(returnReason, deletedBy);
-        
-        ReturnReasonDetail returnReasonDetail = returnReason.getLastDetailForUpdate();
+
+        var returnReasonDetail = returnReason.getLastDetailForUpdate();
         returnReasonDetail.setThruTime(session.START_TIME_LONG);
         returnReason.setActiveDetail(null);
         returnReason.store();
         
         // Check for default, and pick one if necessary
-        ReturnKind returnKind = returnReasonDetail.getReturnKind();
-        ReturnReason defaultReturnReason = getDefaultReturnReason(returnKind);
+        var returnKind = returnReasonDetail.getReturnKind();
+        var defaultReturnReason = getDefaultReturnReason(returnKind);
         if(defaultReturnReason == null) {
-            List<ReturnReason> returnReasons = getReturnReasonsForUpdate(returnKind);
+            var returnReasons = getReturnReasonsForUpdate(returnKind);
             
             if(!returnReasons.isEmpty()) {
-                Iterator<ReturnReason> iter = returnReasons.iterator();
+                var iter = returnReasons.iterator();
                 if(iter.hasNext()) {
                     defaultReturnReason = iter.next();
                 }
-                ReturnReasonDetailValue returnReasonDetailValue = Objects.requireNonNull(defaultReturnReason).getLastDetailForUpdate().getReturnReasonDetailValue().clone();
+                var returnReasonDetailValue = Objects.requireNonNull(defaultReturnReason).getLastDetailForUpdate().getReturnReasonDetailValue().clone();
                 
                 returnReasonDetailValue.setIsDefault(Boolean.TRUE);
                 updateReturnReasonFromValue(returnReasonDetailValue, false, deletedBy);
@@ -1829,7 +1829,7 @@ public class ReturnPolicyControl
     }
     
     public void deleteReturnReasonsByReturnKind(ReturnKind returnKind, BasePK deletedBy) {
-        List<ReturnReason> returnReasons = getReturnReasonsForUpdate(returnKind);
+        var returnReasons = getReturnReasonsForUpdate(returnKind);
         
         returnReasons.forEach((returnReason) -> 
                 deleteReturnReason(returnReason, deletedBy)
@@ -1842,7 +1842,7 @@ public class ReturnPolicyControl
     
     public ReturnReasonDescription createReturnReasonDescription(ReturnReason returnReason, Language language, String description,
             BasePK createdBy) {
-        ReturnReasonDescription returnReasonDescription = ReturnReasonDescriptionFactory.getInstance().create(returnReason,
+        var returnReasonDescription = ReturnReasonDescriptionFactory.getInstance().create(returnReason,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(returnReason.getPrimaryKey(), EventTypes.MODIFY, returnReasonDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1866,8 +1866,8 @@ public class ReturnPolicyControl
                         "WHERE rtnrsnd_rtnrsn_returnreasonid = ? AND rtnrsnd_lang_languageid = ? AND rtnrsnd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ReturnReasonDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = ReturnReasonDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, returnReason.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -1915,8 +1915,8 @@ public class ReturnPolicyControl
                         "WHERE rtnrsnd_rtnrsn_returnreasonid = ? AND rtnrsnd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ReturnReasonDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = ReturnReasonDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, returnReason.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1939,7 +1939,7 @@ public class ReturnPolicyControl
     
     public String getBestReturnReasonDescription(ReturnReason returnReason, Language language) {
         String description;
-        ReturnReasonDescription returnReasonDescription = getReturnReasonDescription(returnReason, language);
+        var returnReasonDescription = getReturnReasonDescription(returnReason, language);
         
         if(returnReasonDescription == null && !language.getIsDefault()) {
             returnReasonDescription = getReturnReasonDescription(returnReason, getPartyControl().getDefaultLanguage());
@@ -1959,7 +1959,7 @@ public class ReturnPolicyControl
     }
     
     public List<ReturnReasonDescriptionTransfer> getReturnReasonDescriptionTransfersByReturnReason(UserVisit userVisit, ReturnReason returnReason) {
-        List<ReturnReasonDescription> returnReasonDescriptions = getReturnReasonDescriptionsByReturnReason(returnReason);
+        var returnReasonDescriptions = getReturnReasonDescriptionsByReturnReason(returnReason);
         List<ReturnReasonDescriptionTransfer> returnReasonDescriptionTransfers = new ArrayList<>(returnReasonDescriptions.size());
         
         returnReasonDescriptions.forEach((returnReasonDescription) -> {
@@ -1971,15 +1971,15 @@ public class ReturnPolicyControl
     
     public void updateReturnReasonDescriptionFromValue(ReturnReasonDescriptionValue returnReasonDescriptionValue, BasePK updatedBy) {
         if(returnReasonDescriptionValue.hasBeenModified()) {
-            ReturnReasonDescription returnReasonDescription = ReturnReasonDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var returnReasonDescription = ReturnReasonDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      returnReasonDescriptionValue.getPrimaryKey());
             
             returnReasonDescription.setThruTime(session.START_TIME_LONG);
             returnReasonDescription.store();
-            
-            ReturnReason returnReason = returnReasonDescription.getReturnReason();
-            Language language = returnReasonDescription.getLanguage();
-            String description = returnReasonDescriptionValue.getDescription();
+
+            var returnReason = returnReasonDescription.getReturnReason();
+            var language = returnReasonDescription.getLanguage();
+            var description = returnReasonDescriptionValue.getDescription();
             
             returnReasonDescription = ReturnReasonDescriptionFactory.getInstance().create(returnReason, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1996,7 +1996,7 @@ public class ReturnPolicyControl
     }
     
     public void deleteReturnReasonDescriptionsByReturnReason(ReturnReason returnReason, BasePK deletedBy) {
-        List<ReturnReasonDescription> returnReasonDescriptions = getReturnReasonDescriptionsByReturnReasonForUpdate(returnReason);
+        var returnReasonDescriptions = getReturnReasonDescriptionsByReturnReasonForUpdate(returnReason);
         
         returnReasonDescriptions.forEach((returnReasonDescription) -> 
                 deleteReturnReasonDescription(returnReasonDescription, deletedBy)
@@ -2009,19 +2009,19 @@ public class ReturnPolicyControl
     
     public ReturnReasonType createReturnReasonType(ReturnReason returnReason, ReturnType returnType, Boolean isDefault,
             Integer sortOrder, BasePK createdBy) {
-        ReturnReasonType defaultReturnReasonType = getDefaultReturnReasonType(returnReason);
-        boolean defaultFound = defaultReturnReasonType != null;
+        var defaultReturnReasonType = getDefaultReturnReasonType(returnReason);
+        var defaultFound = defaultReturnReasonType != null;
         
         if(defaultFound && isDefault) {
-            ReturnReasonTypeValue defaultReturnReasonTypeValue = getDefaultReturnReasonTypeValueForUpdate(returnReason);
+            var defaultReturnReasonTypeValue = getDefaultReturnReasonTypeValueForUpdate(returnReason);
             
             defaultReturnReasonTypeValue.setIsDefault(Boolean.FALSE);
             updateReturnReasonTypeFromValue(defaultReturnReasonTypeValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        ReturnReasonType returnReasonType = ReturnReasonTypeFactory.getInstance().create(returnReason, returnType,
+
+        var returnReasonType = ReturnReasonTypeFactory.getInstance().create(returnReason, returnType,
                 isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(returnReason.getPrimaryKey(), EventTypes.MODIFY, returnReasonType.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2045,8 +2045,8 @@ public class ReturnPolicyControl
                         "WHERE rtnrsntyp_rtnrsn_returnreasonid = ? AND rtnrsntyp_rtntyp_returntypeid = ? AND rtnrsntyp_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ReturnReasonTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = ReturnReasonTypeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, returnReason.getPrimaryKey().getEntityId());
             ps.setLong(2, returnType.getPrimaryKey().getEntityId());
@@ -2069,7 +2069,7 @@ public class ReturnPolicyControl
     }
     
     public ReturnReasonTypeValue getReturnReasonTypeValueForUpdate(ReturnReason returnReason, ReturnType returnType) {
-        ReturnReasonType returnReasonType = getReturnReasonTypeForUpdate(returnReason, returnType);
+        var returnReasonType = getReturnReasonTypeForUpdate(returnReason, returnType);
         
         return returnReasonType == null? null: returnReasonType.getReturnReasonTypeValue().clone();
     }
@@ -2090,8 +2090,8 @@ public class ReturnPolicyControl
                         "WHERE rtnrsntyp_rtnrsn_returnreasonid = ? AND rtnrsntyp_isdefault = 1 AND rtnrsntyp_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ReturnReasonTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = ReturnReasonTypeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, returnReason.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -2113,7 +2113,7 @@ public class ReturnPolicyControl
     }
     
     public ReturnReasonTypeValue getDefaultReturnReasonTypeValueForUpdate(ReturnReason returnReason) {
-        ReturnReasonType returnReasonType = getDefaultReturnReasonTypeForUpdate(returnReason);
+        var returnReasonType = getDefaultReturnReasonTypeForUpdate(returnReason);
         
         return returnReasonType == null? null: returnReasonType.getReturnReasonTypeValue().clone();
     }
@@ -2138,8 +2138,8 @@ public class ReturnPolicyControl
                         "WHERE rtnrsntyp_rtnrsn_returnreasonid = ? AND rtnrsntyp_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ReturnReasonTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = ReturnReasonTypeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, returnReason.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -2179,8 +2179,8 @@ public class ReturnPolicyControl
                         "WHERE rtnrsntyp_rtntyp_returntypeid = ? AND rtnrsntyp_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ReturnReasonTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = ReturnReasonTypeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, returnType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -2203,7 +2203,7 @@ public class ReturnPolicyControl
     
     public List<ReturnReasonTypeTransfer> getReturnReasonTypeTransfers(UserVisit userVisit, Collection<ReturnReasonType> returnReasonTypes) {
         List<ReturnReasonTypeTransfer> returnReasonTypeTransfers = new ArrayList<>(returnReasonTypes.size());
-        ReturnReasonTypeTransferCache returnReasonTypeTransferCache = getReturnPolicyTransferCaches(userVisit).getReturnReasonTypeTransferCache();
+        var returnReasonTypeTransferCache = getReturnPolicyTransferCaches(userVisit).getReturnReasonTypeTransferCache();
         
         returnReasonTypes.forEach((returnReasonType) ->
                 returnReasonTypeTransfers.add(returnReasonTypeTransferCache.getReturnReasonTypeTransfer(returnReasonType))
@@ -2226,25 +2226,25 @@ public class ReturnPolicyControl
     
     private void updateReturnReasonTypeFromValue(ReturnReasonTypeValue returnReasonTypeValue, boolean checkDefault, BasePK updatedBy) {
         if(returnReasonTypeValue.hasBeenModified()) {
-            ReturnReasonType returnReasonType = ReturnReasonTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var returnReasonType = ReturnReasonTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      returnReasonTypeValue.getPrimaryKey());
             
             returnReasonType.setThruTime(session.START_TIME_LONG);
             returnReasonType.store();
-            
-            ReturnReason returnReason = returnReasonType.getReturnReason(); // Not Updated
-            ReturnReasonPK returnReasonPK = returnReason.getPrimaryKey(); // Not Updated
-            ReturnTypePK returnTypePK = returnReasonType.getReturnTypePK(); // Not Updated
-            Boolean isDefault = returnReasonTypeValue.getIsDefault();
-            Integer sortOrder = returnReasonTypeValue.getSortOrder();
+
+            var returnReason = returnReasonType.getReturnReason(); // Not Updated
+            var returnReasonPK = returnReason.getPrimaryKey(); // Not Updated
+            var returnTypePK = returnReasonType.getReturnTypePK(); // Not Updated
+            var isDefault = returnReasonTypeValue.getIsDefault();
+            var sortOrder = returnReasonTypeValue.getSortOrder();
             
             if(checkDefault) {
-                ReturnReasonType defaultReturnReasonType = getDefaultReturnReasonType(returnReason);
-                boolean defaultFound = defaultReturnReasonType != null && !defaultReturnReasonType.equals(returnReasonType);
+                var defaultReturnReasonType = getDefaultReturnReasonType(returnReason);
+                var defaultFound = defaultReturnReasonType != null && !defaultReturnReasonType.equals(returnReasonType);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    ReturnReasonTypeValue defaultReturnReasonTypeValue = getDefaultReturnReasonTypeValueForUpdate(returnReason);
+                    var defaultReturnReasonTypeValue = getDefaultReturnReasonTypeValueForUpdate(returnReason);
                     
                     defaultReturnReasonTypeValue.setIsDefault(Boolean.FALSE);
                     updateReturnReasonTypeFromValue(defaultReturnReasonTypeValue, false, updatedBy);
@@ -2270,17 +2270,17 @@ public class ReturnPolicyControl
         returnReasonType.store();
         
         // Check for default, and pick one if necessary
-        ReturnReason returnReason = returnReasonType.getReturnReason();
-        ReturnReasonType defaultReturnReasonType = getDefaultReturnReasonType(returnReason);
+        var returnReason = returnReasonType.getReturnReason();
+        var defaultReturnReasonType = getDefaultReturnReasonType(returnReason);
         if(defaultReturnReasonType == null) {
-            List<ReturnReasonType> returnReasonTypes = getReturnReasonTypesByReturnReasonForUpdate(returnReason);
+            var returnReasonTypes = getReturnReasonTypesByReturnReasonForUpdate(returnReason);
             
             if(!returnReasonTypes.isEmpty()) {
-                Iterator<ReturnReasonType> iter = returnReasonTypes.iterator();
+                var iter = returnReasonTypes.iterator();
                 if(iter.hasNext()) {
                     defaultReturnReasonType = iter.next();
                 }
-                ReturnReasonTypeValue returnReasonTypeValue = defaultReturnReasonType.getReturnReasonTypeValue().clone();
+                var returnReasonTypeValue = defaultReturnReasonType.getReturnReasonTypeValue().clone();
                 
                 returnReasonTypeValue.setIsDefault(Boolean.TRUE);
                 updateReturnReasonTypeFromValue(returnReasonTypeValue, false, deletedBy);
@@ -2310,20 +2310,20 @@ public class ReturnPolicyControl
     
     public ReturnType createReturnType(ReturnKind returnKind, String returnTypeName, Sequence returnSequence, Boolean isDefault,
             Integer sortOrder, BasePK createdBy) {
-        ReturnType defaultReturnType = getDefaultReturnType(returnKind);
-        boolean defaultFound = defaultReturnType != null;
+        var defaultReturnType = getDefaultReturnType(returnKind);
+        var defaultFound = defaultReturnType != null;
         
         if(defaultFound && isDefault) {
-            ReturnTypeDetailValue defaultReturnTypeDetailValue = getDefaultReturnTypeDetailValueForUpdate(returnKind);
+            var defaultReturnTypeDetailValue = getDefaultReturnTypeDetailValueForUpdate(returnKind);
             
             defaultReturnTypeDetailValue.setIsDefault(Boolean.FALSE);
             updateReturnTypeFromValue(defaultReturnTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        ReturnType returnType = ReturnTypeFactory.getInstance().create();
-        ReturnTypeDetail returnTypeDetail = ReturnTypeDetailFactory.getInstance().create(session,
+
+        var returnType = ReturnTypeFactory.getInstance().create();
+        var returnTypeDetail = ReturnTypeDetailFactory.getInstance().create(session,
                 returnType, returnKind, returnTypeName, returnSequence, isDefault, sortOrder, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
@@ -2449,7 +2449,7 @@ public class ReturnPolicyControl
     
     public ReturnTypeChoicesBean getReturnTypeChoices(String defaultReturnTypeChoice, Language language,
             boolean allowNullChoice, ReturnKind returnKind) {
-        List<ReturnType> returnTypes = getReturnTypes(returnKind);
+        var returnTypes = getReturnTypes(returnKind);
         var size = returnTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -2465,7 +2465,7 @@ public class ReturnPolicyControl
         }
         
         for(var returnType : returnTypes) {
-            ReturnTypeDetail returnTypeDetail = returnType.getLastDetail();
+            var returnTypeDetail = returnType.getLastDetail();
             var label = getBestReturnTypeDescription(returnType, language);
             var value = returnTypeDetail.getReturnTypeName();
             
@@ -2486,9 +2486,9 @@ public class ReturnPolicyControl
     }
     
     public List<ReturnTypeTransfer> getReturnTypeTransfersByReturnKind(UserVisit userVisit, ReturnKind returnKind) {
-        List<ReturnType> returnTypes = getReturnTypes(returnKind);
+        var returnTypes = getReturnTypes(returnKind);
         List<ReturnTypeTransfer> returnTypeTransfers = new ArrayList<>(returnTypes.size());
-        ReturnTypeTransferCache returnTypeTransferCache = getReturnPolicyTransferCaches(userVisit).getReturnTypeTransferCache();
+        var returnTypeTransferCache = getReturnPolicyTransferCaches(userVisit).getReturnTypeTransferCache();
         
         returnTypes.forEach((returnType) ->
                 returnTypeTransfers.add(returnTypeTransferCache.getReturnTypeTransfer(returnType))
@@ -2500,28 +2500,28 @@ public class ReturnPolicyControl
     private void updateReturnTypeFromValue(ReturnTypeDetailValue returnTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(returnTypeDetailValue.hasBeenModified()) {
-            ReturnType returnType = ReturnTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var returnType = ReturnTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      returnTypeDetailValue.getReturnTypePK());
-            ReturnTypeDetail returnTypeDetail = returnType.getActiveDetailForUpdate();
+            var returnTypeDetail = returnType.getActiveDetailForUpdate();
             
             returnTypeDetail.setThruTime(session.START_TIME_LONG);
             returnTypeDetail.store();
-            
-            ReturnTypePK returnTypePK = returnTypeDetail.getReturnTypePK();
-            ReturnKind returnKind = returnTypeDetail.getReturnKind();
-            ReturnKindPK returnKindPK = returnKind.getPrimaryKey();
-            String returnTypeName = returnTypeDetailValue.getReturnTypeName();
-            SequencePK returnSequencePK = returnTypeDetailValue.getReturnSequencePK();
-            Boolean isDefault = returnTypeDetailValue.getIsDefault();
-            Integer sortOrder = returnTypeDetailValue.getSortOrder();
+
+            var returnTypePK = returnTypeDetail.getReturnTypePK();
+            var returnKind = returnTypeDetail.getReturnKind();
+            var returnKindPK = returnKind.getPrimaryKey();
+            var returnTypeName = returnTypeDetailValue.getReturnTypeName();
+            var returnSequencePK = returnTypeDetailValue.getReturnSequencePK();
+            var isDefault = returnTypeDetailValue.getIsDefault();
+            var sortOrder = returnTypeDetailValue.getSortOrder();
             
             if(checkDefault) {
-                ReturnType defaultReturnType = getDefaultReturnType(returnKind);
-                boolean defaultFound = defaultReturnType != null && !defaultReturnType.equals(returnType);
+                var defaultReturnType = getDefaultReturnType(returnKind);
+                var defaultFound = defaultReturnType != null && !defaultReturnType.equals(returnType);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    ReturnTypeDetailValue defaultReturnTypeDetailValue = getDefaultReturnTypeDetailValueForUpdate(returnKind);
+                    var defaultReturnTypeDetailValue = getDefaultReturnTypeDetailValueForUpdate(returnKind);
                     
                     defaultReturnTypeDetailValue.setIsDefault(Boolean.FALSE);
                     updateReturnTypeFromValue(defaultReturnTypeDetailValue, false, updatedBy);
@@ -2549,24 +2549,24 @@ public class ReturnPolicyControl
         deleteReturnReasonTypesByReturnType(returnType, deletedBy);
         deleteReturnTypeShippingMethodsByReturnType(returnType, deletedBy);
         deleteReturnTypeDescriptionsByReturnType(returnType, deletedBy);
-        
-        ReturnTypeDetail returnTypeDetail = returnType.getLastDetailForUpdate();
+
+        var returnTypeDetail = returnType.getLastDetailForUpdate();
         returnTypeDetail.setThruTime(session.START_TIME_LONG);
         returnType.setActiveDetail(null);
         returnType.store();
         
         // Check for default, and pick one if necessary
-        ReturnKind returnKind = returnTypeDetail.getReturnKind();
-        ReturnType defaultReturnType = getDefaultReturnType(returnKind);
+        var returnKind = returnTypeDetail.getReturnKind();
+        var defaultReturnType = getDefaultReturnType(returnKind);
         if(defaultReturnType == null) {
-            List<ReturnType> returnTypes = getReturnTypesForUpdate(returnKind);
+            var returnTypes = getReturnTypesForUpdate(returnKind);
             
             if(!returnTypes.isEmpty()) {
-                Iterator<ReturnType> iter = returnTypes.iterator();
+                var iter = returnTypes.iterator();
                 if(iter.hasNext()) {
                     defaultReturnType = iter.next();
                 }
-                ReturnTypeDetailValue returnTypeDetailValue = Objects.requireNonNull(defaultReturnType).getLastDetailForUpdate().getReturnTypeDetailValue().clone();
+                var returnTypeDetailValue = Objects.requireNonNull(defaultReturnType).getLastDetailForUpdate().getReturnTypeDetailValue().clone();
                 
                 returnTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateReturnTypeFromValue(returnTypeDetailValue, false, deletedBy);
@@ -2577,7 +2577,7 @@ public class ReturnPolicyControl
     }
     
     public void deleteReturnTypesByReturnKind(ReturnKind returnKind, BasePK deletedBy) {
-        List<ReturnType> returnTypes = getReturnTypesForUpdate(returnKind);
+        var returnTypes = getReturnTypesForUpdate(returnKind);
         
         returnTypes.forEach((returnType) -> 
                 deleteReturnType(returnType, deletedBy)
@@ -2590,7 +2590,7 @@ public class ReturnPolicyControl
     
     public ReturnTypeDescription createReturnTypeDescription(ReturnType returnType, Language language, String description,
             BasePK createdBy) {
-        ReturnTypeDescription returnTypeDescription = ReturnTypeDescriptionFactory.getInstance().create(returnType,
+        var returnTypeDescription = ReturnTypeDescriptionFactory.getInstance().create(returnType,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(returnType.getPrimaryKey(), EventTypes.MODIFY, returnTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2670,7 +2670,7 @@ public class ReturnPolicyControl
     
     public String getBestReturnTypeDescription(ReturnType returnType, Language language) {
         String description;
-        ReturnTypeDescription returnTypeDescription = getReturnTypeDescription(returnType, language);
+        var returnTypeDescription = getReturnTypeDescription(returnType, language);
         
         if(returnTypeDescription == null && !language.getIsDefault()) {
             returnTypeDescription = getReturnTypeDescription(returnType, getPartyControl().getDefaultLanguage());
@@ -2690,7 +2690,7 @@ public class ReturnPolicyControl
     }
     
     public List<ReturnTypeDescriptionTransfer> getReturnTypeDescriptionTransfersByReturnType(UserVisit userVisit, ReturnType returnType) {
-        List<ReturnTypeDescription> returnTypeDescriptions = getReturnTypeDescriptionsByReturnType(returnType);
+        var returnTypeDescriptions = getReturnTypeDescriptionsByReturnType(returnType);
         List<ReturnTypeDescriptionTransfer> returnTypeDescriptionTransfers = new ArrayList<>(returnTypeDescriptions.size());
         
         returnTypeDescriptions.forEach((returnTypeDescription) -> {
@@ -2702,15 +2702,15 @@ public class ReturnPolicyControl
     
     public void updateReturnTypeDescriptionFromValue(ReturnTypeDescriptionValue returnTypeDescriptionValue, BasePK updatedBy) {
         if(returnTypeDescriptionValue.hasBeenModified()) {
-            ReturnTypeDescription returnTypeDescription = ReturnTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var returnTypeDescription = ReturnTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      returnTypeDescriptionValue.getPrimaryKey());
             
             returnTypeDescription.setThruTime(session.START_TIME_LONG);
             returnTypeDescription.store();
-            
-            ReturnType returnType = returnTypeDescription.getReturnType();
-            Language language = returnTypeDescription.getLanguage();
-            String description = returnTypeDescriptionValue.getDescription();
+
+            var returnType = returnTypeDescription.getReturnType();
+            var language = returnTypeDescription.getLanguage();
+            var description = returnTypeDescriptionValue.getDescription();
             
             returnTypeDescription = ReturnTypeDescriptionFactory.getInstance().create(returnType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -2727,7 +2727,7 @@ public class ReturnPolicyControl
     }
     
     public void deleteReturnTypeDescriptionsByReturnType(ReturnType returnType, BasePK deletedBy) {
-        List<ReturnTypeDescription> returnTypeDescriptions = getReturnTypeDescriptionsByReturnTypeForUpdate(returnType);
+        var returnTypeDescriptions = getReturnTypeDescriptionsByReturnTypeForUpdate(returnType);
         
         returnTypeDescriptions.forEach((returnTypeDescription) -> 
                 deleteReturnTypeDescription(returnTypeDescription, deletedBy)
@@ -2740,19 +2740,19 @@ public class ReturnPolicyControl
     
     public ReturnTypeShippingMethod createReturnTypeShippingMethod(ReturnType returnType, ShippingMethod shippingMethod, Boolean isDefault,
             Integer sortOrder, BasePK createdBy) {
-        ReturnTypeShippingMethod defaultReturnTypeShippingMethod = getDefaultReturnTypeShippingMethod(returnType);
-        boolean defaultFound = defaultReturnTypeShippingMethod != null;
+        var defaultReturnTypeShippingMethod = getDefaultReturnTypeShippingMethod(returnType);
+        var defaultFound = defaultReturnTypeShippingMethod != null;
         
         if(defaultFound && isDefault) {
-            ReturnTypeShippingMethodValue defaultReturnTypeShippingMethodValue = getDefaultReturnTypeShippingMethodValueForUpdate(returnType);
+            var defaultReturnTypeShippingMethodValue = getDefaultReturnTypeShippingMethodValueForUpdate(returnType);
             
             defaultReturnTypeShippingMethodValue.setIsDefault(Boolean.FALSE);
             updateReturnTypeShippingMethodFromValue(defaultReturnTypeShippingMethodValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        ReturnTypeShippingMethod returnTypeShippingMethod = ReturnTypeShippingMethodFactory.getInstance().create(returnType, shippingMethod,
+
+        var returnTypeShippingMethod = ReturnTypeShippingMethodFactory.getInstance().create(returnType, shippingMethod,
                 isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(returnType.getPrimaryKey(), EventTypes.MODIFY, returnTypeShippingMethod.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2776,8 +2776,8 @@ public class ReturnPolicyControl
                         "WHERE rtntypshm_rtntyp_returntypeid = ? AND rtntypshm_shm_shippingmethodid = ? AND rtntypshm_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ReturnTypeShippingMethodFactory.getInstance().prepareStatement(query);
+
+            var ps = ReturnTypeShippingMethodFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, returnType.getPrimaryKey().getEntityId());
             ps.setLong(2, shippingMethod.getPrimaryKey().getEntityId());
@@ -2800,7 +2800,7 @@ public class ReturnPolicyControl
     }
     
     public ReturnTypeShippingMethodValue getReturnTypeShippingMethodValueForUpdate(ReturnType returnType, ShippingMethod shippingMethod) {
-        ReturnTypeShippingMethod returnTypeShippingMethod = getReturnTypeShippingMethodForUpdate(returnType, shippingMethod);
+        var returnTypeShippingMethod = getReturnTypeShippingMethodForUpdate(returnType, shippingMethod);
         
         return returnTypeShippingMethod == null? null: returnTypeShippingMethod.getReturnTypeShippingMethodValue().clone();
     }
@@ -2821,8 +2821,8 @@ public class ReturnPolicyControl
                         "WHERE rtntypshm_rtntyp_returntypeid = ? AND rtntypshm_isdefault = 1 AND rtntypshm_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ReturnTypeShippingMethodFactory.getInstance().prepareStatement(query);
+
+            var ps = ReturnTypeShippingMethodFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, returnType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -2844,7 +2844,7 @@ public class ReturnPolicyControl
     }
     
     public ReturnTypeShippingMethodValue getDefaultReturnTypeShippingMethodValueForUpdate(ReturnType returnType) {
-        ReturnTypeShippingMethod returnTypeShippingMethod = getDefaultReturnTypeShippingMethodForUpdate(returnType);
+        var returnTypeShippingMethod = getDefaultReturnTypeShippingMethodForUpdate(returnType);
         
         return returnTypeShippingMethod == null? null: returnTypeShippingMethod.getReturnTypeShippingMethodValue().clone();
     }
@@ -2868,8 +2868,8 @@ public class ReturnPolicyControl
                         "WHERE rtntypshm_rtntyp_returntypeid = ? AND rtntypshm_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ReturnTypeShippingMethodFactory.getInstance().prepareStatement(query);
+
+            var ps = ReturnTypeShippingMethodFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, returnType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -2910,8 +2910,8 @@ public class ReturnPolicyControl
                         "WHERE rtntypshm_shm_shippingmethodid = ? AND rtntypshm_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ReturnTypeShippingMethodFactory.getInstance().prepareStatement(query);
+
+            var ps = ReturnTypeShippingMethodFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, shippingMethod.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -2934,7 +2934,7 @@ public class ReturnPolicyControl
     
     public List<ReturnTypeShippingMethodTransfer> getReturnTypeShippingMethodTransfers(UserVisit userVisit, Collection<ReturnTypeShippingMethod> returnTypeShippingMethods) {
         List<ReturnTypeShippingMethodTransfer> returnTypeShippingMethodTransfers = new ArrayList<>(returnTypeShippingMethods.size());
-        ReturnTypeShippingMethodTransferCache returnTypeShippingMethodTransferCache = getReturnPolicyTransferCaches(userVisit).getReturnTypeShippingMethodTransferCache();
+        var returnTypeShippingMethodTransferCache = getReturnPolicyTransferCaches(userVisit).getReturnTypeShippingMethodTransferCache();
         
         returnTypeShippingMethods.forEach((returnTypeShippingMethod) ->
                 returnTypeShippingMethodTransfers.add(returnTypeShippingMethodTransferCache.getReturnTypeShippingMethodTransfer(returnTypeShippingMethod))
@@ -2957,25 +2957,25 @@ public class ReturnPolicyControl
     
     private void updateReturnTypeShippingMethodFromValue(ReturnTypeShippingMethodValue returnTypeShippingMethodValue, boolean checkDefault, BasePK updatedBy) {
         if(returnTypeShippingMethodValue.hasBeenModified()) {
-            ReturnTypeShippingMethod returnTypeShippingMethod = ReturnTypeShippingMethodFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var returnTypeShippingMethod = ReturnTypeShippingMethodFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      returnTypeShippingMethodValue.getPrimaryKey());
             
             returnTypeShippingMethod.setThruTime(session.START_TIME_LONG);
             returnTypeShippingMethod.store();
-            
-            ReturnType returnType = returnTypeShippingMethod.getReturnType(); // Not Updated
-            ReturnTypePK returnTypePK = returnType.getPrimaryKey(); // Not Updated
-            ShippingMethodPK shippingMethodPK = returnTypeShippingMethod.getShippingMethodPK(); // Not Updated
-            Boolean isDefault = returnTypeShippingMethodValue.getIsDefault();
-            Integer sortOrder = returnTypeShippingMethodValue.getSortOrder();
+
+            var returnType = returnTypeShippingMethod.getReturnType(); // Not Updated
+            var returnTypePK = returnType.getPrimaryKey(); // Not Updated
+            var shippingMethodPK = returnTypeShippingMethod.getShippingMethodPK(); // Not Updated
+            var isDefault = returnTypeShippingMethodValue.getIsDefault();
+            var sortOrder = returnTypeShippingMethodValue.getSortOrder();
             
             if(checkDefault) {
-                ReturnTypeShippingMethod defaultReturnTypeShippingMethod = getDefaultReturnTypeShippingMethod(returnType);
-                boolean defaultFound = defaultReturnTypeShippingMethod != null && !defaultReturnTypeShippingMethod.equals(returnTypeShippingMethod);
+                var defaultReturnTypeShippingMethod = getDefaultReturnTypeShippingMethod(returnType);
+                var defaultFound = defaultReturnTypeShippingMethod != null && !defaultReturnTypeShippingMethod.equals(returnTypeShippingMethod);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    ReturnTypeShippingMethodValue defaultReturnTypeShippingMethodValue = getDefaultReturnTypeShippingMethodValueForUpdate(returnType);
+                    var defaultReturnTypeShippingMethodValue = getDefaultReturnTypeShippingMethodValueForUpdate(returnType);
                     
                     defaultReturnTypeShippingMethodValue.setIsDefault(Boolean.FALSE);
                     updateReturnTypeShippingMethodFromValue(defaultReturnTypeShippingMethodValue, false, updatedBy);
@@ -3001,17 +3001,17 @@ public class ReturnPolicyControl
         returnTypeShippingMethod.store();
         
         // Check for default, and pick one if necessary
-        ReturnType returnType = returnTypeShippingMethod.getReturnType();
-        ReturnTypeShippingMethod defaultReturnTypeShippingMethod = getDefaultReturnTypeShippingMethod(returnType);
+        var returnType = returnTypeShippingMethod.getReturnType();
+        var defaultReturnTypeShippingMethod = getDefaultReturnTypeShippingMethod(returnType);
         if(defaultReturnTypeShippingMethod == null) {
-            List<ReturnTypeShippingMethod> returnTypeShippingMethods = getReturnTypeShippingMethodsByReturnTypeForUpdate(returnType);
+            var returnTypeShippingMethods = getReturnTypeShippingMethodsByReturnTypeForUpdate(returnType);
             
             if(!returnTypeShippingMethods.isEmpty()) {
-                Iterator<ReturnTypeShippingMethod> iter = returnTypeShippingMethods.iterator();
+                var iter = returnTypeShippingMethods.iterator();
                 if(iter.hasNext()) {
                     defaultReturnTypeShippingMethod = iter.next();
                 }
-                ReturnTypeShippingMethodValue returnTypeShippingMethodValue = defaultReturnTypeShippingMethod.getReturnTypeShippingMethodValue().clone();
+                var returnTypeShippingMethodValue = defaultReturnTypeShippingMethod.getReturnTypeShippingMethodValue().clone();
                 
                 returnTypeShippingMethodValue.setIsDefault(Boolean.TRUE);
                 updateReturnTypeShippingMethodFromValue(returnTypeShippingMethodValue, false, deletedBy);

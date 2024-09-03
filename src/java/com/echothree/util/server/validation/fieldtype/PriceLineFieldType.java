@@ -35,8 +35,8 @@ public class PriceLineFieldType
     
     @Override
     public String validate() {
-        boolean hadErrors = false;
-        Currency currency = getCurrency();
+        var hadErrors = false;
+        var currency = getCurrency();
         
         if(currency == null) {
             hadErrors = true;

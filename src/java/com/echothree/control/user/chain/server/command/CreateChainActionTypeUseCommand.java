@@ -62,15 +62,15 @@ public class CreateChainActionTypeUseCommand
     @Override
     protected BaseResult execute() {
         var chainControl = Session.getModelController(ChainControl.class);
-        String chainKindName = form.getChainKindName();
-        ChainKind chainKind = chainControl.getChainKindByName(chainKindName);
+        var chainKindName = form.getChainKindName();
+        var chainKind = chainControl.getChainKindByName(chainKindName);
         
         if(chainKind != null) {
-            String chainActionTypeName = form.getChainActionTypeName();
-            ChainActionType chainActionType = chainControl.getChainActionTypeByName(chainActionTypeName);
+            var chainActionTypeName = form.getChainActionTypeName();
+            var chainActionType = chainControl.getChainActionTypeByName(chainActionTypeName);
             
             if(chainActionType != null) {
-                ChainActionTypeUse chainActionTypeUse = chainControl.getChainActionTypeUse(chainKind, chainActionType);
+                var chainActionTypeUse = chainControl.getChainActionTypeUse(chainKind, chainActionType);
                 
                 if(chainActionTypeUse == null) {
                     var isDefault = Boolean.valueOf(form.getIsDefault());

@@ -69,17 +69,17 @@ public class GetCarrierTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var carrierControl = Session.getModelController(CarrierControl.class);
-        GetCarrierTypeDescriptionResult result = CarrierResultFactory.getGetCarrierTypeDescriptionResult();
-        String carrierTypeName = form.getCarrierTypeName();
-        CarrierType carrierType = carrierControl.getCarrierTypeByName(carrierTypeName);
+        var result = CarrierResultFactory.getGetCarrierTypeDescriptionResult();
+        var carrierTypeName = form.getCarrierTypeName();
+        var carrierType = carrierControl.getCarrierTypeByName(carrierTypeName);
         
         if(carrierType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                CarrierTypeDescription carrierTypeDescription = carrierControl.getCarrierTypeDescription(carrierType, language);
+                var carrierTypeDescription = carrierControl.getCarrierTypeDescription(carrierType, language);
                 
                 if(carrierTypeDescription != null) {
                     result.setCarrierTypeDescription(carrierControl.getCarrierTypeDescriptionTransfer(getUserVisit(), carrierTypeDescription));

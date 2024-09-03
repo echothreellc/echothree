@@ -82,21 +82,21 @@ public class EditClubCommand
     @Override
     protected BaseResult execute() {
         var clubControl = Session.getModelController(ClubControl.class);
-        EditClubResult result = ClubResultFactory.getEditClubResult();
+        var result = ClubResultFactory.getEditClubResult();
         
         if(editMode.equals(EditMode.LOCK)) {
-            String clubName = spec.getClubName();
-            Club club = clubControl.getClubByName(clubName);
+            var clubName = spec.getClubName();
+            var club = clubControl.getClubByName(clubName);
             
             if(club != null) {
                 result.setClub(clubControl.getClubTransfer(getUserVisit(), club));
                 
                 if(lockEntity(club)) {
-                    ClubDescription clubDescription = clubControl.getClubDescription(club, getPreferredLanguage());
-                    ClubEdit edit = ClubEditFactory.getClubEdit();
-                    ClubDetail clubDetail = club.getLastDetail();
-                    Filter clubPriceFilter = clubDetail.getClubPriceFilter();
-                    Currency currency = clubDetail.getCurrency();
+                    var clubDescription = clubControl.getClubDescription(club, getPreferredLanguage());
+                    var edit = ClubEditFactory.getClubEdit();
+                    var clubDetail = club.getLastDetail();
+                    var clubPriceFilter = clubDetail.getClubPriceFilter();
+                    var currency = clubDetail.getCurrency();
                     
                     result.setEdit(edit);
                     edit.setClubName(clubDetail.getClubName());
@@ -118,30 +118,30 @@ public class EditClubCommand
                 addExecutionError(ExecutionErrors.UnknownClubName.name(), clubName);
             }
         } else if(editMode.equals(EditMode.UPDATE)) {
-            String clubName = spec.getClubName();
-            Club club = clubControl.getClubByNameForUpdate(clubName);
+            var clubName = spec.getClubName();
+            var club = clubControl.getClubByNameForUpdate(clubName);
             
             if(club != null) {
                 clubName = edit.getClubName();
-                Club duplicateClub = clubControl.getClubByName(clubName);
+                var duplicateClub = clubControl.getClubByName(clubName);
                 
                 if(duplicateClub == null || club.equals(duplicateClub)) {
                     var subscriptionControl = Session.getModelController(SubscriptionControl.class);
-                    SubscriptionKind subscriptionKind = subscriptionControl.getSubscriptionKindByName(SubscriptionConstants.SubscriptionKind_CLUB);
-                    String subscriptionTypeName = edit.getSubscriptionTypeName();
-                    SubscriptionType subscriptionType = subscriptionControl.getSubscriptionTypeByName(subscriptionKind, subscriptionTypeName);
+                    var subscriptionKind = subscriptionControl.getSubscriptionKindByName(SubscriptionConstants.SubscriptionKind_CLUB);
+                    var subscriptionTypeName = edit.getSubscriptionTypeName();
+                    var subscriptionType = subscriptionControl.getSubscriptionTypeByName(subscriptionKind, subscriptionTypeName);
                     
                     if(subscriptionType != null) {
                         club = clubControl.getClubBySubscriptionType(subscriptionType);
                         
                         if(club == null) {
-                            String clubPriceFilterName = edit.getClubPriceFilterName();
+                            var clubPriceFilterName = edit.getClubPriceFilterName();
                             Filter clubPriceFilter = null;
                             
                             if(clubPriceFilterName != null) {
                                 var filterControl = Session.getModelController(FilterControl.class);
-                                FilterKind filterKind = filterControl.getFilterKindByName(FilterKinds.PRICE.name());
-                                FilterType filterType = filterControl.getFilterTypeByName(filterKind, FilterTypes.CLUB.name());
+                                var filterKind = filterControl.getFilterKindByName(FilterKinds.PRICE.name());
+                                var filterType = filterControl.getFilterTypeByName(filterKind, FilterTypes.CLUB.name());
                                 
                                 if(filterType != null) {
                                     clubPriceFilter = filterControl.getFilterByName(filterType, clubPriceFilterName);
@@ -150,16 +150,16 @@ public class EditClubCommand
                             
                             if(clubPriceFilterName == null || clubPriceFilter != null) {
                                 var accountingControl = Session.getModelController(AccountingControl.class);
-                                String currencyIsoName = edit.getCurrencyIsoName();
-                                Currency currency = currencyIsoName == null? null: accountingControl.getCurrencyByIsoName(currencyIsoName);
+                                var currencyIsoName = edit.getCurrencyIsoName();
+                                var currency = currencyIsoName == null? null: accountingControl.getCurrencyByIsoName(currencyIsoName);
                                 
                                 if(currencyIsoName == null || currency != null) {
                                     if(lockEntityForUpdate(club)) {
                                         try {
                                             var partyPK = getPartyPK();
-                                            ClubDetailValue clubDetailValue = clubControl.getClubDetailValueForUpdate(club);
-                                            ClubDescription clubDescription = clubControl.getClubDescriptionForUpdate(club, getPreferredLanguage());
-                                            String description = edit.getDescription();
+                                            var clubDetailValue = clubControl.getClubDetailValueForUpdate(club);
+                                            var clubDescription = clubControl.getClubDescriptionForUpdate(club, getPreferredLanguage());
+                                            var description = edit.getDescription();
                                             
                                             clubDetailValue.setClubName(edit.getClubName());
                                             clubDetailValue.setSubscriptionTypePK(subscriptionType.getPrimaryKey());
@@ -175,7 +175,7 @@ public class EditClubCommand
                                             } else if(clubDescription != null && description == null) {
                                                 clubControl.deleteClubDescription(clubDescription, partyPK);
                                             } else if(clubDescription != null && description != null) {
-                                                ClubDescriptionValue clubDescriptionValue = clubControl.getClubDescriptionValue(clubDescription);
+                                                var clubDescriptionValue = clubControl.getClubDescriptionValue(clubDescription);
                                                 
                                                 clubDescriptionValue.setDescription(description);
                                                 clubControl.updateClubDescriptionFromValue(clubDescriptionValue, partyPK);

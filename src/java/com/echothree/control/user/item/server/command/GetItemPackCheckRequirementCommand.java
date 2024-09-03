@@ -55,17 +55,17 @@ public class GetItemPackCheckRequirementCommand
     @Override
     protected BaseResult execute() {
         var itemControl = Session.getModelController(ItemControl.class);
-        GetItemPackCheckRequirementResult result = ItemResultFactory.getGetItemPackCheckRequirementResult();
-        String itemName = form.getItemName();
-        Item item = itemControl.getItemByName(itemName);
+        var result = ItemResultFactory.getGetItemPackCheckRequirementResult();
+        var itemName = form.getItemName();
+        var item = itemControl.getItemByName(itemName);
 
         if(item != null) {
             var uomControl = Session.getModelController(UomControl.class);
-            String unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
-            UnitOfMeasureType unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(item.getLastDetail().getUnitOfMeasureKind(), unitOfMeasureTypeName);
+            var unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
+            var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(item.getLastDetail().getUnitOfMeasureKind(), unitOfMeasureTypeName);
 
             if(unitOfMeasureType != null) {
-                ItemPackCheckRequirement itemPackCheckRequirement = itemControl.getItemPackCheckRequirement(item, unitOfMeasureType);
+                var itemPackCheckRequirement = itemControl.getItemPackCheckRequirement(item, unitOfMeasureType);
 
                 if(itemPackCheckRequirement != null) {
                     result.setItemPackCheckRequirement(itemControl.getItemPackCheckRequirementTransfer(getUserVisit(), itemPackCheckRequirement));

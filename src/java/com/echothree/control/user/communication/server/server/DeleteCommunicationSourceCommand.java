@@ -49,8 +49,8 @@ public class DeleteCommunicationSourceCommand
     @Override
     protected BaseResult execute() {
         var communicationControl = Session.getModelController(CommunicationControl.class);
-        String communicationSourceName = form.getCommunicationSourceName();
-        CommunicationSource communicationSource = communicationControl.getCommunicationSourceByNameForUpdate(communicationSourceName);
+        var communicationSourceName = form.getCommunicationSourceName();
+        var communicationSource = communicationControl.getCommunicationSourceByNameForUpdate(communicationSourceName);
         
         if(communicationSource != null) {
             communicationControl.deleteCommunicationSource(communicationSource, getPartyPK());

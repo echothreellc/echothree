@@ -60,21 +60,21 @@ public class WorkRequirementScopeTransferCache
     }
     
     public WorkRequirementScopeTransfer getWorkRequirementScopeTransfer(WorkRequirementScope workRequirementScope) {
-        WorkRequirementScopeTransfer workRequirementScopeTransfer = get(workRequirementScope);
+        var workRequirementScopeTransfer = get(workRequirementScope);
         
         if(workRequirementScopeTransfer == null) {
-            WorkRequirementScopeDetail workRequirementScopeDetail = workRequirementScope.getLastDetail();
-            WorkEffortScopeTransfer workEffortScopeTransfer = workEffortControl.getWorkEffortScopeTransfer(userVisit, workRequirementScopeDetail.getWorkEffortScope());
-            WorkRequirementTypeTransfer workRequirementTypeTransfer = workRequirementControl.getWorkRequirementTypeTransfer(userVisit, workRequirementScopeDetail.getWorkRequirementType());
-            Sequence workRequirementSequence = workRequirementScopeDetail.getWorkRequirementSequence();
-            SequenceTransfer workRequirementSequenceTransfer = workRequirementSequence == null? null: sequenceControl.getSequenceTransfer(userVisit, workRequirementSequence);
-            Sequence workTimeSequence = workRequirementScopeDetail.getWorkTimeSequence();
-            SequenceTransfer workTimeSequenceTransfer = workTimeSequence == null? null: sequenceControl.getSequenceTransfer(userVisit, workTimeSequence);
-            Selector workAssignmentSelector = workRequirementScopeDetail.getWorkAssignmentSelector();
-            SelectorTransfer workAssignmentSelectorTransfer = workAssignmentSelector == null? null: selectorControl.getSelectorTransfer(userVisit, workAssignmentSelector);
-            UnitOfMeasureKind timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
-            String estimatedTimeAllowed = formatUnitOfMeasure(timeUnitOfMeasureKind, workRequirementScopeDetail.getEstimatedTimeAllowed());
-            String maximumTimeAllowed = formatUnitOfMeasure(timeUnitOfMeasureKind, workRequirementScopeDetail.getMaximumTimeAllowed());
+            var workRequirementScopeDetail = workRequirementScope.getLastDetail();
+            var workEffortScopeTransfer = workEffortControl.getWorkEffortScopeTransfer(userVisit, workRequirementScopeDetail.getWorkEffortScope());
+            var workRequirementTypeTransfer = workRequirementControl.getWorkRequirementTypeTransfer(userVisit, workRequirementScopeDetail.getWorkRequirementType());
+            var workRequirementSequence = workRequirementScopeDetail.getWorkRequirementSequence();
+            var workRequirementSequenceTransfer = workRequirementSequence == null? null: sequenceControl.getSequenceTransfer(userVisit, workRequirementSequence);
+            var workTimeSequence = workRequirementScopeDetail.getWorkTimeSequence();
+            var workTimeSequenceTransfer = workTimeSequence == null? null: sequenceControl.getSequenceTransfer(userVisit, workTimeSequence);
+            var workAssignmentSelector = workRequirementScopeDetail.getWorkAssignmentSelector();
+            var workAssignmentSelectorTransfer = workAssignmentSelector == null? null: selectorControl.getSelectorTransfer(userVisit, workAssignmentSelector);
+            var timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
+            var estimatedTimeAllowed = formatUnitOfMeasure(timeUnitOfMeasureKind, workRequirementScopeDetail.getEstimatedTimeAllowed());
+            var maximumTimeAllowed = formatUnitOfMeasure(timeUnitOfMeasureKind, workRequirementScopeDetail.getMaximumTimeAllowed());
             
             workRequirementScopeTransfer = new WorkRequirementScopeTransfer(workEffortScopeTransfer, workRequirementTypeTransfer,
                     workRequirementSequenceTransfer, workTimeSequenceTransfer, workAssignmentSelectorTransfer, estimatedTimeAllowed,

@@ -47,10 +47,10 @@ public class SetUserVisitPreferredCurrencyCommand
     
     @Override
     protected BaseResult execute() {
-        Currency currency = CurrencyLogic.getInstance().getCurrencyByName(this, form.getCurrencyIsoName());
+        var currency = CurrencyLogic.getInstance().getCurrencyByName(this, form.getCurrencyIsoName());
 
         if(!hasExecutionErrors()) {
-            UserControl userControl = getUserControl();
+            var userControl = getUserControl();
 
             userControl.setUserVisitPreferredCurrency(getUserVisitForUpdate(), currency, getPartyPK());
         }

@@ -38,13 +38,13 @@ public class GeoCodeLanguageTransferCache
     }
     
     public GeoCodeLanguageTransfer getGeoCodeLanguageTransfer(GeoCodeLanguage geoCodeLanguage) {
-        GeoCodeLanguageTransfer geoCodeLanguageTransfer = get(geoCodeLanguage);
+        var geoCodeLanguageTransfer = get(geoCodeLanguage);
         
         if(geoCodeLanguageTransfer == null) {
-            GeoCodeTransfer geoCode = geoControl.getGeoCodeTransfer(userVisit, geoCodeLanguage.getGeoCode());
-            LanguageTransfer language = partyControl.getLanguageTransfer(userVisit, geoCodeLanguage.getLanguage());
-            Boolean isDefault = geoCodeLanguage.getIsDefault();
-            Integer sortOrder = geoCodeLanguage.getSortOrder();
+            var geoCode = geoControl.getGeoCodeTransfer(userVisit, geoCodeLanguage.getGeoCode());
+            var language = partyControl.getLanguageTransfer(userVisit, geoCodeLanguage.getLanguage());
+            var isDefault = geoCodeLanguage.getIsDefault();
+            var sortOrder = geoCodeLanguage.getSortOrder();
             
             geoCodeLanguageTransfer = new GeoCodeLanguageTransfer(geoCode, language, isDefault, sortOrder);
             put(geoCodeLanguage, geoCodeLanguageTransfer);

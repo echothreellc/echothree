@@ -61,7 +61,7 @@ public class GetTextDecorationCommand
     protected TextDecoration getEntity() {
         var coreControl = getCoreControl();
         TextDecoration textDecoration = null;
-        String textDecorationName = form.getTextDecorationName();
+        var textDecorationName = form.getTextDecorationName();
         var parameterCount = (textDecorationName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {
@@ -89,7 +89,7 @@ public class GetTextDecorationCommand
     @Override
     protected BaseResult getResult(TextDecoration textDecoration) {
         var coreControl = getCoreControl();
-        GetTextDecorationResult result = CoreResultFactory.getGetTextDecorationResult();
+        var result = CoreResultFactory.getGetTextDecorationResult();
 
         if(textDecoration != null) {
             result.setTextDecoration(coreControl.getTextDecorationTransfer(getUserVisit(), textDecoration));

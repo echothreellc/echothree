@@ -67,16 +67,16 @@ public class DeleteIndexTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var indexControl = Session.getModelController(IndexControl.class);
-        String indexTypeName = form.getIndexTypeName();
-        IndexType indexType = indexControl.getIndexTypeByName(indexTypeName);
+        var indexTypeName = form.getIndexTypeName();
+        var indexType = indexControl.getIndexTypeByName(indexTypeName);
         
         if(indexType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                IndexTypeDescription indexTypeDescription = indexControl.getIndexTypeDescriptionForUpdate(indexType, language);
+                var indexTypeDescription = indexControl.getIndexTypeDescriptionForUpdate(indexType, language);
                 
                 if(indexTypeDescription != null) {
                     indexControl.deleteIndexTypeDescription(indexTypeDescription, getPartyPK());

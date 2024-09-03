@@ -49,21 +49,21 @@ public class IndexTransferCache
     }
 
     public IndexTransfer getIndexTransfer(Index index) {
-        IndexTransfer indexTransfer = get(index);
+        var indexTransfer = get(index);
 
         if(indexTransfer == null) {
-            IndexDetail indexDetail = index.getLastDetail();
-            IndexStatus indexStatus = indexControl.getIndexStatus(index);
-            String indexName = indexDetail.getIndexName();
-            IndexTypeTransfer indexTypeTransfer = indexControl.getIndexTypeTransfer(userVisit, indexDetail.getIndexType());
-            Language language = indexDetail.getLanguage();
-            LanguageTransfer languageTransfer = language == null ? null : partyControl.getLanguageTransfer(userVisit, language);
-            String directory = indexDetail.getDirectory();
-            Boolean isDefault = indexDetail.getIsDefault();
-            Integer sortOrder = indexDetail.getSortOrder();
-            String description = indexControl.getBestIndexDescription(index, getLanguage());
-            Long unformattedCreatedTime = indexStatus.getCreatedTime();
-            String createdTime = formatTypicalDateTime(unformattedCreatedTime);
+            var indexDetail = index.getLastDetail();
+            var indexStatus = indexControl.getIndexStatus(index);
+            var indexName = indexDetail.getIndexName();
+            var indexTypeTransfer = indexControl.getIndexTypeTransfer(userVisit, indexDetail.getIndexType());
+            var language = indexDetail.getLanguage();
+            var languageTransfer = language == null ? null : partyControl.getLanguageTransfer(userVisit, language);
+            var directory = indexDetail.getDirectory();
+            var isDefault = indexDetail.getIsDefault();
+            var sortOrder = indexDetail.getSortOrder();
+            var description = indexControl.getBestIndexDescription(index, getLanguage());
+            var unformattedCreatedTime = indexStatus.getCreatedTime();
+            var createdTime = formatTypicalDateTime(unformattedCreatedTime);
 
             indexTransfer = new IndexTransfer(indexName, indexTypeTransfer, languageTransfer, directory, isDefault, sortOrder, description,
                     unformattedCreatedTime, createdTime);

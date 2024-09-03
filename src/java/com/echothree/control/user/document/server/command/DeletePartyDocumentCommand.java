@@ -64,11 +64,11 @@ public class DeletePartyDocumentCommand
     @Override
     protected BaseResult execute() {
         var documentControl = Session.getModelController(DocumentControl.class);
-        String documentName = form.getDocumentName();
-        Document document = documentControl.getDocumentByNameForUpdate(documentName);
+        var documentName = form.getDocumentName();
+        var document = documentControl.getDocumentByNameForUpdate(documentName);
         
         if(document != null) {
-            PartyDocument partyDocument = documentControl.getPartyDocumentByDocumentForUpdate(document);
+            var partyDocument = documentControl.getPartyDocumentByDocumentForUpdate(document);
 
             if(partyDocument != null) {
                 documentControl.deletePartyDocument(partyDocument, getPartyPK());

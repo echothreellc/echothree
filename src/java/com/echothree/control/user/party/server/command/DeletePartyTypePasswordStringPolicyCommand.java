@@ -50,11 +50,11 @@ public class DeletePartyTypePasswordStringPolicyCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        String partyTypeName = form.getPartyTypeName();
-        PartyType partyType = partyControl.getPartyTypeByName(partyTypeName);
+        var partyTypeName = form.getPartyTypeName();
+        var partyType = partyControl.getPartyTypeByName(partyTypeName);
         
         if(partyType != null) {
-            PartyTypePasswordStringPolicy partyTypePasswordStringPolicy = partyControl.getPartyTypePasswordStringPolicyForUpdate(partyType);
+            var partyTypePasswordStringPolicy = partyControl.getPartyTypePasswordStringPolicyForUpdate(partyType);
             
             if(partyTypePasswordStringPolicy != null) {
                 partyControl.deletePartyTypePasswordStringPolicy(partyTypePasswordStringPolicy, getPartyPK());

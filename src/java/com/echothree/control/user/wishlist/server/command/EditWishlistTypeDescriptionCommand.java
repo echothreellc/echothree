@@ -79,24 +79,24 @@ public class EditWishlistTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var wishlistControl = Session.getModelController(WishlistControl.class);
-        EditWishlistTypeDescriptionResult result = WishlistResultFactory.getEditWishlistTypeDescriptionResult();
-        String wishlistTypeName = spec.getWishlistTypeName();
-        WishlistType wishlistType = wishlistControl.getWishlistTypeByName(wishlistTypeName);
+        var result = WishlistResultFactory.getEditWishlistTypeDescriptionResult();
+        var wishlistTypeName = spec.getWishlistTypeName();
+        var wishlistType = wishlistControl.getWishlistTypeByName(wishlistTypeName);
         
         if(wishlistType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK)) {
-                    WishlistTypeDescription wishlistTypeDescription = wishlistControl.getWishlistTypeDescription(wishlistType, language);
+                    var wishlistTypeDescription = wishlistControl.getWishlistTypeDescription(wishlistType, language);
                     
                     if(wishlistTypeDescription != null) {
                         result.setWishlistTypeDescription(wishlistControl.getWishlistTypeDescriptionTransfer(getUserVisit(), wishlistTypeDescription));
                         
                         if(lockEntity(wishlistType)) {
-                            WishlistTypeDescriptionEdit edit = WishlistEditFactory.getWishlistTypeDescriptionEdit();
+                            var edit = WishlistEditFactory.getWishlistTypeDescriptionEdit();
                             
                             result.setEdit(edit);
                             edit.setDescription(wishlistTypeDescription.getDescription());
@@ -109,12 +109,12 @@ public class EditWishlistTypeDescriptionCommand
                         addExecutionError(ExecutionErrors.UnknownWishlistTypeDescription.name());
                     }
                 } else if(editMode.equals(EditMode.UPDATE)) {
-                    WishlistTypeDescriptionValue wishlistTypeDescriptionValue = wishlistControl.getWishlistTypeDescriptionValueForUpdate(wishlistType, language);
+                    var wishlistTypeDescriptionValue = wishlistControl.getWishlistTypeDescriptionValueForUpdate(wishlistType, language);
                     
                     if(wishlistTypeDescriptionValue != null) {
                         if(lockEntityForUpdate(wishlistType)) {
                             try {
-                                String description = edit.getDescription();
+                                var description = edit.getDescription();
                                 
                                 wishlistTypeDescriptionValue.setDescription(description);
                                 

@@ -67,12 +67,12 @@ public class CreateContactMechanismAliasTypeCommand
     @Override
     protected BaseResult execute() {
         var contactControl = Session.getModelController(ContactControl.class);
-        String contactMechanismAliasTypeName = form.getContactMechanismAliasTypeName();
-        ContactMechanismAliasType contactMechanismAliasType = contactControl.getContactMechanismAliasTypeByName(contactMechanismAliasTypeName);
+        var contactMechanismAliasTypeName = form.getContactMechanismAliasTypeName();
+        var contactMechanismAliasType = contactControl.getContactMechanismAliasTypeByName(contactMechanismAliasTypeName);
         
         if(contactMechanismAliasType == null) {
             var partyPK = getPartyPK();
-            String validationPattern = form.getValidationPattern();
+            var validationPattern = form.getValidationPattern();
             var isDefault = Boolean.valueOf(form.getIsDefault());
             var sortOrder = Integer.valueOf(form.getSortOrder());
             var description = form.getDescription();

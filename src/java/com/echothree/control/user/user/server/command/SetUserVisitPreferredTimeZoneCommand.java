@@ -47,10 +47,10 @@ public class SetUserVisitPreferredTimeZoneCommand
     
     @Override
     protected BaseResult execute() {
-        TimeZone currency = TimeZoneLogic.getInstance().getTimeZoneByName(this, form.getJavaTimeZoneName());
+        var currency = TimeZoneLogic.getInstance().getTimeZoneByName(this, form.getJavaTimeZoneName());
 
         if(!hasExecutionErrors()) {
-            UserControl userControl = getUserControl();
+            var userControl = getUserControl();
 
             userControl.setUserVisitPreferredTimeZone(getUserVisitForUpdate(), currency, getPartyPK());
         }

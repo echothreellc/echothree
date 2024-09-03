@@ -67,16 +67,16 @@ public class DeleteOfferDescriptionCommand
     @Override
     protected BaseResult execute() {
         var offerControl = Session.getModelController(OfferControl.class);
-        String offerName = form.getOfferName();
-        Offer offer = offerControl.getOfferByName(offerName);
+        var offerName = form.getOfferName();
+        var offer = offerControl.getOfferByName(offerName);
         
         if(offer != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                OfferDescription offerDescription = offerControl.getOfferDescriptionForUpdate(offer, language);
+                var offerDescription = offerControl.getOfferDescriptionForUpdate(offer, language);
                 
                 if(offerDescription != null) {
                     offerControl.deleteOfferDescription(offerDescription, getPartyPK());

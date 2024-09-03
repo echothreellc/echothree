@@ -95,12 +95,12 @@ public class EditSelectorTypeCommand
     public SelectorType getEntity(EditSelectorTypeResult result) {
         var selectorControl = Session.getModelController(SelectorControl.class);
         SelectorType selectorType = null;
-        String selectorKindName = spec.getSelectorKindName();
+        var selectorKindName = spec.getSelectorKindName();
 
         selectorKind = selectorControl.getSelectorKindByName(selectorKindName);
 
         if(selectorKind != null) {
-            String selectorTypeName = spec.getSelectorTypeName();
+            var selectorTypeName = spec.getSelectorTypeName();
 
             if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
                 selectorType = selectorControl.getSelectorTypeByName(selectorKind, selectorTypeName);
@@ -133,8 +133,8 @@ public class EditSelectorTypeCommand
     @Override
     public void doLock(SelectorTypeEdit edit, SelectorType selectorType) {
         var selectorControl = Session.getModelController(SelectorControl.class);
-        SelectorTypeDescription selectorTypeDescription = selectorControl.getSelectorTypeDescription(selectorType, getPreferredLanguage());
-        SelectorTypeDetail selectorTypeDetail = selectorType.getLastDetail();
+        var selectorTypeDescription = selectorControl.getSelectorTypeDescription(selectorType, getPreferredLanguage());
+        var selectorTypeDetail = selectorType.getLastDetail();
 
         edit.setSelectorTypeName(selectorTypeDetail.getSelectorTypeName());
         edit.setIsDefault(selectorTypeDetail.getIsDefault().toString());
@@ -148,9 +148,9 @@ public class EditSelectorTypeCommand
     @Override
     public void canUpdate(SelectorType selectorType) {
         var selectorControl = Session.getModelController(SelectorControl.class);
-        SelectorKindDetail selectorKindDetail = selectorKind.getLastDetail();
-        String selectorTypeName = edit.getSelectorTypeName();
-        SelectorType duplicateSelectorType = selectorControl.getSelectorTypeByName(selectorKind, selectorTypeName);
+        var selectorKindDetail = selectorKind.getLastDetail();
+        var selectorTypeName = edit.getSelectorTypeName();
+        var duplicateSelectorType = selectorControl.getSelectorTypeByName(selectorKind, selectorTypeName);
 
         if(duplicateSelectorType != null && !selectorType.equals(duplicateSelectorType)) {
             addExecutionError(ExecutionErrors.DuplicateSelectorTypeName.name(), selectorKindDetail.getSelectorKindName(), selectorTypeName);
@@ -161,9 +161,9 @@ public class EditSelectorTypeCommand
     public void doUpdate(SelectorType selectorType) {
         var selectorControl = Session.getModelController(SelectorControl.class);
         var partyPK = getPartyPK();
-        SelectorTypeDetailValue selectorTypeDetailValue = selectorControl.getSelectorTypeDetailValueForUpdate(selectorType);
-        SelectorTypeDescription selectorTypeDescription = selectorControl.getSelectorTypeDescriptionForUpdate(selectorType, getPreferredLanguage());
-        String description = edit.getDescription();
+        var selectorTypeDetailValue = selectorControl.getSelectorTypeDetailValueForUpdate(selectorType);
+        var selectorTypeDescription = selectorControl.getSelectorTypeDescriptionForUpdate(selectorType, getPreferredLanguage());
+        var description = edit.getDescription();
 
         selectorTypeDetailValue.setSelectorTypeName(edit.getSelectorTypeName());
         selectorTypeDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
@@ -176,7 +176,7 @@ public class EditSelectorTypeCommand
         } else if(selectorTypeDescription != null && description == null) {
             selectorControl.deleteSelectorTypeDescription(selectorTypeDescription, partyPK);
         } else if(selectorTypeDescription != null && description != null) {
-            SelectorTypeDescriptionValue selectorTypeDescriptionValue = selectorControl.getSelectorTypeDescriptionValue(selectorTypeDescription);
+            var selectorTypeDescriptionValue = selectorControl.getSelectorTypeDescriptionValue(selectorTypeDescription);
 
             selectorTypeDescriptionValue.setDescription(description);
             selectorControl.updateSelectorTypeDescriptionFromValue(selectorTypeDescriptionValue, partyPK);

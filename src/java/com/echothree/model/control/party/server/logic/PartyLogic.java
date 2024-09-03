@@ -59,11 +59,11 @@ public class PartyLogic
     }
 
     public boolean isPartyType(final Party party, final String ... partyTypeNames) {
-        String partyTypeName = party.getLastDetail().getPartyType().getPartyTypeName();
-        boolean found = false;
-        int length = partyTypeNames.length;
+        var partyTypeName = party.getLastDetail().getPartyType().getPartyTypeName();
+        var found = false;
+        var length = partyTypeNames.length;
 
-        for(int i = 0 ; i < length ; i++) {
+        for(var i = 0; i < length ; i++) {
             if(partyTypeName.equals(partyTypeNames[i])) {
                 found = true;
                 break;
@@ -74,11 +74,11 @@ public class PartyLogic
     }
 
     public String checkPartyType(final ExecutionErrorAccumulator eea, final Party party, final String ... partyTypeNames) {
-        String partyTypeName = party.getLastDetail().getPartyType().getPartyTypeName();
-        boolean found = false;
-        int length = partyTypeNames.length;
+        var partyTypeName = party.getLastDetail().getPartyType().getPartyTypeName();
+        var found = false;
+        var length = partyTypeNames.length;
 
-        for(int i = 0 ; i < length ; i++) {
+        for(var i = 0; i < length ; i++) {
             if(partyTypeName.equals(partyTypeNames[i])) {
                 found = true;
                 break;
@@ -94,7 +94,7 @@ public class PartyLogic
 
     public PartyType getPartyTypeByName(final ExecutionErrorAccumulator eea, final String partyTypeName) {
         var partyControl = Session.getModelController(PartyControl.class);
-        PartyType partyType = partyControl.getPartyTypeByName(partyTypeName);
+        var partyType = partyControl.getPartyTypeByName(partyTypeName);
 
         if(partyType == null) {
             handleExecutionError(UnknownPartyTypeNameException.class, eea, ExecutionErrors.UnknownPartyTypeName.name(), partyTypeName);
@@ -106,7 +106,7 @@ public class PartyLogic
     public Party getPartyByName(final ExecutionErrorAccumulator eea, final String partyName,
             final EntityPermission entityPermission) {
         var partyControl = Session.getModelController(PartyControl.class);
-        Party party = partyControl.getPartyByName(partyName, entityPermission);
+        var party = partyControl.getPartyByName(partyName, entityPermission);
 
         if(party == null) {
             handleExecutionError(UnknownPartyNameException.class, eea, ExecutionErrors.UnknownPartyName.name(), partyName);
@@ -147,7 +147,7 @@ public class PartyLogic
     }
         
     public Party getPartyByName(final ExecutionErrorAccumulator eea, final String partyName, final String ... partyTypeNames) {
-        Party party = getPartyByName(eea, partyName);
+        var party = getPartyByName(eea, partyName);
 
         if(party != null) {
             checkPartyType(eea, party, partyTypeNames);

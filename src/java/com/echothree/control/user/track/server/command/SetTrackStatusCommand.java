@@ -65,11 +65,11 @@ public class SetTrackStatusCommand
     @Override
     protected BaseResult execute() {
         var trackControl = Session.getModelController(TrackControl.class);
-        String trackName = form.getTrackName();
-        Track track = trackControl.getTrackByName(trackName);
+        var trackName = form.getTrackName();
+        var track = trackControl.getTrackByName(trackName);
         
         if(track != null) {
-            String trackStatusChoice = form.getTrackStatusChoice();
+            var trackStatusChoice = form.getTrackStatusChoice();
             
             TrackLogic.getInstance().setTrackStatus(session, this, track, trackStatusChoice, getPartyPK());
         } else {

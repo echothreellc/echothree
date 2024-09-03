@@ -69,10 +69,10 @@ public class GetEntityIntegerRangeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        GetEntityIntegerRangeChoicesResult result = CoreResultFactory.getGetEntityIntegerRangeChoicesResult();
-        String entityRef = form.getEntityRef();
-        String componentVendorName = form.getComponentVendorName();
-        String entityTypeName = form.getEntityTypeName();
+        var result = CoreResultFactory.getGetEntityIntegerRangeChoicesResult();
+        var entityRef = form.getEntityRef();
+        var componentVendorName = form.getComponentVendorName();
+        var entityTypeName = form.getEntityTypeName();
         var parameterCount = (entityRef != null && componentVendorName == null && entityTypeName == null? 1: 0)
                 + (entityRef == null && componentVendorName != null && entityTypeName != null? 1: 0);
         
@@ -81,7 +81,7 @@ public class GetEntityIntegerRangeChoicesCommand
             EntityType entityType = null;
             
             if(entityRef == null) {
-                ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+                var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
                 
                 if(componentVendor != null) {
                     entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
@@ -93,7 +93,7 @@ public class GetEntityIntegerRangeChoicesCommand
                     addExecutionError(ExecutionErrors.UnknownComponentVendorName.name(), componentVendorName);
                 }
             } else {
-                EntityInstance entityInstance = coreControl.getEntityInstanceByEntityRef(entityRef);
+                var entityInstance = coreControl.getEntityInstanceByEntityRef(entityRef);
                 
                 if(entityInstance != null) {
                     entityType = entityInstance.getEntityType();
@@ -103,16 +103,16 @@ public class GetEntityIntegerRangeChoicesCommand
             }
             
             if(!hasExecutionErrors()) {
-                String entityAttributeName = form.getEntityAttributeName();
-                EntityAttribute entityAttribute = coreControl.getEntityAttributeByName(entityType, entityAttributeName);
+                var entityAttributeName = form.getEntityAttributeName();
+                var entityAttribute = coreControl.getEntityAttributeByName(entityType, entityAttributeName);
                 
                 if(entityAttribute != null) {
-                    EntityAttributeType entityAttributeType = entityAttribute.getLastDetail().getEntityAttributeType();
-                    String entityAttributeTypeName = entityAttributeType.getEntityAttributeTypeName();
+                    var entityAttributeType = entityAttribute.getLastDetail().getEntityAttributeType();
+                    var entityAttributeTypeName = entityAttributeType.getEntityAttributeTypeName();
                     
                     if(entityAttributeTypeName.equals(EntityAttributeTypes.INTEGER.name())) {
-                        String defaultEntityIntegerRangeChoice = form.getDefaultEntityIntegerRangeChoice();
-                        Boolean allowNullChoice = Boolean.valueOf(form.getAllowNullChoice());
+                        var defaultEntityIntegerRangeChoice = form.getDefaultEntityIntegerRangeChoice();
+                        var allowNullChoice = Boolean.valueOf(form.getAllowNullChoice());
                         
                         result.setEntityIntegerRangeChoices(coreControl.getEntityIntegerRangeChoices(defaultEntityIntegerRangeChoice,
                                 getPreferredLanguage(), allowNullChoice, entityAttribute));

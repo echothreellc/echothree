@@ -56,7 +56,7 @@ public class GetPaymentProcessorActionTypesCommand
     
     @Override
     protected BaseResult getResult(Collection<PaymentProcessorActionType> entities) {
-        GetPaymentProcessorActionTypesResult result = PaymentResultFactory.getGetPaymentProcessorActionTypesResult();
+        var result = PaymentResultFactory.getGetPaymentProcessorActionTypesResult();
         var paymentProcessorActionTypeControl = Session.getModelController(PaymentProcessorActionTypeControl.class);
         
         result.setPaymentProcessorActionTypes(paymentProcessorActionTypeControl.getPaymentProcessorActionTypeTransfers(getUserVisit(), entities));

@@ -71,21 +71,21 @@ public class GetFilterTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var filterControl = Session.getModelController(FilterControl.class);
-        GetFilterTypeDescriptionResult result = FilterResultFactory.getGetFilterTypeDescriptionResult();
-        String filterKindName = form.getFilterKindName();
-        FilterKind filterKind = filterControl.getFilterKindByName(filterKindName);
+        var result = FilterResultFactory.getGetFilterTypeDescriptionResult();
+        var filterKindName = form.getFilterKindName();
+        var filterKind = filterControl.getFilterKindByName(filterKindName);
 
         if(filterKind != null) {
-            String filterTypeName = form.getFilterTypeName();
-            FilterType filterType = filterControl.getFilterTypeByName(filterKind, filterTypeName);
+            var filterTypeName = form.getFilterTypeName();
+            var filterType = filterControl.getFilterTypeByName(filterKind, filterTypeName);
 
             if(filterType != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = form.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = form.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                 if(language != null) {
-                    FilterTypeDescription filterTypeDescription = filterControl.getFilterTypeDescription(filterType, language);
+                    var filterTypeDescription = filterControl.getFilterTypeDescription(filterType, language);
 
                     if(filterTypeDescription != null) {
                         result.setFilterTypeDescription(filterControl.getFilterTypeDescriptionTransfer(getUserVisit(), filterTypeDescription));

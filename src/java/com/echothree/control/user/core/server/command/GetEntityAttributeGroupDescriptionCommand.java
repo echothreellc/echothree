@@ -68,17 +68,17 @@ public class GetEntityAttributeGroupDescriptionCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        GetEntityAttributeGroupDescriptionResult result = CoreResultFactory.getGetEntityAttributeGroupDescriptionResult();
-        String entityAttributeGroupName = form.getEntityAttributeGroupName();
-        EntityAttributeGroup entityAttributeGroup = coreControl.getEntityAttributeGroupByName(entityAttributeGroupName);
+        var result = CoreResultFactory.getGetEntityAttributeGroupDescriptionResult();
+        var entityAttributeGroupName = form.getEntityAttributeGroupName();
+        var entityAttributeGroup = coreControl.getEntityAttributeGroupByName(entityAttributeGroupName);
         
         if(entityAttributeGroup != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                EntityAttributeGroupDescription entityAttributeGroupDescription = coreControl.getEntityAttributeGroupDescription(entityAttributeGroup, language);
+                var entityAttributeGroupDescription = coreControl.getEntityAttributeGroupDescription(entityAttributeGroup, language);
                 
                 if(entityAttributeGroupDescription != null) {
                     result.setEntityAttributeGroupDescription(coreControl.getEntityAttributeGroupDescriptionTransfer(getUserVisit(), entityAttributeGroupDescription, null));

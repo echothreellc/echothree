@@ -33,12 +33,12 @@ public class TransactionEntityRoleTypeDescriptionTransferCache
     
     @Override
     public TransactionEntityRoleTypeDescriptionTransfer getTransfer(TransactionEntityRoleTypeDescription transactionEntityRoleTypeDescription) {
-        TransactionEntityRoleTypeDescriptionTransfer transactionEntityRoleTypeDescriptionTransfer = get(transactionEntityRoleTypeDescription);
+        var transactionEntityRoleTypeDescriptionTransfer = get(transactionEntityRoleTypeDescription);
         
         if(transactionEntityRoleTypeDescriptionTransfer == null) {
-            TransactionEntityRoleTypeTransferCache transactionEntityRoleTypeTransferCache = accountingControl.getAccountingTransferCaches(userVisit).getTransactionEntityRoleTypeTransferCache();
-            TransactionEntityRoleTypeTransfer transactionEntityRoleTypeTransfer = transactionEntityRoleTypeTransferCache.getTransfer(transactionEntityRoleTypeDescription.getTransactionEntityRoleType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, transactionEntityRoleTypeDescription.getLanguage());
+            var transactionEntityRoleTypeTransferCache = accountingControl.getAccountingTransferCaches(userVisit).getTransactionEntityRoleTypeTransferCache();
+            var transactionEntityRoleTypeTransfer = transactionEntityRoleTypeTransferCache.getTransfer(transactionEntityRoleTypeDescription.getTransactionEntityRoleType());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, transactionEntityRoleTypeDescription.getLanguage());
             
             transactionEntityRoleTypeDescriptionTransfer = new TransactionEntityRoleTypeDescriptionTransfer(languageTransfer, transactionEntityRoleTypeTransfer, transactionEntityRoleTypeDescription.getDescription());
             put(transactionEntityRoleTypeDescription, transactionEntityRoleTypeDescriptionTransfer);

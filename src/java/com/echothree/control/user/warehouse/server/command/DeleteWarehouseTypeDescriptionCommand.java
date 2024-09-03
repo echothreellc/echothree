@@ -67,16 +67,16 @@ public class DeleteWarehouseTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var warehouseControl = Session.getModelController(WarehouseControl.class);
-        String warehouseTypeName = form.getWarehouseTypeName();
-        WarehouseType warehouseType = warehouseControl.getWarehouseTypeByName(warehouseTypeName);
+        var warehouseTypeName = form.getWarehouseTypeName();
+        var warehouseType = warehouseControl.getWarehouseTypeByName(warehouseTypeName);
         
         if(warehouseType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                WarehouseTypeDescription warehouseTypeDescription = warehouseControl.getWarehouseTypeDescriptionForUpdate(warehouseType, language);
+                var warehouseTypeDescription = warehouseControl.getWarehouseTypeDescriptionForUpdate(warehouseType, language);
                 
                 if(warehouseTypeDescription != null) {
                     warehouseControl.deleteWarehouseTypeDescription(warehouseTypeDescription, getPartyPK());

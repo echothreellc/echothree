@@ -36,10 +36,10 @@ public class ChainActionSurveyTransferCache
     }
     
     public ChainActionSurveyTransfer getChainActionSurveyTransfer(ChainActionSurvey chainActionSurvey) {
-        ChainActionSurveyTransfer chainActionSurveyTransfer = get(chainActionSurvey);
+        var chainActionSurveyTransfer = get(chainActionSurvey);
         
         if(chainActionSurveyTransfer == null) {
-            ChainActionTransfer chainAction = chainControl.getChainActionTransfer(userVisit, chainActionSurvey.getChainAction());
+            var chainAction = chainControl.getChainActionTransfer(userVisit, chainActionSurvey.getChainAction());
             SurveyTransfer survey = null; // TODO: surveyControl.getSurveyTransfer(userVisit, chainActionSurvey.getSurvey());
             
             chainActionSurveyTransfer = new ChainActionSurveyTransfer(chainAction, survey);

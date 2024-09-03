@@ -60,8 +60,8 @@ public class DeleteContentPageLayoutCommand
     
     @Override
     protected BaseResult execute() {
-        String contentPageLayoutName = form.getContentPageLayoutName();
-        ContentPageLayout contentPageLayout = ContentPageLayoutLogic.getInstance().getContentPageLayoutByNameForUpdate(this, contentPageLayoutName);
+        var contentPageLayoutName = form.getContentPageLayoutName();
+        var contentPageLayout = ContentPageLayoutLogic.getInstance().getContentPageLayoutByNameForUpdate(this, contentPageLayoutName);
         
         if(!hasExecutionErrors()) {
             ContentPageLayoutLogic.getInstance().deleteContentPageLayout(this, contentPageLayout, getPartyPK());

@@ -74,23 +74,23 @@ public class EditSubscriptionTypeCommand
     @Override
     protected BaseResult execute() {
         var subscriptionControl = Session.getModelController(SubscriptionControl.class);
-        EditSubscriptionTypeResult result = SubscriptionResultFactory.getEditSubscriptionTypeResult();
-        String subscriptionKindName = spec.getSubscriptionKindName();
-        SubscriptionKind subscriptionKind = subscriptionControl.getSubscriptionKindByName(subscriptionKindName);
+        var result = SubscriptionResultFactory.getEditSubscriptionTypeResult();
+        var subscriptionKindName = spec.getSubscriptionKindName();
+        var subscriptionKind = subscriptionControl.getSubscriptionKindByName(subscriptionKindName);
         
         if(subscriptionKind != null) {
             if(editMode.equals(EditMode.LOCK)) {
-                String subscriptionTypeName = spec.getSubscriptionTypeName();
-                SubscriptionType subscriptionType = subscriptionControl.getSubscriptionTypeByName(subscriptionKind, subscriptionTypeName);
+                var subscriptionTypeName = spec.getSubscriptionTypeName();
+                var subscriptionType = subscriptionControl.getSubscriptionTypeByName(subscriptionKind, subscriptionTypeName);
                 
                 if(subscriptionType != null) {
                     result.setSubscriptionType(subscriptionControl.getSubscriptionTypeTransfer(getUserVisit(), subscriptionType));
                     
                     if(lockEntity(subscriptionType)) {
-                        SubscriptionTypeDescription subscriptionTypeDescription = subscriptionControl.getSubscriptionTypeDescription(subscriptionType, getPreferredLanguage());
-                        SubscriptionTypeEdit edit = SubscriptionEditFactory.getSubscriptionTypeEdit();
-                        SubscriptionTypeDetail subscriptionTypeDetail = subscriptionType.getLastDetail();
-                        Sequence subscriptionSequence = subscriptionTypeDetail.getSubscriptionSequence();
+                        var subscriptionTypeDescription = subscriptionControl.getSubscriptionTypeDescription(subscriptionType, getPreferredLanguage());
+                        var edit = SubscriptionEditFactory.getSubscriptionTypeEdit();
+                        var subscriptionTypeDetail = subscriptionType.getLastDetail();
+                        var subscriptionSequence = subscriptionTypeDetail.getSubscriptionSequence();
                         
                         result.setEdit(edit);
                         edit.setSubscriptionTypeName(subscriptionTypeDetail.getSubscriptionTypeName());
@@ -110,20 +110,20 @@ public class EditSubscriptionTypeCommand
                     addExecutionError(ExecutionErrors.UnknownSubscriptionTypeName.name(), subscriptionTypeName);
                 }
             } else if(editMode.equals(EditMode.UPDATE)) {
-                String subscriptionTypeName = spec.getSubscriptionTypeName();
-                SubscriptionType subscriptionType = subscriptionControl.getSubscriptionTypeByNameForUpdate(subscriptionKind, subscriptionTypeName);
+                var subscriptionTypeName = spec.getSubscriptionTypeName();
+                var subscriptionType = subscriptionControl.getSubscriptionTypeByNameForUpdate(subscriptionKind, subscriptionTypeName);
                 
                 if(subscriptionType != null) {
                     subscriptionTypeName = edit.getSubscriptionTypeName();
-                    SubscriptionType duplicateSubscriptionType = subscriptionControl.getSubscriptionTypeByName(subscriptionKind, subscriptionTypeName);
+                    var duplicateSubscriptionType = subscriptionControl.getSubscriptionTypeByName(subscriptionKind, subscriptionTypeName);
                     
                     if(duplicateSubscriptionType == null || subscriptionType.equals(duplicateSubscriptionType)) {
-                        String subscriptionSequenceName = edit.getSubscriptionSequenceName();
+                        var subscriptionSequenceName = edit.getSubscriptionSequenceName();
                         Sequence subscriptionSequence = null;
                         
                         if(subscriptionSequenceName != null) {
                             var sequenceControl = Session.getModelController(SequenceControl.class);
-                            SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.SUBSCRIPTION.name());
+                            var sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.SUBSCRIPTION.name());
                             subscriptionSequence = sequenceControl.getSequenceByName(sequenceType, subscriptionSequenceName);
                         }
                         
@@ -131,9 +131,9 @@ public class EditSubscriptionTypeCommand
                             if(lockEntityForUpdate(subscriptionType)) {
                                 try {
                                     var partyPK = getPartyPK();
-                                    SubscriptionTypeDetailValue subscriptionTypeDetailValue = subscriptionControl.getSubscriptionTypeDetailValueForUpdate(subscriptionType);
-                                    SubscriptionTypeDescription subscriptionTypeDescription = subscriptionControl.getSubscriptionTypeDescriptionForUpdate(subscriptionType, getPreferredLanguage());
-                                    String description = edit.getDescription();
+                                    var subscriptionTypeDetailValue = subscriptionControl.getSubscriptionTypeDetailValueForUpdate(subscriptionType);
+                                    var subscriptionTypeDescription = subscriptionControl.getSubscriptionTypeDescriptionForUpdate(subscriptionType, getPreferredLanguage());
+                                    var description = edit.getDescription();
                                     
                                     subscriptionTypeDetailValue.setSubscriptionTypeName(edit.getSubscriptionTypeName());
                                     subscriptionTypeDetailValue.setSubscriptionSequencePK(subscriptionSequence == null? null: subscriptionSequence.getPrimaryKey());
@@ -147,7 +147,7 @@ public class EditSubscriptionTypeCommand
                                     } else if(subscriptionTypeDescription != null && description == null) {
                                         subscriptionControl.deleteSubscriptionTypeDescription(subscriptionTypeDescription, partyPK);
                                     } else if(subscriptionTypeDescription != null && description != null) {
-                                        SubscriptionTypeDescriptionValue subscriptionTypeDescriptionValue = subscriptionControl.getSubscriptionTypeDescriptionValue(subscriptionTypeDescription);
+                                        var subscriptionTypeDescriptionValue = subscriptionControl.getSubscriptionTypeDescriptionValue(subscriptionTypeDescription);
                                         
                                         subscriptionTypeDescriptionValue.setDescription(description);
                                         subscriptionControl.updateSubscriptionTypeDescriptionFromValue(subscriptionTypeDescriptionValue, partyPK);

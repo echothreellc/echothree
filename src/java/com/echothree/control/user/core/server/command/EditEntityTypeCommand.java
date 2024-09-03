@@ -98,12 +98,12 @@ public class EditEntityTypeCommand
     public EntityType getEntity(EditEntityTypeResult result) {
         var coreControl = getCoreControl();
         EntityType entityType = null;
-        String componentVendorName = spec.getComponentVendorName();
+        var componentVendorName = spec.getComponentVendorName();
         
         componentVendor = coreControl.getComponentVendorByName(componentVendorName);
 
         if(componentVendor != null) {
-            String entityTypeName = spec.getEntityTypeName();
+            var entityTypeName = spec.getEntityTypeName();
 
             if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
                 entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
@@ -136,9 +136,9 @@ public class EditEntityTypeCommand
     @Override
     public void doLock(EntityTypeEdit edit, EntityType entityType) {
         var coreControl = getCoreControl();
-        UnitOfMeasureTypeLogic unitOfMeasureTypeLogic = UnitOfMeasureTypeLogic.getInstance();
-        EntityTypeDescription entityTypeDescription = coreControl.getEntityTypeDescription(entityType, getPreferredLanguage());
-        EntityTypeDetail entityTypeDetail = entityType.getLastDetail();
+        var unitOfMeasureTypeLogic = UnitOfMeasureTypeLogic.getInstance();
+        var entityTypeDescription = coreControl.getEntityTypeDescription(entityType, getPreferredLanguage());
+        var entityTypeDetail = entityType.getLastDetail();
         UnitOfMeasureTypeLogic.StringUnitOfMeasure stringUnitOfMeasure;
 
         edit.setEntityTypeName(entityTypeDetail.getEntityTypeName());
@@ -159,13 +159,13 @@ public class EditEntityTypeCommand
     @Override
     public void canUpdate(EntityType entityType) {
         var coreControl = getCoreControl();
-        String entityTypeName = edit.getEntityTypeName();
-        EntityType duplicateEntityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+        var entityTypeName = edit.getEntityTypeName();
+        var duplicateEntityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
 
         if(duplicateEntityType != null && !entityType.equals(duplicateEntityType)) {
             addExecutionError(ExecutionErrors.DuplicateEntityTypeName.name(), entityTypeName);
         } else {
-            UnitOfMeasureTypeLogic unitOfMeasureTypeLogic = UnitOfMeasureTypeLogic.getInstance();
+            var unitOfMeasureTypeLogic = UnitOfMeasureTypeLogic.getInstance();
 
             lockTimeout = unitOfMeasureTypeLogic.checkUnitOfMeasure(this, UomConstants.UnitOfMeasureKindUseType_TIME,
                     edit.getLockTimeout(), edit.getLockTimeoutUnitOfMeasureTypeName(),
@@ -179,9 +179,9 @@ public class EditEntityTypeCommand
     public void doUpdate(EntityType entityType) {
         var coreControl = getCoreControl();
         var partyPK = getPartyPK();
-        EntityTypeDetailValue entityTypeDetailValue = coreControl.getEntityTypeDetailValueForUpdate(entityType);
-        EntityTypeDescription entityTypeDescription = coreControl.getEntityTypeDescriptionForUpdate(entityType, getPreferredLanguage());
-        String description = edit.getDescription();
+        var entityTypeDetailValue = coreControl.getEntityTypeDetailValueForUpdate(entityType);
+        var entityTypeDescription = coreControl.getEntityTypeDescriptionForUpdate(entityType, getPreferredLanguage());
+        var description = edit.getDescription();
 
         entityTypeDetailValue.setEntityTypeName(edit.getEntityTypeName());
         entityTypeDetailValue.setKeepAllHistory(Boolean.valueOf(edit.getKeepAllHistory()));
@@ -198,7 +198,7 @@ public class EditEntityTypeCommand
                 coreControl.deleteEntityTypeDescription(entityTypeDescription, partyPK);
             } else {
                 if(entityTypeDescription != null && description != null) {
-                    EntityTypeDescriptionValue entityTypeDescriptionValue = coreControl.getEntityTypeDescriptionValue(entityTypeDescription);
+                    var entityTypeDescriptionValue = coreControl.getEntityTypeDescriptionValue(entityTypeDescription);
 
                     entityTypeDescriptionValue.setDescription(description);
                     coreControl.updateEntityTypeDescriptionFromValue(entityTypeDescriptionValue, partyPK);

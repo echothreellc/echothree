@@ -53,17 +53,17 @@ public class DeleteInventoryLocationGroupVolumeCommand
     @Override
     protected BaseResult execute() {
         var warehouseControl = Session.getModelController(WarehouseControl.class);
-        String warehouseName = form.getWarehouseName();
-        Warehouse warehouse = warehouseControl.getWarehouseByName(warehouseName);
+        var warehouseName = form.getWarehouseName();
+        var warehouse = warehouseControl.getWarehouseByName(warehouseName);
         
         if(warehouse != null) {
             var inventoryControl = Session.getModelController(InventoryControl.class);
-            String inventoryLocationGroupName = form.getInventoryLocationGroupName();
-            InventoryLocationGroup inventoryLocationGroup = inventoryControl.getInventoryLocationGroupByName(warehouse.getParty(),
+            var inventoryLocationGroupName = form.getInventoryLocationGroupName();
+            var inventoryLocationGroup = inventoryControl.getInventoryLocationGroupByName(warehouse.getParty(),
                     inventoryLocationGroupName);
             
             if(inventoryLocationGroup != null) {
-                InventoryLocationGroupVolume inventoryLocationGroupVolume = inventoryControl.getInventoryLocationGroupVolumeForUpdate(inventoryLocationGroup);
+                var inventoryLocationGroupVolume = inventoryControl.getInventoryLocationGroupVolumeForUpdate(inventoryLocationGroup);
                 
                 if(inventoryLocationGroupVolume != null) {
                     inventoryControl.deleteInventoryLocationGroupVolume(inventoryLocationGroupVolume, getPartyPK());

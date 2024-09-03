@@ -58,18 +58,18 @@ public class CreateMoodCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        String moodName = form.getMoodName();
-        Mood mood = partyControl.getMoodByName(moodName);
+        var moodName = form.getMoodName();
+        var mood = partyControl.getMoodByName(moodName);
 
         if(mood == null) {
             var iconControl = Session.getModelController(IconControl.class);
-            String iconName = form.getIconName();
-            Icon icon = iconName == null? null: iconControl.getIconByName(iconName);
+            var iconName = form.getIconName();
+            var icon = iconName == null? null: iconControl.getIconByName(iconName);
             
             if(iconName == null || icon != null) {
                 if(icon != null) {
-                    IconUsageType iconUsageType = iconControl.getIconUsageTypeByName(IconConstants.IconUsageType_MOOD);
-                    IconUsage iconUsage = iconControl.getIconUsage(iconUsageType, icon);
+                    var iconUsageType = iconControl.getIconUsageTypeByName(IconConstants.IconUsageType_MOOD);
+                    var iconUsage = iconControl.getIconUsage(iconUsageType, icon);
                     
                     if(iconUsage == null) {
                         addExecutionError(ExecutionErrors.UnknownIconUsage.name());

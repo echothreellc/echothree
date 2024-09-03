@@ -69,7 +69,7 @@ public class GetOfferNameElementCommand
     
     @Override
     protected OfferNameElement getEntity() {
-        OfferNameElement offerNameElement = OfferNameElementLogic.getInstance().getOfferNameElementByUniversalSpec(this, form);
+        var offerNameElement = OfferNameElementLogic.getInstance().getOfferNameElementByUniversalSpec(this, form);
 
         if(offerNameElement != null) {
             sendEvent(offerNameElement.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -81,7 +81,7 @@ public class GetOfferNameElementCommand
     @Override
     protected BaseResult getResult(OfferNameElement offerNameElement) {
         var offerNameElementControl = Session.getModelController(OfferNameElementControl.class);
-        GetOfferNameElementResult result = OfferResultFactory.getGetOfferNameElementResult();
+        var result = OfferResultFactory.getGetOfferNameElementResult();
 
         if(offerNameElement != null) {
             result.setOfferNameElement(offerNameElementControl.getOfferNameElementTransfer(getUserVisit(), offerNameElement));

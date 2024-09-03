@@ -74,31 +74,31 @@ public class DeleteWorkflowEntranceSecurityRoleCommand
     @Override
     protected BaseResult execute() {
         var workflowControl = Session.getModelController(WorkflowControl.class);
-        String workflowName = form.getWorkflowName();
+        var workflowName = form.getWorkflowName();
         var workflow = workflowControl.getWorkflowByName(workflowName);
         
         if(workflow != null) {
-            String workflowEntranceName = form.getWorkflowEntranceName();
-            WorkflowEntrance workflowEntrance = workflowControl.getWorkflowEntranceByName(workflow, workflowEntranceName);
+            var workflowEntranceName = form.getWorkflowEntranceName();
+            var workflowEntrance = workflowControl.getWorkflowEntranceByName(workflow, workflowEntranceName);
             
             if(workflowEntrance != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String partyTypeName = form.getPartyTypeName();
-                PartyType partyType = partyControl.getPartyTypeByName(partyTypeName);
+                var partyTypeName = form.getPartyTypeName();
+                var partyType = partyControl.getPartyTypeByName(partyTypeName);
                 
                 if(partyType != null) {
-                    WorkflowEntrancePartyType workflowEntrancePartyType = workflowControl.getWorkflowEntrancePartyType(workflowEntrance, partyType);
+                    var workflowEntrancePartyType = workflowControl.getWorkflowEntrancePartyType(workflowEntrance, partyType);
                     
                     if(workflowEntrancePartyType != null) {
-                        SecurityRoleGroup securityRoleGroup = workflow.getLastDetail().getSecurityRoleGroup();
+                        var securityRoleGroup = workflow.getLastDetail().getSecurityRoleGroup();
 
                         if(securityRoleGroup != null) {
                             var securityControl = Session.getModelController(SecurityControl.class);
-                            String securityRoleName = form.getSecurityRoleName();
-                            SecurityRole securityRole = securityControl.getSecurityRoleByName(securityRoleGroup, securityRoleName);
+                            var securityRoleName = form.getSecurityRoleName();
+                            var securityRole = securityControl.getSecurityRoleByName(securityRoleGroup, securityRoleName);
                             
                             if(securityRole != null) {
-                                WorkflowEntranceSecurityRole workflowEntranceSecurityRole = workflowControl.getWorkflowEntranceSecurityRoleForUpdate(workflowEntrancePartyType, securityRole);
+                                var workflowEntranceSecurityRole = workflowControl.getWorkflowEntranceSecurityRoleForUpdate(workflowEntrancePartyType, securityRole);
                                 
                                 if(workflowEntranceSecurityRole != null) {
                                     workflowControl.deleteWorkflowEntranceSecurityRole(workflowEntranceSecurityRole, getPartyPK());

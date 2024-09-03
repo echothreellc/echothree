@@ -50,9 +50,9 @@ public class GetSelectorBooleanTypeChoicesCommand
     @Override
     protected BaseResult execute() {
         var selectorControl = Session.getModelController(SelectorControl.class);
-        GetSelectorBooleanTypeChoicesResult result = SelectorResultFactory.getGetSelectorBooleanTypeChoicesResult();
-        String defaultSelectorBooleanTypeChoice = form.getDefaultSelectorBooleanTypeChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = SelectorResultFactory.getGetSelectorBooleanTypeChoicesResult();
+        var defaultSelectorBooleanTypeChoice = form.getDefaultSelectorBooleanTypeChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setSelectorBooleanTypeChoices(selectorControl.getSelectorBooleanTypeChoices(defaultSelectorBooleanTypeChoice,
                 getPreferredLanguage(), allowNullChoice));

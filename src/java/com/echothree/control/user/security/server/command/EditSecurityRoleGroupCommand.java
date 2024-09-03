@@ -92,7 +92,7 @@ public class EditSecurityRoleGroupCommand
     public SecurityRoleGroup getEntity(EditSecurityRoleGroupResult result) {
         var securityControl = Session.getModelController(SecurityControl.class);
         SecurityRoleGroup securityRoleGroup = null;
-        String securityRoleGroupName = spec.getSecurityRoleGroupName();
+        var securityRoleGroupName = spec.getSecurityRoleGroupName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
             securityRoleGroup = securityControl.getSecurityRoleGroupByName(securityRoleGroupName);
@@ -126,8 +126,8 @@ public class EditSecurityRoleGroupCommand
     @Override
     public void doLock(SecurityRoleGroupEdit edit, SecurityRoleGroup securityRoleGroup) {
         var securityControl = Session.getModelController(SecurityControl.class);
-        SecurityRoleGroupDescription securityRoleGroupDescription = securityControl.getSecurityRoleGroupDescription(securityRoleGroup, getPreferredLanguage());
-        SecurityRoleGroupDetail securityRoleGroupDetail = securityRoleGroup.getLastDetail();
+        var securityRoleGroupDescription = securityControl.getSecurityRoleGroupDescription(securityRoleGroup, getPreferredLanguage());
+        var securityRoleGroupDetail = securityRoleGroup.getLastDetail();
         
         parentSecurityRoleGroup = securityRoleGroupDetail.getParentSecurityRoleGroup();
         if(parentSecurityRoleGroup != null && SecurityRoleGroups.ROOT.name().equals(parentSecurityRoleGroup.getLastDetail().getSecurityRoleGroupName())) {
@@ -147,11 +147,11 @@ public class EditSecurityRoleGroupCommand
     @Override
     public void canUpdate(SecurityRoleGroup securityRoleGroup) {
         var securityControl = Session.getModelController(SecurityControl.class);
-        String securityRoleGroupName = edit.getSecurityRoleGroupName();
-        SecurityRoleGroup duplicateSecurityRoleGroup = securityControl.getSecurityRoleGroupByName(securityRoleGroupName);
+        var securityRoleGroupName = edit.getSecurityRoleGroupName();
+        var duplicateSecurityRoleGroup = securityControl.getSecurityRoleGroupByName(securityRoleGroupName);
 
         if(duplicateSecurityRoleGroup == null || securityRoleGroup.equals(duplicateSecurityRoleGroup)) {
-            String parentSecurityRoleGroupName = edit.getParentSecurityRoleGroupName();
+            var parentSecurityRoleGroupName = edit.getParentSecurityRoleGroupName();
             
             parentSecurityRoleGroup = securityControl.getSecurityRoleGroupByName(parentSecurityRoleGroupName == null? SecurityRoleGroups.ROOT.name(): parentSecurityRoleGroupName);
 
@@ -171,9 +171,9 @@ public class EditSecurityRoleGroupCommand
     public void doUpdate(SecurityRoleGroup securityRoleGroup) {
         var securityControl = Session.getModelController(SecurityControl.class);
         var partyPK = getPartyPK();
-        SecurityRoleGroupDetailValue securityRoleGroupDetailValue = securityControl.getSecurityRoleGroupDetailValueForUpdate(securityRoleGroup);
-        SecurityRoleGroupDescription securityRoleGroupDescription = securityControl.getSecurityRoleGroupDescriptionForUpdate(securityRoleGroup, getPreferredLanguage());
-        String description = edit.getDescription();
+        var securityRoleGroupDetailValue = securityControl.getSecurityRoleGroupDetailValueForUpdate(securityRoleGroup);
+        var securityRoleGroupDescription = securityControl.getSecurityRoleGroupDescriptionForUpdate(securityRoleGroup, getPreferredLanguage());
+        var description = edit.getDescription();
 
         securityRoleGroupDetailValue.setSecurityRoleGroupName(edit.getSecurityRoleGroupName());
         securityRoleGroupDetailValue.setParentSecurityRoleGroupPK(parentSecurityRoleGroup == null? null: parentSecurityRoleGroup.getPrimaryKey());
@@ -187,7 +187,7 @@ public class EditSecurityRoleGroupCommand
         } else if(securityRoleGroupDescription != null && description == null) {
             securityControl.deleteSecurityRoleGroupDescription(securityRoleGroupDescription, partyPK);
         } else if(securityRoleGroupDescription != null && description != null) {
-            SecurityRoleGroupDescriptionValue securityRoleGroupDescriptionValue = securityControl.getSecurityRoleGroupDescriptionValue(securityRoleGroupDescription);
+            var securityRoleGroupDescriptionValue = securityControl.getSecurityRoleGroupDescriptionValue(securityRoleGroupDescription);
 
             securityRoleGroupDescriptionValue.setDescription(description);
             securityControl.updateSecurityRoleGroupDescriptionFromValue(securityRoleGroupDescriptionValue, partyPK);

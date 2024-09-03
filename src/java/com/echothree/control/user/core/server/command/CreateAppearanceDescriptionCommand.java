@@ -67,16 +67,16 @@ public class CreateAppearanceDescriptionCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String appearanceName = form.getAppearanceName();
-        Appearance appearance = coreControl.getAppearanceByName(appearanceName);
+        var appearanceName = form.getAppearanceName();
+        var appearance = coreControl.getAppearanceByName(appearanceName);
         
         if(appearance != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                AppearanceDescription appearanceDescription = coreControl.getAppearanceDescription(appearance, language);
+                var appearanceDescription = coreControl.getAppearanceDescription(appearance, language);
                 
                 if(appearanceDescription == null) {
                     var description = form.getDescription();

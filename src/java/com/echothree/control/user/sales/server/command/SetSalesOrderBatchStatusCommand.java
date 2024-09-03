@@ -61,10 +61,10 @@ public class SetSalesOrderBatchStatusCommand
     
     @Override
     protected BaseResult execute() {
-        Batch batch = SalesOrderBatchLogic.getInstance().getBatchByName(this, form.getBatchName());
+        var batch = SalesOrderBatchLogic.getInstance().getBatchByName(this, form.getBatchName());
 
         if(batch != null) {
-            String salesOrderBatchStatusChoice = form.getSalesOrderBatchStatusChoice();
+            var salesOrderBatchStatusChoice = form.getSalesOrderBatchStatusChoice();
 
             SalesOrderBatchLogic.getInstance().setSalesOrderBatchStatus(session, this, batch, salesOrderBatchStatusChoice, getPartyPK());
         }

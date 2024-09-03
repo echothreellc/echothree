@@ -63,13 +63,13 @@ public class GetSalesOrderBatchStatusChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        GetSalesOrderBatchStatusChoicesResult result = SalesResultFactory.getGetSalesOrderBatchStatusChoicesResult();
-        String batchName = form.getBatchName();
-        Batch batch = batchName == null? null: SalesOrderBatchLogic.getInstance().getBatchByName(this, batchName);
+        var result = SalesResultFactory.getGetSalesOrderBatchStatusChoicesResult();
+        var batchName = form.getBatchName();
+        var batch = batchName == null? null: SalesOrderBatchLogic.getInstance().getBatchByName(this, batchName);
 
         if(!hasExecutionErrors()) {
-            String defaultSalesOrderBatchStatusChoice = form.getDefaultSalesOrderBatchStatusChoice();
-            boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+            var defaultSalesOrderBatchStatusChoice = form.getDefaultSalesOrderBatchStatusChoice();
+            var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 
             result.setSalesOrderBatchStatusChoices(SalesOrderBatchLogic.getInstance().getSalesOrderBatchStatusChoices(defaultSalesOrderBatchStatusChoice,
                     getPreferredLanguage(), allowNullChoice, batch, getPartyPK()));

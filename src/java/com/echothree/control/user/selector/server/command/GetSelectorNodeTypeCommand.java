@@ -51,9 +51,9 @@ public class GetSelectorNodeTypeCommand
     @Override
     protected BaseResult execute() {
         var selectorControl = Session.getModelController(SelectorControl.class);
-        GetSelectorNodeTypeResult result = SelectorResultFactory.getGetSelectorNodeTypeResult();
-        String selectorNodeTypeName = form.getSelectorNodeTypeName();
-        SelectorNodeType selectorNodeType = selectorControl.getSelectorNodeTypeByName(selectorNodeTypeName);
+        var result = SelectorResultFactory.getGetSelectorNodeTypeResult();
+        var selectorNodeTypeName = form.getSelectorNodeTypeName();
+        var selectorNodeType = selectorControl.getSelectorNodeTypeByName(selectorNodeTypeName);
         
         if(selectorNodeType != null) {
             result.setSelectorNodeType(selectorControl.getSelectorNodeTypeTransfer(getUserVisit(), selectorNodeType));

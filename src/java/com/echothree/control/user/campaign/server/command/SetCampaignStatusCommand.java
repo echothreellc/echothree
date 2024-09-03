@@ -65,11 +65,11 @@ public class SetCampaignStatusCommand
     @Override
     protected BaseResult execute() {
         var campaignControl = Session.getModelController(CampaignControl.class);
-        String campaignName = form.getCampaignName();
-        Campaign campaign = campaignControl.getCampaignByName(campaignName);
+        var campaignName = form.getCampaignName();
+        var campaign = campaignControl.getCampaignByName(campaignName);
         
         if(campaign != null) {
-            String campaignStatusChoice = form.getCampaignStatusChoice();
+            var campaignStatusChoice = form.getCampaignStatusChoice();
             
             CampaignLogic.getInstance().setCampaignStatus(session, this, campaign, campaignStatusChoice, getPartyPK());
         } else {

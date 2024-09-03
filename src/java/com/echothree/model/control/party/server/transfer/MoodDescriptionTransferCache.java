@@ -32,11 +32,11 @@ public class MoodDescriptionTransferCache
     }
     
     public MoodDescriptionTransfer getMoodDescriptionTransfer(MoodDescription moodDescription) {
-        MoodDescriptionTransfer moodDescriptionTransfer = get(moodDescription);
+        var moodDescriptionTransfer = get(moodDescription);
         
         if(moodDescriptionTransfer == null) {
-            MoodTransfer moodTransfer = partyControl.getMoodTransfer(userVisit, moodDescription.getMood());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, moodDescription.getLanguage());
+            var moodTransfer = partyControl.getMoodTransfer(userVisit, moodDescription.getMood());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, moodDescription.getLanguage());
             
             moodDescriptionTransfer = new MoodDescriptionTransfer(languageTransfer, moodTransfer, moodDescription.getDescription());
             put(moodDescription, moodDescriptionTransfer);

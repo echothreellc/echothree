@@ -104,11 +104,11 @@ public class EditCarrierServiceCommand
     public CarrierService getEntity(EditCarrierServiceResult result) {
         var carrierControl = Session.getModelController(CarrierControl.class);
         CarrierService carrierService = null;
-        String carrierName = spec.getCarrierName();
-        Carrier carrier = carrierControl.getCarrierByName(carrierName);
+        var carrierName = spec.getCarrierName();
+        var carrier = carrierControl.getCarrierByName(carrierName);
 
         if(carrier != null) {
-            String carrierServiceName = spec.getCarrierServiceName();
+            var carrierServiceName = spec.getCarrierServiceName();
             
             carrierParty = carrier.getParty();
 
@@ -148,8 +148,8 @@ public class EditCarrierServiceCommand
     @Override
     public void doLock(CarrierServiceEdit edit, CarrierService carrierService) {
         var carrierControl = Session.getModelController(CarrierControl.class);
-        CarrierServiceDescription carrierServiceDescription = carrierControl.getCarrierServiceDescription(carrierService, getPreferredLanguage());
-        CarrierServiceDetail carrierServiceDetail = carrierService.getLastDetail();
+        var carrierServiceDescription = carrierControl.getCarrierServiceDescription(carrierService, getPreferredLanguage());
+        var carrierServiceDetail = carrierService.getLastDetail();
 
         geoCodeSelector = carrierServiceDetail.getGeoCodeSelector();
         itemSelector = carrierServiceDetail.getItemSelector();
@@ -168,18 +168,18 @@ public class EditCarrierServiceCommand
     @Override
     public void canUpdate(CarrierService carrierService) {
         var carrierControl = Session.getModelController(CarrierControl.class);
-        String carrierServiceName = edit.getCarrierServiceName();
-        CarrierService duplicateCarrierService = carrierControl.getCarrierServiceByName(carrierParty, carrierServiceName);
+        var carrierServiceName = edit.getCarrierServiceName();
+        var duplicateCarrierService = carrierControl.getCarrierServiceByName(carrierParty, carrierServiceName);
 
         if(duplicateCarrierService == null || carrierService.equals(duplicateCarrierService)) {
-            String geoCodeSelectorName = edit.getGeoCodeSelectorName();
+            var geoCodeSelectorName = edit.getGeoCodeSelectorName();
 
             if(geoCodeSelectorName != null) {
                 var selectorControl = Session.getModelController(SelectorControl.class);
-                SelectorKind selectorKind = selectorControl.getSelectorKindByName(SelectorKinds.POSTAL_ADDRESS.name());
+                var selectorKind = selectorControl.getSelectorKindByName(SelectorKinds.POSTAL_ADDRESS.name());
 
                 if(selectorKind != null) {
-                    SelectorType selectorType = selectorControl.getSelectorTypeByName(selectorKind,
+                    var selectorType = selectorControl.getSelectorTypeByName(selectorKind,
                             SelectorTypes.CARRIER.name());
 
                     if(selectorType != null) {
@@ -194,14 +194,14 @@ public class EditCarrierServiceCommand
             }
 
             if(geoCodeSelectorName == null || geoCodeSelector != null) {
-                String itemSelectorName = edit.getItemSelectorName();
+                var itemSelectorName = edit.getItemSelectorName();
 
                 if(itemSelectorName != null) {
                     var selectorControl = Session.getModelController(SelectorControl.class);
-                    SelectorKind selectorKind = selectorControl.getSelectorKindByName(SelectorKinds.ITEM.name());
+                    var selectorKind = selectorControl.getSelectorKindByName(SelectorKinds.ITEM.name());
 
                     if(selectorKind != null) {
-                        SelectorType selectorType = selectorControl.getSelectorTypeByName(selectorKind,
+                        var selectorType = selectorControl.getSelectorTypeByName(selectorKind,
                                 SelectorTypes.CARRIER.name());
 
                         if(selectorType != null) {
@@ -230,9 +230,9 @@ public class EditCarrierServiceCommand
     public void doUpdate(CarrierService carrierService) {
         var carrierControl = Session.getModelController(CarrierControl.class);
         var partyPK = getPartyPK();
-        CarrierServiceDetailValue carrierServiceDetailValue = carrierControl.getCarrierServiceDetailValueForUpdate(carrierService);
-        CarrierServiceDescription carrierServiceDescription = carrierControl.getCarrierServiceDescriptionForUpdate(carrierService, getPreferredLanguage());
-        String description = edit.getDescription();
+        var carrierServiceDetailValue = carrierControl.getCarrierServiceDetailValueForUpdate(carrierService);
+        var carrierServiceDescription = carrierControl.getCarrierServiceDescriptionForUpdate(carrierService, getPreferredLanguage());
+        var description = edit.getDescription();
 
         carrierServiceDetailValue.setCarrierServiceName(edit.getCarrierServiceName());
         carrierServiceDetailValue.setGeoCodeSelectorPK(geoCodeSelector == null ? null : geoCodeSelector.getPrimaryKey());
@@ -249,7 +249,7 @@ public class EditCarrierServiceCommand
                 carrierControl.deleteCarrierServiceDescription(carrierServiceDescription, partyPK);
             } else {
                 if(carrierServiceDescription != null && description != null) {
-                    CarrierServiceDescriptionValue carrierServiceDescriptionValue = carrierControl.getCarrierServiceDescriptionValue(carrierServiceDescription);
+                    var carrierServiceDescriptionValue = carrierControl.getCarrierServiceDescriptionValue(carrierServiceDescription);
 
                     carrierServiceDescriptionValue.setDescription(description);
                     carrierControl.updateCarrierServiceDescriptionFromValue(carrierServiceDescriptionValue, partyPK);

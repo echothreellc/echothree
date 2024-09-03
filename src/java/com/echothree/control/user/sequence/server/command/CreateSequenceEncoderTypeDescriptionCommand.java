@@ -68,16 +68,16 @@ public class CreateSequenceEncoderTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var sequenceControl = Session.getModelController(SequenceControl.class);
-        String sequenceEncoderTypeName = form.getSequenceEncoderTypeName();
-        SequenceEncoderType sequenceEncoderType = sequenceControl.getSequenceEncoderTypeByName(sequenceEncoderTypeName);
+        var sequenceEncoderTypeName = form.getSequenceEncoderTypeName();
+        var sequenceEncoderType = sequenceControl.getSequenceEncoderTypeByName(sequenceEncoderTypeName);
         
         if(sequenceEncoderType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                SequenceEncoderTypeDescription sequenceEncoderTypeDescription = sequenceControl.getSequenceEncoderTypeDescription(sequenceEncoderType, language);
+                var sequenceEncoderTypeDescription = sequenceControl.getSequenceEncoderTypeDescription(sequenceEncoderType, language);
                 
                 if(sequenceEncoderTypeDescription == null) {
                     var description = form.getDescription();

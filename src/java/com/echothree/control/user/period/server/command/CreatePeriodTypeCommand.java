@@ -74,28 +74,28 @@ public class CreatePeriodTypeCommand
     @Override
     protected BaseResult execute() {
         var periodControl = Session.getModelController(PeriodControl.class);
-        String workflowName = form.getWorkflowName();
-        String workflowEntranceName = form.getWorkflowEntranceName();
+        var workflowName = form.getWorkflowName();
+        var workflowEntranceName = form.getWorkflowEntranceName();
         var parameterCount = (workflowName == null ? 0 : 1) + (workflowEntranceName == null ? 0 : 1);
 
         if(parameterCount == 0 || parameterCount == 2) {
-            String periodKindName = form.getPeriodKindName();
-            PeriodKind periodKind = periodControl.getPeriodKindByName(periodKindName);
+            var periodKindName = form.getPeriodKindName();
+            var periodKind = periodControl.getPeriodKindByName(periodKindName);
 
             if(periodKind != null) {
-                String periodTypeName = form.getPeriodTypeName();
-                PeriodType periodType = periodControl.getPeriodTypeByName(periodKind, periodTypeName);
+                var periodTypeName = form.getPeriodTypeName();
+                var periodType = periodControl.getPeriodTypeByName(periodKind, periodTypeName);
 
                 if(periodType == null) {
-                    String parentPeriodTypeName = form.getParentPeriodTypeName();
-                    PeriodType parentPeriodType = periodControl.getPeriodTypeByName(periodKind, parentPeriodTypeName);
+                    var parentPeriodTypeName = form.getParentPeriodTypeName();
+                    var parentPeriodType = periodControl.getPeriodTypeByName(periodKind, parentPeriodTypeName);
 
                     if(parentPeriodTypeName == null || parentPeriodType != null) {
                         var workflowControl = Session.getModelController(WorkflowControl.class);
-                        Workflow workflow = workflowName == null ? null : workflowControl.getWorkflowByName(workflowName);
+                        var workflow = workflowName == null ? null : workflowControl.getWorkflowByName(workflowName);
 
                         if(workflowName == null || workflow != null) {
-                            WorkflowEntrance workflowEntrance = workflowEntranceName == null? null: workflowControl.getWorkflowEntranceByName(workflow, workflowEntranceName);
+                            var workflowEntrance = workflowEntranceName == null? null: workflowControl.getWorkflowEntranceByName(workflow, workflowEntranceName);
 
                             if(workflowEntranceName == null || workflowEntrance != null) {
                                 var partyPK = getPartyPK();

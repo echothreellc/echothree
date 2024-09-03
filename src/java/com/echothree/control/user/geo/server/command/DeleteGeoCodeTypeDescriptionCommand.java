@@ -67,16 +67,16 @@ public class DeleteGeoCodeTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var geoControl = Session.getModelController(GeoControl.class);
-        String geoCodeTypeName = form.getGeoCodeTypeName();
-        GeoCodeType geoCodeType = geoControl.getGeoCodeTypeByName(geoCodeTypeName);
+        var geoCodeTypeName = form.getGeoCodeTypeName();
+        var geoCodeType = geoControl.getGeoCodeTypeByName(geoCodeTypeName);
         
         if(geoCodeType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                GeoCodeTypeDescription geoCodeTypeDescription = geoControl.getGeoCodeTypeDescriptionForUpdate(geoCodeType, language);
+                var geoCodeTypeDescription = geoControl.getGeoCodeTypeDescriptionForUpdate(geoCodeType, language);
                 
                 if(geoCodeTypeDescription != null) {
                     geoControl.deleteGeoCodeTypeDescription(geoCodeTypeDescription, getPartyPK());

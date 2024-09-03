@@ -100,7 +100,7 @@ public class EditItemCategoryCommand
     public ItemCategory getEntity(EditItemCategoryResult result) {
         var itemControl = Session.getModelController(ItemControl.class);
         ItemCategory itemCategory = null;
-        String itemCategoryName = spec.getItemCategoryName();
+        var itemCategoryName = spec.getItemCategoryName();
         var parameterCount = (itemCategoryName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(spec);
 
         if(parameterCount == 1) {
@@ -142,8 +142,8 @@ public class EditItemCategoryCommand
     @Override
     public void doLock(ItemCategoryEdit edit, ItemCategory itemCategory) {
         var itemControl = Session.getModelController(ItemControl.class);
-        ItemCategoryDescription itemCategoryDescription = itemControl.getItemCategoryDescription(itemCategory, getPreferredLanguage());
-        ItemCategoryDetail itemCategoryDetail = itemCategory.getLastDetail();
+        var itemCategoryDescription = itemControl.getItemCategoryDescription(itemCategory, getPreferredLanguage());
+        var itemCategoryDetail = itemCategory.getLastDetail();
         
         parentItemCategory = itemCategoryDetail.getParentItemCategory();
         
@@ -160,11 +160,11 @@ public class EditItemCategoryCommand
     @Override
     public void canUpdate(ItemCategory itemCategory) {
         var itemControl = Session.getModelController(ItemControl.class);
-        String itemCategoryName = edit.getItemCategoryName();
-        ItemCategory duplicateItemCategory = itemControl.getItemCategoryByName(itemCategoryName);
+        var itemCategoryName = edit.getItemCategoryName();
+        var duplicateItemCategory = itemControl.getItemCategoryByName(itemCategoryName);
 
         if(duplicateItemCategory == null || itemCategory.equals(duplicateItemCategory)) {
-            String parentItemCategoryName = edit.getParentItemCategoryName();
+            var parentItemCategoryName = edit.getParentItemCategoryName();
             
             parentItemCategory = parentItemCategoryName == null? null: itemControl.getItemCategoryByName(parentItemCategoryName);
 
@@ -186,9 +186,9 @@ public class EditItemCategoryCommand
     public void doUpdate(ItemCategory itemCategory) {
         var itemControl = Session.getModelController(ItemControl.class);
         var partyPK = getPartyPK();
-        ItemCategoryDetailValue itemCategoryDetailValue = itemControl.getItemCategoryDetailValueForUpdate(itemCategory);
-        ItemCategoryDescription itemCategoryDescription = itemControl.getItemCategoryDescriptionForUpdate(itemCategory, getPreferredLanguage());
-        String description = edit.getDescription();
+        var itemCategoryDetailValue = itemControl.getItemCategoryDetailValueForUpdate(itemCategory);
+        var itemCategoryDescription = itemControl.getItemCategoryDescriptionForUpdate(itemCategory, getPreferredLanguage());
+        var description = edit.getDescription();
 
         itemCategoryDetailValue.setItemCategoryName(edit.getItemCategoryName());
         itemCategoryDetailValue.setParentItemCategoryPK(parentItemCategory == null? null: parentItemCategory.getPrimaryKey());
@@ -202,7 +202,7 @@ public class EditItemCategoryCommand
         } else if(itemCategoryDescription != null && description == null) {
             itemControl.deleteItemCategoryDescription(itemCategoryDescription, partyPK);
         } else if(itemCategoryDescription != null && description != null) {
-            ItemCategoryDescriptionValue itemCategoryDescriptionValue = itemControl.getItemCategoryDescriptionValue(itemCategoryDescription);
+            var itemCategoryDescriptionValue = itemControl.getItemCategoryDescriptionValue(itemCategoryDescription);
 
             itemCategoryDescriptionValue.setDescription(description);
             itemControl.updateItemCategoryDescriptionFromValue(itemCategoryDescriptionValue, partyPK);

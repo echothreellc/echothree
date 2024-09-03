@@ -65,9 +65,9 @@ public class GetTrainingClassTranslationsCommand
     @Override
     protected BaseResult execute() {
         var trainingControl = Session.getModelController(TrainingControl.class);
-        GetTrainingClassTranslationsResult result = TrainingResultFactory.getGetTrainingClassTranslationsResult();
-        String trainingClassName = form.getTrainingClassName();
-        TrainingClass trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
+        var result = TrainingResultFactory.getGetTrainingClassTranslationsResult();
+        var trainingClassName = form.getTrainingClassName();
+        var trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
         
         if(trainingClass != null) {
             result.setTrainingClass(trainingControl.getTrainingClassTransfer(getUserVisit(), trainingClass));

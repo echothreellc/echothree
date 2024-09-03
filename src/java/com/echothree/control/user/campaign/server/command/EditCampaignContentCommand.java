@@ -91,7 +91,7 @@ public class EditCampaignContentCommand
     public CampaignContent getEntity(EditCampaignContentResult result) {
         var campaignControl = Session.getModelController(CampaignControl.class);
         CampaignContent campaignContent;
-        String campaignContentName = spec.getCampaignContentName();
+        var campaignContentName = spec.getCampaignContentName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
             campaignContent = campaignControl.getCampaignContentByName(campaignContentName);
@@ -121,8 +121,8 @@ public class EditCampaignContentCommand
     @Override
     public void doLock(CampaignContentEdit edit, CampaignContent campaignContent) {
         var campaignControl = Session.getModelController(CampaignControl.class);
-        CampaignContentDescription campaignContentDescription = campaignControl.getCampaignContentDescription(campaignContent, getPreferredLanguage());
-        CampaignContentDetail campaignContentDetail = campaignContent.getLastDetail();
+        var campaignContentDescription = campaignControl.getCampaignContentDescription(campaignContent, getPreferredLanguage());
+        var campaignContentDetail = campaignContent.getLastDetail();
 
         edit.setValue(campaignContentDetail.getValue());
         edit.setIsDefault(campaignContentDetail.getIsDefault().toString());
@@ -136,8 +136,8 @@ public class EditCampaignContentCommand
     @Override
     public void canUpdate(CampaignContent campaignContent) {
         var campaignControl = Session.getModelController(CampaignControl.class);
-        String value = edit.getValue();
-        CampaignContent duplicateCampaignContent = campaignControl.getCampaignContentByValue(value);
+        var value = edit.getValue();
+        var duplicateCampaignContent = campaignControl.getCampaignContentByValue(value);
 
         if(duplicateCampaignContent != null && !campaignContent.equals(duplicateCampaignContent)) {
             addExecutionError(ExecutionErrors.DuplicateCampaignContentValue.name(), value);
@@ -148,9 +148,9 @@ public class EditCampaignContentCommand
     public void doUpdate(CampaignContent campaignContent) {
         var campaignControl = Session.getModelController(CampaignControl.class);
         var partyPK = getPartyPK();
-        CampaignContentDetailValue campaignContentDetailValue = campaignControl.getCampaignContentDetailValueForUpdate(campaignContent);
-        CampaignContentDescription campaignContentDescription = campaignControl.getCampaignContentDescriptionForUpdate(campaignContent, getPreferredLanguage());
-        String description = edit.getDescription();
+        var campaignContentDetailValue = campaignControl.getCampaignContentDetailValueForUpdate(campaignContent);
+        var campaignContentDescription = campaignControl.getCampaignContentDescriptionForUpdate(campaignContent, getPreferredLanguage());
+        var description = edit.getDescription();
 
         campaignContentDetailValue.setValue(edit.getValue());
         campaignContentDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
@@ -165,7 +165,7 @@ public class EditCampaignContentCommand
                 campaignControl.deleteCampaignContentDescription(campaignContentDescription, partyPK);
             } else {
                 if(campaignContentDescription != null && description != null) {
-                    CampaignContentDescriptionValue campaignContentDescriptionValue = campaignControl.getCampaignContentDescriptionValue(campaignContentDescription);
+                    var campaignContentDescriptionValue = campaignControl.getCampaignContentDescriptionValue(campaignContentDescription);
 
                     campaignContentDescriptionValue.setDescription(description);
                     campaignControl.updateCampaignContentDescriptionFromValue(campaignContentDescriptionValue, partyPK);

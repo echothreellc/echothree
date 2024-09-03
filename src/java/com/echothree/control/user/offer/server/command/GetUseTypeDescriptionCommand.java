@@ -69,17 +69,17 @@ public class GetUseTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var useTypeControl = Session.getModelController(UseTypeControl.class);
-        GetUseTypeDescriptionResult result = OfferResultFactory.getGetUseTypeDescriptionResult();
-        String useTypeName = form.getUseTypeName();
-        UseType useType = useTypeControl.getUseTypeByName(useTypeName);
+        var result = OfferResultFactory.getGetUseTypeDescriptionResult();
+        var useTypeName = form.getUseTypeName();
+        var useType = useTypeControl.getUseTypeByName(useTypeName);
         
         if(useType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                UseTypeDescription useTypeDescription = useTypeControl.getUseTypeDescription(useType, language);
+                var useTypeDescription = useTypeControl.getUseTypeDescription(useType, language);
                 
                 if(useTypeDescription != null) {
                     result.setUseTypeDescription(useTypeControl.getUseTypeDescriptionTransfer(getUserVisit(), useTypeDescription));

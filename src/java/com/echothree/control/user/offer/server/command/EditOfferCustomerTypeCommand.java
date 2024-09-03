@@ -80,24 +80,24 @@ public class EditOfferCustomerTypeCommand
     @Override
     protected BaseResult execute() {
         var offerControl = Session.getModelController(OfferControl.class);
-        EditOfferCustomerTypeResult result = OfferResultFactory.getEditOfferCustomerTypeResult();
-        String offerName = spec.getOfferName();
-        Offer offer = offerControl.getOfferByName(offerName);
+        var result = OfferResultFactory.getEditOfferCustomerTypeResult();
+        var offerName = spec.getOfferName();
+        var offer = offerControl.getOfferByName(offerName);
         
         if(offer != null) {
             var customerControl = Session.getModelController(CustomerControl.class);
-            String customerTypeName = spec.getCustomerTypeName();
-            CustomerType customerType = customerControl.getCustomerTypeByName(customerTypeName);
+            var customerTypeName = spec.getCustomerTypeName();
+            var customerType = customerControl.getCustomerTypeByName(customerTypeName);
 
             if(customerType != null) {
                 if(editMode.equals(EditMode.LOCK)) {
-                    OfferCustomerType offerCustomerType = offerControl.getOfferCustomerType(offer, customerType);
+                    var offerCustomerType = offerControl.getOfferCustomerType(offer, customerType);
 
                     if(offerCustomerType != null) {
                         result.setOfferCustomerType(offerControl.getOfferCustomerTypeTransfer(getUserVisit(), offerCustomerType));
 
                         if(lockEntity(offer)) {
-                            OfferCustomerTypeEdit edit = OfferEditFactory.getOfferCustomerTypeEdit();
+                            var edit = OfferEditFactory.getOfferCustomerTypeEdit();
 
                             result.setEdit(edit);
                             edit.setIsDefault(offerCustomerType.getIsDefault().toString());
@@ -112,7 +112,7 @@ public class EditOfferCustomerTypeCommand
                         addExecutionError(ExecutionErrors.UnknownOfferCustomerType.name(), offerName, customerTypeName);
                     }
                 } else if(editMode.equals(EditMode.UPDATE)) {
-                    OfferCustomerTypeValue offerCustomerTypeValue = offerControl.getOfferCustomerTypeValueForUpdate(offer, customerType);
+                    var offerCustomerTypeValue = offerControl.getOfferCustomerTypeValueForUpdate(offer, customerType);
 
                     if(offerCustomerTypeValue != null) {
                         if(lockEntityForUpdate(offer)) {

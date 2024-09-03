@@ -75,15 +75,15 @@ public class EditSalesOrderTimeCommand
 
     @Override
     public OrderTime getEntity(EditSalesOrderTimeResult result) {
-        String orderName = spec.getOrderName();
-        Order order = SalesOrderLogic.getInstance().getOrderByName(this, orderName);
+        var orderName = spec.getOrderName();
+        var order = SalesOrderLogic.getInstance().getOrderByName(this, orderName);
         OrderTime orderTime = null;
         
         if(!hasExecutionErrors()) {
             var orderTimeControl = Session.getModelController(OrderTimeControl.class);
-            OrderType orderType = order.getLastDetail().getOrderType();
-            String orderTimeTypeName = spec.getOrderTimeTypeName();
-            OrderTimeType orderTimeType = orderTimeControl.getOrderTimeTypeByName(orderType, orderTimeTypeName);
+            var orderType = order.getLastDetail().getOrderType();
+            var orderTimeTypeName = spec.getOrderTimeTypeName();
+            var orderTimeType = orderTimeControl.getOrderTimeTypeByName(orderType, orderTimeTypeName);
 
             if(orderTimeType != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -121,8 +121,8 @@ public class EditSalesOrderTimeCommand
     @Override
     public void doUpdate(OrderTime orderTime) {
         var orderTimeControl = Session.getModelController(OrderTimeControl.class);
-        OrderTimeValue orderTimeValue = orderTimeControl.getOrderTimeValue(orderTime);
-        Long time = Long.valueOf(edit.getTime());
+        var orderTimeValue = orderTimeControl.getOrderTimeValue(orderTime);
+        var time = Long.valueOf(edit.getTime());
         
         orderTimeValue.setTime(time);
 

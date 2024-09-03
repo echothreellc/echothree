@@ -63,20 +63,20 @@ public class ForumMessagePartTransferCache
     }
     
     public ForumMessagePartTransfer getForumMessagePartTransfer(ForumMessagePart forumMessagePart) {
-        ForumMessagePartTransfer forumMessagePartTransfer = get(forumMessagePart);
+        var forumMessagePartTransfer = get(forumMessagePart);
         
         if(forumMessagePartTransfer == null) {
-            ForumMessagePartDetail forumMessagePartDetail = forumMessagePart.getLastDetail();
-            ForumMessageTransfer forumMessageTransfer = forumControl.getForumMessageTransfer(userVisit, forumMessagePartDetail.getForumMessage());
-            ForumMessagePartTypeTransfer forumMessagePartTypeTransfer = forumControl.getForumMessagePartTypeTransfer(userVisit, forumMessagePartDetail.getForumMessagePartType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, forumMessagePartDetail.getLanguage());
-            MimeType mimeType = forumMessagePartDetail.getMimeType();
+            var forumMessagePartDetail = forumMessagePart.getLastDetail();
+            var forumMessageTransfer = forumControl.getForumMessageTransfer(userVisit, forumMessagePartDetail.getForumMessage());
+            var forumMessagePartTypeTransfer = forumControl.getForumMessagePartTypeTransfer(userVisit, forumMessagePartDetail.getForumMessagePartType());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, forumMessagePartDetail.getLanguage());
+            var mimeType = forumMessagePartDetail.getMimeType();
             ByteArray blobMessagePart = null;
             String clobMessagePart = null;
             String stringMessagePart = null;
             
             if(includeBlob) {
-                ForumBlobMessagePart forumBlobMessagePart = forumControl.getForumBlobMessagePart(forumMessagePart);
+                var forumBlobMessagePart = forumControl.getForumBlobMessagePart(forumMessagePart);
                 
                 if(forumBlobMessagePart != null) {
                     blobMessagePart = forumBlobMessagePart.getBlob();
@@ -84,15 +84,15 @@ public class ForumMessagePartTransferCache
             }
             
             if(includeClob) {
-                ForumClobMessagePart forumClobMessagePart = forumControl.getForumClobMessagePart(forumMessagePart);
+                var forumClobMessagePart = forumControl.getForumClobMessagePart(forumMessagePart);
                 
                 if(forumClobMessagePart != null) {
-                    MimeType preferredClobMimeType = session.getPreferredClobMimeType();
+                    var preferredClobMimeType = session.getPreferredClobMimeType();
                     
                     clobMessagePart = forumClobMessagePart.getClob();
                     
                     if(preferredClobMimeType != null) {
-                        String preferredClobMimeTypeName = preferredClobMimeType.getLastDetail().getMimeTypeName();
+                        var preferredClobMimeTypeName = preferredClobMimeType.getLastDetail().getMimeTypeName();
                         
                         if(preferredClobMimeTypeName.contains(MimeTypes.TEXT_HTML.mimeTypeName())) {
                             clobMessagePart = StringUtils.getInstance().convertToHtml(clobMessagePart, mimeType.getLastDetail().getMimeTypeName());
@@ -103,14 +103,14 @@ public class ForumMessagePartTransferCache
             }
             
             if(includeString) {
-                ForumStringMessagePart forumStringMessagePart = forumControl.getForumStringMessagePart(forumMessagePart);
+                var forumStringMessagePart = forumControl.getForumStringMessagePart(forumMessagePart);
                 
                 if(forumStringMessagePart != null) {
                     stringMessagePart = forumStringMessagePart.getString();
                 }
             }
-            
-            MimeTypeTransfer mimeTypeTransfer = mimeType == null ? null : coreControl.getMimeTypeTransfer(userVisit, mimeType);
+
+            var mimeTypeTransfer = mimeType == null ? null : coreControl.getMimeTypeTransfer(userVisit, mimeType);
             
             forumMessagePartTransfer = new ForumMessagePartTransfer(forumMessageTransfer, forumMessagePartTypeTransfer,
                     languageTransfer, mimeTypeTransfer, blobMessagePart, clobMessagePart, stringMessagePart);

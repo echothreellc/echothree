@@ -97,29 +97,29 @@ public class EditChainActionDescriptionCommand
     public ChainActionDescription getEntity(EditChainActionDescriptionResult result) {
         var chainControl = Session.getModelController(ChainControl.class);
         ChainActionDescription chainActionDescription = null;
-        String chainKindName = spec.getChainKindName();
-        ChainKind chainKind = chainControl.getChainKindByName(chainKindName);
+        var chainKindName = spec.getChainKindName();
+        var chainKind = chainControl.getChainKindByName(chainKindName);
 
         if(chainKind != null) {
-            String chainTypeName = spec.getChainTypeName();
-            ChainType chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
+            var chainTypeName = spec.getChainTypeName();
+            var chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
 
             if(chainType != null) {
-                String chainName = spec.getChainName();
-                Chain chain = chainControl.getChainByName(chainType, chainName);
+                var chainName = spec.getChainName();
+                var chain = chainControl.getChainByName(chainType, chainName);
 
                 if(chain != null) {
-                    String chainActionSetName = spec.getChainActionSetName();
-                    ChainActionSet chainActionSet = chainControl.getChainActionSetByName(chain, chainActionSetName);
+                    var chainActionSetName = spec.getChainActionSetName();
+                    var chainActionSet = chainControl.getChainActionSetByName(chain, chainActionSetName);
 
                     if(chainActionSet != null) {
-                        String chainActionName = spec.getChainActionName();
-                        ChainAction chainAction = chainControl.getChainActionByName(chainActionSet, chainActionName);
+                        var chainActionName = spec.getChainActionName();
+                        var chainAction = chainControl.getChainActionByName(chainActionSet, chainActionName);
 
                         if(chainAction != null) {
                             var partyControl = Session.getModelController(PartyControl.class);
-                            String languageIsoName = spec.getLanguageIsoName();
-                            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                            var languageIsoName = spec.getLanguageIsoName();
+                            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                             if(language != null) {
                                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -175,7 +175,7 @@ public class EditChainActionDescriptionCommand
     @Override
     public void doUpdate(ChainActionDescription chainActionDescription) {
         var chainControl = Session.getModelController(ChainControl.class);
-        ChainActionDescriptionValue chainActionDescriptionValue = chainControl.getChainActionDescriptionValue(chainActionDescription);
+        var chainActionDescriptionValue = chainControl.getChainActionDescriptionValue(chainActionDescription);
 
         chainActionDescriptionValue.setDescription(edit.getDescription());
 

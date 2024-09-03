@@ -75,29 +75,29 @@ public class GetTrainingClassAnswerTranslationCommand
     @Override
     protected BaseResult execute() {
         var trainingControl = Session.getModelController(TrainingControl.class);
-        GetTrainingClassAnswerTranslationResult result = TrainingResultFactory.getGetTrainingClassAnswerTranslationResult();
-        String trainingClassName = form.getTrainingClassName();
-        TrainingClass trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
+        var result = TrainingResultFactory.getGetTrainingClassAnswerTranslationResult();
+        var trainingClassName = form.getTrainingClassName();
+        var trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
 
         if(trainingClass != null) {
-            String trainingClassSectionName = form.getTrainingClassSectionName();
-            TrainingClassSection trainingClassSection = trainingControl.getTrainingClassSectionByName(trainingClass, trainingClassSectionName);
+            var trainingClassSectionName = form.getTrainingClassSectionName();
+            var trainingClassSection = trainingControl.getTrainingClassSectionByName(trainingClass, trainingClassSectionName);
 
             if(trainingClassSection != null) {
-                String trainingClassQuestionName = form.getTrainingClassQuestionName();
-                TrainingClassQuestion trainingClassQuestion = trainingControl.getTrainingClassQuestionByName(trainingClassSection, trainingClassQuestionName);
+                var trainingClassQuestionName = form.getTrainingClassQuestionName();
+                var trainingClassQuestion = trainingControl.getTrainingClassQuestionByName(trainingClassSection, trainingClassQuestionName);
 
                 if(trainingClassQuestion != null) {
-                    String trainingClassAnswerName = form.getTrainingClassAnswerName();
-                    TrainingClassAnswer trainingClassAnswer = trainingControl.getTrainingClassAnswerByName(trainingClassQuestion, trainingClassAnswerName);
+                    var trainingClassAnswerName = form.getTrainingClassAnswerName();
+                    var trainingClassAnswer = trainingControl.getTrainingClassAnswerByName(trainingClassQuestion, trainingClassAnswerName);
 
                     if(trainingClassAnswer != null) {
                         var partyControl = Session.getModelController(PartyControl.class);
-                        String languageIsoName = form.getLanguageIsoName();
-                        Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                        var languageIsoName = form.getLanguageIsoName();
+                        var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                         if(language != null) {
-                            TrainingClassAnswerTranslation trainingClassAnswerTranslation = trainingControl.getTrainingClassAnswerTranslation(trainingClassAnswer, language);
+                            var trainingClassAnswerTranslation = trainingControl.getTrainingClassAnswerTranslation(trainingClassAnswer, language);
 
                             if(trainingClassAnswerTranslation != null) {
                                 result.setTrainingClassAnswerTranslation(trainingControl.getTrainingClassAnswerTranslationTransfer(getUserVisit(),

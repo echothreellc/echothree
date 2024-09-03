@@ -67,11 +67,11 @@ public class CreateEntityBooleanAttributeCommand
         var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form);
 
         if(!hasExecutionErrors()) {
-            EntityAttribute entityAttribute = EntityAttributeLogic.getInstance().getEntityAttribute(this, entityInstance, form, form,
+            var entityAttribute = EntityAttributeLogic.getInstance().getEntityAttribute(this, entityInstance, form, form,
                     EntityAttributeTypes.BOOLEAN);
 
             if(!hasExecutionErrors()) {
-                Boolean booleanAttribute = Boolean.valueOf(form.getBooleanAttribute());
+                var booleanAttribute = Boolean.valueOf(form.getBooleanAttribute());
                 
                 EntityAttributeLogic.getInstance().createEntityBooleanAttribute(this, entityAttribute, entityInstance,
                         booleanAttribute, getPartyPK());

@@ -44,17 +44,17 @@ public class FilterAdjustmentAmountTransferCache
 
     @Override
     public FilterAdjustmentAmountTransfer getTransfer(FilterAdjustmentAmount filterAdjustmentAmount) {
-        FilterAdjustmentAmountTransfer filterAdjustmentAmountTransfer = get(filterAdjustmentAmount);
+        var filterAdjustmentAmountTransfer = get(filterAdjustmentAmount);
         
         if(filterAdjustmentAmountTransfer == null) {
-            FilterAdjustmentTransfer filterAdjustmentTransfer = filterControl.getFilterAdjustmentTransfer(userVisit, filterAdjustmentAmount.getFilterAdjustment());
-            UnitOfMeasureTypeTransfer unitOfMeasureTypeTransfer = uomControl.getUnitOfMeasureTypeTransfer(userVisit, filterAdjustmentAmount.getUnitOfMeasureType());
-            Currency currency = filterAdjustmentAmount.getCurrency();
-            CurrencyTransfer currencyTransfer = accountingControl.getCurrencyTransfer(userVisit, currency);
-            Long unformattedAmount = filterAdjustmentAmount.getAmount();
+            var filterAdjustmentTransfer = filterControl.getFilterAdjustmentTransfer(userVisit, filterAdjustmentAmount.getFilterAdjustment());
+            var unitOfMeasureTypeTransfer = uomControl.getUnitOfMeasureTypeTransfer(userVisit, filterAdjustmentAmount.getUnitOfMeasureType());
+            var currency = filterAdjustmentAmount.getCurrency();
+            var currencyTransfer = accountingControl.getCurrencyTransfer(userVisit, currency);
+            var unformattedAmount = filterAdjustmentAmount.getAmount();
             String amount = null;
-            
-            String filterKindName = filterAdjustmentTransfer.getFilterKind().getFilterKindName();
+
+            var filterKindName = filterAdjustmentTransfer.getFilterKind().getFilterKindName();
             if(FilterKinds.COST.name().equals(filterKindName)) {
                 amount = AmountUtils.getInstance().formatCostUnit(currency, unformattedAmount);
             } else if(FilterKinds.PRICE.name().equals(filterKindName)) {

@@ -36,14 +36,14 @@ public class ServerTransferCache
     }
 
     public ServerTransfer getServerTransfer(Server server) {
-        ServerTransfer serverTransfer = get(server);
+        var serverTransfer = get(server);
 
         if(serverTransfer == null) {
-            ServerDetail serverDetail = server.getLastDetail();
-            String serverName = serverDetail.getServerName();
-            Boolean isDefault = serverDetail.getIsDefault();
-            Integer sortOrder = serverDetail.getSortOrder();
-            String description = coreControl.getBestServerDescription(server, getLanguage());
+            var serverDetail = server.getLastDetail();
+            var serverName = serverDetail.getServerName();
+            var isDefault = serverDetail.getIsDefault();
+            var sortOrder = serverDetail.getSortOrder();
+            var description = coreControl.getBestServerDescription(server, getLanguage());
 
             serverTransfer = new ServerTransfer(serverName, isDefault, sortOrder, description);
             put(server, serverTransfer);

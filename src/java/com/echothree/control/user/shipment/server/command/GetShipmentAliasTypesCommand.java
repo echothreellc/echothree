@@ -65,9 +65,9 @@ public class GetShipmentAliasTypesCommand
     @Override
     protected BaseResult execute() {
         var shipmentControl = Session.getModelController(ShipmentControl.class);
-        GetShipmentAliasTypesResult result = ShipmentResultFactory.getGetShipmentAliasTypesResult();
-        String shipmentTypeName = form.getShipmentTypeName();
-        ShipmentType shipmentType = shipmentControl.getShipmentTypeByName(shipmentTypeName);
+        var result = ShipmentResultFactory.getGetShipmentAliasTypesResult();
+        var shipmentTypeName = form.getShipmentTypeName();
+        var shipmentType = shipmentControl.getShipmentTypeByName(shipmentTypeName);
 
         if(shipmentType != null) {
             result.setShipmentType(shipmentControl.getShipmentTypeTransfer(getUserVisit(), shipmentType));

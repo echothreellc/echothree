@@ -30,7 +30,7 @@ public class PostageUtil {
     public static PostageLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
 
             cachedLocal = (PostageLocal)ctx.lookup("ejb:echothree/echothree-server/PostageBean!com.echothree.control.user.postage.server.PostageLocal");
         }
@@ -42,7 +42,7 @@ public class PostageUtil {
     public static PostageRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
             
             cachedRemote = (PostageRemote)ctx.lookup("ejb:echothree/echothree-server/PostageBean!com.echothree.control.user.postage.common.PostageRemote");
         }

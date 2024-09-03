@@ -59,7 +59,7 @@ public class PartyRelationshipLogic
 
     public PartyRelationshipType getPartyRelationshipTypeByName(final ExecutionErrorAccumulator eea, final String partyRelationshipTypeName) {
         var partyControl = Session.getModelController(PartyControl.class);
-        PartyRelationshipType partyRelationshipType = partyControl.getPartyRelationshipTypeByName(partyRelationshipTypeName);
+        var partyRelationshipType = partyControl.getPartyRelationshipTypeByName(partyRelationshipTypeName);
 
         if(partyRelationshipType == null) {
             handleExecutionError(UnknownPartyRelationshipTypeNameException.class, eea, ExecutionErrors.UnknownPartyRelationshipTypeName.name(), partyRelationshipTypeName);
@@ -70,7 +70,7 @@ public class PartyRelationshipLogic
 
     public RoleType getRoleTypeByName(final ExecutionErrorAccumulator eea, final String roleTypeName) {
         var partyControl = Session.getModelController(PartyControl.class);
-        RoleType roleType = partyControl.getRoleTypeByName(roleTypeName);
+        var roleType = partyControl.getRoleTypeByName(roleTypeName);
 
         if(roleType == null) {
             handleExecutionError(UnknownRoleTypeNameException.class, eea, ExecutionErrors.UnknownRoleTypeName.name(), roleTypeName);
@@ -82,7 +82,7 @@ public class PartyRelationshipLogic
     public PartyRelationship createPartyRelationship(final ExecutionErrorAccumulator eea, final PartyRelationshipType partyRelationshipType,
             final Party fromParty, final RoleType fromRoleType, final Party toParty, final RoleType toRoleType, final BasePK createdBy) {
         var partyControl = Session.getModelController(PartyControl.class);
-        PartyRelationship partyRelationship = partyControl.getPartyRelationship(partyRelationshipType, fromParty, fromRoleType, toParty, toRoleType);
+        var partyRelationship = partyControl.getPartyRelationship(partyRelationshipType, fromParty, fromRoleType, toParty, toRoleType);
 
         if(partyRelationship == null) {
             partyControl.createPartyRelationship(partyRelationshipType, fromParty, fromRoleType, toParty, toRoleType, createdBy);
@@ -99,7 +99,7 @@ public class PartyRelationshipLogic
     public void deletePartyRelationship(final ExecutionErrorAccumulator eea, final PartyRelationshipType partyRelationshipType, final Party fromParty,
             final RoleType fromRoleType, final Party toParty, final RoleType toRoleType, final BasePK deletedBy) {
         var partyControl = Session.getModelController(PartyControl.class);
-        PartyRelationship partyRelationship = partyControl.getPartyRelationshipForUpdate(partyRelationshipType, fromParty, fromRoleType, toParty, toRoleType);
+        var partyRelationship = partyControl.getPartyRelationshipForUpdate(partyRelationshipType, fromParty, fromRoleType, toParty, toRoleType);
 
         if(partyRelationship == null) {
             handleExecutionError(UnknownPartyRelationshipException.class, eea, ExecutionErrors.UnknownPartyRelationship.name(),
@@ -114,7 +114,7 @@ public class PartyRelationshipLogic
     }
 
     public boolean isEmployeeOfCompany(final ExecutionErrorAccumulator eea, final Party company, final Party employee) {
-        boolean result = false;
+        var result = false;
 
         PartyLogic.getInstance().checkPartyType(eea, company, PartyTypes.COMPANY.name());
         PartyLogic.getInstance().checkPartyType(eea, employee, PartyTypes.EMPLOYEE.name());
@@ -159,7 +159,7 @@ public class PartyRelationshipLogic
     }
 
     public boolean isEmployeeOfDivision(final ExecutionErrorAccumulator eea, final Party division, final Party employee) {
-        boolean result = false;
+        var result = false;
 
         PartyLogic.getInstance().checkPartyType(eea, division, PartyTypes.DIVISION.name());
         PartyLogic.getInstance().checkPartyType(eea, employee, PartyTypes.EMPLOYEE.name());
@@ -183,9 +183,9 @@ public class PartyRelationshipLogic
 
         if(!hasExecutionErrors(eea)) {
             var partyControl = Session.getModelController(PartyControl.class);
-            PartyDivision partyDivision = partyControl.getPartyDivision(divisionParty);
-            PartyCompany partyCompany = partyControl.getPartyCompany(partyDivision.getCompanyParty());
-            Party companyParty = partyCompany.getParty();
+            var partyDivision = partyControl.getPartyDivision(divisionParty);
+            var partyCompany = partyControl.getPartyCompany(partyDivision.getCompanyParty());
+            var companyParty = partyCompany.getParty();
 
             if(isEmployeeOfCompany(eea, companyParty, employeeParty)) {
                 partyRelationship = createPartyRelationship(eea, getPartyRelationshipTypeByName(eea, PartyRelationshipTypes.EMPLOYMENT.name()),
@@ -202,7 +202,7 @@ public class PartyRelationshipLogic
 
     public void removeEmployeeFromCompanysDivisions(final ExecutionErrorAccumulator eea, final Party companyParty, final Party employeeParty, final BasePK deletedBy) {
         var partyControl = Session.getModelController(PartyControl.class);
-        List<PartyDivision> partyDivisions = partyControl.getDivisionsByCompany(companyParty);
+        var partyDivisions = partyControl.getDivisionsByCompany(companyParty);
 
         partyDivisions.stream().map((partyDivision) -> partyDivision.getParty()).filter((divisionParty) -> isEmployeeOfDivision(eea, divisionParty, employeeParty)).forEach((divisionParty) -> {
             removeEmployeeFromDivisionsDepartments(eea, employeeParty, employeeParty, deletedBy);
@@ -224,7 +224,7 @@ public class PartyRelationshipLogic
     }
 
     public boolean isEmployeeOfDepartment(final ExecutionErrorAccumulator eea, final Party department, final Party employee) {
-        boolean result = false;
+        var result = false;
 
         PartyLogic.getInstance().checkPartyType(eea, department, PartyTypes.DEPARTMENT.name());
         PartyLogic.getInstance().checkPartyType(eea, employee, PartyTypes.EMPLOYEE.name());
@@ -248,10 +248,10 @@ public class PartyRelationshipLogic
 
         if(!hasExecutionErrors(eea)) {
             var partyControl = Session.getModelController(PartyControl.class);
-            PartyDepartment partyDepartment = partyControl.getPartyDepartment(departmentParty);
-            PartyDivision partyDivision = partyControl.getPartyDivision(partyDepartment.getDivisionParty());
-            PartyCompany partyCompany = partyControl.getPartyCompany(partyDivision.getCompanyParty());
-            Party divisionParty = partyDivision.getParty();
+            var partyDepartment = partyControl.getPartyDepartment(departmentParty);
+            var partyDivision = partyControl.getPartyDivision(partyDepartment.getDivisionParty());
+            var partyCompany = partyControl.getPartyCompany(partyDivision.getCompanyParty());
+            var divisionParty = partyDivision.getParty();
 
             if(isEmployeeOfDivision(eea, divisionParty, employeeParty)) {
                 partyRelationship = createPartyRelationship(eea, getPartyRelationshipTypeByName(eea, PartyRelationshipTypes.EMPLOYMENT.name()),
@@ -268,7 +268,7 @@ public class PartyRelationshipLogic
 
     public void removeEmployeeFromDivisionsDepartments(final ExecutionErrorAccumulator eea, final Party divisionParty, final Party employeeParty, final BasePK deletedBy) {
         var partyControl = Session.getModelController(PartyControl.class);
-        List<PartyDepartment> partyDepartments = partyControl.getDepartmentsByDivision(divisionParty);
+        var partyDepartments = partyControl.getDepartmentsByDivision(divisionParty);
 
         partyDepartments.stream().map((partyDepartment) -> partyDepartment.getParty()).filter((departmentParty) -> isEmployeeOfDepartment(eea, departmentParty, employeeParty)).forEach((departmentParty) -> {
             removeEmployeeFromDepartment(eea, departmentParty, employeeParty, deletedBy);

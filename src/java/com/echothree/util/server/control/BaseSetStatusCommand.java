@@ -43,12 +43,12 @@ public abstract class BaseSetStatusCommand<F extends BaseForm, R extends BaseSet
     
     @Override
     protected R execute() {
-        R result = getResult();
-        BE baseEntity = getEntity();
+        var result = getResult();
+        var baseEntity = getEntity();
         
         if(!hasExecutionErrors()) {
             var entityLockControl = Session.getModelController(EntityLockControl.class);
-            LE lockEntity = getLockEntity(baseEntity);
+            var lockEntity = getLockEntity(baseEntity);
             
             if(entityLockControl.lockEntity(lockEntity, getPartyPK()) != 0) {
                 if(entityLockControl.lockEntityForUpdate(lockEntity, getPartyPK())) {

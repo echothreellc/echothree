@@ -43,21 +43,21 @@ public class EmploymentTransferCache
     }
     
     public EmploymentTransfer getEmploymentTransfer(Employment employment) {
-        EmploymentTransfer employmentTransfer = get(employment);
+        var employmentTransfer = get(employment);
         
         if(employmentTransfer == null) {
-            EmploymentDetail employmentDetail = employment.getLastDetail();
-            String employmentName = employmentDetail.getEmploymentName();
-            PartyTransfer partyTransfer = partyControl.getPartyTransfer(userVisit, employmentDetail.getParty());
-            CompanyTransfer companyTransfer = partyControl.getCompanyTransfer(userVisit, employmentDetail.getCompanyParty());
-            Long unformattedStartTime = employmentDetail.getStartTime();
-            String startTime = formatTypicalDateTime(unformattedStartTime);
-            Long unformattedEndTime = employmentDetail.getEndTime();
-            String endTime = formatTypicalDateTime(unformattedEndTime);
-            TerminationType terminationType = employmentDetail.getTerminationType();
-            TerminationTypeTransfer terminationTypeTransfer = terminationType == null ? null : employeeControl.getTerminationTypeTransfer(userVisit, terminationType);
-            TerminationReason terminationReason = employmentDetail.getTerminationReason();
-            TerminationReasonTransfer terminationReasonTransfer = terminationReason == null ? null : employeeControl.getTerminationReasonTransfer(userVisit, terminationReason);
+            var employmentDetail = employment.getLastDetail();
+            var employmentName = employmentDetail.getEmploymentName();
+            var partyTransfer = partyControl.getPartyTransfer(userVisit, employmentDetail.getParty());
+            var companyTransfer = partyControl.getCompanyTransfer(userVisit, employmentDetail.getCompanyParty());
+            var unformattedStartTime = employmentDetail.getStartTime();
+            var startTime = formatTypicalDateTime(unformattedStartTime);
+            var unformattedEndTime = employmentDetail.getEndTime();
+            var endTime = formatTypicalDateTime(unformattedEndTime);
+            var terminationType = employmentDetail.getTerminationType();
+            var terminationTypeTransfer = terminationType == null ? null : employeeControl.getTerminationTypeTransfer(userVisit, terminationType);
+            var terminationReason = employmentDetail.getTerminationReason();
+            var terminationReasonTransfer = terminationReason == null ? null : employeeControl.getTerminationReasonTransfer(userVisit, terminationReason);
             
             employmentTransfer = new EmploymentTransfer(employmentName, partyTransfer, companyTransfer, unformattedStartTime, startTime, unformattedEndTime,
                     endTime, terminationTypeTransfer, terminationReasonTransfer);

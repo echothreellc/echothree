@@ -32,12 +32,12 @@ public class ResponsibilityTypeDescriptionTransferCache
     }
     
     public ResponsibilityTypeDescriptionTransfer getResponsibilityTypeDescriptionTransfer(ResponsibilityTypeDescription responsibilityTypeDescription) {
-        ResponsibilityTypeDescriptionTransfer responsibilityTypeDescriptionTransfer = get(responsibilityTypeDescription);
+        var responsibilityTypeDescriptionTransfer = get(responsibilityTypeDescription);
         
         if(responsibilityTypeDescriptionTransfer == null) {
-            ResponsibilityTypeTransfer responsibilityTypeTransfer = employeeControl.getResponsibilityTypeTransfer(userVisit,
+            var responsibilityTypeTransfer = employeeControl.getResponsibilityTypeTransfer(userVisit,
                     responsibilityTypeDescription.getResponsibilityType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, responsibilityTypeDescription.getLanguage());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, responsibilityTypeDescription.getLanguage());
             
             responsibilityTypeDescriptionTransfer = new ResponsibilityTypeDescriptionTransfer(languageTransfer, responsibilityTypeTransfer, responsibilityTypeDescription.getDescription());
             put(responsibilityTypeDescription, responsibilityTypeDescriptionTransfer);

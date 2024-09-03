@@ -67,16 +67,16 @@ public class CreateTextDecorationDescriptionCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String textDecorationName = form.getTextDecorationName();
-        TextDecoration textDecoration = coreControl.getTextDecorationByName(textDecorationName);
+        var textDecorationName = form.getTextDecorationName();
+        var textDecoration = coreControl.getTextDecorationByName(textDecorationName);
         
         if(textDecoration != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                TextDecorationDescription textDecorationDescription = coreControl.getTextDecorationDescription(textDecoration, language);
+                var textDecorationDescription = coreControl.getTextDecorationDescription(textDecoration, language);
                 
                 if(textDecorationDescription == null) {
                     var description = form.getDescription();

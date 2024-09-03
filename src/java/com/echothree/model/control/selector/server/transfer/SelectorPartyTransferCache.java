@@ -38,11 +38,11 @@ public class SelectorPartyTransferCache
     }
     
     public SelectorPartyTransfer getSelectorPartyTransfer(SelectorParty selectorParty) {
-        SelectorPartyTransfer selectorPartyTransfer = get(selectorParty);
+        var selectorPartyTransfer = get(selectorParty);
         
         if(selectorPartyTransfer == null) {
-            SelectorTransfer selectorTransfer = selectorControl.getSelectorTransfer(userVisit, selectorParty.getSelector());
-            PartyTransfer partyTransfer = partyControl.getPartyTransfer(userVisit, selectorParty.getParty());
+            var selectorTransfer = selectorControl.getSelectorTransfer(userVisit, selectorParty.getSelector());
+            var partyTransfer = partyControl.getPartyTransfer(userVisit, selectorParty.getParty());
             
             selectorPartyTransfer = new SelectorPartyTransfer(selectorTransfer, partyTransfer);
             put(selectorParty, selectorPartyTransfer);

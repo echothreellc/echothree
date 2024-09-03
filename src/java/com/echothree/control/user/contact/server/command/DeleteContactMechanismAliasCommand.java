@@ -52,12 +52,12 @@ public class DeleteContactMechanismAliasCommand
     @Override
     protected BaseResult execute() {
         var contactControl = Session.getModelController(ContactControl.class);
-        String contactMechanismAliasTypeName = form.getContactMechanismAliasTypeName();
-        ContactMechanismAliasType contactMechanismAliasType = contactControl.getContactMechanismAliasTypeByName(contactMechanismAliasTypeName);
+        var contactMechanismAliasTypeName = form.getContactMechanismAliasTypeName();
+        var contactMechanismAliasType = contactControl.getContactMechanismAliasTypeByName(contactMechanismAliasTypeName);
         
         if(contactMechanismAliasType != null) {
-            String alias = form.getAlias();
-            ContactMechanismAlias contactMechanismAlias = contactControl.getContactMechanismAliasByAliasForUpdate(contactMechanismAliasType,
+            var alias = form.getAlias();
+            var contactMechanismAlias = contactControl.getContactMechanismAliasByAliasForUpdate(contactMechanismAliasType,
                     alias);
             
             if(contactMechanismAlias != null) {

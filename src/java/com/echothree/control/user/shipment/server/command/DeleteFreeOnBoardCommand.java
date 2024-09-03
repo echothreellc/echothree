@@ -60,8 +60,8 @@ public class DeleteFreeOnBoardCommand
     
     @Override
     protected BaseResult execute() {
-        String freeOnBoardName = form.getFreeOnBoardName();
-        FreeOnBoard freeOnBoard = FreeOnBoardLogic.getInstance().getFreeOnBoardByNameForUpdate(this, freeOnBoardName);
+        var freeOnBoardName = form.getFreeOnBoardName();
+        var freeOnBoard = FreeOnBoardLogic.getInstance().getFreeOnBoardByNameForUpdate(this, freeOnBoardName);
         
         if(!hasExecutionErrors()) {
             FreeOnBoardLogic.getInstance().deleteFreeOnBoard(this, freeOnBoard, getPartyPK());

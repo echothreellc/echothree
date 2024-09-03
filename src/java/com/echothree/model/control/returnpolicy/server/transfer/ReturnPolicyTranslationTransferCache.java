@@ -38,15 +38,15 @@ public class ReturnPolicyTranslationTransferCache
     }
     
     public ReturnPolicyTranslationTransfer getReturnPolicyTranslationTransfer(ReturnPolicyTranslation returnPolicyTranslation) {
-        ReturnPolicyTranslationTransfer returnPolicyTranslationTransfer = get(returnPolicyTranslation);
+        var returnPolicyTranslationTransfer = get(returnPolicyTranslation);
         
         if(returnPolicyTranslationTransfer == null) {
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, returnPolicyTranslation.getLanguage());
-            ReturnPolicyTransfer returnPolicyTransfer = returnPolicyControl.getReturnPolicyTransfer(userVisit, returnPolicyTranslation.getReturnPolicy());
-            String description = returnPolicyTranslation.getDescription();
-            MimeType policyMimeType = returnPolicyTranslation.getPolicyMimeType();
-            MimeTypeTransfer policyMimeTypeTransfer = policyMimeType == null? null: coreControl.getMimeTypeTransfer(userVisit, policyMimeType);
-            String policy = returnPolicyTranslation.getPolicy();
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, returnPolicyTranslation.getLanguage());
+            var returnPolicyTransfer = returnPolicyControl.getReturnPolicyTransfer(userVisit, returnPolicyTranslation.getReturnPolicy());
+            var description = returnPolicyTranslation.getDescription();
+            var policyMimeType = returnPolicyTranslation.getPolicyMimeType();
+            var policyMimeTypeTransfer = policyMimeType == null? null: coreControl.getMimeTypeTransfer(userVisit, policyMimeType);
+            var policy = returnPolicyTranslation.getPolicy();
             
             returnPolicyTranslationTransfer = new ReturnPolicyTranslationTransfer(returnPolicyTransfer, languageTransfer, description,
                     policyMimeTypeTransfer, policy);

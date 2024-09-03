@@ -39,10 +39,10 @@ public class KeyUtils {
     private static final int keyLength = 80;
     
     public String generateKey() {
-        StringBuilder keyBuilder = new StringBuilder(keyLength);
-        Random random = EncryptionUtils.getInstance().getRandom();
+        var keyBuilder = new StringBuilder(keyLength);
+        var random = EncryptionUtils.getInstance().getRandom();
         
-        for(int i = 0; i < keyLength; i++) {
+        for(var i = 0; i < keyLength; i++) {
             keyBuilder.append(characterArray[random.nextInt(characterCount)]);
         }
         

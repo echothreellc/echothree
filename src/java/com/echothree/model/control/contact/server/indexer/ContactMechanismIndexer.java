@@ -122,8 +122,8 @@ public class ContactMechanismIndexer
         Set<ContactMechanismPurpose> contactMechanismPurposes = new HashSet<>();
         
         contactControl.getPartyContactMechanismsByContactMechanism(contactMechanism).stream().forEach((partyContactMechanism) -> {
-            PartyContactMechanismDetail partyContactMechanismDetail = partyContactMechanism.getLastDetail();
-            Party party = partyContactMechanismDetail.getParty();
+            var partyContactMechanismDetail = partyContactMechanism.getLastDetail();
+            var party = partyContactMechanismDetail.getParty();
             parties.add(party);
             partyTypes.add(party.getLastDetail().getPartyType());
             contactControl.getPartyContactMechanismPurposesByPartyContactMechanism(partyContactMechanism).stream().forEach((partyContactMechanismPurpose) -> {
@@ -149,7 +149,7 @@ public class ContactMechanismIndexer
     }
     
     private void addContactEmailAddressToDocument(final Document document, final ContactMechanism contactMechanism) {
-        ContactEmailAddress contactEmailAddress = contactControl.getContactEmailAddress(contactMechanism);
+        var contactEmailAddress = contactControl.getContactEmailAddress(contactMechanism);
 
         if(contactEmailAddress != null) {
             document.add(new Field(IndexFields.emailAddress.name(), contactEmailAddress.getEmailAddress(), FieldTypes.NOT_STORED_TOKENIZED));
@@ -157,7 +157,7 @@ public class ContactMechanismIndexer
     }
 
     private void addContactInet4AddressToDocument(final Document document, final ContactMechanism contactMechanism) {
-        ContactInet4Address contactInet4Address = contactControl.getContactInet4Address(contactMechanism);
+        var contactInet4Address = contactControl.getContactInet4Address(contactMechanism);
 
         if(contactInet4Address != null) {
             document.add(new Field(IndexFields.inet4Address.name(), Inet4AddressUtils.getInstance().formatInet4Address(contactInet4Address.getInet4Address()), FieldTypes.NOT_STORED_TOKENIZED));
@@ -165,18 +165,18 @@ public class ContactMechanismIndexer
     }
 
     private void addContactPostalAddressToDocument(final Document document, final ContactMechanism contactMechanism, final Language language) {
-        ContactPostalAddress contactPostalAddress = contactControl.getContactPostalAddress(contactMechanism);
+        var contactPostalAddress = contactControl.getContactPostalAddress(contactMechanism);
 
         if(contactPostalAddress != null) {
-            PersonalTitle personalTitle = contactPostalAddress.getPersonalTitle();
-            String firstName = contactPostalAddress.getFirstName();
-            String middleName = contactPostalAddress.getMiddleName();
-            String lastName = contactPostalAddress.getLastName();
-            NameSuffix nameSuffix = contactPostalAddress.getNameSuffix();
-            String companyName = contactPostalAddress.getCompanyName();
-            String attention = contactPostalAddress.getAttention();
-            String address2 = contactPostalAddress.getAddress2();
-            String address3 = contactPostalAddress.getAddress3();
+            var personalTitle = contactPostalAddress.getPersonalTitle();
+            var firstName = contactPostalAddress.getFirstName();
+            var middleName = contactPostalAddress.getMiddleName();
+            var lastName = contactPostalAddress.getLastName();
+            var nameSuffix = contactPostalAddress.getNameSuffix();
+            var companyName = contactPostalAddress.getCompanyName();
+            var attention = contactPostalAddress.getAttention();
+            var address2 = contactPostalAddress.getAddress2();
+            var address3 = contactPostalAddress.getAddress3();
 
             if(personalTitle != null) {
                 document.add(new Field(IndexFields.personalTitle.name(), personalTitle.getLastDetail().getDescription(), FieldTypes.NOT_STORED_TOKENIZED));
@@ -227,11 +227,11 @@ public class ContactMechanismIndexer
     }
 
     private void addContactTelephoneToDocument(final Document document, final ContactMechanism contactMechanism) {
-        ContactTelephone contactTelephone = contactControl.getContactTelephone(contactMechanism);
+        var contactTelephone = contactControl.getContactTelephone(contactMechanism);
 
         if(contactTelephone != null) {
-            String areaCode = contactTelephone.getAreaCode();
-            String telephoneExtension = contactTelephone.getTelephoneExtension();
+            var areaCode = contactTelephone.getAreaCode();
+            var telephoneExtension = contactTelephone.getTelephoneExtension();
 
             document.add(new Field(IndexFields.countryGeoCodeName.name(), contactTelephone.getCountryGeoCode().getLastDetail().getGeoCodeName(), FieldTypes.NOT_STORED_TOKENIZED));
 
@@ -248,7 +248,7 @@ public class ContactMechanismIndexer
     }
 
     private void addContactWebAddressToDocument(final Document document, final ContactMechanism contactMechanism) {
-        ContactWebAddress contactWebAddress = contactControl.getContactWebAddress(contactMechanism);
+        var contactWebAddress = contactControl.getContactWebAddress(contactMechanism);
 
         if(contactWebAddress != null) {
             document.add(new Field(IndexFields.url.name(), contactWebAddress.getUrl(), FieldTypes.NOT_STORED_TOKENIZED));
@@ -256,8 +256,8 @@ public class ContactMechanismIndexer
     }
     
     private void addContactMechanismToDocument(final Document document, final ContactMechanism contactMechanism, final Language language) {
-        ContactMechanismDetail contactMechanismDetail = contactMechanism.getLastDetail();
-        String contactMechanismTypeName = contactMechanismDetail.getContactMechanismType().getContactMechanismTypeName();
+        var contactMechanismDetail = contactMechanism.getLastDetail();
+        var contactMechanismTypeName = contactMechanismDetail.getContactMechanismType().getContactMechanismTypeName();
         
         document.add(new Field(IndexFields.contactMechanismName.name(), contactMechanismDetail.getContactMechanismName(), FieldTypes.NOT_STORED_TOKENIZED));
         document.add(new SortedDocValuesField(IndexFields.contactMechanismName.name() + IndexConstants.INDEX_FIELD_VARIATION_SEPARATOR + IndexFieldVariations.sortable.name(),

@@ -39,13 +39,13 @@ public class LetterContactMechanismPurposeTransferCache
     }
     
     public LetterContactMechanismPurposeTransfer getLetterContactMechanismPurposeTransfer(LetterContactMechanismPurpose letterContactMechanismPurpose) {
-        LetterContactMechanismPurposeTransfer letterContactMechanismPurposeTransfer = get(letterContactMechanismPurpose);
+        var letterContactMechanismPurposeTransfer = get(letterContactMechanismPurpose);
         
         if(letterContactMechanismPurposeTransfer == null) {
-            LetterContactMechanismPurposeDetail letterContactMechanismPurposeDetail = letterContactMechanismPurpose.getLastDetail();
-            LetterTransfer letter = letterControl.getLetterTransfer(userVisit, letterContactMechanismPurposeDetail.getLetter());
-            ContactMechanismPurposeTransfer contactMechanismPurpose = contactControl.getContactMechanismPurposeTransfer(userVisit, letterContactMechanismPurposeDetail.getContactMechanismPurpose());
-            Integer priority = letterContactMechanismPurposeDetail.getPriority();
+            var letterContactMechanismPurposeDetail = letterContactMechanismPurpose.getLastDetail();
+            var letter = letterControl.getLetterTransfer(userVisit, letterContactMechanismPurposeDetail.getLetter());
+            var contactMechanismPurpose = contactControl.getContactMechanismPurposeTransfer(userVisit, letterContactMechanismPurposeDetail.getContactMechanismPurpose());
+            var priority = letterContactMechanismPurposeDetail.getPriority();
             
             letterContactMechanismPurposeTransfer = new LetterContactMechanismPurposeTransfer(letter, contactMechanismPurpose,
                     priority);

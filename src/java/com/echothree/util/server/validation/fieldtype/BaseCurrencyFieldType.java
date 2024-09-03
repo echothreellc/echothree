@@ -38,14 +38,14 @@ public abstract class BaseCurrencyFieldType
     }
     
     public Currency getCurrency() {
-        Currency currency = validator.getCurrency();
+        var currency = validator.getCurrency();
         
         if(currency == null) {
-            Map<String, String> parameters = getSplitFieldNameParameters();
+            var parameters = getSplitFieldNameParameters();
             
             if(fieldValue != null) {
-                String currencyIsoName = getParameterValue(parameters, CURRENCY_ISO_NAME); // beware nulls
-                String vendorName = getParameterValue(parameters, VENDOR_NAME); // beware nulls
+                var currencyIsoName = getParameterValue(parameters, CURRENCY_ISO_NAME); // beware nulls
+                var vendorName = getParameterValue(parameters, VENDOR_NAME); // beware nulls
                 
                 if(currencyIsoName != null) {
                     currency = validator.getAccountingControl().getCurrencyByIsoName(currencyIsoName);
@@ -54,7 +54,7 @@ public abstract class BaseCurrencyFieldType
                         validationMessages.add(fieldName, new Message(Validator.ERROR_UNKOWN_CURRENCY_ISO_NAME, currencyIsoName));
                     }
                 } else if(vendorName != null) {
-                    Vendor vendor = validator.getVendorControl().getVendorByName(vendorName);
+                    var vendor = validator.getVendorControl().getVendorByName(vendorName);
                     
                     if(vendor != null) {
                         currency = validator.getPartyControl().getPreferredCurrency(vendor.getParty());

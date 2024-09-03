@@ -98,7 +98,7 @@ public class EditSequenceTypeCommand
     public SequenceType getEntity(EditSequenceTypeResult result) {
         var sequenceControl = Session.getModelController(SequenceControl.class);
         SequenceType sequenceType;
-        String sequenceTypeName = spec.getSequenceTypeName();
+        var sequenceTypeName = spec.getSequenceTypeName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
             sequenceType = sequenceControl.getSequenceTypeByName(sequenceTypeName);
@@ -132,9 +132,9 @@ public class EditSequenceTypeCommand
     @Override
     public void doLock(SequenceTypeEdit edit, SequenceType sequenceType) {
         var sequenceControl = Session.getModelController(SequenceControl.class);
-        SequenceTypeDescription sequenceTypeDescription = sequenceControl.getSequenceTypeDescription(sequenceType, getPreferredLanguage());
-        SequenceTypeDetail sequenceTypeDetail = sequenceType.getLastDetail();
-        Integer chunkSize = sequenceTypeDetail.getChunkSize();
+        var sequenceTypeDescription = sequenceControl.getSequenceTypeDescription(sequenceType, getPreferredLanguage());
+        var sequenceTypeDetail = sequenceType.getLastDetail();
+        var chunkSize = sequenceTypeDetail.getChunkSize();
         
         edit.setSequenceTypeName(sequenceTypeDetail.getSequenceTypeName());
         edit.setPrefix(sequenceTypeDetail.getPrefix());
@@ -156,34 +156,34 @@ public class EditSequenceTypeCommand
     @Override
     public void canUpdate(SequenceType sequenceType) {
         var sequenceControl = Session.getModelController(SequenceControl.class);
-        String sequenceTypeName = edit.getSequenceTypeName();
-        SequenceType duplicateSequenceType = sequenceControl.getSequenceTypeByName(sequenceTypeName);
+        var sequenceTypeName = edit.getSequenceTypeName();
+        var duplicateSequenceType = sequenceControl.getSequenceTypeByName(sequenceTypeName);
 
         if(duplicateSequenceType != null && !sequenceType.equals(duplicateSequenceType)) {
             addExecutionError(ExecutionErrors.DuplicateSequenceTypeName.name(), sequenceTypeName);
         } else {
-            String prefix = edit.getPrefix();
+            var prefix = edit.getPrefix();
             
             duplicateSequenceType = prefix == null ? null : sequenceControl.getSequenceTypeByPrefix(prefix);
             
             if(duplicateSequenceType != null && !sequenceType.equals(duplicateSequenceType)) {
                 addExecutionError(ExecutionErrors.DuplicatePrefix.name(), prefix);
             } else {
-                String suffix = edit.getSuffix();
+                var suffix = edit.getSuffix();
 
                 duplicateSequenceType = suffix == null ? null : sequenceControl.getSequenceTypeBySuffix(suffix);
 
                 if(duplicateSequenceType != null && !sequenceType.equals(duplicateSequenceType)) {
                     addExecutionError(ExecutionErrors.DuplicateSuffix.name(), suffix);
                 } else {
-                    String sequenceEncoderTypeName = edit.getSequenceEncoderTypeName();
+                    var sequenceEncoderTypeName = edit.getSequenceEncoderTypeName();
 
                     sequenceEncoderType = sequenceControl.getSequenceEncoderTypeByName(sequenceEncoderTypeName);
 
                     if(sequenceEncoderType == null) {
                         addExecutionError(ExecutionErrors.UnknownSequenceEncoderTypeName.name(), sequenceEncoderTypeName);
                     } else {
-                        String sequenceChecksumTypeName = edit.getSequenceChecksumTypeName();
+                        var sequenceChecksumTypeName = edit.getSequenceChecksumTypeName();
 
                         sequenceChecksumType = sequenceControl.getSequenceChecksumTypeByName(sequenceChecksumTypeName);
 
@@ -200,11 +200,11 @@ public class EditSequenceTypeCommand
     public void doUpdate(SequenceType sequenceType) {
         var sequenceControl = Session.getModelController(SequenceControl.class);
         var partyPK = getPartyPK();
-        SequenceTypeDetailValue sequenceTypeDetailValue = sequenceControl.getSequenceTypeDetailValueForUpdate(sequenceType);
-        SequenceTypeDescription sequenceTypeDescription = sequenceControl.getSequenceTypeDescriptionForUpdate(sequenceType, getPreferredLanguage());
-        String rawChunkSize = edit.getChunkSize();
-        Integer chunkSize = rawChunkSize == null? null: Integer.valueOf(rawChunkSize);
-        String description = edit.getDescription();
+        var sequenceTypeDetailValue = sequenceControl.getSequenceTypeDetailValueForUpdate(sequenceType);
+        var sequenceTypeDescription = sequenceControl.getSequenceTypeDescriptionForUpdate(sequenceType, getPreferredLanguage());
+        var rawChunkSize = edit.getChunkSize();
+        var chunkSize = rawChunkSize == null? null: Integer.valueOf(rawChunkSize);
+        var description = edit.getDescription();
 
         sequenceTypeDetailValue.setSequenceTypeName(edit.getSequenceTypeName());
         sequenceTypeDetailValue.setPrefix(edit.getPrefix());
@@ -222,7 +222,7 @@ public class EditSequenceTypeCommand
         } else if(sequenceTypeDescription != null && description == null) {
             sequenceControl.deleteSequenceTypeDescription(sequenceTypeDescription, partyPK);
         } else if(sequenceTypeDescription != null && description != null) {
-            SequenceTypeDescriptionValue sequenceTypeDescriptionValue = sequenceControl.getSequenceTypeDescriptionValue(sequenceTypeDescription);
+            var sequenceTypeDescriptionValue = sequenceControl.getSequenceTypeDescriptionValue(sequenceTypeDescription);
 
             sequenceTypeDescriptionValue.setDescription(description);
             sequenceControl.updateSequenceTypeDescriptionFromValue(sequenceTypeDescriptionValue, partyPK);

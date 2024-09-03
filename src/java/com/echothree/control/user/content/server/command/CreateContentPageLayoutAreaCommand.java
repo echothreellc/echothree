@@ -68,17 +68,17 @@ public class CreateContentPageLayoutAreaCommand
     @Override
     protected BaseResult execute() {
         var contentControl = Session.getModelController(ContentControl.class);
-        String contentPageLayoutName = form.getContentPageLayoutName();
-        ContentPageLayout contentPageLayout = contentControl.getContentPageLayoutByName(contentPageLayoutName);
+        var contentPageLayoutName = form.getContentPageLayoutName();
+        var contentPageLayout = contentControl.getContentPageLayoutByName(contentPageLayoutName);
         
         if(contentPageLayout != null) {
             var sortOrder = Integer.valueOf(form.getSortOrder());
-            ContentPageLayoutArea contentPageLayoutArea = contentControl.getContentPageLayoutArea(contentPageLayout, sortOrder);
+            var contentPageLayoutArea = contentControl.getContentPageLayoutArea(contentPageLayout, sortOrder);
             
             if(contentPageLayoutArea == null) {
-                Boolean showDescriptionField = Boolean.valueOf(form.getShowDescriptionField());
-                String contentPageAreaTypeName = form.getContentPageAreaTypeName();
-                ContentPageAreaType contentPageAreaType = contentControl.getContentPageAreaTypeByName(contentPageAreaTypeName);
+                var showDescriptionField = Boolean.valueOf(form.getShowDescriptionField());
+                var contentPageAreaTypeName = form.getContentPageAreaTypeName();
+                var contentPageAreaType = contentControl.getContentPageAreaTypeByName(contentPageAreaTypeName);
                 
                 contentControl.createContentPageLayoutArea(contentPageLayout, contentPageAreaType, showDescriptionField, sortOrder);
             } else {

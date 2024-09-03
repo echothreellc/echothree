@@ -35,11 +35,11 @@ public class OrderTypeDescriptionTransferCache
     }
     
     public OrderTypeDescriptionTransfer getOrderTypeDescriptionTransfer(OrderTypeDescription orderTypeDescription) {
-        OrderTypeDescriptionTransfer orderTypeDescriptionTransfer = get(orderTypeDescription);
+        var orderTypeDescriptionTransfer = get(orderTypeDescription);
         
         if(orderTypeDescriptionTransfer == null) {
-            OrderTypeTransfer orderTypeTransfer = orderTypeControl.getOrderTypeTransfer(userVisit, orderTypeDescription.getOrderType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, orderTypeDescription.getLanguage());
+            var orderTypeTransfer = orderTypeControl.getOrderTypeTransfer(userVisit, orderTypeDescription.getOrderType());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, orderTypeDescription.getLanguage());
             
             orderTypeDescriptionTransfer = new OrderTypeDescriptionTransfer(languageTransfer, orderTypeTransfer, orderTypeDescription.getDescription());
             put(orderTypeDescription, orderTypeDescriptionTransfer);

@@ -34,14 +34,14 @@ public class HarmonizedTariffScheduleCodeUseTypeTransferCache
     
     @Override
     public HarmonizedTariffScheduleCodeUseTypeTransfer getTransfer(HarmonizedTariffScheduleCodeUseType harmonizedTariffScheduleCodeUseType) {
-        HarmonizedTariffScheduleCodeUseTypeTransfer harmonizedTariffScheduleCodeUseTypeTransfer = get(harmonizedTariffScheduleCodeUseType);
+        var harmonizedTariffScheduleCodeUseTypeTransfer = get(harmonizedTariffScheduleCodeUseType);
         
         if(harmonizedTariffScheduleCodeUseTypeTransfer == null) {
-            HarmonizedTariffScheduleCodeUseTypeDetail harmonizedTariffScheduleCodeUseTypeDetail = harmonizedTariffScheduleCodeUseType.getLastDetail();
-            String harmonizedTariffScheduleCodeUseTypeName = harmonizedTariffScheduleCodeUseTypeDetail.getHarmonizedTariffScheduleCodeUseTypeName();
-            Boolean isDefault = harmonizedTariffScheduleCodeUseTypeDetail.getIsDefault();
-            Integer sortOrder = harmonizedTariffScheduleCodeUseTypeDetail.getSortOrder();
-            String description = itemControl.getBestHarmonizedTariffScheduleCodeUseTypeDescription(harmonizedTariffScheduleCodeUseType, getLanguage());
+            var harmonizedTariffScheduleCodeUseTypeDetail = harmonizedTariffScheduleCodeUseType.getLastDetail();
+            var harmonizedTariffScheduleCodeUseTypeName = harmonizedTariffScheduleCodeUseTypeDetail.getHarmonizedTariffScheduleCodeUseTypeName();
+            var isDefault = harmonizedTariffScheduleCodeUseTypeDetail.getIsDefault();
+            var sortOrder = harmonizedTariffScheduleCodeUseTypeDetail.getSortOrder();
+            var description = itemControl.getBestHarmonizedTariffScheduleCodeUseTypeDescription(harmonizedTariffScheduleCodeUseType, getLanguage());
             
             harmonizedTariffScheduleCodeUseTypeTransfer = new HarmonizedTariffScheduleCodeUseTypeTransfer(harmonizedTariffScheduleCodeUseTypeName, isDefault, sortOrder, description);
             put(harmonizedTariffScheduleCodeUseType, harmonizedTariffScheduleCodeUseTypeTransfer);

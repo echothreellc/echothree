@@ -61,7 +61,7 @@ public class GetLotTimeTypesCommand
     @Override
     protected BaseResult execute() {
         var lotTimeControl = Session.getModelController(LotTimeControl.class);
-        GetLotTimeTypesResult result = InventoryResultFactory.getGetLotTimeTypesResult();
+        var result = InventoryResultFactory.getGetLotTimeTypesResult();
 
         result.setLotTimeTypes(lotTimeControl.getLotTimeTypeTransfers(getUserVisit()));
 

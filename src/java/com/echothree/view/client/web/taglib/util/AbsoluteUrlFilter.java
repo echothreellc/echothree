@@ -47,9 +47,9 @@ public class AbsoluteUrlFilter
 
     private void buildBase(ServletRequest servletRequest) {
         StringBuilder url = new StringBuilder();
-        String scheme = servletRequest.getScheme();
-        String serverName = servletRequest.getServerName();
-        int localPort = servletRequest.getLocalPort();
+        var scheme = servletRequest.getScheme();
+        var serverName = servletRequest.getServerName();
+        var localPort = servletRequest.getLocalPort();
 
         url.append(scheme).append("://").append(serverName);
 
@@ -73,12 +73,12 @@ public class AbsoluteUrlFilter
     }
 
     private void filterElementAndAttributes(QName element, XMLAttributes attributes) {
-        Set<String> attributesSet = elementsAndAttributes.get(element.rawname.toLowerCase(Locale.getDefault()));
+        var attributesSet = elementsAndAttributes.get(element.rawname.toLowerCase(Locale.getDefault()));
 
         if(attributesSet != null) {
-            int attributeCount = attributes.getLength();
+            var attributeCount = attributes.getLength();
 
-            for(int i = 0; i < attributeCount; i++) {
+            for(var i = 0; i < attributeCount; i++) {
                 if(attributesSet.contains(attributes.getQName(i).toLowerCase(Locale.getDefault()))) {
                      attributes.setValue(i, absoluteifyUrl(attributes.getValue(i)));
                  }

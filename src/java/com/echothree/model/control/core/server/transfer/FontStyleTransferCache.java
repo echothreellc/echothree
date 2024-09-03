@@ -36,14 +36,14 @@ public class FontStyleTransferCache
     }
 
     public FontStyleTransfer getFontStyleTransfer(FontStyle fontStyle) {
-        FontStyleTransfer fontStyleTransfer = get(fontStyle);
+        var fontStyleTransfer = get(fontStyle);
 
         if(fontStyleTransfer == null) {
-            FontStyleDetail fontStyleDetail = fontStyle.getLastDetail();
-            String fontStyleName = fontStyleDetail.getFontStyleName();
-            Boolean isDefault = fontStyleDetail.getIsDefault();
-            Integer sortOrder = fontStyleDetail.getSortOrder();
-            String description = coreControl.getBestFontStyleDescription(fontStyle, getLanguage());
+            var fontStyleDetail = fontStyle.getLastDetail();
+            var fontStyleName = fontStyleDetail.getFontStyleName();
+            var isDefault = fontStyleDetail.getIsDefault();
+            var sortOrder = fontStyleDetail.getSortOrder();
+            var description = coreControl.getBestFontStyleDescription(fontStyle, getLanguage());
 
             fontStyleTransfer = new FontStyleTransfer(fontStyleName, isDefault, sortOrder, description);
             put(fontStyle, fontStyleTransfer);

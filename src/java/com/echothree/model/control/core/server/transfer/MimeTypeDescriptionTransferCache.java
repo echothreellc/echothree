@@ -35,12 +35,12 @@ public class MimeTypeDescriptionTransferCache
     }
     
     public MimeTypeDescriptionTransfer getMimeTypeDescriptionTransfer(MimeTypeDescription mimeTypeDescription) {
-        MimeTypeDescriptionTransfer mimeTypeDescriptionTransfer = get(mimeTypeDescription);
+        var mimeTypeDescriptionTransfer = get(mimeTypeDescription);
         
         if(mimeTypeDescriptionTransfer == null) {
-            MimeTypeTransfer mimeTypeTransfer = coreControl.getMimeTypeTransfer(userVisit,
+            var mimeTypeTransfer = coreControl.getMimeTypeTransfer(userVisit,
                     mimeTypeDescription.getMimeType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, mimeTypeDescription.getLanguage());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, mimeTypeDescription.getLanguage());
             
             mimeTypeDescriptionTransfer = new MimeTypeDescriptionTransfer(languageTransfer, mimeTypeTransfer, mimeTypeDescription.getDescription());
             put(mimeTypeDescription, mimeTypeDescriptionTransfer);

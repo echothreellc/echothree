@@ -77,25 +77,25 @@ public class GetTrainingClassQuestionCommand
     @Override
     protected BaseResult execute() {
         var trainingControl = Session.getModelController(TrainingControl.class);
-        GetTrainingClassQuestionResult result = TrainingResultFactory.getGetTrainingClassQuestionResult();
-        String trainingClassName = form.getTrainingClassName();
-        TrainingClass trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
+        var result = TrainingResultFactory.getGetTrainingClassQuestionResult();
+        var trainingClassName = form.getTrainingClassName();
+        var trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
 
         if(trainingClass != null) {
-            String trainingClassSectionName = form.getTrainingClassSectionName();
-            TrainingClassSection trainingClassSection = trainingControl.getTrainingClassSectionByName(trainingClass, trainingClassSectionName);
+            var trainingClassSectionName = form.getTrainingClassSectionName();
+            var trainingClassSection = trainingControl.getTrainingClassSectionByName(trainingClass, trainingClassSectionName);
 
             if(trainingClassSection != null) {
-                String trainingClassQuestionName = form.getTrainingClassQuestionName();
-                TrainingClassQuestion trainingClassQuestion = trainingControl.getTrainingClassQuestionByName(trainingClassSection, trainingClassQuestionName);
+                var trainingClassQuestionName = form.getTrainingClassQuestionName();
+                var trainingClassQuestion = trainingControl.getTrainingClassQuestionByName(trainingClassSection, trainingClassQuestionName);
 
                 if(trainingClassQuestion != null) {
-                    String partyTrainingClassName = form.getPartyTrainingClassName();
-                    PartyTrainingClassSessionStatus partyTrainingClassSessionStatus = partyTrainingClassName == null ? null
+                    var partyTrainingClassName = form.getPartyTrainingClassName();
+                    var partyTrainingClassSessionStatus = partyTrainingClassName == null ? null
                             : PartyTrainingClassSessionLogic.getInstance().getLatestPartyTrainingClassSessionStatusForUpdate(this, partyTrainingClassName);
                     
                     if(!hasExecutionErrors()) {
-                        PartyTrainingClassSession partyTrainingClassSession = partyTrainingClassSessionStatus == null ? null
+                        var partyTrainingClassSession = partyTrainingClassSessionStatus == null ? null
                                 : partyTrainingClassSessionStatus.getPartyTrainingClassSession();
                         
                         // Verify that the TrainingClass from above is same as the one being used by the PartyTrainingClassSession.
@@ -106,7 +106,7 @@ public class GetTrainingClassQuestionCommand
                         }
                         
                         if(!hasExecutionErrors()) {
-                            UserVisit userVisit = getUserVisit();
+                            var userVisit = getUserVisit();
                             var partyPK = getPartyPK();
 
                             result.setTrainingClassQuestion(trainingControl.getTrainingClassQuestionTransfer(userVisit, trainingClassQuestion));
@@ -114,7 +114,7 @@ public class GetTrainingClassQuestionCommand
                             sendEvent(trainingClassQuestion.getPrimaryKey(), EventTypes.READ, null, null, partyPK);
 
                             if(partyTrainingClassSessionStatus != null) {
-                                PartyTrainingClassSessionQuestion partyTrainingClassSessionQuestion = trainingControl.getPartyTrainingClassSessionQuestion(partyTrainingClassSession, trainingClassQuestion);
+                                var partyTrainingClassSessionQuestion = trainingControl.getPartyTrainingClassSessionQuestion(partyTrainingClassSession, trainingClassQuestion);
 
                                 // If there isn't an existing PartyTrainingClassSessionQuestion, then we'll create one to attach the Answer to.
                                 if(partyTrainingClassSessionQuestion == null) {
@@ -122,7 +122,7 @@ public class GetTrainingClassQuestionCommand
                                             trainingClassQuestion, null, partyPK);
                                 }
 
-                                PartyTrainingClassSessionAnswer partyTrainingClassSessionAnswer = trainingControl.createPartyTrainingClassSessionAnswer(partyTrainingClassSessionQuestion,
+                                var partyTrainingClassSessionAnswer = trainingControl.createPartyTrainingClassSessionAnswer(partyTrainingClassSessionQuestion,
                                         null, session.START_TIME_LONG, null, partyPK);
 
                                 PartyTrainingClassSessionLogic.getInstance().updatePartyTrainingClassSessionStatus(session, partyTrainingClassSessionStatus,

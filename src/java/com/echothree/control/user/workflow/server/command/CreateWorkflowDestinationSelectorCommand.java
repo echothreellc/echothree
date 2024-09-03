@@ -72,27 +72,27 @@ public class CreateWorkflowDestinationSelectorCommand
     @Override
     protected BaseResult execute() {
         var workflowControl = Session.getModelController(WorkflowControl.class);
-        String workflowName = form.getWorkflowName();
+        var workflowName = form.getWorkflowName();
         var workflow = workflowControl.getWorkflowByName(workflowName);
         
         if(workflow != null) {
-            SelectorType selectorType = workflow.getLastDetail().getSelectorType();
+            var selectorType = workflow.getLastDetail().getSelectorType();
             
             if(selectorType != null) {
-                String workflowStepName = form.getWorkflowStepName();
+                var workflowStepName = form.getWorkflowStepName();
                 var workflowStep = workflowControl.getWorkflowStepByName(workflow, workflowStepName);
                 
                 if(workflowStep != null) {
-                    String workflowDestinationName = form.getWorkflowDestinationName();
-                    WorkflowDestination workflowDestination = workflowControl.getWorkflowDestinationByName(workflowStep, workflowDestinationName);
+                    var workflowDestinationName = form.getWorkflowDestinationName();
+                    var workflowDestination = workflowControl.getWorkflowDestinationByName(workflowStep, workflowDestinationName);
                     
                     if(workflowDestination != null) {
                         var selectorControl = Session.getModelController(SelectorControl.class);
-                        String selectorName = form.getSelectorName();
-                        Selector selector = selectorControl.getSelectorByName(workflow.getLastDetail().getSelectorType(), selectorName);
+                        var selectorName = form.getSelectorName();
+                        var selector = selectorControl.getSelectorByName(workflow.getLastDetail().getSelectorType(), selectorName);
                         
                         if(selector != null) {
-                            WorkflowDestinationSelector workflowDestinationSelector = workflowControl.getWorkflowDestinationSelector(workflowDestination, selector);
+                            var workflowDestinationSelector = workflowControl.getWorkflowDestinationSelector(workflowDestination, selector);
                             
                             if(workflowDestinationSelector == null) {
                                 workflowControl.createWorkflowDestinationSelector(workflowDestination, selector, getPartyPK());

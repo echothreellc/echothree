@@ -53,11 +53,11 @@ public class CreateSkillTypeCommand
     @Override
     protected BaseResult execute() {
         var employeeControl = Session.getModelController(EmployeeControl.class);
-        String skillTypeName = form.getSkillTypeName();
-        SkillType skillType = employeeControl.getSkillTypeByName(skillTypeName);
+        var skillTypeName = form.getSkillTypeName();
+        var skillType = employeeControl.getSkillTypeByName(skillTypeName);
         
         if(skillType == null) {
-            PartyPK createdBy = getPartyPK();
+            var createdBy = getPartyPK();
             var isDefault = Boolean.valueOf(form.getIsDefault());
             var sortOrder = Integer.valueOf(form.getSortOrder());
             var description = form.getDescription();

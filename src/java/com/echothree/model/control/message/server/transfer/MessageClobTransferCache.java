@@ -42,13 +42,13 @@ public class MessageClobTransferCache
     }
     
     public MessageClobTransfer getMessageClobTransfer(MessageClob messageClob) {
-        MessageClobTransfer messageClobTransfer = get(messageClob);
+        var messageClobTransfer = get(messageClob);
         
         if(messageClobTransfer == null) {
-            MessageTransfer message = messageControl.getMessageTransfer(userVisit, messageClob.getMessage());
-            LanguageTransfer language = partyControl.getLanguageTransfer(userVisit, messageClob.getLanguage());
-            MimeTypeTransfer mimeType = coreControl.getMimeTypeTransfer(userVisit, messageClob.getMimeType());
-            String clob = messageClob.getClob();
+            var message = messageControl.getMessageTransfer(userVisit, messageClob.getMessage());
+            var language = partyControl.getLanguageTransfer(userVisit, messageClob.getLanguage());
+            var mimeType = coreControl.getMimeTypeTransfer(userVisit, messageClob.getMimeType());
+            var clob = messageClob.getClob();
             
             messageClobTransfer = new MessageClobTransfer(message, language, mimeType, clob);
             put(messageClob, messageClobTransfer);

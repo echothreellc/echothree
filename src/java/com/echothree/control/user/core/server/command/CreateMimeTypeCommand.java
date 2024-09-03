@@ -54,23 +54,23 @@ public class CreateMimeTypeCommand
    @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String mimeTypeName = form.getMimeTypeName();
-        MimeType mimeType = coreControl.getMimeTypeByName(mimeTypeName);
+       var mimeTypeName = form.getMimeTypeName();
+       var mimeType = coreControl.getMimeTypeByName(mimeTypeName);
         
         if(mimeType == null) {
-            String entityAttributeTypeName = form.getEntityAttributeTypeName();
-            EntityAttributeType entityAttributeType = coreControl.getEntityAttributeTypeByName(entityAttributeTypeName);
+            var entityAttributeTypeName = form.getEntityAttributeTypeName();
+            var entityAttributeType = coreControl.getEntityAttributeTypeByName(entityAttributeTypeName);
 
             if(entityAttributeType != null) {
                 var isDefault = Boolean.valueOf(form.getIsDefault());
                 var sortOrder = Integer.valueOf(form.getSortOrder());
                 var description = form.getDescription();
-                PartyPK createdBy = getPartyPK();
+                var createdBy = getPartyPK();
 
                 mimeType = coreControl.createMimeType(mimeTypeName, entityAttributeType, isDefault, sortOrder, createdBy);
 
                 if(description != null) {
-                    Language language = getPreferredLanguage();
+                    var language = getPreferredLanguage();
 
                     coreControl.createMimeTypeDescription(mimeType, language, description, createdBy);
                 }

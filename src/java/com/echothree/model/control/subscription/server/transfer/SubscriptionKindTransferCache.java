@@ -33,14 +33,14 @@ public class SubscriptionKindTransferCache
     }
     
     public SubscriptionKindTransfer getSubscriptionKindTransfer(SubscriptionKind subscriptionKind) {
-        SubscriptionKindTransfer subscriptionKindTransfer = get(subscriptionKind);
+        var subscriptionKindTransfer = get(subscriptionKind);
         
         if(subscriptionKindTransfer == null) {
-            SubscriptionKindDetail subscriptionKindDetail = subscriptionKind.getLastDetail();
-            String subscriptionKindName = subscriptionKindDetail.getSubscriptionKindName();
-            Boolean isDefault = subscriptionKindDetail.getIsDefault();
-            Integer sortOrder = subscriptionKindDetail.getSortOrder();
-            String description = subscriptionControl.getBestSubscriptionKindDescription(subscriptionKind, getLanguage());
+            var subscriptionKindDetail = subscriptionKind.getLastDetail();
+            var subscriptionKindName = subscriptionKindDetail.getSubscriptionKindName();
+            var isDefault = subscriptionKindDetail.getIsDefault();
+            var sortOrder = subscriptionKindDetail.getSortOrder();
+            var description = subscriptionControl.getBestSubscriptionKindDescription(subscriptionKind, getLanguage());
             
             subscriptionKindTransfer = new SubscriptionKindTransfer(subscriptionKindName, isDefault, sortOrder, description);
             put(subscriptionKind, subscriptionKindTransfer);

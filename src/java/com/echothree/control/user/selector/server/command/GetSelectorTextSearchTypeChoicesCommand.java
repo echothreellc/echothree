@@ -50,9 +50,9 @@ public class GetSelectorTextSearchTypeChoicesCommand
     @Override
     protected BaseResult execute() {
         var selectorControl = Session.getModelController(SelectorControl.class);
-        GetSelectorTextSearchTypeChoicesResult result = SelectorResultFactory.getGetSelectorTextSearchTypeChoicesResult();
-        String defaultSelectorTextSearchTypeChoice = form.getDefaultSelectorTextSearchTypeChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = SelectorResultFactory.getGetSelectorTextSearchTypeChoicesResult();
+        var defaultSelectorTextSearchTypeChoice = form.getDefaultSelectorTextSearchTypeChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setSelectorTextSearchTypeChoices(selectorControl.getSelectorTextSearchTypeChoices(defaultSelectorTextSearchTypeChoice,
                 getPreferredLanguage(), allowNullChoice));

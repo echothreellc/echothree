@@ -65,16 +65,16 @@ public class SetDefaultFilterCommand
     @Override
     protected BaseResult execute() {
         var filterControl = Session.getModelController(FilterControl.class);
-        String filterKindName = form.getFilterKindName();
-        FilterKind filterKind = filterControl.getFilterKindByName(filterKindName);
+        var filterKindName = form.getFilterKindName();
+        var filterKind = filterControl.getFilterKindByName(filterKindName);
         
         if(filterKind != null) {
-            String filterTypeName = form.getFilterTypeName();
-            FilterType filterType = filterControl.getFilterTypeByName(filterKind, filterTypeName);
+            var filterTypeName = form.getFilterTypeName();
+            var filterType = filterControl.getFilterTypeByName(filterKind, filterTypeName);
             
             if(filterType != null) {
-                String filterName = form.getFilterName();
-                FilterDetailValue filterDetailValue = filterControl.getFilterDetailValueByNameForUpdate(filterType, filterName);
+                var filterName = form.getFilterName();
+                var filterDetailValue = filterControl.getFilterDetailValueByNameForUpdate(filterType, filterName);
                 
                 if(filterDetailValue != null) {
                     filterDetailValue.setIsDefault(Boolean.TRUE);

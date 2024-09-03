@@ -63,8 +63,8 @@ public class SetDefaultSearchSortDirectionCommand
     @Override
     protected BaseResult execute() {
         var searchControl = Session.getModelController(SearchControl.class);
-        String searchSortDirectionName = form.getSearchSortDirectionName();
-        SearchSortDirectionDetailValue searchSortDirectionDetailValue = searchControl.getSearchSortDirectionDetailValueByNameForUpdate(searchSortDirectionName);
+        var searchSortDirectionName = form.getSearchSortDirectionName();
+        var searchSortDirectionDetailValue = searchControl.getSearchSortDirectionDetailValueByNameForUpdate(searchSortDirectionName);
         
         if(searchSortDirectionDetailValue != null) {
             searchSortDirectionDetailValue.setIsDefault(Boolean.TRUE);

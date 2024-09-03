@@ -69,21 +69,21 @@ public class CreateApplicationEditorUseDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        String applicationName = form.getApplicationName();
-        Application application = ApplicationLogic.getInstance().getApplicationByName(this, applicationName);
+        var applicationName = form.getApplicationName();
+        var application = ApplicationLogic.getInstance().getApplicationByName(this, applicationName);
 
         if(!hasExecutionErrors()) {
-            String applicationEditorUseName = form.getApplicationEditorUseName();
-            ApplicationEditorUse applicationEditorUse = ApplicationLogic.getInstance().getApplicationEditorUseByName(this, application, applicationEditorUseName);
+            var applicationEditorUseName = form.getApplicationEditorUseName();
+            var applicationEditorUse = ApplicationLogic.getInstance().getApplicationEditorUseByName(this, application, applicationEditorUseName);
 
             if(!hasExecutionErrors()) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = form.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = form.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                 if(language != null) {
                     var coreControl = getCoreControl();
-                    ApplicationEditorUseDescription applicationEditorUseDescription = coreControl.getApplicationEditorUseDescription(applicationEditorUse, language);
+                    var applicationEditorUseDescription = coreControl.getApplicationEditorUseDescription(applicationEditorUse, language);
 
                     if(applicationEditorUseDescription == null) {
                         var description = form.getDescription();

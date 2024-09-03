@@ -66,13 +66,13 @@ public class DeleteCarrierOptionCommand
     @Override
     protected BaseResult execute() {
         var carrierControl = Session.getModelController(CarrierControl.class);
-        String carrierName = form.getCarrierName();
-        Carrier carrier = carrierControl.getCarrierByName(carrierName);
+        var carrierName = form.getCarrierName();
+        var carrier = carrierControl.getCarrierByName(carrierName);
         
         if(carrier != null) {
-            Party carrierParty = carrier.getParty();
-            String carrierOptionName = form.getCarrierOptionName();
-            CarrierOption carrierOption = carrierControl.getCarrierOptionByNameForUpdate(carrierParty, carrierOptionName);
+            var carrierParty = carrier.getParty();
+            var carrierOptionName = form.getCarrierOptionName();
+            var carrierOption = carrierControl.getCarrierOptionByNameForUpdate(carrierParty, carrierOptionName);
             
             if(carrierOption != null) {
                 carrierControl.deleteCarrierOption(carrierOption, getPartyPK());

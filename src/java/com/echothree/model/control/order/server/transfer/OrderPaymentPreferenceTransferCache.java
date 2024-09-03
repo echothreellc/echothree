@@ -42,18 +42,18 @@ public class OrderPaymentPreferenceTransferCache
     }
     
     public OrderPaymentPreferenceTransfer getOrderPaymentPreferenceTransfer(OrderPaymentPreference orderPaymentPreference) {
-        OrderPaymentPreferenceTransfer orderPaymentPreferenceTransfer = get(orderPaymentPreference);
+        var orderPaymentPreferenceTransfer = get(orderPaymentPreference);
         
         if(orderPaymentPreferenceTransfer == null) {
-            OrderPaymentPreferenceDetail orderPaymentPreferenceDetail = orderPaymentPreference.getLastDetail();
-            Integer orderPaymentPreferenceSequence = orderPaymentPreferenceDetail.getOrderPaymentPreferenceSequence();
-            PaymentMethodTransfer paymentMethodTransfer = paymentMethodControl.getPaymentMethodTransfer(userVisit, orderPaymentPreferenceDetail.getPaymentMethod());
-            PartyPaymentMethod partyPaymentMethod = orderPaymentPreferenceDetail.getPartyPaymentMethod();
-            PartyPaymentMethodTransfer partyPaymentMethodTransfer = partyPaymentMethod == null ? null : partyPaymentMethodControl.getPartyPaymentMethodTransfer(userVisit, partyPaymentMethod);
-            Boolean wasPresent = orderPaymentPreferenceDetail.getWasPresent();
-            Long unformattedMaximumAmount = orderPaymentPreferenceDetail.getMaximumAmount();
-            String maximumAmount = AmountUtils.getInstance().formatPriceUnit(orderPaymentPreferenceDetail.getOrder().getLastDetail().getCurrency(), unformattedMaximumAmount);
-            Integer sortOrder = orderPaymentPreferenceDetail.getSortOrder();
+            var orderPaymentPreferenceDetail = orderPaymentPreference.getLastDetail();
+            var orderPaymentPreferenceSequence = orderPaymentPreferenceDetail.getOrderPaymentPreferenceSequence();
+            var paymentMethodTransfer = paymentMethodControl.getPaymentMethodTransfer(userVisit, orderPaymentPreferenceDetail.getPaymentMethod());
+            var partyPaymentMethod = orderPaymentPreferenceDetail.getPartyPaymentMethod();
+            var partyPaymentMethodTransfer = partyPaymentMethod == null ? null : partyPaymentMethodControl.getPartyPaymentMethodTransfer(userVisit, partyPaymentMethod);
+            var wasPresent = orderPaymentPreferenceDetail.getWasPresent();
+            var unformattedMaximumAmount = orderPaymentPreferenceDetail.getMaximumAmount();
+            var maximumAmount = AmountUtils.getInstance().formatPriceUnit(orderPaymentPreferenceDetail.getOrder().getLastDetail().getCurrency(), unformattedMaximumAmount);
+            var sortOrder = orderPaymentPreferenceDetail.getSortOrder();
             
             orderPaymentPreferenceTransfer = new OrderPaymentPreferenceTransfer(orderPaymentPreferenceSequence, paymentMethodTransfer,
                     partyPaymentMethodTransfer, wasPresent, unformattedMaximumAmount, maximumAmount,sortOrder);

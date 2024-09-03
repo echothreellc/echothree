@@ -55,24 +55,24 @@ public class CreateComponentVersionCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String componentVendorName = form.getComponentVendorName();
-        ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+        var componentVendorName = form.getComponentVendorName();
+        var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
         
         if(componentVendor != null) {
-            String componentName = form.getComponentName();
-            Component component = coreControl.getComponentByName(componentVendor, componentName);
+            var componentName = form.getComponentName();
+            var component = coreControl.getComponentByName(componentVendor, componentName);
             
             if(component != null) {
-                ComponentVersion componentVersion = coreControl.getComponentVersion(component);
+                var componentVersion = coreControl.getComponentVersion(component);
                 
                 if(componentVersion == null) {
-                    String componentStageName = form.getComponentStageName();
-                    ComponentStage componentStage = coreControl.getComponentStageByName(componentStageName);
+                    var componentStageName = form.getComponentStageName();
+                    var componentStage = coreControl.getComponentStageByName(componentStageName);
                     
                     if(componentStage != null) {
-                        Integer majorRevision = Integer.valueOf(form.getMajorRevision());
-                        Integer minorRevision = Integer.valueOf(form.getMinorRevision());
-                        Integer buildNumber = Integer.valueOf(form.getBuildNumber());
+                        var majorRevision = Integer.valueOf(form.getMajorRevision());
+                        var minorRevision = Integer.valueOf(form.getMinorRevision());
+                        var buildNumber = Integer.valueOf(form.getBuildNumber());
                         
                         coreControl.createComponentVersion(component, majorRevision, minorRevision, componentStage, buildNumber, getPartyPK());
                     } else {

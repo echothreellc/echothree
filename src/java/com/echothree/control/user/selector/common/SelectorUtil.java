@@ -30,7 +30,7 @@ public class SelectorUtil {
     public static SelectorLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
 
             cachedLocal = (SelectorLocal)ctx.lookup("ejb:echothree/echothree-server/SelectorBean!com.echothree.control.user.selector.server.SelectorLocal");
         }
@@ -42,7 +42,7 @@ public class SelectorUtil {
     public static SelectorRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
             
             cachedRemote = (SelectorRemote)ctx.lookup("ejb:echothree/echothree-server/SelectorBean!com.echothree.control.user.selector.common.SelectorRemote");
         }

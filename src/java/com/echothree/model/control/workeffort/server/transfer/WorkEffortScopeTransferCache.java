@@ -58,23 +58,23 @@ public class WorkEffortScopeTransferCache
     }
     
     public WorkEffortScopeTransfer getWorkEffortScopeTransfer(WorkEffortScope workEffortScope) {
-        WorkEffortScopeTransfer workEffortScopeTransfer = get(workEffortScope);
+        var workEffortScopeTransfer = get(workEffortScope);
         
         if(workEffortScopeTransfer == null) {
-            WorkEffortScopeDetail workEffortScopeDetail = workEffortScope.getLastDetail();
-            WorkEffortTypeTransfer workEffortTypeTransfer = workEffortControl.getWorkEffortTypeTransfer(userVisit, workEffortScopeDetail.getWorkEffortType());
-            String workEffortScopeName = workEffortScopeDetail.getWorkEffortScopeName();
-            Sequence workEffortSequence = workEffortScopeDetail.getWorkEffortSequence();
-            SequenceTransfer workEffortSequenceTransfer = workEffortSequence == null? null: sequenceControl.getSequenceTransfer(userVisit, workEffortSequence);
-            Long unformattedScheduledTime = workEffortScopeDetail.getScheduledTime();
-            String scheduledTime = formatUnitOfMeasure(timeUnitOfMeasureKind, unformattedScheduledTime);
-            Long unformattedEstimatedTimeAllowed = workEffortScopeDetail.getEstimatedTimeAllowed();
-            String estimatedTimeAllowed = formatUnitOfMeasure(timeUnitOfMeasureKind, unformattedEstimatedTimeAllowed);
-            Long unformattedMaximumTimeAllowed = workEffortScopeDetail.getMaximumTimeAllowed();
-            String maximumTimeAllowed = formatUnitOfMeasure(timeUnitOfMeasureKind, unformattedMaximumTimeAllowed);
-            Boolean isDefault = workEffortScopeDetail.getIsDefault();
-            Integer sortOrder = workEffortScopeDetail.getSortOrder();
-            String description = workEffortControl.getBestWorkEffortScopeDescription(workEffortScope, getLanguage());
+            var workEffortScopeDetail = workEffortScope.getLastDetail();
+            var workEffortTypeTransfer = workEffortControl.getWorkEffortTypeTransfer(userVisit, workEffortScopeDetail.getWorkEffortType());
+            var workEffortScopeName = workEffortScopeDetail.getWorkEffortScopeName();
+            var workEffortSequence = workEffortScopeDetail.getWorkEffortSequence();
+            var workEffortSequenceTransfer = workEffortSequence == null? null: sequenceControl.getSequenceTransfer(userVisit, workEffortSequence);
+            var unformattedScheduledTime = workEffortScopeDetail.getScheduledTime();
+            var scheduledTime = formatUnitOfMeasure(timeUnitOfMeasureKind, unformattedScheduledTime);
+            var unformattedEstimatedTimeAllowed = workEffortScopeDetail.getEstimatedTimeAllowed();
+            var estimatedTimeAllowed = formatUnitOfMeasure(timeUnitOfMeasureKind, unformattedEstimatedTimeAllowed);
+            var unformattedMaximumTimeAllowed = workEffortScopeDetail.getMaximumTimeAllowed();
+            var maximumTimeAllowed = formatUnitOfMeasure(timeUnitOfMeasureKind, unformattedMaximumTimeAllowed);
+            var isDefault = workEffortScopeDetail.getIsDefault();
+            var sortOrder = workEffortScopeDetail.getSortOrder();
+            var description = workEffortControl.getBestWorkEffortScopeDescription(workEffortScope, getLanguage());
             
             workEffortScopeTransfer = new WorkEffortScopeTransfer(workEffortTypeTransfer, workEffortScopeName, workEffortSequenceTransfer,
                     unformattedScheduledTime, scheduledTime, unformattedEstimatedTimeAllowed, estimatedTimeAllowed, unformattedMaximumTimeAllowed,

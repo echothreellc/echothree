@@ -38,12 +38,12 @@ public class MessageStringTransferCache
     }
     
     public MessageStringTransfer getMessageStringTransfer(MessageString messageString) {
-        MessageStringTransfer messageStringTransfer = get(messageString);
+        var messageStringTransfer = get(messageString);
         
         if(messageStringTransfer == null) {
-            MessageTransfer message = messageControl.getMessageTransfer(userVisit, messageString.getMessage());
-            LanguageTransfer language = partyControl.getLanguageTransfer(userVisit, messageString.getLanguage());
-            String string = messageString.getString();
+            var message = messageControl.getMessageTransfer(userVisit, messageString.getMessage());
+            var language = partyControl.getLanguageTransfer(userVisit, messageString.getLanguage());
+            var string = messageString.getString();
             
             messageStringTransfer = new MessageStringTransfer(message, language, string);
             put(messageString, messageStringTransfer);

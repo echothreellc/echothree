@@ -63,9 +63,9 @@ public class GetItemDescriptionTypeChoicesCommand
     @Override
     protected BaseResult execute() {
         var itemControl = Session.getModelController(ItemControl.class);
-        GetItemDescriptionTypeChoicesResult result = ItemResultFactory.getGetItemDescriptionTypeChoicesResult();
-        String defaultItemDescriptionTypeChoice = form.getDefaultItemDescriptionTypeChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = ItemResultFactory.getGetItemDescriptionTypeChoicesResult();
+        var defaultItemDescriptionTypeChoice = form.getDefaultItemDescriptionTypeChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setItemDescriptionTypeChoices(itemControl.getItemDescriptionTypeChoices(defaultItemDescriptionTypeChoice, getPreferredLanguage(), allowNullChoice));
         

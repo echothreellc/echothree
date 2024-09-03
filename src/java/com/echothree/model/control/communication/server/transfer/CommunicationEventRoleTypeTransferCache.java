@@ -30,12 +30,12 @@ public class CommunicationEventRoleTypeTransferCache
     }
     
     public CommunicationEventRoleTypeTransfer getCommunicationEventRoleTypeTransfer(CommunicationEventRoleType communicationEventRoleType) {
-        CommunicationEventRoleTypeTransfer communicationEventRoleTypeTransfer = get(communicationEventRoleType);
+        var communicationEventRoleTypeTransfer = get(communicationEventRoleType);
         
         if(communicationEventRoleTypeTransfer == null) {
-            String communicationEventRoleTypeName = communicationEventRoleType.getCommunicationEventRoleTypeName();
-            Integer sortOrder = communicationEventRoleType.getSortOrder();
-            String description = communicationControl.getBestCommunicationEventRoleTypeDescription(communicationEventRoleType, getLanguage());
+            var communicationEventRoleTypeName = communicationEventRoleType.getCommunicationEventRoleTypeName();
+            var sortOrder = communicationEventRoleType.getSortOrder();
+            var description = communicationControl.getBestCommunicationEventRoleTypeDescription(communicationEventRoleType, getLanguage());
             
             communicationEventRoleTypeTransfer = new CommunicationEventRoleTypeTransfer(communicationEventRoleTypeName, sortOrder,
                     description);

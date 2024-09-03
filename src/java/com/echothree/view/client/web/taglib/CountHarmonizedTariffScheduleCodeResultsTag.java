@@ -79,11 +79,11 @@ public class CountHarmonizedTariffScheduleCodeResultsTag
     public int doStartTag()
             throws JspException {
         try {
-            CountHarmonizedTariffScheduleCodeResultsForm commandForm = SearchUtil.getHome().getCountHarmonizedTariffScheduleCodeResultsForm();
+            var commandForm = SearchUtil.getHome().getCountHarmonizedTariffScheduleCodeResultsForm();
 
             commandForm.setSearchTypeName(searchTypeName);
 
-            CommandResult commandResult = SearchUtil.getHome().countHarmonizedTariffScheduleCodeResults(getUserVisitPK(), commandForm);
+            var commandResult = SearchUtil.getHome().countHarmonizedTariffScheduleCodeResults(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -91,8 +91,8 @@ public class CountHarmonizedTariffScheduleCodeResultsTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                CountHarmonizedTariffScheduleCodeResultsResult result = (CountHarmonizedTariffScheduleCodeResultsResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (CountHarmonizedTariffScheduleCodeResultsResult)executionResult.getResult();
 
                 pageContext.setAttribute(countVar, result.getCount(), scope);
             }

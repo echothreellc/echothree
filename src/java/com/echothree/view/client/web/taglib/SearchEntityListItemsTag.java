@@ -191,7 +191,7 @@ public class SearchEntityListItemsTag
     public int doStartTag()
             throws JspException {
         try {
-            SearchEntityListItemsForm commandForm = SearchUtil.getHome().getSearchEntityListItemsForm();
+            var commandForm = SearchUtil.getHome().getSearchEntityListItemsForm();
             
             commandForm.setLanguageIsoName(languageIsoName);
             commandForm.setSearchTypeName(searchTypeName);
@@ -205,7 +205,7 @@ public class SearchEntityListItemsTag
             commandForm.setFields(fields);
             commandForm.setSearchUseTypeName(searchUseTypeName);
 
-            CommandResult commandResult = SearchUtil.getHome().searchEntityListItems(getUserVisitPK(), commandForm);
+            var commandResult = SearchUtil.getHome().searchEntityListItems(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -213,8 +213,8 @@ public class SearchEntityListItemsTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                SearchEntityListItemsResult result = (SearchEntityListItemsResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (SearchEntityListItemsResult)executionResult.getResult();
 
                 if(countVar != null) {
                     pageContext.setAttribute(countVar, result.getCount(), scope);

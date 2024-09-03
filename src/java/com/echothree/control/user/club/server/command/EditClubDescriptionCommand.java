@@ -65,24 +65,24 @@ public class EditClubDescriptionCommand
     @Override
     protected BaseResult execute() {
         var clubControl = Session.getModelController(ClubControl.class);
-        EditClubDescriptionResult result = ClubResultFactory.getEditClubDescriptionResult();
-        String clubName = spec.getClubName();
-        Club club = clubControl.getClubByName(clubName);
+        var result = ClubResultFactory.getEditClubDescriptionResult();
+        var clubName = spec.getClubName();
+        var club = clubControl.getClubByName(clubName);
         
         if(club != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK)) {
-                    ClubDescription clubDescription = clubControl.getClubDescription(club, language);
+                    var clubDescription = clubControl.getClubDescription(club, language);
                     
                     if(clubDescription != null) {
                         result.setClubDescription(clubControl.getClubDescriptionTransfer(getUserVisit(), clubDescription));
                         
                         if(lockEntity(club)) {
-                            ClubDescriptionEdit edit = ClubEditFactory.getClubDescriptionEdit();
+                            var edit = ClubEditFactory.getClubDescriptionEdit();
                             
                             result.setEdit(edit);
                             edit.setDescription(clubDescription.getDescription());
@@ -95,12 +95,12 @@ public class EditClubDescriptionCommand
                         addExecutionError(ExecutionErrors.UnknownClubDescription.name());
                     }
                 } else if(editMode.equals(EditMode.UPDATE)) {
-                    ClubDescriptionValue clubDescriptionValue = clubControl.getClubDescriptionValueForUpdate(club, language);
+                    var clubDescriptionValue = clubControl.getClubDescriptionValueForUpdate(club, language);
                     
                     if(clubDescriptionValue != null) {
                         if(lockEntityForUpdate(club)) {
                             try {
-                                String description = edit.getDescription();
+                                var description = edit.getDescription();
                                 
                                 clubDescriptionValue.setDescription(description);
                                 

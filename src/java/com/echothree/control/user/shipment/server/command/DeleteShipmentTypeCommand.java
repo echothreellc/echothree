@@ -63,8 +63,8 @@ public class DeleteShipmentTypeCommand
     @Override
     protected BaseResult execute() {
         var shipmentControl = Session.getModelController(ShipmentControl.class);
-        String shipmentTypeName = form.getShipmentTypeName();
-        ShipmentType shipmentType = shipmentControl.getShipmentTypeByNameForUpdate(shipmentTypeName);
+        var shipmentTypeName = form.getShipmentTypeName();
+        var shipmentType = shipmentControl.getShipmentTypeByNameForUpdate(shipmentTypeName);
         
         if(shipmentType != null) {
             shipmentControl.deleteShipmentType(shipmentType, getPartyPK());

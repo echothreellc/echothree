@@ -99,20 +99,20 @@ public class EditEntityIntegerRangeCommand
     public EntityIntegerRange getEntity(EditEntityIntegerRangeResult result) {
         var coreControl = getCoreControl();
         EntityIntegerRange entityIntegerRange = null;
-        String componentVendorName = spec.getComponentVendorName();
-        ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+        var componentVendorName = spec.getComponentVendorName();
+        var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
 
         if(componentVendor != null) {
-            String entityTypeName = spec.getEntityTypeName();
-            EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+            var entityTypeName = spec.getEntityTypeName();
+            var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
 
             if(entityType != null) {
-                String entityAttributeName = spec.getEntityAttributeName();
+                var entityAttributeName = spec.getEntityAttributeName();
                 
                 entityAttribute = coreControl.getEntityAttributeByName(entityType, entityAttributeName);
 
                 if(entityAttribute != null) {
-                    String entityIntegerRangeName = spec.getEntityIntegerRangeName();
+                    var entityIntegerRangeName = spec.getEntityIntegerRangeName();
 
                     if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
                         entityIntegerRange = coreControl.getEntityIntegerRangeByName(entityAttribute, entityIntegerRangeName);
@@ -151,10 +151,10 @@ public class EditEntityIntegerRangeCommand
     @Override
     public void doLock(EntityIntegerRangeEdit edit, EntityIntegerRange entityIntegerRange) {
         var coreControl = getCoreControl();
-        EntityIntegerRangeDescription entityIntegerRangeDescription = coreControl.getEntityIntegerRangeDescription(entityIntegerRange, getPreferredLanguage());
-        EntityIntegerRangeDetail entityIntegerRangeDetail = entityIntegerRange.getLastDetail();
-        Integer minimumIntegerValue = entityIntegerRangeDetail.getMinimumIntegerValue();
-        Integer maximumIntegerValue = entityIntegerRangeDetail.getMaximumIntegerValue();
+        var entityIntegerRangeDescription = coreControl.getEntityIntegerRangeDescription(entityIntegerRange, getPreferredLanguage());
+        var entityIntegerRangeDetail = entityIntegerRange.getLastDetail();
+        var minimumIntegerValue = entityIntegerRangeDetail.getMinimumIntegerValue();
+        var maximumIntegerValue = entityIntegerRangeDetail.getMaximumIntegerValue();
 
         edit.setEntityIntegerRangeName(entityIntegerRangeDetail.getEntityIntegerRangeName());
         edit.setMinimumIntegerValue(minimumIntegerValue == null ? null : minimumIntegerValue.toString());
@@ -169,15 +169,15 @@ public class EditEntityIntegerRangeCommand
 
     @Override
     public void canUpdate(EntityIntegerRange entityIntegerRange) {
-        String strMinimumIntegerValue = edit.getMinimumIntegerValue();
-        Integer minimumIntegerValue = strMinimumIntegerValue == null ? null : Integer.valueOf(strMinimumIntegerValue);
-        String strMaximumIntegerValue = edit.getMaximumIntegerValue();
-        Integer maximumIntegerValue = strMaximumIntegerValue == null ? null : Integer.valueOf(strMaximumIntegerValue);
+        var strMinimumIntegerValue = edit.getMinimumIntegerValue();
+        var minimumIntegerValue = strMinimumIntegerValue == null ? null : Integer.valueOf(strMinimumIntegerValue);
+        var strMaximumIntegerValue = edit.getMaximumIntegerValue();
+        var maximumIntegerValue = strMaximumIntegerValue == null ? null : Integer.valueOf(strMaximumIntegerValue);
 
         if(minimumIntegerValue == null || maximumIntegerValue == null || maximumIntegerValue >= minimumIntegerValue) {
             var coreControl = getCoreControl();
-            String entityIntegerRangeName = edit.getEntityIntegerRangeName();
-            EntityIntegerRange duplicateEntityIntegerRange = coreControl.getEntityIntegerRangeByName(entityAttribute, entityIntegerRangeName);
+            var entityIntegerRangeName = edit.getEntityIntegerRangeName();
+            var duplicateEntityIntegerRange = coreControl.getEntityIntegerRangeByName(entityAttribute, entityIntegerRangeName);
 
             if(duplicateEntityIntegerRange != null && !entityIntegerRange.equals(duplicateEntityIntegerRange)) {
                 addExecutionError(ExecutionErrors.DuplicateEntityIntegerRangeName.name(), entityIntegerRangeName);
@@ -191,11 +191,11 @@ public class EditEntityIntegerRangeCommand
     public void doUpdate(EntityIntegerRange entityIntegerRange) {
         var coreControl = getCoreControl();
         var partyPK = getPartyPK();
-        EntityIntegerRangeDetailValue entityIntegerRangeDetailValue = coreControl.getEntityIntegerRangeDetailValueForUpdate(entityIntegerRange);
-        EntityIntegerRangeDescription entityIntegerRangeDescription = coreControl.getEntityIntegerRangeDescriptionForUpdate(entityIntegerRange, getPreferredLanguage());
-        String strMinimumIntegerValue = edit.getMinimumIntegerValue();
-        String strMaximumIntegerValue = edit.getMaximumIntegerValue();
-        String description = edit.getDescription();
+        var entityIntegerRangeDetailValue = coreControl.getEntityIntegerRangeDetailValueForUpdate(entityIntegerRange);
+        var entityIntegerRangeDescription = coreControl.getEntityIntegerRangeDescriptionForUpdate(entityIntegerRange, getPreferredLanguage());
+        var strMinimumIntegerValue = edit.getMinimumIntegerValue();
+        var strMaximumIntegerValue = edit.getMaximumIntegerValue();
+        var description = edit.getDescription();
 
         entityIntegerRangeDetailValue.setEntityIntegerRangeName(edit.getEntityIntegerRangeName());
         entityIntegerRangeDetailValue.setMinimumIntegerValue(strMinimumIntegerValue == null ? null : Integer.valueOf(strMinimumIntegerValue));
@@ -212,7 +212,7 @@ public class EditEntityIntegerRangeCommand
                 coreControl.deleteEntityIntegerRangeDescription(entityIntegerRangeDescription, partyPK);
             } else {
                 if(entityIntegerRangeDescription != null && description != null) {
-                    EntityIntegerRangeDescriptionValue entityIntegerRangeDescriptionValue = coreControl.getEntityIntegerRangeDescriptionValue(entityIntegerRangeDescription);
+                    var entityIntegerRangeDescriptionValue = coreControl.getEntityIntegerRangeDescriptionValue(entityIntegerRangeDescription);
 
                     entityIntegerRangeDescriptionValue.setDescription(description);
                     coreControl.updateEntityIntegerRangeDescriptionFromValue(entityIntegerRangeDescriptionValue, partyPK);

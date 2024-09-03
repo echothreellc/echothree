@@ -80,24 +80,24 @@ public class EditGeoCodeDateTimeFormatCommand
     @Override
     protected BaseResult execute() {
         var geoControl = Session.getModelController(GeoControl.class);
-        EditGeoCodeDateTimeFormatResult result = GeoResultFactory.getEditGeoCodeDateTimeFormatResult();
-        String geoCodeName = spec.getGeoCodeName();
-        GeoCode geoCode = geoControl.getGeoCodeByName(geoCodeName);
+        var result = GeoResultFactory.getEditGeoCodeDateTimeFormatResult();
+        var geoCodeName = spec.getGeoCodeName();
+        var geoCode = geoControl.getGeoCodeByName(geoCodeName);
         
         if(geoCode != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String dateTimeFormatName = spec.getDateTimeFormatName();
-            DateTimeFormat dateTimeFormat = partyControl.getDateTimeFormatByName(dateTimeFormatName);
+            var dateTimeFormatName = spec.getDateTimeFormatName();
+            var dateTimeFormat = partyControl.getDateTimeFormatByName(dateTimeFormatName);
             
             if(dateTimeFormat != null) {
                 if(editMode.equals(EditMode.LOCK)) {
-                    GeoCodeDateTimeFormat geoCodeDateTimeFormat = geoControl.getGeoCodeDateTimeFormat(geoCode, dateTimeFormat);
+                    var geoCodeDateTimeFormat = geoControl.getGeoCodeDateTimeFormat(geoCode, dateTimeFormat);
                     
                     if(geoCodeDateTimeFormat != null) {
                         result.setGeoCodeDateTimeFormat(geoControl.getGeoCodeDateTimeFormatTransfer(getUserVisit(), geoCodeDateTimeFormat));
                         
                         if(lockEntity(geoCode)) {
-                            GeoCodeDateTimeFormatEdit edit = GeoEditFactory.getGeoCodeDateTimeFormatEdit();
+                            var edit = GeoEditFactory.getGeoCodeDateTimeFormatEdit();
                             
                             result.setEdit(edit);
                             edit.setIsDefault(geoCodeDateTimeFormat.getIsDefault().toString());
@@ -112,10 +112,10 @@ public class EditGeoCodeDateTimeFormatCommand
                         addExecutionError(ExecutionErrors.UnknownGeoCodeDateTimeFormat.name(), geoCodeName, dateTimeFormatName);
                     }
                 } else if(editMode.equals(EditMode.UPDATE)) {
-                    GeoCodeDateTimeFormat geoCodeDateTimeFormat = geoControl.getGeoCodeDateTimeFormatForUpdate(geoCode, dateTimeFormat);
+                    var geoCodeDateTimeFormat = geoControl.getGeoCodeDateTimeFormatForUpdate(geoCode, dateTimeFormat);
                     
                     if(geoCodeDateTimeFormat != null) {
-                        GeoCodeDateTimeFormatValue geoCodeDateTimeFormatValue = geoControl.getGeoCodeDateTimeFormatValue(geoCodeDateTimeFormat);
+                        var geoCodeDateTimeFormatValue = geoControl.getGeoCodeDateTimeFormatValue(geoCodeDateTimeFormat);
                         
                         if(lockEntityForUpdate(geoCode)) {
                             try {

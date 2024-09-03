@@ -63,8 +63,8 @@ public class SetDefaultCampaignMediumCommand
     @Override
     protected BaseResult execute() {
         var campaignControl = Session.getModelController(CampaignControl.class);
-        String campaignMediumName = form.getCampaignMediumName();
-        CampaignMediumDetailValue campaignMediumDetailValue = campaignControl.getCampaignMediumDetailValueByNameForUpdate(campaignMediumName);
+        var campaignMediumName = form.getCampaignMediumName();
+        var campaignMediumDetailValue = campaignControl.getCampaignMediumDetailValueByNameForUpdate(campaignMediumName);
         
         if(campaignMediumDetailValue != null) {
             campaignMediumDetailValue.setIsDefault(Boolean.TRUE);

@@ -75,24 +75,24 @@ public class CreateChainCommand
     @Override
     protected BaseResult execute() {
         var chainControl = Session.getModelController(ChainControl.class);
-        String chainKindName = form.getChainKindName();
-        ChainKind chainKind = chainControl.getChainKindByName(chainKindName);
+        var chainKindName = form.getChainKindName();
+        var chainKind = chainControl.getChainKindByName(chainKindName);
 
         if(chainKind != null) {
-            String chainTypeName = form.getChainTypeName();
-            ChainType chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
+            var chainTypeName = form.getChainTypeName();
+            var chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
 
             if(chainType != null) {
-                String chainName = form.getChainName();
-                Chain chain = chainControl.getChainByName(chainType, chainName);
+                var chainName = form.getChainName();
+                var chain = chainControl.getChainByName(chainType, chainName);
 
                 if(chain == null) {
-                    String chainInstanceSequenceName = form.getChainInstanceSequenceName();
+                    var chainInstanceSequenceName = form.getChainInstanceSequenceName();
                     Sequence chainInstanceSequence = null;
 
                     if(chainInstanceSequenceName != null) {
                         var sequenceControl = Session.getModelController(SequenceControl.class);
-                        SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.CHAIN_INSTANCE.name());
+                        var sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.CHAIN_INSTANCE.name());
 
                         chainInstanceSequence = sequenceControl.getSequenceByName(sequenceType, chainInstanceSequenceName);
                     }

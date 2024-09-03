@@ -33,14 +33,14 @@ public class InventoryConditionUseTransferCache
     
     @Override
     public InventoryConditionUseTransfer getTransfer(InventoryConditionUse inventoryConditionUse) {
-        InventoryConditionUseTransfer inventoryConditionUseTransfer = get(inventoryConditionUse);
+        var inventoryConditionUseTransfer = get(inventoryConditionUse);
         
         if(inventoryConditionUseTransfer == null) {
-            InventoryConditionUseTypeTransfer inventoryConditionUseType = inventoryControl.getInventoryConditionUseTypeTransfer(userVisit,
+            var inventoryConditionUseType = inventoryControl.getInventoryConditionUseTypeTransfer(userVisit,
                     inventoryConditionUse.getInventoryConditionUseType());
-            InventoryConditionTransfer inventoryCondition = inventoryControl.getInventoryConditionTransfer(userVisit,
+            var inventoryCondition = inventoryControl.getInventoryConditionTransfer(userVisit,
                     inventoryConditionUse.getInventoryCondition());
-            Boolean isDefault = inventoryConditionUse.getIsDefault();
+            var isDefault = inventoryConditionUse.getIsDefault();
             
             inventoryConditionUseTransfer = new InventoryConditionUseTransfer(inventoryConditionUseType, inventoryCondition, isDefault);
             put(inventoryConditionUse, inventoryConditionUseTransfer);

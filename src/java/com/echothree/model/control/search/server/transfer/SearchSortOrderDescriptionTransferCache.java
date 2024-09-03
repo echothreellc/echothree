@@ -32,11 +32,11 @@ public class SearchSortOrderDescriptionTransferCache
     }
     
     public SearchSortOrderDescriptionTransfer getSearchSortOrderDescriptionTransfer(SearchSortOrderDescription searchSortOrderDescription) {
-        SearchSortOrderDescriptionTransfer searchSortOrderDescriptionTransfer = get(searchSortOrderDescription);
+        var searchSortOrderDescriptionTransfer = get(searchSortOrderDescription);
         
         if(searchSortOrderDescriptionTransfer == null) {
-            SearchSortOrderTransfer searchSortOrderTransfer = searchControl.getSearchSortOrderTransfer(userVisit, searchSortOrderDescription.getSearchSortOrder());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, searchSortOrderDescription.getLanguage());
+            var searchSortOrderTransfer = searchControl.getSearchSortOrderTransfer(userVisit, searchSortOrderDescription.getSearchSortOrder());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, searchSortOrderDescription.getLanguage());
             
             searchSortOrderDescriptionTransfer = new SearchSortOrderDescriptionTransfer(languageTransfer, searchSortOrderTransfer, searchSortOrderDescription.getDescription());
             put(searchSortOrderDescription, searchSortOrderDescriptionTransfer);

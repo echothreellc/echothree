@@ -45,8 +45,8 @@ public class GetUserVisitGroupsCommand
     
     @Override
     protected BaseResult execute() {
-        UserControl userControl = getUserControl();
-        GetUserVisitGroupsResult result = UserResultFactory.getGetUserVisitGroupsResult();
+        var userControl = getUserControl();
+        var result = UserResultFactory.getGetUserVisitGroupsResult();
         
         result.setUserVisitGroups(userControl.getUserVisitGroupTransfers(getUserVisit()));
         

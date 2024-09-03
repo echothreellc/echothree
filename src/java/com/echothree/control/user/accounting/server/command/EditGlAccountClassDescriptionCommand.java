@@ -79,25 +79,25 @@ public class EditGlAccountClassDescriptionCommand
     @Override
     protected BaseResult execute() {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        EditGlAccountClassDescriptionResult result = AccountingResultFactory.getEditGlAccountClassDescriptionResult();
-        String glAccountClassName = spec.getGlAccountClassName();
-        GlAccountClass glAccountClass = accountingControl.getGlAccountClassByName(glAccountClassName);
+        var result = AccountingResultFactory.getEditGlAccountClassDescriptionResult();
+        var glAccountClassName = spec.getGlAccountClassName();
+        var glAccountClass = accountingControl.getGlAccountClassByName(glAccountClassName);
         
         if(glAccountClass != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                    GlAccountClassDescription glAccountClassDescription = accountingControl.getGlAccountClassDescription(glAccountClass, language);
+                    var glAccountClassDescription = accountingControl.getGlAccountClassDescription(glAccountClass, language);
                     
                     if(glAccountClassDescription != null) {
                         if(editMode.equals(EditMode.LOCK)) {
                             result.setGlAccountClassDescription(accountingControl.getGlAccountClassDescriptionTransfer(getUserVisit(), glAccountClassDescription));
 
                             if(lockEntity(glAccountClass)) {
-                                GlAccountClassDescriptionEdit edit = AccountingEditFactory.getGlAccountClassDescriptionEdit();
+                                var edit = AccountingEditFactory.getGlAccountClassDescriptionEdit();
 
                                 result.setEdit(edit);
                                 edit.setDescription(glAccountClassDescription.getDescription());
@@ -113,12 +113,12 @@ public class EditGlAccountClassDescriptionCommand
                         addExecutionError(ExecutionErrors.UnknownGlAccountClassDescription.name());
                     }
                 } else if(editMode.equals(EditMode.UPDATE)) {
-                    GlAccountClassDescriptionValue glAccountClassDescriptionValue = accountingControl.getGlAccountClassDescriptionValueForUpdate(glAccountClass, language);
+                    var glAccountClassDescriptionValue = accountingControl.getGlAccountClassDescriptionValueForUpdate(glAccountClass, language);
                     
                     if(glAccountClassDescriptionValue != null) {
                         if(lockEntityForUpdate(glAccountClass)) {
                             try {
-                                String description = edit.getDescription();
+                                var description = edit.getDescription();
                                 
                                 glAccountClassDescriptionValue.setDescription(description);
                                 

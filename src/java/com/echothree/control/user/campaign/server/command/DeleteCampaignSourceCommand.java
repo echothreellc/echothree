@@ -63,8 +63,8 @@ public class DeleteCampaignSourceCommand
     @Override
     protected BaseResult execute() {
         var campaignControl = Session.getModelController(CampaignControl.class);
-        String campaignSourceName = form.getCampaignSourceName();
-        CampaignSource campaignSource = campaignControl.getCampaignSourceByNameForUpdate(campaignSourceName);
+        var campaignSourceName = form.getCampaignSourceName();
+        var campaignSource = campaignControl.getCampaignSourceByNameForUpdate(campaignSourceName);
         
         if(campaignSource != null) {
             campaignControl.deleteCampaignSource(campaignSource, getPartyPK());

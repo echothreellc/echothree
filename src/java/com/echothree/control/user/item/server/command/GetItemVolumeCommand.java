@@ -56,18 +56,18 @@ public class GetItemVolumeCommand
     @Override
     protected BaseResult execute() {
         var itemControl = Session.getModelController(ItemControl.class);
-        GetItemVolumeResult result = ItemResultFactory.getGetItemVolumeResult();
-        String itemName = form.getItemName();
-        Item item = itemControl.getItemByName(itemName);
+        var result = ItemResultFactory.getGetItemVolumeResult();
+        var itemName = form.getItemName();
+        var item = itemControl.getItemByName(itemName);
         
         if(item != null) {
         var uomControl = Session.getModelController(UomControl.class);
-            String unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
-            UnitOfMeasureKind unitOfMeasureKind = item.getLastDetail().getUnitOfMeasureKind();
-            UnitOfMeasureType unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
+            var unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
+            var unitOfMeasureKind = item.getLastDetail().getUnitOfMeasureKind();
+            var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
             
             if(unitOfMeasureType != null) {
-                ItemVolume itemVolume = itemControl.getItemVolume(item, unitOfMeasureType);
+                var itemVolume = itemControl.getItemVolume(item, unitOfMeasureType);
                 
                 if(itemVolume != null) {
                     result.setItemVolume(itemControl.getItemVolumeTransfer(getUserVisit(), itemVolume));

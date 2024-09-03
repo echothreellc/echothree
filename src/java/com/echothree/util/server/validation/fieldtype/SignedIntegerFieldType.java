@@ -34,9 +34,9 @@ public class SignedIntegerFieldType
     
     @Override
     public String validate() {
-        boolean hadErrors = false;
-        
-        Matcher m = Patterns.SignedNumbers.matcher(fieldValue);
+        var hadErrors = false;
+
+        var m = Patterns.SignedNumbers.matcher(fieldValue);
         if(!m.matches()) {
             validationMessages.add(fieldName, new Message(Validator.ERROR_INVALID_FORMAT));
             hadErrors = true;

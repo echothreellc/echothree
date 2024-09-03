@@ -67,13 +67,13 @@ public class GetWorkflowEntranceDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var workflowControl = Session.getModelController(WorkflowControl.class);
-        GetWorkflowEntranceDescriptionsResult result = WorkflowResultFactory.getGetWorkflowEntranceDescriptionsResult();
-        String workflowName = form.getWorkflowName();
+        var result = WorkflowResultFactory.getGetWorkflowEntranceDescriptionsResult();
+        var workflowName = form.getWorkflowName();
         var workflow = workflowControl.getWorkflowByName(workflowName);
         
         if(workflow != null) {
-            String workflowEntranceName = form.getWorkflowEntranceName();
-            WorkflowEntrance workflowEntrance = workflowControl.getWorkflowEntranceByName(workflow, workflowEntranceName);
+            var workflowEntranceName = form.getWorkflowEntranceName();
+            var workflowEntrance = workflowControl.getWorkflowEntranceByName(workflow, workflowEntranceName);
             
             result.setWorkflow(workflowControl.getWorkflowTransfer(getUserVisit(), workflow));
             

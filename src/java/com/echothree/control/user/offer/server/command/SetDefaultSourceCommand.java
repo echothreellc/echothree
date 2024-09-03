@@ -63,8 +63,8 @@ public class SetDefaultSourceCommand
     @Override
     protected BaseResult execute() {
         var sourceControl = Session.getModelController(SourceControl.class);
-        String sourceName = form.getSourceName();
-        SourceDetailValue sourceDetailValue = sourceControl.getSourceDetailValueByNameForUpdate(sourceName);
+        var sourceName = form.getSourceName();
+        var sourceDetailValue = sourceControl.getSourceDetailValueByNameForUpdate(sourceName);
         
         if(sourceDetailValue != null) {
             sourceDetailValue.setIsDefault(Boolean.TRUE);

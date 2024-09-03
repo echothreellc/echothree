@@ -66,16 +66,16 @@ public class DeleteApplicationDescriptionCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String applicationName = form.getApplicationName();
-        Application application = coreControl.getApplicationByName(applicationName);
+        var applicationName = form.getApplicationName();
+        var application = coreControl.getApplicationByName(applicationName);
         
         if(application != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                ApplicationDescription applicationDescription = coreControl.getApplicationDescriptionForUpdate(application, language);
+                var applicationDescription = coreControl.getApplicationDescriptionForUpdate(application, language);
                 
                 if(applicationDescription != null) {
                     coreControl.deleteApplicationDescription(applicationDescription, getPartyPK());

@@ -62,8 +62,8 @@ public class SetDefaultGlAccountCategoryCommand
     @Override
     protected BaseResult execute() {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        String glAccountCategoryName = form.getGlAccountCategoryName();
-        GlAccountCategoryDetailValue glAccountCategoryDetailValue = accountingControl.getGlAccountCategoryDetailValueByNameForUpdate(glAccountCategoryName);
+        var glAccountCategoryName = form.getGlAccountCategoryName();
+        var glAccountCategoryDetailValue = accountingControl.getGlAccountCategoryDetailValueByNameForUpdate(glAccountCategoryName);
         
         if(glAccountCategoryDetailValue != null) {
             glAccountCategoryDetailValue.setIsDefault(Boolean.TRUE);

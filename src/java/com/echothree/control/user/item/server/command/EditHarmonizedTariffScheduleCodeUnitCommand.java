@@ -91,7 +91,7 @@ public class EditHarmonizedTariffScheduleCodeUnitCommand
     public HarmonizedTariffScheduleCodeUnit getEntity(EditHarmonizedTariffScheduleCodeUnitResult result) {
         var itemControl = Session.getModelController(ItemControl.class);
         HarmonizedTariffScheduleCodeUnit harmonizedTariffScheduleCodeUnit = null;
-        String harmonizedTariffScheduleCodeUnitName = spec.getHarmonizedTariffScheduleCodeUnitName();
+        var harmonizedTariffScheduleCodeUnitName = spec.getHarmonizedTariffScheduleCodeUnitName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
             harmonizedTariffScheduleCodeUnit = itemControl.getHarmonizedTariffScheduleCodeUnitByName(harmonizedTariffScheduleCodeUnitName);
@@ -121,8 +121,8 @@ public class EditHarmonizedTariffScheduleCodeUnitCommand
     @Override
     public void doLock(HarmonizedTariffScheduleCodeUnitEdit edit, HarmonizedTariffScheduleCodeUnit harmonizedTariffScheduleCodeUnit) {
         var itemControl = Session.getModelController(ItemControl.class);
-        HarmonizedTariffScheduleCodeUnitDescription harmonizedTariffScheduleCodeUnitDescription = itemControl.getHarmonizedTariffScheduleCodeUnitDescription(harmonizedTariffScheduleCodeUnit, getPreferredLanguage());
-        HarmonizedTariffScheduleCodeUnitDetail harmonizedTariffScheduleCodeUnitDetail = harmonizedTariffScheduleCodeUnit.getLastDetail();
+        var harmonizedTariffScheduleCodeUnitDescription = itemControl.getHarmonizedTariffScheduleCodeUnitDescription(harmonizedTariffScheduleCodeUnit, getPreferredLanguage());
+        var harmonizedTariffScheduleCodeUnitDetail = harmonizedTariffScheduleCodeUnit.getLastDetail();
 
         edit.setHarmonizedTariffScheduleCodeUnitName(harmonizedTariffScheduleCodeUnitDetail.getHarmonizedTariffScheduleCodeUnitName());
         edit.setIsDefault(harmonizedTariffScheduleCodeUnitDetail.getIsDefault().toString());
@@ -136,8 +136,8 @@ public class EditHarmonizedTariffScheduleCodeUnitCommand
     @Override
     public void canUpdate(HarmonizedTariffScheduleCodeUnit harmonizedTariffScheduleCodeUnit) {
         var itemControl = Session.getModelController(ItemControl.class);
-        String harmonizedTariffScheduleCodeUnitName = edit.getHarmonizedTariffScheduleCodeUnitName();
-        HarmonizedTariffScheduleCodeUnit duplicateHarmonizedTariffScheduleCodeUnit = itemControl.getHarmonizedTariffScheduleCodeUnitByName(harmonizedTariffScheduleCodeUnitName);
+        var harmonizedTariffScheduleCodeUnitName = edit.getHarmonizedTariffScheduleCodeUnitName();
+        var duplicateHarmonizedTariffScheduleCodeUnit = itemControl.getHarmonizedTariffScheduleCodeUnitByName(harmonizedTariffScheduleCodeUnitName);
 
         if(duplicateHarmonizedTariffScheduleCodeUnit != null && !harmonizedTariffScheduleCodeUnit.equals(duplicateHarmonizedTariffScheduleCodeUnit)) {
             addExecutionError(ExecutionErrors.DuplicateHarmonizedTariffScheduleCodeUnitName.name(), harmonizedTariffScheduleCodeUnitName);
@@ -148,9 +148,9 @@ public class EditHarmonizedTariffScheduleCodeUnitCommand
     public void doUpdate(HarmonizedTariffScheduleCodeUnit harmonizedTariffScheduleCodeUnit) {
         var itemControl = Session.getModelController(ItemControl.class);
         var partyPK = getPartyPK();
-        HarmonizedTariffScheduleCodeUnitDetailValue harmonizedTariffScheduleCodeUnitDetailValue = itemControl.getHarmonizedTariffScheduleCodeUnitDetailValueForUpdate(harmonizedTariffScheduleCodeUnit);
-        HarmonizedTariffScheduleCodeUnitDescription harmonizedTariffScheduleCodeUnitDescription = itemControl.getHarmonizedTariffScheduleCodeUnitDescriptionForUpdate(harmonizedTariffScheduleCodeUnit, getPreferredLanguage());
-        String description = edit.getDescription();
+        var harmonizedTariffScheduleCodeUnitDetailValue = itemControl.getHarmonizedTariffScheduleCodeUnitDetailValueForUpdate(harmonizedTariffScheduleCodeUnit);
+        var harmonizedTariffScheduleCodeUnitDescription = itemControl.getHarmonizedTariffScheduleCodeUnitDescriptionForUpdate(harmonizedTariffScheduleCodeUnit, getPreferredLanguage());
+        var description = edit.getDescription();
 
         harmonizedTariffScheduleCodeUnitDetailValue.setHarmonizedTariffScheduleCodeUnitName(edit.getHarmonizedTariffScheduleCodeUnitName());
         harmonizedTariffScheduleCodeUnitDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
@@ -163,7 +163,7 @@ public class EditHarmonizedTariffScheduleCodeUnitCommand
         } else if(harmonizedTariffScheduleCodeUnitDescription != null && description == null) {
             itemControl.deleteHarmonizedTariffScheduleCodeUnitDescription(harmonizedTariffScheduleCodeUnitDescription, partyPK);
         } else if(harmonizedTariffScheduleCodeUnitDescription != null && description != null) {
-            HarmonizedTariffScheduleCodeUnitDescriptionValue harmonizedTariffScheduleCodeUnitDescriptionValue = itemControl.getHarmonizedTariffScheduleCodeUnitDescriptionValue(harmonizedTariffScheduleCodeUnitDescription);
+            var harmonizedTariffScheduleCodeUnitDescriptionValue = itemControl.getHarmonizedTariffScheduleCodeUnitDescriptionValue(harmonizedTariffScheduleCodeUnitDescription);
 
             harmonizedTariffScheduleCodeUnitDescriptionValue.setDescription(description);
             itemControl.updateHarmonizedTariffScheduleCodeUnitDescriptionFromValue(harmonizedTariffScheduleCodeUnitDescriptionValue, partyPK);

@@ -63,8 +63,8 @@ public class DeletePaymentProcessorCommand
     @Override
     protected BaseResult execute() {
         var paymentProcessorControl = Session.getModelController(PaymentProcessorControl.class);
-        String paymentProcessorName = form.getPaymentProcessorName();
-        PaymentProcessor paymentProcessor = paymentProcessorControl.getPaymentProcessorByNameForUpdate(paymentProcessorName);
+        var paymentProcessorName = form.getPaymentProcessorName();
+        var paymentProcessor = paymentProcessorControl.getPaymentProcessorByNameForUpdate(paymentProcessorName);
         
         if(paymentProcessor != null) {
             paymentProcessorControl.deletePaymentProcessor(paymentProcessor, getPartyPK());

@@ -32,12 +32,12 @@ public class ItemPurchasingCategoryDescriptionTransferCache
     }
     
     public ItemPurchasingCategoryDescriptionTransfer getItemPurchasingCategoryDescriptionTransfer(ItemPurchasingCategoryDescription itemPurchasingCategoryDescription) {
-        ItemPurchasingCategoryDescriptionTransfer itemPurchasingCategoryDescriptionTransfer = get(itemPurchasingCategoryDescription);
+        var itemPurchasingCategoryDescriptionTransfer = get(itemPurchasingCategoryDescription);
         
         if(itemPurchasingCategoryDescriptionTransfer == null) {
-            ItemPurchasingCategoryTransferCache itemPurchasingCategoryTransferCache = vendorControl.getVendorTransferCaches(userVisit).getItemPurchasingCategoryTransferCache();
-            ItemPurchasingCategoryTransfer itemPurchasingCategoryTransfer = itemPurchasingCategoryTransferCache.getItemPurchasingCategoryTransfer(itemPurchasingCategoryDescription.getItemPurchasingCategory());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, itemPurchasingCategoryDescription.getLanguage());
+            var itemPurchasingCategoryTransferCache = vendorControl.getVendorTransferCaches(userVisit).getItemPurchasingCategoryTransferCache();
+            var itemPurchasingCategoryTransfer = itemPurchasingCategoryTransferCache.getItemPurchasingCategoryTransfer(itemPurchasingCategoryDescription.getItemPurchasingCategory());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, itemPurchasingCategoryDescription.getLanguage());
             
             itemPurchasingCategoryDescriptionTransfer = new ItemPurchasingCategoryDescriptionTransfer(languageTransfer, itemPurchasingCategoryTransfer, itemPurchasingCategoryDescription.getDescription());
             put(itemPurchasingCategoryDescription, itemPurchasingCategoryDescriptionTransfer);

@@ -73,25 +73,25 @@ public class GetPartyReturnPolicyStatusChoicesCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        GetPartyReturnPolicyStatusChoicesResult result = ReturnPolicyResultFactory.getGetPartyReturnPolicyStatusChoicesResult();
-        String partyName = form.getPartyName();
-        Party party = partyControl.getPartyByName(partyName);
+        var result = ReturnPolicyResultFactory.getGetPartyReturnPolicyStatusChoicesResult();
+        var partyName = form.getPartyName();
+        var party = partyControl.getPartyByName(partyName);
 
         if(party != null) {
             var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
-            String returnKindName = form.getReturnKindName();
-            ReturnKind returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
+            var returnKindName = form.getReturnKindName();
+            var returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
 
             if(returnKind != null) {
-                String returnPolicyName = form.getReturnPolicyName();
-                ReturnPolicy returnPolicy = returnPolicyControl.getReturnPolicyByName(returnKind, returnPolicyName);
+                var returnPolicyName = form.getReturnPolicyName();
+                var returnPolicy = returnPolicyControl.getReturnPolicyByName(returnKind, returnPolicyName);
 
                 if(returnPolicy != null) {
-                    PartyReturnPolicy partyReturnPolicy = returnPolicyControl.createPartyReturnPolicy(party, returnPolicy, getPartyPK());
+                    var partyReturnPolicy = returnPolicyControl.createPartyReturnPolicy(party, returnPolicy, getPartyPK());
 
                     if(partyReturnPolicy != null) {
-                        String defaultPartyReturnPolicyStatusChoice = form.getDefaultPartyReturnPolicyStatusChoice();
-                        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+                        var defaultPartyReturnPolicyStatusChoice = form.getDefaultPartyReturnPolicyStatusChoice();
+                        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 
                         result.setPartyReturnPolicyStatusChoices(PartyReturnPolicyLogic.getInstance().getPartyReturnPolicyStatusChoices(defaultPartyReturnPolicyStatusChoice,
                                 getPreferredLanguage(), allowNullChoice, partyReturnPolicy, getPartyPK()));

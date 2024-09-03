@@ -86,13 +86,13 @@ public class PreferredDateTimeFormatTag
     public int doStartTag()
             throws JspException {
         try {
-            GetPreferredDateTimeFormatForm commandForm = PartyUtil.getHome().getGetPreferredDateTimeFormatForm();
+            var commandForm = PartyUtil.getHome().getGetPreferredDateTimeFormatForm();
             
             setOptions(options, null, commandForm);
 
             commandForm.setTransferProperties(transferProperties);
-            
-            CommandResult commandResult = PartyUtil.getHome().getPreferredDateTimeFormat(getUserVisitPK(), commandForm);
+
+            var commandResult = PartyUtil.getHome().getPreferredDateTimeFormat(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -100,8 +100,8 @@ public class PreferredDateTimeFormatTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetPreferredDateTimeFormatResult result = (GetPreferredDateTimeFormatResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetPreferredDateTimeFormatResult)executionResult.getResult();
 
                 pageContext.setAttribute(var, result.getPreferredDateTimeFormat(), scope);
             }

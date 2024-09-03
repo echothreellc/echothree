@@ -93,18 +93,18 @@ public class EditSecurityRoleDescriptionCommand
     public SecurityRoleDescription getEntity(EditSecurityRoleDescriptionResult result) {
         var securityControl = Session.getModelController(SecurityControl.class);
         SecurityRoleDescription securityRoleDescription = null;
-        String securityRoleGroupName = spec.getSecurityRoleGroupName();
+        var securityRoleGroupName = spec.getSecurityRoleGroupName();
         
         securityRoleGroup = securityControl.getSecurityRoleGroupByName(securityRoleGroupName);
 
         if(securityRoleGroup != null) {
-            String securityRoleName = spec.getSecurityRoleName();
-            SecurityRole securityRole = securityControl.getSecurityRoleByName(securityRoleGroup, securityRoleName);
+            var securityRoleName = spec.getSecurityRoleName();
+            var securityRole = securityControl.getSecurityRoleByName(securityRoleGroup, securityRoleName);
 
             if(securityRole != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = spec.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = spec.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                 if(language != null) {
                     if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -149,7 +149,7 @@ public class EditSecurityRoleDescriptionCommand
     @Override
     public void doUpdate(SecurityRoleDescription securityRoleDescription) {
         var securityControl = Session.getModelController(SecurityControl.class);
-        SecurityRoleDescriptionValue securityRoleDescriptionValue = securityControl.getSecurityRoleDescriptionValue(securityRoleDescription);
+        var securityRoleDescriptionValue = securityControl.getSecurityRoleDescriptionValue(securityRoleDescription);
         
         securityRoleDescriptionValue.setDescription(edit.getDescription());
         

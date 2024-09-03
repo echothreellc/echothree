@@ -32,11 +32,11 @@ public class PrinterGroupDescriptionTransferCache
     }
     
     public PrinterGroupDescriptionTransfer getPrinterGroupDescriptionTransfer(PrinterGroupDescription printerGroupDescription) {
-        PrinterGroupDescriptionTransfer printerGroupDescriptionTransfer = get(printerGroupDescription);
+        var printerGroupDescriptionTransfer = get(printerGroupDescription);
         
         if(printerGroupDescriptionTransfer == null) {
-            PrinterGroupTransfer printerGroupTransfer = printerControl.getPrinterGroupTransfer(userVisit, printerGroupDescription.getPrinterGroup());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, printerGroupDescription.getLanguage());
+            var printerGroupTransfer = printerControl.getPrinterGroupTransfer(userVisit, printerGroupDescription.getPrinterGroup());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, printerGroupDescription.getLanguage());
             
             printerGroupDescriptionTransfer = new PrinterGroupDescriptionTransfer(languageTransfer, printerGroupTransfer, printerGroupDescription.getDescription());
             put(printerGroupDescription, printerGroupDescriptionTransfer);

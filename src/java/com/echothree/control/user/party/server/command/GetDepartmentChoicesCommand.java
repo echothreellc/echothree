@@ -56,19 +56,19 @@ public class GetDepartmentChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        GetDepartmentChoicesResult result = PartyResultFactory.getGetDepartmentChoicesResult();
-        String companyName = form.getCompanyName();
-        PartyCompany partyCompany = CompanyLogic.getInstance().getPartyCompanyByName(this, companyName, null, null, false);
+        var result = PartyResultFactory.getGetDepartmentChoicesResult();
+        var companyName = form.getCompanyName();
+        var partyCompany = CompanyLogic.getInstance().getPartyCompanyByName(this, companyName, null, null, false);
 
         if(!hasExecutionErrors()) {
-            String divisionName = form.getDivisionName();
-            String partyName = form.getPartyName();
-            PartyDivision partyDivision = DivisionLogic.getInstance().getPartyDivisionByName(this, partyCompany == null ? null : partyCompany.getParty(), divisionName, partyName, null, true);
+            var divisionName = form.getDivisionName();
+            var partyName = form.getPartyName();
+            var partyDivision = DivisionLogic.getInstance().getPartyDivisionByName(this, partyCompany == null ? null : partyCompany.getParty(), divisionName, partyName, null, true);
 
             if(!hasExecutionErrors()) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String defaultDepartmentChoice = form.getDefaultDepartmentChoice();
-                boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+                var defaultDepartmentChoice = form.getDefaultDepartmentChoice();
+                var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 
                 result.setDepartmentChoices(partyControl.getDepartmentChoices(partyDivision.getParty(), defaultDepartmentChoice, allowNullChoice));
             }

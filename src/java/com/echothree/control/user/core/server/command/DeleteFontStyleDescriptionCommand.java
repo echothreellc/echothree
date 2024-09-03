@@ -66,16 +66,16 @@ public class DeleteFontStyleDescriptionCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String fontStyleName = form.getFontStyleName();
-        FontStyle fontStyle = coreControl.getFontStyleByName(fontStyleName);
+        var fontStyleName = form.getFontStyleName();
+        var fontStyle = coreControl.getFontStyleByName(fontStyleName);
         
         if(fontStyle != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                FontStyleDescription fontStyleDescription = coreControl.getFontStyleDescriptionForUpdate(fontStyle, language);
+                var fontStyleDescription = coreControl.getFontStyleDescriptionForUpdate(fontStyle, language);
                 
                 if(fontStyleDescription != null) {
                     coreControl.deleteFontStyleDescription(fontStyleDescription, getPartyPK());

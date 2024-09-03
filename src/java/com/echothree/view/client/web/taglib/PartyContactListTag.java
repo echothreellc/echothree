@@ -98,7 +98,7 @@ public class PartyContactListTag
     public int doStartTag()
             throws JspException {
         try {
-            GetPartyContactListForm commandForm = ContactListUtil.getHome().getGetPartyContactListForm();
+            var commandForm = ContactListUtil.getHome().getGetPartyContactListForm();
             
             commandForm.setPartyName(partyName);
             commandForm.setContactListName(contactListName);
@@ -106,8 +106,8 @@ public class PartyContactListTag
             setOptions(options, null, commandForm);
 
             commandForm.setTransferProperties(transferProperties);
-            
-            CommandResult commandResult = ContactListUtil.getHome().getPartyContactList(getUserVisitPK(), commandForm);
+
+            var commandResult = ContactListUtil.getHome().getPartyContactList(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -115,8 +115,8 @@ public class PartyContactListTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetPartyContactListResult result = (GetPartyContactListResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetPartyContactListResult)executionResult.getResult();
 
                 pageContext.setAttribute(var, result.getPartyContactList(), scope);
             }

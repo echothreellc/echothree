@@ -96,8 +96,8 @@ public class EditFilterAdjustmentAmountCommand
     @Override
     protected void setupValidatorForEdit(Validator validator, BaseForm specForm) {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        String filterKindName = spec.getFilterKindName();
-        String currencyIsoName = spec.getCurrencyIsoName();
+        var filterKindName = spec.getFilterKindName();
+        var currencyIsoName = spec.getCurrencyIsoName();
         
         validator.setCurrency(accountingControl.getCurrencyByIsoName(currencyIsoName));
         
@@ -113,20 +113,20 @@ public class EditFilterAdjustmentAmountCommand
     @Override
     protected BaseResult execute() {
         var filterControl = Session.getModelController(FilterControl.class);
-        EditFilterAdjustmentAmountResult result = FilterResultFactory.getEditFilterAdjustmentAmountResult();
-        String filterKindName = spec.getFilterKindName();
-        FilterKind filterKind = filterControl.getFilterKindByName(filterKindName);
+        var result = FilterResultFactory.getEditFilterAdjustmentAmountResult();
+        var filterKindName = spec.getFilterKindName();
+        var filterKind = filterControl.getFilterKindByName(filterKindName);
         
         if(filterKind != null) {
-            String filterAdjustmentName = spec.getFilterAdjustmentName();
-            FilterAdjustment filterAdjustment = filterControl.getFilterAdjustmentByName(filterKind, filterAdjustmentName);
+            var filterAdjustmentName = spec.getFilterAdjustmentName();
+            var filterAdjustment = filterControl.getFilterAdjustmentByName(filterKind, filterAdjustmentName);
             
             if(filterAdjustment != null) {
-                String filterAdjustmentTypeName = filterAdjustment.getLastDetail().getFilterAdjustmentType().getFilterAdjustmentTypeName();
+                var filterAdjustmentTypeName = filterAdjustment.getLastDetail().getFilterAdjustmentType().getFilterAdjustmentTypeName();
                 
                 if(filterAdjustmentTypeName.equals(FilterAdjustmentTypes.AMOUNT.name())) {
                     var uomControl = Session.getModelController(UomControl.class);
-                    String unitOfMeasureName = spec.getUnitOfMeasureName();
+                    var unitOfMeasureName = spec.getUnitOfMeasureName();
                     String unitOfMeasureKindName = null;
                     String unitOfMeasureTypeName = null;
                     
@@ -143,20 +143,20 @@ public class EditFilterAdjustmentAmountCommand
                     }
                     
                     if(unitOfMeasureKindName != null && unitOfMeasureTypeName != null) {
-                        UnitOfMeasureKind unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);
+                        var unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);
                         
                         if(unitOfMeasureKind != null) {
-                            UnitOfMeasureType unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind,
+                            var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind,
                                     unitOfMeasureTypeName);
                             
                             if(unitOfMeasureType != null) {
                                 var accountingControl = Session.getModelController(AccountingControl.class);
-                                String currencyIsoName = spec.getCurrencyIsoName();
-                                Currency currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
+                                var currencyIsoName = spec.getCurrencyIsoName();
+                                var currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
                                 
                                 if(currency != null) {
                                     if(editMode.equals(EditMode.LOCK)) {
-                                        FilterAdjustmentAmount filterAdjustmentAmount = filterControl.getFilterAdjustmentAmount(filterAdjustment,
+                                        var filterAdjustmentAmount = filterControl.getFilterAdjustmentAmount(filterAdjustment,
                                                 unitOfMeasureType, currency);
                                         
                                         if(filterAdjustmentAmount != null) {
@@ -180,14 +180,14 @@ public class EditFilterAdjustmentAmountCommand
                                             addExecutionError(ExecutionErrors.UnknownFilterAdjustmentAmount.name());
                                         }
                                     } else if(editMode.equals(EditMode.UPDATE)) {
-                                        FilterAdjustmentAmount filterAdjustmentAmount = filterControl.getFilterAdjustmentAmountForUpdate(filterAdjustment,
+                                        var filterAdjustmentAmount = filterControl.getFilterAdjustmentAmountForUpdate(filterAdjustment,
                                                 unitOfMeasureType, currency);
                                         
                                         if(filterAdjustmentAmount != null) {
                                             if(lockEntityForUpdate(filterAdjustmentAmount)) {
                                                 try {
                                                     var partyPK = getPartyPK();
-                                                    FilterAdjustmentAmountValue filterAdjustmentAmountValue = filterControl.getFilterAdjustmentAmountValue(filterAdjustmentAmount);
+                                                    var filterAdjustmentAmountValue = filterControl.getFilterAdjustmentAmountValue(filterAdjustmentAmount);
                                                     
                                                     filterAdjustmentAmountValue.setAmount(Long.valueOf(edit.getAmount()));
                                                     

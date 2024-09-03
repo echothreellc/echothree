@@ -54,16 +54,16 @@ public class CreateForumMimeTypeCommand
     @Override
     protected BaseResult execute() {
         var forumControl = Session.getModelController(ForumControl.class);
-        String forumName = form.getForumName();
-        Forum forum = forumControl.getForumByName(forumName);
+        var forumName = form.getForumName();
+        var forum = forumControl.getForumByName(forumName);
         
         if(forum != null) {
             var coreControl = getCoreControl();
-            String mimeTypeName = form.getMimeTypeName();
-            MimeType mimeType = coreControl.getMimeTypeByName(mimeTypeName);
+            var mimeTypeName = form.getMimeTypeName();
+            var mimeType = coreControl.getMimeTypeByName(mimeTypeName);
             
             if(mimeType != null) {
-                ForumMimeType forumMimeType = forumControl.getForumMimeType(forum, mimeType);
+                var forumMimeType = forumControl.getForumMimeType(forum, mimeType);
                 
                 if(forumMimeType == null) {
                     var isDefault = Boolean.valueOf(form.getIsDefault());

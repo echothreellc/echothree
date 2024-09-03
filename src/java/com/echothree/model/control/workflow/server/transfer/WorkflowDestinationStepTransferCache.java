@@ -32,11 +32,11 @@ public class WorkflowDestinationStepTransferCache
     }
     
     public WorkflowDestinationStepTransfer getWorkflowDestinationStepTransfer(WorkflowDestinationStep workflowDestinationStep) {
-        WorkflowDestinationStepTransfer workflowDestinationStepTransfer = get(workflowDestinationStep);
+        var workflowDestinationStepTransfer = get(workflowDestinationStep);
         
         if(workflowDestinationStepTransfer == null) {
-            WorkflowDestinationTransfer workflowDestination = workflowControl.getWorkflowDestinationTransfer(userVisit, workflowDestinationStep.getWorkflowDestination());
-            WorkflowStepTransfer workflowStep = workflowControl.getWorkflowStepTransfer(userVisit, workflowDestinationStep.getWorkflowStep());
+            var workflowDestination = workflowControl.getWorkflowDestinationTransfer(userVisit, workflowDestinationStep.getWorkflowDestination());
+            var workflowStep = workflowControl.getWorkflowStepTransfer(userVisit, workflowDestinationStep.getWorkflowStep());
             
             workflowDestinationStepTransfer = new WorkflowDestinationStepTransfer(workflowDestination, workflowStep);
             put(workflowDestinationStep, workflowDestinationStepTransfer);

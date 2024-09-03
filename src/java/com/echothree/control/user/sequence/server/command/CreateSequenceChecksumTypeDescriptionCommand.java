@@ -68,16 +68,16 @@ public class CreateSequenceChecksumTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var sequenceControl = Session.getModelController(SequenceControl.class);
-        String sequenceChecksumTypeName = form.getSequenceChecksumTypeName();
-        SequenceChecksumType sequenceChecksumType = sequenceControl.getSequenceChecksumTypeByName(sequenceChecksumTypeName);
+        var sequenceChecksumTypeName = form.getSequenceChecksumTypeName();
+        var sequenceChecksumType = sequenceControl.getSequenceChecksumTypeByName(sequenceChecksumTypeName);
         
         if(sequenceChecksumType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                SequenceChecksumTypeDescription sequenceChecksumTypeDescription = sequenceControl.getSequenceChecksumTypeDescription(sequenceChecksumType, language);
+                var sequenceChecksumTypeDescription = sequenceControl.getSequenceChecksumTypeDescription(sequenceChecksumType, language);
                 
                 if(sequenceChecksumTypeDescription == null) {
                     var description = form.getDescription();

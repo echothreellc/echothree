@@ -56,18 +56,18 @@ public class GetContactMechanismChoicesCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        GetContactMechanismChoicesResult result = ContactResultFactory.getGetContactMechanismChoicesResult();
-        String partyName = form.getPartyName();
-        Party party = partyControl.getPartyByName(partyName);
+        var result = ContactResultFactory.getGetContactMechanismChoicesResult();
+        var partyName = form.getPartyName();
+        var party = partyControl.getPartyByName(partyName);
         
         if(party != null) {
             var contactControl = Session.getModelController(ContactControl.class);
-            String contactMechanismTypeName = form.getContactMechanismTypeName();
-            ContactMechanismType contactMechanismType = contactMechanismTypeName == null ? null : contactControl.getContactMechanismTypeByName(contactMechanismTypeName);
+            var contactMechanismTypeName = form.getContactMechanismTypeName();
+            var contactMechanismType = contactMechanismTypeName == null ? null : contactControl.getContactMechanismTypeByName(contactMechanismTypeName);
             
             if(contactMechanismTypeName == null || contactMechanismType != null) {
-                String defaultContactMechanismChoice = form.getDefaultContactMechanismChoice();
-                boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+                var defaultContactMechanismChoice = form.getDefaultContactMechanismChoice();
+                var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
                 
                 result.setContactMechanismChoices(contactMechanismType == null ? contactControl.getContactMechanismChoicesByParty(party, defaultContactMechanismChoice, getPreferredLanguage(), allowNullChoice)
                         : contactControl.getContactMechanismChoicesByPartyAndContactMechanismType(party, contactMechanismType, defaultContactMechanismChoice, getPreferredLanguage(), allowNullChoice));

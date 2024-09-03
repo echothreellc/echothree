@@ -72,24 +72,24 @@ public class CreatePartyContactListCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        String partyName = form.getPartyName();
-        Party party = partyControl.getPartyByName(partyName);
+        var partyName = form.getPartyName();
+        var party = partyControl.getPartyByName(partyName);
         
         if(party != null) {
             var contactListControl = Session.getModelController(ContactListControl.class);
-            String contactListName = form.getContactListName();
-            ContactList contactList = contactListControl.getContactListByName(contactListName);
+            var contactListName = form.getContactListName();
+            var contactList = contactListControl.getContactListByName(contactListName);
             
             if(contactList != null) {
-                PartyContactList partyContactList = contactListControl.getPartyContactList(party, contactList);
+                var partyContactList = contactListControl.getPartyContactList(party, contactList);
                 
                 if(partyContactList == null) {
                     var contactControl = Session.getModelController(ContactControl.class);
-                    String preferredContactMechanismPurposeName = form.getPreferredContactMechanismPurposeName();
-                    ContactMechanismPurpose preferredContactMechanismPurpose = preferredContactMechanismPurposeName == null ? null : contactControl.getContactMechanismPurposeByName(preferredContactMechanismPurposeName);
+                    var preferredContactMechanismPurposeName = form.getPreferredContactMechanismPurposeName();
+                    var preferredContactMechanismPurpose = preferredContactMechanismPurposeName == null ? null : contactControl.getContactMechanismPurposeByName(preferredContactMechanismPurposeName);
 
                     if(preferredContactMechanismPurposeName == null || preferredContactMechanismPurpose != null) {
-                        ContactListContactMechanismPurpose preferredContactListContactMechanismPurpose = preferredContactMechanismPurpose == null ? null : contactListControl.getContactListContactMechanismPurpose(contactList, preferredContactMechanismPurpose);
+                        var preferredContactListContactMechanismPurpose = preferredContactMechanismPurpose == null ? null : contactListControl.getContactListContactMechanismPurpose(contactList, preferredContactMechanismPurpose);
 
                         if(preferredContactMechanismPurpose == null || preferredContactListContactMechanismPurpose != null) {
                             // ExecutionErrorAccumulator is passed in as null so that an Exception will be thrown if there is an error.

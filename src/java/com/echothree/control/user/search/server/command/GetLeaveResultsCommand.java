@@ -66,9 +66,9 @@ public class GetLeaveResultsCommand
     
     @Override
     protected BaseResult execute() {
-        GetLeaveResultsResult result = SearchResultFactory.getGetLeaveResultsResult();
-        UserVisit userVisit = getUserVisit();
-        UserVisitSearch userVisitSearch = SearchLogic.getInstance().getUserVisitSearchByName(this, userVisit, SearchKinds.LEAVE.name(), form.getSearchTypeName());
+        var result = SearchResultFactory.getGetLeaveResultsResult();
+        var userVisit = getUserVisit();
+        var userVisitSearch = SearchLogic.getInstance().getUserVisitSearchByName(this, userVisit, SearchKinds.LEAVE.name(), form.getSearchTypeName());
         
         if(!hasExecutionErrors()) {
             var leaveControl = Session.getModelController(LeaveControl.class);

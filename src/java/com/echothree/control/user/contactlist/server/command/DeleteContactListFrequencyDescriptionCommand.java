@@ -67,16 +67,16 @@ public class DeleteContactListFrequencyDescriptionCommand
     @Override
     protected BaseResult execute() {
         var contactListControl = Session.getModelController(ContactListControl.class);
-        String contactListFrequencyName = form.getContactListFrequencyName();
-        ContactListFrequency contactListFrequency = contactListControl.getContactListFrequencyByName(contactListFrequencyName);
+        var contactListFrequencyName = form.getContactListFrequencyName();
+        var contactListFrequency = contactListControl.getContactListFrequencyByName(contactListFrequencyName);
         
         if(contactListFrequency != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                ContactListFrequencyDescription contactListFrequencyDescription = contactListControl.getContactListFrequencyDescriptionForUpdate(contactListFrequency, language);
+                var contactListFrequencyDescription = contactListControl.getContactListFrequencyDescriptionForUpdate(contactListFrequency, language);
                 
                 if(contactListFrequencyDescription != null) {
                     contactListControl.deleteContactListFrequencyDescription(contactListFrequencyDescription, getPartyPK());

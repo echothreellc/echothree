@@ -113,40 +113,40 @@ public class CreateEmployeeCommand
     @Override
     protected BaseResult execute() {
         var employeeControl = Session.getModelController(EmployeeControl.class);
-        UserControl userControl = getUserControl();
-        CreateEmployeeResult result = PartyResultFactory.getCreateEmployeeResult();
+        var userControl = getUserControl();
+        var result = PartyResultFactory.getCreateEmployeeResult();
         PartyEmployee partyEmployee = null;
-        String username = form.getUsername();
-        UserLogin userLogin = userControl.getUserLoginByUsername(username);
+        var username = form.getUsername();
+        var userLogin = userControl.getUserLoginByUsername(username);
         
         if(userLogin == null) {
-            String password1 = form.getPassword1();
-            String password2 = form.getPassword2();
+            var password1 = form.getPassword1();
+            var password2 = form.getPassword2();
             
             if(password1.equals(password2)) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                PartyType partyType = partyControl.getPartyTypeByName(PartyTypes.EMPLOYEE.name());
-                PartyTypePasswordStringPolicy partyTypePasswordStringPolicy = PasswordStringPolicyLogic.getInstance().checkStringPassword(session,
+                var partyType = partyControl.getPartyTypeByName(PartyTypes.EMPLOYEE.name());
+                var partyTypePasswordStringPolicy = PasswordStringPolicyLogic.getInstance().checkStringPassword(session,
                         getUserVisit(), this, partyType, null, null, password1);
                 
                 if(!hasExecutionErrors()) {
-                    String employeeTypeName = form.getEmployeeTypeName();
-                    EmployeeType employeeType = employeeTypeName == null? employeeControl.getDefaultEmployeeType(): employeeControl.getEmployeeTypeByName(employeeTypeName);
+                    var employeeTypeName = form.getEmployeeTypeName();
+                    var employeeType = employeeTypeName == null? employeeControl.getDefaultEmployeeType(): employeeControl.getEmployeeTypeByName(employeeTypeName);
                     
                     if(employeeType != null) {
-                        String preferredLanguageIsoName = form.getPreferredLanguageIsoName();
-                        Language preferredLanguage = preferredLanguageIsoName == null? null: partyControl.getLanguageByIsoName(preferredLanguageIsoName);
+                        var preferredLanguageIsoName = form.getPreferredLanguageIsoName();
+                        var preferredLanguage = preferredLanguageIsoName == null? null: partyControl.getLanguageByIsoName(preferredLanguageIsoName);
                         
                         if(preferredLanguageIsoName == null || (preferredLanguage != null)) {
-                            String preferredJavaTimeZoneName = form.getPreferredJavaTimeZoneName();
-                            TimeZone preferredTimeZone = preferredJavaTimeZoneName == null? null: partyControl.getTimeZoneByJavaName(preferredJavaTimeZoneName);
+                            var preferredJavaTimeZoneName = form.getPreferredJavaTimeZoneName();
+                            var preferredTimeZone = preferredJavaTimeZoneName == null? null: partyControl.getTimeZoneByJavaName(preferredJavaTimeZoneName);
                             
                             if(preferredJavaTimeZoneName == null || (preferredTimeZone != null)) {
-                                String preferredDateTimeFormatName = form.getPreferredDateTimeFormatName();
-                                DateTimeFormat preferredDateTimeFormat = preferredDateTimeFormatName == null? null: partyControl.getDateTimeFormatByName(preferredDateTimeFormatName);
+                                var preferredDateTimeFormatName = form.getPreferredDateTimeFormatName();
+                                var preferredDateTimeFormat = preferredDateTimeFormatName == null? null: partyControl.getDateTimeFormatByName(preferredDateTimeFormatName);
                                 
                                 if(preferredDateTimeFormatName == null || (preferredDateTimeFormat != null)) {
-                                    String preferredCurrencyIsoName = form.getPreferredCurrencyIsoName();
+                                    var preferredCurrencyIsoName = form.getPreferredCurrencyIsoName();
                                     Currency preferredCurrency;
                                     
                                     if(preferredCurrencyIsoName == null)
@@ -158,29 +158,29 @@ public class CreateEmployeeCommand
                                     
                                     if(preferredCurrencyIsoName == null || (preferredCurrency != null)) {
                                         var securityControl = Session.getModelController(SecurityControl.class);
-                                        String partySecurityRoleTemplateName = form.getPartySecurityRoleTemplateName();
-                                        PartySecurityRoleTemplate partySecurityRoleTemplate = securityControl.getPartySecurityRoleTemplateByName(partySecurityRoleTemplateName);
+                                        var partySecurityRoleTemplateName = form.getPartySecurityRoleTemplateName();
+                                        var partySecurityRoleTemplate = securityControl.getPartySecurityRoleTemplateByName(partySecurityRoleTemplateName);
                                         
                                         if(partySecurityRoleTemplate != null) {
                                             var coreControl = getCoreControl();
                                             var workflowControl = Session.getModelController(WorkflowControl.class);
                                             Soundex soundex = new Soundex();
                                             BasePK createdBy = getPartyPK();
-                                            String personalTitleId = form.getPersonalTitleId();
-                                            PersonalTitle personalTitle = personalTitleId == null? null: partyControl.convertPersonalTitleIdToEntity(personalTitleId, EntityPermission.READ_ONLY);
-                                            String firstName = form.getFirstName();
-                                            String firstNameSdx = soundex.encode(firstName);
-                                            String middleName = form.getMiddleName();
-                                            String middleNameSdx = middleName == null? null: soundex.encode(middleName);
-                                            String lastName = form.getLastName();
-                                            String lastNameSdx = soundex.encode(lastName);
-                                            String nameSuffixId = form.getNameSuffixId();
-                                            NameSuffix nameSuffix = nameSuffixId == null? null: partyControl.convertNameSuffixIdToEntity(nameSuffixId, EntityPermission.READ_ONLY);
-                                            String emailAddress = form.getEmailAddress();
-                                            Boolean allowSolicitation = Boolean.valueOf(form.getAllowSolicitation());
-                                            String partyEmployeeName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(null, SequenceTypes.EMPLOYEE.name());
-                                            
-                                            Party party = partyControl.createParty(null, partyType, preferredLanguage, preferredCurrency, preferredTimeZone, preferredDateTimeFormat, createdBy);
+                                            var personalTitleId = form.getPersonalTitleId();
+                                            var personalTitle = personalTitleId == null? null: partyControl.convertPersonalTitleIdToEntity(personalTitleId, EntityPermission.READ_ONLY);
+                                            var firstName = form.getFirstName();
+                                            var firstNameSdx = soundex.encode(firstName);
+                                            var middleName = form.getMiddleName();
+                                            var middleNameSdx = middleName == null? null: soundex.encode(middleName);
+                                            var lastName = form.getLastName();
+                                            var lastNameSdx = soundex.encode(lastName);
+                                            var nameSuffixId = form.getNameSuffixId();
+                                            var nameSuffix = nameSuffixId == null? null: partyControl.convertNameSuffixIdToEntity(nameSuffixId, EntityPermission.READ_ONLY);
+                                            var emailAddress = form.getEmailAddress();
+                                            var allowSolicitation = Boolean.valueOf(form.getAllowSolicitation());
+                                            var partyEmployeeName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(null, SequenceTypes.EMPLOYEE.name());
+
+                                            var party = partyControl.createParty(null, partyType, preferredLanguage, preferredCurrency, preferredTimeZone, preferredDateTimeFormat, createdBy);
                                             partyControl.createPerson(party, personalTitle, firstName, firstNameSdx, middleName, middleNameSdx, lastName, lastNameSdx, nameSuffix, createdBy);
                                             partyEmployee = employeeControl.createPartyEmployee(party, partyEmployeeName, employeeType, createdBy);
                                             userControl.createUserLogin(party, username, createdBy);
@@ -188,20 +188,20 @@ public class CreateEmployeeCommand
                                             ContactEmailAddressLogic.getInstance().createContactEmailAddress(party,
                                                     emailAddress, allowSolicitation, null,
                                                     ContactMechanismPurposes.PRIMARY_EMAIL.name(), createdBy);
-                                            
-                                            UserLoginPasswordType userLoginPasswordType = userControl.getUserLoginPasswordTypeByName(UserConstants.UserLoginPasswordType_STRING);
-                                            UserLoginPassword userLoginPassword = userControl.createUserLoginPassword(party, userLoginPasswordType, createdBy);
+
+                                            var userLoginPasswordType = userControl.getUserLoginPasswordTypeByName(UserConstants.UserLoginPasswordType_STRING);
+                                            var userLoginPassword = userControl.createUserLoginPassword(party, userLoginPasswordType, createdBy);
                                             userControl.createUserLoginPasswordString(userLoginPassword, password1, session.START_TIME_LONG, Boolean.FALSE, createdBy);
 
                                             if(partyTypePasswordStringPolicy != null && partyTypePasswordStringPolicy.getLastDetail().getForceChangeAfterCreate()) {
-                                                UserLoginStatus userLoginStatus = userControl.getUserLoginStatusForUpdate(party);
+                                                var userLoginStatus = userControl.getUserLoginStatusForUpdate(party);
 
                                                 userLoginStatus.setForceChange(Boolean.TRUE);
                                             }
 
                                             securityControl.createPartySecurityRoleTemplateUse(party, partySecurityRoleTemplate, createdBy);
-                                            
-                                            EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(party.getPrimaryKey());
+
+                                            var entityInstance = coreControl.getEntityInstanceByBasePK(party.getPrimaryKey());
                                             workflowControl.addEntityToWorkflowUsingNames(null, EmployeeStatusConstants.Workflow_EMPLOYEE_STATUS,
                                                     EmployeeStatusConstants.WorkflowEntrance_NEW_ACTIVE, entityInstance, null, null, createdBy);
                                             workflowControl.addEntityToWorkflowUsingNames(null, EmployeeAvailabilityConstants.Workflow_EMPLOYEE_AVAILABILITY,
@@ -236,13 +236,13 @@ public class CreateEmployeeCommand
             }
         } else {
             addExecutionError(ExecutionErrors.DuplicateUsername.name());
-            
-            Party party = userLogin.getParty();
+
+            var party = userLogin.getParty();
             partyEmployee = employeeControl.getPartyEmployee(party);
         }
         
         if(partyEmployee != null) {
-            Party party = partyEmployee.getParty();
+            var party = partyEmployee.getParty();
             
             result.setEntityRef(party.getPrimaryKey().getEntityRef());
             result.setEmployeeName(partyEmployee.getPartyEmployeeName());

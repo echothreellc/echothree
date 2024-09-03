@@ -55,19 +55,19 @@ public class CreateForumForumThreadCommand
     @Override
     protected BaseResult execute() {
         var forumControl = Session.getModelController(ForumControl.class);
-        String forumName = form.getForumName();
-        Forum forum = forumControl.getForumByName(forumName);
+        var forumName = form.getForumName();
+        var forum = forumControl.getForumByName(forumName);
         
         if(forum != null) {
-            String forumThreadName = form.getForumThreadName();
-            ForumThread forumThread = forumControl.getForumThreadByName(forumThreadName);
+            var forumThreadName = form.getForumThreadName();
+            var forumThread = forumControl.getForumThreadByName(forumThreadName);
             
             if(forumThread != null) {
-                ForumForumThread defaultForumForumThread = forumControl.getDefaultForumForumThread(forumThread);
-                ForumType forumType = forum.getLastDetail().getForumType();
+                var defaultForumForumThread = forumControl.getDefaultForumForumThread(forumThread);
+                var forumType = forum.getLastDetail().getForumType();
 
                 if(defaultForumForumThread.getForum().getLastDetail().getForumType().equals(forumType)) {
-                    ForumForumThread forumForumThread = forumControl.getForumForumThread(forum, forumThread);
+                    var forumForumThread = forumControl.getForumForumThread(forum, forumThread);
 
                     if(forumForumThread == null) {
                         var isDefault = Boolean.valueOf(form.getIsDefault());

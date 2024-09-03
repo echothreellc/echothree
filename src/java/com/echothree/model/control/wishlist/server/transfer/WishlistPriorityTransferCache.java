@@ -34,15 +34,15 @@ public class WishlistPriorityTransferCache
     }
     
     public WishlistPriorityTransfer getWishlistPriorityTransfer(WishlistPriority wishlistPriority) {
-        WishlistPriorityTransfer wishlistPriorityTransfer = get(wishlistPriority);
+        var wishlistPriorityTransfer = get(wishlistPriority);
         
         if(wishlistPriorityTransfer == null) {
-            WishlistPriorityDetail wishlistPriorityDetail = wishlistPriority.getLastDetail();
-            WishlistTypeTransfer wishlistType = wishlistControl.getWishlistTypeTransfer(userVisit, wishlistPriorityDetail.getWishlistType());
-            String wishlistPriorityName = wishlistPriorityDetail.getWishlistPriorityName();
-            Boolean isDefault = wishlistPriorityDetail.getIsDefault();
-            Integer sortOrder = wishlistPriorityDetail.getSortOrder();
-            String description = wishlistControl.getBestWishlistPriorityDescription(wishlistPriority, getLanguage());
+            var wishlistPriorityDetail = wishlistPriority.getLastDetail();
+            var wishlistType = wishlistControl.getWishlistTypeTransfer(userVisit, wishlistPriorityDetail.getWishlistType());
+            var wishlistPriorityName = wishlistPriorityDetail.getWishlistPriorityName();
+            var isDefault = wishlistPriorityDetail.getIsDefault();
+            var sortOrder = wishlistPriorityDetail.getSortOrder();
+            var description = wishlistControl.getBestWishlistPriorityDescription(wishlistPriority, getLanguage());
             
             wishlistPriorityTransfer = new WishlistPriorityTransfer(wishlistType, wishlistPriorityName, isDefault,
                     sortOrder, description);

@@ -56,21 +56,21 @@ public class CreateContactMechanismAliasCommand
     @Override
     protected BaseResult execute() {
         var contactControl = Session.getModelController(ContactControl.class);
-        String contactMechanismName = form.getContactMechanismName();
-        ContactMechanism contactMechanism = contactControl.getContactMechanismByName(contactMechanismName);
+        var contactMechanismName = form.getContactMechanismName();
+        var contactMechanism = contactControl.getContactMechanismByName(contactMechanismName);
 
         if(contactMechanism != null) {
-            String contactMechanismAliasTypeName = form.getContactMechanismAliasTypeName();
-            ContactMechanismAliasType contactMechanismAliasType = contactControl.getContactMechanismAliasTypeByName(contactMechanismAliasTypeName);
+            var contactMechanismAliasTypeName = form.getContactMechanismAliasTypeName();
+            var contactMechanismAliasType = contactControl.getContactMechanismAliasTypeByName(contactMechanismAliasTypeName);
 
             if(contactMechanismAliasType != null) {
-                ContactMechanismAliasTypeDetail contactMechanismAliasTypeDetail = contactMechanismAliasType.getLastDetail();
-                String validationPattern = contactMechanismAliasTypeDetail.getValidationPattern();
-                String alias = form.getAlias();
+                var contactMechanismAliasTypeDetail = contactMechanismAliasType.getLastDetail();
+                var validationPattern = contactMechanismAliasTypeDetail.getValidationPattern();
+                var alias = form.getAlias();
 
                 if(validationPattern != null) {
-                    Pattern pattern = Pattern.compile(validationPattern);
-                    Matcher m = pattern.matcher(alias);
+                    var pattern = Pattern.compile(validationPattern);
+                    var m = pattern.matcher(alias);
 
                     if(!m.matches()) {
                         addExecutionError(ExecutionErrors.InvalidAlias.name(), alias);
@@ -78,7 +78,7 @@ public class CreateContactMechanismAliasCommand
                 }
 
                 if(!hasExecutionErrors()) {
-                    ContactMechanismAlias contactMechanismAlias = contactControl.getContactMechanismAliasByAlias(contactMechanismAliasType,
+                    var contactMechanismAlias = contactControl.getContactMechanismAliasByAlias(contactMechanismAliasType,
                             alias);
 
                     if(contactMechanismAlias == null) {

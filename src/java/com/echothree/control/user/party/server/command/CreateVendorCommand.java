@@ -123,67 +123,67 @@ public class CreateVendorCommand
     
     @Override
     protected BaseResult execute() {
-        CreateVendorResult result = PartyResultFactory.getCreateVendorResult();
+        var result = PartyResultFactory.getCreateVendorResult();
         var vendorControl = Session.getModelController(VendorControl.class);
-        String vendorName = form.getVendorName();
-        Vendor vendor = vendorName == null ? null : vendorControl.getVendorByName(vendorName);
+        var vendorName = form.getVendorName();
+        var vendor = vendorName == null ? null : vendorControl.getVendorByName(vendorName);
 
         if(vendor == null) {
-            String vendorTypeName = form.getVendorTypeName();
-            VendorType vendorType = vendorTypeName == null ? vendorControl.getDefaultVendorType() : vendorControl.getVendorTypeByName(vendorTypeName);
+            var vendorTypeName = form.getVendorTypeName();
+            var vendorType = vendorTypeName == null ? vendorControl.getDefaultVendorType() : vendorControl.getVendorTypeByName(vendorTypeName);
 
             if(vendorType != null) {
-                String cancellationPolicyName = form.getCancellationPolicyName();
+                var cancellationPolicyName = form.getCancellationPolicyName();
                 CancellationPolicy cancellationPolicy = null;
 
                 if(cancellationPolicyName != null) {
                     var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
-                    CancellationKind returnKind = cancellationPolicyControl.getCancellationKindByName(CancellationKinds.VENDOR_CANCELLATION.name());
+                    var returnKind = cancellationPolicyControl.getCancellationKindByName(CancellationKinds.VENDOR_CANCELLATION.name());
 
                     cancellationPolicy = cancellationPolicyControl.getCancellationPolicyByName(returnKind, cancellationPolicyName);
                 }
 
                 if(cancellationPolicyName == null || cancellationPolicy != null) {
-                    String returnPolicyName = form.getReturnPolicyName();
+                    var returnPolicyName = form.getReturnPolicyName();
                     ReturnPolicy returnPolicy = null;
 
                     if(returnPolicyName != null) {
                         var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
-                        ReturnKind returnKind = returnPolicyControl.getReturnKindByName(ReturnKinds.VENDOR_RETURN.name());
+                        var returnKind = returnPolicyControl.getReturnKindByName(ReturnKinds.VENDOR_RETURN.name());
 
                         returnPolicy = returnPolicyControl.getReturnPolicyByName(returnKind, returnPolicyName);
                     }
 
                     if(returnPolicyName == null || returnPolicy != null) {
                         var accountingControl = Session.getModelController(AccountingControl.class);
-                        String apGlAccountName = form.getApGlAccountName();
-                        GlAccount apGlAccount = apGlAccountName == null ? null : accountingControl.getGlAccountByName(apGlAccountName);
+                        var apGlAccountName = form.getApGlAccountName();
+                        var apGlAccount = apGlAccountName == null ? null : accountingControl.getGlAccountByName(apGlAccountName);
 
                         if(apGlAccountName == null || apGlAccount != null) {
-                            String glAccountCategoryName = apGlAccount == null ? null
+                            var glAccountCategoryName = apGlAccount == null ? null
                                     : apGlAccount.getLastDetail().getGlAccountCategory().getLastDetail().getGlAccountCategoryName();
 
                             if(glAccountCategoryName == null || glAccountCategoryName.equals(AccountingConstants.GlAccountCategory_ACCOUNTS_PAYABLE)) {
                                 var itemControl = Session.getModelController(ItemControl.class);
-                                String defaultItemAliasTypeName = form.getDefaultItemAliasTypeName();
-                                ItemAliasType defaultItemAliasType = itemControl.getItemAliasTypeByName(defaultItemAliasTypeName);
+                                var defaultItemAliasTypeName = form.getDefaultItemAliasTypeName();
+                                var defaultItemAliasType = itemControl.getItemAliasTypeByName(defaultItemAliasTypeName);
 
                                 if(defaultItemAliasTypeName == null || defaultItemAliasType != null) {
                                     if(defaultItemAliasType == null || !defaultItemAliasType.getLastDetail().getAllowMultiple()) {
                                         var partyControl = Session.getModelController(PartyControl.class);
-                                        String preferredLanguageIsoName = form.getPreferredLanguageIsoName();
-                                        Language preferredLanguage = preferredLanguageIsoName == null ? null : partyControl.getLanguageByIsoName(preferredLanguageIsoName);
+                                        var preferredLanguageIsoName = form.getPreferredLanguageIsoName();
+                                        var preferredLanguage = preferredLanguageIsoName == null ? null : partyControl.getLanguageByIsoName(preferredLanguageIsoName);
 
                                         if(preferredLanguageIsoName == null || (preferredLanguage != null)) {
-                                            String preferredJavaTimeZoneName = form.getPreferredJavaTimeZoneName();
-                                            TimeZone preferredTimeZone = preferredJavaTimeZoneName == null ? null : partyControl.getTimeZoneByJavaName(preferredJavaTimeZoneName);
+                                            var preferredJavaTimeZoneName = form.getPreferredJavaTimeZoneName();
+                                            var preferredTimeZone = preferredJavaTimeZoneName == null ? null : partyControl.getTimeZoneByJavaName(preferredJavaTimeZoneName);
 
                                             if(preferredJavaTimeZoneName == null || (preferredTimeZone != null)) {
-                                                String preferredDateTimeFormatName = form.getPreferredDateTimeFormatName();
-                                                DateTimeFormat preferredDateTimeFormat = preferredDateTimeFormatName == null ? null : partyControl.getDateTimeFormatByName(preferredDateTimeFormatName);
+                                                var preferredDateTimeFormatName = form.getPreferredDateTimeFormatName();
+                                                var preferredDateTimeFormat = preferredDateTimeFormatName == null ? null : partyControl.getDateTimeFormatByName(preferredDateTimeFormatName);
 
                                                 if(preferredDateTimeFormatName == null || (preferredDateTimeFormat != null)) {
-                                                    String preferredCurrencyIsoName = form.getPreferredCurrencyIsoName();
+                                                    var preferredCurrencyIsoName = form.getPreferredCurrencyIsoName();
                                                     Currency preferredCurrency;
 
                                                     if(preferredCurrencyIsoName == null) {
@@ -198,29 +198,29 @@ public class CreateVendorCommand
                                                         var partyFreeOnBoardControl = Session.getModelController(PartyFreeOnBoardControl.class);
                                                         var termControl = Session.getModelController(TermControl.class);
                                                         var workflowControl = Session.getModelController(WorkflowControl.class);
-                                                        VendorTypeDetail vendorTypeDetail = vendorType.getLastDetail();
+                                                        var vendorTypeDetail = vendorType.getLastDetail();
                                                         Soundex soundex = new Soundex();
-                                                        PartyType partyType = partyControl.getPartyTypeByName(PartyTypes.VENDOR.name());
+                                                        var partyType = partyControl.getPartyTypeByName(PartyTypes.VENDOR.name());
                                                         BasePK createdBy = getPartyPK();
-                                                        String personalTitleId = form.getPersonalTitleId();
-                                                        PersonalTitle personalTitle = personalTitleId == null ? null : partyControl.convertPersonalTitleIdToEntity(personalTitleId, EntityPermission.READ_ONLY);
-                                                        String firstName = form.getFirstName();
-                                                        String middleName = form.getMiddleName();
-                                                        String lastName = form.getLastName();
-                                                        String nameSuffixId = form.getNameSuffixId();
-                                                        NameSuffix nameSuffix = nameSuffixId == null ? null : partyControl.convertNameSuffixIdToEntity(nameSuffixId, EntityPermission.READ_ONLY);
-                                                        String name = form.getName();
-                                                        String emailAddress = form.getEmailAddress();
-                                                        Boolean allowSolicitation = Boolean.valueOf(form.getAllowSolicitation());
-                                                        String strMinimumPurchaseOrderLines = form.getMinimumPurchaseOrderLines();
-                                                        Integer minimumPurchaseOrderLines = strMinimumPurchaseOrderLines == null ? null : Integer.valueOf(strMinimumPurchaseOrderLines);
-                                                        String strMaximumPurchaseOrderLines = form.getMaximumPurchaseOrderLines();
-                                                        Integer maximumPurchaseOrderLines = strMaximumPurchaseOrderLines == null ? null : Integer.valueOf(strMaximumPurchaseOrderLines);
-                                                        String strMinimumPurchaseOrderAmount = form.getMinimumPurchaseOrderAmount();
-                                                        Long minimumPurchaseOrderAmount = strMinimumPurchaseOrderAmount == null ? null : Long.valueOf(strMinimumPurchaseOrderAmount);
-                                                        String strMaximumPurchaseOrderAmount = form.getMaximumPurchaseOrderAmount();
-                                                        Long maximumPurchaseOrderAmount = strMaximumPurchaseOrderAmount == null ? null : Long.valueOf(strMaximumPurchaseOrderAmount);
-                                                        Boolean useItemPurchasingCategories = Boolean.valueOf(form.getUseItemPurchasingCategories());
+                                                        var personalTitleId = form.getPersonalTitleId();
+                                                        var personalTitle = personalTitleId == null ? null : partyControl.convertPersonalTitleIdToEntity(personalTitleId, EntityPermission.READ_ONLY);
+                                                        var firstName = form.getFirstName();
+                                                        var middleName = form.getMiddleName();
+                                                        var lastName = form.getLastName();
+                                                        var nameSuffixId = form.getNameSuffixId();
+                                                        var nameSuffix = nameSuffixId == null ? null : partyControl.convertNameSuffixIdToEntity(nameSuffixId, EntityPermission.READ_ONLY);
+                                                        var name = form.getName();
+                                                        var emailAddress = form.getEmailAddress();
+                                                        var allowSolicitation = Boolean.valueOf(form.getAllowSolicitation());
+                                                        var strMinimumPurchaseOrderLines = form.getMinimumPurchaseOrderLines();
+                                                        var minimumPurchaseOrderLines = strMinimumPurchaseOrderLines == null ? null : Integer.valueOf(strMinimumPurchaseOrderLines);
+                                                        var strMaximumPurchaseOrderLines = form.getMaximumPurchaseOrderLines();
+                                                        var maximumPurchaseOrderLines = strMaximumPurchaseOrderLines == null ? null : Integer.valueOf(strMaximumPurchaseOrderLines);
+                                                        var strMinimumPurchaseOrderAmount = form.getMinimumPurchaseOrderAmount();
+                                                        var minimumPurchaseOrderAmount = strMinimumPurchaseOrderAmount == null ? null : Long.valueOf(strMinimumPurchaseOrderAmount);
+                                                        var strMaximumPurchaseOrderAmount = form.getMaximumPurchaseOrderAmount();
+                                                        var maximumPurchaseOrderAmount = strMaximumPurchaseOrderAmount == null ? null : Long.valueOf(strMaximumPurchaseOrderAmount);
+                                                        var useItemPurchasingCategories = Boolean.valueOf(form.getUseItemPurchasingCategories());
 
                                                         String firstNameSdx;
                                                         try {
@@ -243,7 +243,7 @@ public class CreateVendorCommand
                                                             lastNameSdx = null;
                                                         }
 
-                                                        Party party = partyControl.createParty(null, partyType, preferredLanguage, preferredCurrency,
+                                                        var party = partyControl.createParty(null, partyType, preferredLanguage, preferredCurrency,
                                                                 preferredTimeZone, preferredDateTimeFormat, createdBy);
 
                                                         if(createdBy == null) {
@@ -279,7 +279,7 @@ public class CreateVendorCommand
 
                                                         ContactListLogic.getInstance().setupInitialContactLists(this, party, createdBy);
 
-                                                        EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(party.getPrimaryKey());
+                                                        var entityInstance = coreControl.getEntityInstanceByBasePK(party.getPrimaryKey());
                                                         workflowControl.addEntityToWorkflowUsingNames(null, VendorStatusConstants.Workflow_VENDOR_STATUS,
                                                                 VendorStatusConstants.WorkflowEntrance_NEW_ACTIVE, entityInstance, null, null, createdBy);
                                                     } else {
@@ -324,7 +324,7 @@ public class CreateVendorCommand
         }
 
         if(vendor != null) {
-            Party party = vendor.getParty();
+            var party = vendor.getParty();
 
             result.setEntityRef(party.getPrimaryKey().getEntityRef());
             result.setVendorName(vendor.getVendorName());

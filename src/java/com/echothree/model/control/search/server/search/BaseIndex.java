@@ -68,7 +68,7 @@ public abstract class BaseIndex<R extends Object>
             throws IOException;
     
     protected R openIndex() {
-        final IndexStatus indexStatus = indexControl.getIndexStatus(index);
+        final var indexStatus = indexControl.getIndexStatus(index);
         R result = null;
         
         if(indexStatus.getCreatedTime() == null) {

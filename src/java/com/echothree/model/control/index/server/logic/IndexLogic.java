@@ -64,7 +64,7 @@ public class IndexLogic
     
     public Index getIndexByName(final ExecutionErrorAccumulator eea, final String indexName) {
         var indexControl = Session.getModelController(IndexControl.class);
-        Index index = indexControl.getIndexByName(indexName);
+        var index = indexControl.getIndexByName(indexName);
 
         if(index == null) {
             handleExecutionError(UnknownIndexNameException.class, eea, ExecutionErrors.UnknownIndexName.name(), indexName);
@@ -86,16 +86,16 @@ public class IndexLogic
 
     private void queueEntityInstancesByEntityType(final Session session, final ExecutionErrorAccumulator eea, final QueueControl queueControl,
             final QueueTypePK queueTypePK, final Set<EntityType> queuedEntityTypes, final IndexType indexType) {
-        IndexTypeDetail indexTypeDetail = indexType.getLastDetail();
-        EntityType entityType = indexTypeDetail.getEntityType();
-        EntityTypeDetail entityTypeDetail = entityType.getLastDetail();
-        ComponentVendor componentVendor = entityTypeDetail.getComponentVendor();
-        String entityTypeName = entityTypeDetail.getEntityTypeName();
+        var indexTypeDetail = indexType.getLastDetail();
+        var entityType = indexTypeDetail.getEntityType();
+        var entityTypeDetail = entityType.getLastDetail();
+        var componentVendor = entityTypeDetail.getComponentVendor();
+        var entityTypeName = entityTypeDetail.getEntityTypeName();
         
         if(entityTypeName.equals(EntityTypes.Party.name())
                 && componentVendor.getLastDetail().getComponentVendorName().equals(ComponentVendors.ECHO_THREE.name())) {
             // The Party indexes aren't by Language, so we're not worried about de-dupping them.
-            PartyType partyType = PartyLogic.getInstance().getPartyTypeByName(eea, indexTypeDetail.getIndexTypeName());
+            var partyType = PartyLogic.getInstance().getPartyTypeByName(eea, indexTypeDetail.getIndexTypeName());
 
             if(eea == null || !eea.hasExecutionErrors()) {
                 queueEntityInstances(session, queueControl, queueTypePK, new EntityInstancesByPartyTypeQuery().execute(entityType, partyType));
@@ -115,20 +115,20 @@ public class IndexLogic
      * @param entityType the EntityType that should be reindexed. If null, all indexes will be reindexed (Optional)
      */
     public void reindex(final Session session, final ExecutionErrorAccumulator eea, final EntityType entityType) {
-        QueueType queueType = QueueTypeLogic.getInstance().getQueueTypeByName(eea, QueueTypes.INDEXING.name());
+        var queueType = QueueTypeLogic.getInstance().getQueueTypeByName(eea, QueueTypes.INDEXING.name());
         
         if(eea == null || !eea.hasExecutionErrors()) {
             var indexControl = Session.getModelController(IndexControl.class);
             var queueControl = Session.getModelController(QueueControl.class);
-            QueueTypePK queueTypePK = queueType.getPrimaryKey();
+            var queueTypePK = queueType.getPrimaryKey();
             Set<EntityType> queuedEntityTypes = new HashSet<>();
-            List<IndexType> indexTypes = entityType == null ? indexControl.getIndexTypes() : indexControl.getIndexTypesByEntityType(entityType);
+            var indexTypes = entityType == null ? indexControl.getIndexTypes() : indexControl.getIndexTypesByEntityType(entityType);
 
             for(var indexType : indexTypes) {
-                List<Index> indexes = indexControl.getIndexesByIndexType(indexType);
+                var indexes = indexControl.getIndexesByIndexType(indexType);
                 
                 for(var index : indexes) {
-                    IndexStatus indexStatus = indexControl.getIndexStatusForUpdate(index);
+                    var indexStatus = indexControl.getIndexStatusForUpdate(index);
                     
                     queueEntityInstancesByEntityType(session, eea, queueControl, queueTypePK, queuedEntityTypes, indexType);
                     

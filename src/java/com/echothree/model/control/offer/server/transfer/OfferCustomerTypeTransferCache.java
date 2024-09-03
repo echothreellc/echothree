@@ -37,13 +37,13 @@ public class OfferCustomerTypeTransferCache
     }
     
     public OfferCustomerTypeTransfer getOfferCustomerTypeTransfer(OfferCustomerType offerCustomerType) {
-        OfferCustomerTypeTransfer offerCustomerTypeTransfer = get(offerCustomerType);
+        var offerCustomerTypeTransfer = get(offerCustomerType);
         
         if(offerCustomerTypeTransfer == null) {
-            OfferTransfer offer = offerControl.getOfferTransfer(userVisit, offerCustomerType.getOffer());
-            CustomerTypeTransfer customerType = customerControl.getCustomerTypeTransfer(userVisit, offerCustomerType.getCustomerType());
-            Boolean isDefault = offerCustomerType.getIsDefault();
-            Integer sortOrder = offerCustomerType.getSortOrder();
+            var offer = offerControl.getOfferTransfer(userVisit, offerCustomerType.getOffer());
+            var customerType = customerControl.getCustomerTypeTransfer(userVisit, offerCustomerType.getCustomerType());
+            var isDefault = offerCustomerType.getIsDefault();
+            var sortOrder = offerCustomerType.getSortOrder();
             
             offerCustomerTypeTransfer = new OfferCustomerTypeTransfer(offer, customerType, isDefault, sortOrder);
             put(offerCustomerType, offerCustomerTypeTransfer);

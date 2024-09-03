@@ -59,16 +59,16 @@ public class ForumThreadTransferCache
     }
     
     public ForumThreadTransfer getForumThreadTransfer(ForumThread forumThread) {
-        ForumThreadTransfer forumThreadTransfer = get(forumThread);
+        var forumThreadTransfer = get(forumThread);
         
         if(forumThreadTransfer == null) {
-            ForumThreadDetail forumThreadDetail = forumThread.getLastDetail();
-            String forumThreadName = forumThreadDetail.getForumThreadName();
-            Icon icon = forumThreadDetail.getIcon();
-            IconTransfer iconTransfer = icon == null? null: iconControl.getIconTransfer(userVisit, icon);
-            Long unformattedPostedTime = forumThreadDetail.getPostedTime();
-            String postedTime = formatTypicalDateTime(unformattedPostedTime);
-            Integer sortOrder = forumThreadDetail.getSortOrder();
+            var forumThreadDetail = forumThread.getLastDetail();
+            var forumThreadName = forumThreadDetail.getForumThreadName();
+            var icon = forumThreadDetail.getIcon();
+            var iconTransfer = icon == null? null: iconControl.getIconTransfer(userVisit, icon);
+            var unformattedPostedTime = forumThreadDetail.getPostedTime();
+            var postedTime = formatTypicalDateTime(unformattedPostedTime);
+            var sortOrder = forumThreadDetail.getSortOrder();
                     
             forumThreadTransfer = new ForumThreadTransfer(forumThreadName, iconTransfer, unformattedPostedTime, postedTime, sortOrder);
             put(forumThread, forumThreadTransfer);

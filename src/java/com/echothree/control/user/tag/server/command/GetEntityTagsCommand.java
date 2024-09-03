@@ -110,7 +110,7 @@ public class GetEntityTagsCommand
 
         if(entities != null) {
             var tagControl = Session.getModelController(TagControl.class);
-            UserVisit userVisit = getUserVisit();
+            var userVisit = getUserVisit();
 
             if(taggedEntityInstance != null) {
                 var coreControl = getCoreControl();

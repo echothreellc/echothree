@@ -64,8 +64,8 @@ public class CreateCommandMessageTypeCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String commandMessageTypeName = form.getCommandMessageTypeName();
-        CommandMessageType commandMessageType = coreControl.getCommandMessageTypeByName(commandMessageTypeName);
+        var commandMessageTypeName = form.getCommandMessageTypeName();
+        var commandMessageType = coreControl.getCommandMessageTypeByName(commandMessageTypeName);
         
         if(commandMessageType == null) {
             var partyPK = getPartyPK();

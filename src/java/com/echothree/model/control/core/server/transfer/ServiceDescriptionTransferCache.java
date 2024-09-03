@@ -35,11 +35,11 @@ public class ServiceDescriptionTransferCache
     }
     
     public ServiceDescriptionTransfer getServiceDescriptionTransfer(ServiceDescription serviceDescription) {
-        ServiceDescriptionTransfer serviceDescriptionTransfer = get(serviceDescription);
+        var serviceDescriptionTransfer = get(serviceDescription);
         
         if(serviceDescriptionTransfer == null) {
-            ServiceTransfer serviceTransfer = coreControl.getServiceTransfer(userVisit, serviceDescription.getService());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, serviceDescription.getLanguage());
+            var serviceTransfer = coreControl.getServiceTransfer(userVisit, serviceDescription.getService());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, serviceDescription.getLanguage());
             
             serviceDescriptionTransfer = new ServiceDescriptionTransfer(languageTransfer, serviceTransfer,
                     serviceDescription.getDescription());

@@ -68,16 +68,16 @@ public class CreateCampaignTermDescriptionCommand
     @Override
     protected BaseResult execute() {
         var campaignControl = Session.getModelController(CampaignControl.class);
-        String campaignTermName = form.getCampaignTermName();
-        CampaignTerm campaignTerm = campaignControl.getCampaignTermByName(campaignTermName);
+        var campaignTermName = form.getCampaignTermName();
+        var campaignTerm = campaignControl.getCampaignTermByName(campaignTermName);
         
         if(campaignTerm != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                CampaignTermDescription campaignTermDescription = campaignControl.getCampaignTermDescription(campaignTerm, language);
+                var campaignTermDescription = campaignControl.getCampaignTermDescription(campaignTerm, language);
                 
                 if(campaignTermDescription == null) {
                     var description = form.getDescription();

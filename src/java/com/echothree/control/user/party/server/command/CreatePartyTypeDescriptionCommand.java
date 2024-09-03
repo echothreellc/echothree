@@ -53,15 +53,15 @@ public class CreatePartyTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        String partyTypeName = form.getPartyTypeName();
-        PartyType partyType = partyControl.getPartyTypeByName(partyTypeName);
+        var partyTypeName = form.getPartyTypeName();
+        var partyType = partyControl.getPartyTypeByName(partyTypeName);
         
         if(partyType != null) {
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                PartyTypeDescription partyTypeDescription = partyControl.getPartyTypeDescription(partyType, language);
+                var partyTypeDescription = partyControl.getPartyTypeDescription(partyType, language);
                 
                 if(partyTypeDescription == null) {
                     var description = form.getDescription();

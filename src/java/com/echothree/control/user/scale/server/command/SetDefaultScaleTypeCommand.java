@@ -49,8 +49,8 @@ public class SetDefaultScaleTypeCommand
    @Override
     protected BaseResult execute() {
         var scaleControl = Session.getModelController(ScaleControl.class);
-        String scaleTypeName = form.getScaleTypeName();
-        ScaleTypeDetailValue scaleTypeDetailValue = scaleControl.getScaleTypeDetailValueByNameForUpdate(scaleTypeName);
+       var scaleTypeName = form.getScaleTypeName();
+       var scaleTypeDetailValue = scaleControl.getScaleTypeDetailValueByNameForUpdate(scaleTypeName);
         
         if(scaleTypeDetailValue != null) {
             scaleTypeDetailValue.setIsDefault(Boolean.TRUE);

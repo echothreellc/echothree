@@ -53,16 +53,16 @@ public class CreateMimeTypeDescriptionCommand
    @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String mimeTypeName = form.getMimeTypeName();
-        MimeType mimeType = coreControl.getMimeTypeByName(mimeTypeName);
+       var mimeTypeName = form.getMimeTypeName();
+       var mimeType = coreControl.getMimeTypeByName(mimeTypeName);
         
         if(mimeType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                MimeTypeDescription mimeDescription = coreControl.getMimeTypeDescription(mimeType, language);
+                var mimeDescription = coreControl.getMimeTypeDescription(mimeType, language);
                 
                 if(mimeDescription == null) {
                     var description = form.getDescription();

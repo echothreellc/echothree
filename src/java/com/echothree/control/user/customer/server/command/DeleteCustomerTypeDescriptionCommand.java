@@ -67,16 +67,16 @@ public class DeleteCustomerTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var customerControl = Session.getModelController(CustomerControl.class);
-        String customerTypeName = form.getCustomerTypeName();
-        CustomerType customerType = customerControl.getCustomerTypeByName(customerTypeName);
+        var customerTypeName = form.getCustomerTypeName();
+        var customerType = customerControl.getCustomerTypeByName(customerTypeName);
         
         if(customerType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                CustomerTypeDescription customerTypeDescription = customerControl.getCustomerTypeDescriptionForUpdate(customerType, language);
+                var customerTypeDescription = customerControl.getCustomerTypeDescriptionForUpdate(customerType, language);
                 
                 if(customerTypeDescription != null) {
                     customerControl.deleteCustomerTypeDescription(customerTypeDescription, getPartyPK());

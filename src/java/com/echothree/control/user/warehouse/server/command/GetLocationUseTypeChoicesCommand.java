@@ -62,9 +62,9 @@ public class GetLocationUseTypeChoicesCommand
     @Override
     protected BaseResult execute() {
         var locationUseTypeControl = Session.getModelController(LocationUseTypeControl.class);
-        GetLocationUseTypeChoicesResult result = WarehouseResultFactory.getGetLocationUseTypeChoicesResult();
-        String defaultLocationUseTypeChoice = form.getDefaultLocationUseTypeChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = WarehouseResultFactory.getGetLocationUseTypeChoicesResult();
+        var defaultLocationUseTypeChoice = form.getDefaultLocationUseTypeChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setLocationUseTypeChoices(locationUseTypeControl.getLocationUseTypeChoices(defaultLocationUseTypeChoice,
                 getPreferredLanguage(), allowNullChoice));

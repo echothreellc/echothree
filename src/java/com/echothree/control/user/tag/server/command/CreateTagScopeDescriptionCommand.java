@@ -68,16 +68,16 @@ public class CreateTagScopeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var tagControl = Session.getModelController(TagControl.class);
-        String tagScopeName = form.getTagScopeName();
-        TagScope tagScope = tagControl.getTagScopeByName(tagScopeName);
+        var tagScopeName = form.getTagScopeName();
+        var tagScope = tagControl.getTagScopeByName(tagScopeName);
         
         if(tagScope != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                TagScopeDescription tagScopeDescription = tagControl.getTagScopeDescription(tagScope, language);
+                var tagScopeDescription = tagControl.getTagScopeDescription(tagScope, language);
                 
                 if(tagScopeDescription == null) {
                     var description = form.getDescription();

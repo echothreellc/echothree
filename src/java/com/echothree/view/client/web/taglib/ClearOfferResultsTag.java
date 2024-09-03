@@ -74,11 +74,11 @@ public class ClearOfferResultsTag
     public int doStartTag()
             throws JspException {
         try {
-            ClearOfferResultsForm commandForm = SearchUtil.getHome().getClearOfferResultsForm();
+            var commandForm = SearchUtil.getHome().getClearOfferResultsForm();
 
             commandForm.setSearchTypeName(searchTypeName);
-            
-            CommandResult commandResult = SearchUtil.getHome().clearOfferResults(getUserVisitPK(), commandForm);
+
+            var commandResult = SearchUtil.getHome().clearOfferResults(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {

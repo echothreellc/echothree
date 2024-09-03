@@ -32,11 +32,11 @@ public class ChainEntityRoleTypeDescriptionTransferCache
     }
     
     public ChainEntityRoleTypeDescriptionTransfer getChainEntityRoleTypeDescriptionTransfer(ChainEntityRoleTypeDescription chainEntityRoleTypeDescription) {
-        ChainEntityRoleTypeDescriptionTransfer chainEntityRoleTypeDescriptionTransfer = get(chainEntityRoleTypeDescription);
+        var chainEntityRoleTypeDescriptionTransfer = get(chainEntityRoleTypeDescription);
         
         if(chainEntityRoleTypeDescriptionTransfer == null) {
-            ChainEntityRoleTypeTransfer chainEntityRoleTypeTransfer = chainControl.getChainEntityRoleTypeTransfer(userVisit, chainEntityRoleTypeDescription.getChainEntityRoleType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, chainEntityRoleTypeDescription.getLanguage());
+            var chainEntityRoleTypeTransfer = chainControl.getChainEntityRoleTypeTransfer(userVisit, chainEntityRoleTypeDescription.getChainEntityRoleType());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, chainEntityRoleTypeDescription.getLanguage());
             
             chainEntityRoleTypeDescriptionTransfer = new ChainEntityRoleTypeDescriptionTransfer(languageTransfer, chainEntityRoleTypeTransfer, chainEntityRoleTypeDescription.getDescription());
             put(chainEntityRoleTypeDescription, chainEntityRoleTypeDescriptionTransfer);

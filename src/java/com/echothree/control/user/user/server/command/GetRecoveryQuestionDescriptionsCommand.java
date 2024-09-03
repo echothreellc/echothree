@@ -49,10 +49,10 @@ public class GetRecoveryQuestionDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        UserControl userControl = getUserControl();
-        GetRecoveryQuestionDescriptionsResult result = UserResultFactory.getGetRecoveryQuestionDescriptionsResult();
-        String recoveryQuestionName = form.getRecoveryQuestionName();
-        RecoveryQuestion recoveryQuestion = userControl.getRecoveryQuestionByName(recoveryQuestionName);
+        var userControl = getUserControl();
+        var result = UserResultFactory.getGetRecoveryQuestionDescriptionsResult();
+        var recoveryQuestionName = form.getRecoveryQuestionName();
+        var recoveryQuestion = userControl.getRecoveryQuestionByName(recoveryQuestionName);
         
         if(recoveryQuestion != null) {
             result.setRecoveryQuestion(userControl.getRecoveryQuestionTransfer(getUserVisit(), recoveryQuestion));

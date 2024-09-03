@@ -66,15 +66,15 @@ public class CreateItemDescriptionTypeUseCommand
     @Override
     protected BaseResult execute() {
         var itemControl = Session.getModelController(ItemControl.class);
-        String itemDescriptionTypeName = form.getItemDescriptionTypeName();
-        ItemDescriptionType itemDescriptionType = itemControl.getItemDescriptionTypeByName(itemDescriptionTypeName);
+        var itemDescriptionTypeName = form.getItemDescriptionTypeName();
+        var itemDescriptionType = itemControl.getItemDescriptionTypeByName(itemDescriptionTypeName);
 
         if(itemDescriptionType != null) {
-            String itemDescriptionTypeUseTypeName = form.getItemDescriptionTypeUseTypeName();
-            ItemDescriptionTypeUseType itemDescriptionTypeUseType = itemControl.getItemDescriptionTypeUseTypeByName(itemDescriptionTypeUseTypeName);
+            var itemDescriptionTypeUseTypeName = form.getItemDescriptionTypeUseTypeName();
+            var itemDescriptionTypeUseType = itemControl.getItemDescriptionTypeUseTypeByName(itemDescriptionTypeUseTypeName);
 
             if(itemDescriptionTypeUseType != null) {
-                ItemDescriptionTypeUse itemDescriptionTypeUse = itemControl.getItemDescriptionTypeUse(itemDescriptionType, itemDescriptionTypeUseType);
+                var itemDescriptionTypeUse = itemControl.getItemDescriptionTypeUse(itemDescriptionType, itemDescriptionTypeUseType);
 
                 if(itemDescriptionTypeUse == null) {
                     itemControl.createItemDescriptionTypeUse(itemDescriptionType, itemDescriptionTypeUseType, getPartyPK());

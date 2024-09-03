@@ -81,32 +81,32 @@ public class EditFilterDescriptionCommand
     @Override
     protected BaseResult execute() {
         var filterControl = Session.getModelController(FilterControl.class);
-        EditFilterDescriptionResult result = FilterResultFactory.getEditFilterDescriptionResult();
-        String filterKindName = spec.getFilterKindName();
-        FilterKind filterKind = filterControl.getFilterKindByName(filterKindName);
+        var result = FilterResultFactory.getEditFilterDescriptionResult();
+        var filterKindName = spec.getFilterKindName();
+        var filterKind = filterControl.getFilterKindByName(filterKindName);
         
         if(filterKind != null) {
-            String filterTypeName = spec.getFilterTypeName();
-            FilterType filterType = filterControl.getFilterTypeByName(filterKind, filterTypeName);
+            var filterTypeName = spec.getFilterTypeName();
+            var filterType = filterControl.getFilterTypeByName(filterKind, filterTypeName);
             
             if(filterType != null) {
-                String filterName = spec.getFilterName();
-                Filter filter = filterControl.getFilterByName(filterType, filterName);
+                var filterName = spec.getFilterName();
+                var filter = filterControl.getFilterByName(filterType, filterName);
                 
                 if(filter != null) {
                     var partyControl = Session.getModelController(PartyControl.class);
-                    String languageIsoName = spec.getLanguageIsoName();
-                    Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                    var languageIsoName = spec.getLanguageIsoName();
+                    var language = partyControl.getLanguageByIsoName(languageIsoName);
                     
                     if(language != null) {
                         if(editMode.equals(EditMode.LOCK)) {
-                            FilterDescription filterDescription = filterControl.getFilterDescription(filter, language);
+                            var filterDescription = filterControl.getFilterDescription(filter, language);
                             
                             if(filterDescription != null) {
                                 result.setFilterDescription(filterControl.getFilterDescriptionTransfer(getUserVisit(), filterDescription));
                                 
                                 if(lockEntity(filter)) {
-                                    FilterDescriptionEdit edit = FilterEditFactory.getFilterDescriptionEdit();
+                                    var edit = FilterEditFactory.getFilterDescriptionEdit();
                                     
                                     result.setEdit(edit);
                                     edit.setDescription(filterDescription.getDescription());
@@ -119,12 +119,12 @@ public class EditFilterDescriptionCommand
                                 addExecutionError(ExecutionErrors.UnknownFilterDescription.name());
                             }
                         } else if(editMode.equals(EditMode.UPDATE)) {
-                            FilterDescriptionValue filterDescriptionValue = filterControl.getFilterDescriptionValueForUpdate(filter, language);
+                            var filterDescriptionValue = filterControl.getFilterDescriptionValueForUpdate(filter, language);
                             
                             if(filterDescriptionValue != null) {
                                 if(lockEntityForUpdate(filter)) {
                                     try {
-                                        String description = edit.getDescription();
+                                        var description = edit.getDescription();
                                         
                                         filterDescriptionValue.setDescription(description);
                                         

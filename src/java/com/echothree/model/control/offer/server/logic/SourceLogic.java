@@ -42,7 +42,7 @@ public class SourceLogic
     
     public Source getSourceByName(final ExecutionErrorAccumulator eea, final String sourceName) {
         var sourceControl = Session.getModelController(SourceControl.class);
-        Source source = sourceControl.getSourceByName(sourceName);
+        var source = sourceControl.getSourceByName(sourceName);
 
         if(source == null) {
             handleExecutionError(UnknownSourceNameException.class, eea, ExecutionErrors.UnknownSourceName.name(), sourceName);

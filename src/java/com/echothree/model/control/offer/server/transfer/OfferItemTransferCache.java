@@ -71,11 +71,11 @@ public class OfferItemTransferCache
     }
     
     public OfferItemTransfer getOfferItemTransfer(OfferItem offerItem) {
-        OfferItemTransfer offerItemTransfer = get(offerItem);
+        var offerItemTransfer = get(offerItem);
         
         if(offerItemTransfer == null) {
-            OfferTransfer offer = filterOffer ? null : offerControl.getOfferTransfer(userVisit, offerItem.getOffer());
-            ItemTransfer item = filterItem ? null : itemControl.getItemTransfer(userVisit, offerItem.getItem());
+            var offer = filterOffer ? null : offerControl.getOfferTransfer(userVisit, offerItem.getOffer());
+            var item = filterItem ? null : itemControl.getItemTransfer(userVisit, offerItem.getItem());
             
             offerItemTransfer = new OfferItemTransfer(offer, item);
             put(offerItem, offerItemTransfer);

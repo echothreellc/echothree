@@ -64,12 +64,12 @@ public class GetUnitOfMeasureTypeChoicesCommand
     @Override
     protected BaseResult execute() {
         var uomControl = Session.getModelController(UomControl.class);
-        GetUnitOfMeasureTypeChoicesResult result = UomResultFactory.getGetUnitOfMeasureTypeChoicesResult();
-        String unitOfMeasureKindName = form.getUnitOfMeasureKindName();
-        String unitOfMeasureKindUseTypeName = form.getUnitOfMeasureKindUseTypeName();
-        String vendorName = form.getVendorName();
-        String vendorItemName = form.getVendorItemName();
-        String itemName = form.getItemName();
+        var result = UomResultFactory.getGetUnitOfMeasureTypeChoicesResult();
+        var unitOfMeasureKindName = form.getUnitOfMeasureKindName();
+        var unitOfMeasureKindUseTypeName = form.getUnitOfMeasureKindUseTypeName();
+        var vendorName = form.getVendorName();
+        var vendorItemName = form.getVendorItemName();
+        var itemName = form.getItemName();
         var parameterCount = (unitOfMeasureKindName != null? 1: 0) + (unitOfMeasureKindUseTypeName != null? 1: 0)
                 + (vendorName != null && vendorItemName != null? 1: 0) + (itemName != null? 1: 0);
         
@@ -83,11 +83,11 @@ public class GetUnitOfMeasureTypeChoicesCommand
                     addExecutionError(ExecutionErrors.UnknownUnitOfMeasureKindName.name(), unitOfMeasureKindName);
                 }
             } else if(unitOfMeasureKindUseTypeName != null) {
-                UnitOfMeasureKindUseType unitOfMeasureKindUseType = uomControl.getUnitOfMeasureKindUseTypeByName(unitOfMeasureKindUseTypeName);
+                var unitOfMeasureKindUseType = uomControl.getUnitOfMeasureKindUseTypeByName(unitOfMeasureKindUseTypeName);
                 
                 if(unitOfMeasureKindUseType != null) {
                     if(!unitOfMeasureKindUseType.getAllowMultiple()) {
-                        UnitOfMeasureKindUse unitOfMeasureKindUse = uomControl.getUnitOfMeasureKindUseByUnitOfMeasureKindUseType(unitOfMeasureKindUseType);
+                        var unitOfMeasureKindUse = uomControl.getUnitOfMeasureKindUseByUnitOfMeasureKindUseType(unitOfMeasureKindUseType);
                         
                         if(unitOfMeasureKindUse != null) {
                             unitOfMeasureKind = unitOfMeasureKindUse.getUnitOfMeasureKind();
@@ -102,10 +102,10 @@ public class GetUnitOfMeasureTypeChoicesCommand
                 }
             } else if(vendorName != null) {
                 var vendorControl = Session.getModelController(VendorControl.class);
-                Vendor vendor = vendorControl.getVendorByName(vendorName);
+                var vendor = vendorControl.getVendorByName(vendorName);
                 
                 if(vendor != null) {
-                    VendorItem vendorItem = vendorControl.getVendorItemByVendorPartyAndVendorItemName(vendor.getParty(), vendorItemName);
+                    var vendorItem = vendorControl.getVendorItemByVendorPartyAndVendorItemName(vendor.getParty(), vendorItemName);
                     
                     if(vendorItem != null) {
                         unitOfMeasureKind = vendorItem.getLastDetail().getItem().getLastDetail().getUnitOfMeasureKind();
@@ -117,7 +117,7 @@ public class GetUnitOfMeasureTypeChoicesCommand
                 }
             } else {
                 var itemControl = Session.getModelController(ItemControl.class);
-                Item item = itemControl.getItemByName(itemName);
+                var item = itemControl.getItemByName(itemName);
                 
                 if(item != null) {
                     unitOfMeasureKind = item.getLastDetail().getUnitOfMeasureKind();
@@ -127,8 +127,8 @@ public class GetUnitOfMeasureTypeChoicesCommand
             }
             
             if(!hasExecutionErrors()) {
-                String defaultUnitOfMeasureTypeChoice = form.getDefaultUnitOfMeasureTypeChoice();
-                boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+                var defaultUnitOfMeasureTypeChoice = form.getDefaultUnitOfMeasureTypeChoice();
+                var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
                 
                 result.setUnitOfMeasureTypeChoices(uomControl.getUnitOfMeasureTypeChoices(defaultUnitOfMeasureTypeChoice,
                         getPreferredLanguage(), allowNullChoice, unitOfMeasureKind));

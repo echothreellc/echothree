@@ -105,14 +105,14 @@ public class OfferItemPriceTransferCache
     
     private OfferItemPriceTransfer getOfferItemPriceTransfer(OfferItemPrice offerItemPrice, OfferItemFixedPrice offerItemFixedPrice,
             OfferItemVariablePrice offerItemVariablePrice) {
-        OfferItem offerItem = filterOfferItem ? null : offerItemPrice.getOfferItem();
-        OfferItemTransfer offerItemTransfer = offerItem == null ? null : offerItemControl.getOfferItemTransfer(userVisit, offerItem);
-        InventoryCondition inventoryCondition = filterInventoryCondition ? null : offerItemPrice.getInventoryCondition();
-        InventoryConditionTransfer inventoryConditionTransfer = inventoryCondition == null ? null : inventoryControl.getInventoryConditionTransfer(userVisit, inventoryCondition);
-        UnitOfMeasureType unitOfMeasureType = filterUnitOfMeasureType ? null : offerItemPrice.getUnitOfMeasureType();
-        UnitOfMeasureTypeTransfer unitOfMeasureTypeTransfer = unitOfMeasureType == null ? null : uomControl.getUnitOfMeasureTypeTransfer(userVisit, unitOfMeasureType);
-        Currency currency = offerItemPrice.getCurrency();
-        CurrencyTransfer currencyTransfer = filterCurrency ? null : accountingControl.getCurrencyTransfer(userVisit, currency);
+        var offerItem = filterOfferItem ? null : offerItemPrice.getOfferItem();
+        var offerItemTransfer = offerItem == null ? null : offerItemControl.getOfferItemTransfer(userVisit, offerItem);
+        var inventoryCondition = filterInventoryCondition ? null : offerItemPrice.getInventoryCondition();
+        var inventoryConditionTransfer = inventoryCondition == null ? null : inventoryControl.getInventoryConditionTransfer(userVisit, inventoryCondition);
+        var unitOfMeasureType = filterUnitOfMeasureType ? null : offerItemPrice.getUnitOfMeasureType();
+        var unitOfMeasureTypeTransfer = unitOfMeasureType == null ? null : uomControl.getUnitOfMeasureTypeTransfer(userVisit, unitOfMeasureType);
+        var currency = offerItemPrice.getCurrency();
+        var currencyTransfer = filterCurrency ? null : accountingControl.getCurrencyTransfer(userVisit, currency);
         Long unformattedUnitPrice = null;
         String unitPrice = null;
         Long unformattedMinimumUnitPrice = null;
@@ -144,32 +144,32 @@ public class OfferItemPriceTransferCache
     @Override
     public ListWrapper<HistoryTransfer<OfferItemPriceTransfer>> getHistory(OfferItemPrice offerItemPrice) {
         List<HistoryTransfer<OfferItemPriceTransfer>> historyTransfers = null;
-        String itemPriceTypeName = offerItemPrice.getOfferItem().getItem().getLastDetail().getItemPriceType().getItemPriceTypeName();
+        var itemPriceTypeName = offerItemPrice.getOfferItem().getItem().getLastDetail().getItemPriceType().getItemPriceTypeName();
         
         if(ItemPriceTypes.FIXED.name().equals(itemPriceTypeName)) {
-            List<OfferItemFixedPrice> offerItemFixedPriceHistory = offerItemControl.getOfferItemFixedPriceHistory(offerItemPrice);
+            var offerItemFixedPriceHistory = offerItemControl.getOfferItemFixedPriceHistory(offerItemPrice);
             
             historyTransfers = new ArrayList<>(offerItemFixedPriceHistory.size());
             
             for(var offerItemFixedPrice : offerItemFixedPriceHistory) {
-                Long unformattedFromTime = filterUnformattedFromTime ? null : offerItemFixedPrice.getFromTime();
-                String fromTime = filterFromTime ? null : formatTypicalDateTime(offerItemFixedPrice.getFromTime());
-                Long unformattedThruTime = filterUnformattedThruTime ? null : offerItemFixedPrice.getThruTime();
-                String thruTime = filterThruTime ? null : formatTypicalDateTime(offerItemFixedPrice.getThruTime());
+                var unformattedFromTime = filterUnformattedFromTime ? null : offerItemFixedPrice.getFromTime();
+                var fromTime = filterFromTime ? null : formatTypicalDateTime(offerItemFixedPrice.getFromTime());
+                var unformattedThruTime = filterUnformattedThruTime ? null : offerItemFixedPrice.getThruTime();
+                var thruTime = filterThruTime ? null : formatTypicalDateTime(offerItemFixedPrice.getThruTime());
                 
                 historyTransfers.add(new HistoryTransfer<>(getOfferItemPriceTransfer(offerItemPrice, offerItemFixedPrice, null),
                         unformattedFromTime, fromTime, unformattedThruTime, thruTime));
             }
         } else if(ItemPriceTypes.VARIABLE.name().equals(itemPriceTypeName)) {
-            List<OfferItemVariablePrice> offerItemVariablePriceHistory = offerItemControl.getOfferItemVariablePriceHistory(offerItemPrice);
+            var offerItemVariablePriceHistory = offerItemControl.getOfferItemVariablePriceHistory(offerItemPrice);
             
             historyTransfers = new ArrayList<>(offerItemVariablePriceHistory.size());
             
             for(var offerItemVariablePrice : offerItemVariablePriceHistory) {
-                Long unformattedFromTime = filterUnformattedFromTime ? null : offerItemVariablePrice.getFromTime();
-                String fromTime = filterFromTime ? null : formatTypicalDateTime(offerItemVariablePrice.getFromTime());
-                Long unformattedThruTime = filterUnformattedThruTime ? null : offerItemVariablePrice.getThruTime();
-                String thruTime = filterThruTime ? null : formatTypicalDateTime(offerItemVariablePrice.getThruTime());
+                var unformattedFromTime = filterUnformattedFromTime ? null : offerItemVariablePrice.getFromTime();
+                var fromTime = filterFromTime ? null : formatTypicalDateTime(offerItemVariablePrice.getFromTime());
+                var unformattedThruTime = filterUnformattedThruTime ? null : offerItemVariablePrice.getThruTime();
+                var thruTime = filterThruTime ? null : formatTypicalDateTime(offerItemVariablePrice.getThruTime());
                 
                 historyTransfers.add(new HistoryTransfer<>(getOfferItemPriceTransfer(offerItemPrice, null, offerItemVariablePrice),
                         unformattedFromTime, fromTime, unformattedThruTime, thruTime));
@@ -180,12 +180,12 @@ public class OfferItemPriceTransferCache
     }
     
     public OfferItemPriceTransfer getTransfer(OfferItemPrice offerItemPrice) {
-        OfferItemPriceTransfer offerItemPriceTransfer = get(offerItemPrice);
+        var offerItemPriceTransfer = get(offerItemPrice);
         
         if(offerItemPriceTransfer == null) {
             OfferItemFixedPrice offerItemFixedPrice = null;
             OfferItemVariablePrice offerItemVariablePrice = null;
-            String itemPriceTypeName = offerItemPrice.getOfferItem().getItem().getLastDetail().getItemPriceType().getItemPriceTypeName();
+            var itemPriceTypeName = offerItemPrice.getOfferItem().getItem().getLastDetail().getItemPriceType().getItemPriceTypeName();
 
             if(ItemPriceTypes.FIXED.name().equals(itemPriceTypeName)) {
                 offerItemFixedPrice = offerItemControl.getOfferItemFixedPrice(offerItemPrice);

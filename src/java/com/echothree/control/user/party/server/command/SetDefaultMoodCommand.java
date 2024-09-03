@@ -49,8 +49,8 @@ public class SetDefaultMoodCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        String moodName = form.getMoodName();
-        MoodDetailValue moodDetailValue = partyControl.getMoodDetailValueByNameForUpdate(moodName);
+        var moodName = form.getMoodName();
+        var moodDetailValue = partyControl.getMoodDetailValueByNameForUpdate(moodName);
         
         if(moodDetailValue != null) {
             moodDetailValue.setIsDefault(Boolean.TRUE);

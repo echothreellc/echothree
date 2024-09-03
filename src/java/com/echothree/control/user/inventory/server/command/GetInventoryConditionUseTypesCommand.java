@@ -47,7 +47,7 @@ public class GetInventoryConditionUseTypesCommand
     @Override
     protected BaseResult execute() {
         var inventoryControl = Session.getModelController(InventoryControl.class);
-        GetInventoryConditionUseTypesResult result = InventoryResultFactory.getGetInventoryConditionUseTypesResult();
+        var result = InventoryResultFactory.getGetInventoryConditionUseTypesResult();
         
         result.setInventoryConditionUseTypes(inventoryControl.getInventoryConditionUseTypeTransfers(getUserVisit()));
         

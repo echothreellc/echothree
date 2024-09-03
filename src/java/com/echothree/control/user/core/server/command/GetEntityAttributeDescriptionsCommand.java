@@ -68,20 +68,20 @@ public class GetEntityAttributeDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        GetEntityAttributeDescriptionsResult result = CoreResultFactory.getGetEntityAttributeDescriptionsResult();
-        String componentVendorName = form.getComponentVendorName();
-        ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+        var result = CoreResultFactory.getGetEntityAttributeDescriptionsResult();
+        var componentVendorName = form.getComponentVendorName();
+        var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
         
         if(componentVendor != null) {
-            String entityTypeName = form.getEntityTypeName();
-            EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+            var entityTypeName = form.getEntityTypeName();
+            var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
             
             if(entityType != null) {
-                String entityAttributeName = form.getEntityAttributeName();
-                EntityAttribute entityAttribute = coreControl.getEntityAttributeByName(entityType, entityAttributeName);
+                var entityAttributeName = form.getEntityAttributeName();
+                var entityAttribute = coreControl.getEntityAttributeByName(entityType, entityAttributeName);
                 
                 if(entityAttribute != null) {
-                    UserVisit userVisit = getUserVisit();
+                    var userVisit = getUserVisit();
                     
                     result.setEntityAttribute(coreControl.getEntityAttributeTransfer(userVisit, entityAttribute, null));
                     result.setEntityAttributeDescriptions(coreControl.getEntityAttributeDescriptionTransfersByEntityAttribute(userVisit, entityAttribute, null));

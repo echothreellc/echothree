@@ -51,13 +51,13 @@ public class GetCustomerTypePaymentMethodsCommand
     
     @Override
     protected BaseResult execute() {
-        GetCustomerTypePaymentMethodsResult result = CustomerResultFactory.getGetCustomerTypePaymentMethodsResult();
+        var result = CustomerResultFactory.getGetCustomerTypePaymentMethodsResult();
         var customerControl = Session.getModelController(CustomerControl.class);
-        String customerTypeName = form.getCustomerTypeName();
-        CustomerType customerType = customerControl.getCustomerTypeByName(customerTypeName);
+        var customerTypeName = form.getCustomerTypeName();
+        var customerType = customerControl.getCustomerTypeByName(customerTypeName);
         
         if(customerType != null) {
-            UserVisit userVisit = getUserVisit();
+            var userVisit = getUserVisit();
             
             result.setCustomerType(customerControl.getCustomerTypeTransfer(userVisit, customerType));
             result.setCustomerTypePaymentMethods(customerControl.getCustomerTypePaymentMethodTransfersByCustomerType(userVisit,

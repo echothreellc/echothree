@@ -56,7 +56,7 @@ public class GetDateTimeFormatsCommand
     
     @Override
     protected BaseResult getResult(Collection<DateTimeFormat> entities) {
-        GetDateTimeFormatsResult result = PartyResultFactory.getGetDateTimeFormatsResult();
+        var result = PartyResultFactory.getGetDateTimeFormatsResult();
         var partyControl = Session.getModelController(PartyControl.class);
         
         result.setDateTimeFormats(partyControl.getDateTimeFormatTransfers(getUserVisit(), entities));

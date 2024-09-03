@@ -97,44 +97,44 @@ public class CreateContentCategoryCommand
     protected BaseResult execute() {
         var result = ContentResultFactory.getCreateContentCategoryResult();
         var contentControl = Session.getModelController(ContentControl.class);
-        String contentCollectionName = form.getContentCollectionName();
-        ContentCollection contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
+        var contentCollectionName = form.getContentCollectionName();
+        var contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
         ContentCategory contentCategory = null;
         
         if(contentCollection != null) {
-            String contentCatalogName = form.getContentCatalogName();
-            ContentCatalog contentCatalog = contentControl.getContentCatalogByName(contentCollection, contentCatalogName);
+            var contentCatalogName = form.getContentCatalogName();
+            var contentCatalog = contentControl.getContentCatalogByName(contentCollection, contentCatalogName);
             
             if(contentCatalog != null) {
-                String contentCategoryName = form.getContentCategoryName();
+                var contentCategoryName = form.getContentCategoryName();
                 
                 contentCategory = contentControl.getContentCategoryByName(contentCatalog, contentCategoryName);
                 
                 if(contentCategory == null) {
-                    String parentContentCategoryName = form.getParentContentCategoryName();
+                    var parentContentCategoryName = form.getParentContentCategoryName();
                     
                     if(parentContentCategoryName == null)
                         parentContentCategoryName = ContentCategories.ROOT.toString();
-                    
-                    ContentCategory parentContentCategory = parentContentCategoryName == null? null: contentControl.getContentCategoryByName(contentCatalog,
+
+                    var parentContentCategory = parentContentCategoryName == null? null: contentControl.getContentCategoryByName(contentCatalog,
                             parentContentCategoryName);
                     
                     if(parentContentCategory == null) {
                         addExecutionError(ExecutionErrors.UnknownParentContentCategoryName.name(), parentContentCategoryName);
                     } else {
                         var offerControl = Session.getModelController(OfferControl.class);
-                        String defaultOfferName = form.getDefaultOfferName();
-                        String defaultUseName = form.getDefaultUseName();
-                        String defaultSourceName = form.getDefaultSourceName();
+                        var defaultOfferName = form.getDefaultOfferName();
+                        var defaultUseName = form.getDefaultUseName();
+                        var defaultSourceName = form.getDefaultSourceName();
                         OfferUse defaultOfferUse = null;
-                        boolean invalidDefaultOfferOrSourceSpecification = false;
+                        var invalidDefaultOfferOrSourceSpecification = false;
                         
                         if(defaultOfferName != null && defaultUseName != null && defaultSourceName == null) {
-                            Offer defaultOffer = offerControl.getOfferByName(defaultOfferName);
+                            var defaultOffer = offerControl.getOfferByName(defaultOfferName);
                             
                             if(defaultOffer != null) {
                                 var useControl = Session.getModelController(UseControl.class);
-                                Use defaultUse = useControl.getUseByName(defaultUseName);
+                                var defaultUse = useControl.getUseByName(defaultUseName);
                                 
                                 if(defaultUse != null) {
                                     var offerUseControl = Session.getModelController(OfferUseControl.class);
@@ -151,7 +151,7 @@ public class CreateContentCategoryCommand
                             }
                         } else if(defaultOfferName == null && defaultUseName == null && defaultSourceName != null) {
                             var sourceControl = Session.getModelController(SourceControl.class);
-                            Source source = sourceControl.getSourceByName(defaultSourceName);
+                            var source = sourceControl.getSourceByName(defaultSourceName);
                             
                             if(source != null) {
                                 defaultOfferUse = source.getLastDetail().getOfferUse();
@@ -166,19 +166,19 @@ public class CreateContentCategoryCommand
                         }
                         
                         if(!invalidDefaultOfferOrSourceSpecification) {
-                            boolean invalidOfferCompany = false;
+                            var invalidOfferCompany = false;
                             
                             if(defaultOfferUse != null) {
                                 var partyControl = Session.getModelController(PartyControl.class);
-                                Offer defaultOffer = defaultOfferUse.getLastDetail().getOffer();
-                                PartyDepartment defaultPartyDepartment = partyControl.getPartyDepartment(defaultOffer.getLastDetail().getDepartmentParty());
-                                PartyDivision defaultPartyDivision = partyControl.getPartyDivision(defaultPartyDepartment.getDivisionParty());
-                                PartyCompany defaultPartyCompany = partyControl.getPartyCompany(defaultPartyDivision.getCompanyParty());
-                                
-                                Offer catalogOffer = contentCatalog.getLastDetail().getDefaultOfferUse().getLastDetail().getOffer();
-                                PartyDepartment catalogPartyDepartment = partyControl.getPartyDepartment(catalogOffer.getLastDetail().getDepartmentParty());
-                                PartyDivision catalogPartyDivision = partyControl.getPartyDivision(catalogPartyDepartment.getDivisionParty());
-                                PartyCompany catalogPartyCompany = partyControl.getPartyCompany(catalogPartyDivision.getCompanyParty());
+                                var defaultOffer = defaultOfferUse.getLastDetail().getOffer();
+                                var defaultPartyDepartment = partyControl.getPartyDepartment(defaultOffer.getLastDetail().getDepartmentParty());
+                                var defaultPartyDivision = partyControl.getPartyDivision(defaultPartyDepartment.getDivisionParty());
+                                var defaultPartyCompany = partyControl.getPartyCompany(defaultPartyDivision.getCompanyParty());
+
+                                var catalogOffer = contentCatalog.getLastDetail().getDefaultOfferUse().getLastDetail().getOffer();
+                                var catalogPartyDepartment = partyControl.getPartyDepartment(catalogOffer.getLastDetail().getDepartmentParty());
+                                var catalogPartyDivision = partyControl.getPartyDivision(catalogPartyDepartment.getDivisionParty());
+                                var catalogPartyCompany = partyControl.getPartyCompany(catalogPartyDivision.getCompanyParty());
                                 
                                 if(!defaultPartyCompany.equals(catalogPartyCompany)) {
                                     invalidOfferCompany = true;
@@ -186,15 +186,15 @@ public class CreateContentCategoryCommand
                             }
                             
                             if(!invalidOfferCompany) {
-                                String contentCategoryItemSelectorName = form.getContentCategoryItemSelectorName();
+                                var contentCategoryItemSelectorName = form.getContentCategoryItemSelectorName();
                                 Selector contentCategoryItemSelector = null;
                                 
                                 if(contentCategoryItemSelectorName != null) {
                                     var selectorControl = Session.getModelController(SelectorControl.class);
-                                    SelectorKind selectorKind = selectorControl.getSelectorKindByName(SelectorKinds.ITEM.name());
+                                    var selectorKind = selectorControl.getSelectorKindByName(SelectorKinds.ITEM.name());
                                     
                                     if(selectorKind != null) {
-                                        SelectorType selectorType = selectorControl.getSelectorTypeByName(selectorKind, SelectorTypes.CONTENT_CATEGORY.name());
+                                        var selectorType = selectorControl.getSelectorTypeByName(selectorKind, SelectorTypes.CONTENT_CATEGORY.name());
                                         
                                         if(selectorType != null) {
                                             contentCategoryItemSelector = selectorControl.getSelectorByName(selectorType, contentCategoryItemSelectorName);
@@ -212,7 +212,7 @@ public class CreateContentCategoryCommand
                                     var isDefault = Boolean.valueOf(form.getIsDefault());
                                     var sortOrder = Integer.valueOf(form.getSortOrder());
                                     var description = form.getDescription();
-                                    PartyPK createdBy = getPartyPK();
+                                    var createdBy = getPartyPK();
                                     
                                     contentCategory = contentControl.createContentCategory(contentCatalog, contentCategoryName,
                                             parentContentCategory, defaultOfferUse, contentCategoryItemSelector, isDefault,

@@ -55,20 +55,20 @@ public class CreateForumPartyRoleCommand
     @Override
     protected BaseResult execute() {
         var forumControl = Session.getModelController(ForumControl.class);
-        String forumName = form.getForumName();
-        Forum forum = forumControl.getForumByName(forumName);
+        var forumName = form.getForumName();
+        var forum = forumControl.getForumByName(forumName);
         
         if(forum != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String partyName = form.getPartyName();
-            Party party = partyControl.getPartyByName(partyName);
+            var partyName = form.getPartyName();
+            var party = partyControl.getPartyByName(partyName);
             
             if(party != null) {
-                String forumRoleTypeName = form.getForumRoleTypeName();
-                ForumRoleType forumRoleType = forumControl.getForumRoleTypeByName(forumRoleTypeName);
+                var forumRoleTypeName = form.getForumRoleTypeName();
+                var forumRoleType = forumControl.getForumRoleTypeByName(forumRoleTypeName);
                 
                 if(forumRoleType != null) {
-                    ForumPartyRole forumPartyRole = forumControl.getForumPartyRole(forum, party, forumRoleType);
+                    var forumPartyRole = forumControl.getForumPartyRole(forum, party, forumRoleType);
                     
                     if(forumPartyRole == null) {
                         forumControl.createForumPartyRole(forum, party, forumRoleType, getPartyPK());

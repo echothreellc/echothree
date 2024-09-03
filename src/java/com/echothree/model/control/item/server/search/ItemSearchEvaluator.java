@@ -184,7 +184,7 @@ public class ItemSearchEvaluator
     @Override
     public SortField[] getSortFields(String searchSortOrderName) {
         SortField[] sortFields = null;
-        boolean reverse = searchSortDirection.getLastDetail().getSearchSortDirectionName().equals(SearchSortDirections.DESCENDING.name());
+        var reverse = searchSortDirection.getLastDetail().getSearchSortDirectionName().equals(SearchSortDirections.DESCENDING.name());
         
         if(searchSortOrderName.equals(SearchSortOrders.SCORE.name())) {
             sortFields = new SortField[]{
@@ -219,7 +219,7 @@ public class ItemSearchEvaluator
             if(resultSet == null || resultSet.size() > 0) {
                 if(q != null) {
                     if(resultSet == null || resultSet.size() > 0) {
-                        EntityInstancePKHolder entityInstancePKHolder = executeQuery(eea);
+                        var entityInstancePKHolder = executeQuery(eea);
                         
                         if(resultSet == null) {
                             resultSet = entityInstancePKHolder;
@@ -232,7 +232,7 @@ public class ItemSearchEvaluator
             
             if(resultSet == null || resultSet.size() > 0) {
                 if(itemType != null) {
-                    EntityInstancePKHolder entityInstancePKHolder = getEntityInstancePKHolderByItemType(itemType);
+                    var entityInstancePKHolder = getEntityInstancePKHolderByItemType(itemType);
                     
                     if(resultSet == null) {
                         resultSet = entityInstancePKHolder;
@@ -244,7 +244,7 @@ public class ItemSearchEvaluator
             
             if(resultSet == null || resultSet.size() > 0) {
                 if(itemUseType != null) {
-                    EntityInstancePKHolder entityInstancePKHolder = getEntityInstancePKHolderByItemUseType(itemUseType);
+                    var entityInstancePKHolder = getEntityInstancePKHolderByItemUseType(itemUseType);
                     
                     if(resultSet == null) {
                         resultSet = entityInstancePKHolder;
@@ -256,7 +256,7 @@ public class ItemSearchEvaluator
 
             if(resultSet == null || resultSet.size() > 0) {
                 if(itemStatusWorkflowStep != null) {
-                    EntityInstancePKHolder entityInstancePKHolder = getEntityInstancePKHolderByItemStatusWorkflowStep(itemStatusWorkflowStep);
+                    var entityInstancePKHolder = getEntityInstancePKHolderByItemStatusWorkflowStep(itemStatusWorkflowStep);
 
                     if(resultSet == null) {
                         resultSet = entityInstancePKHolder;
@@ -271,7 +271,7 @@ public class ItemSearchEvaluator
                     EntityInstancePKHolder entityInstancePKHolder = null;
                     
                     for(var workflowStep : itemStatusWorkflowSteps) {
-                        EntityInstancePKHolder individualPKHolder = getEntityInstancePKHolderByItemStatusWorkflowStep(workflowStep);
+                        var individualPKHolder = getEntityInstancePKHolderByItemStatusWorkflowStep(workflowStep);
                         
                         if(entityInstancePKHolder == null) {
                             entityInstancePKHolder = individualPKHolder;
@@ -289,7 +289,7 @@ public class ItemSearchEvaluator
             }
         } else {
             var itemControl = Session.getModelController(ItemControl.class);
-            Item item = itemControl.getItemByNameThenAlias(itemNameOrAlias);
+            var item = itemControl.getItemByNameThenAlias(itemNameOrAlias);
             
             if(item != null) {
                 resultSet = new EntityInstancePKHolder(1);

@@ -37,14 +37,14 @@ public class FilterKindTransferCache
 
     @Override
     public FilterKindTransfer getTransfer(FilterKind filterKind) {
-        FilterKindTransfer filterKindTransfer = get(filterKind);
+        var filterKindTransfer = get(filterKind);
         
         if(filterKindTransfer == null) {
-            FilterKindDetail filterKindDetail = filterKind.getLastDetail();
-            String filterKindName = filterKindDetail.getFilterKindName();
-            Boolean isDefault = filterKindDetail.getIsDefault();
-            Integer sortOrder = filterKindDetail.getSortOrder();
-            String description = filterControl.getBestFilterKindDescription(filterKind, getLanguage());
+            var filterKindDetail = filterKind.getLastDetail();
+            var filterKindName = filterKindDetail.getFilterKindName();
+            var isDefault = filterKindDetail.getIsDefault();
+            var sortOrder = filterKindDetail.getSortOrder();
+            var description = filterControl.getBestFilterKindDescription(filterKind, getLanguage());
             
             filterKindTransfer = new FilterKindTransfer(filterKindName, isDefault, sortOrder, description);
             put(filterKind, filterKindTransfer);

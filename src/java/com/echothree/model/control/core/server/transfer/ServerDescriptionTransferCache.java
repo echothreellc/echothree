@@ -35,11 +35,11 @@ public class ServerDescriptionTransferCache
     }
     
     public ServerDescriptionTransfer getServerDescriptionTransfer(ServerDescription serverDescription) {
-        ServerDescriptionTransfer serverDescriptionTransfer = get(serverDescription);
+        var serverDescriptionTransfer = get(serverDescription);
         
         if(serverDescriptionTransfer == null) {
-            ServerTransfer serverTransfer = coreControl.getServerTransfer(userVisit, serverDescription.getServer());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, serverDescription.getLanguage());
+            var serverTransfer = coreControl.getServerTransfer(userVisit, serverDescription.getServer());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, serverDescription.getLanguage());
             
             serverDescriptionTransfer = new ServerDescriptionTransfer(languageTransfer, serverTransfer, serverDescription.getDescription());
             put(serverDescription, serverDescriptionTransfer);

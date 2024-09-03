@@ -92,15 +92,15 @@ public class PartyTag
     public int doStartTag()
             throws JspException {
         try {
-            GetPartyForm commandForm = PartyUtil.getHome().getGetPartyForm();
+            var commandForm = PartyUtil.getHome().getGetPartyForm();
             
             commandForm.setPartyName(partyName);
 
             setOptions(options, null, commandForm);
 
             commandForm.setTransferProperties(transferProperties);
-            
-            CommandResult commandResult = PartyUtil.getHome().getParty(getUserVisitPK(), commandForm);
+
+            var commandResult = PartyUtil.getHome().getParty(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -108,8 +108,8 @@ public class PartyTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetPartyResult result = (GetPartyResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetPartyResult)executionResult.getResult();
 
                 pageContext.setAttribute(var, result.getParty(), scope);
             }

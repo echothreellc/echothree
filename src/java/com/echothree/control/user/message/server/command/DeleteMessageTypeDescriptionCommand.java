@@ -57,25 +57,25 @@ public class DeleteMessageTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String componentVendorName = form.getComponentVendorName();
-        ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+        var componentVendorName = form.getComponentVendorName();
+        var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
         
         if(componentVendor != null) {
-            String entityTypeName = form.getEntityTypeName();
-            EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+            var entityTypeName = form.getEntityTypeName();
+            var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
             
             if(entityType != null) {
                 var messageControl = Session.getModelController(MessageControl.class);
-                String messageTypeName = form.getMessageTypeName();
-                MessageType messageType = messageControl.getMessageTypeByName(entityType, messageTypeName);
+                var messageTypeName = form.getMessageTypeName();
+                var messageType = messageControl.getMessageTypeByName(entityType, messageTypeName);
                 
                 if(messageType != null) {
                     var partyControl = Session.getModelController(PartyControl.class);
-                    String languageIsoName = form.getLanguageIsoName();
-                    Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                    var languageIsoName = form.getLanguageIsoName();
+                    var language = partyControl.getLanguageByIsoName(languageIsoName);
                     
                     if(language != null) {
-                        MessageTypeDescription messageTypeDescription = messageControl.getMessageTypeDescriptionForUpdate(messageType, language);
+                        var messageTypeDescription = messageControl.getMessageTypeDescriptionForUpdate(messageType, language);
                         
                         if(messageTypeDescription != null) {
                             messageControl.deleteMessageTypeDescription(messageTypeDescription, getPartyPK());

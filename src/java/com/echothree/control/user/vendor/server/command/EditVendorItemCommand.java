@@ -102,10 +102,10 @@ public class EditVendorItemCommand
                 result.setVendorItem(vendorControl.getVendorItemTransfer(getUserVisit(), vendorItem));
 
                 if(lockEntity(vendorItem)) {
-                    VendorItemEdit edit = VendorEditFactory.getVendorItemEdit();
-                    VendorItemDetail vendorItemDetail = vendorItem.getLastDetail();
-                    CancellationPolicy cancellationPolicy = vendorItemDetail.getCancellationPolicy();
-                    ReturnPolicy returnPolicy = vendorItemDetail.getReturnPolicy();
+                    var edit = VendorEditFactory.getVendorItemEdit();
+                    var vendorItemDetail = vendorItem.getLastDetail();
+                    var cancellationPolicy = vendorItemDetail.getCancellationPolicy();
+                    var returnPolicy = vendorItemDetail.getReturnPolicy();
 
                     result.setEdit(edit);
                     edit.setVendorItemName(vendorItemDetail.getVendorItemName());
@@ -127,23 +127,23 @@ public class EditVendorItemCommand
                 var duplicateVendorItem = vendorControl.getVendorItemByVendorPartyAndVendorItemName(vendorItem.getLastDetail().getVendorParty(), vendorItemName);
 
                 if(duplicateVendorItem == null || vendorItem.equals(duplicateVendorItem)) {
-                    String cancellationPolicyName = edit.getCancellationPolicyName();
+                    var cancellationPolicyName = edit.getCancellationPolicyName();
                     CancellationPolicy cancellationPolicy = null;
 
                     if(cancellationPolicyName != null) {
                         var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
-                        CancellationKind cancellationKind = cancellationPolicyControl.getCancellationKindByName(CancellationKinds.VENDOR_CANCELLATION.name());
+                        var cancellationKind = cancellationPolicyControl.getCancellationKindByName(CancellationKinds.VENDOR_CANCELLATION.name());
 
                         cancellationPolicy = cancellationPolicyControl.getCancellationPolicyByName(cancellationKind, cancellationPolicyName);
                     }
 
                     if(cancellationPolicyName == null || cancellationPolicy != null) {
-                        String returnPolicyName = edit.getReturnPolicyName();
+                        var returnPolicyName = edit.getReturnPolicyName();
                         ReturnPolicy returnPolicy = null;
 
                         if(returnPolicyName != null) {
                             var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
-                            ReturnKind returnKind = returnPolicyControl.getReturnKindByName(ReturnKinds.VENDOR_RETURN.name());
+                            var returnKind = returnPolicyControl.getReturnKindByName(ReturnKinds.VENDOR_RETURN.name());
 
                             returnPolicy = returnPolicyControl.getReturnPolicyByName(returnKind, returnPolicyName);
                         }
@@ -151,7 +151,7 @@ public class EditVendorItemCommand
                         if(returnPolicyName == null || returnPolicy != null) {
                             if(lockEntityForUpdate(vendorItem)) {
                                 try {
-                                    VendorItemDetailValue vendorItemDetailValue = vendorControl.getVendorItemDetailValueForUpdate(vendorItem);
+                                    var vendorItemDetailValue = vendorControl.getVendorItemDetailValueForUpdate(vendorItem);
 
                                     vendorItemDetailValue.setVendorItemName(edit.getVendorItemName());
                                     vendorItemDetailValue.setDescription(edit.getDescription());

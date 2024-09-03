@@ -83,33 +83,33 @@ public class CreateLeaveCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        String partyName = form.getPartyName();
-        Party party = partyControl.getPartyByName(partyName);
+        var partyName = form.getPartyName();
+        var party = partyControl.getPartyByName(partyName);
 
         if(party != null) {
-            String companyName = form.getCompanyName();
-            PartyCompany partyCompany = partyControl.getPartyCompanyByName(companyName);
+            var companyName = form.getCompanyName();
+            var partyCompany = partyControl.getPartyCompanyByName(companyName);
 
             if(partyCompany != null) {
                 var employeeControl = Session.getModelController(EmployeeControl.class);
-                String leaveTypeName = form.getLeaveTypeName();
-                LeaveType leaveType = employeeControl.getLeaveTypeByName(leaveTypeName);
+                var leaveTypeName = form.getLeaveTypeName();
+                var leaveType = employeeControl.getLeaveTypeByName(leaveTypeName);
 
                 if(leaveTypeName == null || leaveType != null) {
-                    String leaveReasonName = form.getLeaveReasonName();
-                    LeaveReason leaveReason = employeeControl.getLeaveReasonByName(leaveReasonName);
+                    var leaveReasonName = form.getLeaveReasonName();
+                    var leaveReason = employeeControl.getLeaveReasonByName(leaveReasonName);
 
                     if(leaveReasonName == null || leaveReason != null) {
-                        UnitOfMeasureTypeLogic unitOfMeasureTypeLogic = UnitOfMeasureTypeLogic.getInstance();
-                        Long totalTime = unitOfMeasureTypeLogic.checkUnitOfMeasure(this, UomConstants.UnitOfMeasureKindUseType_TIME,
+                        var unitOfMeasureTypeLogic = UnitOfMeasureTypeLogic.getInstance();
+                        var totalTime = unitOfMeasureTypeLogic.checkUnitOfMeasure(this, UomConstants.UnitOfMeasureKindUseType_TIME,
                                 form.getTotalTime(), form.getTotalTimeUnitOfMeasureTypeName(),
                                 null, ExecutionErrors.MissingRequiredTotalTime.name(), null, ExecutionErrors.MissingRequiredTotalTimeUnitOfMeasureTypeName.name(),
                                 null, ExecutionErrors.UnknownTotalTimeUnitOfMeasureTypeName.name());
 
                         if(!hasExecutionErrors()) {
-                            PartyPK createdBy = getPartyPK();
+                            var createdBy = getPartyPK();
                             WorkflowEntrance leaveStatus = null;
-                            String leaveStatusChoice = form.getLeaveStatus();
+                            var leaveStatusChoice = form.getLeaveStatus();
 
                             if(leaveStatusChoice != null) {
                                 var workflowControl = Session.getModelController(WorkflowControl.class);
@@ -122,9 +122,9 @@ public class CreateLeaveCommand
                             }
 
                             if(!hasExecutionErrors()) {
-                                Long startTime = Long.valueOf(form.getStartTime());
-                                String strEndTime = form.getEndTime();
-                                Long endTime = strEndTime == null ? null : Long.valueOf(strEndTime);
+                                var startTime = Long.valueOf(form.getStartTime());
+                                var strEndTime = form.getEndTime();
+                                var endTime = strEndTime == null ? null : Long.valueOf(strEndTime);
 
                                 if(endTime == null || endTime > startTime) {
                                     LeaveLogic.getInstance().createLeave(session, party, partyCompany.getParty(), leaveType, leaveReason, startTime, endTime,

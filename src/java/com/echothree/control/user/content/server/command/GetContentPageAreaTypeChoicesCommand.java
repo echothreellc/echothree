@@ -63,9 +63,9 @@ public class GetContentPageAreaTypeChoicesCommand
     @Override
     protected BaseResult execute() {
         var contentControl = Session.getModelController(ContentControl.class);
-        GetContentPageAreaTypeChoicesResult result = ContentResultFactory.getGetContentPageAreaTypeChoicesResult();
-        String defaultContentPageAreaTypeChoice = form.getDefaultContentPageAreaTypeChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = ContentResultFactory.getGetContentPageAreaTypeChoicesResult();
+        var defaultContentPageAreaTypeChoice = form.getDefaultContentPageAreaTypeChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setContentPageAreaTypeChoices(contentControl.getContentPageAreaTypeChoices(defaultContentPageAreaTypeChoice,
                 getPreferredLanguage(), allowNullChoice));

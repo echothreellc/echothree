@@ -81,20 +81,20 @@ public class CreateContactEmailAddressCommand
 
     @Override
     protected BaseResult execute() {
-        CreateContactEmailAddressResult result = ContactResultFactory.getCreateContactEmailAddressResult();
+        var result = ContactResultFactory.getCreateContactEmailAddressResult();
         var partyControl = Session.getModelController(PartyControl.class);
-        String partyName = form.getPartyName();
-        Party party = partyName == null ? getParty() : partyControl.getPartyByName(partyName);
+        var partyName = form.getPartyName();
+        var party = partyName == null ? getParty() : partyControl.getPartyByName(partyName);
         
         if(party != null) {
             BasePK createdBy = getPartyPK();
-            String emailAddress = form.getEmailAddress();
-            Boolean allowSolicitation = Boolean.valueOf(form.getAllowSolicitation());
+            var emailAddress = form.getEmailAddress();
+            var allowSolicitation = Boolean.valueOf(form.getAllowSolicitation());
             var description = form.getDescription();
-            
-            PartyContactMechanism partyContactMechanism = ContactEmailAddressLogic.getInstance().createContactEmailAddress(party,
+
+            var partyContactMechanism = ContactEmailAddressLogic.getInstance().createContactEmailAddress(party,
                     emailAddress, allowSolicitation, description, null, createdBy);
-            ContactMechanism contactMechanism = partyContactMechanism.getLastDetail().getContactMechanism();
+            var contactMechanism = partyContactMechanism.getLastDetail().getContactMechanism();
             
             result.setContactMechanismName(contactMechanism.getLastDetail().getContactMechanismName());
             result.setEntityRef(contactMechanism.getPrimaryKey().getEntityRef());

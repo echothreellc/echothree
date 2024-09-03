@@ -61,38 +61,38 @@ public class GetEntityMessageCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        GetEntityMessageResult result = MessageResultFactory.getGetEntityMessageResult();
-        String entityRef = form.getEntityRef();
-        EntityInstance entityInstance = coreControl.getEntityInstanceByEntityRef(entityRef);
+        var result = MessageResultFactory.getGetEntityMessageResult();
+        var entityRef = form.getEntityRef();
+        var entityInstance = coreControl.getEntityInstanceByEntityRef(entityRef);
         
         if(entityInstance != null) {
-            String componentVendorName = form.getComponentVendorName();
-            ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
-            UserVisit userVisit = getUserVisit();
+            var componentVendorName = form.getComponentVendorName();
+            var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+            var userVisit = getUserVisit();
             
             result.setComponentVendor(coreControl.getComponentVendorTransfer(userVisit, componentVendor));
             
             if(componentVendor != null) {
-                String entityTypeName = form.getEntityTypeName();
-                EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+                var entityTypeName = form.getEntityTypeName();
+                var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
                 
                 result.setEntityType(coreControl.getEntityTypeTransfer(userVisit, entityType));
                 
                 if(entityType != null) {
                     var messageControl = Session.getModelController(MessageControl.class);
-                    String messageTypeName = form.getMessageTypeName();
-                    MessageType messageType = messageControl.getMessageTypeByName(entityType, messageTypeName);
+                    var messageTypeName = form.getMessageTypeName();
+                    var messageType = messageControl.getMessageTypeByName(entityType, messageTypeName);
                     
                     result.setEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, entityInstance, false, false, false, false, false, false));
                     
                     if(messageType != null) {
-                        String messageName = form.getMessageName();
-                        Message message = messageControl.getMessageByName(messageType, messageName);
+                        var messageName = form.getMessageName();
+                        var message = messageControl.getMessageByName(messageType, messageName);
                         
                         result.setMessageType(messageControl.getMessageTypeTransfer(userVisit, messageType));
                         
                         if(message != null) {
-                            EntityMessage entityMessage = messageControl.getEntityMessage(entityInstance, message);
+                            var entityMessage = messageControl.getEntityMessage(entityInstance, message);
                             
                             result.setMessage(messageControl.getMessageTransfer(userVisit, message));
                             

@@ -44,13 +44,13 @@ public class FilterAdjustmentPercentTransferCache
 
     @Override
     public FilterAdjustmentPercentTransfer getTransfer(FilterAdjustmentPercent filterAdjustmentPercent) {
-        FilterAdjustmentPercentTransfer filterAdjustmentPercentTransfer = get(filterAdjustmentPercent);
+        var filterAdjustmentPercentTransfer = get(filterAdjustmentPercent);
         
         if(filterAdjustmentPercentTransfer == null) {
-            FilterAdjustmentTransfer filterAdjustment = filterControl.getFilterAdjustmentTransfer(userVisit, filterAdjustmentPercent.getFilterAdjustment());
-            UnitOfMeasureTypeTransfer unitOfMeasureType = uomControl.getUnitOfMeasureTypeTransfer(userVisit, filterAdjustmentPercent.getUnitOfMeasureType());
-            CurrencyTransfer currency = accountingControl.getCurrencyTransfer(userVisit, filterAdjustmentPercent.getCurrency());
-            String percent = PercentUtils.getInstance().formatFractionalPercent(filterAdjustmentPercent.getPercent());
+            var filterAdjustment = filterControl.getFilterAdjustmentTransfer(userVisit, filterAdjustmentPercent.getFilterAdjustment());
+            var unitOfMeasureType = uomControl.getUnitOfMeasureTypeTransfer(userVisit, filterAdjustmentPercent.getUnitOfMeasureType());
+            var currency = accountingControl.getCurrencyTransfer(userVisit, filterAdjustmentPercent.getCurrency());
+            var percent = PercentUtils.getInstance().formatFractionalPercent(filterAdjustmentPercent.getPercent());
             
             filterAdjustmentPercentTransfer = new FilterAdjustmentPercentTransfer(filterAdjustment, unitOfMeasureType, currency, percent);
             

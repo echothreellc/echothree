@@ -33,12 +33,12 @@ public class InventoryLocationGroupDescriptionTransferCache
     
     @Override
     public InventoryLocationGroupDescriptionTransfer getTransfer(InventoryLocationGroupDescription inventoryLocationGroupDescription) {
-        InventoryLocationGroupDescriptionTransfer inventoryLocationGroupDescriptionTransfer = get(inventoryLocationGroupDescription);
+        var inventoryLocationGroupDescriptionTransfer = get(inventoryLocationGroupDescription);
         
         if(inventoryLocationGroupDescriptionTransfer == null) {
-            InventoryLocationGroupTransferCache inventoryLocationGroupTransferCache = inventoryControl.getInventoryTransferCaches(userVisit).getInventoryLocationGroupTransferCache();
-            InventoryLocationGroupTransfer inventoryLocationGroupTransfer = inventoryLocationGroupTransferCache.getTransfer(inventoryLocationGroupDescription.getInventoryLocationGroup());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, inventoryLocationGroupDescription.getLanguage());
+            var inventoryLocationGroupTransferCache = inventoryControl.getInventoryTransferCaches(userVisit).getInventoryLocationGroupTransferCache();
+            var inventoryLocationGroupTransfer = inventoryLocationGroupTransferCache.getTransfer(inventoryLocationGroupDescription.getInventoryLocationGroup());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, inventoryLocationGroupDescription.getLanguage());
             
             inventoryLocationGroupDescriptionTransfer = new InventoryLocationGroupDescriptionTransfer(languageTransfer, inventoryLocationGroupTransfer, inventoryLocationGroupDescription.getDescription());
             put(inventoryLocationGroupDescription, inventoryLocationGroupDescriptionTransfer);

@@ -80,8 +80,8 @@ public class JobControl
     // --------------------------------------------------------------------------------
     
     public Job createJob(String jobName, Party runAsParty, Integer sortOrder, BasePK createdBy) {
-        Job job = JobFactory.getInstance().create();
-        JobDetail jobDetail = JobDetailFactory.getInstance().create(job, jobName, runAsParty, sortOrder,
+        var job = JobFactory.getInstance().create();
+        var jobDetail = JobDetailFactory.getInstance().create(job, jobName, runAsParty, sortOrder,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -113,8 +113,8 @@ public class JobControl
                         "WHERE jb_activedetailid = jbdt_jobdetailid AND jbdt_jobname = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = JobFactory.getInstance().prepareStatement(query);
+
+            var ps = JobFactory.getInstance().prepareStatement(query);
             
             ps.setString(1, jobName);
             
@@ -156,8 +156,8 @@ public class JobControl
                     "WHERE jb_activedetailid = jbdt_jobdetailid " +
                     "FOR UPDATE";
         }
-        
-        PreparedStatement ps = JobFactory.getInstance().prepareStatement(query);
+
+        var ps = JobFactory.getInstance().prepareStatement(query);
         
         return JobFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
     }
@@ -175,9 +175,9 @@ public class JobControl
     }
     
     public List<JobTransfer> getJobTransfers(UserVisit userVisit) {
-        List<Job> jobs = getJobs();
+        var jobs = getJobs();
         List<JobTransfer> jobTransfers = new ArrayList<>(jobs.size());
-        JobTransferCache jobTransferCache = getJobTransferCaches(userVisit).getJobTransferCache();
+        var jobTransferCache = getJobTransferCaches(userVisit).getJobTransferCache();
         
         jobs.forEach((job) ->
                 jobTransfers.add(jobTransferCache.getJobTransfer(job))
@@ -195,8 +195,8 @@ public class JobControl
             workflowControl.getWorkflowEntranceChoices(jobStatusChoicesBean, defaultJobStatusChoice, language, allowNullChoice,
                     workflowControl.getWorkflowByName(JobStatusConstants.Workflow_JOB_STATUS), partyPK);
         } else {
-            EntityInstance entityInstance = getCoreControl().getEntityInstanceByBasePK(job.getPrimaryKey());
-            WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(JobStatusConstants.Workflow_JOB_STATUS,
+            var entityInstance = getCoreControl().getEntityInstanceByBasePK(job.getPrimaryKey());
+            var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(JobStatusConstants.Workflow_JOB_STATUS,
                     entityInstance);
             
             workflowControl.getWorkflowDestinationChoices(jobStatusChoicesBean, defaultJobStatusChoice, language, allowNullChoice,
@@ -208,10 +208,10 @@ public class JobControl
     
     public void setJobStatus(ExecutionErrorAccumulator eea, Job job, String jobStatusChoice, PartyPK modifiedBy) {
         var workflowControl = getWorkflowControl();
-        EntityInstance entityInstance = getEntityInstanceByBaseEntity(job);
-        WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(JobStatusConstants.Workflow_JOB_STATUS,
+        var entityInstance = getEntityInstanceByBaseEntity(job);
+        var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(JobStatusConstants.Workflow_JOB_STATUS,
                 entityInstance);
-        WorkflowDestination workflowDestination = jobStatusChoice == null? null: workflowControl.getWorkflowDestinationByName(workflowEntityStatus.getWorkflowStep(), jobStatusChoice);
+        var workflowDestination = jobStatusChoice == null? null: workflowControl.getWorkflowDestinationByName(workflowEntityStatus.getWorkflowStep(), jobStatusChoice);
         
         if(workflowDestination != null || jobStatusChoice == null) {
             workflowControl.transitionEntityInWorkflow(eea, workflowEntityStatus, workflowDestination, null, modifiedBy);
@@ -221,17 +221,17 @@ public class JobControl
     }
     
     public void updateJobFromValue(JobDetailValue jobDetailValue, BasePK updatedBy) {
-        Job job = JobFactory.getInstance().getEntityFromPK(session,
+        var job = JobFactory.getInstance().getEntityFromPK(session,
                 EntityPermission.READ_WRITE, jobDetailValue.getJobPK());
-        JobDetail jobDetail = job.getActiveDetailForUpdate();
+        var jobDetail = job.getActiveDetailForUpdate();
         
         jobDetail.setThruTime(session.START_TIME_LONG);
         jobDetail.store();
-        
-        JobPK jobPK = jobDetail.getJobPK();
-        String jobName = jobDetailValue.getJobName();
-        PartyPK runAsPartyPK = jobDetailValue.getRunAsPartyPK();
-        Integer sortOrder = jobDetailValue.getSortOrder();
+
+        var jobPK = jobDetail.getJobPK();
+        var jobName = jobDetailValue.getJobName();
+        var runAsPartyPK = jobDetailValue.getRunAsPartyPK();
+        var sortOrder = jobDetailValue.getSortOrder();
         
         jobDetail = JobDetailFactory.getInstance().create(jobPK, jobName, runAsPartyPK, sortOrder,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -245,8 +245,8 @@ public class JobControl
     
     public void deleteJob(Job job, BasePK deletedBy) {
         deleteJobDescriptionsByJob(job, deletedBy);
-        
-        JobDetail jobDetail = job.getLastDetailForUpdate();
+
+        var jobDetail = job.getLastDetailForUpdate();
         jobDetail.setThruTime(session.START_TIME_LONG);
         job.setActiveDetail(null);
         job.store();
@@ -262,7 +262,7 @@ public class JobControl
     
     public JobDescription createJobDescription(Job job, Language language,
             String description, BasePK createdBy) {
-        JobDescription jobDescription = JobDescriptionFactory.getInstance().create(session,
+        var jobDescription = JobDescriptionFactory.getInstance().create(session,
                 job, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(job.getPrimaryKey(), EventTypes.MODIFY, jobDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -286,8 +286,8 @@ public class JobControl
                         "WHERE jbd_jb_jobid = ? AND jbd_lang_languageid = ? AND jbd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = JobDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = JobDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, job.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -334,8 +334,8 @@ public class JobControl
                         "WHERE jbd_jb_jobid = ? AND jbd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = JobDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = JobDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, job.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -358,7 +358,7 @@ public class JobControl
     
     public String getBestJobDescription(Job job, Language language) {
         String description;
-        JobDescription jobDescription = getJobDescription(job, language);
+        var jobDescription = getJobDescription(job, language);
         
         if(jobDescription == null && !language.getIsDefault()) {
             jobDescription = getJobDescription(job, getPartyControl().getDefaultLanguage());
@@ -378,7 +378,7 @@ public class JobControl
     }
     
     public List<JobDescriptionTransfer> getJobDescriptionTransfersByJob(UserVisit userVisit, Job job) {
-        List<JobDescription> jobDescriptions = getJobDescriptionsByJob(job);
+        var jobDescriptions = getJobDescriptionsByJob(job);
         List<JobDescriptionTransfer> jobDescriptionTransfers = new ArrayList<>(jobDescriptions.size());
         
         jobDescriptions.forEach((jobDescription) -> {
@@ -390,15 +390,15 @@ public class JobControl
     
     public void updateJobDescriptionFromValue(JobDescriptionValue jobDescriptionValue, BasePK updatedBy) {
         if(jobDescriptionValue.hasBeenModified()) {
-            JobDescription jobDescription = JobDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var jobDescription = JobDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      jobDescriptionValue.getPrimaryKey());
             
             jobDescription.setThruTime(session.START_TIME_LONG);
             jobDescription.store();
-            
-            Job job = jobDescription.getJob();
-            Language language = jobDescription.getLanguage();
-            String description = jobDescriptionValue.getDescription();
+
+            var job = jobDescription.getJob();
+            var language = jobDescription.getLanguage();
+            var description = jobDescriptionValue.getDescription();
             
             jobDescription = JobDescriptionFactory.getInstance().create(job, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -415,7 +415,7 @@ public class JobControl
     }
     
     public void deleteJobDescriptionsByJob(Job job, BasePK deletedBy) {
-        List<JobDescription> jobDescriptions = getJobDescriptionsByJobForUpdate(job);
+        var jobDescriptions = getJobDescriptionsByJobForUpdate(job);
         
         jobDescriptions.forEach((jobDescription) -> 
                 deleteJobDescription(jobDescription, deletedBy)
@@ -446,8 +446,8 @@ public class JobControl
                         "WHERE jbst_jb_jobid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = JobStatusFactory.getInstance().prepareStatement(query);
+
+            var ps = JobStatusFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, job.getPrimaryKey().getEntityId());
             
@@ -468,7 +468,7 @@ public class JobControl
     }
     
     public void removeJobStatusByJob(Job job) {
-        JobStatus jobStatus = getJobStatusForUpdate(job);
+        var jobStatus = getJobStatusForUpdate(job);
         
         if(jobStatus != null) {
             jobStatus.remove();

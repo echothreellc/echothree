@@ -65,9 +65,9 @@ public class GetSearchSortOrdersCommand
     @Override
     protected BaseResult execute() {
         var searchControl = Session.getModelController(SearchControl.class);
-        GetSearchSortOrdersResult result = SearchResultFactory.getGetSearchSortOrdersResult();
-        String searchKindName = form.getSearchKindName();
-        SearchKind searchKind = searchControl.getSearchKindByName(searchKindName);
+        var result = SearchResultFactory.getGetSearchSortOrdersResult();
+        var searchKindName = form.getSearchKindName();
+        var searchKind = searchControl.getSearchKindByName(searchKindName);
         
         if(searchKind != null) {
             result.setSearchKind(searchControl.getSearchKindTransfer(getUserVisit(), searchKind));

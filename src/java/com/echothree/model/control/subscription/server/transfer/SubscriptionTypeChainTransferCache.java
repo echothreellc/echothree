@@ -41,13 +41,13 @@ public class SubscriptionTypeChainTransferCache
     }
     
     public SubscriptionTypeChainTransfer getSubscriptionTypeChainTransfer(SubscriptionTypeChain subscriptionTypeChain) {
-        SubscriptionTypeChainTransfer subscriptionTypeChainTransfer = get(subscriptionTypeChain);
+        var subscriptionTypeChainTransfer = get(subscriptionTypeChain);
         
         if(subscriptionTypeChainTransfer == null) {
-            SubscriptionTypeTransfer subscriptionType = subscriptionControl.getSubscriptionTypeTransfer(userVisit, subscriptionTypeChain.getSubscriptionType());
-            ChainTransfer chain = chainControl.getChainTransfer(userVisit, subscriptionTypeChain.getChain());
-            Long unformattedRemainingTime = subscriptionTypeChain.getRemainingTime();
-            String remainingTime = formatUnitOfMeasure(timeUnitOfMeasureKind, unformattedRemainingTime);
+            var subscriptionType = subscriptionControl.getSubscriptionTypeTransfer(userVisit, subscriptionTypeChain.getSubscriptionType());
+            var chain = chainControl.getChainTransfer(userVisit, subscriptionTypeChain.getChain());
+            var unformattedRemainingTime = subscriptionTypeChain.getRemainingTime();
+            var remainingTime = formatUnitOfMeasure(timeUnitOfMeasureKind, unformattedRemainingTime);
             
             subscriptionTypeChainTransfer = new SubscriptionTypeChainTransfer(subscriptionType, chain, unformattedRemainingTime, remainingTime);
             put(subscriptionTypeChain, subscriptionTypeChainTransfer);

@@ -62,16 +62,16 @@ public class CreateBillingAccountRoleTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var billingControl = Session.getModelController(BillingControl.class);
-        String billingAccountRoleTypeName = form.getBillingAccountRoleTypeName();
-        BillingAccountRoleType billingAccountRoleType = billingControl.getBillingAccountRoleTypeByName(billingAccountRoleTypeName);
+        var billingAccountRoleTypeName = form.getBillingAccountRoleTypeName();
+        var billingAccountRoleType = billingControl.getBillingAccountRoleTypeByName(billingAccountRoleTypeName);
         
         if(billingAccountRoleType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                BillingAccountRoleTypeDescription billingAccountRoleTypeDescription = billingControl.getBillingAccountRoleTypeDescription(billingAccountRoleType, language);
+                var billingAccountRoleTypeDescription = billingControl.getBillingAccountRoleTypeDescription(billingAccountRoleType, language);
                 
                 if(billingAccountRoleTypeDescription == null) {
                     var description = form.getDescription();

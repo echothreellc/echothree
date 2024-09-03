@@ -32,12 +32,12 @@ public class TermDescriptionTransferCache
     }
     
     public TermDescriptionTransfer getTermDescriptionTransfer(TermDescription termDescription) {
-        TermDescriptionTransfer termDescriptionTransfer = get(termDescription);
+        var termDescriptionTransfer = get(termDescription);
         
         if(termDescriptionTransfer == null) {
-            TermTransferCache termTransferCache = termControl.getTermTransferCaches(userVisit).getTermTransferCache();
-            TermTransfer termTransfer = termTransferCache.getTermTransfer(termDescription.getTerm());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, termDescription.getLanguage());
+            var termTransferCache = termControl.getTermTransferCaches(userVisit).getTermTransferCache();
+            var termTransfer = termTransferCache.getTermTransfer(termDescription.getTerm());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, termDescription.getLanguage());
             
             termDescriptionTransfer = new TermDescriptionTransfer(languageTransfer, termTransfer, termDescription.getDescription());
             put(termDescription, termDescriptionTransfer);

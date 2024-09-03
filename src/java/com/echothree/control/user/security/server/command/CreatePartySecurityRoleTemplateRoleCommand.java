@@ -69,22 +69,22 @@ public class CreatePartySecurityRoleTemplateRoleCommand
     @Override
     protected BaseResult execute() {
         var securityControl = Session.getModelController(SecurityControl.class);
-        String partySecurityRoleTemplateName = form.getPartySecurityRoleTemplateName();
-        PartySecurityRoleTemplate partySecurityRoleTemplate = securityControl.getPartySecurityRoleTemplateByName(partySecurityRoleTemplateName);
+        var partySecurityRoleTemplateName = form.getPartySecurityRoleTemplateName();
+        var partySecurityRoleTemplate = securityControl.getPartySecurityRoleTemplateByName(partySecurityRoleTemplateName);
         
         if(partySecurityRoleTemplate != null) {
-            String securityRoleGroupName = form.getSecurityRoleGroupName();
-            SecurityRoleGroup securityRoleGroup = securityControl.getSecurityRoleGroupByName(securityRoleGroupName);
+            var securityRoleGroupName = form.getSecurityRoleGroupName();
+            var securityRoleGroup = securityControl.getSecurityRoleGroupByName(securityRoleGroupName);
             
             if(securityRoleGroup != null) {
-                String securityRoleName = form.getSecurityRoleName();
+                var securityRoleName = form.getSecurityRoleName();
 
                 if(securityRoleName == null) {
-                    List<SecurityRole> securityRoles = securityControl.getSecurityRoles(securityRoleGroup);
+                    var securityRoles = securityControl.getSecurityRoles(securityRoleGroup);
 
                     // Pass 1: Check for duplicates.
                     for(var securityRole : securityRoles) {
-                        PartySecurityRoleTemplateRole partySecurityRoleTemplateRole = securityControl.getPartySecurityRoleTemplateRole(partySecurityRoleTemplate,
+                        var partySecurityRoleTemplateRole = securityControl.getPartySecurityRoleTemplateRole(partySecurityRoleTemplate,
                                 securityRole);
 
                         if(partySecurityRoleTemplateRole != null) {
@@ -101,10 +101,10 @@ public class CreatePartySecurityRoleTemplateRoleCommand
                         });
                     }
                 } else {
-                    SecurityRole securityRole = securityControl.getSecurityRoleByName(securityRoleGroup, securityRoleName);
+                    var securityRole = securityControl.getSecurityRoleByName(securityRoleGroup, securityRoleName);
 
                     if(securityRole != null) {
-                        PartySecurityRoleTemplateRole partySecurityRoleTemplateRole = securityControl.getPartySecurityRoleTemplateRole(partySecurityRoleTemplate,
+                        var partySecurityRoleTemplateRole = securityControl.getPartySecurityRoleTemplateRole(partySecurityRoleTemplate,
                                 securityRole);
 
                         if(partySecurityRoleTemplateRole == null) {

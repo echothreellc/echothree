@@ -50,10 +50,10 @@ public class GetUserVisitGroupCommand
     
     @Override
     protected BaseResult execute() {
-        UserControl userControl = getUserControl();
-        GetUserVisitGroupResult result = UserResultFactory.getGetUserVisitGroupResult();
-        String userVisitGroupName = form.getUserVisitGroupName();
-        UserVisitGroup userVisitGroup = userControl.getUserVisitGroupByName(userVisitGroupName);
+        var userControl = getUserControl();
+        var result = UserResultFactory.getGetUserVisitGroupResult();
+        var userVisitGroupName = form.getUserVisitGroupName();
+        var userVisitGroup = userControl.getUserVisitGroupByName(userVisitGroupName);
         
         if(userVisitGroup != null) {
             result.setUserVisitGroup(userControl.getUserVisitGroupTransfer(getUserVisit(), userVisitGroup));

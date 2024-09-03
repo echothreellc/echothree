@@ -71,8 +71,8 @@ public class SetDefaultOrderPriorityCommand
 
         if(orderType != null) {
             var orderPriorityControl = Session.getModelController(OrderPriorityControl.class);
-            String orderPriorityName = form.getOrderPriorityName();
-            OrderPriorityDetailValue orderPriorityDetailValue = orderPriorityControl.getOrderPriorityDetailValueByNameForUpdate(orderType, orderPriorityName);
+            var orderPriorityName = form.getOrderPriorityName();
+            var orderPriorityDetailValue = orderPriorityControl.getOrderPriorityDetailValueByNameForUpdate(orderType, orderPriorityName);
 
             if(orderPriorityDetailValue != null) {
                 orderPriorityDetailValue.setIsDefault(Boolean.TRUE);

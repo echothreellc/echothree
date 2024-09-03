@@ -62,15 +62,15 @@ public class ItemShippingTimeTransferCache
     
     @Override
     public ItemShippingTimeTransfer getTransfer(ItemShippingTime itemShippingTime) {
-        ItemShippingTimeTransfer itemShippingTimeTransfer = get(itemShippingTime);
+        var itemShippingTimeTransfer = get(itemShippingTime);
         
         if(itemShippingTimeTransfer == null) {
-            ItemTransfer itemTransfer = filterItem ? null : itemControl.getItemTransfer(userVisit, itemShippingTime.getItem());
-            CustomerTypeTransfer customerTypeTransfer = filterCustomerType ? null : customerControl.getCustomerTypeTransfer(userVisit, itemShippingTime.getCustomerType());
-            Long unformattedShippingStartTime = itemShippingTime.getShippingStartTime();
-            String shippingStartTime = filterShippingStartTime ? null : formatTypicalDateTime(unformattedShippingStartTime);
-            Long unformattedShippingEndTime = itemShippingTime.getShippingEndTime();
-            String shippingEndTime = filterShippingEndTime ? null : formatTypicalDateTime(unformattedShippingEndTime);
+            var itemTransfer = filterItem ? null : itemControl.getItemTransfer(userVisit, itemShippingTime.getItem());
+            var customerTypeTransfer = filterCustomerType ? null : customerControl.getCustomerTypeTransfer(userVisit, itemShippingTime.getCustomerType());
+            var unformattedShippingStartTime = itemShippingTime.getShippingStartTime();
+            var shippingStartTime = filterShippingStartTime ? null : formatTypicalDateTime(unformattedShippingStartTime);
+            var unformattedShippingEndTime = itemShippingTime.getShippingEndTime();
+            var shippingEndTime = filterShippingEndTime ? null : formatTypicalDateTime(unformattedShippingEndTime);
             
             itemShippingTimeTransfer = new ItemShippingTimeTransfer(itemTransfer, customerTypeTransfer,
                     filterUnformattedShippingStartTime ? null : unformattedShippingStartTime, shippingStartTime,

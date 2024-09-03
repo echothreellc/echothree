@@ -33,12 +33,12 @@ public class UnitOfMeasureTypeWeightTransferCache
     }
     
     public UnitOfMeasureTypeWeightTransfer getUnitOfMeasureTypeWeightTransfer(UnitOfMeasureTypeWeight unitOfMeasureTypeWeight) {
-        UnitOfMeasureTypeWeightTransfer unitOfMeasureTypeWeightTransfer = get(unitOfMeasureTypeWeight);
+        var unitOfMeasureTypeWeightTransfer = get(unitOfMeasureTypeWeight);
         
         if(unitOfMeasureTypeWeightTransfer == null) {
-            UnitOfMeasureTypeTransfer unitOfMeasureTypeTransfer = uomControl.getUnitOfMeasureTypeTransfer(userVisit, unitOfMeasureTypeWeight.getUnitOfMeasureType());
-            UnitOfMeasureKind volumeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_WEIGHT);
-            String weight = formatUnitOfMeasure(volumeUnitOfMeasureKind, unitOfMeasureTypeWeight.getWeight());
+            var unitOfMeasureTypeTransfer = uomControl.getUnitOfMeasureTypeTransfer(userVisit, unitOfMeasureTypeWeight.getUnitOfMeasureType());
+            var volumeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_WEIGHT);
+            var weight = formatUnitOfMeasure(volumeUnitOfMeasureKind, unitOfMeasureTypeWeight.getWeight());
             
             unitOfMeasureTypeWeightTransfer = new UnitOfMeasureTypeWeightTransfer(unitOfMeasureTypeTransfer, weight);
             put(unitOfMeasureTypeWeight, unitOfMeasureTypeWeightTransfer);

@@ -34,12 +34,12 @@ public class OrderTimeTransferCache
     }
     
     public OrderTimeTransfer getOrderTimeTransfer(OrderTime orderTime) {
-        OrderTimeTransfer orderTimeTransfer = get(orderTime);
+        var orderTimeTransfer = get(orderTime);
         
         if(orderTimeTransfer == null) {
-            OrderTimeTypeTransfer orderTimeType = orderTimeControl.getOrderTimeTypeTransfer(userVisit, orderTime.getOrderTimeType());
-            Long unformattedTime = orderTime.getTime();
-            String time = formatTypicalDateTime(unformattedTime);
+            var orderTimeType = orderTimeControl.getOrderTimeTypeTransfer(userVisit, orderTime.getOrderTimeType());
+            var unformattedTime = orderTime.getTime();
+            var time = formatTypicalDateTime(unformattedTime);
             
             orderTimeTransfer = new OrderTimeTransfer(orderTimeType, unformattedTime, time);
             put(orderTime, orderTimeTransfer);

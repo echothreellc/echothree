@@ -52,9 +52,9 @@ public class GetCommentCommand
     @Override
     protected BaseResult execute() {
         var commentControl = Session.getModelController(CommentControl.class);
-        GetCommentResult result = CommentResultFactory.getGetCommentResult();
-        String commentName = form.getCommentName();
-        Comment comment = commentControl.getCommentByName(commentName);
+        var result = CommentResultFactory.getGetCommentResult();
+        var commentName = form.getCommentName();
+        var comment = commentControl.getCommentByName(commentName);
 
         if(comment != null) {
             result.setComment(commentControl.getCommentTransfer(getUserVisit(), comment));

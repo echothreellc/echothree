@@ -89,13 +89,13 @@ public class EditDocumentTypeDescriptionCommand
     public DocumentTypeDescription getEntity(EditDocumentTypeDescriptionResult result) {
         var documentControl = Session.getModelController(DocumentControl.class);
         DocumentTypeDescription documentTypeDescription = null;
-        String documentTypeName = spec.getDocumentTypeName();
-        DocumentType documentType = documentControl.getDocumentTypeByName(documentTypeName);
+        var documentTypeName = spec.getDocumentTypeName();
+        var documentType = documentControl.getDocumentTypeByName(documentTypeName);
 
         if(documentType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -137,7 +137,7 @@ public class EditDocumentTypeDescriptionCommand
     @Override
     public void doUpdate(DocumentTypeDescription documentTypeDescription) {
         var documentControl = Session.getModelController(DocumentControl.class);
-        DocumentTypeDescriptionValue documentTypeDescriptionValue = documentControl.getDocumentTypeDescriptionValue(documentTypeDescription);
+        var documentTypeDescriptionValue = documentControl.getDocumentTypeDescriptionValue(documentTypeDescription);
         documentTypeDescriptionValue.setDescription(edit.getDescription());
 
         documentControl.updateDocumentTypeDescriptionFromValue(documentTypeDescriptionValue, getPartyPK());

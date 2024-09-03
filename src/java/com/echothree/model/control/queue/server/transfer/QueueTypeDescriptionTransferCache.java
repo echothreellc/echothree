@@ -32,11 +32,11 @@ public class QueueTypeDescriptionTransferCache
     }
     
     public QueueTypeDescriptionTransfer getQueueTypeDescriptionTransfer(QueueTypeDescription queueTypeDescription) {
-        QueueTypeDescriptionTransfer queueTypeDescriptionTransfer = get(queueTypeDescription);
+        var queueTypeDescriptionTransfer = get(queueTypeDescription);
         
         if(queueTypeDescriptionTransfer == null) {
-            QueueTypeTransfer queueTypeTransfer = queueControl.getQueueTypeTransfer(userVisit, queueTypeDescription.getQueueType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, queueTypeDescription.getLanguage());
+            var queueTypeTransfer = queueControl.getQueueTypeTransfer(userVisit, queueTypeDescription.getQueueType());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, queueTypeDescription.getLanguage());
             
             queueTypeDescriptionTransfer = new QueueTypeDescriptionTransfer(languageTransfer, queueTypeTransfer, queueTypeDescription.getDescription());
             put(queueTypeDescription, queueTypeDescriptionTransfer);

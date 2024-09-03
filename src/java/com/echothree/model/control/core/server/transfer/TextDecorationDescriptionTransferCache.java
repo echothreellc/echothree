@@ -35,11 +35,11 @@ public class TextDecorationDescriptionTransferCache
     }
     
     public TextDecorationDescriptionTransfer getTextDecorationDescriptionTransfer(TextDecorationDescription textDecorationDescription) {
-        TextDecorationDescriptionTransfer textDecorationDescriptionTransfer = get(textDecorationDescription);
+        var textDecorationDescriptionTransfer = get(textDecorationDescription);
         
         if(textDecorationDescriptionTransfer == null) {
-            TextDecorationTransfer textDecorationTransfer = coreControl.getTextDecorationTransfer(userVisit, textDecorationDescription.getTextDecoration());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, textDecorationDescription.getLanguage());
+            var textDecorationTransfer = coreControl.getTextDecorationTransfer(userVisit, textDecorationDescription.getTextDecoration());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, textDecorationDescription.getLanguage());
             
             textDecorationDescriptionTransfer = new TextDecorationDescriptionTransfer(languageTransfer, textDecorationTransfer, textDecorationDescription.getDescription());
             put(textDecorationDescription, textDecorationDescriptionTransfer);

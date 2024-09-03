@@ -58,11 +58,11 @@ public class GetRatingTypeListItemChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        GetRatingTypeListItemChoicesResult result = RatingResultFactory.getGetRatingTypeListItemChoicesResult();
-        String componentVendorName = form.getComponentVendorName();
-        String entityTypeName = form.getEntityTypeName();
-        String ratingTypeName = form.getRatingTypeName();
-        String ratingName = form.getRatingName();
+        var result = RatingResultFactory.getGetRatingTypeListItemChoicesResult();
+        var componentVendorName = form.getComponentVendorName();
+        var entityTypeName = form.getEntityTypeName();
+        var ratingTypeName = form.getRatingTypeName();
+        var ratingName = form.getRatingName();
         var parameterCount = (componentVendorName == null && entityTypeName == null && ratingTypeName == null ? 0 : 1) + (ratingName == null ? 0 : 1);
         
         if(parameterCount == 1) {
@@ -71,7 +71,7 @@ public class GetRatingTypeListItemChoicesCommand
             if(ratingName == null) {
                 ratingType = RatingTypeLogic.getInstance().getRatingTypeByName(this, componentVendorName, entityTypeName, ratingTypeName);
             } else {
-                Rating rating = RatingLogic.getInstance().getRatingByName(this, ratingName);
+                var rating = RatingLogic.getInstance().getRatingByName(this, ratingName);
                 
                 if(!hasExecutionErrors()) {
                     ratingType = rating.getLastDetail().getRatingTypeListItem().getLastDetail().getRatingType();
@@ -80,7 +80,7 @@ public class GetRatingTypeListItemChoicesCommand
             
             if(!hasExecutionErrors()) {
                 var ratingControl = Session.getModelController(RatingControl.class);
-                boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+                var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 
                 result.setRatingTypeListItemChoices(ratingControl.getRatingTypeListItemChoices(form.getDefaultRatingTypeListItemChoice(), getPreferredLanguage(),
                         allowNullChoice, ratingType));

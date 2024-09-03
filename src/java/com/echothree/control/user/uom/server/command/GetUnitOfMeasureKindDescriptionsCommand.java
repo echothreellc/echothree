@@ -51,9 +51,9 @@ public class GetUnitOfMeasureKindDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var uomControl = Session.getModelController(UomControl.class);
-        GetUnitOfMeasureKindDescriptionsResult result = UomResultFactory.getGetUnitOfMeasureKindDescriptionsResult();
-        String unitOfMeasureKindName = form.getUnitOfMeasureKindName();
-        UnitOfMeasureKind unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);
+        var result = UomResultFactory.getGetUnitOfMeasureKindDescriptionsResult();
+        var unitOfMeasureKindName = form.getUnitOfMeasureKindName();
+        var unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);
         
         if(unitOfMeasureKind != null) {
             result.setUnitOfMeasureKind(uomControl.getUnitOfMeasureKindTransfer(getUserVisit(), unitOfMeasureKind));

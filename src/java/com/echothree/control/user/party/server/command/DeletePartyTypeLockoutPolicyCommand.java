@@ -50,11 +50,11 @@ public class DeletePartyTypeLockoutPolicyCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        String partyTypeName = form.getPartyTypeName();
-        PartyType partyType = partyControl.getPartyTypeByName(partyTypeName);
+        var partyTypeName = form.getPartyTypeName();
+        var partyType = partyControl.getPartyTypeByName(partyTypeName);
         
         if(partyType != null) {
-            PartyTypeLockoutPolicy partyTypeLockoutPolicy = partyControl.getPartyTypeLockoutPolicyForUpdate(partyType);
+            var partyTypeLockoutPolicy = partyControl.getPartyTypeLockoutPolicyForUpdate(partyType);
             
             if(partyTypeLockoutPolicy != null) {
                 partyControl.deletePartyTypeLockoutPolicy(partyTypeLockoutPolicy, getPartyPK());

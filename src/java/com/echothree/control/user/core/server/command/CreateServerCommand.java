@@ -64,8 +64,8 @@ public class CreateServerCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String serverName = form.getServerName();
-        Server server = coreControl.getServerByName(serverName);
+        var serverName = form.getServerName();
+        var server = coreControl.getServerByName(serverName);
         
         if(server == null) {
             var partyPK = getPartyPK();

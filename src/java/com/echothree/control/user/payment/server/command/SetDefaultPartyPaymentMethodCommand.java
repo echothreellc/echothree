@@ -63,8 +63,8 @@ public class SetDefaultPartyPaymentMethodCommand
     @Override
     protected BaseResult execute() {
         var partyPaymentMethodControl = Session.getModelController(PartyPaymentMethodControl.class);
-        String partyPaymentMethodName = form.getPartyPaymentMethodName();
-        PartyPaymentMethodDetailValue partyPaymentMethodDetailValue = partyPaymentMethodControl.getPartyPaymentMethodDetailValueByNameForUpdate(partyPaymentMethodName);
+        var partyPaymentMethodName = form.getPartyPaymentMethodName();
+        var partyPaymentMethodDetailValue = partyPaymentMethodControl.getPartyPaymentMethodDetailValueByNameForUpdate(partyPaymentMethodName);
         
         if(partyPaymentMethodDetailValue != null) {
             partyPaymentMethodDetailValue.setIsDefault(Boolean.TRUE);

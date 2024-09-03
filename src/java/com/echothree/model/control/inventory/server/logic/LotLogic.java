@@ -82,7 +82,7 @@ public class LotLogic
     public Lot getLotByName(final ExecutionErrorAccumulator eea, final String lotName,
             final EntityPermission entityPermission) {
         var lotControl = Session.getModelController(LotControl.class);
-        Lot lot = lotControl.getLotByName(lotName, entityPermission);
+        var lot = lotControl.getLotByName(lotName, entityPermission);
 
         if(lot == null) {
             handleExecutionError(UnknownLotNameException.class, eea, ExecutionErrors.UnknownLotName.name(), lotName);
@@ -103,7 +103,7 @@ public class LotLogic
             final EntityPermission entityPermission) {
         Lot lot = null;
         var lotControl = Session.getModelController(LotControl.class);
-        String lotName = universalSpec.getLotName();
+        var lotName = universalSpec.getLotName();
         var parameterCount = (lotName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {

@@ -50,19 +50,19 @@ public class CampaignContentTransferCache
     }
 
     public CampaignContentTransfer getCampaignContentTransfer(CampaignContent campaignContent) {
-        CampaignContentTransfer campaignContentTransfer = get(campaignContent);
+        var campaignContentTransfer = get(campaignContent);
 
         if(campaignContentTransfer == null) {
-            CampaignContentDetail campaignContentDetail = campaignContent.getLastDetail();
-            String campaignContentName = campaignContentDetail.getCampaignContentName();
-            String valueSha1Hash = campaignContentDetail.getValueSha1Hash();
-            String value = campaignContentDetail.getValue();
-            Boolean isDefault = campaignContentDetail.getIsDefault();
-            Integer sortOrder = campaignContentDetail.getSortOrder();
-            String description = campaignControl.getBestCampaignContentDescription(campaignContent, getLanguage());
+            var campaignContentDetail = campaignContent.getLastDetail();
+            var campaignContentName = campaignContentDetail.getCampaignContentName();
+            var valueSha1Hash = campaignContentDetail.getValueSha1Hash();
+            var value = campaignContentDetail.getValue();
+            var isDefault = campaignContentDetail.getIsDefault();
+            var sortOrder = campaignContentDetail.getSortOrder();
+            var description = campaignControl.getBestCampaignContentDescription(campaignContent, getLanguage());
 
-            EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(campaignContent.getPrimaryKey());
-            WorkflowEntityStatusTransfer campaignContentStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
+            var entityInstance = coreControl.getEntityInstanceByBasePK(campaignContent.getPrimaryKey());
+            var campaignContentStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
                     CampaignContentStatusConstants.Workflow_CAMPAIGN_CONTENT_STATUS, entityInstance);
             
             campaignContentTransfer = new CampaignContentTransfer(campaignContentName, valueSha1Hash, value, isDefault, sortOrder, description,

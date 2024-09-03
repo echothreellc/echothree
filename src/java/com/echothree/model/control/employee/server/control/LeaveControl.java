@@ -68,7 +68,7 @@ public class LeaveControl
 
             try (var rs = ps.executeQuery()) {
                 while(rs.next()) {
-                    Leave leave = LeaveFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new LeavePK(rs.getLong(1)));
+                    var leave = LeaveFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new LeavePK(rs.getLong(1)));
 
                     leaveResultTransfers.add(new LeaveResultTransfer(leave.getLastDetail().getLeaveName(),
                             includeLeave ? employeeControl.getLeaveTransfer(userVisit, leave) : null));

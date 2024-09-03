@@ -37,15 +37,15 @@ public class OfferNameElementTransferCache
     }
     
     public OfferNameElementTransfer getOfferNameElementTransfer(OfferNameElement offerNameElement) {
-        OfferNameElementTransfer offerNameElementTransfer = get(offerNameElement);
+        var offerNameElementTransfer = get(offerNameElement);
         
         if(offerNameElementTransfer == null) {
-            OfferNameElementDetail offerNameElementDetail = offerNameElement.getLastDetail();
-            String offerNameElementName = offerNameElementDetail.getOfferNameElementName();
-            Integer offset = offerNameElementDetail.getOffset();
-            Integer length = offerNameElementDetail.getLength();
-            String validationPattern = offerNameElementDetail.getValidationPattern();
-            String description = offerNameElementControl.getBestOfferNameElementDescription(offerNameElement, getLanguage());
+            var offerNameElementDetail = offerNameElement.getLastDetail();
+            var offerNameElementName = offerNameElementDetail.getOfferNameElementName();
+            var offset = offerNameElementDetail.getOffset();
+            var length = offerNameElementDetail.getLength();
+            var validationPattern = offerNameElementDetail.getValidationPattern();
+            var description = offerNameElementControl.getBestOfferNameElementDescription(offerNameElement, getLanguage());
             
             offerNameElementTransfer = new OfferNameElementTransfer(offerNameElementName, offset, length, validationPattern,
                     description);

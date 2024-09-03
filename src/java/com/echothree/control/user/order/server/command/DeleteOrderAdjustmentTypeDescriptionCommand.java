@@ -74,16 +74,16 @@ public class DeleteOrderAdjustmentTypeDescriptionCommand
 
         if(orderType != null) {
             var orderAdjustmentControl = Session.getModelController(OrderAdjustmentControl.class);
-            String orderAdjustmentTypeName = form.getOrderAdjustmentTypeName();
-            OrderAdjustmentType orderAdjustmentType = orderAdjustmentControl.getOrderAdjustmentTypeByName(orderType, orderAdjustmentTypeName);
+            var orderAdjustmentTypeName = form.getOrderAdjustmentTypeName();
+            var orderAdjustmentType = orderAdjustmentControl.getOrderAdjustmentTypeByName(orderType, orderAdjustmentTypeName);
 
             if(orderAdjustmentType != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = form.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = form.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                 if(language != null) {
-                    OrderAdjustmentTypeDescription orderAdjustmentTypeDescription = orderAdjustmentControl.getOrderAdjustmentTypeDescriptionForUpdate(orderAdjustmentType, language);
+                    var orderAdjustmentTypeDescription = orderAdjustmentControl.getOrderAdjustmentTypeDescriptionForUpdate(orderAdjustmentType, language);
 
                     if(orderAdjustmentTypeDescription != null) {
                         orderAdjustmentControl.deleteOrderAdjustmentTypeDescription(orderAdjustmentTypeDescription, getPartyPK());

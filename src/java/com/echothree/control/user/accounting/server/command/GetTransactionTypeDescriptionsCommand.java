@@ -65,9 +65,9 @@ public class GetTransactionTypeDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        GetTransactionTypeDescriptionsResult result = AccountingResultFactory.getGetTransactionTypeDescriptionsResult();
-        String transactionTypeName = form.getTransactionTypeName();
-        TransactionType transactionType = accountingControl.getTransactionTypeByName(transactionTypeName);
+        var result = AccountingResultFactory.getGetTransactionTypeDescriptionsResult();
+        var transactionTypeName = form.getTransactionTypeName();
+        var transactionType = accountingControl.getTransactionTypeByName(transactionTypeName);
         
         if(transactionType != null) {
             result.setTransactionType(accountingControl.getTransactionTypeTransfer(getUserVisit(), transactionType));

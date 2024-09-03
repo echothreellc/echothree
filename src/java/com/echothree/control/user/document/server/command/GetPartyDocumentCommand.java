@@ -52,16 +52,16 @@ public class GetPartyDocumentCommand
     
     @Override
     protected BaseResult execute() {
-        GetPartyDocumentResult result = DocumentResultFactory.getGetPartyDocumentResult();
+        var result = DocumentResultFactory.getGetPartyDocumentResult();
         ContentLogic.getInstance().checkReferrer(this, form.getReferrer());
         
         if(!hasExecutionErrors()) {
             var documentControl = Session.getModelController(DocumentControl.class);
-            String documentName = form.getDocumentName();
-            Document document = documentControl.getDocumentByName(documentName);
+            var documentName = form.getDocumentName();
+            var document = documentControl.getDocumentByName(documentName);
 
             if(document != null) {
-                PartyDocument partyDocument = documentControl.getPartyDocumentByDocument(document);
+                var partyDocument = documentControl.getPartyDocumentByDocument(document);
 
                 if(partyDocument != null) {
                     result.setPartyDocument(documentControl.getPartyDocumentTransfer(getUserVisit(), partyDocument));

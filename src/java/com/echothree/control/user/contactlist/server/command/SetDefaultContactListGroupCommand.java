@@ -62,8 +62,8 @@ public class SetDefaultContactListGroupCommand
     @Override
     protected BaseResult execute() {
         var contactListControl = Session.getModelController(ContactListControl.class);
-        String contactListGroupName = form.getContactListGroupName();
-        ContactListGroupDetailValue contactListGroupDetailValue = contactListControl.getContactListGroupDetailValueByNameForUpdate(contactListGroupName);
+        var contactListGroupName = form.getContactListGroupName();
+        var contactListGroupDetailValue = contactListControl.getContactListGroupDetailValueByNameForUpdate(contactListGroupName);
         
         if(contactListGroupDetailValue != null) {
             contactListGroupDetailValue.setIsDefault(Boolean.TRUE);

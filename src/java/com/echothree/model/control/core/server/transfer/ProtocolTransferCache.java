@@ -36,14 +36,14 @@ public class ProtocolTransferCache
     }
     
     public ProtocolTransfer getProtocolTransfer(Protocol protocol) {
-        ProtocolTransfer protocolTransfer = get(protocol);
+        var protocolTransfer = get(protocol);
         
         if(protocolTransfer == null) {
-            ProtocolDetail protocolDetail = protocol.getLastDetail();
-            String protocolName = protocolDetail.getProtocolName();
-            Boolean isDefault = protocolDetail.getIsDefault();
-            Integer sortOrder = protocolDetail.getSortOrder();
-            String description = coreControl.getBestProtocolDescription(protocol, getLanguage());
+            var protocolDetail = protocol.getLastDetail();
+            var protocolName = protocolDetail.getProtocolName();
+            var isDefault = protocolDetail.getIsDefault();
+            var sortOrder = protocolDetail.getSortOrder();
+            var description = coreControl.getBestProtocolDescription(protocol, getLanguage());
     
             protocolTransfer = new ProtocolTransfer(protocolName, isDefault, sortOrder, description);
             put(protocol, protocolTransfer);

@@ -77,31 +77,31 @@ public class CreateItemAliasCommand
     @Override
     protected BaseResult execute() {
         var itemControl = Session.getModelController(ItemControl.class);
-        String itemName = form.getItemName();
-        Item item = itemControl.getItemByName(itemName);
+        var itemName = form.getItemName();
+        var item = itemControl.getItemByName(itemName);
         
         if(item != null) {
             var uomControl = Session.getModelController(UomControl.class);
-            String unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
-            ItemDetail itemDetail = item.getLastDetail();
-            UnitOfMeasureKind unitOfMeasureKind = itemDetail.getUnitOfMeasureKind();
-            UnitOfMeasureType unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
+            var unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
+            var itemDetail = item.getLastDetail();
+            var unitOfMeasureKind = itemDetail.getUnitOfMeasureKind();
+            var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
             
             if(unitOfMeasureType != null) {
-                ItemUnitOfMeasureType itemUnitOfMeasureType = itemControl.getItemUnitOfMeasureType(item, unitOfMeasureType);
+                var itemUnitOfMeasureType = itemControl.getItemUnitOfMeasureType(item, unitOfMeasureType);
                 
                 if(itemUnitOfMeasureType != null) {
-                    String itemAliasTypeName = form.getItemAliasTypeName();
-                    ItemAliasType itemAliasType = itemControl.getItemAliasTypeByName(itemAliasTypeName);
+                    var itemAliasTypeName = form.getItemAliasTypeName();
+                    var itemAliasType = itemControl.getItemAliasTypeByName(itemAliasTypeName);
                     
                     if(itemAliasType != null) {
-                        ItemAliasTypeDetail itemAliasTypeDetail = itemAliasType.getLastDetail();
-                        String validationPattern = itemAliasTypeDetail.getValidationPattern();
-                        String alias = form.getAlias();
+                        var itemAliasTypeDetail = itemAliasType.getLastDetail();
+                        var validationPattern = itemAliasTypeDetail.getValidationPattern();
+                        var alias = form.getAlias();
                         
                         if(validationPattern != null) {
-                            Pattern pattern = Pattern.compile(validationPattern);
-                            Matcher m = pattern.matcher(alias);
+                            var pattern = Pattern.compile(validationPattern);
+                            var m = pattern.matcher(alias);
                             
                             if(!m.matches()) {
                                 addExecutionError(ExecutionErrors.InvalidAlias.name(), alias);
@@ -119,10 +119,10 @@ public class CreateItemAliasCommand
                                 }
 
                                 if(!hasExecutionErrors()) {
-                                    Item duplicateItem = itemControl.getItemByName(alias);
+                                    var duplicateItem = itemControl.getItemByName(alias);
 
                                     if(duplicateItem == null) {
-                                        ItemAlias itemAlias = itemControl.getItemAliasByAlias(alias);
+                                        var itemAlias = itemControl.getItemAliasByAlias(alias);
 
                                         if(itemAlias == null) {
                                             itemControl.createItemAlias(item, unitOfMeasureType, itemAliasType, alias, getPartyPK());

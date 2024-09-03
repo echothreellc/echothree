@@ -123,8 +123,8 @@ public class EditAllocationPriorityCommand
     @Override
     public void doLock(AllocationPriorityEdit edit, AllocationPriority allocationPriority) {
         var inventoryControl = Session.getModelController(InventoryControl.class);
-        AllocationPriorityDescription allocationPriorityDescription = inventoryControl.getAllocationPriorityDescription(allocationPriority, getPreferredLanguage());
-        AllocationPriorityDetail allocationPriorityDetail = allocationPriority.getLastDetail();
+        var allocationPriorityDescription = inventoryControl.getAllocationPriorityDescription(allocationPriority, getPreferredLanguage());
+        var allocationPriorityDetail = allocationPriority.getLastDetail();
 
         edit.setAllocationPriorityName(allocationPriorityDetail.getAllocationPriorityName());
         edit.setPriority(allocationPriorityDetail.getPriority().toString());
@@ -139,8 +139,8 @@ public class EditAllocationPriorityCommand
     @Override
     public void canUpdate(AllocationPriority allocationPriority) {
         var inventoryControl = Session.getModelController(InventoryControl.class);
-        String allocationPriorityName = edit.getAllocationPriorityName();
-        AllocationPriority duplicateAllocationPriority = inventoryControl.getAllocationPriorityByName(allocationPriorityName);
+        var allocationPriorityName = edit.getAllocationPriorityName();
+        var duplicateAllocationPriority = inventoryControl.getAllocationPriorityByName(allocationPriorityName);
 
         if(duplicateAllocationPriority != null && !allocationPriority.equals(duplicateAllocationPriority)) {
             addExecutionError(ExecutionErrors.DuplicateAllocationPriorityName.name(), allocationPriorityName);
@@ -151,9 +151,9 @@ public class EditAllocationPriorityCommand
     public void doUpdate(AllocationPriority allocationPriority) {
         var inventoryControl = Session.getModelController(InventoryControl.class);
         var partyPK = getPartyPK();
-        AllocationPriorityDetailValue allocationPriorityDetailValue = inventoryControl.getAllocationPriorityDetailValueForUpdate(allocationPriority);
-        AllocationPriorityDescription allocationPriorityDescription = inventoryControl.getAllocationPriorityDescriptionForUpdate(allocationPriority, getPreferredLanguage());
-        String description = edit.getDescription();
+        var allocationPriorityDetailValue = inventoryControl.getAllocationPriorityDetailValueForUpdate(allocationPriority);
+        var allocationPriorityDescription = inventoryControl.getAllocationPriorityDescriptionForUpdate(allocationPriority, getPreferredLanguage());
+        var description = edit.getDescription();
 
         allocationPriorityDetailValue.setAllocationPriorityName(edit.getAllocationPriorityName());
         allocationPriorityDetailValue.setPriority(Integer.valueOf(edit.getPriority()));
@@ -169,7 +169,7 @@ public class EditAllocationPriorityCommand
                 inventoryControl.deleteAllocationPriorityDescription(allocationPriorityDescription, partyPK);
             } else {
                 if(allocationPriorityDescription != null && description != null) {
-                    AllocationPriorityDescriptionValue allocationPriorityDescriptionValue = inventoryControl.getAllocationPriorityDescriptionValue(allocationPriorityDescription);
+                    var allocationPriorityDescriptionValue = inventoryControl.getAllocationPriorityDescriptionValue(allocationPriorityDescription);
 
                     allocationPriorityDescriptionValue.setDescription(description);
                     inventoryControl.updateAllocationPriorityDescriptionFromValue(allocationPriorityDescriptionValue, partyPK);

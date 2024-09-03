@@ -69,14 +69,14 @@ public class GetLocationTypeCommand
     @Override
     protected BaseResult execute() {
         var warehouseControl = Session.getModelController(WarehouseControl.class);
-        GetLocationTypeResult result = WarehouseResultFactory.getGetLocationTypeResult();
-        String warehouseName = form.getWarehouseName();
-        Warehouse warehouse = warehouseControl.getWarehouseByName(warehouseName);
+        var result = WarehouseResultFactory.getGetLocationTypeResult();
+        var warehouseName = form.getWarehouseName();
+        var warehouse = warehouseControl.getWarehouseByName(warehouseName);
         
         if(warehouse != null) {
-            Party warehouseParty = warehouse.getParty();
-            String locationTypeName = form.getLocationTypeName();
-            LocationType locationType = warehouseControl.getLocationTypeByName(warehouseParty, locationTypeName);
+            var warehouseParty = warehouse.getParty();
+            var locationTypeName = form.getLocationTypeName();
+            var locationType = warehouseControl.getLocationTypeByName(warehouseParty, locationTypeName);
             
             if(locationType != null) {
                 result.setLocationType(warehouseControl.getLocationTypeTransfer(getUserVisit(), locationType));

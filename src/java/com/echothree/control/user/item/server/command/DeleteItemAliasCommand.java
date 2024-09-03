@@ -63,8 +63,8 @@ public class DeleteItemAliasCommand
     @Override
     protected BaseResult execute() {
         var itemControl = Session.getModelController(ItemControl.class);
-        String alias = form.getAlias();
-        ItemAlias itemAlias = itemControl.getItemAliasByAliasForUpdate(alias);
+        var alias = form.getAlias();
+        var itemAlias = itemControl.getItemAliasByAliasForUpdate(alias);
         
         if(itemAlias != null) {
             itemControl.deleteItemAlias(itemAlias, getPartyPK());

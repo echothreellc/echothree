@@ -33,12 +33,12 @@ public class GlAccountCategoryDescriptionTransferCache
     
     @Override
     public GlAccountCategoryDescriptionTransfer getTransfer(GlAccountCategoryDescription glAccountCategoryDescription) {
-        GlAccountCategoryDescriptionTransfer glAccountCategoryDescriptionTransfer = get(glAccountCategoryDescription);
+        var glAccountCategoryDescriptionTransfer = get(glAccountCategoryDescription);
         
         if(glAccountCategoryDescriptionTransfer == null) {
-            GlAccountCategoryTransferCache glAccountCategoryTransferCache = accountingControl.getAccountingTransferCaches(userVisit).getGlAccountCategoryTransferCache();
-            GlAccountCategoryTransfer glAccountCategoryTransfer = glAccountCategoryTransferCache.getTransfer(glAccountCategoryDescription.getGlAccountCategory());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, glAccountCategoryDescription.getLanguage());
+            var glAccountCategoryTransferCache = accountingControl.getAccountingTransferCaches(userVisit).getGlAccountCategoryTransferCache();
+            var glAccountCategoryTransfer = glAccountCategoryTransferCache.getTransfer(glAccountCategoryDescription.getGlAccountCategory());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, glAccountCategoryDescription.getLanguage());
             
             glAccountCategoryDescriptionTransfer = new GlAccountCategoryDescriptionTransfer(languageTransfer, glAccountCategoryTransfer, glAccountCategoryDescription.getDescription());
             put(glAccountCategoryDescription, glAccountCategoryDescriptionTransfer);

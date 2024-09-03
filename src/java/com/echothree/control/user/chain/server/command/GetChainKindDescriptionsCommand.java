@@ -65,9 +65,9 @@ public class GetChainKindDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var chainControl = Session.getModelController(ChainControl.class);
-        GetChainKindDescriptionsResult result = ChainResultFactory.getGetChainKindDescriptionsResult();
-        String chainKindName = form.getChainKindName();
-        ChainKind chainKind = chainControl.getChainKindByName(chainKindName);
+        var result = ChainResultFactory.getGetChainKindDescriptionsResult();
+        var chainKindName = form.getChainKindName();
+        var chainKind = chainControl.getChainKindByName(chainKindName);
         
         if(chainKind != null) {
             result.setChainKind(chainControl.getChainKindTransfer(getUserVisit(), chainKind));

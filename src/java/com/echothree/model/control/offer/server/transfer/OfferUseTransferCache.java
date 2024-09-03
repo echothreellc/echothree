@@ -44,14 +44,14 @@ public class OfferUseTransferCache
     }
     
     public OfferUseTransfer getOfferUseTransfer(OfferUse offerUse) {
-        OfferUseTransfer offerUseTransfer = get(offerUse);
+        var offerUseTransfer = get(offerUse);
         
         if(offerUseTransfer == null) {
-            OfferUseDetail offerUseDetail = offerUse.getLastDetail();
-            OfferTransfer offerTransfer = offerControl.getOfferTransfer(userVisit, offerUseDetail.getOffer());
-            UseTransfer useTransfer = useControl.getUseTransfer(userVisit, offerUseDetail.getUse());
-            Sequence salesOrderSequence = offerUseDetail.getSalesOrderSequence();
-            SequenceTransfer salesOrderSequenceTransfer = salesOrderSequence == null? null:sequenceControl.getSequenceTransfer(userVisit, salesOrderSequence);
+            var offerUseDetail = offerUse.getLastDetail();
+            var offerTransfer = offerControl.getOfferTransfer(userVisit, offerUseDetail.getOffer());
+            var useTransfer = useControl.getUseTransfer(userVisit, offerUseDetail.getUse());
+            var salesOrderSequence = offerUseDetail.getSalesOrderSequence();
+            var salesOrderSequenceTransfer = salesOrderSequence == null? null:sequenceControl.getSequenceTransfer(userVisit, salesOrderSequence);
             
             offerUseTransfer = new OfferUseTransfer(offerTransfer, useTransfer, salesOrderSequenceTransfer);
             put(offerUse, offerUseTransfer);

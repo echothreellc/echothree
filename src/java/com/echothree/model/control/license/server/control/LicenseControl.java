@@ -74,11 +74,11 @@ public class LicenseControl
     // --------------------------------------------------------------------------------
 
     public LicenseType createLicenseType(String licenseTypeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        LicenseType defaultLicenseType = getDefaultLicenseType();
-        boolean defaultFound = defaultLicenseType != null;
+        var defaultLicenseType = getDefaultLicenseType();
+        var defaultFound = defaultLicenseType != null;
 
         if(defaultFound && isDefault) {
-            LicenseTypeDetailValue defaultLicenseTypeDetailValue = getDefaultLicenseTypeDetailValueForUpdate();
+            var defaultLicenseTypeDetailValue = getDefaultLicenseTypeDetailValueForUpdate();
 
             defaultLicenseTypeDetailValue.setIsDefault(Boolean.FALSE);
             updateLicenseTypeFromValue(defaultLicenseTypeDetailValue, false, createdBy);
@@ -86,8 +86,8 @@ public class LicenseControl
             isDefault = Boolean.TRUE;
         }
 
-        LicenseType licenseType = LicenseTypeFactory.getInstance().create();
-        LicenseTypeDetail licenseTypeDetail = LicenseTypeDetailFactory.getInstance().create(licenseType, licenseTypeName, isDefault, sortOrder, session.START_TIME_LONG,
+        var licenseType = LicenseTypeFactory.getInstance().create();
+        var licenseTypeDetail = LicenseTypeDetailFactory.getInstance().create(licenseType, licenseTypeName, isDefault, sortOrder, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -104,7 +104,7 @@ public class LicenseControl
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.LicenseType */
     public LicenseType getLicenseTypeByEntityInstance(EntityInstance entityInstance) {
         LicenseTypePK pk = new LicenseTypePK(entityInstance.getEntityUniqueId());
-        LicenseType licenseType = LicenseTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
+        var licenseType = LicenseTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
 
         return licenseType;
     }
@@ -219,9 +219,9 @@ public class LicenseControl
     }
 
     public List<LicenseTypeTransfer> getLicenseTypeTransfers(UserVisit userVisit) {
-        List<LicenseType> licenseTypes = getLicenseTypes();
+        var licenseTypes = getLicenseTypes();
         List<LicenseTypeTransfer> licenseTypeTransfers = new ArrayList<>(licenseTypes.size());
-        LicenseTypeTransferCache licenseTypeTransferCache = getLicenseTransferCaches(userVisit).getLicenseTypeTransferCache();
+        var licenseTypeTransferCache = getLicenseTransferCaches(userVisit).getLicenseTypeTransferCache();
 
         licenseTypes.forEach((licenseType) ->
                 licenseTypeTransfers.add(licenseTypeTransferCache.getLicenseTypeTransfer(licenseType))
@@ -231,7 +231,7 @@ public class LicenseControl
     }
 
     public LicenseTypeChoicesBean getLicenseTypeChoices(String defaultLicenseTypeChoice, Language language, boolean allowNullChoice) {
-        List<LicenseType> licenseTypes = getLicenseTypes();
+        var licenseTypes = getLicenseTypes();
         var size = licenseTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -247,7 +247,7 @@ public class LicenseControl
         }
 
         for(var licenseType : licenseTypes) {
-            LicenseTypeDetail licenseTypeDetail = licenseType.getLastDetail();
+            var licenseTypeDetail = licenseType.getLastDetail();
 
             var label = getBestLicenseTypeDescription(licenseType, language);
             var value = licenseTypeDetail.getLicenseTypeName();
@@ -266,25 +266,25 @@ public class LicenseControl
 
     private void updateLicenseTypeFromValue(LicenseTypeDetailValue licenseTypeDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(licenseTypeDetailValue.hasBeenModified()) {
-            LicenseType licenseType = LicenseTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var licenseType = LicenseTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      licenseTypeDetailValue.getLicenseTypePK());
-            LicenseTypeDetail licenseTypeDetail = licenseType.getActiveDetailForUpdate();
+            var licenseTypeDetail = licenseType.getActiveDetailForUpdate();
 
             licenseTypeDetail.setThruTime(session.START_TIME_LONG);
             licenseTypeDetail.store();
 
-            LicenseTypePK licenseTypePK = licenseTypeDetail.getLicenseTypePK(); // Not updated
-            String licenseTypeName = licenseTypeDetailValue.getLicenseTypeName();
-            Boolean isDefault = licenseTypeDetailValue.getIsDefault();
-            Integer sortOrder = licenseTypeDetailValue.getSortOrder();
+            var licenseTypePK = licenseTypeDetail.getLicenseTypePK(); // Not updated
+            var licenseTypeName = licenseTypeDetailValue.getLicenseTypeName();
+            var isDefault = licenseTypeDetailValue.getIsDefault();
+            var sortOrder = licenseTypeDetailValue.getSortOrder();
 
             if(checkDefault) {
-                LicenseType defaultLicenseType = getDefaultLicenseType();
-                boolean defaultFound = defaultLicenseType != null && !defaultLicenseType.equals(licenseType);
+                var defaultLicenseType = getDefaultLicenseType();
+                var defaultFound = defaultLicenseType != null && !defaultLicenseType.equals(licenseType);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    LicenseTypeDetailValue defaultLicenseTypeDetailValue = getDefaultLicenseTypeDetailValueForUpdate();
+                    var defaultLicenseTypeDetailValue = getDefaultLicenseTypeDetailValueForUpdate();
 
                     defaultLicenseTypeDetailValue.setIsDefault(Boolean.FALSE);
                     updateLicenseTypeFromValue(defaultLicenseTypeDetailValue, false, updatedBy);
@@ -309,7 +309,7 @@ public class LicenseControl
     }
 
     private void deleteLicenseType(LicenseType licenseType, boolean checkDefault, BasePK deletedBy) {
-        LicenseTypeDetail licenseTypeDetail = licenseType.getLastDetailForUpdate();
+        var licenseTypeDetail = licenseType.getLastDetailForUpdate();
 
         deleteLicenseTypeDescriptionsByLicenseType(licenseType, deletedBy);
 
@@ -319,17 +319,17 @@ public class LicenseControl
 
         if(checkDefault) {
             // Check for default, and pick one if necessary
-            LicenseType defaultLicenseType = getDefaultLicenseType();
+            var defaultLicenseType = getDefaultLicenseType();
 
             if(defaultLicenseType == null) {
-                List<LicenseType> licenseTypes = getLicenseTypesForUpdate();
+                var licenseTypes = getLicenseTypesForUpdate();
 
                 if(!licenseTypes.isEmpty()) {
-                    Iterator<LicenseType> iter = licenseTypes.iterator();
+                    var iter = licenseTypes.iterator();
                     if(iter.hasNext()) {
                         defaultLicenseType = iter.next();
                     }
-                    LicenseTypeDetailValue licenseTypeDetailValue = Objects.requireNonNull(defaultLicenseType).getLastDetailForUpdate().getLicenseTypeDetailValue().clone();
+                    var licenseTypeDetailValue = Objects.requireNonNull(defaultLicenseType).getLastDetailForUpdate().getLicenseTypeDetailValue().clone();
 
                     licenseTypeDetailValue.setIsDefault(Boolean.TRUE);
                     updateLicenseTypeFromValue(licenseTypeDetailValue, false, deletedBy);
@@ -357,7 +357,7 @@ public class LicenseControl
     // --------------------------------------------------------------------------------
 
     public LicenseTypeDescription createLicenseTypeDescription(LicenseType licenseType, Language language, String description, BasePK createdBy) {
-        LicenseTypeDescription licenseTypeDescription = LicenseTypeDescriptionFactory.getInstance().create(licenseType, language, description,
+        var licenseTypeDescription = LicenseTypeDescriptionFactory.getInstance().create(licenseType, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(licenseType.getPrimaryKey(), EventTypes.MODIFY, licenseTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -436,7 +436,7 @@ public class LicenseControl
 
     public String getBestLicenseTypeDescription(LicenseType licenseType, Language language) {
         String description;
-        LicenseTypeDescription licenseTypeDescription = getLicenseTypeDescription(licenseType, language);
+        var licenseTypeDescription = getLicenseTypeDescription(licenseType, language);
 
         if(licenseTypeDescription == null && !language.getIsDefault()) {
             licenseTypeDescription = getLicenseTypeDescription(licenseType, getPartyControl().getDefaultLanguage());
@@ -456,9 +456,9 @@ public class LicenseControl
     }
 
     public List<LicenseTypeDescriptionTransfer> getLicenseTypeDescriptionTransfersByLicenseType(UserVisit userVisit, LicenseType licenseType) {
-        List<LicenseTypeDescription> licenseTypeDescriptions = getLicenseTypeDescriptionsByLicenseType(licenseType);
+        var licenseTypeDescriptions = getLicenseTypeDescriptionsByLicenseType(licenseType);
         List<LicenseTypeDescriptionTransfer> licenseTypeDescriptionTransfers = new ArrayList<>(licenseTypeDescriptions.size());
-        LicenseTypeDescriptionTransferCache licenseTypeDescriptionTransferCache = getLicenseTransferCaches(userVisit).getLicenseTypeDescriptionTransferCache();
+        var licenseTypeDescriptionTransferCache = getLicenseTransferCaches(userVisit).getLicenseTypeDescriptionTransferCache();
 
         licenseTypeDescriptions.forEach((licenseTypeDescription) ->
                 licenseTypeDescriptionTransfers.add(licenseTypeDescriptionTransferCache.getLicenseTypeDescriptionTransfer(licenseTypeDescription))
@@ -469,15 +469,15 @@ public class LicenseControl
 
     public void updateLicenseTypeDescriptionFromValue(LicenseTypeDescriptionValue licenseTypeDescriptionValue, BasePK updatedBy) {
         if(licenseTypeDescriptionValue.hasBeenModified()) {
-            LicenseTypeDescription licenseTypeDescription = LicenseTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var licenseTypeDescription = LicenseTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     licenseTypeDescriptionValue.getPrimaryKey());
 
             licenseTypeDescription.setThruTime(session.START_TIME_LONG);
             licenseTypeDescription.store();
 
-            LicenseType licenseType = licenseTypeDescription.getLicenseType();
-            Language language = licenseTypeDescription.getLanguage();
-            String description = licenseTypeDescriptionValue.getDescription();
+            var licenseType = licenseTypeDescription.getLicenseType();
+            var language = licenseTypeDescription.getLanguage();
+            var description = licenseTypeDescriptionValue.getDescription();
 
             licenseTypeDescription = LicenseTypeDescriptionFactory.getInstance().create(licenseType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -494,7 +494,7 @@ public class LicenseControl
     }
 
     public void deleteLicenseTypeDescriptionsByLicenseType(LicenseType licenseType, BasePK deletedBy) {
-        List<LicenseTypeDescription> licenseTypeDescriptions = getLicenseTypeDescriptionsByLicenseTypeForUpdate(licenseType);
+        var licenseTypeDescriptions = getLicenseTypeDescriptionsByLicenseTypeForUpdate(licenseType);
 
         licenseTypeDescriptions.forEach((licenseTypeDescription) -> 
                 deleteLicenseTypeDescription(licenseTypeDescription, deletedBy)

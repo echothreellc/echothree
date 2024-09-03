@@ -38,11 +38,11 @@ public class InvoiceLineGlAccountTransferCache
     }
 
     public InvoiceLineGlAccountTransfer getInvoiceLineGlAccountTransfer(InvoiceLineGlAccount invoiceLineGlAccount) {
-        InvoiceLineGlAccountTransfer invoiceLineGlAccountTransfer = get(invoiceLineGlAccount);
+        var invoiceLineGlAccountTransfer = get(invoiceLineGlAccount);
 
         if(invoiceLineGlAccountTransfer == null) {
-            InvoiceLineTransfer invoiceLine = invoiceControl.getInvoiceLineTransfer(userVisit, invoiceLineGlAccount.getInvoiceLine());
-            GlAccountTransfer glAccount = accountingControl.getGlAccountTransfer(userVisit, invoiceLineGlAccount.getGlAccount());
+            var invoiceLine = invoiceControl.getInvoiceLineTransfer(userVisit, invoiceLineGlAccount.getInvoiceLine());
+            var glAccount = accountingControl.getGlAccountTransfer(userVisit, invoiceLineGlAccount.getGlAccount());
 
             invoiceLineGlAccountTransfer = new InvoiceLineGlAccountTransfer(invoiceLine, glAccount);
             put(invoiceLineGlAccount, invoiceLineGlAccountTransfer);

@@ -32,11 +32,11 @@ public class BirthdayFormatDescriptionTransferCache
     }
     
     public BirthdayFormatDescriptionTransfer getBirthdayFormatDescriptionTransfer(BirthdayFormatDescription birthdayFormatDescription) {
-        BirthdayFormatDescriptionTransfer birthdayFormatDescriptionTransfer = get(birthdayFormatDescription);
+        var birthdayFormatDescriptionTransfer = get(birthdayFormatDescription);
         
         if(birthdayFormatDescriptionTransfer == null) {
-            BirthdayFormatTransfer birthdayFormatTransfer = partyControl.getBirthdayFormatTransfer(userVisit, birthdayFormatDescription.getBirthdayFormat());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, birthdayFormatDescription.getLanguage());
+            var birthdayFormatTransfer = partyControl.getBirthdayFormatTransfer(userVisit, birthdayFormatDescription.getBirthdayFormat());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, birthdayFormatDescription.getLanguage());
             
             birthdayFormatDescriptionTransfer = new BirthdayFormatDescriptionTransfer(languageTransfer, birthdayFormatTransfer, birthdayFormatDescription.getDescription());
             put(birthdayFormatDescription, birthdayFormatDescriptionTransfer);

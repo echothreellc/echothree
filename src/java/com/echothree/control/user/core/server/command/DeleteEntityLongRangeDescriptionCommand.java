@@ -72,28 +72,28 @@ public class DeleteEntityLongRangeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String componentVendorName = form.getComponentVendorName();
-        ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+        var componentVendorName = form.getComponentVendorName();
+        var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
         
         if(componentVendor != null) {
-            String entityTypeName = form.getEntityTypeName();
-            EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+            var entityTypeName = form.getEntityTypeName();
+            var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
             
             if(entityType != null) {
-                String entityAttributeName = form.getEntityAttributeName();
-                EntityAttribute entityAttribute = coreControl.getEntityAttributeByName(entityType, entityAttributeName);
+                var entityAttributeName = form.getEntityAttributeName();
+                var entityAttribute = coreControl.getEntityAttributeByName(entityType, entityAttributeName);
                 
                 if(entityAttribute != null) {
-                    String entityLongRangeName = form.getEntityLongRangeName();
-                    EntityLongRange entityLongRange = coreControl.getEntityLongRangeByName(entityAttribute, entityLongRangeName);
+                    var entityLongRangeName = form.getEntityLongRangeName();
+                    var entityLongRange = coreControl.getEntityLongRangeByName(entityAttribute, entityLongRangeName);
                     
                     if(entityLongRange != null) {
                         var partyControl = Session.getModelController(PartyControl.class);
-                        String languageIsoName = form.getLanguageIsoName();
-                        Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                        var languageIsoName = form.getLanguageIsoName();
+                        var language = partyControl.getLanguageByIsoName(languageIsoName);
                         
                         if(language != null) {
-                            EntityLongRangeDescription entityLongRangeDescription = coreControl.getEntityLongRangeDescriptionForUpdate(entityLongRange, language);
+                            var entityLongRangeDescription = coreControl.getEntityLongRangeDescriptionForUpdate(entityLongRange, language);
                             
                             if(entityLongRangeDescription != null) {
                                 coreControl.deleteEntityLongRangeDescription(entityLongRangeDescription, getPartyPK());

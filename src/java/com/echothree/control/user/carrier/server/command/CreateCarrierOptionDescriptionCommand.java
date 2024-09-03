@@ -71,21 +71,21 @@ public class CreateCarrierOptionDescriptionCommand
     @Override
     protected BaseResult execute() {
         var carrierControl = Session.getModelController(CarrierControl.class);
-        String carrierName = form.getCarrierName();
-        Carrier carrier = carrierControl.getCarrierByName(carrierName);
+        var carrierName = form.getCarrierName();
+        var carrier = carrierControl.getCarrierByName(carrierName);
         
         if(carrier != null) {
-            Party carrierParty = carrier.getParty();
-            String carrierOptionName = form.getCarrierOptionName();
-            CarrierOption carrierOption = carrierControl.getCarrierOptionByName(carrierParty, carrierOptionName);
+            var carrierParty = carrier.getParty();
+            var carrierOptionName = form.getCarrierOptionName();
+            var carrierOption = carrierControl.getCarrierOptionByName(carrierParty, carrierOptionName);
             
             if(carrierOption != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = form.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = form.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
                 
                 if(language != null) {
-                    CarrierOptionDescription carrierOptionDescription = carrierControl.getCarrierOptionDescription(carrierOption, language);
+                    var carrierOptionDescription = carrierControl.getCarrierOptionDescription(carrierOption, language);
                     
                     if(carrierOptionDescription == null) {
                         var description = form.getDescription();

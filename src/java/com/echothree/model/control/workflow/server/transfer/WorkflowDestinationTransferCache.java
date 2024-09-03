@@ -60,15 +60,15 @@ public class WorkflowDestinationTransferCache
     }
     
     public WorkflowDestinationTransfer getWorkflowDestinationTransfer(WorkflowDestination workflowDestination) {
-        WorkflowDestinationTransfer workflowDestinationTransfer = get(workflowDestination);
+        var workflowDestinationTransfer = get(workflowDestination);
         
         if(workflowDestinationTransfer == null) {
-            WorkflowDestinationDetail workflowDestinationDetail = workflowDestination.getLastDetail();
-            WorkflowStepTransfer workflowStep = filterWorkflowStep ? null : workflowControl.getWorkflowStepTransfer(userVisit, workflowDestinationDetail.getWorkflowStep());
-            String workflowDestinationName = filterWorkflowDestinationName ? null : workflowDestinationDetail.getWorkflowDestinationName();
-            Boolean isDefault = filterIsDefault ? null : workflowDestinationDetail.getIsDefault();
-            Integer sortOrder = filterSortOrder ? null : workflowDestinationDetail.getSortOrder();
-            String description = filterDescription ? null : workflowControl.getBestWorkflowDestinationDescription(workflowDestination, getLanguage());
+            var workflowDestinationDetail = workflowDestination.getLastDetail();
+            var workflowStep = filterWorkflowStep ? null : workflowControl.getWorkflowStepTransfer(userVisit, workflowDestinationDetail.getWorkflowStep());
+            var workflowDestinationName = filterWorkflowDestinationName ? null : workflowDestinationDetail.getWorkflowDestinationName();
+            var isDefault = filterIsDefault ? null : workflowDestinationDetail.getIsDefault();
+            var sortOrder = filterSortOrder ? null : workflowDestinationDetail.getSortOrder();
+            var description = filterDescription ? null : workflowControl.getBestWorkflowDestinationDescription(workflowDestination, getLanguage());
             
             workflowDestinationTransfer = new WorkflowDestinationTransfer(workflowStep, workflowDestinationName, isDefault,
                     sortOrder, description);

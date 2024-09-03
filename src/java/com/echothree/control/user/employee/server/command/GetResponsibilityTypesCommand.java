@@ -46,7 +46,7 @@ public class GetResponsibilityTypesCommand
     
     @Override
     protected BaseResult execute() {
-        GetResponsibilityTypesResult result = EmployeeResultFactory.getGetResponsibilityTypesResult();
+        var result = EmployeeResultFactory.getGetResponsibilityTypesResult();
         var employeeControl = Session.getModelController(EmployeeControl.class);
         
         result.setResponsibilityTypes(employeeControl.getResponsibilityTypeTransfers(getUserVisit()));

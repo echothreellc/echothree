@@ -70,22 +70,22 @@ public class CreateLotAliasCommand
     @Override
     protected BaseResult execute() {
         var lotControl = Session.getModelController(LotControl.class);
-        String lotName = form.getLotName();
-        Lot lot = lotControl.getLotByName(lotName);
+        var lotName = form.getLotName();
+        var lot = lotControl.getLotByName(lotName);
 
         if(lot != null) {
             var lotAliasControl = Session.getModelController(LotAliasControl.class);
-            String lotAliasTypeName = form.getLotAliasTypeName();
-            LotAliasType lotAliasType = lotAliasControl.getLotAliasTypeByName(lotAliasTypeName);
+            var lotAliasTypeName = form.getLotAliasTypeName();
+            var lotAliasType = lotAliasControl.getLotAliasTypeByName(lotAliasTypeName);
 
             if(lotAliasType != null) {
-                LotAliasTypeDetail lotAliasTypeDetail = lotAliasType.getLastDetail();
-                String validationPattern = lotAliasTypeDetail.getValidationPattern();
-                String alias = form.getAlias();
+                var lotAliasTypeDetail = lotAliasType.getLastDetail();
+                var validationPattern = lotAliasTypeDetail.getValidationPattern();
+                var alias = form.getAlias();
 
                 if(validationPattern != null) {
-                    Pattern pattern = Pattern.compile(validationPattern);
-                    Matcher m = pattern.matcher(alias);
+                    var pattern = Pattern.compile(validationPattern);
+                    var m = pattern.matcher(alias);
 
                     if(!m.matches()) {
                         addExecutionError(ExecutionErrors.InvalidAlias.name(), alias);

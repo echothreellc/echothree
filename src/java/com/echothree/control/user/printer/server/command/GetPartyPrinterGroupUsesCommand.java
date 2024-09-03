@@ -66,8 +66,8 @@ public class GetPartyPrinterGroupUsesCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        GetPartyPrinterGroupUsesResult result = PrinterResultFactory.getGetPartyPrinterGroupUsesResult();
-        String partyName = form.getPartyName();
+        var result = PrinterResultFactory.getGetPartyPrinterGroupUsesResult();
+        var partyName = form.getPartyName();
         Party party = null;
 
         if(partyName != null) {

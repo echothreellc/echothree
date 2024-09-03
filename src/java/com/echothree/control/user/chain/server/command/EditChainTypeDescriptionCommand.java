@@ -90,17 +90,17 @@ public class EditChainTypeDescriptionCommand
     public ChainTypeDescription getEntity(EditChainTypeDescriptionResult result) {
         var chainControl = Session.getModelController(ChainControl.class);
         ChainTypeDescription chainTypeDescription = null;
-        String chainKindName = spec.getChainKindName();
-        ChainKind chainKind = chainControl.getChainKindByName(chainKindName);
+        var chainKindName = spec.getChainKindName();
+        var chainKind = chainControl.getChainKindByName(chainKindName);
 
         if(chainKind != null) {
-            String chainTypeName = spec.getChainTypeName();
-            ChainType chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
+            var chainTypeName = spec.getChainTypeName();
+            var chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
 
             if(chainType != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = spec.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = spec.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                 if(language != null) {
                     if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -145,7 +145,7 @@ public class EditChainTypeDescriptionCommand
     @Override
     public void doUpdate(ChainTypeDescription chainTypeDescription) {
         var chainControl = Session.getModelController(ChainControl.class);
-        ChainTypeDescriptionValue chainTypeDescriptionValue = chainControl.getChainTypeDescriptionValue(chainTypeDescription);
+        var chainTypeDescriptionValue = chainControl.getChainTypeDescriptionValue(chainTypeDescription);
 
         chainTypeDescriptionValue.setDescription(edit.getDescription());
 

@@ -39,19 +39,19 @@ public class ApplicationEditorUseTransferCache
     }
 
     public ApplicationEditorUseTransfer getApplicationEditorUseTransfer(ApplicationEditorUse applicationEditorUse) {
-        ApplicationEditorUseTransfer applicationEditorUseTransfer = get(applicationEditorUse);
+        var applicationEditorUseTransfer = get(applicationEditorUse);
 
         if(applicationEditorUseTransfer == null) {
-            ApplicationEditorUseDetail applicationEditorUseDetail = applicationEditorUse.getLastDetail();
-            ApplicationTransfer applicationTransfer = coreControl.getApplicationTransfer(userVisit, applicationEditorUseDetail.getApplication());
-            String applicationEditorUseName = applicationEditorUseDetail.getApplicationEditorUseName();
-            ApplicationEditor defaultApplicationEditor = applicationEditorUseDetail.getDefaultApplicationEditor();
-            ApplicationEditorTransfer defaultApplicationEditorTransfer = defaultApplicationEditor == null ? null : coreControl.getApplicationEditorTransfer(userVisit, defaultApplicationEditor);
-            Integer defaultHeight = applicationEditorUseDetail.getDefaultHeight();
-            Integer defaultWidth = applicationEditorUseDetail.getDefaultWidth();
-            Boolean isDefault = applicationEditorUseDetail.getIsDefault();
-            Integer sortOrder = applicationEditorUseDetail.getSortOrder();
-            String description = coreControl.getBestApplicationEditorUseDescription(applicationEditorUse, getLanguage());
+            var applicationEditorUseDetail = applicationEditorUse.getLastDetail();
+            var applicationTransfer = coreControl.getApplicationTransfer(userVisit, applicationEditorUseDetail.getApplication());
+            var applicationEditorUseName = applicationEditorUseDetail.getApplicationEditorUseName();
+            var defaultApplicationEditor = applicationEditorUseDetail.getDefaultApplicationEditor();
+            var defaultApplicationEditorTransfer = defaultApplicationEditor == null ? null : coreControl.getApplicationEditorTransfer(userVisit, defaultApplicationEditor);
+            var defaultHeight = applicationEditorUseDetail.getDefaultHeight();
+            var defaultWidth = applicationEditorUseDetail.getDefaultWidth();
+            var isDefault = applicationEditorUseDetail.getIsDefault();
+            var sortOrder = applicationEditorUseDetail.getSortOrder();
+            var description = coreControl.getBestApplicationEditorUseDescription(applicationEditorUse, getLanguage());
 
             applicationEditorUseTransfer = new ApplicationEditorUseTransfer(applicationTransfer, applicationEditorUseName, defaultApplicationEditorTransfer,
                     defaultHeight, defaultWidth, isDefault, sortOrder, description);

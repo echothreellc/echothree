@@ -32,11 +32,11 @@ public class ChainTypeDescriptionTransferCache
     }
     
     public ChainTypeDescriptionTransfer getChainTypeDescriptionTransfer(ChainTypeDescription chainTypeDescription) {
-        ChainTypeDescriptionTransfer chainTypeDescriptionTransfer = get(chainTypeDescription);
+        var chainTypeDescriptionTransfer = get(chainTypeDescription);
         
         if(chainTypeDescriptionTransfer == null) {
-            ChainTypeTransfer chainTypeTransfer = chainControl.getChainTypeTransfer(userVisit, chainTypeDescription.getChainType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, chainTypeDescription.getLanguage());
+            var chainTypeTransfer = chainControl.getChainTypeTransfer(userVisit, chainTypeDescription.getChainType());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, chainTypeDescription.getLanguage());
             
             chainTypeDescriptionTransfer = new ChainTypeDescriptionTransfer(languageTransfer, chainTypeTransfer, chainTypeDescription.getDescription());
             put(chainTypeDescription, chainTypeDescriptionTransfer);

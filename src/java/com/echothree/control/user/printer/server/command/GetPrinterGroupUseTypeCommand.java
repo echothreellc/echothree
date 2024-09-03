@@ -65,9 +65,9 @@ public class GetPrinterGroupUseTypeCommand
     @Override
     protected BaseResult execute() {
         var printerControl = Session.getModelController(PrinterControl.class);
-        GetPrinterGroupUseTypeResult result = PrinterResultFactory.getGetPrinterGroupUseTypeResult();
-        String printerGroupUseTypeName = form.getPrinterGroupUseTypeName();
-        PrinterGroupUseType printerGroupUseType = printerControl.getPrinterGroupUseTypeByName(printerGroupUseTypeName);
+        var result = PrinterResultFactory.getGetPrinterGroupUseTypeResult();
+        var printerGroupUseTypeName = form.getPrinterGroupUseTypeName();
+        var printerGroupUseType = printerControl.getPrinterGroupUseTypeByName(printerGroupUseTypeName);
         
         if(printerGroupUseType != null) {
             result.setPrinterGroupUseType(printerControl.getPrinterGroupUseTypeTransfer(getUserVisit(), printerGroupUseType));

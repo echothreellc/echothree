@@ -38,13 +38,13 @@ public class ForumMessagePartTypeTransferCache
     }
     
     public ForumMessagePartTypeTransfer getForumMessagePartTypeTransfer(ForumMessagePartType forumMessagePartType) {
-        ForumMessagePartTypeTransfer forumMessagePartTypeTransfer = get(forumMessagePartType);
+        var forumMessagePartTypeTransfer = get(forumMessagePartType);
         
         if(forumMessagePartTypeTransfer == null) {
-            String forumMessagePartTypeName = forumMessagePartType.getForumMessagePartTypeName();
-            MimeTypeUsageType mimeTypeUsageType = forumMessagePartType.getMimeTypeUsageType();
-            MimeTypeUsageTypeTransfer mimeTypeUsageTypeTransfer = mimeTypeUsageType == null? null: coreControl.getMimeTypeUsageTypeTransfer(userVisit, mimeTypeUsageType);
-            Integer sortOrder = forumMessagePartType.getSortOrder();
+            var forumMessagePartTypeName = forumMessagePartType.getForumMessagePartTypeName();
+            var mimeTypeUsageType = forumMessagePartType.getMimeTypeUsageType();
+            var mimeTypeUsageTypeTransfer = mimeTypeUsageType == null? null: coreControl.getMimeTypeUsageTypeTransfer(userVisit, mimeTypeUsageType);
+            var sortOrder = forumMessagePartType.getSortOrder();
             
             forumMessagePartTypeTransfer = new ForumMessagePartTypeTransfer(forumMessagePartTypeName, mimeTypeUsageTypeTransfer,
                     sortOrder);

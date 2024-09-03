@@ -63,9 +63,9 @@ public class GetSequenceEncoderTypeChoicesCommand
     @Override
     protected BaseResult execute() {
         var sequenceControl = Session.getModelController(SequenceControl.class);
-        GetSequenceEncoderTypeChoicesResult result = SequenceResultFactory.getGetSequenceEncoderTypeChoicesResult();
-        String defaultSequenceEncoderTypeChoice = form.getDefaultSequenceEncoderTypeChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = SequenceResultFactory.getGetSequenceEncoderTypeChoicesResult();
+        var defaultSequenceEncoderTypeChoice = form.getDefaultSequenceEncoderTypeChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 
         result.setSequenceEncoderTypeChoices(sequenceControl.getSequenceEncoderTypeChoices(defaultSequenceEncoderTypeChoice,
                 getPreferredLanguage(), allowNullChoice));

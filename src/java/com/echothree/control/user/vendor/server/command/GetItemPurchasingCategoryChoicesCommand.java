@@ -63,9 +63,9 @@ public class GetItemPurchasingCategoryChoicesCommand
     @Override
     protected BaseResult execute() {
         var vendorControl = Session.getModelController(VendorControl.class);
-        GetItemPurchasingCategoryChoicesResult result = VendorResultFactory.getGetItemPurchasingCategoryChoicesResult();
-        String defaultItemPurchasingCategoryChoice = form.getDefaultItemPurchasingCategoryChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = VendorResultFactory.getGetItemPurchasingCategoryChoicesResult();
+        var defaultItemPurchasingCategoryChoice = form.getDefaultItemPurchasingCategoryChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setItemPurchasingCategoryChoices(vendorControl.getItemPurchasingCategoryChoices(defaultItemPurchasingCategoryChoice,
                 getPreferredLanguage(), allowNullChoice));

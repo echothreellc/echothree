@@ -54,21 +54,21 @@ public class ForumGroupTransferCache
     }
     
     public ForumGroupTransfer getForumGroupTransfer(ForumGroup forumGroup) {
-        ForumGroupTransfer forumGroupTransfer = get(forumGroup);
+        var forumGroupTransfer = get(forumGroup);
         
         if(forumGroupTransfer == null) {
-            ForumGroupDetail forumGroupDetail = forumGroup.getLastDetail();
-            String forumGroupName = forumGroupDetail.getForumGroupName();
-            Icon icon = forumGroupDetail.getIcon();
-            IconTransfer iconTransfer = icon == null? null: iconControl.getIconTransfer(userVisit, icon);
-            Integer sortOrder = forumGroupDetail.getSortOrder();
-            String description = forumControl.getBestForumGroupDescription(forumGroup, getLanguage());
+            var forumGroupDetail = forumGroup.getLastDetail();
+            var forumGroupName = forumGroupDetail.getForumGroupName();
+            var icon = forumGroupDetail.getIcon();
+            var iconTransfer = icon == null? null: iconControl.getIconTransfer(userVisit, icon);
+            var sortOrder = forumGroupDetail.getSortOrder();
+            var description = forumControl.getBestForumGroupDescription(forumGroup, getLanguage());
             
             forumGroupTransfer = new ForumGroupTransfer(forumGroupName, iconTransfer, sortOrder, description);
             put(forumGroup, forumGroupTransfer);
             
             if(includeForums) {
-                List<ForumGroupForum> forumGroupForums = forumControl.getForumGroupForumsByForumGroup(forumGroup);
+                var forumGroupForums = forumControl.getForumGroupForumsByForumGroup(forumGroup);
                 List<Forum> forums = new ArrayList<>(forumGroupForums.size());
                 
                 forumGroupForums.forEach((forumGroupForum) -> {

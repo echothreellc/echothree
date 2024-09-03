@@ -70,7 +70,7 @@ public class GetUseNameElementsCommand
     
     @Override
     protected BaseResult getResult(Collection<UseNameElement> entities) {
-        GetUseNameElementsResult result = OfferResultFactory.getGetUseNameElementsResult();
+        var result = OfferResultFactory.getGetUseNameElementsResult();
         var useNameElementControl = Session.getModelController(UseNameElementControl.class);
         
         if(session.hasLimit(UseNameElementFactory.class)) {

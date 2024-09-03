@@ -65,9 +65,9 @@ public class GetPaymentProcessorActionTypeDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var paymentProcessorActionTypeControl = Session.getModelController(PaymentProcessorActionTypeControl.class);
-        GetPaymentProcessorActionTypeDescriptionsResult result = PaymentResultFactory.getGetPaymentProcessorActionTypeDescriptionsResult();
-        String paymentProcessorActionTypeName = form.getPaymentProcessorActionTypeName();
-        PaymentProcessorActionType paymentProcessorActionType = paymentProcessorActionTypeControl.getPaymentProcessorActionTypeByName(paymentProcessorActionTypeName);
+        var result = PaymentResultFactory.getGetPaymentProcessorActionTypeDescriptionsResult();
+        var paymentProcessorActionTypeName = form.getPaymentProcessorActionTypeName();
+        var paymentProcessorActionType = paymentProcessorActionTypeControl.getPaymentProcessorActionTypeByName(paymentProcessorActionTypeName);
         
         if(paymentProcessorActionType != null) {
             result.setPaymentProcessorActionType(paymentProcessorActionTypeControl.getPaymentProcessorActionTypeTransfer(getUserVisit(), paymentProcessorActionType));

@@ -33,14 +33,14 @@ public class SelectorKindTransferCache
     }
     
     public SelectorKindTransfer getSelectorKindTransfer(SelectorKind selectorKind) {
-        SelectorKindTransfer selectorKindTransfer = get(selectorKind);
+        var selectorKindTransfer = get(selectorKind);
         
         if(selectorKindTransfer == null) {
-            SelectorKindDetail selectorKindDetail = selectorKind.getLastDetail();
-            String selectorKindName = selectorKindDetail.getSelectorKindName();
-            Boolean isDefault = selectorKindDetail.getIsDefault();
-            Integer sortOrder = selectorKindDetail.getSortOrder();
-            String description = selectorControl.getBestSelectorKindDescription(selectorKind, getLanguage());
+            var selectorKindDetail = selectorKind.getLastDetail();
+            var selectorKindName = selectorKindDetail.getSelectorKindName();
+            var isDefault = selectorKindDetail.getIsDefault();
+            var sortOrder = selectorKindDetail.getSortOrder();
+            var description = selectorControl.getBestSelectorKindDescription(selectorKind, getLanguage());
             
             selectorKindTransfer = new SelectorKindTransfer(selectorKindName, isDefault, sortOrder, description);
             put(selectorKind, selectorKindTransfer);

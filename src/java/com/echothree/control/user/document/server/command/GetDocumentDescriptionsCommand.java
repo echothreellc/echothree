@@ -65,9 +65,9 @@ public class GetDocumentDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var documentControl = Session.getModelController(DocumentControl.class);
-        GetDocumentDescriptionsResult result = DocumentResultFactory.getGetDocumentDescriptionsResult();
-        String documentName = form.getDocumentName();
-        Document document = documentControl.getDocumentByName(documentName);
+        var result = DocumentResultFactory.getGetDocumentDescriptionsResult();
+        var documentName = form.getDocumentName();
+        var document = documentControl.getDocumentByName(documentName);
         
         if(document != null) {
             result.setDocument(documentControl.getDocumentTransfer(getUserVisit(), document));

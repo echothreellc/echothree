@@ -62,8 +62,8 @@ public class SetDefaultSearchKindCommand
     @Override
     protected BaseResult execute() {
         var searchControl = Session.getModelController(SearchControl.class);
-        String searchKindName = form.getSearchKindName();
-        SearchKindDetailValue searchKindDetailValue = searchControl.getSearchKindDetailValueByNameForUpdate(searchKindName);
+        var searchKindName = form.getSearchKindName();
+        var searchKindDetailValue = searchControl.getSearchKindDetailValueByNameForUpdate(searchKindName);
         
         if(searchKindDetailValue != null) {
             searchKindDetailValue.setIsDefault(Boolean.TRUE);

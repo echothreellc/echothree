@@ -42,15 +42,15 @@ public class WarehouseTypeTransferCache
     }
 
     public WarehouseTypeTransfer getTransfer(WarehouseType warehouseType) {
-        WarehouseTypeTransfer warehouseTypeTransfer = get(warehouseType);
+        var warehouseTypeTransfer = get(warehouseType);
         
         if(warehouseTypeTransfer == null) {
-            WarehouseTypeDetail warehouseTypeDetail = warehouseType.getLastDetail();
-            String warehouseTypeName = warehouseTypeDetail.getWarehouseTypeName();
-            Integer priority = warehouseTypeDetail.getPriority();
-            Boolean isDefault = warehouseTypeDetail.getIsDefault();
-            Integer sortOrder = warehouseTypeDetail.getSortOrder();
-            String description = warehouseControl.getBestWarehouseTypeDescription(warehouseType, getLanguage());
+            var warehouseTypeDetail = warehouseType.getLastDetail();
+            var warehouseTypeName = warehouseTypeDetail.getWarehouseTypeName();
+            var priority = warehouseTypeDetail.getPriority();
+            var isDefault = warehouseTypeDetail.getIsDefault();
+            var sortOrder = warehouseTypeDetail.getSortOrder();
+            var description = warehouseControl.getBestWarehouseTypeDescription(warehouseType, getLanguage());
             
             warehouseTypeTransfer = new WarehouseTypeTransfer(warehouseTypeName, priority, isDefault, sortOrder,
                     description);

@@ -72,24 +72,24 @@ public class CreateWorkflowDestinationDescriptionCommand
     @Override
     protected BaseResult execute() {
         var workflowControl = Session.getModelController(WorkflowControl.class);
-        String workflowName = form.getWorkflowName();
+        var workflowName = form.getWorkflowName();
         var workflow = workflowControl.getWorkflowByName(workflowName);
         
         if(workflow != null) {
-            String workflowStepName = form.getWorkflowStepName();
+            var workflowStepName = form.getWorkflowStepName();
             var workflowStep = workflowControl.getWorkflowStepByName(workflow, workflowStepName);
             
             if(workflowStep != null) {
-                String workflowDestinationName = form.getWorkflowDestinationName();
-                WorkflowDestination workflowDestination = workflowControl.getWorkflowDestinationByName(workflowStep, workflowDestinationName);
+                var workflowDestinationName = form.getWorkflowDestinationName();
+                var workflowDestination = workflowControl.getWorkflowDestinationByName(workflowStep, workflowDestinationName);
                 
                 if(workflowDestination != null) {
                     var partyControl = Session.getModelController(PartyControl.class);
-                    String languageIsoName = form.getLanguageIsoName();
-                    Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                    var languageIsoName = form.getLanguageIsoName();
+                    var language = partyControl.getLanguageByIsoName(languageIsoName);
                     
                     if(language != null) {
-                        WorkflowDestinationDescription workflowStepDescription = workflowControl.getWorkflowDestinationDescription(workflowDestination, language);
+                        var workflowStepDescription = workflowControl.getWorkflowDestinationDescription(workflowDestination, language);
                         
                         if(workflowStepDescription == null) {
                             var description = form.getDescription();

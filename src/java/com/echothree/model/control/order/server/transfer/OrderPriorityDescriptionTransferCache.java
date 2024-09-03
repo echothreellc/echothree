@@ -35,11 +35,11 @@ public class OrderPriorityDescriptionTransferCache
     }
     
     public OrderPriorityDescriptionTransfer getOrderPriorityDescriptionTransfer(OrderPriorityDescription orderPriorityDescription) {
-        OrderPriorityDescriptionTransfer orderPriorityDescriptionTransfer = get(orderPriorityDescription);
+        var orderPriorityDescriptionTransfer = get(orderPriorityDescription);
         
         if(orderPriorityDescriptionTransfer == null) {
-            OrderPriorityTransfer orderPriorityTransfer = orderPriorityControl.getOrderPriorityTransfer(userVisit, orderPriorityDescription.getOrderPriority());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, orderPriorityDescription.getLanguage());
+            var orderPriorityTransfer = orderPriorityControl.getOrderPriorityTransfer(userVisit, orderPriorityDescription.getOrderPriority());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, orderPriorityDescription.getLanguage());
             
             orderPriorityDescriptionTransfer = new OrderPriorityDescriptionTransfer(languageTransfer, orderPriorityTransfer, orderPriorityDescription.getDescription());
             put(orderPriorityDescription, orderPriorityDescriptionTransfer);

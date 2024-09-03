@@ -71,12 +71,12 @@ public class CreateWorkflowEntranceCommand
     protected BaseResult execute() {
         var result = WorkflowResultFactory.getCreateWorkflowEntranceResult();
         var workflowControl = Session.getModelController(WorkflowControl.class);
-        String workflowName = form.getWorkflowName();
+        var workflowName = form.getWorkflowName();
         var workflow = workflowControl.getWorkflowByName(workflowName);
         WorkflowEntrance workflowEntrance = null;
         
         if(workflow != null) {
-            String workflowEntranceName = form.getWorkflowEntranceName();
+            var workflowEntranceName = form.getWorkflowEntranceName();
 
             workflowEntrance = workflowControl.getWorkflowEntranceByName(workflow, workflowEntranceName);
             

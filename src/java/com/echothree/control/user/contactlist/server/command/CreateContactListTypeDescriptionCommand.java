@@ -68,16 +68,16 @@ public class CreateContactListTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var contactListControl = Session.getModelController(ContactListControl.class);
-        String contactListTypeName = form.getContactListTypeName();
-        ContactListType contactListType = contactListControl.getContactListTypeByName(contactListTypeName);
+        var contactListTypeName = form.getContactListTypeName();
+        var contactListType = contactListControl.getContactListTypeByName(contactListTypeName);
         
         if(contactListType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                ContactListTypeDescription contactListTypeDescription = contactListControl.getContactListTypeDescription(contactListType, language);
+                var contactListTypeDescription = contactListControl.getContactListTypeDescription(contactListType, language);
                 
                 if(contactListTypeDescription == null) {
                     var description = form.getDescription();

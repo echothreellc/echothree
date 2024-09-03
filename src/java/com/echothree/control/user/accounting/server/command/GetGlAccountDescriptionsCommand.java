@@ -65,9 +65,9 @@ public class GetGlAccountDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        GetGlAccountDescriptionsResult result = AccountingResultFactory.getGetGlAccountDescriptionsResult();
-        String glAccountName = form.getGlAccountName();
-        GlAccount glAccount = accountingControl.getGlAccountByName(glAccountName);
+        var result = AccountingResultFactory.getGetGlAccountDescriptionsResult();
+        var glAccountName = form.getGlAccountName();
+        var glAccount = accountingControl.getGlAccountByName(glAccountName);
         
         if(glAccount != null) {
             result.setGlAccount(accountingControl.getGlAccountTransfer(getUserVisit(), glAccount));

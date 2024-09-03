@@ -100,12 +100,12 @@ public class EditCancellationPolicyCommand
     public CancellationPolicy getEntity(EditCancellationPolicyResult result) {
         var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
         CancellationPolicy cancellationPolicy = null;
-        String cancellationKindName = spec.getCancellationKindName();
+        var cancellationKindName = spec.getCancellationKindName();
 
         cancellationKind = cancellationPolicyControl.getCancellationKindByName(cancellationKindName);
 
         if(cancellationKind != null) {
-            String cancellationPolicyName = spec.getCancellationPolicyName();
+            var cancellationPolicyName = spec.getCancellationPolicyName();
 
             if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
                 cancellationPolicy = cancellationPolicyControl.getCancellationPolicyByName(cancellationKind, cancellationPolicyName);
@@ -142,8 +142,8 @@ public class EditCancellationPolicyCommand
     @Override
     public void doLock(CancellationPolicyEdit edit, CancellationPolicy cancellationPolicy) {
         var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
-        CancellationPolicyTranslation cancellationPolicyTranslation = cancellationPolicyControl.getCancellationPolicyTranslation(cancellationPolicy, getPreferredLanguage());
-        CancellationPolicyDetail cancellationPolicyDetail = cancellationPolicy.getLastDetail();
+        var cancellationPolicyTranslation = cancellationPolicyControl.getCancellationPolicyTranslation(cancellationPolicy, getPreferredLanguage());
+        var cancellationPolicyDetail = cancellationPolicy.getLastDetail();
 
         edit.setCancellationPolicyName(cancellationPolicyDetail.getCancellationPolicyName());
         edit.setIsDefault(cancellationPolicyDetail.getIsDefault().toString());
@@ -161,15 +161,15 @@ public class EditCancellationPolicyCommand
     @Override
     public void canUpdate(CancellationPolicy cancellationPolicy) {
         var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
-        String cancellationPolicyName = edit.getCancellationPolicyName();
-        CancellationPolicy duplicateCancellationPolicy = cancellationPolicyControl.getCancellationPolicyByName(cancellationKind, cancellationPolicyName);
+        var cancellationPolicyName = edit.getCancellationPolicyName();
+        var duplicateCancellationPolicy = cancellationPolicyControl.getCancellationPolicyByName(cancellationKind, cancellationPolicyName);
 
         if(duplicateCancellationPolicy != null && !cancellationPolicy.equals(duplicateCancellationPolicy)) {
             addExecutionError(ExecutionErrors.DuplicateCancellationPolicyName.name(), cancellationPolicyName);
         } else {
-            MimeTypeLogic mimeTypeLogic = MimeTypeLogic.getInstance();
-            String policyMimeTypeName = edit.getPolicyMimeTypeName();
-            String policy = edit.getPolicy();
+            var mimeTypeLogic = MimeTypeLogic.getInstance();
+            var policyMimeTypeName = edit.getPolicyMimeTypeName();
+            var policy = edit.getPolicy();
 
             policyMimeType = mimeTypeLogic.checkMimeType(this, policyMimeTypeName, policy, MimeTypeUsageTypes.TEXT.name(),
                     ExecutionErrors.MissingRequiredPolicyMimeTypeName.name(), ExecutionErrors.MissingRequiredPolicy.name(),
@@ -181,10 +181,10 @@ public class EditCancellationPolicyCommand
     public void doUpdate(CancellationPolicy cancellationPolicy) {
         var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
         var partyPK = getPartyPK();
-        CancellationPolicyDetailValue cancellationPolicyDetailValue = cancellationPolicyControl.getCancellationPolicyDetailValueForUpdate(cancellationPolicy);
-        CancellationPolicyTranslation cancellationPolicyTranslation = cancellationPolicyControl.getCancellationPolicyTranslationForUpdate(cancellationPolicy, getPreferredLanguage());
-        String description = edit.getDescription();
-        String policy = edit.getPolicy();
+        var cancellationPolicyDetailValue = cancellationPolicyControl.getCancellationPolicyDetailValueForUpdate(cancellationPolicy);
+        var cancellationPolicyTranslation = cancellationPolicyControl.getCancellationPolicyTranslationForUpdate(cancellationPolicy, getPreferredLanguage());
+        var description = edit.getDescription();
+        var policy = edit.getPolicy();
 
         cancellationPolicyDetailValue.setCancellationPolicyName(edit.getCancellationPolicyName());
         cancellationPolicyDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
@@ -198,7 +198,7 @@ public class EditCancellationPolicyCommand
         } else if(cancellationPolicyTranslation != null && (description == null && policy == null)) {
             cancellationPolicyControl.deleteCancellationPolicyTranslation(cancellationPolicyTranslation, partyPK);
         } else if(cancellationPolicyTranslation != null && (description != null || policy != null)) {
-            CancellationPolicyTranslationValue cancellationPolicyTranslationValue = cancellationPolicyControl.getCancellationPolicyTranslationValue(cancellationPolicyTranslation);
+            var cancellationPolicyTranslationValue = cancellationPolicyControl.getCancellationPolicyTranslationValue(cancellationPolicyTranslation);
 
             cancellationPolicyTranslationValue.setDescription(description);
             cancellationPolicyTranslationValue.setPolicyMimeTypePK(policyMimeType == null? null: policyMimeType.getPrimaryKey());

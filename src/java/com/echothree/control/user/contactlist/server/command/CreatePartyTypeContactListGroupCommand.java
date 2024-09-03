@@ -68,19 +68,19 @@ public class CreatePartyTypeContactListGroupCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        String partyTypeName = form.getPartyTypeName();
-        PartyType partyType = partyControl.getPartyTypeByName(partyTypeName);
+        var partyTypeName = form.getPartyTypeName();
+        var partyType = partyControl.getPartyTypeByName(partyTypeName);
         
         if(partyType != null) {
             var contactListControl = Session.getModelController(ContactListControl.class);
-            String contactListGroupName = form.getContactListGroupName();
-            ContactListGroup contactListGroup = contactListControl.getContactListGroupByName(contactListGroupName);
+            var contactListGroupName = form.getContactListGroupName();
+            var contactListGroup = contactListControl.getContactListGroupByName(contactListGroupName);
             
             if(contactListGroup != null) {
-                PartyTypeContactListGroup partyTypeContactListGroup = contactListControl.getPartyTypeContactListGroup(partyType, contactListGroup);
+                var partyTypeContactListGroup = contactListControl.getPartyTypeContactListGroup(partyType, contactListGroup);
                 
                 if(partyTypeContactListGroup == null) {
-                    Boolean addWhenCreated = Boolean.valueOf(form.getAddWhenCreated());
+                    var addWhenCreated = Boolean.valueOf(form.getAddWhenCreated());
 
                     contactListControl.createPartyTypeContactListGroup(partyType, contactListGroup, addWhenCreated, getPartyPK());
                 } else {

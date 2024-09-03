@@ -34,16 +34,16 @@ public class PersonTransferCache
     }
     
     public PersonTransfer getPersonTransfer(Person person) {
-        PersonTransfer personTransfer = get(person);
+        var personTransfer = get(person);
         
         if(personTransfer == null) {
-            PersonalTitle personalTitle = person.getPersonalTitle();
-            PersonalTitleTransfer personalTitleTransfer = personalTitle == null? null: partyControl.getPersonalTitleTransfer(userVisit, personalTitle);
-            String firstName = person.getFirstName();
-            String middleName = person.getMiddleName();
-            String lastName = person.getLastName();
-            NameSuffix nameSuffix = person.getNameSuffix();
-            NameSuffixTransfer nameSuffixTransfer = nameSuffix == null? null: partyControl.getNameSuffixTransfer(userVisit, nameSuffix);
+            var personalTitle = person.getPersonalTitle();
+            var personalTitleTransfer = personalTitle == null? null: partyControl.getPersonalTitleTransfer(userVisit, personalTitle);
+            var firstName = person.getFirstName();
+            var middleName = person.getMiddleName();
+            var lastName = person.getLastName();
+            var nameSuffix = person.getNameSuffix();
+            var nameSuffixTransfer = nameSuffix == null? null: partyControl.getNameSuffixTransfer(userVisit, nameSuffix);
             
             personTransfer = new PersonTransfer(personalTitleTransfer, firstName, middleName, lastName, nameSuffixTransfer);
             put(person, personTransfer);

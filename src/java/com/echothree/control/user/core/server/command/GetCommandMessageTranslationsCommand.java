@@ -52,16 +52,16 @@ public class GetCommandMessageTranslationsCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        GetCommandMessageTranslationsResult result = CoreResultFactory.getGetCommandMessageTranslationsResult();
-        String commandMessageTypeName = form.getCommandMessageTypeName();
-        CommandMessageType commandMessageType = coreControl.getCommandMessageTypeByName(commandMessageTypeName);
+        var result = CoreResultFactory.getGetCommandMessageTranslationsResult();
+        var commandMessageTypeName = form.getCommandMessageTypeName();
+        var commandMessageType = coreControl.getCommandMessageTypeByName(commandMessageTypeName);
         
         if(commandMessageType != null) {
-            String commandMessageKey = form.getCommandMessageKey();
-            CommandMessage commandMessage = coreControl.getCommandMessageByKey(commandMessageType, commandMessageKey);
+            var commandMessageKey = form.getCommandMessageKey();
+            var commandMessage = coreControl.getCommandMessageByKey(commandMessageType, commandMessageKey);
             
             if(commandMessage != null) {
-                UserVisit userVisit = getUserVisit();
+                var userVisit = getUserVisit();
                 
                 result.setCommandMessage(coreControl.getCommandMessageTransfer(userVisit, commandMessage));
                 result.setCommandMessageTranslations(coreControl.getCommandMessageTranslationTransfersByCommandMessage(userVisit, commandMessage));

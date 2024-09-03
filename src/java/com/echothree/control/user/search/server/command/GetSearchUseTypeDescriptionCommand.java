@@ -68,17 +68,17 @@ public class GetSearchUseTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var searchControl = Session.getModelController(SearchControl.class);
-        GetSearchUseTypeDescriptionResult result = SearchResultFactory.getGetSearchUseTypeDescriptionResult();
-        String searchUseTypeName = form.getSearchUseTypeName();
-        SearchUseType searchUseType = searchControl.getSearchUseTypeByName(searchUseTypeName);
+        var result = SearchResultFactory.getGetSearchUseTypeDescriptionResult();
+        var searchUseTypeName = form.getSearchUseTypeName();
+        var searchUseType = searchControl.getSearchUseTypeByName(searchUseTypeName);
 
         if(searchUseType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
-                SearchUseTypeDescription searchUseTypeDescription = searchControl.getSearchUseTypeDescription(searchUseType, language);
+                var searchUseTypeDescription = searchControl.getSearchUseTypeDescription(searchUseType, language);
 
                 if(searchUseTypeDescription != null) {
                     result.setSearchUseTypeDescription(searchControl.getSearchUseTypeDescriptionTransfer(getUserVisit(), searchUseTypeDescription));

@@ -51,13 +51,13 @@ public class GetCustomerTypeShippingMethodsCommand
     
     @Override
     protected BaseResult execute() {
-        GetCustomerTypeShippingMethodsResult result = CustomerResultFactory.getGetCustomerTypeShippingMethodsResult();
+        var result = CustomerResultFactory.getGetCustomerTypeShippingMethodsResult();
         var customerControl = Session.getModelController(CustomerControl.class);
-        String customerTypeName = form.getCustomerTypeName();
-        CustomerType customerType = customerControl.getCustomerTypeByName(customerTypeName);
+        var customerTypeName = form.getCustomerTypeName();
+        var customerType = customerControl.getCustomerTypeByName(customerTypeName);
         
         if(customerType != null) {
-            UserVisit userVisit = getUserVisit();
+            var userVisit = getUserVisit();
             
             result.setCustomerType(customerControl.getCustomerTypeTransfer(userVisit, customerType));
             result.setCustomerTypeShippingMethods(customerControl.getCustomerTypeShippingMethodTransfersByCustomerType(userVisit,

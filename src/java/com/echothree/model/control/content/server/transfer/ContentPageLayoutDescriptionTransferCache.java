@@ -32,12 +32,12 @@ public class ContentPageLayoutDescriptionTransferCache
     }
     
     public ContentPageLayoutDescriptionTransfer getTransfer(ContentPageLayoutDescription contentPageLayoutDescription) {
-        ContentPageLayoutDescriptionTransfer contentPageLayoutDescriptionTransfer = get(contentPageLayoutDescription);
+        var contentPageLayoutDescriptionTransfer = get(contentPageLayoutDescription);
         
         if(contentPageLayoutDescriptionTransfer == null) {
-            ContentPageLayoutTransferCache contentPageLayoutTransferCache = contentControl.getContentTransferCaches(userVisit).getContentPageLayoutTransferCache();
-            ContentPageLayoutTransfer contentPageLayoutTransfer = contentPageLayoutTransferCache.getTransfer(contentPageLayoutDescription.getContentPageLayout());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, contentPageLayoutDescription.getLanguage());
+            var contentPageLayoutTransferCache = contentControl.getContentTransferCaches(userVisit).getContentPageLayoutTransferCache();
+            var contentPageLayoutTransfer = contentPageLayoutTransferCache.getTransfer(contentPageLayoutDescription.getContentPageLayout());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, contentPageLayoutDescription.getLanguage());
             
             contentPageLayoutDescriptionTransfer = new ContentPageLayoutDescriptionTransfer(languageTransfer, contentPageLayoutTransfer, contentPageLayoutDescription.getDescription());
             put(contentPageLayoutDescription, contentPageLayoutDescriptionTransfer);

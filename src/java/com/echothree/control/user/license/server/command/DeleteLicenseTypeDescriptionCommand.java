@@ -67,16 +67,16 @@ public class DeleteLicenseTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var licenseControl = Session.getModelController(LicenseControl.class);
-        String licenseTypeName = form.getLicenseTypeName();
-        LicenseType licenseType = licenseControl.getLicenseTypeByName(licenseTypeName);
+        var licenseTypeName = form.getLicenseTypeName();
+        var licenseType = licenseControl.getLicenseTypeByName(licenseTypeName);
         
         if(licenseType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                LicenseTypeDescription licenseTypeDescription = licenseControl.getLicenseTypeDescriptionForUpdate(licenseType, language);
+                var licenseTypeDescription = licenseControl.getLicenseTypeDescriptionForUpdate(licenseType, language);
                 
                 if(licenseTypeDescription != null) {
                     licenseControl.deleteLicenseTypeDescription(licenseTypeDescription, getPartyPK());

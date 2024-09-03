@@ -53,7 +53,7 @@ public class ChangeBaseKeysCommand
     
     @Override
     protected BaseResult execute() {
-        ChangeBaseKeysResult result = CoreResultFactory.getChangeBaseKeysResult();
+        var result = CoreResultFactory.getChangeBaseKeysResult();
         
         result.setBaseKeys(EncryptionUtils.getInstance().changeBaseKeys(this, form.getBaseKeys(), getPartyPK()));
         

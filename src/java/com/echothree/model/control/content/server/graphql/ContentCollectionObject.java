@@ -95,7 +95,7 @@ public class ContentCollectionObject
     @GraphQLDescription("content catalogs")
     public List<ContentCatalogObject> getContentCatalogs(final DataFetchingEnvironment env) {
         var contentControl = Session.getModelController(ContentControl.class);
-        List<ContentCatalog> entities = ContentSecurityUtils.getHasContentCatalogsAccess(env) ? contentControl.getContentCatalogs(contentCollection) : null;
+        var entities = ContentSecurityUtils.getHasContentCatalogsAccess(env) ? contentControl.getContentCatalogs(contentCollection) : null;
         List<ContentCatalogObject> contentCatalogs = entities == null ? null : new ArrayList<>(entities.size());
         
         if(entities != null) {
@@ -119,7 +119,7 @@ public class ContentCollectionObject
     @GraphQLDescription("content sections")
     public List<ContentSectionObject> getContentSections(final DataFetchingEnvironment env) {
         var contentControl = Session.getModelController(ContentControl.class);
-        List<ContentSection> entities = ContentSecurityUtils.getHasContentSectionsAccess(env) ? contentControl.getContentSections(contentCollection) : null;
+        var entities = ContentSecurityUtils.getHasContentSectionsAccess(env) ? contentControl.getContentSections(contentCollection) : null;
         List<ContentSectionObject> contentSections = entities == null ? null : new ArrayList<>(entities.size());
         
         if(entities != null) {

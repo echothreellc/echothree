@@ -72,32 +72,32 @@ public class GetFilterStepDestinationsCommand
     @Override
     protected BaseResult execute() {
         var filterControl = Session.getModelController(FilterControl.class);
-        GetFilterStepDestinationsResult result = FilterResultFactory.getGetFilterStepDestinationsResult();
-        String filterKindName = form.getFilterKindName();
-        FilterKind filterKind = filterControl.getFilterKindByName(filterKindName);
+        var result = FilterResultFactory.getGetFilterStepDestinationsResult();
+        var filterKindName = form.getFilterKindName();
+        var filterKind = filterControl.getFilterKindByName(filterKindName);
         
         if(filterKind != null) {
-            UserVisit userVisit = getUserVisit();
-            String filterTypeName = form.getFilterTypeName();
-            FilterType filterType = filterControl.getFilterTypeByName(filterKind, filterTypeName);
+            var userVisit = getUserVisit();
+            var filterTypeName = form.getFilterTypeName();
+            var filterType = filterControl.getFilterTypeByName(filterKind, filterTypeName);
             
             result.setFilterKind(filterControl.getFilterKindTransfer(userVisit, filterKind));
             
             if(filterType != null) {
-                String filterName = form.getFilterName();
-                Filter filter = filterControl.getFilterByName(filterType, filterName);
+                var filterName = form.getFilterName();
+                var filter = filterControl.getFilterByName(filterType, filterName);
                 
                 result.setFilterType(filterControl.getFilterTypeTransfer(userVisit, filterType));
                 
                 if(filter != null) {
-                    String fromFilterStepName = form.getFromFilterStepName();
-                    String toFilterStepName = form.getToFilterStepName();
+                    var fromFilterStepName = form.getFromFilterStepName();
+                    var toFilterStepName = form.getToFilterStepName();
                     List<FilterStepDestinationTransfer> filterStepDestinationTransfers = null;
                     
                     result.setFilter(filterControl.getFilterTransfer(userVisit, filter));
                     
                     if(fromFilterStepName != null && toFilterStepName == null) {
-                        FilterStep fromFilterStep = filterControl.getFilterStepByName(filter, fromFilterStepName);
+                        var fromFilterStep = filterControl.getFilterStepByName(filter, fromFilterStepName);
                         
                         if(fromFilterStep != null) {
                             result.setFromFilterStep(filterControl.getFilterStepTransfer(userVisit, fromFilterStep));
@@ -106,7 +106,7 @@ public class GetFilterStepDestinationsCommand
                             addExecutionError(ExecutionErrors.UnknownFromFilterStepName.name(), fromFilterStepName);
                         }
                     } else if(fromFilterStepName == null && toFilterStepName != null) {
-                        FilterStep toFilterStep = filterControl.getFilterStepByName(filter, toFilterStepName);
+                        var toFilterStep = filterControl.getFilterStepByName(filter, toFilterStepName);
                         
                         if(toFilterStep != null) {
                             result.setToFilterStep(filterControl.getFilterStepTransfer(userVisit, toFilterStep));

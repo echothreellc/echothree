@@ -34,16 +34,16 @@ public class ItemCategoryTransferCache
     
     @Override
     public ItemCategoryTransfer getTransfer(ItemCategory itemCategory) {
-        ItemCategoryTransfer itemCategoryTransfer = get(itemCategory);
+        var itemCategoryTransfer = get(itemCategory);
         
         if(itemCategoryTransfer == null) {
-            ItemCategoryDetail itemCategoryDetail = itemCategory.getLastDetail();
-            String itemCategoryName = itemCategoryDetail.getItemCategoryName();
-            ItemCategory parentItemCategory = itemCategoryDetail.getParentItemCategory();
-            ItemCategoryTransfer parentItemCategoryTransfer = parentItemCategory == null ? null : getTransfer(parentItemCategory);
-            Boolean isDefault = itemCategoryDetail.getIsDefault();
-            Integer sortOrder = itemCategoryDetail.getSortOrder();
-            String description = itemControl.getBestItemCategoryDescription(itemCategory, getLanguage());
+            var itemCategoryDetail = itemCategory.getLastDetail();
+            var itemCategoryName = itemCategoryDetail.getItemCategoryName();
+            var parentItemCategory = itemCategoryDetail.getParentItemCategory();
+            var parentItemCategoryTransfer = parentItemCategory == null ? null : getTransfer(parentItemCategory);
+            var isDefault = itemCategoryDetail.getIsDefault();
+            var sortOrder = itemCategoryDetail.getSortOrder();
+            var description = itemControl.getBestItemCategoryDescription(itemCategory, getLanguage());
             
             itemCategoryTransfer = new ItemCategoryTransfer(itemCategoryName, parentItemCategoryTransfer, isDefault, sortOrder, description);
             put(itemCategory, itemCategoryTransfer);

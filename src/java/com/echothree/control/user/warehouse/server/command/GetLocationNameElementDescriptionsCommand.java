@@ -70,20 +70,20 @@ public class GetLocationNameElementDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var warehouseControl = Session.getModelController(WarehouseControl.class);
-        GetLocationNameElementDescriptionsResult result = WarehouseResultFactory.getGetLocationNameElementDescriptionsResult();
-        String warehouseName = form.getWarehouseName();
-        Warehouse warehouse = warehouseControl.getWarehouseByName(warehouseName);
+        var result = WarehouseResultFactory.getGetLocationNameElementDescriptionsResult();
+        var warehouseName = form.getWarehouseName();
+        var warehouse = warehouseControl.getWarehouseByName(warehouseName);
         
         if(warehouse != null) {
-            Party warehouseParty = warehouse.getParty();
-            String locationTypeName = form.getLocationTypeName();
-            LocationType locationType = warehouseControl.getLocationTypeByName(warehouseParty, locationTypeName);
+            var warehouseParty = warehouse.getParty();
+            var locationTypeName = form.getLocationTypeName();
+            var locationType = warehouseControl.getLocationTypeByName(warehouseParty, locationTypeName);
             
             result.setWarehouse(warehouseControl.getWarehouseTransfer(getUserVisit(), warehouse));
             
             if(locationType != null) {
-                String locationNameElementName = form.getLocationNameElementName();
-                LocationNameElement locationNameElement = warehouseControl.getLocationNameElementByName(locationType, locationNameElementName);
+                var locationNameElementName = form.getLocationNameElementName();
+                var locationNameElement = warehouseControl.getLocationNameElementByName(locationType, locationNameElementName);
                 
                 result.setLocationType(warehouseControl.getLocationTypeTransfer(getUserVisit(), locationType));
                 

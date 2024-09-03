@@ -70,20 +70,20 @@ public class CreateInvoiceTimeTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var invoiceControl = Session.getModelController(InvoiceControl.class);
-        String invoiceTypeName = form.getInvoiceTypeName();
-        InvoiceType invoiceType = invoiceControl.getInvoiceTypeByName(invoiceTypeName);
+        var invoiceTypeName = form.getInvoiceTypeName();
+        var invoiceType = invoiceControl.getInvoiceTypeByName(invoiceTypeName);
 
         if(invoiceType != null) {
-            String invoiceTimeTypeName = form.getInvoiceTimeTypeName();
-            InvoiceTimeType invoiceTimeType = invoiceControl.getInvoiceTimeTypeByName(invoiceType, invoiceTimeTypeName);
+            var invoiceTimeTypeName = form.getInvoiceTimeTypeName();
+            var invoiceTimeType = invoiceControl.getInvoiceTimeTypeByName(invoiceType, invoiceTimeTypeName);
 
             if(invoiceTimeType != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = form.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = form.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                 if(language != null) {
-                    InvoiceTimeTypeDescription invoiceTimeTypeDescription = invoiceControl.getInvoiceTimeTypeDescription(invoiceTimeType, language);
+                    var invoiceTimeTypeDescription = invoiceControl.getInvoiceTimeTypeDescription(invoiceTimeType, language);
 
                     if(invoiceTimeTypeDescription == null) {
                         var description = form.getDescription();

@@ -59,7 +59,7 @@ public class GetServersCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        GetServersResult result = CoreResultFactory.getGetServersResult();
+        var result = CoreResultFactory.getGetServersResult();
         
         result.setServers(coreControl.getServerTransfers(getUserVisit()));
         

@@ -66,13 +66,13 @@ public class GetSelectorTypeChoicesCommand
     @Override
     protected BaseResult execute() {
         var selectorControl = Session.getModelController(SelectorControl.class);
-        GetSelectorTypeChoicesResult result = SelectorResultFactory.getGetSelectorTypeChoicesResult();
-        String selectorKindName = form.getSelectorKindName();
-        SelectorKind selectorKind = selectorControl.getSelectorKindByName(selectorKindName);
+        var result = SelectorResultFactory.getGetSelectorTypeChoicesResult();
+        var selectorKindName = form.getSelectorKindName();
+        var selectorKind = selectorControl.getSelectorKindByName(selectorKindName);
         
         if(selectorKind != null) {
-            String defaultSelectorTypeChoice = form.getDefaultSelectorTypeChoice();
-            boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+            var defaultSelectorTypeChoice = form.getDefaultSelectorTypeChoice();
+            var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
             
             result.setSelectorTypeChoices(selectorControl.getSelectorTypeChoices(defaultSelectorTypeChoice, getPreferredLanguage(),
                     allowNullChoice, selectorKind));

@@ -47,13 +47,13 @@ public class EntityStringAttributeTransferCache
     }
     
     public EntityStringAttributeTransfer getEntityStringAttributeTransfer(EntityStringAttribute entityStringAttribute, EntityInstance entityInstance) {
-        EntityStringAttributeTransfer entityStringAttributeTransfer = get(entityStringAttribute);
+        var entityStringAttributeTransfer = get(entityStringAttribute);
         
         if(entityStringAttributeTransfer == null) {
-            EntityAttributeTransfer entityAttribute = entityInstance == null ? coreControl.getEntityAttributeTransfer(userVisit, entityStringAttribute.getEntityAttribute(), entityInstance) : null;
-            EntityInstanceTransfer entityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, entityStringAttribute.getEntityInstance(), false, false, false, false, false, false);
-            LanguageTransfer language = partyControl.getLanguageTransfer(userVisit, entityStringAttribute.getLanguage());
-            String stringAttribute = includeString ? entityStringAttribute.getStringAttribute() : null;
+            var entityAttribute = entityInstance == null ? coreControl.getEntityAttributeTransfer(userVisit, entityStringAttribute.getEntityAttribute(), entityInstance) : null;
+            var entityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, entityStringAttribute.getEntityInstance(), false, false, false, false, false, false);
+            var language = partyControl.getLanguageTransfer(userVisit, entityStringAttribute.getLanguage());
+            var stringAttribute = includeString ? entityStringAttribute.getStringAttribute() : null;
             
             entityStringAttributeTransfer = new EntityStringAttributeTransfer(entityAttribute, entityInstanceTransfer, language, stringAttribute);
             put(entityStringAttribute, entityStringAttributeTransfer);

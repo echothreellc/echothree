@@ -40,17 +40,17 @@ public class ReturnTypeTransferCache
     }
     
     public ReturnTypeTransfer getReturnTypeTransfer(ReturnType returnType) {
-        ReturnTypeTransfer returnTypeTransfer = get(returnType);
+        var returnTypeTransfer = get(returnType);
         
         if(returnTypeTransfer == null) {
-            ReturnTypeDetail returnTypeDetail = returnType.getLastDetail();
-            ReturnKindTransfer returnKindTransfer = returnPolicyControl.getReturnKindTransfer(userVisit, returnTypeDetail.getReturnKind());
-            String returnTypeName = returnTypeDetail.getReturnTypeName();
-            Sequence returnSequence = returnTypeDetail.getReturnSequence();
-            SequenceTransfer returnSequenceTransfer = returnSequence == null? null: sequenceControl.getSequenceTransfer(userVisit, returnSequence);
-            Boolean isDefault = returnTypeDetail.getIsDefault();
-            Integer sortOrder = returnTypeDetail.getSortOrder();
-            String description = returnPolicyControl.getBestReturnTypeDescription(returnType, getLanguage());
+            var returnTypeDetail = returnType.getLastDetail();
+            var returnKindTransfer = returnPolicyControl.getReturnKindTransfer(userVisit, returnTypeDetail.getReturnKind());
+            var returnTypeName = returnTypeDetail.getReturnTypeName();
+            var returnSequence = returnTypeDetail.getReturnSequence();
+            var returnSequenceTransfer = returnSequence == null? null: sequenceControl.getSequenceTransfer(userVisit, returnSequence);
+            var isDefault = returnTypeDetail.getIsDefault();
+            var sortOrder = returnTypeDetail.getSortOrder();
+            var description = returnPolicyControl.getBestReturnTypeDescription(returnType, getLanguage());
             
             returnTypeTransfer = new ReturnTypeTransfer(returnKindTransfer, returnTypeName, returnSequenceTransfer, isDefault, sortOrder, description);
             put(returnType, returnTypeTransfer);

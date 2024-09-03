@@ -51,9 +51,9 @@ public class GetLanguageChoicesCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        GetLanguageChoicesResult result = PartyResultFactory.getGetLanguageChoicesResult();
-        String defaultLanguageChoice = form.getDefaultLanguageChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = PartyResultFactory.getGetLanguageChoicesResult();
+        var defaultLanguageChoice = form.getDefaultLanguageChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setLanguageChoices(partyControl.getLanguageChoices(defaultLanguageChoice, getPreferredLanguage(), allowNullChoice));
         

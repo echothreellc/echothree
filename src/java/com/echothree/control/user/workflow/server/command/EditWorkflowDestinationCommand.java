@@ -151,7 +151,7 @@ public class EditWorkflowDestinationCommand
         } else if(workflowDestinationDescription != null && description == null) {
             workflowControl.deleteWorkflowDestinationDescription(workflowDestinationDescription, partyPK);
         } else if(workflowDestinationDescription != null && description != null) {
-            WorkflowDestinationDescriptionValue workflowDestinationDescriptionValue = workflowControl.getWorkflowDestinationDescriptionValue(workflowDestinationDescription);
+            var workflowDestinationDescriptionValue = workflowControl.getWorkflowDestinationDescriptionValue(workflowDestinationDescription);
 
             workflowDestinationDescriptionValue.setDescription(description);
             workflowControl.updateWorkflowDestinationDescriptionFromValue(workflowDestinationDescriptionValue, partyPK);

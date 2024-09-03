@@ -67,16 +67,16 @@ public class CreateServiceCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String serviceName = form.getServiceName();
-        Service service = coreControl.getServiceByName(serviceName);
+        var serviceName = form.getServiceName();
+        var service = coreControl.getServiceByName(serviceName);
         
         if(service == null) {
-            String protocolName = form.getProtocolName();
-            Protocol protocol = coreControl.getProtocolByName(protocolName);
+            var protocolName = form.getProtocolName();
+            var protocol = coreControl.getProtocolByName(protocolName);
 
             if(protocol != null) {
                 var partyPK = getPartyPK();
-                Integer port = Integer.valueOf(form.getPort());
+                var port = Integer.valueOf(form.getPort());
                 var isDefault = Boolean.valueOf(form.getIsDefault());
                 var sortOrder = Integer.valueOf(form.getSortOrder());
                 var description = form.getDescription();

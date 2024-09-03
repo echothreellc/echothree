@@ -66,13 +66,13 @@ public class GetPicklistTimeTypeChoicesCommand
     @Override
     protected BaseResult execute() {
         var picklistControl = Session.getModelController(PicklistControl.class);
-        GetPicklistTimeTypeChoicesResult result = PicklistResultFactory.getGetPicklistTimeTypeChoicesResult();
-        String picklistTypeName = form.getPicklistTypeName();
-        PicklistType picklistType = picklistControl.getPicklistTypeByName(picklistTypeName);
+        var result = PicklistResultFactory.getGetPicklistTimeTypeChoicesResult();
+        var picklistTypeName = form.getPicklistTypeName();
+        var picklistType = picklistControl.getPicklistTypeByName(picklistTypeName);
 
         if(picklistType != null) {
-            String defaultPicklistTimeTypeChoice = form.getDefaultPicklistTimeTypeChoice();
-            boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+            var defaultPicklistTimeTypeChoice = form.getDefaultPicklistTimeTypeChoice();
+            var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 
             result.setPicklistTimeTypeChoices(picklistControl.getPicklistTimeTypeChoices(defaultPicklistTimeTypeChoice, getPreferredLanguage(), allowNullChoice,
                     picklistType));

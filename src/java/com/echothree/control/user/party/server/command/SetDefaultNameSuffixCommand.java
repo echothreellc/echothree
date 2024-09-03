@@ -50,11 +50,11 @@ public class SetDefaultNameSuffixCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        String nameSuffixId = form.getNameSuffixId();
-        NameSuffixPK nameSuffixPK = partyControl.convertNameSuffixIdToPK(nameSuffixId);
+        var nameSuffixId = form.getNameSuffixId();
+        var nameSuffixPK = partyControl.convertNameSuffixIdToPK(nameSuffixId);
         
         if(nameSuffixPK != null) {
-             NameSuffixDetailValue nameSuffixDetailValue = partyControl.getNameSuffixDetailValueByPKForUpdate(nameSuffixPK);
+            var nameSuffixDetailValue = partyControl.getNameSuffixDetailValueByPKForUpdate(nameSuffixPK);
              
              nameSuffixDetailValue.setIsDefault(Boolean.TRUE);
              partyControl.updateNameSuffixFromValue(nameSuffixDetailValue, getPartyPK());

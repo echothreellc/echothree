@@ -66,13 +66,13 @@ public class GetTrackStatusChoicesCommand
     @Override
     protected BaseResult execute() {
         var trackControl = Session.getModelController(TrackControl.class);
-        GetTrackStatusChoicesResult result = TrackResultFactory.getGetTrackStatusChoicesResult();
-        String trackName = form.getTrackName();
-        Track track = trackControl.getTrackByName(trackName);
+        var result = TrackResultFactory.getGetTrackStatusChoicesResult();
+        var trackName = form.getTrackName();
+        var track = trackControl.getTrackByName(trackName);
         
         if(track != null) {
-            String defaultTrackStatusChoice = form.getDefaultTrackStatusChoice();
-            boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+            var defaultTrackStatusChoice = form.getDefaultTrackStatusChoice();
+            var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
             
             result.setTrackStatusChoices(trackControl.getTrackStatusChoices(defaultTrackStatusChoice,
                     getPreferredLanguage(), allowNullChoice, track, getPartyPK()));

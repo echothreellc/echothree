@@ -73,30 +73,30 @@ public class CreateEntityLongRangeCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String componentVendorName = form.getComponentVendorName();
-        ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+        var componentVendorName = form.getComponentVendorName();
+        var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
 
         if(componentVendor != null) {
-            String entityTypeName = form.getEntityTypeName();
-            EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+            var entityTypeName = form.getEntityTypeName();
+            var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
 
             if(entityType != null) {
-                String entityAttributeName = form.getEntityAttributeName();
-                EntityAttribute entityAttribute = coreControl.getEntityAttributeByName(entityType, entityAttributeName);
+                var entityAttributeName = form.getEntityAttributeName();
+                var entityAttribute = coreControl.getEntityAttributeByName(entityType, entityAttributeName);
 
                 if(entityAttribute != null) {
-                    String entityAttributeTypeName = entityAttribute.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
+                    var entityAttributeTypeName = entityAttribute.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
 
                     if(entityAttributeTypeName.equals(EntityAttributeTypes.LONG.name())) {
-                        String entityLongRangeName = form.getEntityLongRangeName();
-                        EntityLongRange entityLongRange = coreControl.getEntityLongRangeByName(entityAttribute, entityLongRangeName);
+                        var entityLongRangeName = form.getEntityLongRangeName();
+                        var entityLongRange = coreControl.getEntityLongRangeByName(entityAttribute, entityLongRangeName);
 
                         if(entityLongRange == null) {
                             var partyPK = getPartyPK();
-                            String strMinimumLongValue = form.getMinimumLongValue();
-                            Long minimumLongValue = strMinimumLongValue == null ? null : Long.valueOf(strMinimumLongValue);
-                            String strMaximumLongValue = form.getMaximumLongValue();
-                            Long maximumLongValue = strMaximumLongValue == null ? null : Long.valueOf(strMaximumLongValue);
+                            var strMinimumLongValue = form.getMinimumLongValue();
+                            var minimumLongValue = strMinimumLongValue == null ? null : Long.valueOf(strMinimumLongValue);
+                            var strMaximumLongValue = form.getMaximumLongValue();
+                            var maximumLongValue = strMaximumLongValue == null ? null : Long.valueOf(strMaximumLongValue);
                             var isDefault = Boolean.valueOf(form.getIsDefault());
                             var sortOrder = Integer.valueOf(form.getSortOrder());
                             var description = form.getDescription();

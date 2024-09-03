@@ -53,16 +53,16 @@ public class GetEmailAddressStatusChoicesCommand
     @Override
     protected BaseResult execute() {
         var contactControl = Session.getModelController(ContactControl.class);
-        GetEmailAddressStatusChoicesResult result = ContactResultFactory.getGetEmailAddressStatusChoicesResult();
-        String contactMechanismName = form.getContactMechanismName();
-        ContactMechanism contactMechanism = contactControl.getContactMechanismByName(contactMechanismName);
+        var result = ContactResultFactory.getGetEmailAddressStatusChoicesResult();
+        var contactMechanismName = form.getContactMechanismName();
+        var contactMechanism = contactControl.getContactMechanismByName(contactMechanismName);
 
         if(contactMechanism != null) {
-            String contactMechanismTypeName = contactMechanism.getLastDetail().getContactMechanismType().getContactMechanismTypeName();
+            var contactMechanismTypeName = contactMechanism.getLastDetail().getContactMechanismType().getContactMechanismTypeName();
 
             if(contactMechanismTypeName.equals(ContactMechanismTypes.EMAIL_ADDRESS.name())) {
-                String defaultEmailAddressStatusChoice = form.getDefaultEmailAddressStatusChoice();
-                boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+                var defaultEmailAddressStatusChoice = form.getDefaultEmailAddressStatusChoice();
+                var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 
                 result.setEmailAddressStatusChoices(contactControl.getEmailAddressStatusChoices(defaultEmailAddressStatusChoice, getPreferredLanguage(), allowNullChoice, contactMechanism,
                         getPartyPK()));

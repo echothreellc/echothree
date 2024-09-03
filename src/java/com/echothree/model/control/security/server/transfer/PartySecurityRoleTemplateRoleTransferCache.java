@@ -32,13 +32,13 @@ public class PartySecurityRoleTemplateRoleTransferCache
     }
     
     public PartySecurityRoleTemplateRoleTransfer getPartySecurityRoleTemplateRoleTransfer(PartySecurityRoleTemplateRole partySecurityRoleTemplateRole) {
-        PartySecurityRoleTemplateRoleTransfer partySecurityRoleTemplateRoleTransfer = get(partySecurityRoleTemplateRole);
+        var partySecurityRoleTemplateRoleTransfer = get(partySecurityRoleTemplateRole);
         
         if(partySecurityRoleTemplateRoleTransfer == null) {
-            PartySecurityRoleTemplateTransferCache partySecurityRoleTemplateTransferCache = securityControl.getSecurityTransferCaches(userVisit).getPartySecurityRoleTemplateTransferCache();
-            PartySecurityRoleTemplateTransfer partySecurityRoleTemplateTransfer = partySecurityRoleTemplateTransferCache.getPartySecurityRoleTemplateTransfer(partySecurityRoleTemplateRole.getPartySecurityRoleTemplate());
-            SecurityRoleTransferCache securityRoleTransferCache = securityControl.getSecurityTransferCaches(userVisit).getSecurityRoleTransferCache();
-            SecurityRoleTransfer securityRoleTransfer = securityRoleTransferCache.getSecurityRoleTransfer(partySecurityRoleTemplateRole.getSecurityRole());
+            var partySecurityRoleTemplateTransferCache = securityControl.getSecurityTransferCaches(userVisit).getPartySecurityRoleTemplateTransferCache();
+            var partySecurityRoleTemplateTransfer = partySecurityRoleTemplateTransferCache.getPartySecurityRoleTemplateTransfer(partySecurityRoleTemplateRole.getPartySecurityRoleTemplate());
+            var securityRoleTransferCache = securityControl.getSecurityTransferCaches(userVisit).getSecurityRoleTransferCache();
+            var securityRoleTransfer = securityRoleTransferCache.getSecurityRoleTransfer(partySecurityRoleTemplateRole.getSecurityRole());
             
             partySecurityRoleTemplateRoleTransfer = new PartySecurityRoleTemplateRoleTransfer(partySecurityRoleTemplateTransfer, securityRoleTransfer);
             put(partySecurityRoleTemplateRole, partySecurityRoleTemplateRoleTransfer);

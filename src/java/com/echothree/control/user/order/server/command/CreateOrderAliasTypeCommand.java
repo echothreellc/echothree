@@ -76,12 +76,12 @@ public class CreateOrderAliasTypeCommand
 
         if(orderType != null) {
             var orderAliasControl = Session.getModelController(OrderAliasControl.class);
-            String orderAliasTypeName = form.getOrderAliasTypeName();
-            OrderAliasType orderAliasType = orderAliasControl.getOrderAliasTypeByName(orderType, orderAliasTypeName);
+            var orderAliasTypeName = form.getOrderAliasTypeName();
+            var orderAliasType = orderAliasControl.getOrderAliasTypeByName(orderType, orderAliasTypeName);
 
             if(orderAliasType == null) {
-                PartyPK createdBy = getPartyPK();
-                String validationPattern = form.getValidationPattern();
+                var createdBy = getPartyPK();
+                var validationPattern = form.getValidationPattern();
                 var isDefault = Boolean.valueOf(form.getIsDefault());
                 var sortOrder = Integer.valueOf(form.getSortOrder());
                 var description = form.getDescription();

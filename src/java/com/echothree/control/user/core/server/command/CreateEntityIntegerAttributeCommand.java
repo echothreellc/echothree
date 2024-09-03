@@ -67,11 +67,11 @@ public class CreateEntityIntegerAttributeCommand
         var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form);
 
         if(!hasExecutionErrors()) {
-            EntityAttribute entityAttribute = EntityAttributeLogic.getInstance().getEntityAttribute(this, entityInstance, form, form,
+            var entityAttribute = EntityAttributeLogic.getInstance().getEntityAttribute(this, entityInstance, form, form,
                     EntityAttributeTypes.INTEGER);
 
             if(!hasExecutionErrors()) {
-                Integer integerAttribute = Integer.valueOf(form.getIntegerAttribute());
+                var integerAttribute = Integer.valueOf(form.getIntegerAttribute());
                 
                 EntityAttributeLogic.getInstance().createEntityIntegerAttribute(this, entityAttribute, entityInstance,
                         integerAttribute, getPartyPK());

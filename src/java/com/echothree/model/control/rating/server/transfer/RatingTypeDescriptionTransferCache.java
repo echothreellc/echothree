@@ -32,12 +32,12 @@ public class RatingTypeDescriptionTransferCache
     }
     
     public RatingTypeDescriptionTransfer getRatingTypeDescriptionTransfer(RatingTypeDescription ratingTypeDescription) {
-        RatingTypeDescriptionTransfer ratingTypeDescriptionTransfer = get(ratingTypeDescription);
+        var ratingTypeDescriptionTransfer = get(ratingTypeDescription);
         
         if(ratingTypeDescriptionTransfer == null) {
-            RatingTypeTransferCache ratingTypeTransferCache = ratingControl.getRatingTransferCaches(userVisit).getRatingTypeTransferCache();
-            RatingTypeTransfer ratingTypeTransfer = ratingTypeTransferCache.getRatingTypeTransfer(ratingTypeDescription.getRatingType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, ratingTypeDescription.getLanguage());
+            var ratingTypeTransferCache = ratingControl.getRatingTransferCaches(userVisit).getRatingTypeTransferCache();
+            var ratingTypeTransfer = ratingTypeTransferCache.getRatingTypeTransfer(ratingTypeDescription.getRatingType());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, ratingTypeDescription.getLanguage());
             
             ratingTypeDescriptionTransfer = new RatingTypeDescriptionTransfer(languageTransfer, ratingTypeTransfer, ratingTypeDescription.getDescription());
             put(ratingTypeDescription, ratingTypeDescriptionTransfer);

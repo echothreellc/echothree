@@ -36,11 +36,11 @@ public class FreeOnBoardDescriptionTransferCache
     
     @Override
     public FreeOnBoardDescriptionTransfer getTransfer(FreeOnBoardDescription freeOnBoardDescription) {
-        FreeOnBoardDescriptionTransfer freeOnBoardDescriptionTransfer = get(freeOnBoardDescription);
+        var freeOnBoardDescriptionTransfer = get(freeOnBoardDescription);
         
         if(freeOnBoardDescriptionTransfer == null) {
-            FreeOnBoardTransfer freeOnBoardTransfer = freeOnBoardControl.getFreeOnBoardTransfer(userVisit, freeOnBoardDescription.getFreeOnBoard());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, freeOnBoardDescription.getLanguage());
+            var freeOnBoardTransfer = freeOnBoardControl.getFreeOnBoardTransfer(userVisit, freeOnBoardDescription.getFreeOnBoard());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, freeOnBoardDescription.getLanguage());
             
             freeOnBoardDescriptionTransfer = new FreeOnBoardDescriptionTransfer(languageTransfer, freeOnBoardTransfer, freeOnBoardDescription.getDescription());
             put(freeOnBoardDescription, freeOnBoardDescriptionTransfer);

@@ -160,19 +160,19 @@ public class CampaignControl
 
     public Campaign createCampaign(String value, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var sequenceControl = Session.getModelController(SequenceControl.class);
-        Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.CAMPAIGN.name());
-        String campaignName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
+        var sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.CAMPAIGN.name());
+        var campaignName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
         
         return createCampaign(campaignName, value, isDefault, sortOrder, createdBy);
     }
     
     public Campaign createCampaign(String campaignName, String value, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        String valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault()));
-        Campaign defaultCampaign = getDefaultCampaign();
-        boolean defaultFound = defaultCampaign != null;
+        var valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault()));
+        var defaultCampaign = getDefaultCampaign();
+        var defaultFound = defaultCampaign != null;
 
         if(defaultFound && isDefault) {
-            CampaignDetailValue defaultCampaignDetailValue = getDefaultCampaignDetailValueForUpdate();
+            var defaultCampaignDetailValue = getDefaultCampaignDetailValueForUpdate();
 
             defaultCampaignDetailValue.setIsDefault(Boolean.FALSE);
             updateCampaignFromValue(defaultCampaignDetailValue, false, createdBy);
@@ -180,8 +180,8 @@ public class CampaignControl
             isDefault = Boolean.TRUE;
         }
 
-        Campaign campaign = CampaignFactory.getInstance().create();
-        CampaignDetail campaignDetail = CampaignDetailFactory.getInstance().create(campaign, campaignName, valueSha1Hash, value,
+        var campaign = CampaignFactory.getInstance().create();
+        var campaignDetail = CampaignDetailFactory.getInstance().create(campaign, campaignName, valueSha1Hash, value,
                 isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -190,10 +190,10 @@ public class CampaignControl
         campaign.setLastDetail(campaignDetail);
         campaign.store();
 
-        CampaignPK campaignPK = campaign.getPrimaryKey();
+        var campaignPK = campaign.getPrimaryKey();
         sendEvent(campaignPK, EventTypes.CREATE, null, null, createdBy);
 
-        EntityInstance entityInstance = getCoreControl().getEntityInstanceByBasePK(campaignPK);
+        var entityInstance = getCoreControl().getEntityInstanceByBasePK(campaignPK);
         getWorkflowControl().addEntityToWorkflowUsingNames(null, CampaignStatusConstants.Workflow_CAMPAIGN_STATUS,
                 CampaignStatusConstants.WorkflowEntrance_NEW_ACTIVE, entityInstance, null, null, createdBy);
         
@@ -203,7 +203,7 @@ public class CampaignControl
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.Campaign */
     public Campaign getCampaignByEntityInstance(EntityInstance entityInstance) {
         CampaignPK pk = new CampaignPK(entityInstance.getEntityUniqueId());
-        Campaign campaign = CampaignFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
+        var campaign = CampaignFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
 
         return campaign;
     }
@@ -354,8 +354,8 @@ public class CampaignControl
             workflowControl.getWorkflowEntranceChoices(employeeStatusChoicesBean, defaultCampaignStatusChoice, language, allowNullChoice,
                     workflowControl.getWorkflowByName(CampaignStatusConstants.Workflow_CAMPAIGN_STATUS), partyPK);
         } else {
-            EntityInstance entityInstance = getCoreControl().getEntityInstanceByBasePK(campaign.getPrimaryKey());
-            WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(CampaignStatusConstants.Workflow_CAMPAIGN_STATUS,
+            var entityInstance = getCoreControl().getEntityInstanceByBasePK(campaign.getPrimaryKey());
+            var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(CampaignStatusConstants.Workflow_CAMPAIGN_STATUS,
                     entityInstance);
             
             workflowControl.getWorkflowDestinationChoices(employeeStatusChoicesBean, defaultCampaignStatusChoice, language, allowNullChoice,
@@ -367,10 +367,10 @@ public class CampaignControl
     
     public void setCampaignStatus(ExecutionErrorAccumulator eea, Party party, String employeeStatusChoice, PartyPK modifiedBy) {
         var workflowControl = getWorkflowControl();
-        EntityInstance entityInstance = getEntityInstanceByBaseEntity(party);
-        WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(CampaignStatusConstants.Workflow_CAMPAIGN_STATUS,
+        var entityInstance = getEntityInstanceByBaseEntity(party);
+        var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(CampaignStatusConstants.Workflow_CAMPAIGN_STATUS,
                 entityInstance);
-        WorkflowDestination workflowDestination = employeeStatusChoice == null? null:
+        var workflowDestination = employeeStatusChoice == null? null:
             workflowControl.getWorkflowDestinationByName(workflowEntityStatus.getWorkflowStep(), employeeStatusChoice);
         
         if(workflowDestination != null || employeeStatusChoice == null) {
@@ -385,9 +385,9 @@ public class CampaignControl
     }
 
     public List<CampaignTransfer> getCampaignTransfers(UserVisit userVisit) {
-        List<Campaign> campaigns = getCampaigns();
+        var campaigns = getCampaigns();
         List<CampaignTransfer> campaignTransfers = new ArrayList<>(campaigns.size());
-        CampaignTransferCache campaignTransferCache = getCampaignTransferCaches(userVisit).getCampaignTransferCache();
+        var campaignTransferCache = getCampaignTransferCaches(userVisit).getCampaignTransferCache();
 
         campaigns.forEach((campaign) ->
                 campaignTransfers.add(campaignTransferCache.getCampaignTransfer(campaign))
@@ -397,7 +397,7 @@ public class CampaignControl
     }
 
     public CampaignChoicesBean getCampaignChoices(String defaultCampaignChoice, Language language, boolean allowNullChoice) {
-        List<Campaign> campaigns = getCampaigns();
+        var campaigns = getCampaigns();
         var size = campaigns.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -413,7 +413,7 @@ public class CampaignControl
         }
 
         for(var campaign : campaigns) {
-            CampaignDetail campaignDetail = campaign.getLastDetail();
+            var campaignDetail = campaign.getLastDetail();
 
             var label = getBestCampaignDescription(campaign, language);
             var value = campaignDetail.getCampaignName();
@@ -432,27 +432,27 @@ public class CampaignControl
 
     private void updateCampaignFromValue(CampaignDetailValue campaignDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(campaignDetailValue.hasBeenModified()) {
-            Campaign campaign = CampaignFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var campaign = CampaignFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      campaignDetailValue.getCampaignPK());
-            CampaignDetail campaignDetail = campaign.getActiveDetailForUpdate();
+            var campaignDetail = campaign.getActiveDetailForUpdate();
 
             campaignDetail.setThruTime(session.START_TIME_LONG);
             campaignDetail.store();
 
-            CampaignPK campaignPK = campaignDetail.getCampaignPK(); // Not updated
-            String campaignName = campaignDetailValue.getCampaignName();
+            var campaignPK = campaignDetail.getCampaignPK(); // Not updated
+            var campaignName = campaignDetailValue.getCampaignName();
             var value = campaignDetailValue.getValue();
-            String valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault()));
-            Boolean isDefault = campaignDetailValue.getIsDefault();
-            Integer sortOrder = campaignDetailValue.getSortOrder();
+            var valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault()));
+            var isDefault = campaignDetailValue.getIsDefault();
+            var sortOrder = campaignDetailValue.getSortOrder();
 
             if(checkDefault) {
-                Campaign defaultCampaign = getDefaultCampaign();
-                boolean defaultFound = defaultCampaign != null && !defaultCampaign.equals(campaign);
+                var defaultCampaign = getDefaultCampaign();
+                var defaultFound = defaultCampaign != null && !defaultCampaign.equals(campaign);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    CampaignDetailValue defaultCampaignDetailValue = getDefaultCampaignDetailValueForUpdate();
+                    var defaultCampaignDetailValue = getDefaultCampaignDetailValueForUpdate();
 
                     defaultCampaignDetailValue.setIsDefault(Boolean.FALSE);
                     updateCampaignFromValue(defaultCampaignDetailValue, false, updatedBy);
@@ -477,7 +477,7 @@ public class CampaignControl
     }
 
     private void deleteCampaign(Campaign campaign, boolean checkDefault, BasePK deletedBy) {
-        CampaignDetail campaignDetail = campaign.getLastDetailForUpdate();
+        var campaignDetail = campaign.getLastDetailForUpdate();
 
         deleteUserVisitCampaignsByCampaign(campaign);
         deleteCampaignDescriptionsByCampaign(campaign, deletedBy);
@@ -488,17 +488,17 @@ public class CampaignControl
 
         if(checkDefault) {
             // Check for default, and pick one if necessary
-            Campaign defaultCampaign = getDefaultCampaign();
+            var defaultCampaign = getDefaultCampaign();
 
             if(defaultCampaign == null) {
-                List<Campaign> campaigns = getCampaignsForUpdate();
+                var campaigns = getCampaignsForUpdate();
 
                 if(!campaigns.isEmpty()) {
-                    Iterator<Campaign> iter = campaigns.iterator();
+                    var iter = campaigns.iterator();
                     if(iter.hasNext()) {
                         defaultCampaign = iter.next();
                     }
-                    CampaignDetailValue campaignDetailValue = Objects.requireNonNull(defaultCampaign).getLastDetailForUpdate().getCampaignDetailValue().clone();
+                    var campaignDetailValue = Objects.requireNonNull(defaultCampaign).getLastDetailForUpdate().getCampaignDetailValue().clone();
 
                     campaignDetailValue.setIsDefault(Boolean.TRUE);
                     updateCampaignFromValue(campaignDetailValue, false, deletedBy);
@@ -526,7 +526,7 @@ public class CampaignControl
     // --------------------------------------------------------------------------------
 
     public CampaignDescription createCampaignDescription(Campaign campaign, Language language, String description, BasePK createdBy) {
-        CampaignDescription campaignDescription = CampaignDescriptionFactory.getInstance().create(campaign, language, description,
+        var campaignDescription = CampaignDescriptionFactory.getInstance().create(campaign, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(campaign.getPrimaryKey(), EventTypes.MODIFY, campaignDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -605,7 +605,7 @@ public class CampaignControl
 
     public String getBestCampaignDescription(Campaign campaign, Language language) {
         String description;
-        CampaignDescription campaignDescription = getCampaignDescription(campaign, language);
+        var campaignDescription = getCampaignDescription(campaign, language);
 
         if(campaignDescription == null && !language.getIsDefault()) {
             campaignDescription = getCampaignDescription(campaign, getPartyControl().getDefaultLanguage());
@@ -625,9 +625,9 @@ public class CampaignControl
     }
 
     public List<CampaignDescriptionTransfer> getCampaignDescriptionTransfersByCampaign(UserVisit userVisit, Campaign campaign) {
-        List<CampaignDescription> campaignDescriptions = getCampaignDescriptionsByCampaign(campaign);
+        var campaignDescriptions = getCampaignDescriptionsByCampaign(campaign);
         List<CampaignDescriptionTransfer> campaignDescriptionTransfers = new ArrayList<>(campaignDescriptions.size());
-        CampaignDescriptionTransferCache campaignDescriptionTransferCache = getCampaignTransferCaches(userVisit).getCampaignDescriptionTransferCache();
+        var campaignDescriptionTransferCache = getCampaignTransferCaches(userVisit).getCampaignDescriptionTransferCache();
 
         campaignDescriptions.forEach((campaignDescription) ->
                 campaignDescriptionTransfers.add(campaignDescriptionTransferCache.getCampaignDescriptionTransfer(campaignDescription))
@@ -638,15 +638,15 @@ public class CampaignControl
 
     public void updateCampaignDescriptionFromValue(CampaignDescriptionValue campaignDescriptionValue, BasePK updatedBy) {
         if(campaignDescriptionValue.hasBeenModified()) {
-            CampaignDescription campaignDescription = CampaignDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var campaignDescription = CampaignDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     campaignDescriptionValue.getPrimaryKey());
 
             campaignDescription.setThruTime(session.START_TIME_LONG);
             campaignDescription.store();
 
-            Campaign campaign = campaignDescription.getCampaign();
-            Language language = campaignDescription.getLanguage();
-            String description = campaignDescriptionValue.getDescription();
+            var campaign = campaignDescription.getCampaign();
+            var language = campaignDescription.getLanguage();
+            var description = campaignDescriptionValue.getDescription();
 
             campaignDescription = CampaignDescriptionFactory.getInstance().create(campaign, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -663,7 +663,7 @@ public class CampaignControl
     }
 
     public void deleteCampaignDescriptionsByCampaign(Campaign campaign, BasePK deletedBy) {
-        List<CampaignDescription> campaignDescriptions = getCampaignDescriptionsByCampaignForUpdate(campaign);
+        var campaignDescriptions = getCampaignDescriptionsByCampaignForUpdate(campaign);
 
         campaignDescriptions.forEach((campaignDescription) -> 
                 deleteCampaignDescription(campaignDescription, deletedBy)
@@ -676,19 +676,19 @@ public class CampaignControl
 
     public CampaignSource createCampaignSource(String value, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var sequenceControl = Session.getModelController(SequenceControl.class);
-        Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.CAMPAIGN_SOURCE.name());
-        String campaignSourceName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
+        var sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.CAMPAIGN_SOURCE.name());
+        var campaignSourceName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
         
         return createCampaignSource(campaignSourceName, value, isDefault, sortOrder, createdBy);
     }
     
     public CampaignSource createCampaignSource(String campaignSourceName, String value, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        String valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault()));
-        CampaignSource defaultCampaignSource = getDefaultCampaignSource();
-        boolean defaultFound = defaultCampaignSource != null;
+        var valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault()));
+        var defaultCampaignSource = getDefaultCampaignSource();
+        var defaultFound = defaultCampaignSource != null;
 
         if(defaultFound && isDefault) {
-            CampaignSourceDetailValue defaultCampaignSourceDetailValue = getDefaultCampaignSourceDetailValueForUpdate();
+            var defaultCampaignSourceDetailValue = getDefaultCampaignSourceDetailValueForUpdate();
 
             defaultCampaignSourceDetailValue.setIsDefault(Boolean.FALSE);
             updateCampaignSourceFromValue(defaultCampaignSourceDetailValue, false, createdBy);
@@ -696,8 +696,8 @@ public class CampaignControl
             isDefault = Boolean.TRUE;
         }
 
-        CampaignSource campaignSource = CampaignSourceFactory.getInstance().create();
-        CampaignSourceDetail campaignSourceDetail = CampaignSourceDetailFactory.getInstance().create(campaignSource, campaignSourceName, valueSha1Hash, value,
+        var campaignSource = CampaignSourceFactory.getInstance().create();
+        var campaignSourceDetail = CampaignSourceDetailFactory.getInstance().create(campaignSource, campaignSourceName, valueSha1Hash, value,
                 isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -706,10 +706,10 @@ public class CampaignControl
         campaignSource.setLastDetail(campaignSourceDetail);
         campaignSource.store();
 
-        CampaignSourcePK campaignSourcePK = campaignSource.getPrimaryKey();
+        var campaignSourcePK = campaignSource.getPrimaryKey();
         sendEvent(campaignSourcePK, EventTypes.CREATE, null, null, createdBy);
 
-        EntityInstance entityInstance = getCoreControl().getEntityInstanceByBasePK(campaignSourcePK);
+        var entityInstance = getCoreControl().getEntityInstanceByBasePK(campaignSourcePK);
         getWorkflowControl().addEntityToWorkflowUsingNames(null, CampaignSourceStatusConstants.Workflow_CAMPAIGN_SOURCE_STATUS,
                 CampaignSourceStatusConstants.WorkflowEntrance_NEW_ACTIVE, entityInstance, null, null, createdBy);
 
@@ -719,7 +719,7 @@ public class CampaignControl
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.CampaignSource */
     public CampaignSource getCampaignSourceByEntityInstance(EntityInstance entityInstance) {
         CampaignSourcePK pk = new CampaignSourcePK(entityInstance.getEntityUniqueId());
-        CampaignSource campaignSource = CampaignSourceFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
+        var campaignSource = CampaignSourceFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
 
         return campaignSource;
     }
@@ -870,8 +870,8 @@ public class CampaignControl
             workflowControl.getWorkflowEntranceChoices(employeeStatusChoicesBean, defaultCampaignSourceStatusChoice, language, allowNullChoice,
                     workflowControl.getWorkflowByName(CampaignSourceStatusConstants.Workflow_CAMPAIGN_SOURCE_STATUS), partyPK);
         } else {
-            EntityInstance entityInstance = getCoreControl().getEntityInstanceByBasePK(campaignSource.getPrimaryKey());
-            WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(CampaignSourceStatusConstants.Workflow_CAMPAIGN_SOURCE_STATUS,
+            var entityInstance = getCoreControl().getEntityInstanceByBasePK(campaignSource.getPrimaryKey());
+            var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(CampaignSourceStatusConstants.Workflow_CAMPAIGN_SOURCE_STATUS,
                     entityInstance);
             
             workflowControl.getWorkflowDestinationChoices(employeeStatusChoicesBean, defaultCampaignSourceStatusChoice, language, allowNullChoice,
@@ -883,10 +883,10 @@ public class CampaignControl
     
     public void setCampaignSourceStatus(ExecutionErrorAccumulator eea, Party party, String employeeStatusChoice, PartyPK modifiedBy) {
         var workflowControl = getWorkflowControl();
-        EntityInstance entityInstance = getEntityInstanceByBaseEntity(party);
-        WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(CampaignSourceStatusConstants.Workflow_CAMPAIGN_SOURCE_STATUS,
+        var entityInstance = getEntityInstanceByBaseEntity(party);
+        var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(CampaignSourceStatusConstants.Workflow_CAMPAIGN_SOURCE_STATUS,
                 entityInstance);
-        WorkflowDestination workflowDestination = employeeStatusChoice == null? null:
+        var workflowDestination = employeeStatusChoice == null? null:
             workflowControl.getWorkflowDestinationByName(workflowEntityStatus.getWorkflowStep(), employeeStatusChoice);
         
         if(workflowDestination != null || employeeStatusChoice == null) {
@@ -901,9 +901,9 @@ public class CampaignControl
     }
 
     public List<CampaignSourceTransfer> getCampaignSourceTransfers(UserVisit userVisit) {
-        List<CampaignSource> campaignSources = getCampaignSources();
+        var campaignSources = getCampaignSources();
         List<CampaignSourceTransfer> campaignSourceTransfers = new ArrayList<>(campaignSources.size());
-        CampaignSourceTransferCache campaignSourceTransferCache = getCampaignTransferCaches(userVisit).getCampaignSourceTransferCache();
+        var campaignSourceTransferCache = getCampaignTransferCaches(userVisit).getCampaignSourceTransferCache();
 
         campaignSources.forEach((campaignSource) ->
                 campaignSourceTransfers.add(campaignSourceTransferCache.getCampaignSourceTransfer(campaignSource))
@@ -913,7 +913,7 @@ public class CampaignControl
     }
 
     public CampaignSourceChoicesBean getCampaignSourceChoices(String defaultCampaignSourceChoice, Language language, boolean allowNullChoice) {
-        List<CampaignSource> campaignSources = getCampaignSources();
+        var campaignSources = getCampaignSources();
         var size = campaignSources.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -929,7 +929,7 @@ public class CampaignControl
         }
 
         for(var campaignSource : campaignSources) {
-            CampaignSourceDetail campaignSourceDetail = campaignSource.getLastDetail();
+            var campaignSourceDetail = campaignSource.getLastDetail();
 
             var label = getBestCampaignSourceDescription(campaignSource, language);
             var value = campaignSourceDetail.getCampaignSourceName();
@@ -948,27 +948,27 @@ public class CampaignControl
 
     private void updateCampaignSourceFromValue(CampaignSourceDetailValue campaignSourceDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(campaignSourceDetailValue.hasBeenModified()) {
-            CampaignSource campaignSource = CampaignSourceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var campaignSource = CampaignSourceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      campaignSourceDetailValue.getCampaignSourcePK());
-            CampaignSourceDetail campaignSourceDetail = campaignSource.getActiveDetailForUpdate();
+            var campaignSourceDetail = campaignSource.getActiveDetailForUpdate();
 
             campaignSourceDetail.setThruTime(session.START_TIME_LONG);
             campaignSourceDetail.store();
 
-            CampaignSourcePK campaignSourcePK = campaignSourceDetail.getCampaignSourcePK(); // Not updated
-            String campaignSourceName = campaignSourceDetailValue.getCampaignSourceName();
+            var campaignSourcePK = campaignSourceDetail.getCampaignSourcePK(); // Not updated
+            var campaignSourceName = campaignSourceDetailValue.getCampaignSourceName();
             var value = campaignSourceDetailValue.getValue();
-            String valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault()));
-            Boolean isDefault = campaignSourceDetailValue.getIsDefault();
-            Integer sortOrder = campaignSourceDetailValue.getSortOrder();
+            var valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault()));
+            var isDefault = campaignSourceDetailValue.getIsDefault();
+            var sortOrder = campaignSourceDetailValue.getSortOrder();
 
             if(checkDefault) {
-                CampaignSource defaultCampaignSource = getDefaultCampaignSource();
-                boolean defaultFound = defaultCampaignSource != null && !defaultCampaignSource.equals(campaignSource);
+                var defaultCampaignSource = getDefaultCampaignSource();
+                var defaultFound = defaultCampaignSource != null && !defaultCampaignSource.equals(campaignSource);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    CampaignSourceDetailValue defaultCampaignSourceDetailValue = getDefaultCampaignSourceDetailValueForUpdate();
+                    var defaultCampaignSourceDetailValue = getDefaultCampaignSourceDetailValueForUpdate();
 
                     defaultCampaignSourceDetailValue.setIsDefault(Boolean.FALSE);
                     updateCampaignSourceFromValue(defaultCampaignSourceDetailValue, false, updatedBy);
@@ -993,7 +993,7 @@ public class CampaignControl
     }
 
     private void deleteCampaignSource(CampaignSource campaignSource, boolean checkDefault, BasePK deletedBy) {
-        CampaignSourceDetail campaignSourceDetail = campaignSource.getLastDetailForUpdate();
+        var campaignSourceDetail = campaignSource.getLastDetailForUpdate();
 
         deleteUserVisitCampaignsByCampaignSource(campaignSource);
         deleteCampaignSourceDescriptionsByCampaignSource(campaignSource, deletedBy);
@@ -1004,17 +1004,17 @@ public class CampaignControl
 
         if(checkDefault) {
             // Check for default, and pick one if necessary
-            CampaignSource defaultCampaignSource = getDefaultCampaignSource();
+            var defaultCampaignSource = getDefaultCampaignSource();
 
             if(defaultCampaignSource == null) {
-                List<CampaignSource> campaignSources = getCampaignSourcesForUpdate();
+                var campaignSources = getCampaignSourcesForUpdate();
 
                 if(!campaignSources.isEmpty()) {
-                    Iterator<CampaignSource> iter = campaignSources.iterator();
+                    var iter = campaignSources.iterator();
                     if(iter.hasNext()) {
                         defaultCampaignSource = iter.next();
                     }
-                    CampaignSourceDetailValue campaignSourceDetailValue = Objects.requireNonNull(defaultCampaignSource).getLastDetailForUpdate().getCampaignSourceDetailValue().clone();
+                    var campaignSourceDetailValue = Objects.requireNonNull(defaultCampaignSource).getLastDetailForUpdate().getCampaignSourceDetailValue().clone();
 
                     campaignSourceDetailValue.setIsDefault(Boolean.TRUE);
                     updateCampaignSourceFromValue(campaignSourceDetailValue, false, deletedBy);
@@ -1042,7 +1042,7 @@ public class CampaignControl
     // --------------------------------------------------------------------------------
 
     public CampaignSourceDescription createCampaignSourceDescription(CampaignSource campaignSource, Language language, String description, BasePK createdBy) {
-        CampaignSourceDescription campaignSourceDescription = CampaignSourceDescriptionFactory.getInstance().create(campaignSource, language, description,
+        var campaignSourceDescription = CampaignSourceDescriptionFactory.getInstance().create(campaignSource, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(campaignSource.getPrimaryKey(), EventTypes.MODIFY, campaignSourceDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1121,7 +1121,7 @@ public class CampaignControl
 
     public String getBestCampaignSourceDescription(CampaignSource campaignSource, Language language) {
         String description;
-        CampaignSourceDescription campaignSourceDescription = getCampaignSourceDescription(campaignSource, language);
+        var campaignSourceDescription = getCampaignSourceDescription(campaignSource, language);
 
         if(campaignSourceDescription == null && !language.getIsDefault()) {
             campaignSourceDescription = getCampaignSourceDescription(campaignSource, getPartyControl().getDefaultLanguage());
@@ -1141,9 +1141,9 @@ public class CampaignControl
     }
 
     public List<CampaignSourceDescriptionTransfer> getCampaignSourceDescriptionTransfersByCampaignSource(UserVisit userVisit, CampaignSource campaignSource) {
-        List<CampaignSourceDescription> campaignSourceDescriptions = getCampaignSourceDescriptionsByCampaignSource(campaignSource);
+        var campaignSourceDescriptions = getCampaignSourceDescriptionsByCampaignSource(campaignSource);
         List<CampaignSourceDescriptionTransfer> campaignSourceDescriptionTransfers = new ArrayList<>(campaignSourceDescriptions.size());
-        CampaignSourceDescriptionTransferCache campaignSourceDescriptionTransferCache = getCampaignTransferCaches(userVisit).getCampaignSourceDescriptionTransferCache();
+        var campaignSourceDescriptionTransferCache = getCampaignTransferCaches(userVisit).getCampaignSourceDescriptionTransferCache();
 
         campaignSourceDescriptions.forEach((campaignSourceDescription) ->
                 campaignSourceDescriptionTransfers.add(campaignSourceDescriptionTransferCache.getCampaignSourceDescriptionTransfer(campaignSourceDescription))
@@ -1154,15 +1154,15 @@ public class CampaignControl
 
     public void updateCampaignSourceDescriptionFromValue(CampaignSourceDescriptionValue campaignSourceDescriptionValue, BasePK updatedBy) {
         if(campaignSourceDescriptionValue.hasBeenModified()) {
-            CampaignSourceDescription campaignSourceDescription = CampaignSourceDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var campaignSourceDescription = CampaignSourceDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     campaignSourceDescriptionValue.getPrimaryKey());
 
             campaignSourceDescription.setThruTime(session.START_TIME_LONG);
             campaignSourceDescription.store();
 
-            CampaignSource campaignSource = campaignSourceDescription.getCampaignSource();
-            Language language = campaignSourceDescription.getLanguage();
-            String description = campaignSourceDescriptionValue.getDescription();
+            var campaignSource = campaignSourceDescription.getCampaignSource();
+            var language = campaignSourceDescription.getLanguage();
+            var description = campaignSourceDescriptionValue.getDescription();
 
             campaignSourceDescription = CampaignSourceDescriptionFactory.getInstance().create(campaignSource, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1179,7 +1179,7 @@ public class CampaignControl
     }
 
     public void deleteCampaignSourceDescriptionsByCampaignSource(CampaignSource campaignSource, BasePK deletedBy) {
-        List<CampaignSourceDescription> campaignSourceDescriptions = getCampaignSourceDescriptionsByCampaignSourceForUpdate(campaignSource);
+        var campaignSourceDescriptions = getCampaignSourceDescriptionsByCampaignSourceForUpdate(campaignSource);
 
         campaignSourceDescriptions.forEach((campaignSourceDescription) -> 
                 deleteCampaignSourceDescription(campaignSourceDescription, deletedBy)
@@ -1192,19 +1192,19 @@ public class CampaignControl
 
     public CampaignMedium createCampaignMedium(String value, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var sequenceControl = Session.getModelController(SequenceControl.class);
-        Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.CAMPAIGN_MEDIUM.name());
-        String campaignMediumName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
+        var sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.CAMPAIGN_MEDIUM.name());
+        var campaignMediumName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
         
         return createCampaignMedium(campaignMediumName, value, isDefault, sortOrder, createdBy);
     }
     
     public CampaignMedium createCampaignMedium(String campaignMediumName, String value, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        String valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault()));
-        CampaignMedium defaultCampaignMedium = getDefaultCampaignMedium();
-        boolean defaultFound = defaultCampaignMedium != null;
+        var valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault()));
+        var defaultCampaignMedium = getDefaultCampaignMedium();
+        var defaultFound = defaultCampaignMedium != null;
 
         if(defaultFound && isDefault) {
-            CampaignMediumDetailValue defaultCampaignMediumDetailValue = getDefaultCampaignMediumDetailValueForUpdate();
+            var defaultCampaignMediumDetailValue = getDefaultCampaignMediumDetailValueForUpdate();
 
             defaultCampaignMediumDetailValue.setIsDefault(Boolean.FALSE);
             updateCampaignMediumFromValue(defaultCampaignMediumDetailValue, false, createdBy);
@@ -1212,8 +1212,8 @@ public class CampaignControl
             isDefault = Boolean.TRUE;
         }
 
-        CampaignMedium campaignMedium = CampaignMediumFactory.getInstance().create();
-        CampaignMediumDetail campaignMediumDetail = CampaignMediumDetailFactory.getInstance().create(campaignMedium, campaignMediumName, valueSha1Hash, value,
+        var campaignMedium = CampaignMediumFactory.getInstance().create();
+        var campaignMediumDetail = CampaignMediumDetailFactory.getInstance().create(campaignMedium, campaignMediumName, valueSha1Hash, value,
                 isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -1222,10 +1222,10 @@ public class CampaignControl
         campaignMedium.setLastDetail(campaignMediumDetail);
         campaignMedium.store();
 
-        CampaignMediumPK campaignMediumPK = campaignMedium.getPrimaryKey();
+        var campaignMediumPK = campaignMedium.getPrimaryKey();
         sendEvent(campaignMediumPK, EventTypes.CREATE, null, null, createdBy);
 
-        EntityInstance entityInstance = getCoreControl().getEntityInstanceByBasePK(campaignMediumPK);
+        var entityInstance = getCoreControl().getEntityInstanceByBasePK(campaignMediumPK);
         getWorkflowControl().addEntityToWorkflowUsingNames(null, CampaignMediumStatusConstants.Workflow_CAMPAIGN_MEDIUM_STATUS,
                 CampaignMediumStatusConstants.WorkflowEntrance_NEW_ACTIVE, entityInstance, null, null, createdBy);
 
@@ -1235,7 +1235,7 @@ public class CampaignControl
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.CampaignMedium */
     public CampaignMedium getCampaignMediumByEntityInstance(EntityInstance entityInstance) {
         CampaignMediumPK pk = new CampaignMediumPK(entityInstance.getEntityUniqueId());
-        CampaignMedium campaignMedium = CampaignMediumFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
+        var campaignMedium = CampaignMediumFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
 
         return campaignMedium;
     }
@@ -1386,8 +1386,8 @@ public class CampaignControl
             workflowControl.getWorkflowEntranceChoices(employeeStatusChoicesBean, defaultCampaignMediumStatusChoice, language, allowNullChoice,
                     workflowControl.getWorkflowByName(CampaignMediumStatusConstants.Workflow_CAMPAIGN_MEDIUM_STATUS), partyPK);
         } else {
-            EntityInstance entityInstance = getCoreControl().getEntityInstanceByBasePK(campaignMedium.getPrimaryKey());
-            WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(CampaignMediumStatusConstants.Workflow_CAMPAIGN_MEDIUM_STATUS,
+            var entityInstance = getCoreControl().getEntityInstanceByBasePK(campaignMedium.getPrimaryKey());
+            var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(CampaignMediumStatusConstants.Workflow_CAMPAIGN_MEDIUM_STATUS,
                     entityInstance);
             
             workflowControl.getWorkflowDestinationChoices(employeeStatusChoicesBean, defaultCampaignMediumStatusChoice, language, allowNullChoice,
@@ -1399,10 +1399,10 @@ public class CampaignControl
     
     public void setCampaignMediumStatus(ExecutionErrorAccumulator eea, Party party, String employeeStatusChoice, PartyPK modifiedBy) {
         var workflowControl = getWorkflowControl();
-        EntityInstance entityInstance = getEntityInstanceByBaseEntity(party);
-        WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(CampaignMediumStatusConstants.Workflow_CAMPAIGN_MEDIUM_STATUS,
+        var entityInstance = getEntityInstanceByBaseEntity(party);
+        var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(CampaignMediumStatusConstants.Workflow_CAMPAIGN_MEDIUM_STATUS,
                 entityInstance);
-        WorkflowDestination workflowDestination = employeeStatusChoice == null? null:
+        var workflowDestination = employeeStatusChoice == null? null:
             workflowControl.getWorkflowDestinationByName(workflowEntityStatus.getWorkflowStep(), employeeStatusChoice);
         
         if(workflowDestination != null || employeeStatusChoice == null) {
@@ -1417,9 +1417,9 @@ public class CampaignControl
     }
 
     public List<CampaignMediumTransfer> getCampaignMediumTransfers(UserVisit userVisit) {
-        List<CampaignMedium> campaignMediums = getCampaignMediums();
+        var campaignMediums = getCampaignMediums();
         List<CampaignMediumTransfer> campaignMediumTransfers = new ArrayList<>(campaignMediums.size());
-        CampaignMediumTransferCache campaignMediumTransferCache = getCampaignTransferCaches(userVisit).getCampaignMediumTransferCache();
+        var campaignMediumTransferCache = getCampaignTransferCaches(userVisit).getCampaignMediumTransferCache();
 
         campaignMediums.forEach((campaignMedium) ->
                 campaignMediumTransfers.add(campaignMediumTransferCache.getCampaignMediumTransfer(campaignMedium))
@@ -1429,7 +1429,7 @@ public class CampaignControl
     }
 
     public CampaignMediumChoicesBean getCampaignMediumChoices(String defaultCampaignMediumChoice, Language language, boolean allowNullChoice) {
-        List<CampaignMedium> campaignMediums = getCampaignMediums();
+        var campaignMediums = getCampaignMediums();
         var size = campaignMediums.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -1445,7 +1445,7 @@ public class CampaignControl
         }
 
         for(var campaignMedium : campaignMediums) {
-            CampaignMediumDetail campaignMediumDetail = campaignMedium.getLastDetail();
+            var campaignMediumDetail = campaignMedium.getLastDetail();
 
             var label = getBestCampaignMediumDescription(campaignMedium, language);
             var value = campaignMediumDetail.getCampaignMediumName();
@@ -1464,27 +1464,27 @@ public class CampaignControl
 
     private void updateCampaignMediumFromValue(CampaignMediumDetailValue campaignMediumDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(campaignMediumDetailValue.hasBeenModified()) {
-            CampaignMedium campaignMedium = CampaignMediumFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var campaignMedium = CampaignMediumFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      campaignMediumDetailValue.getCampaignMediumPK());
-            CampaignMediumDetail campaignMediumDetail = campaignMedium.getActiveDetailForUpdate();
+            var campaignMediumDetail = campaignMedium.getActiveDetailForUpdate();
 
             campaignMediumDetail.setThruTime(session.START_TIME_LONG);
             campaignMediumDetail.store();
 
-            CampaignMediumPK campaignMediumPK = campaignMediumDetail.getCampaignMediumPK(); // Not updated
-            String campaignMediumName = campaignMediumDetailValue.getCampaignMediumName();
+            var campaignMediumPK = campaignMediumDetail.getCampaignMediumPK(); // Not updated
+            var campaignMediumName = campaignMediumDetailValue.getCampaignMediumName();
             var value = campaignMediumDetailValue.getValue();
-            String valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault()));
-            Boolean isDefault = campaignMediumDetailValue.getIsDefault();
-            Integer sortOrder = campaignMediumDetailValue.getSortOrder();
+            var valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault()));
+            var isDefault = campaignMediumDetailValue.getIsDefault();
+            var sortOrder = campaignMediumDetailValue.getSortOrder();
 
             if(checkDefault) {
-                CampaignMedium defaultCampaignMedium = getDefaultCampaignMedium();
-                boolean defaultFound = defaultCampaignMedium != null && !defaultCampaignMedium.equals(campaignMedium);
+                var defaultCampaignMedium = getDefaultCampaignMedium();
+                var defaultFound = defaultCampaignMedium != null && !defaultCampaignMedium.equals(campaignMedium);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    CampaignMediumDetailValue defaultCampaignMediumDetailValue = getDefaultCampaignMediumDetailValueForUpdate();
+                    var defaultCampaignMediumDetailValue = getDefaultCampaignMediumDetailValueForUpdate();
 
                     defaultCampaignMediumDetailValue.setIsDefault(Boolean.FALSE);
                     updateCampaignMediumFromValue(defaultCampaignMediumDetailValue, false, updatedBy);
@@ -1509,7 +1509,7 @@ public class CampaignControl
     }
 
     private void deleteCampaignMedium(CampaignMedium campaignMedium, boolean checkDefault, BasePK deletedBy) {
-        CampaignMediumDetail campaignMediumDetail = campaignMedium.getLastDetailForUpdate();
+        var campaignMediumDetail = campaignMedium.getLastDetailForUpdate();
 
         deleteUserVisitCampaignsByCampaignMedium(campaignMedium);
         deleteCampaignMediumDescriptionsByCampaignMedium(campaignMedium, deletedBy);
@@ -1520,17 +1520,17 @@ public class CampaignControl
 
         if(checkDefault) {
             // Check for default, and pick one if necessary
-            CampaignMedium defaultCampaignMedium = getDefaultCampaignMedium();
+            var defaultCampaignMedium = getDefaultCampaignMedium();
 
             if(defaultCampaignMedium == null) {
-                List<CampaignMedium> campaignMediums = getCampaignMediumsForUpdate();
+                var campaignMediums = getCampaignMediumsForUpdate();
 
                 if(!campaignMediums.isEmpty()) {
-                    Iterator<CampaignMedium> iter = campaignMediums.iterator();
+                    var iter = campaignMediums.iterator();
                     if(iter.hasNext()) {
                         defaultCampaignMedium = iter.next();
                     }
-                    CampaignMediumDetailValue campaignMediumDetailValue = Objects.requireNonNull(defaultCampaignMedium).getLastDetailForUpdate().getCampaignMediumDetailValue().clone();
+                    var campaignMediumDetailValue = Objects.requireNonNull(defaultCampaignMedium).getLastDetailForUpdate().getCampaignMediumDetailValue().clone();
 
                     campaignMediumDetailValue.setIsDefault(Boolean.TRUE);
                     updateCampaignMediumFromValue(campaignMediumDetailValue, false, deletedBy);
@@ -1558,7 +1558,7 @@ public class CampaignControl
     // --------------------------------------------------------------------------------
 
     public CampaignMediumDescription createCampaignMediumDescription(CampaignMedium campaignMedium, Language language, String description, BasePK createdBy) {
-        CampaignMediumDescription campaignMediumDescription = CampaignMediumDescriptionFactory.getInstance().create(campaignMedium, language, description,
+        var campaignMediumDescription = CampaignMediumDescriptionFactory.getInstance().create(campaignMedium, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(campaignMedium.getPrimaryKey(), EventTypes.MODIFY, campaignMediumDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1637,7 +1637,7 @@ public class CampaignControl
 
     public String getBestCampaignMediumDescription(CampaignMedium campaignMedium, Language language) {
         String description;
-        CampaignMediumDescription campaignMediumDescription = getCampaignMediumDescription(campaignMedium, language);
+        var campaignMediumDescription = getCampaignMediumDescription(campaignMedium, language);
 
         if(campaignMediumDescription == null && !language.getIsDefault()) {
             campaignMediumDescription = getCampaignMediumDescription(campaignMedium, getPartyControl().getDefaultLanguage());
@@ -1657,9 +1657,9 @@ public class CampaignControl
     }
 
     public List<CampaignMediumDescriptionTransfer> getCampaignMediumDescriptionTransfersByCampaignMedium(UserVisit userVisit, CampaignMedium campaignMedium) {
-        List<CampaignMediumDescription> campaignMediumDescriptions = getCampaignMediumDescriptionsByCampaignMedium(campaignMedium);
+        var campaignMediumDescriptions = getCampaignMediumDescriptionsByCampaignMedium(campaignMedium);
         List<CampaignMediumDescriptionTransfer> campaignMediumDescriptionTransfers = new ArrayList<>(campaignMediumDescriptions.size());
-        CampaignMediumDescriptionTransferCache campaignMediumDescriptionTransferCache = getCampaignTransferCaches(userVisit).getCampaignMediumDescriptionTransferCache();
+        var campaignMediumDescriptionTransferCache = getCampaignTransferCaches(userVisit).getCampaignMediumDescriptionTransferCache();
 
         campaignMediumDescriptions.forEach((campaignMediumDescription) ->
                 campaignMediumDescriptionTransfers.add(campaignMediumDescriptionTransferCache.getCampaignMediumDescriptionTransfer(campaignMediumDescription))
@@ -1670,15 +1670,15 @@ public class CampaignControl
 
     public void updateCampaignMediumDescriptionFromValue(CampaignMediumDescriptionValue campaignMediumDescriptionValue, BasePK updatedBy) {
         if(campaignMediumDescriptionValue.hasBeenModified()) {
-            CampaignMediumDescription campaignMediumDescription = CampaignMediumDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var campaignMediumDescription = CampaignMediumDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     campaignMediumDescriptionValue.getPrimaryKey());
 
             campaignMediumDescription.setThruTime(session.START_TIME_LONG);
             campaignMediumDescription.store();
 
-            CampaignMedium campaignMedium = campaignMediumDescription.getCampaignMedium();
-            Language language = campaignMediumDescription.getLanguage();
-            String description = campaignMediumDescriptionValue.getDescription();
+            var campaignMedium = campaignMediumDescription.getCampaignMedium();
+            var language = campaignMediumDescription.getLanguage();
+            var description = campaignMediumDescriptionValue.getDescription();
 
             campaignMediumDescription = CampaignMediumDescriptionFactory.getInstance().create(campaignMedium, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1695,7 +1695,7 @@ public class CampaignControl
     }
 
     public void deleteCampaignMediumDescriptionsByCampaignMedium(CampaignMedium campaignMedium, BasePK deletedBy) {
-        List<CampaignMediumDescription> campaignMediumDescriptions = getCampaignMediumDescriptionsByCampaignMediumForUpdate(campaignMedium);
+        var campaignMediumDescriptions = getCampaignMediumDescriptionsByCampaignMediumForUpdate(campaignMedium);
 
         campaignMediumDescriptions.forEach((campaignMediumDescription) -> 
                 deleteCampaignMediumDescription(campaignMediumDescription, deletedBy)
@@ -1708,19 +1708,19 @@ public class CampaignControl
 
     public CampaignTerm createCampaignTerm(String value, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var sequenceControl = Session.getModelController(SequenceControl.class);
-        Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.CAMPAIGN_TERM.name());
-        String campaignTermName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
+        var sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.CAMPAIGN_TERM.name());
+        var campaignTermName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
         
         return createCampaignTerm(campaignTermName, value, isDefault, sortOrder, createdBy);
     }
     
     public CampaignTerm createCampaignTerm(String campaignTermName, String value, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        String valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault()));
-        CampaignTerm defaultCampaignTerm = getDefaultCampaignTerm();
-        boolean defaultFound = defaultCampaignTerm != null;
+        var valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault()));
+        var defaultCampaignTerm = getDefaultCampaignTerm();
+        var defaultFound = defaultCampaignTerm != null;
 
         if(defaultFound && isDefault) {
-            CampaignTermDetailValue defaultCampaignTermDetailValue = getDefaultCampaignTermDetailValueForUpdate();
+            var defaultCampaignTermDetailValue = getDefaultCampaignTermDetailValueForUpdate();
 
             defaultCampaignTermDetailValue.setIsDefault(Boolean.FALSE);
             updateCampaignTermFromValue(defaultCampaignTermDetailValue, false, createdBy);
@@ -1728,8 +1728,8 @@ public class CampaignControl
             isDefault = Boolean.TRUE;
         }
 
-        CampaignTerm campaignTerm = CampaignTermFactory.getInstance().create();
-        CampaignTermDetail campaignTermDetail = CampaignTermDetailFactory.getInstance().create(campaignTerm, campaignTermName, valueSha1Hash, value,
+        var campaignTerm = CampaignTermFactory.getInstance().create();
+        var campaignTermDetail = CampaignTermDetailFactory.getInstance().create(campaignTerm, campaignTermName, valueSha1Hash, value,
                 isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -1738,10 +1738,10 @@ public class CampaignControl
         campaignTerm.setLastDetail(campaignTermDetail);
         campaignTerm.store();
 
-        CampaignTermPK campaignTermPK = campaignTerm.getPrimaryKey();
+        var campaignTermPK = campaignTerm.getPrimaryKey();
         sendEvent(campaignTermPK, EventTypes.CREATE, null, null, createdBy);
 
-        EntityInstance entityInstance = getCoreControl().getEntityInstanceByBasePK(campaignTermPK);
+        var entityInstance = getCoreControl().getEntityInstanceByBasePK(campaignTermPK);
         getWorkflowControl().addEntityToWorkflowUsingNames(null, CampaignTermStatusConstants.Workflow_CAMPAIGN_TERM_STATUS,
                 CampaignTermStatusConstants.WorkflowEntrance_NEW_ACTIVE, entityInstance, null, null, createdBy);
 
@@ -1751,7 +1751,7 @@ public class CampaignControl
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.CampaignTerm */
     public CampaignTerm getCampaignTermByEntityInstance(EntityInstance entityInstance) {
         CampaignTermPK pk = new CampaignTermPK(entityInstance.getEntityUniqueId());
-        CampaignTerm campaignTerm = CampaignTermFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
+        var campaignTerm = CampaignTermFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
 
         return campaignTerm;
     }
@@ -1902,8 +1902,8 @@ public class CampaignControl
             workflowControl.getWorkflowEntranceChoices(employeeStatusChoicesBean, defaultCampaignTermStatusChoice, language, allowNullChoice,
                     workflowControl.getWorkflowByName(CampaignTermStatusConstants.Workflow_CAMPAIGN_TERM_STATUS), partyPK);
         } else {
-            EntityInstance entityInstance = getCoreControl().getEntityInstanceByBasePK(campaignTerm.getPrimaryKey());
-            WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(CampaignTermStatusConstants.Workflow_CAMPAIGN_TERM_STATUS,
+            var entityInstance = getCoreControl().getEntityInstanceByBasePK(campaignTerm.getPrimaryKey());
+            var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(CampaignTermStatusConstants.Workflow_CAMPAIGN_TERM_STATUS,
                     entityInstance);
             
             workflowControl.getWorkflowDestinationChoices(employeeStatusChoicesBean, defaultCampaignTermStatusChoice, language, allowNullChoice,
@@ -1915,10 +1915,10 @@ public class CampaignControl
     
     public void setCampaignTermStatus(ExecutionErrorAccumulator eea, Party party, String employeeStatusChoice, PartyPK modifiedBy) {
         var workflowControl = getWorkflowControl();
-        EntityInstance entityInstance = getEntityInstanceByBaseEntity(party);
-        WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(CampaignTermStatusConstants.Workflow_CAMPAIGN_TERM_STATUS,
+        var entityInstance = getEntityInstanceByBaseEntity(party);
+        var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(CampaignTermStatusConstants.Workflow_CAMPAIGN_TERM_STATUS,
                 entityInstance);
-        WorkflowDestination workflowDestination = employeeStatusChoice == null? null:
+        var workflowDestination = employeeStatusChoice == null? null:
             workflowControl.getWorkflowDestinationByName(workflowEntityStatus.getWorkflowStep(), employeeStatusChoice);
         
         if(workflowDestination != null || employeeStatusChoice == null) {
@@ -1933,9 +1933,9 @@ public class CampaignControl
     }
 
     public List<CampaignTermTransfer> getCampaignTermTransfers(UserVisit userVisit) {
-        List<CampaignTerm> campaignTerms = getCampaignTerms();
+        var campaignTerms = getCampaignTerms();
         List<CampaignTermTransfer> campaignTermTransfers = new ArrayList<>(campaignTerms.size());
-        CampaignTermTransferCache campaignTermTransferCache = getCampaignTransferCaches(userVisit).getCampaignTermTransferCache();
+        var campaignTermTransferCache = getCampaignTransferCaches(userVisit).getCampaignTermTransferCache();
 
         campaignTerms.forEach((campaignTerm) ->
                 campaignTermTransfers.add(campaignTermTransferCache.getCampaignTermTransfer(campaignTerm))
@@ -1945,7 +1945,7 @@ public class CampaignControl
     }
 
     public CampaignTermChoicesBean getCampaignTermChoices(String defaultCampaignTermChoice, Language language, boolean allowNullChoice) {
-        List<CampaignTerm> campaignTerms = getCampaignTerms();
+        var campaignTerms = getCampaignTerms();
         var size = campaignTerms.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -1961,7 +1961,7 @@ public class CampaignControl
         }
 
         for(var campaignTerm : campaignTerms) {
-            CampaignTermDetail campaignTermDetail = campaignTerm.getLastDetail();
+            var campaignTermDetail = campaignTerm.getLastDetail();
 
             var label = getBestCampaignTermDescription(campaignTerm, language);
             var value = campaignTermDetail.getCampaignTermName();
@@ -1980,27 +1980,27 @@ public class CampaignControl
 
     private void updateCampaignTermFromValue(CampaignTermDetailValue campaignTermDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(campaignTermDetailValue.hasBeenModified()) {
-            CampaignTerm campaignTerm = CampaignTermFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var campaignTerm = CampaignTermFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      campaignTermDetailValue.getCampaignTermPK());
-            CampaignTermDetail campaignTermDetail = campaignTerm.getActiveDetailForUpdate();
+            var campaignTermDetail = campaignTerm.getActiveDetailForUpdate();
 
             campaignTermDetail.setThruTime(session.START_TIME_LONG);
             campaignTermDetail.store();
 
-            CampaignTermPK campaignTermPK = campaignTermDetail.getCampaignTermPK(); // Not updated
-            String campaignTermName = campaignTermDetailValue.getCampaignTermName();
+            var campaignTermPK = campaignTermDetail.getCampaignTermPK(); // Not updated
+            var campaignTermName = campaignTermDetailValue.getCampaignTermName();
             var value = campaignTermDetailValue.getValue();
-            String valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault()));
-            Boolean isDefault = campaignTermDetailValue.getIsDefault();
-            Integer sortOrder = campaignTermDetailValue.getSortOrder();
+            var valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault()));
+            var isDefault = campaignTermDetailValue.getIsDefault();
+            var sortOrder = campaignTermDetailValue.getSortOrder();
 
             if(checkDefault) {
-                CampaignTerm defaultCampaignTerm = getDefaultCampaignTerm();
-                boolean defaultFound = defaultCampaignTerm != null && !defaultCampaignTerm.equals(campaignTerm);
+                var defaultCampaignTerm = getDefaultCampaignTerm();
+                var defaultFound = defaultCampaignTerm != null && !defaultCampaignTerm.equals(campaignTerm);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    CampaignTermDetailValue defaultCampaignTermDetailValue = getDefaultCampaignTermDetailValueForUpdate();
+                    var defaultCampaignTermDetailValue = getDefaultCampaignTermDetailValueForUpdate();
 
                     defaultCampaignTermDetailValue.setIsDefault(Boolean.FALSE);
                     updateCampaignTermFromValue(defaultCampaignTermDetailValue, false, updatedBy);
@@ -2025,7 +2025,7 @@ public class CampaignControl
     }
 
     private void deleteCampaignTerm(CampaignTerm campaignTerm, boolean checkDefault, BasePK deletedBy) {
-        CampaignTermDetail campaignTermDetail = campaignTerm.getLastDetailForUpdate();
+        var campaignTermDetail = campaignTerm.getLastDetailForUpdate();
 
         deleteUserVisitCampaignsByCampaignTerm(campaignTerm);
         deleteCampaignTermDescriptionsByCampaignTerm(campaignTerm, deletedBy);
@@ -2036,17 +2036,17 @@ public class CampaignControl
 
         if(checkDefault) {
             // Check for default, and pick one if necessary
-            CampaignTerm defaultCampaignTerm = getDefaultCampaignTerm();
+            var defaultCampaignTerm = getDefaultCampaignTerm();
 
             if(defaultCampaignTerm == null) {
-                List<CampaignTerm> campaignTerms = getCampaignTermsForUpdate();
+                var campaignTerms = getCampaignTermsForUpdate();
 
                 if(!campaignTerms.isEmpty()) {
-                    Iterator<CampaignTerm> iter = campaignTerms.iterator();
+                    var iter = campaignTerms.iterator();
                     if(iter.hasNext()) {
                         defaultCampaignTerm = iter.next();
                     }
-                    CampaignTermDetailValue campaignTermDetailValue = Objects.requireNonNull(defaultCampaignTerm).getLastDetailForUpdate().getCampaignTermDetailValue().clone();
+                    var campaignTermDetailValue = Objects.requireNonNull(defaultCampaignTerm).getLastDetailForUpdate().getCampaignTermDetailValue().clone();
 
                     campaignTermDetailValue.setIsDefault(Boolean.TRUE);
                     updateCampaignTermFromValue(campaignTermDetailValue, false, deletedBy);
@@ -2074,7 +2074,7 @@ public class CampaignControl
     // --------------------------------------------------------------------------------
 
     public CampaignTermDescription createCampaignTermDescription(CampaignTerm campaignTerm, Language language, String description, BasePK createdBy) {
-        CampaignTermDescription campaignTermDescription = CampaignTermDescriptionFactory.getInstance().create(campaignTerm, language, description,
+        var campaignTermDescription = CampaignTermDescriptionFactory.getInstance().create(campaignTerm, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(campaignTerm.getPrimaryKey(), EventTypes.MODIFY, campaignTermDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2153,7 +2153,7 @@ public class CampaignControl
 
     public String getBestCampaignTermDescription(CampaignTerm campaignTerm, Language language) {
         String description;
-        CampaignTermDescription campaignTermDescription = getCampaignTermDescription(campaignTerm, language);
+        var campaignTermDescription = getCampaignTermDescription(campaignTerm, language);
 
         if(campaignTermDescription == null && !language.getIsDefault()) {
             campaignTermDescription = getCampaignTermDescription(campaignTerm, getPartyControl().getDefaultLanguage());
@@ -2173,9 +2173,9 @@ public class CampaignControl
     }
 
     public List<CampaignTermDescriptionTransfer> getCampaignTermDescriptionTransfersByCampaignTerm(UserVisit userVisit, CampaignTerm campaignTerm) {
-        List<CampaignTermDescription> campaignTermDescriptions = getCampaignTermDescriptionsByCampaignTerm(campaignTerm);
+        var campaignTermDescriptions = getCampaignTermDescriptionsByCampaignTerm(campaignTerm);
         List<CampaignTermDescriptionTransfer> campaignTermDescriptionTransfers = new ArrayList<>(campaignTermDescriptions.size());
-        CampaignTermDescriptionTransferCache campaignTermDescriptionTransferCache = getCampaignTransferCaches(userVisit).getCampaignTermDescriptionTransferCache();
+        var campaignTermDescriptionTransferCache = getCampaignTransferCaches(userVisit).getCampaignTermDescriptionTransferCache();
 
         campaignTermDescriptions.forEach((campaignTermDescription) ->
                 campaignTermDescriptionTransfers.add(campaignTermDescriptionTransferCache.getCampaignTermDescriptionTransfer(campaignTermDescription))
@@ -2186,15 +2186,15 @@ public class CampaignControl
 
     public void updateCampaignTermDescriptionFromValue(CampaignTermDescriptionValue campaignTermDescriptionValue, BasePK updatedBy) {
         if(campaignTermDescriptionValue.hasBeenModified()) {
-            CampaignTermDescription campaignTermDescription = CampaignTermDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var campaignTermDescription = CampaignTermDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     campaignTermDescriptionValue.getPrimaryKey());
 
             campaignTermDescription.setThruTime(session.START_TIME_LONG);
             campaignTermDescription.store();
 
-            CampaignTerm campaignTerm = campaignTermDescription.getCampaignTerm();
-            Language language = campaignTermDescription.getLanguage();
-            String description = campaignTermDescriptionValue.getDescription();
+            var campaignTerm = campaignTermDescription.getCampaignTerm();
+            var language = campaignTermDescription.getLanguage();
+            var description = campaignTermDescriptionValue.getDescription();
 
             campaignTermDescription = CampaignTermDescriptionFactory.getInstance().create(campaignTerm, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -2211,7 +2211,7 @@ public class CampaignControl
     }
 
     public void deleteCampaignTermDescriptionsByCampaignTerm(CampaignTerm campaignTerm, BasePK deletedBy) {
-        List<CampaignTermDescription> campaignTermDescriptions = getCampaignTermDescriptionsByCampaignTermForUpdate(campaignTerm);
+        var campaignTermDescriptions = getCampaignTermDescriptionsByCampaignTermForUpdate(campaignTerm);
 
         campaignTermDescriptions.forEach((campaignTermDescription) -> 
                 deleteCampaignTermDescription(campaignTermDescription, deletedBy)
@@ -2224,19 +2224,19 @@ public class CampaignControl
 
     public CampaignContent createCampaignContent(String value, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var sequenceControl = Session.getModelController(SequenceControl.class);
-        Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.CAMPAIGN_CONTENT.name());
-        String campaignContentName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
+        var sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.CAMPAIGN_CONTENT.name());
+        var campaignContentName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
         
         return createCampaignContent(campaignContentName, value, isDefault, sortOrder, createdBy);
     }
     
     public CampaignContent createCampaignContent(String campaignContentName, String value, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        String valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault()));
-        CampaignContent defaultCampaignContent = getDefaultCampaignContent();
-        boolean defaultFound = defaultCampaignContent != null;
+        var valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault()));
+        var defaultCampaignContent = getDefaultCampaignContent();
+        var defaultFound = defaultCampaignContent != null;
 
         if(defaultFound && isDefault) {
-            CampaignContentDetailValue defaultCampaignContentDetailValue = getDefaultCampaignContentDetailValueForUpdate();
+            var defaultCampaignContentDetailValue = getDefaultCampaignContentDetailValueForUpdate();
 
             defaultCampaignContentDetailValue.setIsDefault(Boolean.FALSE);
             updateCampaignContentFromValue(defaultCampaignContentDetailValue, false, createdBy);
@@ -2244,8 +2244,8 @@ public class CampaignControl
             isDefault = Boolean.TRUE;
         }
 
-        CampaignContent campaignContent = CampaignContentFactory.getInstance().create();
-        CampaignContentDetail campaignContentDetail = CampaignContentDetailFactory.getInstance().create(campaignContent, campaignContentName, valueSha1Hash, value,
+        var campaignContent = CampaignContentFactory.getInstance().create();
+        var campaignContentDetail = CampaignContentDetailFactory.getInstance().create(campaignContent, campaignContentName, valueSha1Hash, value,
                 isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -2254,10 +2254,10 @@ public class CampaignControl
         campaignContent.setLastDetail(campaignContentDetail);
         campaignContent.store();
 
-        CampaignContentPK campaignContentPK = campaignContent.getPrimaryKey();
+        var campaignContentPK = campaignContent.getPrimaryKey();
         sendEvent(campaignContentPK, EventTypes.CREATE, null, null, createdBy);
 
-        EntityInstance entityInstance = getCoreControl().getEntityInstanceByBasePK(campaignContentPK);
+        var entityInstance = getCoreControl().getEntityInstanceByBasePK(campaignContentPK);
         getWorkflowControl().addEntityToWorkflowUsingNames(null, CampaignContentStatusConstants.Workflow_CAMPAIGN_CONTENT_STATUS,
                 CampaignContentStatusConstants.WorkflowEntrance_NEW_ACTIVE, entityInstance, null, null, createdBy);
 
@@ -2267,7 +2267,7 @@ public class CampaignControl
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.CampaignContent */
     public CampaignContent getCampaignContentByEntityInstance(EntityInstance entityInstance) {
         CampaignContentPK pk = new CampaignContentPK(entityInstance.getEntityUniqueId());
-        CampaignContent campaignContent = CampaignContentFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
+        var campaignContent = CampaignContentFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
 
         return campaignContent;
     }
@@ -2418,8 +2418,8 @@ public class CampaignControl
             workflowControl.getWorkflowEntranceChoices(employeeStatusChoicesBean, defaultCampaignContentStatusChoice, language, allowNullChoice,
                     workflowControl.getWorkflowByName(CampaignContentStatusConstants.Workflow_CAMPAIGN_CONTENT_STATUS), partyPK);
         } else {
-            EntityInstance entityInstance = getCoreControl().getEntityInstanceByBasePK(campaignContent.getPrimaryKey());
-            WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(CampaignContentStatusConstants.Workflow_CAMPAIGN_CONTENT_STATUS,
+            var entityInstance = getCoreControl().getEntityInstanceByBasePK(campaignContent.getPrimaryKey());
+            var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(CampaignContentStatusConstants.Workflow_CAMPAIGN_CONTENT_STATUS,
                     entityInstance);
             
             workflowControl.getWorkflowDestinationChoices(employeeStatusChoicesBean, defaultCampaignContentStatusChoice, language, allowNullChoice,
@@ -2431,10 +2431,10 @@ public class CampaignControl
     
     public void setCampaignContentStatus(ExecutionErrorAccumulator eea, Party party, String employeeStatusChoice, PartyPK modifiedBy) {
         var workflowControl = getWorkflowControl();
-        EntityInstance entityInstance = getEntityInstanceByBaseEntity(party);
-        WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(CampaignContentStatusConstants.Workflow_CAMPAIGN_CONTENT_STATUS,
+        var entityInstance = getEntityInstanceByBaseEntity(party);
+        var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(CampaignContentStatusConstants.Workflow_CAMPAIGN_CONTENT_STATUS,
                 entityInstance);
-        WorkflowDestination workflowDestination = employeeStatusChoice == null? null:
+        var workflowDestination = employeeStatusChoice == null? null:
             workflowControl.getWorkflowDestinationByName(workflowEntityStatus.getWorkflowStep(), employeeStatusChoice);
         
         if(workflowDestination != null || employeeStatusChoice == null) {
@@ -2449,9 +2449,9 @@ public class CampaignControl
     }
 
     public List<CampaignContentTransfer> getCampaignContentTransfers(UserVisit userVisit) {
-        List<CampaignContent> campaignContents = getCampaignContents();
+        var campaignContents = getCampaignContents();
         List<CampaignContentTransfer> campaignContentTransfers = new ArrayList<>(campaignContents.size());
-        CampaignContentTransferCache campaignContentTransferCache = getCampaignTransferCaches(userVisit).getCampaignContentTransferCache();
+        var campaignContentTransferCache = getCampaignTransferCaches(userVisit).getCampaignContentTransferCache();
 
         campaignContents.forEach((campaignContent) ->
                 campaignContentTransfers.add(campaignContentTransferCache.getCampaignContentTransfer(campaignContent))
@@ -2461,7 +2461,7 @@ public class CampaignControl
     }
 
     public CampaignContentChoicesBean getCampaignContentChoices(String defaultCampaignContentChoice, Language language, boolean allowNullChoice) {
-        List<CampaignContent> campaignContents = getCampaignContents();
+        var campaignContents = getCampaignContents();
         var size = campaignContents.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -2477,7 +2477,7 @@ public class CampaignControl
         }
 
         for(var campaignContent : campaignContents) {
-            CampaignContentDetail campaignContentDetail = campaignContent.getLastDetail();
+            var campaignContentDetail = campaignContent.getLastDetail();
 
             var label = getBestCampaignContentDescription(campaignContent, language);
             var value = campaignContentDetail.getCampaignContentName();
@@ -2496,27 +2496,27 @@ public class CampaignControl
 
     private void updateCampaignContentFromValue(CampaignContentDetailValue campaignContentDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(campaignContentDetailValue.hasBeenModified()) {
-            CampaignContent campaignContent = CampaignContentFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var campaignContent = CampaignContentFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      campaignContentDetailValue.getCampaignContentPK());
-            CampaignContentDetail campaignContentDetail = campaignContent.getActiveDetailForUpdate();
+            var campaignContentDetail = campaignContent.getActiveDetailForUpdate();
 
             campaignContentDetail.setThruTime(session.START_TIME_LONG);
             campaignContentDetail.store();
 
-            CampaignContentPK campaignContentPK = campaignContentDetail.getCampaignContentPK(); // Not updated
-            String campaignContentName = campaignContentDetailValue.getCampaignContentName();
+            var campaignContentPK = campaignContentDetail.getCampaignContentPK(); // Not updated
+            var campaignContentName = campaignContentDetailValue.getCampaignContentName();
             var value = campaignContentDetailValue.getValue();
-            String valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault()));
-            Boolean isDefault = campaignContentDetailValue.getIsDefault();
-            Integer sortOrder = campaignContentDetailValue.getSortOrder();
+            var valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault()));
+            var isDefault = campaignContentDetailValue.getIsDefault();
+            var sortOrder = campaignContentDetailValue.getSortOrder();
 
             if(checkDefault) {
-                CampaignContent defaultCampaignContent = getDefaultCampaignContent();
-                boolean defaultFound = defaultCampaignContent != null && !defaultCampaignContent.equals(campaignContent);
+                var defaultCampaignContent = getDefaultCampaignContent();
+                var defaultFound = defaultCampaignContent != null && !defaultCampaignContent.equals(campaignContent);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    CampaignContentDetailValue defaultCampaignContentDetailValue = getDefaultCampaignContentDetailValueForUpdate();
+                    var defaultCampaignContentDetailValue = getDefaultCampaignContentDetailValueForUpdate();
 
                     defaultCampaignContentDetailValue.setIsDefault(Boolean.FALSE);
                     updateCampaignContentFromValue(defaultCampaignContentDetailValue, false, updatedBy);
@@ -2541,7 +2541,7 @@ public class CampaignControl
     }
 
     private void deleteCampaignContent(CampaignContent campaignContent, boolean checkDefault, BasePK deletedBy) {
-        CampaignContentDetail campaignContentDetail = campaignContent.getLastDetailForUpdate();
+        var campaignContentDetail = campaignContent.getLastDetailForUpdate();
 
         deleteUserVisitCampaignsByCampaignContent(campaignContent);
         deleteCampaignContentDescriptionsByCampaignContent(campaignContent, deletedBy);
@@ -2552,17 +2552,17 @@ public class CampaignControl
 
         if(checkDefault) {
             // Check for default, and pick one if necessary
-            CampaignContent defaultCampaignContent = getDefaultCampaignContent();
+            var defaultCampaignContent = getDefaultCampaignContent();
 
             if(defaultCampaignContent == null) {
-                List<CampaignContent> campaignContents = getCampaignContentsForUpdate();
+                var campaignContents = getCampaignContentsForUpdate();
 
                 if(!campaignContents.isEmpty()) {
-                    Iterator<CampaignContent> iter = campaignContents.iterator();
+                    var iter = campaignContents.iterator();
                     if(iter.hasNext()) {
                         defaultCampaignContent = iter.next();
                     }
-                    CampaignContentDetailValue campaignContentDetailValue = Objects.requireNonNull(defaultCampaignContent).getLastDetailForUpdate().getCampaignContentDetailValue().clone();
+                    var campaignContentDetailValue = Objects.requireNonNull(defaultCampaignContent).getLastDetailForUpdate().getCampaignContentDetailValue().clone();
 
                     campaignContentDetailValue.setIsDefault(Boolean.TRUE);
                     updateCampaignContentFromValue(campaignContentDetailValue, false, deletedBy);
@@ -2590,7 +2590,7 @@ public class CampaignControl
     // --------------------------------------------------------------------------------
 
     public CampaignContentDescription createCampaignContentDescription(CampaignContent campaignContent, Language language, String description, BasePK createdBy) {
-        CampaignContentDescription campaignContentDescription = CampaignContentDescriptionFactory.getInstance().create(campaignContent, language, description,
+        var campaignContentDescription = CampaignContentDescriptionFactory.getInstance().create(campaignContent, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(campaignContent.getPrimaryKey(), EventTypes.MODIFY, campaignContentDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2669,7 +2669,7 @@ public class CampaignControl
 
     public String getBestCampaignContentDescription(CampaignContent campaignContent, Language language) {
         String description;
-        CampaignContentDescription campaignContentDescription = getCampaignContentDescription(campaignContent, language);
+        var campaignContentDescription = getCampaignContentDescription(campaignContent, language);
 
         if(campaignContentDescription == null && !language.getIsDefault()) {
             campaignContentDescription = getCampaignContentDescription(campaignContent, getPartyControl().getDefaultLanguage());
@@ -2689,9 +2689,9 @@ public class CampaignControl
     }
 
     public List<CampaignContentDescriptionTransfer> getCampaignContentDescriptionTransfersByCampaignContent(UserVisit userVisit, CampaignContent campaignContent) {
-        List<CampaignContentDescription> campaignContentDescriptions = getCampaignContentDescriptionsByCampaignContent(campaignContent);
+        var campaignContentDescriptions = getCampaignContentDescriptionsByCampaignContent(campaignContent);
         List<CampaignContentDescriptionTransfer> campaignContentDescriptionTransfers = new ArrayList<>(campaignContentDescriptions.size());
-        CampaignContentDescriptionTransferCache campaignContentDescriptionTransferCache = getCampaignTransferCaches(userVisit).getCampaignContentDescriptionTransferCache();
+        var campaignContentDescriptionTransferCache = getCampaignTransferCaches(userVisit).getCampaignContentDescriptionTransferCache();
 
         campaignContentDescriptions.forEach((campaignContentDescription) ->
                 campaignContentDescriptionTransfers.add(campaignContentDescriptionTransferCache.getCampaignContentDescriptionTransfer(campaignContentDescription))
@@ -2702,15 +2702,15 @@ public class CampaignControl
 
     public void updateCampaignContentDescriptionFromValue(CampaignContentDescriptionValue campaignContentDescriptionValue, BasePK updatedBy) {
         if(campaignContentDescriptionValue.hasBeenModified()) {
-            CampaignContentDescription campaignContentDescription = CampaignContentDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var campaignContentDescription = CampaignContentDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     campaignContentDescriptionValue.getPrimaryKey());
 
             campaignContentDescription.setThruTime(session.START_TIME_LONG);
             campaignContentDescription.store();
 
-            CampaignContent campaignContent = campaignContentDescription.getCampaignContent();
-            Language language = campaignContentDescription.getLanguage();
-            String description = campaignContentDescriptionValue.getDescription();
+            var campaignContent = campaignContentDescription.getCampaignContent();
+            var language = campaignContentDescription.getLanguage();
+            var description = campaignContentDescriptionValue.getDescription();
 
             campaignContentDescription = CampaignContentDescriptionFactory.getInstance().create(campaignContent, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -2727,7 +2727,7 @@ public class CampaignControl
     }
 
     public void deleteCampaignContentDescriptionsByCampaignContent(CampaignContent campaignContent, BasePK deletedBy) {
-        List<CampaignContentDescription> campaignContentDescriptions = getCampaignContentDescriptionsByCampaignContentForUpdate(campaignContent);
+        var campaignContentDescriptions = getCampaignContentDescriptionsByCampaignContentForUpdate(campaignContent);
 
         campaignContentDescriptions.forEach((campaignContentDescription) -> 
                 deleteCampaignContentDescription(campaignContentDescription, deletedBy)
@@ -2741,7 +2741,7 @@ public class CampaignControl
     public UserVisitCampaign createUserVisitCampaign(UserVisit userVisit, Long time, Campaign campaign, CampaignSource campaignSource,
             CampaignMedium campaignMedium, CampaignTerm campaignTerm, CampaignContent campaignContent) {
         var userControl = Session.getModelController(UserControl.class);
-        UserVisitStatus userVisitStatus = userControl.getUserVisitStatusForUpdate(userVisit);
+        var userVisitStatus = userControl.getUserVisitStatusForUpdate(userVisit);
         Integer userVisitCampaignSequence = userVisitStatus.getUserVisitCampaignSequence()+ 1;
         
         userVisitStatus.setUserVisitCampaignSequence(userVisitCampaignSequence);
@@ -2751,7 +2751,7 @@ public class CampaignControl
 
     public UserVisitCampaign createUserVisitCampaign(UserVisit userVisit, Integer userVisitCampaignSequence, Long time, Campaign campaign,
             CampaignSource campaignSource, CampaignMedium campaignMedium, CampaignTerm campaignTerm, CampaignContent campaignContent) {
-        UserVisitCampaign userVisitCampaign = UserVisitCampaignFactory.getInstance().create(userVisit, userVisitCampaignSequence, time, campaign,
+        var userVisitCampaign = UserVisitCampaignFactory.getInstance().create(userVisit, userVisitCampaignSequence, time, campaign,
                 campaignSource, campaignMedium, campaignTerm, campaignContent, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         return userVisitCampaign;
@@ -2942,7 +2942,7 @@ public class CampaignControl
 
     public List<UserVisitCampaignTransfer> getUserVisitCampaignTransfers(UserVisit userVisit, Collection<UserVisitCampaign> userVisitCampaigns) {
         List<UserVisitCampaignTransfer> userVisitCampaignTransfers = new ArrayList<>(userVisitCampaigns.size());
-        UserVisitCampaignTransferCache userVisitCampaignTransferCache = getCampaignTransferCaches(userVisit).getUserVisitCampaignTransferCache();
+        var userVisitCampaignTransferCache = getCampaignTransferCaches(userVisit).getUserVisitCampaignTransferCache();
 
         userVisitCampaigns.forEach((userVisitCampaign) ->
                 userVisitCampaignTransfers.add(userVisitCampaignTransferCache.getUserVisitCampaignTransfer(userVisitCampaign))

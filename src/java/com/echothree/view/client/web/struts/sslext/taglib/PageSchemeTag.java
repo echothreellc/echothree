@@ -100,16 +100,16 @@ public class PageSchemeTag
     public int doStartTag() throws JspException {
         
         // Get the request and response objects
-        HttpServletRequest request = (HttpServletRequest) pageContext.getRequest();
-        HttpServletResponse response = (HttpServletResponse) pageContext.getResponse();
+        var request = (HttpServletRequest) pageContext.getRequest();
+        var response = (HttpServletResponse) pageContext.getResponse();
         
         // Get servlet context
-        ServletContext servletContext = pageContext.getServletContext();
+        var servletContext = pageContext.getServletContext();
         
         /**
          * Determine whether we should redirect
          */
-        String redirectString =
+        var redirectString =
         SecureRequestUtils.getRedirectString(request,
         servletContext,
         getSecure());

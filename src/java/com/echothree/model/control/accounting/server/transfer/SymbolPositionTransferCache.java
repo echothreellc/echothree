@@ -34,14 +34,14 @@ public class SymbolPositionTransferCache
     
     @Override
     public SymbolPositionTransfer getTransfer(SymbolPosition symbolPosition) {
-        SymbolPositionTransfer symbolPositionTransfer = get(symbolPosition);
+        var symbolPositionTransfer = get(symbolPosition);
         
         if(symbolPositionTransfer == null) {
-            SymbolPositionDetail symbolPositionDetail = symbolPosition.getLastDetail();
-            String symbolPositionName = symbolPositionDetail.getSymbolPositionName();
-            Boolean isDefault = symbolPositionDetail.getIsDefault();
-            Integer sortOrder = symbolPositionDetail.getSortOrder();
-            String description = accountingControl.getBestSymbolPositionDescription(symbolPosition, getLanguage());
+            var symbolPositionDetail = symbolPosition.getLastDetail();
+            var symbolPositionName = symbolPositionDetail.getSymbolPositionName();
+            var isDefault = symbolPositionDetail.getIsDefault();
+            var sortOrder = symbolPositionDetail.getSortOrder();
+            var description = accountingControl.getBestSymbolPositionDescription(symbolPosition, getLanguage());
             
             symbolPositionTransfer = new SymbolPositionTransfer(symbolPositionName, isDefault, sortOrder, description);
             put(symbolPosition, symbolPositionTransfer);

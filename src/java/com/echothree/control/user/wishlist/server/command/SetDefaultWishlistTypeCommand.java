@@ -62,8 +62,8 @@ public class SetDefaultWishlistTypeCommand
     @Override
     protected BaseResult execute() {
         var wishlistControl = Session.getModelController(WishlistControl.class);
-        String wishlistTypeName = form.getWishlistTypeName();
-        WishlistTypeDetailValue wishlistTypeDetailValue = wishlistControl.getWishlistTypeDetailValueByNameForUpdate(wishlistTypeName);
+        var wishlistTypeName = form.getWishlistTypeName();
+        var wishlistTypeDetailValue = wishlistControl.getWishlistTypeDetailValueByNameForUpdate(wishlistTypeName);
         
         if(wishlistTypeDetailValue != null) {
             wishlistTypeDetailValue.setIsDefault(Boolean.TRUE);

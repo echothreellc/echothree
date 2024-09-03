@@ -69,20 +69,20 @@ public class DeleteContentSectionDescriptionCommand
     @Override
     protected BaseResult execute() {
         var contentControl = Session.getModelController(ContentControl.class);
-        String contentCollectionName = form.getContentCollectionName();
-        ContentCollection contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
+        var contentCollectionName = form.getContentCollectionName();
+        var contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
         
         if(contentCollection != null) {
-            String contentSectionName = form.getContentSectionName();
-            ContentSection contentSection = contentControl.getContentSectionByName(contentCollection, contentSectionName);
+            var contentSectionName = form.getContentSectionName();
+            var contentSection = contentControl.getContentSectionByName(contentCollection, contentSectionName);
             
             if(contentSection != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = form.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = form.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
                 
                 if(language != null) {
-                    ContentSectionDescription contentSectionDescription = contentControl.getContentSectionDescriptionForUpdate(contentSection, language);
+                    var contentSectionDescription = contentControl.getContentSectionDescriptionForUpdate(contentSection, language);
                     
                     if(contentSectionDescription != null) {
                         contentControl.deleteContentSectionDescription(contentSectionDescription, getPartyPK());

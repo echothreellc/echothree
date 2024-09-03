@@ -51,9 +51,9 @@ public class GetCurrencyChoicesCommand
     @Override
     protected BaseResult execute() {
         var coreControl = Session.getModelController(AccountingControl.class);
-        GetCurrencyChoicesResult result = AccountingResultFactory.getGetCurrencyChoicesResult();
-        String defaultCurrencyChoice = form.getDefaultCurrencyChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = AccountingResultFactory.getGetCurrencyChoicesResult();
+        var defaultCurrencyChoice = form.getDefaultCurrencyChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setCurrencyChoices(coreControl.getCurrencyChoices(defaultCurrencyChoice, getPreferredLanguage(), allowNullChoice));
         

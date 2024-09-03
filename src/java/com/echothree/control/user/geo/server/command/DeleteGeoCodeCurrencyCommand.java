@@ -67,16 +67,16 @@ public class DeleteGeoCodeCurrencyCommand
     @Override
     protected BaseResult execute() {
         var geoControl = Session.getModelController(GeoControl.class);
-        String geoCodeName = form.getGeoCodeName();
-        GeoCode geoCode = geoControl.getGeoCodeByName(geoCodeName);
+        var geoCodeName = form.getGeoCodeName();
+        var geoCode = geoControl.getGeoCodeByName(geoCodeName);
         
         if(geoCode != null) {
             var accountingControl = Session.getModelController(AccountingControl.class);
-            String currencyIsoName = form.getCurrencyIsoName();
-            Currency currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
+            var currencyIsoName = form.getCurrencyIsoName();
+            var currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
             
             if(currency != null) {
-                GeoCodeCurrency geoCodeCurrency = geoControl.getGeoCodeCurrencyForUpdate(geoCode, currency);
+                var geoCodeCurrency = geoControl.getGeoCodeCurrencyForUpdate(geoCode, currency);
                 
                 if(geoCodeCurrency != null) {
                     geoControl.deleteGeoCodeCurrency(geoCodeCurrency, getPartyPK());

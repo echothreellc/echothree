@@ -71,21 +71,21 @@ public class GetReturnTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
-        GetReturnTypeDescriptionResult result = ReturnPolicyResultFactory.getGetReturnTypeDescriptionResult();
-        String returnKindName = form.getReturnKindName();
-        ReturnKind returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
+        var result = ReturnPolicyResultFactory.getGetReturnTypeDescriptionResult();
+        var returnKindName = form.getReturnKindName();
+        var returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
 
         if(returnKind != null) {
-            String returnTypeName = form.getReturnTypeName();
-            ReturnType returnType = returnPolicyControl.getReturnTypeByName(returnKind, returnTypeName);
+            var returnTypeName = form.getReturnTypeName();
+            var returnType = returnPolicyControl.getReturnTypeByName(returnKind, returnTypeName);
 
             if(returnType != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = form.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = form.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                 if(language != null) {
-                    ReturnTypeDescription returnTypeDescription = returnPolicyControl.getReturnTypeDescription(returnType, language);
+                    var returnTypeDescription = returnPolicyControl.getReturnTypeDescription(returnType, language);
 
                     if(returnTypeDescription != null) {
                         result.setReturnTypeDescription(returnPolicyControl.getReturnTypeDescriptionTransfer(getUserVisit(), returnTypeDescription));

@@ -67,13 +67,13 @@ public class GetPartyTrainingClassStatusChoicesCommand
     @Override
     protected BaseResult execute() {
         var trainingControl = Session.getModelController(TrainingControl.class);
-        GetPartyTrainingClassStatusChoicesResult result = TrainingResultFactory.getGetPartyTrainingClassStatusChoicesResult();
-            String partyTrainingClassName = form.getPartyTrainingClassName();
-            PartyTrainingClass partyTrainingClass = trainingControl.getPartyTrainingClassByName(partyTrainingClassName);
+        var result = TrainingResultFactory.getGetPartyTrainingClassStatusChoicesResult();
+        var partyTrainingClassName = form.getPartyTrainingClassName();
+        var partyTrainingClass = trainingControl.getPartyTrainingClassByName(partyTrainingClassName);
 
             if(partyTrainingClass != null) {
-                String defaultPartyTrainingClassStatusChoice = form.getDefaultPartyTrainingClassStatusChoice();
-                boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+                var defaultPartyTrainingClassStatusChoice = form.getDefaultPartyTrainingClassStatusChoice();
+                var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 
                 result.setPartyTrainingClassStatusChoices(trainingControl.getPartyTrainingClassStatusChoices(defaultPartyTrainingClassStatusChoice,
                         getPreferredLanguage(), allowNullChoice, partyTrainingClass, getPartyPK()));

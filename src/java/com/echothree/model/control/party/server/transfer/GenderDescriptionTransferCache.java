@@ -32,11 +32,11 @@ public class GenderDescriptionTransferCache
     }
     
     public GenderDescriptionTransfer getGenderDescriptionTransfer(GenderDescription genderDescription) {
-        GenderDescriptionTransfer genderDescriptionTransfer = get(genderDescription);
+        var genderDescriptionTransfer = get(genderDescription);
         
         if(genderDescriptionTransfer == null) {
-            GenderTransfer genderTransfer = partyControl.getGenderTransfer(userVisit, genderDescription.getGender());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, genderDescription.getLanguage());
+            var genderTransfer = partyControl.getGenderTransfer(userVisit, genderDescription.getGender());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, genderDescription.getLanguage());
             
             genderDescriptionTransfer = new GenderDescriptionTransfer(languageTransfer, genderTransfer, genderDescription.getDescription());
             put(genderDescription, genderDescriptionTransfer);

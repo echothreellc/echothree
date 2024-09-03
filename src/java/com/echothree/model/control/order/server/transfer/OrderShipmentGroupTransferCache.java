@@ -45,18 +45,18 @@ public class OrderShipmentGroupTransferCache
     }
     
     public OrderShipmentGroupTransfer getOrderShipmentGroupTransfer(OrderShipmentGroup orderShipmentGroup) {
-        OrderShipmentGroupTransfer orderShipmentGroupTransfer = get(orderShipmentGroup);
+        var orderShipmentGroupTransfer = get(orderShipmentGroup);
         
         if(orderShipmentGroupTransfer == null) {
-            OrderShipmentGroupDetail orderShipmentGroupDetail = orderShipmentGroup.getLastDetail();
-            Integer orderShipmentGroupSequence = orderShipmentGroupDetail.getOrderShipmentGroupSequence();
-            ItemDeliveryTypeTransfer itemDeliveryTypeTransfer = itemControl.getItemDeliveryTypeTransfer(userVisit, orderShipmentGroupDetail.getItemDeliveryType());
-            Boolean isDefault = orderShipmentGroupDetail.getIsDefault();
-            PartyContactMechanism partyContactMechanism = orderShipmentGroupDetail.getPartyContactMechanism();
-            PartyContactMechanismTransfer partyContactMechanismTransfer = partyContactMechanism == null ? null : contactControl.getPartyContactMechanismTransfer(userVisit, partyContactMechanism);
-            ShippingMethod shippingMethod = orderShipmentGroupDetail.getShippingMethod();
-            ShippingMethodTransfer shippingMethodTransfer = shippingMethod == null ? null : shippingControl.getShippingMethodTransfer(userVisit, shippingMethod);
-            Boolean holdUntilComplete = orderShipmentGroupDetail.getHoldUntilComplete();
+            var orderShipmentGroupDetail = orderShipmentGroup.getLastDetail();
+            var orderShipmentGroupSequence = orderShipmentGroupDetail.getOrderShipmentGroupSequence();
+            var itemDeliveryTypeTransfer = itemControl.getItemDeliveryTypeTransfer(userVisit, orderShipmentGroupDetail.getItemDeliveryType());
+            var isDefault = orderShipmentGroupDetail.getIsDefault();
+            var partyContactMechanism = orderShipmentGroupDetail.getPartyContactMechanism();
+            var partyContactMechanismTransfer = partyContactMechanism == null ? null : contactControl.getPartyContactMechanismTransfer(userVisit, partyContactMechanism);
+            var shippingMethod = orderShipmentGroupDetail.getShippingMethod();
+            var shippingMethodTransfer = shippingMethod == null ? null : shippingControl.getShippingMethodTransfer(userVisit, shippingMethod);
+            var holdUntilComplete = orderShipmentGroupDetail.getHoldUntilComplete();
             
             orderShipmentGroupTransfer = new OrderShipmentGroupTransfer(orderShipmentGroupSequence, itemDeliveryTypeTransfer, isDefault,
                     partyContactMechanismTransfer, shippingMethodTransfer, holdUntilComplete);

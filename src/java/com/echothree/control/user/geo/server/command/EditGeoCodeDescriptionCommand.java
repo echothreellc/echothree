@@ -80,24 +80,24 @@ public class EditGeoCodeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var geoControl = Session.getModelController(GeoControl.class);
-        EditGeoCodeDescriptionResult result = GeoResultFactory.getEditGeoCodeDescriptionResult();
-        String geoCodeName = spec.getGeoCodeName();
-        GeoCode geoCode = geoControl.getGeoCodeByName(geoCodeName);
+        var result = GeoResultFactory.getEditGeoCodeDescriptionResult();
+        var geoCodeName = spec.getGeoCodeName();
+        var geoCode = geoControl.getGeoCodeByName(geoCodeName);
         
         if(geoCode != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK)) {
-                    GeoCodeDescription geoCodeDescription = geoControl.getGeoCodeDescription(geoCode, language);
+                    var geoCodeDescription = geoControl.getGeoCodeDescription(geoCode, language);
                     
                     if(geoCodeDescription != null) {
                         result.setGeoCodeDescription(geoControl.getGeoCodeDescriptionTransfer(getUserVisit(), geoCodeDescription));
                         
                         if(lockEntity(geoCode)) {
-                            GeoCodeDescriptionEdit edit = GeoEditFactory.getGeoCodeDescriptionEdit();
+                            var edit = GeoEditFactory.getGeoCodeDescriptionEdit();
                             
                             result.setEdit(edit);
                             edit.setDescription(geoCodeDescription.getDescription());
@@ -110,12 +110,12 @@ public class EditGeoCodeDescriptionCommand
                         addExecutionError(ExecutionErrors.UnknownGeoCodeDescription.name(), geoCodeName, languageIsoName);
                     }
                 } else if(editMode.equals(EditMode.UPDATE)) {
-                    GeoCodeDescriptionValue geoCodeDescriptionValue = geoControl.getGeoCodeDescriptionValueForUpdate(geoCode, language);
+                    var geoCodeDescriptionValue = geoControl.getGeoCodeDescriptionValueForUpdate(geoCode, language);
                     
                     if(geoCodeDescriptionValue != null) {
                         if(lockEntityForUpdate(geoCode)) {
                             try {
-                                String description = edit.getDescription();
+                                var description = edit.getDescription();
                                 
                                 geoCodeDescriptionValue.setDescription(description);
                                 

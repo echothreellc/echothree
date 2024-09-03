@@ -90,17 +90,17 @@ public class EditSearchTypeDescriptionCommand
     public SearchTypeDescription getEntity(EditSearchTypeDescriptionResult result) {
         var searchControl = Session.getModelController(SearchControl.class);
         SearchTypeDescription searchTypeDescription = null;
-        String searchKindName = spec.getSearchKindName();
-        SearchKind searchKind = searchControl.getSearchKindByName(searchKindName);
+        var searchKindName = spec.getSearchKindName();
+        var searchKind = searchControl.getSearchKindByName(searchKindName);
 
         if(searchKind != null) {
-            String searchTypeName = spec.getSearchTypeName();
-            SearchType searchType = searchControl.getSearchTypeByName(searchKind, searchTypeName);
+            var searchTypeName = spec.getSearchTypeName();
+            var searchType = searchControl.getSearchTypeByName(searchKind, searchTypeName);
 
             if(searchType != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = spec.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = spec.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                 if(language != null) {
                     if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -145,7 +145,7 @@ public class EditSearchTypeDescriptionCommand
     @Override
     public void doUpdate(SearchTypeDescription searchTypeDescription) {
         var searchControl = Session.getModelController(SearchControl.class);
-        SearchTypeDescriptionValue searchTypeDescriptionValue = searchControl.getSearchTypeDescriptionValue(searchTypeDescription);
+        var searchTypeDescriptionValue = searchControl.getSearchTypeDescriptionValue(searchTypeDescription);
 
         searchTypeDescriptionValue.setDescription(edit.getDescription());
 

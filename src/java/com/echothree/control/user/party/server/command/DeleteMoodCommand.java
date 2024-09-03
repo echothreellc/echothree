@@ -49,8 +49,8 @@ public class DeleteMoodCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        String moodName = form.getMoodName();
-        Mood mood = partyControl.getMoodByNameForUpdate(moodName);
+        var moodName = form.getMoodName();
+        var mood = partyControl.getMoodByNameForUpdate(moodName);
         
         if(mood != null) {
             partyControl.deleteMood(mood, getPartyPK());

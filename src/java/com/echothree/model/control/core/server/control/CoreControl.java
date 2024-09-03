@@ -656,8 +656,8 @@ public class CoreControl
     // --------------------------------------------------------------------------------
     
     public ComponentVendor createComponentVendor(String componentVendorName, String description, BasePK createdBy) {
-        ComponentVendor componentVendor = ComponentVendorFactory.getInstance().create();
-        ComponentVendorDetail componentVendorDetail = ComponentVendorDetailFactory.getInstance().create(componentVendor,
+        var componentVendor = ComponentVendorFactory.getInstance().create();
+        var componentVendorDetail = ComponentVendorDetailFactory.getInstance().create(componentVendor,
                 componentVendorName, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -710,8 +710,8 @@ public class CoreControl
                         "WHERE cvnd_activedetailid = cvndd_componentvendordetailid AND cvndd_componentvendorname = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ComponentVendorFactory.getInstance().prepareStatement(query);
+
+            var ps = ComponentVendorFactory.getInstance().prepareStatement(query);
             
             ps.setString(1, componentVendorName);
             
@@ -742,7 +742,7 @@ public class CoreControl
     private final Map<String, ComponentVendor> componentVendorCache = new HashMap<>();
     
     public ComponentVendor getComponentVendorByNameFromCache(String componentVendorName) {
-        ComponentVendor componentVendor = componentVendorCache.get(componentVendorName);
+        var componentVendor = componentVendorCache.get(componentVendorName);
         
         if(componentVendor == null) {
             componentVendor = getComponentVendorByName(componentVendorName);
@@ -756,7 +756,7 @@ public class CoreControl
     }
     
     public List<ComponentVendor> getComponentVendors() {
-        PreparedStatement ps = ComponentVendorFactory.getInstance().prepareStatement(
+        var ps = ComponentVendorFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
                 "FROM componentvendors, componentvendordetails " +
                 "WHERE cvnd_activedetailid = cvndd_componentvendordetailid " +
@@ -787,16 +787,16 @@ public class CoreControl
 
     public void updateComponentVendorFromValue(ComponentVendorDetailValue componentVendorDetailValue, BasePK updatedBy) {
         if(componentVendorDetailValue.hasBeenModified()) {
-            ComponentVendor componentVendor = ComponentVendorFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var componentVendor = ComponentVendorFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      componentVendorDetailValue.getComponentVendorPK());
-            ComponentVendorDetail componentVendorDetail = componentVendor.getActiveDetailForUpdate();
+            var componentVendorDetail = componentVendor.getActiveDetailForUpdate();
             
             componentVendorDetail.setThruTime(session.START_TIME_LONG);
             componentVendorDetail.store();
-            
-            ComponentVendorPK componentVendorPK = componentVendorDetail.getComponentVendorPK();
-            String componentVendorName = componentVendorDetailValue.getComponentVendorName();
-            String description = componentVendorDetailValue.getDescription();
+
+            var componentVendorPK = componentVendorDetail.getComponentVendorPK();
+            var componentVendorName = componentVendorDetailValue.getComponentVendorName();
+            var description = componentVendorDetailValue.getDescription();
             
             componentVendorDetail = ComponentVendorDetailFactory.getInstance().create(componentVendorPK,
                     componentVendorName, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -825,8 +825,8 @@ public class CoreControl
     
     public EntityType createEntityType(ComponentVendor componentVendor, String entityTypeName, Boolean keepAllHistory,
             Long lockTimeout, Boolean isExtensible, Integer sortOrder, BasePK createdBy) {
-        EntityType entityType = EntityTypeFactory.getInstance().create();
-        EntityTypeDetail entityTypeDetail = EntityTypeDetailFactory.getInstance().create(entityType, componentVendor,
+        var entityType = EntityTypeFactory.getInstance().create();
+        var entityTypeDetail = EntityTypeDetailFactory.getInstance().create(entityType, componentVendor,
                 entityTypeName, keepAllHistory, lockTimeout, isExtensible, sortOrder, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
@@ -889,8 +889,8 @@ public class CoreControl
                         "AND entdt_cvnd_componentvendorid = ? AND entdt_entitytypename = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = EntityTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = EntityTypeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, componentVendor.getPrimaryKey().getEntityId());
             ps.setString(2, entityTypeName);
@@ -922,9 +922,9 @@ public class CoreControl
     private final Map<ComponentVendor, Map<String, EntityType>> entityTypeCache = new HashMap<>();
     
     public EntityType getEntityTypeByNameFromCache(ComponentVendor componentVendor, String entityTypeName) {
-        Map<String, EntityType> cacheByComponentVendor = entityTypeCache.computeIfAbsent(componentVendor, k -> new HashMap<>());
+        var cacheByComponentVendor = entityTypeCache.computeIfAbsent(componentVendor, k -> new HashMap<>());
 
-        EntityType entityType = cacheByComponentVendor.get(entityTypeName);
+        var entityType = cacheByComponentVendor.get(entityTypeName);
         
         if(entityType == null) {
             entityType = getEntityTypeByName(componentVendor, entityTypeName);
@@ -958,7 +958,7 @@ public class CoreControl
                         + "FOR UPDATE";
             }
 
-            PreparedStatement ps = EntityTypeFactory.getInstance().prepareStatement(query);
+            var ps = EntityTypeFactory.getInstance().prepareStatement(query);
 
             ps.setLong(1, componentVendor.getPrimaryKey().getEntityId());
 
@@ -999,7 +999,7 @@ public class CoreControl
                         + "FOR UPDATE";
             }
 
-            PreparedStatement ps = EntityTypeFactory.getInstance().prepareStatement(query);
+            var ps = EntityTypeFactory.getInstance().prepareStatement(query);
 
             ps.setString(1, entityTypeName);
 
@@ -1020,7 +1020,7 @@ public class CoreControl
     }
 
     public List<EntityType> getEntityTypes() {
-        PreparedStatement ps = EntityTypeFactory.getInstance().prepareStatement(
+        var ps = EntityTypeFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ "
                 + "FROM entitytypes, entitytypedetails "
                 + "WHERE ent_activedetailid = entdt_entitytypedetailid "
@@ -1036,7 +1036,7 @@ public class CoreControl
     
     public List<EntityTypeTransfer> getEntityTypeTransfers(UserVisit userVisit, Collection<EntityType> entityTypes) {
         List<EntityTypeTransfer> entityTypeTransfers = new ArrayList<>(entityTypes.size());
-        EntityTypeTransferCache entityTypeTransferCache = getCoreTransferCaches(userVisit).getEntityTypeTransferCache();
+        var entityTypeTransferCache = getCoreTransferCaches(userVisit).getEntityTypeTransferCache();
         
         entityTypes.forEach((entityType) ->
                 entityTypeTransfers.add(entityTypeTransferCache.getEntityTypeTransfer(entityType))
@@ -1055,20 +1055,20 @@ public class CoreControl
     
     public void updateEntityTypeFromValue(EntityTypeDetailValue entityTypeDetailValue, BasePK updatedBy) {
         if(entityTypeDetailValue.hasBeenModified()) {
-            EntityType entityType = EntityTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var entityType = EntityTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      entityTypeDetailValue.getEntityTypePK());
-            EntityTypeDetail entityTypeDetail = entityType.getActiveDetailForUpdate();
+            var entityTypeDetail = entityType.getActiveDetailForUpdate();
             
             entityTypeDetail.setThruTime(session.START_TIME_LONG);
             entityTypeDetail.store();
-            
-            EntityTypePK entityTypePK = entityTypeDetail.getEntityTypePK();
-            ComponentVendorPK componentVendorPK = entityTypeDetail.getComponentVendorPK(); // Not updated
-            String entityTypeName = entityTypeDetailValue.getEntityTypeName();
-            Boolean keepAllHistory = entityTypeDetailValue.getKeepAllHistory();
-            Long lockTimeout = entityTypeDetailValue.getLockTimeout();
-            Boolean isExtensible = entityTypeDetailValue.getIsExtensible();
-            Integer sortOrder = entityTypeDetailValue.getSortOrder();
+
+            var entityTypePK = entityTypeDetail.getEntityTypePK();
+            var componentVendorPK = entityTypeDetail.getComponentVendorPK(); // Not updated
+            var entityTypeName = entityTypeDetailValue.getEntityTypeName();
+            var keepAllHistory = entityTypeDetailValue.getKeepAllHistory();
+            var lockTimeout = entityTypeDetailValue.getLockTimeout();
+            var isExtensible = entityTypeDetailValue.getIsExtensible();
+            var sortOrder = entityTypeDetailValue.getSortOrder();
             
             entityTypeDetail = EntityTypeDetailFactory.getInstance().create(entityTypePK, componentVendorPK, entityTypeName,
                     keepAllHistory, lockTimeout, isExtensible, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1103,8 +1103,8 @@ public class CoreControl
         ratingControl.deleteRatingTypesByEntityType(entityType, deletedBy);
         tagControl.deleteTagScopeEntityTypesByEntityType(entityType, deletedBy);
         workflowControl.deleteWorkflowEntityTypesByEntityType(entityType, deletedBy);
-        
-        EntityTypeDetail entityTypeDetail = entityType.getLastDetailForUpdate();
+
+        var entityTypeDetail = entityType.getLastDetailForUpdate();
         entityTypeDetail.setThruTime(session.START_TIME_LONG);
         entityType.setActiveDetail(null);
         entityType.store();
@@ -1126,7 +1126,7 @@ public class CoreControl
     
     public EntityTypeDescription createEntityTypeDescription(EntityType entityType, Language language, String description,
             BasePK createdBy) {
-        EntityTypeDescription entityTypeDescription = EntityTypeDescriptionFactory.getInstance().create(entityType,
+        var entityTypeDescription = EntityTypeDescriptionFactory.getInstance().create(entityType,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(entityType.getPrimaryKey(), EventTypes.MODIFY, entityTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1151,8 +1151,8 @@ public class CoreControl
                         "WHERE entd_ent_entitytypeid = ? AND entd_lang_languageid = ? AND entd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = EntityTypeDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = EntityTypeDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, entityType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -1200,8 +1200,8 @@ public class CoreControl
                         "WHERE entd_ent_entitytypeid = ? AND entd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = EntityTypeDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = EntityTypeDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, entityType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1224,7 +1224,7 @@ public class CoreControl
     
     public String getBestEntityTypeDescription(EntityType entityType, Language language) {
         String description;
-        EntityTypeDescription entityTypeDescription = getEntityTypeDescription(entityType, language);
+        var entityTypeDescription = getEntityTypeDescription(entityType, language);
         
         if(entityTypeDescription == null && !language.getIsDefault()) {
             entityTypeDescription = getEntityTypeDescription(entityType, getPartyControl().getDefaultLanguage());
@@ -1245,9 +1245,9 @@ public class CoreControl
     
     public List<EntityTypeDescriptionTransfer> getEntityTypeDescriptionTransfersByEntityType(UserVisit userVisit,
             EntityType entityType) {
-        List<EntityTypeDescription> entityTypeDescriptions = getEntityTypeDescriptionsByEntityType(entityType);
+        var entityTypeDescriptions = getEntityTypeDescriptionsByEntityType(entityType);
         List<EntityTypeDescriptionTransfer> entityTypeDescriptionTransfers = new ArrayList<>(entityTypeDescriptions.size());
-        EntityTypeDescriptionTransferCache entityTypeDescriptionTransferCache = getCoreTransferCaches(userVisit).getEntityTypeDescriptionTransferCache();
+        var entityTypeDescriptionTransferCache = getCoreTransferCaches(userVisit).getEntityTypeDescriptionTransferCache();
         
         entityTypeDescriptions.forEach((entityTypeDescription) ->
                 entityTypeDescriptionTransfers.add(entityTypeDescriptionTransferCache.getEntityTypeDescriptionTransfer(entityTypeDescription))
@@ -1258,15 +1258,15 @@ public class CoreControl
     
     public void updateEntityTypeDescriptionFromValue(EntityTypeDescriptionValue entityTypeDescriptionValue, BasePK updatedBy) {
         if(entityTypeDescriptionValue.hasBeenModified()) {
-            EntityTypeDescription entityTypeDescription = EntityTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var entityTypeDescription = EntityTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      entityTypeDescriptionValue.getPrimaryKey());
             
             entityTypeDescription.setThruTime(session.START_TIME_LONG);
             entityTypeDescription.store();
-            
-            EntityType entityType = entityTypeDescription.getEntityType();
-            Language language = entityTypeDescription.getLanguage();
-            String description = entityTypeDescriptionValue.getDescription();
+
+            var entityType = entityTypeDescription.getEntityType();
+            var language = entityTypeDescription.getLanguage();
+            var description = entityTypeDescriptionValue.getDescription();
             
             entityTypeDescription = EntityTypeDescriptionFactory.getInstance().create(entityType, language,
                     description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1282,7 +1282,7 @@ public class CoreControl
     }
     
     public void deleteEntityTypeDescriptionsByEntityType(EntityType entityType, BasePK deletedBy) {
-        List<EntityTypeDescription> entityTypeDescriptions = getEntityTypeDescriptionsByEntityTypeForUpdate(entityType);
+        var entityTypeDescriptions = getEntityTypeDescriptionsByEntityTypeForUpdate(entityType);
         
         entityTypeDescriptions.forEach((entityTypeDescription) -> 
                 deleteEntityTypeDescription(entityTypeDescription, deletedBy)
@@ -1294,8 +1294,8 @@ public class CoreControl
     // --------------------------------------------------------------------------------
     
     public Command createCommand(ComponentVendor componentVendor, String commandName, Integer sortOrder, BasePK createdBy) {
-        Command command = CommandFactory.getInstance().create();
-        CommandDetail commandDetail = CommandDetailFactory.getInstance().create(command, componentVendor,
+        var command = CommandFactory.getInstance().create();
+        var commandDetail = CommandDetailFactory.getInstance().create(command, componentVendor,
                 commandName, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -1327,8 +1327,8 @@ public class CoreControl
                         "AND cmddt_cvnd_componentvendorid = ? AND cmddt_commandname = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CommandFactory.getInstance().prepareStatement(query);
+
+            var ps = CommandFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, componentVendor.getPrimaryKey().getEntityId());
             ps.setString(2, commandName);
@@ -1376,8 +1376,8 @@ public class CoreControl
                         "AND cmddt_cvnd_componentvendorid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CommandFactory.getInstance().prepareStatement(query);
+
+            var ps = CommandFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, componentVendor.getPrimaryKey().getEntityId());
             
@@ -1398,7 +1398,7 @@ public class CoreControl
     }
     
     public List<Command> getCommands() {
-        PreparedStatement ps = CommandFactory.getInstance().prepareStatement(
+        var ps = CommandFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
                 "FROM commands, commanddetails " +
                 "WHERE cmd_activedetailid = cmddt_commanddetailid " +
@@ -1413,7 +1413,7 @@ public class CoreControl
     
     private List<CommandTransfer> getCommandTransfers(UserVisit userVisit, Collection<Command> commands) {
         List<CommandTransfer> commandTransfers = new ArrayList<>(commands.size());
-        CommandTransferCache commandTransferCache = getCoreTransferCaches(userVisit).getCommandTransferCache();
+        var commandTransferCache = getCoreTransferCaches(userVisit).getCommandTransferCache();
         
         commands.forEach((command) ->
                 commandTransfers.add(commandTransferCache.getCommandTransfer(command))
@@ -1432,17 +1432,17 @@ public class CoreControl
     
     public void updateCommandFromValue(CommandDetailValue commandDetailValue, BasePK updatedBy) {
         if(commandDetailValue.hasBeenModified()) {
-            Command command = CommandFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var command = CommandFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      commandDetailValue.getCommandPK());
-            CommandDetail commandDetail = command.getActiveDetailForUpdate();
+            var commandDetail = command.getActiveDetailForUpdate();
             
             commandDetail.setThruTime(session.START_TIME_LONG);
             commandDetail.store();
-            
-            CommandPK commandPK = commandDetail.getCommandPK();
-            ComponentVendorPK componentVendorPK = commandDetail.getComponentVendorPK(); // Not updated
-            String commandName = commandDetailValue.getCommandName();
-            Integer sortOrder = commandDetailValue.getSortOrder();
+
+            var commandPK = commandDetail.getCommandPK();
+            var componentVendorPK = commandDetail.getComponentVendorPK(); // Not updated
+            var commandName = commandDetailValue.getCommandName();
+            var sortOrder = commandDetailValue.getSortOrder();
             
             commandDetail = CommandDetailFactory.getInstance().create(commandPK, componentVendorPK, commandName,
                     sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1456,8 +1456,8 @@ public class CoreControl
     
     public void deleteCommand(Command command, BasePK deletedBy) {
         deleteCommandDescriptionsByCommand(command, deletedBy);
-        
-        CommandDetail commandDetail = command.getLastDetailForUpdate();
+
+        var commandDetail = command.getLastDetailForUpdate();
         commandDetail.setThruTime(session.START_TIME_LONG);
         command.setActiveDetail(null);
         command.store();
@@ -1466,7 +1466,7 @@ public class CoreControl
     }
     
     public void deleteCommandsByComponentVendor(ComponentVendor componentVendor, BasePK deletedBy) {
-        List<Command> commands = getCommandsByComponentVendorForUpdate(componentVendor);
+        var commands = getCommandsByComponentVendorForUpdate(componentVendor);
         
         commands.forEach((command) -> 
                 deleteCommand(command, deletedBy)
@@ -1479,7 +1479,7 @@ public class CoreControl
     
     public CommandDescription createCommandDescription(Command command, Language language, String description,
             BasePK createdBy) {
-        CommandDescription commandDescription = CommandDescriptionFactory.getInstance().create(command,
+        var commandDescription = CommandDescriptionFactory.getInstance().create(command,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(command.getPrimaryKey(), EventTypes.MODIFY, commandDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1504,8 +1504,8 @@ public class CoreControl
                         "WHERE cmdd_cmd_commandid = ? AND cmdd_lang_languageid = ? AND cmdd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CommandDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = CommandDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, command.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -1553,8 +1553,8 @@ public class CoreControl
                         "WHERE cmdd_cmd_commandid = ? AND cmdd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CommandDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = CommandDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, command.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1577,7 +1577,7 @@ public class CoreControl
     
     public String getBestCommandDescription(Command command, Language language) {
         String description;
-        CommandDescription commandDescription = getCommandDescription(command, language);
+        var commandDescription = getCommandDescription(command, language);
         
         if(commandDescription == null && !language.getIsDefault()) {
             commandDescription = getCommandDescription(command, getPartyControl().getDefaultLanguage());
@@ -1598,9 +1598,9 @@ public class CoreControl
     
     public List<CommandDescriptionTransfer> getCommandDescriptionTransfersByCommand(UserVisit userVisit,
             Command command) {
-        List<CommandDescription> commandDescriptions = getCommandDescriptionsByCommand(command);
+        var commandDescriptions = getCommandDescriptionsByCommand(command);
         List<CommandDescriptionTransfer> commandDescriptionTransfers = new ArrayList<>(commandDescriptions.size());
-        CommandDescriptionTransferCache commandDescriptionTransferCache = getCoreTransferCaches(userVisit).getCommandDescriptionTransferCache();
+        var commandDescriptionTransferCache = getCoreTransferCaches(userVisit).getCommandDescriptionTransferCache();
         
         commandDescriptions.forEach((commandDescription) ->
                 commandDescriptionTransfers.add(commandDescriptionTransferCache.getCommandDescriptionTransfer(commandDescription))
@@ -1611,15 +1611,15 @@ public class CoreControl
     
     public void updateCommandDescriptionFromValue(CommandDescriptionValue commandDescriptionValue, BasePK updatedBy) {
         if(commandDescriptionValue.hasBeenModified()) {
-            CommandDescription commandDescription = CommandDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var commandDescription = CommandDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      commandDescriptionValue.getPrimaryKey());
             
             commandDescription.setThruTime(session.START_TIME_LONG);
             commandDescription.store();
-            
-            Command command = commandDescription.getCommand();
-            Language language = commandDescription.getLanguage();
-            String description = commandDescriptionValue.getDescription();
+
+            var command = commandDescription.getCommand();
+            var language = commandDescription.getLanguage();
+            var description = commandDescriptionValue.getDescription();
             
             commandDescription = CommandDescriptionFactory.getInstance().create(command, language,
                     description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1635,7 +1635,7 @@ public class CoreControl
     }
     
     public void deleteCommandDescriptionsByCommand(Command command, BasePK deletedBy) {
-        List<CommandDescription> commandDescriptions = getCommandDescriptionsByCommandForUpdate(command);
+        var commandDescriptions = getCommandDescriptionsByCommandForUpdate(command);
         
         commandDescriptions.forEach((commandDescription) -> 
                 deleteCommandDescription(commandDescription, deletedBy)
@@ -1647,20 +1647,20 @@ public class CoreControl
     // --------------------------------------------------------------------------------
     
     public CommandMessageType createCommandMessageType(String commandMessageTypeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        CommandMessageType defaultCommandMessageType = getDefaultCommandMessageType();
-        boolean defaultFound = defaultCommandMessageType != null;
+        var defaultCommandMessageType = getDefaultCommandMessageType();
+        var defaultFound = defaultCommandMessageType != null;
         
         if(defaultFound && isDefault) {
-            CommandMessageTypeDetailValue defaultCommandMessageTypeDetailValue = getDefaultCommandMessageTypeDetailValueForUpdate();
+            var defaultCommandMessageTypeDetailValue = getDefaultCommandMessageTypeDetailValueForUpdate();
             
             defaultCommandMessageTypeDetailValue.setIsDefault(Boolean.FALSE);
             updateCommandMessageTypeFromValue(defaultCommandMessageTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        CommandMessageType commandMessageType = CommandMessageTypeFactory.getInstance().create();
-        CommandMessageTypeDetail commandMessageTypeDetail = CommandMessageTypeDetailFactory.getInstance().create(commandMessageType,
+
+        var commandMessageType = CommandMessageTypeFactory.getInstance().create();
+        var commandMessageTypeDetail = CommandMessageTypeDetailFactory.getInstance().create(commandMessageType,
                 commandMessageTypeName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -1689,8 +1689,8 @@ public class CoreControl
                     "WHERE cmdmssgty_activedetailid = cmdmssgtydt_commandmessagetypedetailid " +
                     "FOR UPDATE";
         }
-        
-        PreparedStatement ps = CommandMessageTypeFactory.getInstance().prepareStatement(query);
+
+        var ps = CommandMessageTypeFactory.getInstance().prepareStatement(query);
         
         return CommandMessageTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
     }
@@ -1716,8 +1716,8 @@ public class CoreControl
                     "WHERE cmdmssgty_activedetailid = cmdmssgtydt_commandmessagetypedetailid AND cmdmssgtydt_isdefault = 1 " +
                     "FOR UPDATE";
         }
-        
-        PreparedStatement ps = CommandMessageTypeFactory.getInstance().prepareStatement(query);
+
+        var ps = CommandMessageTypeFactory.getInstance().prepareStatement(query);
         
         return CommandMessageTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
     }
@@ -1750,8 +1750,8 @@ public class CoreControl
                         "WHERE cmdmssgty_activedetailid = cmdmssgtydt_commandmessagetypedetailid AND cmdmssgtydt_commandmessagetypename = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CommandMessageTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = CommandMessageTypeFactory.getInstance().prepareStatement(query);
             
             ps.setString(1, commandMessageTypeName);
             
@@ -1781,7 +1781,7 @@ public class CoreControl
     
     public CommandMessageTypeChoicesBean getCommandMessageTypeChoices(String defaultCommandMessageTypeChoice, Language language,
             boolean allowNullChoice) {
-        List<CommandMessageType> commandMessageTypes = getCommandMessageTypes();
+        var commandMessageTypes = getCommandMessageTypes();
         var size = commandMessageTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -1797,7 +1797,7 @@ public class CoreControl
         }
         
         for(var commandMessageType : commandMessageTypes) {
-            CommandMessageTypeDetail commandMessageTypeDetail = commandMessageType.getLastDetail();
+            var commandMessageTypeDetail = commandMessageType.getLastDetail();
             var label = getBestCommandMessageTypeDescription(commandMessageType, language);
             var value = commandMessageTypeDetail.getCommandMessageTypeName();
             
@@ -1818,9 +1818,9 @@ public class CoreControl
     }
     
     public List<CommandMessageTypeTransfer> getCommandMessageTypeTransfers(UserVisit userVisit) {
-        List<CommandMessageType> commandMessageTypes = getCommandMessageTypes();
+        var commandMessageTypes = getCommandMessageTypes();
         List<CommandMessageTypeTransfer> commandMessageTypeTransfers = new ArrayList<>(commandMessageTypes.size());
-        CommandMessageTypeTransferCache commandMessageTypeTransferCache = getCoreTransferCaches(userVisit).getCommandMessageTypeTransferCache();
+        var commandMessageTypeTransferCache = getCoreTransferCaches(userVisit).getCommandMessageTypeTransferCache();
         
         commandMessageTypes.forEach((commandMessageType) ->
                 commandMessageTypeTransfers.add(commandMessageTypeTransferCache.getCommandMessageTypeTransfer(commandMessageType))
@@ -1832,25 +1832,25 @@ public class CoreControl
     private void updateCommandMessageTypeFromValue(CommandMessageTypeDetailValue commandMessageTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(commandMessageTypeDetailValue.hasBeenModified()) {
-            CommandMessageType commandMessageType = CommandMessageTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var commandMessageType = CommandMessageTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      commandMessageTypeDetailValue.getCommandMessageTypePK());
-            CommandMessageTypeDetail commandMessageTypeDetail = commandMessageType.getActiveDetailForUpdate();
+            var commandMessageTypeDetail = commandMessageType.getActiveDetailForUpdate();
             
             commandMessageTypeDetail.setThruTime(session.START_TIME_LONG);
             commandMessageTypeDetail.store();
-            
-            CommandMessageTypePK commandMessageTypePK = commandMessageTypeDetail.getCommandMessageTypePK();
-            String commandMessageTypeName = commandMessageTypeDetailValue.getCommandMessageTypeName();
-            Boolean isDefault = commandMessageTypeDetailValue.getIsDefault();
-            Integer sortOrder = commandMessageTypeDetailValue.getSortOrder();
+
+            var commandMessageTypePK = commandMessageTypeDetail.getCommandMessageTypePK();
+            var commandMessageTypeName = commandMessageTypeDetailValue.getCommandMessageTypeName();
+            var isDefault = commandMessageTypeDetailValue.getIsDefault();
+            var sortOrder = commandMessageTypeDetailValue.getSortOrder();
             
             if(checkDefault) {
-                CommandMessageType defaultCommandMessageType = getDefaultCommandMessageType();
-                boolean defaultFound = defaultCommandMessageType != null && !defaultCommandMessageType.equals(commandMessageType);
+                var defaultCommandMessageType = getDefaultCommandMessageType();
+                var defaultFound = defaultCommandMessageType != null && !defaultCommandMessageType.equals(commandMessageType);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    CommandMessageTypeDetailValue defaultCommandMessageTypeDetailValue = getDefaultCommandMessageTypeDetailValueForUpdate();
+                    var defaultCommandMessageTypeDetailValue = getDefaultCommandMessageTypeDetailValueForUpdate();
                     
                     defaultCommandMessageTypeDetailValue.setIsDefault(Boolean.FALSE);
                     updateCommandMessageTypeFromValue(defaultCommandMessageTypeDetailValue, false, updatedBy);
@@ -1877,23 +1877,23 @@ public class CoreControl
     public void deleteCommandMessageType(CommandMessageType commandMessageType, BasePK deletedBy) {
         deleteCommandMessagesByCommandMessageType(commandMessageType, deletedBy);
         deleteCommandMessageTypeDescriptionsByCommandMessageType(commandMessageType, deletedBy);
-        
-        CommandMessageTypeDetail commandMessageTypeDetail = commandMessageType.getLastDetailForUpdate();
+
+        var commandMessageTypeDetail = commandMessageType.getLastDetailForUpdate();
         commandMessageTypeDetail.setThruTime(session.START_TIME_LONG);
         commandMessageType.setActiveDetail(null);
         commandMessageType.store();
         
         // Check for default, and pick one if necessary
-        CommandMessageType defaultCommandMessageType = getDefaultCommandMessageType();
+        var defaultCommandMessageType = getDefaultCommandMessageType();
         if(defaultCommandMessageType == null) {
-            List<CommandMessageType> commandMessageTypes = getCommandMessageTypesForUpdate();
+            var commandMessageTypes = getCommandMessageTypesForUpdate();
             
             if(!commandMessageTypes.isEmpty()) {
-                Iterator<CommandMessageType> iter = commandMessageTypes.iterator();
+                var iter = commandMessageTypes.iterator();
                 if(iter.hasNext()) {
                     defaultCommandMessageType = iter.next();
                 }
-                CommandMessageTypeDetailValue commandMessageTypeDetailValue = Objects.requireNonNull(defaultCommandMessageType).getLastDetailForUpdate().getCommandMessageTypeDetailValue().clone();
+                var commandMessageTypeDetailValue = Objects.requireNonNull(defaultCommandMessageType).getLastDetailForUpdate().getCommandMessageTypeDetailValue().clone();
                 
                 commandMessageTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateCommandMessageTypeFromValue(commandMessageTypeDetailValue, false, deletedBy);
@@ -1909,7 +1909,7 @@ public class CoreControl
     
     public CommandMessageTypeDescription createCommandMessageTypeDescription(CommandMessageType commandMessageType,
             Language language, String description, BasePK createdBy) {
-        CommandMessageTypeDescription commandMessageTypeDescription = CommandMessageTypeDescriptionFactory.getInstance().create(commandMessageType,
+        var commandMessageTypeDescription = CommandMessageTypeDescriptionFactory.getInstance().create(commandMessageType,
                 language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
@@ -1936,8 +1936,8 @@ public class CoreControl
                         "WHERE cmdmssgtyd_cmdmssgty_commandmessagetypeid = ? AND cmdmssgtyd_lang_languageid = ? AND cmdmssgtyd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CommandMessageTypeDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = CommandMessageTypeDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, commandMessageType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -1985,8 +1985,8 @@ public class CoreControl
                         "WHERE cmdmssgtyd_cmdmssgty_commandmessagetypeid = ? AND cmdmssgtyd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CommandMessageTypeDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = CommandMessageTypeDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, commandMessageType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -2009,7 +2009,7 @@ public class CoreControl
     
     public String getBestCommandMessageTypeDescription(CommandMessageType commandMessageType, Language language) {
         String description;
-        CommandMessageTypeDescription commandMessageTypeDescription = getCommandMessageTypeDescription(commandMessageType, language);
+        var commandMessageTypeDescription = getCommandMessageTypeDescription(commandMessageType, language);
         
         if(commandMessageTypeDescription == null && !language.getIsDefault()) {
             commandMessageTypeDescription = getCommandMessageTypeDescription(commandMessageType, getPartyControl().getDefaultLanguage());
@@ -2029,9 +2029,9 @@ public class CoreControl
     }
     
     public List<CommandMessageTypeDescriptionTransfer> getCommandMessageTypeDescriptionTransfers(UserVisit userVisit, CommandMessageType commandMessageType) {
-        List<CommandMessageTypeDescription> commandMessageTypeDescriptions = getCommandMessageTypeDescriptionsByCommandMessageType(commandMessageType);
+        var commandMessageTypeDescriptions = getCommandMessageTypeDescriptionsByCommandMessageType(commandMessageType);
         List<CommandMessageTypeDescriptionTransfer> commandMessageTypeDescriptionTransfers = new ArrayList<>(commandMessageTypeDescriptions.size());
-        CommandMessageTypeDescriptionTransferCache commandMessageTypeDescriptionTransferCache = getCoreTransferCaches(userVisit).getCommandMessageTypeDescriptionTransferCache();
+        var commandMessageTypeDescriptionTransferCache = getCoreTransferCaches(userVisit).getCommandMessageTypeDescriptionTransferCache();
     
         commandMessageTypeDescriptions.forEach((commandMessageTypeDescription) ->
                 commandMessageTypeDescriptionTransfers.add(commandMessageTypeDescriptionTransferCache.getCommandMessageTypeDescriptionTransfer(commandMessageTypeDescription))
@@ -2042,15 +2042,15 @@ public class CoreControl
     
     public void updateCommandMessageTypeDescriptionFromValue(CommandMessageTypeDescriptionValue commandMessageTypeDescriptionValue, BasePK updatedBy) {
         if(commandMessageTypeDescriptionValue.hasBeenModified()) {
-            CommandMessageTypeDescription commandMessageTypeDescription = CommandMessageTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var commandMessageTypeDescription = CommandMessageTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      commandMessageTypeDescriptionValue.getPrimaryKey());
             
             commandMessageTypeDescription.setThruTime(session.START_TIME_LONG);
             commandMessageTypeDescription.store();
-            
-            CommandMessageType commandMessageType = commandMessageTypeDescription.getCommandMessageType();
-            Language language = commandMessageTypeDescription.getLanguage();
-            String description = commandMessageTypeDescriptionValue.getDescription();
+
+            var commandMessageType = commandMessageTypeDescription.getCommandMessageType();
+            var language = commandMessageTypeDescription.getLanguage();
+            var description = commandMessageTypeDescriptionValue.getDescription();
             
             commandMessageTypeDescription = CommandMessageTypeDescriptionFactory.getInstance().create(commandMessageType, language,
                     description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -2068,7 +2068,7 @@ public class CoreControl
     }
     
     public void deleteCommandMessageTypeDescriptionsByCommandMessageType(CommandMessageType commandMessageType, BasePK deletedBy) {
-        List<CommandMessageTypeDescription> commandMessageTypeDescriptions = getCommandMessageTypeDescriptionsByCommandMessageTypeForUpdate(commandMessageType);
+        var commandMessageTypeDescriptions = getCommandMessageTypeDescriptionsByCommandMessageTypeForUpdate(commandMessageType);
         
         commandMessageTypeDescriptions.forEach((commandMessageTypeDescription) -> 
                 deleteCommandMessageTypeDescription(commandMessageTypeDescription, deletedBy)
@@ -2080,8 +2080,8 @@ public class CoreControl
     // --------------------------------------------------------------------------------
     
     public CommandMessage createCommandMessage(CommandMessageType commandMessageType, String commandMessageKey, BasePK createdBy) {
-        CommandMessage commandMessage = CommandMessageFactory.getInstance().create();
-        CommandMessageDetail commandMessageDetail = CommandMessageDetailFactory.getInstance().create(commandMessage,
+        var commandMessage = CommandMessageFactory.getInstance().create();
+        var commandMessageDetail = CommandMessageDetailFactory.getInstance().create(commandMessage,
                 commandMessageType, commandMessageKey, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -2114,8 +2114,8 @@ public class CoreControl
                         "AND cmdmssgdt_cmdmssgty_commandmessagetypeid = ? AND cmdmssgdt_commandmessagekey = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CommandMessageFactory.getInstance().prepareStatement(query);
+
+            var ps = CommandMessageFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, commandMessageType.getPrimaryKey().getEntityId());
             ps.setString(2, commandMessageKey);
@@ -2163,8 +2163,8 @@ public class CoreControl
                         "AND cmdmssgdt_cmdmssgty_commandmessagetypeid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CommandMessageFactory.getInstance().prepareStatement(query);
+
+            var ps = CommandMessageFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, commandMessageType.getPrimaryKey().getEntityId());
             
@@ -2190,7 +2190,7 @@ public class CoreControl
     
     private List<CommandMessageTransfer> getCommandMessageTransfers(UserVisit userVisit, Collection<CommandMessage> commandMessages) {
         List<CommandMessageTransfer> commandMessageTransfers = new ArrayList<>(commandMessages.size());
-        CommandMessageTransferCache commandMessageTransferCache = getCoreTransferCaches(userVisit).getCommandMessageTransferCache();
+        var commandMessageTransferCache = getCoreTransferCaches(userVisit).getCommandMessageTransferCache();
         
         commandMessages.forEach((commandMessage) ->
                 commandMessageTransfers.add(commandMessageTransferCache.getCommandMessageTransfer(commandMessage))
@@ -2205,16 +2205,16 @@ public class CoreControl
     
     public void updateCommandMessageFromValue(CommandMessageDetailValue commandMessageDetailValue, BasePK updatedBy) {
         if(commandMessageDetailValue.hasBeenModified()) {
-            CommandMessage commandMessage = CommandMessageFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var commandMessage = CommandMessageFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      commandMessageDetailValue.getCommandMessagePK());
-            CommandMessageDetail commandMessageDetail = commandMessage.getActiveDetailForUpdate();
+            var commandMessageDetail = commandMessage.getActiveDetailForUpdate();
             
             commandMessageDetail.setThruTime(session.START_TIME_LONG);
             commandMessageDetail.store();
-            
-            CommandMessagePK commandMessagePK = commandMessageDetail.getCommandMessagePK();
-            CommandMessageTypePK commandMessageTypePK = commandMessageDetail.getCommandMessageTypePK(); // Not updated
-            String commandMessageKey = commandMessageDetailValue.getCommandMessageKey();
+
+            var commandMessagePK = commandMessageDetail.getCommandMessagePK();
+            var commandMessageTypePK = commandMessageDetail.getCommandMessageTypePK(); // Not updated
+            var commandMessageKey = commandMessageDetailValue.getCommandMessageKey();
             
             commandMessageDetail = CommandMessageDetailFactory.getInstance().create(commandMessagePK, commandMessageTypePK, commandMessageKey,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -2228,8 +2228,8 @@ public class CoreControl
     
     public void deleteCommandMessage(CommandMessage commandMessage, BasePK deletedBy) {
         deleteCommandMessageTranslationsByCommandMessage(commandMessage, deletedBy);
-        
-        CommandMessageDetail commandMessageDetail = commandMessage.getLastDetailForUpdate();
+
+        var commandMessageDetail = commandMessage.getLastDetailForUpdate();
         commandMessageDetail.setThruTime(session.START_TIME_LONG);
         commandMessage.setActiveDetail(null);
         commandMessage.store();
@@ -2252,7 +2252,7 @@ public class CoreControl
     // --------------------------------------------------------------------------------
     
     public CommandMessageTranslation createCommandMessageTranslation(CommandMessage commandMessage, Language language, String translation, BasePK createdBy) {
-        CommandMessageTranslation commandMessageTranslation = CommandMessageTranslationFactory.getInstance().create(commandMessage, language, translation,
+        var commandMessageTranslation = CommandMessageTranslationFactory.getInstance().create(commandMessage, language, translation,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(commandMessageTranslation.getCommandMessagePK(), EventTypes.MODIFY, commandMessageTranslation.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2278,8 +2278,8 @@ public class CoreControl
                         "WHERE cmdmssgtr_cmdmssg_commandMessageid = ? AND cmdmssgtr_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CommandMessageTranslationFactory.getInstance().prepareStatement(query);
+
+            var ps = CommandMessageTranslationFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, commandMessage.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -2301,7 +2301,7 @@ public class CoreControl
     }
     
     public CommandMessageTranslation getBestCommandMessageTranslation(CommandMessage commandMessage, Language language) {
-        CommandMessageTranslation commandMessageTranslation = getCommandMessageTranslation(commandMessage, language);
+        var commandMessageTranslation = getCommandMessageTranslation(commandMessage, language);
         
         if(commandMessageTranslation == null && !language.getIsDefault()) {
             commandMessageTranslation = getCommandMessageTranslation(commandMessage, getPartyControl().getDefaultLanguage());
@@ -2326,8 +2326,8 @@ public class CoreControl
                         "WHERE cmdmssgtr_cmdmssg_commandmessageid = ? AND cmdmssgtr_lang_languageid = ? AND cmdmssgtr_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CommandMessageTranslationFactory.getInstance().prepareStatement(query);
+
+            var ps = CommandMessageTranslationFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, commandMessage.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -2354,14 +2354,14 @@ public class CoreControl
     }
     
     public CommandMessageTranslationValue getCommandMessageTranslationValueForUpdate(CommandMessage commandMessage, Language language) {
-        CommandMessageTranslation commandMessageTranslation = getCommandMessageTranslationForUpdate(commandMessage, language);
+        var commandMessageTranslation = getCommandMessageTranslationForUpdate(commandMessage, language);
         
         return commandMessageTranslation == null? null: getCommandMessageTranslationValue(commandMessageTranslation);
     }
     
     public List<CommandMessageTranslationTransfer> getCommandMessageTranslationTransfers(UserVisit userVisit, Collection<CommandMessageTranslation> commandMessageTranslations) {
         List<CommandMessageTranslationTransfer> commandMessageTranslationTransfers = new ArrayList<>(commandMessageTranslations.size());
-        CommandMessageTranslationTransferCache commandMessageTranslationTransferCache = getCoreTransferCaches(userVisit).getCommandMessageTranslationTransferCache();
+        var commandMessageTranslationTransferCache = getCoreTransferCaches(userVisit).getCommandMessageTranslationTransferCache();
         
         commandMessageTranslations.forEach((commandMessageTranslation) ->
                 commandMessageTranslationTransfers.add(commandMessageTranslationTransferCache.getCommandMessageTranslationTransfer(commandMessageTranslation))
@@ -2380,15 +2380,15 @@ public class CoreControl
 
     public void updateCommandMessageTranslationFromValue(CommandMessageTranslationValue commandMessageTranslationValue, BasePK updatedBy) {
         if(commandMessageTranslationValue.hasBeenModified()) {
-            CommandMessageTranslation commandMessageTranslation = CommandMessageTranslationFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var commandMessageTranslation = CommandMessageTranslationFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     commandMessageTranslationValue.getPrimaryKey());
             
             commandMessageTranslation.setThruTime(session.START_TIME_LONG);
             commandMessageTranslation.store();
-            
-            CommandMessagePK commandMessagePK = commandMessageTranslation.getCommandMessagePK(); // Not updated
-            LanguagePK languagePK = commandMessageTranslation.getLanguagePK(); // Not updated
-            String translation = commandMessageTranslationValue.getTranslation();
+
+            var commandMessagePK = commandMessageTranslation.getCommandMessagePK(); // Not updated
+            var languagePK = commandMessageTranslation.getLanguagePK(); // Not updated
+            var translation = commandMessageTranslationValue.getTranslation();
             
             commandMessageTranslation = CommandMessageTranslationFactory.getInstance().create(commandMessagePK, languagePK, translation, session.START_TIME_LONG,
                     Session.MAX_TIME_LONG);
@@ -2422,8 +2422,8 @@ public class CoreControl
     }
     
     public boolean verifyEntityInstance(final EntityInstance entityInstance, final String componentVendorName, final String entityTypeName) {
-        boolean result = true;
-        EntityTypeDetail entityTypeDetail = entityInstance.getEntityType().getLastDetail();
+        var result = true;
+        var entityTypeDetail = entityInstance.getEntityType().getLastDetail();
         
         if(entityTypeDetail.getEntityTypeName().equals(entityTypeName)) {
             if(!entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName().equals(componentVendorName)) {
@@ -2454,7 +2454,7 @@ public class CoreControl
         List<EntityInstance> entityInstances;
         
         try {
-            PreparedStatement ps = EntityInstanceFactory.getInstance().prepareStatement(
+            var ps = EntityInstanceFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM entityinstances " +
                     "WHERE eni_ent_entitytypeid = ? " +
@@ -2487,8 +2487,8 @@ public class CoreControl
                         "WHERE eni_ent_entitytypeid = ? AND eni_entityuniqueid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = EntityInstanceFactory.getInstance().prepareStatement(query);
+
+            var ps = EntityInstanceFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, entityType.getPrimaryKey().getEntityId());
             ps.setLong(2, entityUniqueId);
@@ -2526,8 +2526,8 @@ public class CoreControl
                         "WHERE eni_key = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = EntityInstanceFactory.getInstance().prepareStatement(query);
+
+            var ps = EntityInstanceFactory.getInstance().prepareStatement(query);
             
             ps.setString(1, key);
             
@@ -2587,8 +2587,8 @@ public class CoreControl
                         "WHERE eni_guid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = EntityInstanceFactory.getInstance().prepareStatement(query);
+
+            var ps = EntityInstanceFactory.getInstance().prepareStatement(query);
             
             ps.setString(1, guid);
             
@@ -2648,8 +2648,8 @@ public class CoreControl
                         "WHERE eni_ulid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = EntityInstanceFactory.getInstance().prepareStatement(query);
+
+            var ps = EntityInstanceFactory.getInstance().prepareStatement(query);
             
             ps.setString(1, ulid);
             
@@ -2745,23 +2745,23 @@ public class CoreControl
         }
         
         if(pk != null) {
-            String componentVendorName = pk.getComponentVendorName();
-            ComponentVendor componentVendor = getComponentVendorByNameFromCache(componentVendorName);
+            var componentVendorName = pk.getComponentVendorName();
+            var componentVendor = getComponentVendorByNameFromCache(componentVendorName);
             
             if(CoreDebugFlags.LogEntityInstanceResolution) {
                 getLog().info("--- componentVendor = " + componentVendor);
             }
             
             if(componentVendor != null) {
-                String entityTypeName = pk.getEntityTypeName();
-                EntityType entityType = getEntityTypeByNameFromCache(componentVendor, entityTypeName);
+                var entityTypeName = pk.getEntityTypeName();
+                var entityType = getEntityTypeByNameFromCache(componentVendor, entityTypeName);
                 
                 if(CoreDebugFlags.LogEntityInstanceResolution) {
                     getLog().info("--- entityType = " + entityType);
                 }
                 
                 if(entityType != null) {
-                    Long entityUniqueId = pk.getEntityId();
+                    var entityUniqueId = pk.getEntityId();
                     
                     if(CoreDebugFlags.LogEntityInstanceResolution) {
                         getLog().info("--- entityUniqueId = " + entityUniqueId);
@@ -2814,18 +2814,18 @@ public class CoreControl
         EntityInstance entityInstance = null;
         
         if(entityRef != null) {
-            String[] entityRefParts = Splitter.on('.').trimResults().omitEmptyStrings().splitToList(entityRef).toArray(new String[0]);
+            var entityRefParts = Splitter.on('.').trimResults().omitEmptyStrings().splitToList(entityRef).toArray(new String[0]);
             
             if(entityRefParts.length == 3) {
-                String componentVendorName = entityRefParts[0];
-                ComponentVendor componentVendor = getComponentVendorByNameFromCache(componentVendorName);
+                var componentVendorName = entityRefParts[0];
+                var componentVendor = getComponentVendorByNameFromCache(componentVendorName);
                 
                 if(componentVendor != null) {
-                    String entityTypeName = entityRefParts[1];
-                    EntityType entityType = getEntityTypeByNameFromCache(componentVendor, entityTypeName);
+                    var entityTypeName = entityRefParts[1];
+                    var entityType = getEntityTypeByNameFromCache(componentVendor, entityTypeName);
                     
                     if(entityType != null) {
-                        Long entityUniqueId = Long.valueOf(entityRefParts[2]);
+                        var entityUniqueId = Long.valueOf(entityRefParts[2]);
                         
                         entityInstance = getEntityInstance(entityType, entityUniqueId, entityPermission);
                         
@@ -2864,8 +2864,8 @@ public class CoreControl
      * entities scattered through several components that depend on them.
      */
     public void deleteEntityInstanceDependencies(EntityInstance entityInstance, BasePK deletedBy) {
-        ChainControl chainControl = Session.getModelController(ChainControl.class);
-        SearchControl searchControl = Session.getModelController(SearchControl.class);
+        var chainControl = Session.getModelController(ChainControl.class);
+        var searchControl = Session.getModelController(SearchControl.class);
         var securityControl = Session.getModelController(SecurityControl.class);
 
         Session.getModelController(AccountingControl.class).deleteTransactionEntityRolesByEntityInstance(entityInstance, deletedBy);
@@ -2924,7 +2924,7 @@ public class CoreControl
     // --------------------------------------------------------------------------------
     
     public EventType createEventType(String eventTypeName) {
-        EventType eventType = EventTypeFactory.getInstance().create(eventTypeName);
+        var eventType = EventTypeFactory.getInstance().create(eventTypeName);
         
         return eventType;
     }
@@ -2933,7 +2933,7 @@ public class CoreControl
         EventType eventType;
         
         try {
-            PreparedStatement ps = EventTypeFactory.getInstance().prepareStatement(
+            var ps = EventTypeFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM eventtypes " +
                     "WHERE evty_eventtypename = ?");
@@ -2951,7 +2951,7 @@ public class CoreControl
     private final Map<EventTypes, EventType> eventTypeCache = new HashMap<>();
 
     public EventType getEventTypeByEventTypesFromCache(EventTypes eventTypeEnum) {
-        EventType eventType = eventTypeCache.get(eventTypeEnum);
+        var eventType = eventTypeCache.get(eventTypeEnum);
 
         if(eventType == null) {
             eventType = getEventTypeByName(eventTypeEnum.name());
@@ -2965,7 +2965,7 @@ public class CoreControl
     }
 
     public List<EventType> getEventTypes() {
-        PreparedStatement ps = EventTypeFactory.getInstance().prepareStatement(
+        var ps = EventTypeFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
                 "FROM eventtypes " +
                 "ORDER BY evty_eventtypename");
@@ -2982,7 +2982,7 @@ public class CoreControl
     // --------------------------------------------------------------------------------
     
     public EventTypeDescription createEventTypeDescription(EventType eventType, Language language, String description) {
-        EventTypeDescription eventTypeDescription = EventTypeDescriptionFactory.getInstance().create(eventType, language, description);
+        var eventTypeDescription = EventTypeDescriptionFactory.getInstance().create(eventType, language, description);
         
         return eventTypeDescription;
     }
@@ -2991,7 +2991,7 @@ public class CoreControl
         EventTypeDescription eventTypeDescription;
         
         try {
-            PreparedStatement ps = EventTypeDescriptionFactory.getInstance().prepareStatement(
+            var ps = EventTypeDescriptionFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM eventtypedescriptions " +
                     "WHERE evtyd_evty_eventtypeid = ? AND evtyd_lang_languageid = ?");
@@ -3009,7 +3009,7 @@ public class CoreControl
     
     public String getBestEventTypeDescription(EventType eventType, Language language) {
         String description;
-        EventTypeDescription eventTypeDescription = getEventTypeDescription(eventType, language);
+        var eventTypeDescription = getEventTypeDescription(eventType, language);
         
         if(eventTypeDescription == null && !language.getIsDefault()) {
             eventTypeDescription = getEventTypeDescription(eventType, getPartyControl().getDefaultLanguage());
@@ -3029,7 +3029,7 @@ public class CoreControl
     // --------------------------------------------------------------------------------
     
     public ComponentStage createComponentStage(String componentStageName, String description, Integer relativeAge) {
-        ComponentStage componentStage = ComponentStageFactory.getInstance().create(componentStageName, description, relativeAge);
+        var componentStage = ComponentStageFactory.getInstance().create(componentStageName, description, relativeAge);
         
         return componentStage;
     }
@@ -3038,7 +3038,7 @@ public class CoreControl
         ComponentStage componentStage;
         
         try {
-            PreparedStatement ps = ComponentStageFactory.getInstance().prepareStatement(
+            var ps = ComponentStageFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM componentstages " +
                     "WHERE cstg_componentstagename = ?");
@@ -3058,7 +3058,7 @@ public class CoreControl
     // --------------------------------------------------------------------------------
     
     public EntityAttributeType createEntityAttributeType(String entityAttributeTypeName) {
-        EntityAttributeType entityAttributeType = EntityAttributeTypeFactory.getInstance().create(entityAttributeTypeName);
+        var entityAttributeType = EntityAttributeTypeFactory.getInstance().create(entityAttributeTypeName);
         
         return entityAttributeType;
     }
@@ -3088,7 +3088,7 @@ public class CoreControl
         EntityAttributeType entityAttributeType;
         
         try {
-            PreparedStatement ps = EntityAttributeTypeFactory.getInstance().prepareStatement(
+            var ps = EntityAttributeTypeFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM entityattributetypes " +
                     "WHERE enat_entityattributetypename = ?");
@@ -3104,7 +3104,7 @@ public class CoreControl
     }
     
     public List<EntityAttributeType> getEntityAttributeTypes() {
-        PreparedStatement ps = EntityAttributeTypeFactory.getInstance().prepareStatement(
+        var ps = EntityAttributeTypeFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
                 "FROM entityattributetypes " +
                 "ORDER BY enat_entityattributetypename " +
@@ -3136,7 +3136,7 @@ public class CoreControl
     }
     
     public EntityAttributeTypeChoicesBean getEntityAttributeTypeChoices(String defaultEntityAttributeTypeChoice, Language language) {
-        List<EntityAttributeType> entityAttributeTypes = getEntityAttributeTypes();
+        var entityAttributeTypes = getEntityAttributeTypes();
         var size = entityAttributeTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -3163,7 +3163,7 @@ public class CoreControl
     // --------------------------------------------------------------------------------
     
     public EntityAttributeTypeDescription createEntityAttributeTypeDescription(EntityAttributeType entityAttributeType, Language language, String description) {
-        EntityAttributeTypeDescription entityAttributeTypeDescription = EntityAttributeTypeDescriptionFactory.getInstance().create(entityAttributeType, language, description);
+        var entityAttributeTypeDescription = EntityAttributeTypeDescriptionFactory.getInstance().create(entityAttributeType, language, description);
         
         return entityAttributeTypeDescription;
     }
@@ -3172,7 +3172,7 @@ public class CoreControl
         EntityAttributeTypeDescription entityAttributeTypeDescription;
         
         try {
-            PreparedStatement ps = EntityAttributeTypeDescriptionFactory.getInstance().prepareStatement(
+            var ps = EntityAttributeTypeDescriptionFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM entityattributetypedescriptions " +
                     "WHERE enatd_enat_entityattributetypeid = ? AND enatd_lang_languageid = ?");
@@ -3190,7 +3190,7 @@ public class CoreControl
     
     public String getBestEntityAttributeTypeDescription(EntityAttributeType entityAttributeType, Language language) {
         String description;
-        EntityAttributeTypeDescription entityAttributeTypeDescription = getEntityAttributeTypeDescription(entityAttributeType, language);
+        var entityAttributeTypeDescription = getEntityAttributeTypeDescription(entityAttributeType, language);
         
         if(entityAttributeTypeDescription == null && !language.getIsDefault()) {
             entityAttributeTypeDescription = getEntityAttributeTypeDescription(entityAttributeType, getPartyControl().getDefaultLanguage());
@@ -3218,7 +3218,7 @@ public class CoreControl
         EntityTime entityTime;
         
         try {
-            PreparedStatement ps = EntityTimeFactory.getInstance().prepareStatement(
+            var ps = EntityTimeFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM entitytimes " +
                     "WHERE etim_eni_entityinstanceid = ?");
@@ -3237,7 +3237,7 @@ public class CoreControl
         EntityTime entityTime;
         
         try {
-            PreparedStatement ps = EntityTimeFactory.getInstance().prepareStatement(
+            var ps = EntityTimeFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM entitytimes " +
                     "WHERE etim_eni_entityinstanceid = ? " +
@@ -3275,7 +3275,7 @@ public class CoreControl
         
         try {
             int intLimit = limit;
-            PreparedStatement ps = EntityTimeFactory.getInstance().prepareStatement(
+            var ps = EntityTimeFactory.getInstance().prepareStatement(
                     intLimit == -1? selectEntityTimesByEntityType: selectEntityTimesByEntityTypeWithLimit);
             
             ps.setLong(1, entityType.getPrimaryKey().getEntityId());
@@ -3312,7 +3312,7 @@ public class CoreControl
         
         try {
             int intLimit = limit;
-            PreparedStatement ps = EntityTimeFactory.getInstance().prepareStatement(
+            var ps = EntityTimeFactory.getInstance().prepareStatement(
                     intLimit == -1? selectEntityTimesByEntityTypeCreatedAfter: selectEntityTimesByEntityTypeCreatedAfterWithLimit);
             
             ps.setLong(1, entityType.getPrimaryKey().getEntityId());
@@ -3350,7 +3350,7 @@ public class CoreControl
         
         try {
             int intLimit = limit;
-            PreparedStatement ps = EntityTimeFactory.getInstance().prepareStatement(
+            var ps = EntityTimeFactory.getInstance().prepareStatement(
                     intLimit == -1? selectEntityTimesByEntityTypeModifiedAfter: selectEntityTimesByEntityTypeModifiedAfterWithLimit);
             
             ps.setLong(1, entityType.getPrimaryKey().getEntityId());
@@ -3388,7 +3388,7 @@ public class CoreControl
         
         try {
             int intLimit = limit;
-            PreparedStatement ps = EntityTimeFactory.getInstance().prepareStatement(
+            var ps = EntityTimeFactory.getInstance().prepareStatement(
                     intLimit == -1? selectEntityTimesByEntityTypeDeletedAfter: selectEntityTimesByEntityTypeDeletedAfterWithLimit);
             
             ps.setLong(1, entityType.getPrimaryKey().getEntityId());
@@ -3419,14 +3419,14 @@ public class CoreControl
         EventGroup eventGroup = null;
         
         if(!alreadyCreatingEventGroup) {
-            WorkflowStep workflowStep = getWorkflowControl().getWorkflowStepUsingNames(Workflow_EVENT_GROUP_STATUS,
+            var workflowStep = getWorkflowControl().getWorkflowStepUsingNames(Workflow_EVENT_GROUP_STATUS,
                     WorkflowStep_EVENT_GROUP_STATUS_ACTIVE);
 
             if(workflowStep != null) {
                 List<EventGroup> eventGroups;
 
                 try {
-                    PreparedStatement ps = EventGroupFactory.getInstance().prepareStatement(
+                    var ps = EventGroupFactory.getInstance().prepareStatement(
                             "SELECT _ALL_ " +
                             "FROM componentvendors, componentvendordetails, entitytypes, entitytypedetails, entityinstances, " +
                             "eventgroups, eventgroupdetails, workflowentitystatuses, entitytimes " +
@@ -3470,15 +3470,15 @@ public class CoreControl
         var workflow = workflowControl.getWorkflowByName(Workflow_EVENT_GROUP_STATUS);
         
         if(workflow != null) {
-            WorkflowEntrance workflowEntrance = workflowControl.getDefaultWorkflowEntrance(workflow);
+            var workflowEntrance = workflowControl.getDefaultWorkflowEntrance(workflow);
             
             if(workflowEntrance != null && (workflowControl.countWorkflowEntranceStepsByWorkflowEntrance(workflowEntrance) > 0)) {
-                Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.EVENT_GROUP.name());
-                String eventGroupName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
+                var sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.EVENT_GROUP.name());
+                var eventGroupName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
                 
                 eventGroup = createEventGroup(eventGroupName, createdBy);
 
-                EntityInstance entityInstance = getEntityInstanceByBaseEntity(eventGroup);
+                var entityInstance = getEntityInstanceByBaseEntity(eventGroup);
                 getWorkflowControl().addEntityToWorkflow(workflowEntrance, entityInstance, null, null, createdBy);
             }
         }
@@ -3487,8 +3487,8 @@ public class CoreControl
     }
     
     public EventGroup createEventGroup(String eventGroupName, BasePK createdBy) {
-        EventGroup eventGroup = EventGroupFactory.getInstance().create();
-        EventGroupDetail eventGroupDetail = EventGroupDetailFactory.getInstance().create(eventGroup, eventGroupName,
+        var eventGroup = EventGroupFactory.getInstance().create();
+        var eventGroupDetail = EventGroupDetailFactory.getInstance().create(eventGroup, eventGroupName,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -3523,8 +3523,8 @@ public class CoreControl
                         "WHERE evgrp_activedetailid = evgrpdt_eventgroupdetailid AND evgrpdt_eventgroupname = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = EventGroupFactory.getInstance().prepareStatement(query);
+
+            var ps = EventGroupFactory.getInstance().prepareStatement(query);
             
             ps.setString(1, eventGroupName);
             
@@ -3562,8 +3562,8 @@ public class CoreControl
                     "WHERE evgrp_activedetailid = evgrpdt_eventgroupdetailid " +
                     "FOR UPDATE";
         }
-        
-        PreparedStatement ps = EventGroupFactory.getInstance().prepareStatement(query);
+
+        var ps = EventGroupFactory.getInstance().prepareStatement(query);
         
         return EventGroupFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
     }
@@ -3582,7 +3582,7 @@ public class CoreControl
     
     public List<EventGroupTransfer> getEventGroupTransfers(UserVisit userVisit, Collection<EventGroup> eventGroups) {
         List<EventGroupTransfer> eventGroupTransfers = new ArrayList<>(eventGroups.size());
-        EventGroupTransferCache eventGroupTransferCache = getCoreTransferCaches(userVisit).getEventGroupTransferCache();
+        var eventGroupTransferCache = getCoreTransferCaches(userVisit).getEventGroupTransferCache();
         
         eventGroups.forEach((eventGroup) ->
                 eventGroupTransfers.add(eventGroupTransferCache.getEventGroupTransfer(eventGroup))
@@ -3598,14 +3598,14 @@ public class CoreControl
     public EventGroupStatusChoicesBean getEventGroupStatusChoices(String defaultEventGroupStatusChoice, Language language, boolean allowNullChoice,
             EventGroup eventGroup, PartyPK partyPK) {
         var workflowControl = getWorkflowControl();
-        EventGroupStatusChoicesBean eventGroupStatusChoicesBean = new EventGroupStatusChoicesBean();
+        var eventGroupStatusChoicesBean = new EventGroupStatusChoicesBean();
         
         if(eventGroup == null) {
             workflowControl.getWorkflowEntranceChoices(eventGroupStatusChoicesBean, defaultEventGroupStatusChoice, language, allowNullChoice,
                     workflowControl.getWorkflowByName(Workflow_EVENT_GROUP_STATUS), partyPK);
         } else {
-            EntityInstance entityInstance = getCoreControl().getEntityInstanceByBasePK(eventGroup.getPrimaryKey());
-            WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(Workflow_EVENT_GROUP_STATUS,
+            var entityInstance = getCoreControl().getEntityInstanceByBasePK(eventGroup.getPrimaryKey());
+            var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(Workflow_EVENT_GROUP_STATUS,
                     entityInstance);
             
             workflowControl.getWorkflowDestinationChoices(eventGroupStatusChoicesBean, defaultEventGroupStatusChoice, language, allowNullChoice,
@@ -3617,10 +3617,10 @@ public class CoreControl
     
     public void setEventGroupStatus(ExecutionErrorAccumulator eea, EventGroup eventGroup, String eventGroupStatusChoice, PartyPK modifiedBy) {
         var workflowControl = getWorkflowControl();
-        EntityInstance entityInstance = getEntityInstanceByBaseEntity(eventGroup);
-        WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(Workflow_EVENT_GROUP_STATUS,
+        var entityInstance = getEntityInstanceByBaseEntity(eventGroup);
+        var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(Workflow_EVENT_GROUP_STATUS,
                 entityInstance);
-        WorkflowDestination workflowDestination = eventGroupStatusChoice == null? null:
+        var workflowDestination = eventGroupStatusChoice == null? null:
             workflowControl.getWorkflowDestinationByName(workflowEntityStatus.getWorkflowStep(), eventGroupStatusChoice);
         
         if(workflowDestination != null || eventGroupStatusChoice == null) {
@@ -3636,7 +3636,7 @@ public class CoreControl
     
     public Event createEvent(EventGroup eventGroup, Long eventTime, EntityInstance entityInstance, EventType eventType,
             EntityInstance relatedEntityInstance, EventType relatedEventType, EntityInstance createdBy) {
-        Integer eventTimeSequence = session.getNextEventTimeSequence(entityInstance.getPrimaryKey());
+        var eventTimeSequence = session.getNextEventTimeSequence(entityInstance.getPrimaryKey());
 
         return EventFactory.getInstance().create(eventGroup, eventTime, eventTimeSequence, entityInstance, eventType, relatedEntityInstance, relatedEventType,
                 createdBy);
@@ -3771,7 +3771,7 @@ public class CoreControl
     
     public List<EventTransfer> getEventTransfers(UserVisit userVisit, Collection<Event> events) {
         List<EventTransfer> eventTransfers = new ArrayList<>(events.size());
-        EventTransferCache eventTransferCache = getCoreTransferCaches(userVisit).getEventTransferCache();
+        var eventTransferCache = getCoreTransferCaches(userVisit).getEventTransferCache();
         
         events.forEach((event) ->
                 eventTransfers.add(eventTransferCache.getEventTransfer(event))
@@ -3809,7 +3809,7 @@ public class CoreControl
     }
     
     public List<QueuedEvent> getQueuedEventsForUpdate() {
-        PreparedStatement ps = QueuedEventFactory.getInstance().prepareStatement(
+        var ps = QueuedEventFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
                 "FROM queuedevents " +
                 "FOR UPDATE");
@@ -3869,8 +3869,8 @@ public class CoreControl
 
     public CacheEntry createCacheEntry(String cacheEntryKey, MimeType mimeType, Long createdTime, Long validUntilTime, String clob, ByteArray blob,
             Set<String> entityRefs) {
-        CacheEntry cacheEntry = createCacheEntry(cacheEntryKey, mimeType, createdTime, validUntilTime);
-        String entityAttributeTypeName = mimeType.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
+        var cacheEntry = createCacheEntry(cacheEntryKey, mimeType, createdTime, validUntilTime);
+        var entityAttributeTypeName = mimeType.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
 
         if(entityAttributeTypeName.equals(EntityAttributeTypes.CLOB.name())) {
             createCacheClobEntry(cacheEntry, clob);
@@ -3959,11 +3959,11 @@ public class CoreControl
     }
 
     public CacheEntryTransfer getCacheEntryTransferByCacheEntryKey(UserVisit userVisit, String cacheEntryKey) {
-        CacheEntry cacheEntry = getCacheEntryByCacheEntryKey(cacheEntryKey);
+        var cacheEntry = getCacheEntryByCacheEntryKey(cacheEntryKey);
         CacheEntryTransfer cacheEntryTransfer = null;
 
         if(cacheEntry != null) {
-            Long validUntilTime = cacheEntry.getValidUntilTime();
+            var validUntilTime = cacheEntry.getValidUntilTime();
             
             if(validUntilTime != null && validUntilTime < session.START_TIME) {
                 removeCacheEntry(cacheEntry);
@@ -3977,7 +3977,7 @@ public class CoreControl
 
     public List<CacheEntryTransfer> getCacheEntryTransfers(UserVisit userVisit, Collection<CacheEntry> cacheEntries) {
         List<CacheEntryTransfer> cacheEntryTransfers = new ArrayList<>(cacheEntries.size());
-        CacheEntryTransferCache cacheEntryTransferCache = getCoreTransferCaches(userVisit).getCacheEntryTransferCache();
+        var cacheEntryTransferCache = getCoreTransferCaches(userVisit).getCacheEntryTransferCache();
 
         cacheEntries.forEach((cacheEntry) ->
                 cacheEntryTransfers.add(cacheEntryTransferCache.getCacheEntryTransfer(cacheEntry))
@@ -4003,7 +4003,7 @@ public class CoreControl
     }
 
     private List<CacheEntryPK> getCacheEntryPKsByEntityInstance(final EntityInstance entityInstance) {
-        final CacheEntryFactory instance = CacheEntryFactory.getInstance();
+        final var instance = CacheEntryFactory.getInstance();
         
         return instance.getPKsFromQueryAsList(
                 instance.prepareStatement(
@@ -4102,7 +4102,7 @@ public class CoreControl
         List<CacheEntryDependencyValue> cacheEntryDependencyValues = new ArrayList<>(entityRefs.size());
 
         for(var entityRef : entityRefs) {
-            EntityInstance entityInstance = getEntityInstanceByEntityRef(entityRef);
+            var entityInstance = getEntityInstanceByEntityRef(entityRef);
 
             if(entityInstance != null) {
                 cacheEntryDependencyValues.add(new CacheEntryDependencyValue(cacheEntry.getPrimaryKey(), entityInstance.getPrimaryKey()));
@@ -4188,7 +4188,7 @@ public class CoreControl
 
     public List<CacheEntryDependencyTransfer> getCacheEntryDependencyTransfers(UserVisit userVisit, Collection<CacheEntryDependency> cacheEntries) {
         List<CacheEntryDependencyTransfer> cacheEntryDependencyTransfers = new ArrayList<>(cacheEntries.size());
-        CacheEntryDependencyTransferCache cacheEntryDependencyTransferCache = getCoreTransferCaches(userVisit).getCacheEntryDependencyTransferCache();
+        var cacheEntryDependencyTransferCache = getCoreTransferCaches(userVisit).getCacheEntryDependencyTransferCache();
 
         cacheEntries.forEach((cacheEntryDependency) ->
                 cacheEntryDependencyTransfers.add(cacheEntryDependencyTransferCache.getCacheEntryDependencyTransfer(cacheEntryDependency))
@@ -4207,11 +4207,11 @@ public class CoreControl
 
     public EntityAliasType createEntityAliasType(EntityType entityType, String entityAliasTypeName,
             String validationPattern, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        EntityAliasType defaultEntityAliasType = getDefaultEntityAliasType(entityType);
-        boolean defaultFound = defaultEntityAliasType != null;
+        var defaultEntityAliasType = getDefaultEntityAliasType(entityType);
+        var defaultFound = defaultEntityAliasType != null;
 
         if(defaultFound && isDefault) {
-            EntityAliasTypeDetailValue defaultEntityAliasTypeDetailValue = getDefaultEntityAliasTypeDetailValueForUpdate(entityType);
+            var defaultEntityAliasTypeDetailValue = getDefaultEntityAliasTypeDetailValueForUpdate(entityType);
 
             defaultEntityAliasTypeDetailValue.setIsDefault(Boolean.FALSE);
             updateEntityAliasTypeFromValue(defaultEntityAliasTypeDetailValue, false, createdBy);
@@ -4219,8 +4219,8 @@ public class CoreControl
             isDefault = Boolean.TRUE;
         }
 
-        EntityAliasType entityAliasType = EntityAliasTypeFactory.getInstance().create();
-        EntityAliasTypeDetail entityAliasTypeDetail = EntityAliasTypeDetailFactory.getInstance().create(entityAliasType, entityType,
+        var entityAliasType = EntityAliasTypeFactory.getInstance().create();
+        var entityAliasTypeDetail = EntityAliasTypeDetailFactory.getInstance().create(entityAliasType, entityType,
                 entityAliasTypeName, validationPattern, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -4281,7 +4281,7 @@ public class CoreControl
                         "FOR UPDATE";
             }
 
-            PreparedStatement ps = EntityAliasTypeFactory.getInstance().prepareStatement(query);
+            var ps = EntityAliasTypeFactory.getInstance().prepareStatement(query);
 
             ps.setLong(1, entityType.getPrimaryKey().getEntityId());
             ps.setString(2, entityAliasTypeName);
@@ -4369,7 +4369,7 @@ public class CoreControl
                         "FOR UPDATE";
             }
 
-            PreparedStatement ps = EntityAliasTypeFactory.getInstance().prepareStatement(query);
+            var ps = EntityAliasTypeFactory.getInstance().prepareStatement(query);
 
             ps.setLong(1, entityType.getPrimaryKey().getEntityId());
 
@@ -4395,7 +4395,7 @@ public class CoreControl
 
     public List<EntityAliasTypeTransfer> getEntityAliasTypeTransfers(UserVisit userVisit, Collection<EntityAliasType> entityAliasTypes, EntityInstance entityInstance) {
         List<EntityAliasTypeTransfer> entityAliasTypeTransfers = new ArrayList<>(entityAliasTypes.size());
-        EntityAliasTypeTransferCache entityAliasTypeTransferCache = getCoreTransferCaches(userVisit).getEntityAliasTypeTransferCache();
+        var entityAliasTypeTransferCache = getCoreTransferCaches(userVisit).getEntityAliasTypeTransferCache();
 
         entityAliasTypes.forEach((entityAliasType) ->
                 entityAliasTypeTransfers.add(entityAliasTypeTransferCache.getEntityAliasTypeTransfer(entityAliasType, entityInstance))
@@ -4410,28 +4410,28 @@ public class CoreControl
 
     private void updateEntityAliasTypeFromValue(EntityAliasTypeDetailValue entityAliasTypeDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(entityAliasTypeDetailValue.hasBeenModified()) {
-            EntityAliasType entityAliasType = EntityAliasTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var entityAliasType = EntityAliasTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     entityAliasTypeDetailValue.getEntityAliasTypePK());
-            EntityAliasTypeDetail entityAliasTypeDetail = entityAliasType.getActiveDetailForUpdate();
+            var entityAliasTypeDetail = entityAliasType.getActiveDetailForUpdate();
 
             entityAliasTypeDetail.setThruTime(session.START_TIME_LONG);
             entityAliasTypeDetail.store();
 
-            EntityTypePK entityTypePK = entityAliasTypeDetail.getEntityTypePK();
-            EntityAliasTypePK entityAliasTypePK = entityAliasTypeDetail.getEntityAliasTypePK(); // Not updated
-            String entityAliasTypeName = entityAliasTypeDetailValue.getEntityAliasTypeName();
-            String validationPattern = entityAliasTypeDetailValue.getValidationPattern();
-            Boolean isDefault = entityAliasTypeDetailValue.getIsDefault();
-            Integer sortOrder = entityAliasTypeDetailValue.getSortOrder();
+            var entityTypePK = entityAliasTypeDetail.getEntityTypePK();
+            var entityAliasTypePK = entityAliasTypeDetail.getEntityAliasTypePK(); // Not updated
+            var entityAliasTypeName = entityAliasTypeDetailValue.getEntityAliasTypeName();
+            var validationPattern = entityAliasTypeDetailValue.getValidationPattern();
+            var isDefault = entityAliasTypeDetailValue.getIsDefault();
+            var sortOrder = entityAliasTypeDetailValue.getSortOrder();
 
             if(checkDefault) {
                 var entityType = entityAliasTypeDetail.getEntityType();
-                EntityAliasType defaultEntityAliasType = getDefaultEntityAliasType(entityType);
-                boolean defaultFound = defaultEntityAliasType != null && !defaultEntityAliasType.equals(entityAliasType);
+                var defaultEntityAliasType = getDefaultEntityAliasType(entityType);
+                var defaultFound = defaultEntityAliasType != null && !defaultEntityAliasType.equals(entityAliasType);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    EntityAliasTypeDetailValue defaultEntityAliasTypeDetailValue = getDefaultEntityAliasTypeDetailValueForUpdate(entityType);
+                    var defaultEntityAliasTypeDetailValue = getDefaultEntityAliasTypeDetailValueForUpdate(entityType);
 
                     defaultEntityAliasTypeDetailValue.setIsDefault(Boolean.FALSE);
                     updateEntityAliasTypeFromValue(defaultEntityAliasTypeDetailValue, false, updatedBy);
@@ -4457,7 +4457,7 @@ public class CoreControl
 
     public EntityAliasTypeChoicesBean getEntityAliasTypeChoices(String defaultEntityAliasTypeChoice, Language language,
             boolean allowNullChoice, EntityType entityType) {
-        List<EntityAliasType> entityAliasTypes = getEntityAliasTypesByEntityType(entityType);
+        var entityAliasTypes = getEntityAliasTypesByEntityType(entityType);
         var size = entityAliasTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -4473,7 +4473,7 @@ public class CoreControl
         }
 
         for(var entityAliasType : entityAliasTypes) {
-            EntityAliasTypeDetail entityAliasTypeDetail = entityAliasType.getLastDetail();
+            var entityAliasTypeDetail = entityAliasType.getLastDetail();
             var label = getBestEntityAliasTypeDescription(entityAliasType, language);
             var value = entityAliasTypeDetail.getEntityAliasTypeName();
 
@@ -4490,7 +4490,7 @@ public class CoreControl
     }
 
     private void deleteEntityAliasType(EntityAliasType entityAliasType, boolean checkDefault, BasePK deletedBy) {
-        EntityAliasTypeDetail entityAliasTypeDetail = entityAliasType.getLastDetailForUpdate();
+        var entityAliasTypeDetail = entityAliasType.getLastDetailForUpdate();
 
         deleteEntityAliasesByEntityAliasType(entityAliasType, deletedBy);
         deleteEntityAliasTypeDescriptionsByEntityAliasType(entityAliasType, deletedBy);
@@ -4501,18 +4501,18 @@ public class CoreControl
 
         if(checkDefault) {
             // Check for default, and pick one if necessary
-            EntityAliasType defaultEntityAliasType = getDefaultEntityAliasType(entityAliasTypeDetail.getEntityType());
+            var defaultEntityAliasType = getDefaultEntityAliasType(entityAliasTypeDetail.getEntityType());
 
             if(defaultEntityAliasType == null) {
                 var entityType = entityAliasTypeDetail.getEntityType();
-                List<EntityAliasType> entityAliasTypes = getEntityAliasTypesByEntityTypeForUpdate(entityType);
+                var entityAliasTypes = getEntityAliasTypesByEntityTypeForUpdate(entityType);
 
                 if(!entityAliasTypes.isEmpty()) {
-                    Iterator<EntityAliasType> iter = entityAliasTypes.iterator();
+                    var iter = entityAliasTypes.iterator();
                     if(iter.hasNext()) {
                         defaultEntityAliasType = iter.next();
                     }
-                    EntityAliasTypeDetailValue entityAliasTypeDetailValue = Objects.requireNonNull(defaultEntityAliasType).getLastDetailForUpdate().getEntityAliasTypeDetailValue().clone();
+                    var entityAliasTypeDetailValue = Objects.requireNonNull(defaultEntityAliasType).getLastDetailForUpdate().getEntityAliasTypeDetailValue().clone();
 
                     entityAliasTypeDetailValue.setIsDefault(Boolean.TRUE);
                     updateEntityAliasTypeFromValue(entityAliasTypeDetailValue, false, deletedBy);
@@ -4541,7 +4541,7 @@ public class CoreControl
 
     public EntityAliasTypeDescription createEntityAliasTypeDescription(EntityAliasType entityAliasType, Language language,
             String description, BasePK createdBy) {
-        EntityAliasTypeDescription entityAliasTypeDescription = EntityAliasTypeDescriptionFactory.getInstance().create(session,
+        var entityAliasTypeDescription = EntityAliasTypeDescriptionFactory.getInstance().create(session,
                 entityAliasType, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(entityAliasType.getPrimaryKey(), EventTypes.MODIFY, entityAliasTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -4567,7 +4567,7 @@ public class CoreControl
                         "FOR UPDATE";
             }
 
-            PreparedStatement ps = EntityAliasTypeDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = EntityAliasTypeDescriptionFactory.getInstance().prepareStatement(query);
 
             ps.setLong(1, entityAliasType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -4616,7 +4616,7 @@ public class CoreControl
                         "FOR UPDATE";
             }
 
-            PreparedStatement ps = EntityAliasTypeDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = EntityAliasTypeDescriptionFactory.getInstance().prepareStatement(query);
 
             ps.setLong(1, entityAliasType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -4639,7 +4639,7 @@ public class CoreControl
 
     public String getBestEntityAliasTypeDescription(EntityAliasType entityAliasType, Language language) {
         String description;
-        EntityAliasTypeDescription entityAliasTypeDescription = getEntityAliasTypeDescription(entityAliasType, language);
+        var entityAliasTypeDescription = getEntityAliasTypeDescription(entityAliasType, language);
 
         if(entityAliasTypeDescription == null && !language.getIsDefault()) {
             entityAliasTypeDescription = getEntityAliasTypeDescription(entityAliasType, getPartyControl().getDefaultLanguage());
@@ -4660,9 +4660,9 @@ public class CoreControl
 
     public List<EntityAliasTypeDescriptionTransfer> getEntityAliasTypeDescriptionTransfersByEntityAliasType(UserVisit userVisit,
             EntityAliasType entityAliasType, EntityInstance entityInstance) {
-        List<EntityAliasTypeDescription> entityAliasTypeDescriptions = getEntityAliasTypeDescriptionsByEntityAliasType(entityAliasType);
+        var entityAliasTypeDescriptions = getEntityAliasTypeDescriptionsByEntityAliasType(entityAliasType);
         List<EntityAliasTypeDescriptionTransfer> entityAliasTypeDescriptionTransfers = new ArrayList<>(entityAliasTypeDescriptions.size());
-        EntityAliasTypeDescriptionTransferCache entityAliasTypeDescriptionTransferCache = getCoreTransferCaches(userVisit).getEntityAliasTypeDescriptionTransferCache();
+        var entityAliasTypeDescriptionTransferCache = getCoreTransferCaches(userVisit).getEntityAliasTypeDescriptionTransferCache();
 
         entityAliasTypeDescriptions.forEach((entityAliasTypeDescription) ->
                 entityAliasTypeDescriptionTransfers.add(entityAliasTypeDescriptionTransferCache.getEntityAliasTypeDescriptionTransfer(entityAliasTypeDescription, entityInstance))
@@ -4673,15 +4673,15 @@ public class CoreControl
 
     public void updateEntityAliasTypeDescriptionFromValue(EntityAliasTypeDescriptionValue entityAliasTypeDescriptionValue, BasePK updatedBy) {
         if(entityAliasTypeDescriptionValue.hasBeenModified()) {
-            EntityAliasTypeDescription entityAliasTypeDescription = EntityAliasTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var entityAliasTypeDescription = EntityAliasTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     entityAliasTypeDescriptionValue.getPrimaryKey());
 
             entityAliasTypeDescription.setThruTime(session.START_TIME_LONG);
             entityAliasTypeDescription.store();
 
-            EntityAliasType entityAliasType = entityAliasTypeDescription.getEntityAliasType();
-            Language language = entityAliasTypeDescription.getLanguage();
-            String description = entityAliasTypeDescriptionValue.getDescription();
+            var entityAliasType = entityAliasTypeDescription.getEntityAliasType();
+            var language = entityAliasTypeDescription.getLanguage();
+            var description = entityAliasTypeDescriptionValue.getDescription();
 
             entityAliasTypeDescription = EntityAliasTypeDescriptionFactory.getInstance().create(entityAliasType, language,
                     description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -4697,7 +4697,7 @@ public class CoreControl
     }
 
     public void deleteEntityAliasTypeDescriptionsByEntityAliasType(EntityAliasType entityAliasType, BasePK deletedBy) {
-        List<EntityAliasTypeDescription> entityAliasTypeDescriptions = getEntityAliasTypeDescriptionsByEntityAliasTypeForUpdate(entityAliasType);
+        var entityAliasTypeDescriptions = getEntityAliasTypeDescriptionsByEntityAliasTypeForUpdate(entityAliasType);
 
         entityAliasTypeDescriptions.forEach((entityAliasTypeDescription) ->
                 deleteEntityAliasTypeDescription(entityAliasTypeDescription, deletedBy)
@@ -4710,7 +4710,7 @@ public class CoreControl
 
     public EntityAlias createEntityAlias(EntityInstance entityInstance, EntityAliasType entityAliasType, String alias,
             BasePK createdBy) {
-        EntityAlias entityAlias = EntityAliasFactory.getInstance().create(entityInstance, entityAliasType,
+        var entityAlias = EntityAliasFactory.getInstance().create(entityInstance, entityAliasType,
                 alias, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(entityInstance, EventTypes.MODIFY, entityAliasType.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -4753,7 +4753,7 @@ public class CoreControl
                         "FOR UPDATE";
             }
 
-            PreparedStatement ps = EntityAliasFactory.getInstance().prepareStatement(query);
+            var ps = EntityAliasFactory.getInstance().prepareStatement(query);
 
             ps.setLong(1, entityInstance.getPrimaryKey().getEntityId());
             ps.setLong(2, entityAliasType.getPrimaryKey().getEntityId());
@@ -4802,7 +4802,7 @@ public class CoreControl
                         "FOR UPDATE";
             }
 
-            PreparedStatement ps = EntityAliasFactory.getInstance().prepareStatement(query);
+            var ps = EntityAliasFactory.getInstance().prepareStatement(query);
 
             ps.setLong(1, entityAliasType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -4841,7 +4841,7 @@ public class CoreControl
                         "FOR UPDATE";
             }
 
-            PreparedStatement ps = EntityAliasFactory.getInstance().prepareStatement(query);
+            var ps = EntityAliasFactory.getInstance().prepareStatement(query);
 
             ps.setLong(1, entityInstance.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -4878,9 +4878,9 @@ public class CoreControl
 
     public void updateEntityAliasFromValue(EntityAliasValue entityAliasValue, BasePK updatedBy) {
         if(entityAliasValue.hasBeenModified()) {
-            EntityAlias entityAlias = EntityAliasFactory.getInstance().getEntityFromValue(session, EntityPermission.READ_WRITE, entityAliasValue);
-            EntityAliasType entityAliasType = entityAlias.getEntityAliasType();
-            EntityInstance entityInstance = entityAlias.getEntityInstance();
+            var entityAlias = EntityAliasFactory.getInstance().getEntityFromValue(session, EntityPermission.READ_WRITE, entityAliasValue);
+            var entityAliasType = entityAlias.getEntityAliasType();
+            var entityInstance = entityAlias.getEntityInstance();
 
             entityAlias.setThruTime(session.START_TIME_LONG);
             entityAlias.store();
@@ -4893,8 +4893,8 @@ public class CoreControl
     }
 
     public void deleteEntityAlias(EntityAlias entityAlias, BasePK deletedBy) {
-        EntityAliasType entityAliasType = entityAlias.getEntityAliasType();
-        EntityInstance entityInstance = entityAlias.getEntityInstance();
+        var entityAliasType = entityAlias.getEntityAliasType();
+        var entityInstance = entityAlias.getEntityInstance();
 
         entityAlias.setThruTime(session.START_TIME_LONG);
 
@@ -4919,7 +4919,7 @@ public class CoreControl
         EntityAlias entityAlias;
 
         try {
-            PreparedStatement ps = EntityAliasFactory.getInstance().prepareStatement(
+            var ps = EntityAliasFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM entityaliases " +
                     "WHERE enial_eniat_entityaliastypeid = ? AND enial_alias = ? AND enial_thrutime = ?");
@@ -4941,20 +4941,20 @@ public class CoreControl
     // --------------------------------------------------------------------------------
     
     public EntityAttributeGroup createEntityAttributeGroup(String entityAttributeGroupName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        EntityAttributeGroup defaultEntityAttributeGroup = getDefaultEntityAttributeGroup();
-        boolean defaultFound = defaultEntityAttributeGroup != null;
+        var defaultEntityAttributeGroup = getDefaultEntityAttributeGroup();
+        var defaultFound = defaultEntityAttributeGroup != null;
         
         if(defaultFound && isDefault) {
-            EntityAttributeGroupDetailValue defaultEntityAttributeGroupDetailValue = getDefaultEntityAttributeGroupDetailValueForUpdate();
+            var defaultEntityAttributeGroupDetailValue = getDefaultEntityAttributeGroupDetailValueForUpdate();
             
             defaultEntityAttributeGroupDetailValue.setIsDefault(Boolean.FALSE);
             updateEntityAttributeGroupFromValue(defaultEntityAttributeGroupDetailValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        EntityAttributeGroup entityAttributeGroup = EntityAttributeGroupFactory.getInstance().create();
-        EntityAttributeGroupDetail entityAttributeGroupDetail = EntityAttributeGroupDetailFactory.getInstance().create(entityAttributeGroup,
+
+        var entityAttributeGroup = EntityAttributeGroupFactory.getInstance().create();
+        var entityAttributeGroupDetail = EntityAttributeGroupDetailFactory.getInstance().create(entityAttributeGroup,
                 entityAttributeGroupName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -5024,8 +5024,8 @@ public class CoreControl
                     "WHERE enagp_activedetailid = enagpdt_entityattributegroupdetailid " +
                     "FOR UPDATE";
         }
-        
-        PreparedStatement ps = EntityAttributeGroupFactory.getInstance().prepareStatement(query);
+
+        var ps = EntityAttributeGroupFactory.getInstance().prepareStatement(query);
         
         return EntityAttributeGroupFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
     }
@@ -5062,8 +5062,8 @@ public class CoreControl
                         + "GROUP BY enagp_entityattributegroupid "
                         + "FOR UPDATE";
             }
-            
-            PreparedStatement ps = EntityAttributeGroupFactory.getInstance().prepareStatement(query);
+
+            var ps = EntityAttributeGroupFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, Session.MAX_TIME);
             ps.setLong(2, entityType.getPrimaryKey().getEntityId());
@@ -5097,8 +5097,8 @@ public class CoreControl
                     "WHERE enagp_activedetailid = enagpdt_entityattributegroupdetailid AND enagpdt_isdefault = 1 " +
                     "FOR UPDATE";
         }
-        
-        PreparedStatement ps = EntityAttributeGroupFactory.getInstance().prepareStatement(query);
+
+        var ps = EntityAttributeGroupFactory.getInstance().prepareStatement(query);
         
         return EntityAttributeGroupFactory.getInstance().getEntityFromQuery(entityPermission, ps);
     }
@@ -5131,8 +5131,8 @@ public class CoreControl
                         "WHERE enagp_activedetailid = enagpdt_entityattributegroupdetailid AND enagpdt_entityattributegroupname = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = EntityAttributeGroupFactory.getInstance().prepareStatement(query);
+
+            var ps = EntityAttributeGroupFactory.getInstance().prepareStatement(query);
             
             ps.setString(1, entityAttributeGroupName);
             
@@ -5162,7 +5162,7 @@ public class CoreControl
     
     public EntityAttributeGroupChoicesBean getEntityAttributeGroupChoices(String defaultEntityAttributeGroupChoice, Language language,
             boolean allowNullChoice) {
-        List<EntityAttributeGroup> entityAttributeGroups = getEntityAttributeGroups();
+        var entityAttributeGroups = getEntityAttributeGroups();
         var size = entityAttributeGroups.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -5178,7 +5178,7 @@ public class CoreControl
         }
         
         for(var entityAttributeGroup : entityAttributeGroups) {
-            EntityAttributeGroupDetail entityAttributeGroupDetail = entityAttributeGroup.getLastDetail();
+            var entityAttributeGroupDetail = entityAttributeGroup.getLastDetail();
             var label = getBestEntityAttributeGroupDescription(entityAttributeGroup, language);
             var value = entityAttributeGroupDetail.getEntityAttributeGroupName();
             
@@ -5200,7 +5200,7 @@ public class CoreControl
     
     public List<EntityAttributeGroupTransfer> getEntityAttributeGroupTransfers(UserVisit userVisit, Collection<EntityAttributeGroup> entityAttributeGroups, EntityInstance entityInstance) {
         List<EntityAttributeGroupTransfer> entityAttributeGroupTransfers = new ArrayList<>(entityAttributeGroups.size());
-        EntityAttributeGroupTransferCache entityAttributeGroupTransferCache = getCoreTransferCaches(userVisit).getEntityAttributeGroupTransferCache();
+        var entityAttributeGroupTransferCache = getCoreTransferCaches(userVisit).getEntityAttributeGroupTransferCache();
         
         entityAttributeGroups.forEach((entityAttributeGroup) ->
                 entityAttributeGroupTransfers.add(entityAttributeGroupTransferCache.getEntityAttributeGroupTransfer(entityAttributeGroup, entityInstance))
@@ -5220,25 +5220,25 @@ public class CoreControl
     private void updateEntityAttributeGroupFromValue(EntityAttributeGroupDetailValue entityAttributeGroupDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(entityAttributeGroupDetailValue.hasBeenModified()) {
-            EntityAttributeGroup entityAttributeGroup = EntityAttributeGroupFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var entityAttributeGroup = EntityAttributeGroupFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      entityAttributeGroupDetailValue.getEntityAttributeGroupPK());
-            EntityAttributeGroupDetail entityAttributeGroupDetail = entityAttributeGroup.getActiveDetailForUpdate();
+            var entityAttributeGroupDetail = entityAttributeGroup.getActiveDetailForUpdate();
             
             entityAttributeGroupDetail.setThruTime(session.START_TIME_LONG);
             entityAttributeGroupDetail.store();
-            
-            EntityAttributeGroupPK entityAttributeGroupPK = entityAttributeGroupDetail.getEntityAttributeGroupPK();
-            String entityAttributeGroupName = entityAttributeGroupDetailValue.getEntityAttributeGroupName();
-            Boolean isDefault = entityAttributeGroupDetailValue.getIsDefault();
-            Integer sortOrder = entityAttributeGroupDetailValue.getSortOrder();
+
+            var entityAttributeGroupPK = entityAttributeGroupDetail.getEntityAttributeGroupPK();
+            var entityAttributeGroupName = entityAttributeGroupDetailValue.getEntityAttributeGroupName();
+            var isDefault = entityAttributeGroupDetailValue.getIsDefault();
+            var sortOrder = entityAttributeGroupDetailValue.getSortOrder();
             
             if(checkDefault) {
-                EntityAttributeGroup defaultEntityAttributeGroup = getDefaultEntityAttributeGroup();
-                boolean defaultFound = defaultEntityAttributeGroup != null && !defaultEntityAttributeGroup.equals(entityAttributeGroup);
+                var defaultEntityAttributeGroup = getDefaultEntityAttributeGroup();
+                var defaultFound = defaultEntityAttributeGroup != null && !defaultEntityAttributeGroup.equals(entityAttributeGroup);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    EntityAttributeGroupDetailValue defaultEntityAttributeGroupDetailValue = getDefaultEntityAttributeGroupDetailValueForUpdate();
+                    var defaultEntityAttributeGroupDetailValue = getDefaultEntityAttributeGroupDetailValueForUpdate();
                     
                     defaultEntityAttributeGroupDetailValue.setIsDefault(Boolean.FALSE);
                     updateEntityAttributeGroupFromValue(defaultEntityAttributeGroupDetailValue, false, updatedBy);
@@ -5265,23 +5265,23 @@ public class CoreControl
     public void deleteEntityAttributeGroup(EntityAttributeGroup entityAttributeGroup, BasePK deletedBy) {
         deleteEntityAttributeEntityAttributeGroupsByEntityAttributeGroup(entityAttributeGroup, deletedBy);
         deleteEntityAttributeGroupDescriptionsByEntityAttributeGroup(entityAttributeGroup, deletedBy);
-        
-        EntityAttributeGroupDetail entityAttributeGroupDetail = entityAttributeGroup.getLastDetailForUpdate();
+
+        var entityAttributeGroupDetail = entityAttributeGroup.getLastDetailForUpdate();
         entityAttributeGroupDetail.setThruTime(session.START_TIME_LONG);
         entityAttributeGroup.setActiveDetail(null);
         entityAttributeGroup.store();
         
         // Check for default, and pick one if necessary
-        EntityAttributeGroup defaultEntityAttributeGroup = getDefaultEntityAttributeGroup();
+        var defaultEntityAttributeGroup = getDefaultEntityAttributeGroup();
         if(defaultEntityAttributeGroup == null) {
-            List<EntityAttributeGroup> entityAttributeGroups = getEntityAttributeGroupsForUpdate();
+            var entityAttributeGroups = getEntityAttributeGroupsForUpdate();
             
             if(!entityAttributeGroups.isEmpty()) {
-                Iterator<EntityAttributeGroup> iter = entityAttributeGroups.iterator();
+                var iter = entityAttributeGroups.iterator();
                 if(iter.hasNext()) {
                     defaultEntityAttributeGroup = iter.next();
                 }
-                EntityAttributeGroupDetailValue entityAttributeGroupDetailValue = Objects.requireNonNull(defaultEntityAttributeGroup).getLastDetailForUpdate().getEntityAttributeGroupDetailValue().clone();
+                var entityAttributeGroupDetailValue = Objects.requireNonNull(defaultEntityAttributeGroup).getLastDetailForUpdate().getEntityAttributeGroupDetailValue().clone();
                 
                 entityAttributeGroupDetailValue.setIsDefault(Boolean.TRUE);
                 updateEntityAttributeGroupFromValue(entityAttributeGroupDetailValue, false, deletedBy);
@@ -5297,7 +5297,7 @@ public class CoreControl
     
     public EntityAttributeGroupDescription createEntityAttributeGroupDescription(EntityAttributeGroup entityAttributeGroup, Language language, String description,
             BasePK createdBy) {
-        EntityAttributeGroupDescription entityAttributeGroupDescription = EntityAttributeGroupDescriptionFactory.getInstance().create(entityAttributeGroup,
+        var entityAttributeGroupDescription = EntityAttributeGroupDescriptionFactory.getInstance().create(entityAttributeGroup,
                 language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
@@ -5322,8 +5322,8 @@ public class CoreControl
                         "WHERE enagpd_enagp_entityattributegroupid = ? AND enagpd_lang_languageid = ? AND enagpd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = EntityAttributeGroupDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = EntityAttributeGroupDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, entityAttributeGroup.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -5371,8 +5371,8 @@ public class CoreControl
                         "WHERE enagpd_enagp_entityattributegroupid = ? AND enagpd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = EntityAttributeGroupDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = EntityAttributeGroupDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, entityAttributeGroup.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -5395,7 +5395,7 @@ public class CoreControl
     
     public String getBestEntityAttributeGroupDescription(EntityAttributeGroup entityAttributeGroup, Language language) {
         String description;
-        EntityAttributeGroupDescription entityAttributeGroupDescription = getEntityAttributeGroupDescription(entityAttributeGroup, language);
+        var entityAttributeGroupDescription = getEntityAttributeGroupDescription(entityAttributeGroup, language);
         
         if(entityAttributeGroupDescription == null && !language.getIsDefault()) {
             entityAttributeGroupDescription = getEntityAttributeGroupDescription(entityAttributeGroup, getPartyControl().getDefaultLanguage());
@@ -5415,9 +5415,9 @@ public class CoreControl
     }
     
     public List<EntityAttributeGroupDescriptionTransfer> getEntityAttributeGroupDescriptionTransfers(UserVisit userVisit, EntityAttributeGroup entityAttributeGroup, EntityInstance entityInstance) {
-        List<EntityAttributeGroupDescription> entityAttributeGroupDescriptions = getEntityAttributeGroupDescriptionsByEntityAttributeGroup(entityAttributeGroup);
+        var entityAttributeGroupDescriptions = getEntityAttributeGroupDescriptionsByEntityAttributeGroup(entityAttributeGroup);
         List<EntityAttributeGroupDescriptionTransfer> entityAttributeGroupDescriptionTransfers = new ArrayList<>(entityAttributeGroupDescriptions.size());
-        EntityAttributeGroupDescriptionTransferCache entityAttributeGroupDescriptionTransferCache = getCoreTransferCaches(userVisit).getEntityAttributeGroupDescriptionTransferCache();
+        var entityAttributeGroupDescriptionTransferCache = getCoreTransferCaches(userVisit).getEntityAttributeGroupDescriptionTransferCache();
         
         entityAttributeGroupDescriptions.forEach((entityAttributeGroupDescription) ->
                 entityAttributeGroupDescriptionTransfers.add(entityAttributeGroupDescriptionTransferCache.getEntityAttributeGroupDescriptionTransfer(entityAttributeGroupDescription, entityInstance))
@@ -5428,15 +5428,15 @@ public class CoreControl
     
     public void updateEntityAttributeGroupDescriptionFromValue(EntityAttributeGroupDescriptionValue entityAttributeGroupDescriptionValue, BasePK updatedBy) {
         if(entityAttributeGroupDescriptionValue.hasBeenModified()) {
-            EntityAttributeGroupDescription entityAttributeGroupDescription = EntityAttributeGroupDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var entityAttributeGroupDescription = EntityAttributeGroupDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      entityAttributeGroupDescriptionValue.getPrimaryKey());
             
             entityAttributeGroupDescription.setThruTime(session.START_TIME_LONG);
             entityAttributeGroupDescription.store();
-            
-            EntityAttributeGroup entityAttributeGroup = entityAttributeGroupDescription.getEntityAttributeGroup();
-            Language language = entityAttributeGroupDescription.getLanguage();
-            String description = entityAttributeGroupDescriptionValue.getDescription();
+
+            var entityAttributeGroup = entityAttributeGroupDescription.getEntityAttributeGroup();
+            var language = entityAttributeGroupDescription.getLanguage();
+            var description = entityAttributeGroupDescriptionValue.getDescription();
             
             entityAttributeGroupDescription = EntityAttributeGroupDescriptionFactory.getInstance().create(entityAttributeGroup, language,
                     description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -5452,7 +5452,7 @@ public class CoreControl
     }
     
     public void deleteEntityAttributeGroupDescriptionsByEntityAttributeGroup(EntityAttributeGroup entityAttributeGroup, BasePK deletedBy) {
-        List<EntityAttributeGroupDescription> entityAttributeGroupDescriptions = getEntityAttributeGroupDescriptionsByEntityAttributeGroupForUpdate(entityAttributeGroup);
+        var entityAttributeGroupDescriptions = getEntityAttributeGroupDescriptionsByEntityAttributeGroupForUpdate(entityAttributeGroup);
         
         entityAttributeGroupDescriptions.forEach((entityAttributeGroupDescription) -> 
                 deleteEntityAttributeGroupDescription(entityAttributeGroupDescription, deletedBy)
@@ -5465,8 +5465,8 @@ public class CoreControl
     
     public EntityAttribute createEntityAttribute(EntityType entityType, String entityAttributeName,
             EntityAttributeType entityAttributeType, Boolean trackRevisions, Integer sortOrder, BasePK createdBy) {
-        EntityAttribute entityAttribute = EntityAttributeFactory.getInstance().create();
-        EntityAttributeDetail entityAttributeDetail = EntityAttributeDetailFactory.getInstance().create(entityAttribute, entityType,
+        var entityAttribute = EntityAttributeFactory.getInstance().create();
+        var entityAttributeDetail = EntityAttributeDetailFactory.getInstance().create(entityAttribute, entityType,
                 entityAttributeName, entityAttributeType, trackRevisions, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -5556,8 +5556,8 @@ public class CoreControl
                         "AND enadt_ent_entitytypeid = ? AND enadt_entityattributename = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = EntityAttributeFactory.getInstance().prepareStatement(query);
+
+            var ps = EntityAttributeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, entityType.getPrimaryKey().getEntityId());
             ps.setString(2, entityAttributeName);
@@ -5606,8 +5606,8 @@ public class CoreControl
                         "AND enadt_ent_entitytypeid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = EntityAttributeFactory.getInstance().prepareStatement(query);
+
+            var ps = EntityAttributeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, entityType.getPrimaryKey().getEntityId());
             
@@ -5648,8 +5648,8 @@ public class CoreControl
                         "AND enadt_ent_entitytypeid = ? AND enadt_enat_entityattributetypeid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = EntityAttributeFactory.getInstance().prepareStatement(query);
+
+            var ps = EntityAttributeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, entityType.getPrimaryKey().getEntityId());
             ps.setLong(2, entityAttributeType.getPrimaryKey().getEntityId());
@@ -5695,8 +5695,8 @@ public class CoreControl
                         + "AND ena_lastdetailid = enadt_entityattributedetailid AND enadt_ent_entitytypeid = ? "
                         + "FOR UPDATE";
             }
-            
-            PreparedStatement ps = EntityAttributeFactory.getInstance().prepareStatement(query);
+
+            var ps = EntityAttributeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, entityAttributeGroup.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -5724,7 +5724,7 @@ public class CoreControl
     
     public List<EntityAttributeTransfer> getEntityAttributeTransfers(UserVisit userVisit, Collection<EntityAttribute> entityAttributes, EntityInstance entityInstance) {
         List<EntityAttributeTransfer> entityAttributeTransfers = new ArrayList<>(entityAttributes.size());
-        EntityAttributeTransferCache entityAttributeTransferCache = getCoreTransferCaches(userVisit).getEntityAttributeTransferCache();
+        var entityAttributeTransferCache = getCoreTransferCaches(userVisit).getEntityAttributeTransferCache();
         
         entityAttributes.forEach((entityAttribute) ->
                 entityAttributeTransfers.add(entityAttributeTransferCache.getEntityAttributeTransfer(entityAttribute, entityInstance))
@@ -5857,7 +5857,7 @@ public class CoreControl
     }
     
     public void deleteEntityAttributesByEntityInstance(EntityInstance entityInstance, BasePK deletedBy) {
-        List<EntityAttribute> entityAttributes = getEntityAttributesByEntityType(entityInstance.getEntityType());
+        var entityAttributes = getEntityAttributesByEntityType(entityInstance.getEntityType());
         
         entityAttributes.stream().map((entityAttribute) -> entityAttribute.getLastDetailForUpdate().getEntityAttributeType().getEntityAttributeTypeName()).forEach((entityAttributeTypeName) -> {
             if(entityAttributeTypeName.equals(EntityAttributeTypes.BOOLEAN.name())) {
@@ -5908,7 +5908,7 @@ public class CoreControl
     
     public EntityAttributeDescription createEntityAttributeDescription(EntityAttribute entityAttribute, Language language,
             String description, BasePK createdBy) {
-        EntityAttributeDescription entityAttributeDescription = EntityAttributeDescriptionFactory.getInstance().create(session,
+        var entityAttributeDescription = EntityAttributeDescriptionFactory.getInstance().create(session,
                 entityAttribute, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityAttributeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -5933,8 +5933,8 @@ public class CoreControl
                         "WHERE enad_ena_entityattributeid = ? AND enad_lang_languageid = ? AND enad_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = EntityAttributeDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = EntityAttributeDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -5982,8 +5982,8 @@ public class CoreControl
                         "WHERE enad_ena_entityattributeid = ? AND enad_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = EntityAttributeDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = EntityAttributeDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -6006,7 +6006,7 @@ public class CoreControl
     
     public String getBestEntityAttributeDescription(EntityAttribute entityAttribute, Language language) {
         String description;
-        EntityAttributeDescription entityAttributeDescription = getEntityAttributeDescription(entityAttribute, language);
+        var entityAttributeDescription = getEntityAttributeDescription(entityAttribute, language);
         
         if(entityAttributeDescription == null && !language.getIsDefault()) {
             entityAttributeDescription = getEntityAttributeDescription(entityAttribute, getPartyControl().getDefaultLanguage());
@@ -6027,9 +6027,9 @@ public class CoreControl
     
     public List<EntityAttributeDescriptionTransfer> getEntityAttributeDescriptionTransfersByEntityAttribute(UserVisit userVisit,
             EntityAttribute entityAttribute, EntityInstance entityInstance) {
-        List<EntityAttributeDescription> entityAttributeDescriptions = getEntityAttributeDescriptionsByEntityAttribute(entityAttribute);
+        var entityAttributeDescriptions = getEntityAttributeDescriptionsByEntityAttribute(entityAttribute);
         List<EntityAttributeDescriptionTransfer> entityAttributeDescriptionTransfers = new ArrayList<>(entityAttributeDescriptions.size());
-        EntityAttributeDescriptionTransferCache entityAttributeDescriptionTransferCache = getCoreTransferCaches(userVisit).getEntityAttributeDescriptionTransferCache();
+        var entityAttributeDescriptionTransferCache = getCoreTransferCaches(userVisit).getEntityAttributeDescriptionTransferCache();
         
         entityAttributeDescriptions.forEach((entityAttributeDescription) ->
                 entityAttributeDescriptionTransfers.add(entityAttributeDescriptionTransferCache.getEntityAttributeDescriptionTransfer(entityAttributeDescription, entityInstance))
@@ -6040,15 +6040,15 @@ public class CoreControl
     
     public void updateEntityAttributeDescriptionFromValue(EntityAttributeDescriptionValue entityAttributeDescriptionValue, BasePK updatedBy) {
         if(entityAttributeDescriptionValue.hasBeenModified()) {
-            EntityAttributeDescription entityAttributeDescription = EntityAttributeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var entityAttributeDescription = EntityAttributeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      entityAttributeDescriptionValue.getPrimaryKey());
             
             entityAttributeDescription.setThruTime(session.START_TIME_LONG);
             entityAttributeDescription.store();
-            
-            EntityAttribute entityAttribute = entityAttributeDescription.getEntityAttribute();
-            Language language = entityAttributeDescription.getLanguage();
-            String description = entityAttributeDescriptionValue.getDescription();
+
+            var entityAttribute = entityAttributeDescription.getEntityAttribute();
+            var language = entityAttributeDescription.getLanguage();
+            var description = entityAttributeDescriptionValue.getDescription();
             
             entityAttributeDescription = EntityAttributeDescriptionFactory.getInstance().create(entityAttribute, language,
                     description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -6064,7 +6064,7 @@ public class CoreControl
     }
     
     public void deleteEntityAttributeDescriptionsByEntityAttribute(EntityAttribute entityAttribute, BasePK deletedBy) {
-        List<EntityAttributeDescription> entityAttributeDescriptions = getEntityAttributeDescriptionsByEntityAttributeForUpdate(entityAttribute);
+        var entityAttributeDescriptions = getEntityAttributeDescriptionsByEntityAttributeForUpdate(entityAttribute);
         
         entityAttributeDescriptions.forEach((entityAttributeDescription) -> 
                 deleteEntityAttributeDescription(entityAttributeDescription, deletedBy)
@@ -6077,7 +6077,7 @@ public class CoreControl
     
     public EntityAttributeBlob createEntityAttributeBlob(EntityAttribute entityAttribute, Boolean checkContentWebAddress,
             BasePK createdBy) {
-        EntityAttributeBlob entityAttributeBlob = EntityAttributeBlobFactory.getInstance().create(session,
+        var entityAttributeBlob = EntityAttributeBlobFactory.getInstance().create(session,
                 entityAttribute, checkContentWebAddress, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityAttributeBlob.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -6125,14 +6125,14 @@ public class CoreControl
     
     public void updateEntityAttributeBlobFromValue(EntityAttributeBlobValue entityAttributeBlobValue, BasePK updatedBy) {
         if(entityAttributeBlobValue.hasBeenModified()) {
-            EntityAttributeBlob entityAttributeBlob = EntityAttributeBlobFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var entityAttributeBlob = EntityAttributeBlobFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      entityAttributeBlobValue.getPrimaryKey());
             
             entityAttributeBlob.setThruTime(session.START_TIME_LONG);
             entityAttributeBlob.store();
-            
-            EntityAttribute entityAttribute = entityAttributeBlob.getEntityAttribute();
-            Boolean checkContentWebAddress = entityAttributeBlobValue.getCheckContentWebAddress();
+
+            var entityAttribute = entityAttributeBlob.getEntityAttribute();
+            var checkContentWebAddress = entityAttributeBlobValue.getCheckContentWebAddress();
             
             entityAttributeBlob = EntityAttributeBlobFactory.getInstance().create(entityAttribute, checkContentWebAddress,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -6148,7 +6148,7 @@ public class CoreControl
     }
     
     public void deleteEntityAttributeBlobByEntityAttribute(EntityAttribute entityAttribute, BasePK deletedBy) {
-        EntityAttributeBlob entityAttributeBlob = getEntityAttributeBlobForUpdate(entityAttribute);
+        var entityAttributeBlob = getEntityAttributeBlobForUpdate(entityAttribute);
         
         if(entityAttributeBlob != null) {
             deleteEntityAttributeBlob(entityAttributeBlob, deletedBy);
@@ -6161,7 +6161,7 @@ public class CoreControl
     
     public EntityAttributeString createEntityAttributeString(EntityAttribute entityAttribute, String validationPattern,
             BasePK createdBy) {
-        EntityAttributeString entityAttributeString = EntityAttributeStringFactory.getInstance().create(session,
+        var entityAttributeString = EntityAttributeStringFactory.getInstance().create(session,
                 entityAttribute, validationPattern, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityAttributeString.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -6209,14 +6209,14 @@ public class CoreControl
     
     public void updateEntityAttributeStringFromValue(EntityAttributeStringValue entityAttributeStringValue, BasePK updatedBy) {
         if(entityAttributeStringValue.hasBeenModified()) {
-            EntityAttributeString entityAttributeString = EntityAttributeStringFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var entityAttributeString = EntityAttributeStringFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      entityAttributeStringValue.getPrimaryKey());
             
             entityAttributeString.setThruTime(session.START_TIME_LONG);
             entityAttributeString.store();
-            
-            EntityAttribute entityAttribute = entityAttributeString.getEntityAttribute();
-            String validationPattern = entityAttributeStringValue.getValidationPattern();
+
+            var entityAttribute = entityAttributeString.getEntityAttribute();
+            var validationPattern = entityAttributeStringValue.getValidationPattern();
             
             entityAttributeString = EntityAttributeStringFactory.getInstance().create(entityAttribute, validationPattern,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -6232,7 +6232,7 @@ public class CoreControl
     }
     
     public void deleteEntityAttributeStringByEntityAttribute(EntityAttribute entityAttribute, BasePK deletedBy) {
-        EntityAttributeString entityAttributeString = getEntityAttributeStringForUpdate(entityAttribute);
+        var entityAttributeString = getEntityAttributeStringForUpdate(entityAttribute);
         
         if(entityAttributeString != null) {
             deleteEntityAttributeString(entityAttributeString, deletedBy);
@@ -6245,7 +6245,7 @@ public class CoreControl
     
     public EntityAttributeInteger createEntityAttributeInteger(EntityAttribute entityAttribute, Integer upperRangeIntegerValue,
             Integer upperLimitIntegerValue, Integer lowerLimitIntegerValue, Integer lowerRangeIntegerValue, BasePK createdBy) {
-        EntityAttributeInteger entityAttributeInteger = EntityAttributeIntegerFactory.getInstance().create(session,
+        var entityAttributeInteger = EntityAttributeIntegerFactory.getInstance().create(session,
                 entityAttribute, upperRangeIntegerValue, upperLimitIntegerValue, lowerLimitIntegerValue, lowerRangeIntegerValue,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
@@ -6294,17 +6294,17 @@ public class CoreControl
     
     public void updateEntityAttributeIntegerFromValue(EntityAttributeIntegerValue entityAttributeIntegerValue, BasePK updatedBy) {
         if(entityAttributeIntegerValue.hasBeenModified()) {
-            EntityAttributeInteger entityAttributeInteger = EntityAttributeIntegerFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var entityAttributeInteger = EntityAttributeIntegerFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      entityAttributeIntegerValue.getPrimaryKey());
             
             entityAttributeInteger.setThruTime(session.START_TIME_LONG);
             entityAttributeInteger.store();
-            
-            EntityAttribute entityAttribute = entityAttributeInteger.getEntityAttribute();
-            Integer upperRangeIntegerValue = entityAttributeIntegerValue.getUpperRangeIntegerValue();
-            Integer upperLimitIntegerValue = entityAttributeIntegerValue.getUpperLimitIntegerValue();
-            Integer lowerLimitIntegerValue = entityAttributeIntegerValue.getLowerLimitIntegerValue();
-            Integer lowerRangeIntegerValue = entityAttributeIntegerValue.getLowerRangeIntegerValue();
+
+            var entityAttribute = entityAttributeInteger.getEntityAttribute();
+            var upperRangeIntegerValue = entityAttributeIntegerValue.getUpperRangeIntegerValue();
+            var upperLimitIntegerValue = entityAttributeIntegerValue.getUpperLimitIntegerValue();
+            var lowerLimitIntegerValue = entityAttributeIntegerValue.getLowerLimitIntegerValue();
+            var lowerRangeIntegerValue = entityAttributeIntegerValue.getLowerRangeIntegerValue();
             
             entityAttributeInteger = EntityAttributeIntegerFactory.getInstance().create(entityAttribute, upperRangeIntegerValue,
                     upperLimitIntegerValue, lowerLimitIntegerValue, lowerRangeIntegerValue, session.START_TIME_LONG,
@@ -6321,7 +6321,7 @@ public class CoreControl
     }
     
     public void deleteEntityAttributeIntegerByEntityAttribute(EntityAttribute entityAttribute, BasePK deletedBy) {
-        EntityAttributeInteger entityAttributeInteger = getEntityAttributeIntegerForUpdate(entityAttribute);
+        var entityAttributeInteger = getEntityAttributeIntegerForUpdate(entityAttribute);
         
         if(entityAttributeInteger != null) {
             deleteEntityAttributeInteger(entityAttributeInteger, deletedBy);
@@ -6334,7 +6334,7 @@ public class CoreControl
     
     public EntityAttributeLong createEntityAttributeLong(EntityAttribute entityAttribute, Long upperRangeLongValue,
             Long upperLimitLongValue, Long lowerLimitLongValue, Long lowerRangeLongValue, BasePK createdBy) {
-        EntityAttributeLong entityAttributeLong = EntityAttributeLongFactory.getInstance().create(session,
+        var entityAttributeLong = EntityAttributeLongFactory.getInstance().create(session,
                 entityAttribute, upperRangeLongValue, upperLimitLongValue, lowerLimitLongValue, lowerRangeLongValue,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
@@ -6383,17 +6383,17 @@ public class CoreControl
     
     public void updateEntityAttributeLongFromValue(EntityAttributeLongValue entityAttributeLongValue, BasePK updatedBy) {
         if(entityAttributeLongValue.hasBeenModified()) {
-            EntityAttributeLong entityAttributeLong = EntityAttributeLongFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var entityAttributeLong = EntityAttributeLongFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      entityAttributeLongValue.getPrimaryKey());
             
             entityAttributeLong.setThruTime(session.START_TIME_LONG);
             entityAttributeLong.store();
-            
-            EntityAttribute entityAttribute = entityAttributeLong.getEntityAttribute();
-            Long upperRangeLongValue = entityAttributeLongValue.getUpperRangeLongValue();
-            Long upperLimitLongValue = entityAttributeLongValue.getUpperLimitLongValue();
-            Long lowerLimitLongValue = entityAttributeLongValue.getLowerLimitLongValue();
-            Long lowerRangeLongValue = entityAttributeLongValue.getLowerRangeLongValue();
+
+            var entityAttribute = entityAttributeLong.getEntityAttribute();
+            var upperRangeLongValue = entityAttributeLongValue.getUpperRangeLongValue();
+            var upperLimitLongValue = entityAttributeLongValue.getUpperLimitLongValue();
+            var lowerLimitLongValue = entityAttributeLongValue.getLowerLimitLongValue();
+            var lowerRangeLongValue = entityAttributeLongValue.getLowerRangeLongValue();
             
             entityAttributeLong = EntityAttributeLongFactory.getInstance().create(entityAttribute, upperRangeLongValue,
                     upperLimitLongValue, lowerLimitLongValue, lowerRangeLongValue, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -6409,7 +6409,7 @@ public class CoreControl
     }
     
     public void deleteEntityAttributeLongByEntityAttribute(EntityAttribute entityAttribute, BasePK deletedBy) {
-        EntityAttributeLong entityAttributeLong = getEntityAttributeLongForUpdate(entityAttribute);
+        var entityAttributeLong = getEntityAttributeLongForUpdate(entityAttribute);
         
         if(entityAttributeLong != null) {
             deleteEntityAttributeLong(entityAttributeLong, deletedBy);
@@ -6422,7 +6422,7 @@ public class CoreControl
     
     public EntityAttributeNumeric createEntityAttributeNumeric(EntityAttribute entityAttribute, UnitOfMeasureType unitOfMeasureType,
             BasePK createdBy) {
-        EntityAttributeNumeric entityAttributeNumeric = EntityAttributeNumericFactory.getInstance().create(session,
+        var entityAttributeNumeric = EntityAttributeNumericFactory.getInstance().create(session,
                 entityAttribute, unitOfMeasureType, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityAttributeNumeric.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -6478,14 +6478,14 @@ public class CoreControl
     
     public void updateEntityAttributeNumericFromValue(EntityAttributeNumericValue entityAttributeNumericValue, BasePK updatedBy) {
         if(entityAttributeNumericValue.hasBeenModified()) {
-            EntityAttributeNumeric entityAttributeNumeric = EntityAttributeNumericFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var entityAttributeNumeric = EntityAttributeNumericFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      entityAttributeNumericValue.getPrimaryKey());
             
             entityAttributeNumeric.setThruTime(session.START_TIME_LONG);
             entityAttributeNumeric.store();
-            
-            EntityAttributePK entityAttributePK = entityAttributeNumeric.getEntityAttributePK();
-            UnitOfMeasureTypePK unitOfMeasureTypePK = entityAttributeNumericValue.getUnitOfMeasureTypePK();
+
+            var entityAttributePK = entityAttributeNumeric.getEntityAttributePK();
+            var unitOfMeasureTypePK = entityAttributeNumericValue.getUnitOfMeasureTypePK();
             
             entityAttributeNumeric = EntityAttributeNumericFactory.getInstance().create(entityAttributePK, unitOfMeasureTypePK,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -6501,7 +6501,7 @@ public class CoreControl
     }
     
     public void deleteEntityAttributeNumericByEntityAttribute(EntityAttribute entityAttribute, BasePK deletedBy) {
-        EntityAttributeNumeric entityAttributeNumeric = getEntityAttributeNumericForUpdate(entityAttribute);
+        var entityAttributeNumeric = getEntityAttributeNumericForUpdate(entityAttribute);
         
         if(entityAttributeNumeric != null) {
             deleteEntityAttributeNumeric(entityAttributeNumeric, deletedBy);
@@ -6514,7 +6514,7 @@ public class CoreControl
     
     public EntityAttributeListItem createEntityAttributeListItem(EntityAttribute entityAttribute, Sequence entityListItemSequence,
             BasePK createdBy) {
-        EntityAttributeListItem entityAttributeListItem = EntityAttributeListItemFactory.getInstance().create(session,
+        var entityAttributeListItem = EntityAttributeListItemFactory.getInstance().create(session,
                 entityAttribute, entityListItemSequence, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityAttributeListItem.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -6570,14 +6570,14 @@ public class CoreControl
     
     public void updateEntityAttributeListItemFromValue(EntityAttributeListItemValue entityAttributeListItemValue, BasePK updatedBy) {
         if(entityAttributeListItemValue.hasBeenModified()) {
-            EntityAttributeListItem entityAttributeListItem = EntityAttributeListItemFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var entityAttributeListItem = EntityAttributeListItemFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      entityAttributeListItemValue.getPrimaryKey());
             
             entityAttributeListItem.setThruTime(session.START_TIME_LONG);
             entityAttributeListItem.store();
-            
-            EntityAttributePK entityAttributePK = entityAttributeListItem.getEntityAttributePK();
-            SequencePK entityListItemSequencePK = entityAttributeListItemValue.getEntityListItemSequencePK();
+
+            var entityAttributePK = entityAttributeListItem.getEntityAttributePK();
+            var entityListItemSequencePK = entityAttributeListItemValue.getEntityListItemSequencePK();
             
             entityAttributeListItem = EntityAttributeListItemFactory.getInstance().create(entityAttributePK, entityListItemSequencePK,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -6593,7 +6593,7 @@ public class CoreControl
     }
     
     public void deleteEntityAttributeListItemByEntityAttribute(EntityAttribute entityAttribute, BasePK deletedBy) {
-        EntityAttributeListItem entityAttributeListItem = getEntityAttributeListItemForUpdate(entityAttribute);
+        var entityAttributeListItem = getEntityAttributeListItemForUpdate(entityAttribute);
         
         if(entityAttributeListItem != null) {
             deleteEntityAttributeListItem(entityAttributeListItem, deletedBy);
@@ -6698,7 +6698,7 @@ public class CoreControl
     
     public EntityAttributeEntityAttributeGroup createEntityAttributeEntityAttributeGroup(EntityAttribute entityAttribute,
             EntityAttributeGroup entityAttributeGroup, Integer sortOrder, BasePK createdBy) {
-        EntityAttributeEntityAttributeGroup entityAttributeEntityAttributeGroup = EntityAttributeEntityAttributeGroupFactory.getInstance().create(session,
+        var entityAttributeEntityAttributeGroup = EntityAttributeEntityAttributeGroupFactory.getInstance().create(session,
                 entityAttribute, entityAttributeGroup, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityAttributeEntityAttributeGroup.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -6739,8 +6739,8 @@ public class CoreControl
                         "WHERE enaenagp_ena_entityattributeid = ? AND enaenagp_enagp_entityattributegroupid = ? AND enaenagp_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = EntityAttributeEntityAttributeGroupFactory.getInstance().prepareStatement(query);
+
+            var ps = EntityAttributeEntityAttributeGroupFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             ps.setLong(2, entityAttributeGroup.getPrimaryKey().getEntityId());
@@ -6790,8 +6790,8 @@ public class CoreControl
                         + "WHERE enaenagp_ena_entityattributeid = ? AND enaenagp_thrutime = ? "
                         + "FOR UPDATE";
             }
-            
-            PreparedStatement ps = EntityAttributeEntityAttributeGroupFactory.getInstance().prepareStatement(query);
+
+            var ps = EntityAttributeEntityAttributeGroupFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -6832,8 +6832,8 @@ public class CoreControl
                         + "WHERE enaenagp_enagp_entityattributegroupid = ? AND enaenagp_thrutime = ? "
                         + "FOR UPDATE";
             }
-            
-            PreparedStatement ps = EntityAttributeEntityAttributeGroupFactory.getInstance().prepareStatement(query);
+
+            var ps = EntityAttributeEntityAttributeGroupFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, entityAttributeGroup.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -6861,7 +6861,7 @@ public class CoreControl
     public List<EntityAttributeEntityAttributeGroupTransfer> getEntityAttributeEntityAttributeGroupTransfers(UserVisit userVisit,
             Collection<EntityAttributeEntityAttributeGroup> entityAttributeEntityAttributeGroups, EntityInstance entityInstance) {
         List<EntityAttributeEntityAttributeGroupTransfer> entityAttributeEntityAttributeGroupTransfers = new ArrayList<>(entityAttributeEntityAttributeGroups.size());
-        EntityAttributeEntityAttributeGroupTransferCache entityAttributeEntityAttributeGroupTransferCache = getCoreTransferCaches(userVisit).getEntityAttributeEntityAttributeGroupTransferCache();
+        var entityAttributeEntityAttributeGroupTransferCache = getCoreTransferCaches(userVisit).getEntityAttributeEntityAttributeGroupTransferCache();
         
         entityAttributeEntityAttributeGroups.forEach((entityAttributeEntityAttributeGroup) ->
                 entityAttributeEntityAttributeGroupTransfers.add(entityAttributeEntityAttributeGroupTransferCache.getEntityAttributeEntityAttributeGroupTransfer(entityAttributeEntityAttributeGroup, entityInstance))
@@ -6882,15 +6882,15 @@ public class CoreControl
     
     public void updateEntityAttributeEntityAttributeGroupFromValue(EntityAttributeEntityAttributeGroupValue entityAttributeEntityAttributeGroupValue, BasePK updatedBy) {
         if(entityAttributeEntityAttributeGroupValue.hasBeenModified()) {
-            EntityAttributeEntityAttributeGroup entityAttributeEntityAttributeGroup = EntityAttributeEntityAttributeGroupFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var entityAttributeEntityAttributeGroup = EntityAttributeEntityAttributeGroupFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      entityAttributeEntityAttributeGroupValue.getPrimaryKey());
             
             entityAttributeEntityAttributeGroup.setThruTime(session.START_TIME_LONG);
             entityAttributeEntityAttributeGroup.store();
-            
-            EntityAttribute entityAttribute = entityAttributeEntityAttributeGroup.getEntityAttribute();
-            EntityAttributeGroup entityAttributeGroup = entityAttributeEntityAttributeGroup.getEntityAttributeGroup();
-            Integer sortOrder = entityAttributeEntityAttributeGroupValue.getSortOrder();
+
+            var entityAttribute = entityAttributeEntityAttributeGroup.getEntityAttribute();
+            var entityAttributeGroup = entityAttributeEntityAttributeGroup.getEntityAttributeGroup();
+            var sortOrder = entityAttributeEntityAttributeGroupValue.getSortOrder();
             
             entityAttributeEntityAttributeGroup = EntityAttributeEntityAttributeGroupFactory.getInstance().create(entityAttribute, entityAttributeGroup,
                     sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -6906,7 +6906,7 @@ public class CoreControl
     }
     
     public void deleteEntityAttributeEntityAttributeGroupsByEntityAttribute(EntityAttribute entityAttribute, BasePK deletedBy) {
-        List<EntityAttributeEntityAttributeGroup> entityAttributeEntityAttributeGroups = getEntityAttributeEntityAttributeGroupsByEntityAttributeForUpdate(entityAttribute);
+        var entityAttributeEntityAttributeGroups = getEntityAttributeEntityAttributeGroupsByEntityAttributeForUpdate(entityAttribute);
         
         entityAttributeEntityAttributeGroups.forEach((entityAttributeEntityAttributeGroup) -> 
                 deleteEntityAttributeEntityAttributeGroup(entityAttributeEntityAttributeGroup, deletedBy)
@@ -6914,7 +6914,7 @@ public class CoreControl
     }
     
     public void deleteEntityAttributeEntityAttributeGroupsByEntityAttributeGroup(EntityAttributeGroup entityAttributeGroup, BasePK deletedBy) {
-        List<EntityAttributeEntityAttributeGroup> entityAttributeEntityAttributeGroups = getEntityAttributeEntityAttributeGroupsByEntityAttributeGroupForUpdate(entityAttributeGroup);
+        var entityAttributeEntityAttributeGroups = getEntityAttributeEntityAttributeGroupsByEntityAttributeGroupForUpdate(entityAttributeGroup);
         
         entityAttributeEntityAttributeGroups.forEach((entityAttributeEntityAttributeGroup) -> 
                 deleteEntityAttributeEntityAttributeGroup(entityAttributeEntityAttributeGroup, deletedBy)
@@ -6927,20 +6927,20 @@ public class CoreControl
     
     public EntityListItem createEntityListItem(EntityAttribute entityAttribute, String entityListItemName, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
-        EntityListItem defaultEntityListItem = getDefaultEntityListItem(entityAttribute);
-        boolean defaultFound = defaultEntityListItem != null;
+        var defaultEntityListItem = getDefaultEntityListItem(entityAttribute);
+        var defaultFound = defaultEntityListItem != null;
         
         if(defaultFound && isDefault) {
-            EntityListItemDetailValue defaultEntityListItemDetailValue = getDefaultEntityListItemDetailValueForUpdate(entityAttribute);
+            var defaultEntityListItemDetailValue = getDefaultEntityListItemDetailValueForUpdate(entityAttribute);
             
             defaultEntityListItemDetailValue.setIsDefault(Boolean.FALSE);
             updateEntityListItemFromValue(defaultEntityListItemDetailValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        EntityListItem entityListItem = EntityListItemFactory.getInstance().create();
-        EntityListItemDetail entityListItemDetail = EntityListItemDetailFactory.getInstance().create(entityListItem,
+
+        var entityListItem = EntityListItemFactory.getInstance().create();
+        var entityListItemDetail = EntityListItemDetailFactory.getInstance().create(entityListItem,
                 entityAttribute, entityListItemName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -6998,8 +6998,8 @@ public class CoreControl
                         "AND elidt_ena_entityattributeid = ? AND elidt_isdefault = 1 " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = EntityListItemFactory.getInstance().prepareStatement(query);
+
+            var ps = EntityListItemFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             
@@ -7041,8 +7041,8 @@ public class CoreControl
                         "AND elidt_ena_entityattributeid = ? AND elidt_entitylistitemname = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = EntityListItemFactory.getInstance().prepareStatement(query);
+
+            var ps = EntityListItemFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             ps.setString(2, entityListItemName);
@@ -7089,8 +7089,8 @@ public class CoreControl
                         "WHERE eli_activedetailid = elidt_entitylistitemdetailid AND elidt_ena_entityattributeid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = EntityListItemFactory.getInstance().prepareStatement(query);
+
+            var ps = EntityListItemFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             
@@ -7124,7 +7124,7 @@ public class CoreControl
     
     public List<EntityListItemTransfer> getEntityListItemTransfers(UserVisit userVisit, Collection<EntityListItem> entityListItems, EntityInstance entityInstance) {
         List<EntityListItemTransfer> entityListItemTransfers = new ArrayList<>(entityListItems.size());
-        EntityListItemTransferCache entityListItemTransferCache = getCoreTransferCaches(userVisit).getEntityListItemTransferCache();
+        var entityListItemTransferCache = getCoreTransferCaches(userVisit).getEntityListItemTransferCache();
 
         entityListItems.forEach((entityListItem) ->
                 entityListItemTransfers.add(entityListItemTransferCache.getEntityListItemTransfer(entityListItem, entityInstance))
@@ -7140,26 +7140,26 @@ public class CoreControl
     private void updateEntityListItemFromValue(EntityListItemDetailValue entityListItemDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(entityListItemDetailValue.hasBeenModified()) {
-            EntityListItem entityListItem = EntityListItemFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var entityListItem = EntityListItemFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      entityListItemDetailValue.getEntityListItemPK());
-            EntityListItemDetail entityListItemDetail = entityListItem.getActiveDetailForUpdate();
+            var entityListItemDetail = entityListItem.getActiveDetailForUpdate();
             
             entityListItemDetail.setThruTime(session.START_TIME_LONG);
             entityListItemDetail.store();
-            
-            EntityListItemPK entityListItemPK = entityListItemDetail.getEntityListItemPK(); // Not updated
-            EntityAttribute entityAttribute = entityListItemDetail.getEntityAttribute(); // Not updated
-            String entityListItemName = entityListItemDetailValue.getEntityListItemName();
-            Boolean isDefault = entityListItemDetailValue.getIsDefault();
-            Integer sortOrder = entityListItemDetailValue.getSortOrder();
+
+            var entityListItemPK = entityListItemDetail.getEntityListItemPK(); // Not updated
+            var entityAttribute = entityListItemDetail.getEntityAttribute(); // Not updated
+            var entityListItemName = entityListItemDetailValue.getEntityListItemName();
+            var isDefault = entityListItemDetailValue.getIsDefault();
+            var sortOrder = entityListItemDetailValue.getSortOrder();
             
             if(checkDefault) {
-                EntityListItem defaultEntityListItem = getDefaultEntityListItem(entityAttribute);
-                boolean defaultFound = defaultEntityListItem != null && !defaultEntityListItem.equals(entityListItem);
+                var defaultEntityListItem = getDefaultEntityListItem(entityAttribute);
+                var defaultFound = defaultEntityListItem != null && !defaultEntityListItem.equals(entityListItem);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    EntityListItemDetailValue defaultEntityListItemDetailValue = getDefaultEntityListItemDetailValueForUpdate(entityAttribute);
+                    var defaultEntityListItemDetailValue = getDefaultEntityListItemDetailValueForUpdate(entityAttribute);
                     
                     defaultEntityListItemDetailValue.setIsDefault(Boolean.FALSE);
                     updateEntityListItemFromValue(defaultEntityListItemDetailValue, false, updatedBy);
@@ -7186,7 +7186,7 @@ public class CoreControl
     
     public EntityListItemChoicesBean getEntityListItemChoices(String defaultEntityListItemChoice, Language language,
             boolean allowNullChoice, EntityAttribute entityAttribute) {
-        List<EntityListItem> entityListItems = getEntityListItems(entityAttribute);
+        var entityListItems = getEntityListItems(entityAttribute);
         var size = entityListItems.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -7202,7 +7202,7 @@ public class CoreControl
         }
         
         for(var entityListItem : entityListItems) {
-            EntityListItemDetail entityListItemDetail = entityListItem.getLastDetail();
+            var entityListItemDetail = entityListItem.getLastDetail();
             var label = getBestEntityListItemDescription(entityListItem, language);
             var value = entityListItemDetail.getEntityListItemName();
             
@@ -7219,8 +7219,8 @@ public class CoreControl
     }
     
     private void deleteEntityListItem(EntityListItem entityListItem, boolean checkDefault, BasePK deletedBy) {
-        EntityListItemDetail entityListItemDetail = entityListItem.getLastDetailForUpdate();
-        String entityAttributeTypeName = entityListItemDetail.getEntityAttribute().getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
+        var entityListItemDetail = entityListItem.getLastDetailForUpdate();
+        var entityAttributeTypeName = entityListItemDetail.getEntityAttribute().getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
         
         if(entityAttributeTypeName.equals(EntityAttributeTypes.LISTITEM.name())) {
             deleteEntityListItemAttributesByEntityListItem(entityListItem, deletedBy);
@@ -7236,17 +7236,17 @@ public class CoreControl
 
         if(checkDefault) {
             // Check for default, and pick one if necessary
-            EntityAttribute entityAttribute = entityListItemDetail.getEntityAttribute();
-            EntityListItem defaultEntityListItem = getDefaultEntityListItem(entityAttribute);
+            var entityAttribute = entityListItemDetail.getEntityAttribute();
+            var defaultEntityListItem = getDefaultEntityListItem(entityAttribute);
             if(defaultEntityListItem == null) {
-                List<EntityListItem> entityListItems = getEntityListItemsForUpdate(entityAttribute);
+                var entityListItems = getEntityListItemsForUpdate(entityAttribute);
 
                 if(!entityListItems.isEmpty()) {
-                    Iterator<EntityListItem> iter = entityListItems.iterator();
+                    var iter = entityListItems.iterator();
                     if(iter.hasNext()) {
                         defaultEntityListItem = iter.next();
                     }
-                    EntityListItemDetailValue entityListItemDetailValue = Objects.requireNonNull(defaultEntityListItem).getLastDetailForUpdate().getEntityListItemDetailValue().clone();
+                    var entityListItemDetailValue = Objects.requireNonNull(defaultEntityListItem).getLastDetailForUpdate().getEntityListItemDetailValue().clone();
 
                     entityListItemDetailValue.setIsDefault(Boolean.TRUE);
                     updateEntityListItemFromValue(entityListItemDetailValue, false, deletedBy);
@@ -7262,7 +7262,7 @@ public class CoreControl
     }
 
     public void deleteEntityListItemsByEntityAttribute(EntityAttribute entityAttribute, BasePK deletedBy) {
-        List<EntityListItem> entityListItems = getEntityListItemsForUpdate(entityAttribute);
+        var entityListItems = getEntityListItemsForUpdate(entityAttribute);
         
         entityListItems.forEach((entityListItem) ->
                 deleteEntityListItem(entityListItem, false, deletedBy)
@@ -7274,7 +7274,7 @@ public class CoreControl
     // --------------------------------------------------------------------------------
     
     public EntityListItemDescription createEntityListItemDescription(EntityListItem entityListItem, Language language, String description, BasePK createdBy) {
-        EntityListItemDescription entityListItemDescription = EntityListItemDescriptionFactory.getInstance().create(entityListItem, language, description, session.START_TIME_LONG,
+        var entityListItemDescription = EntityListItemDescriptionFactory.getInstance().create(entityListItem, language, description, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
         sendEvent(entityListItem.getPrimaryKey(), EventTypes.MODIFY, entityListItemDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -7298,8 +7298,8 @@ public class CoreControl
                         "WHERE elid_eli_entitylistitemid = ? AND elid_lang_languageid = ? AND elid_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = EntityListItemDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = EntityListItemDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, entityListItem.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -7346,8 +7346,8 @@ public class CoreControl
                         "WHERE elid_eli_entitylistitemid = ? AND elid_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = EntityListItemDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = EntityListItemDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, entityListItem.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -7370,7 +7370,7 @@ public class CoreControl
     
     public String getBestEntityListItemDescription(EntityListItem entityListItem, Language language) {
         String description;
-        EntityListItemDescription entityListItemDescription = getEntityListItemDescription(entityListItem, language);
+        var entityListItemDescription = getEntityListItemDescription(entityListItem, language);
         
         if(entityListItemDescription == null && !language.getIsDefault()) {
             entityListItemDescription = getEntityListItemDescription(entityListItem, getPartyControl().getDefaultLanguage());
@@ -7390,9 +7390,9 @@ public class CoreControl
     }
     
     public List<EntityListItemDescriptionTransfer> getEntityListItemDescriptionTransfersByEntityListItem(UserVisit userVisit, EntityListItem entityListItem, EntityInstance entityInstance) {
-        List<EntityListItemDescription> entityListItemDescriptions = getEntityListItemDescriptionsByEntityListItem(entityListItem);
+        var entityListItemDescriptions = getEntityListItemDescriptionsByEntityListItem(entityListItem);
         List<EntityListItemDescriptionTransfer> entityListItemDescriptionTransfers = new ArrayList<>(entityListItemDescriptions.size());
-        EntityListItemDescriptionTransferCache entityListItemDescriptionTransferCache = getCoreTransferCaches(userVisit).getEntityListItemDescriptionTransferCache();
+        var entityListItemDescriptionTransferCache = getCoreTransferCaches(userVisit).getEntityListItemDescriptionTransferCache();
         
         entityListItemDescriptions.forEach((entityListItemDescription) ->
                 entityListItemDescriptionTransfers.add(entityListItemDescriptionTransferCache.getEntityListItemDescriptionTransfer(entityListItemDescription, entityInstance))
@@ -7403,14 +7403,14 @@ public class CoreControl
     
     public void updateEntityListItemDescriptionFromValue(EntityListItemDescriptionValue entityListItemDescriptionValue, BasePK updatedBy) {
         if(entityListItemDescriptionValue.hasBeenModified()) {
-            EntityListItemDescription entityListItemDescription = EntityListItemDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, entityListItemDescriptionValue.getPrimaryKey());
+            var entityListItemDescription = EntityListItemDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, entityListItemDescriptionValue.getPrimaryKey());
             
             entityListItemDescription.setThruTime(session.START_TIME_LONG);
             entityListItemDescription.store();
-            
-            EntityListItem entityListItem = entityListItemDescription.getEntityListItem();
-            Language language = entityListItemDescription.getLanguage();
-            String description = entityListItemDescriptionValue.getDescription();
+
+            var entityListItem = entityListItemDescription.getEntityListItem();
+            var language = entityListItemDescription.getLanguage();
+            var description = entityListItemDescriptionValue.getDescription();
             
             entityListItemDescription = EntityListItemDescriptionFactory.getInstance().create(entityListItem, language,
                     description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -7426,7 +7426,7 @@ public class CoreControl
     }
     
     public void deleteEntityListItemDescriptionsByEntityListItem(EntityListItem entityListItem, BasePK deletedBy) {
-        List<EntityListItemDescription> entityListItemDescriptions = getEntityListItemDescriptionsByEntityListItemForUpdate(entityListItem);
+        var entityListItemDescriptions = getEntityListItemDescriptionsByEntityListItemForUpdate(entityListItem);
         
         entityListItemDescriptions.forEach((entityListItemDescription) -> 
                 deleteEntityListItemDescription(entityListItemDescription, deletedBy)
@@ -7439,20 +7439,20 @@ public class CoreControl
     
     public EntityIntegerRange createEntityIntegerRange(EntityAttribute entityAttribute, String entityIntegerRangeName, Integer minimumIntegerValue,
             Integer maximumIntegerValue, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        EntityIntegerRange defaultEntityIntegerRange = getDefaultEntityIntegerRange(entityAttribute);
-        boolean defaultFound = defaultEntityIntegerRange != null;
+        var defaultEntityIntegerRange = getDefaultEntityIntegerRange(entityAttribute);
+        var defaultFound = defaultEntityIntegerRange != null;
         
         if(defaultFound && isDefault) {
-            EntityIntegerRangeDetailValue defaultEntityIntegerRangeDetailValue = getDefaultEntityIntegerRangeDetailValueForUpdate(entityAttribute);
+            var defaultEntityIntegerRangeDetailValue = getDefaultEntityIntegerRangeDetailValueForUpdate(entityAttribute);
             
             defaultEntityIntegerRangeDetailValue.setIsDefault(Boolean.FALSE);
             updateEntityIntegerRangeFromValue(defaultEntityIntegerRangeDetailValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        EntityIntegerRange entityIntegerRange = EntityIntegerRangeFactory.getInstance().create();
-        EntityIntegerRangeDetail entityIntegerRangeDetail = EntityIntegerRangeDetailFactory.getInstance().create(entityIntegerRange, entityAttribute,
+
+        var entityIntegerRange = EntityIntegerRangeFactory.getInstance().create();
+        var entityIntegerRangeDetail = EntityIntegerRangeDetailFactory.getInstance().create(entityIntegerRange, entityAttribute,
                 entityIntegerRangeName, minimumIntegerValue, maximumIntegerValue, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -7468,8 +7468,8 @@ public class CoreControl
     
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.EntityIntegerRange */
     public EntityIntegerRange getEntityIntegerRangeByEntityInstance(EntityInstance entityInstance) {
-        EntityIntegerRangePK pk = new EntityIntegerRangePK(entityInstance.getEntityUniqueId());
-        EntityIntegerRange entityIntegerRange = EntityIntegerRangeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
+        var pk = new EntityIntegerRangePK(entityInstance.getEntityUniqueId());
+        var entityIntegerRange = EntityIntegerRangeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
         
         return entityIntegerRange;
     }
@@ -7492,8 +7492,8 @@ public class CoreControl
                         "AND enirdt_ena_entityattributeid = ? AND enirdt_isdefault = 1 " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = EntityIntegerRangeFactory.getInstance().prepareStatement(query);
+
+            var ps = EntityIntegerRangeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             
@@ -7535,8 +7535,8 @@ public class CoreControl
                         "AND enirdt_ena_entityattributeid = ? AND enirdt_entityintegerrangename = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = EntityIntegerRangeFactory.getInstance().prepareStatement(query);
+
+            var ps = EntityIntegerRangeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             ps.setString(2, entityIntegerRangeName);
@@ -7583,8 +7583,8 @@ public class CoreControl
                         "WHERE enir_activedetailid = enirdt_entityintegerrangedetailid AND enirdt_ena_entityattributeid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = EntityIntegerRangeFactory.getInstance().prepareStatement(query);
+
+            var ps = EntityIntegerRangeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             
@@ -7618,7 +7618,7 @@ public class CoreControl
     
     public List<EntityIntegerRangeTransfer> getEntityIntegerRangeTransfers(UserVisit userVisit, Collection<EntityIntegerRange> entityIntegerRanges, EntityInstance entityInstance) {
         List<EntityIntegerRangeTransfer> entityIntegerRangeTransfers = new ArrayList<>(entityIntegerRanges.size());
-        EntityIntegerRangeTransferCache entityIntegerRangeTransferCache = getCoreTransferCaches(userVisit).getEntityIntegerRangeTransferCache();
+        var entityIntegerRangeTransferCache = getCoreTransferCaches(userVisit).getEntityIntegerRangeTransferCache();
 
         entityIntegerRanges.forEach((entityIntegerRange) ->
                 entityIntegerRangeTransfers.add(entityIntegerRangeTransferCache.getEntityIntegerRangeTransfer(entityIntegerRange, entityInstance))
@@ -7634,28 +7634,28 @@ public class CoreControl
     private void updateEntityIntegerRangeFromValue(EntityIntegerRangeDetailValue entityIntegerRangeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(entityIntegerRangeDetailValue.hasBeenModified()) {
-            EntityIntegerRange entityIntegerRange = EntityIntegerRangeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var entityIntegerRange = EntityIntegerRangeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      entityIntegerRangeDetailValue.getEntityIntegerRangePK());
-            EntityIntegerRangeDetail entityIntegerRangeDetail = entityIntegerRange.getActiveDetailForUpdate();
+            var entityIntegerRangeDetail = entityIntegerRange.getActiveDetailForUpdate();
             
             entityIntegerRangeDetail.setThruTime(session.START_TIME_LONG);
             entityIntegerRangeDetail.store();
-            
-            EntityIntegerRangePK entityIntegerRangePK = entityIntegerRangeDetail.getEntityIntegerRangePK(); // Not updated
-            EntityAttribute entityAttribute = entityIntegerRangeDetail.getEntityAttribute(); // Not updated
-            String entityIntegerRangeName = entityIntegerRangeDetailValue.getEntityIntegerRangeName();
-            Integer minimumIntegerValue = entityIntegerRangeDetailValue.getMinimumIntegerValue();
-            Integer maximumIntegerValue = entityIntegerRangeDetailValue.getMaximumIntegerValue();
-            Boolean isDefault = entityIntegerRangeDetailValue.getIsDefault();
-            Integer sortOrder = entityIntegerRangeDetailValue.getSortOrder();
+
+            var entityIntegerRangePK = entityIntegerRangeDetail.getEntityIntegerRangePK(); // Not updated
+            var entityAttribute = entityIntegerRangeDetail.getEntityAttribute(); // Not updated
+            var entityIntegerRangeName = entityIntegerRangeDetailValue.getEntityIntegerRangeName();
+            var minimumIntegerValue = entityIntegerRangeDetailValue.getMinimumIntegerValue();
+            var maximumIntegerValue = entityIntegerRangeDetailValue.getMaximumIntegerValue();
+            var isDefault = entityIntegerRangeDetailValue.getIsDefault();
+            var sortOrder = entityIntegerRangeDetailValue.getSortOrder();
             
             if(checkDefault) {
-                EntityIntegerRange defaultEntityIntegerRange = getDefaultEntityIntegerRange(entityAttribute);
-                boolean defaultFound = defaultEntityIntegerRange != null && !defaultEntityIntegerRange.equals(entityIntegerRange);
+                var defaultEntityIntegerRange = getDefaultEntityIntegerRange(entityAttribute);
+                var defaultFound = defaultEntityIntegerRange != null && !defaultEntityIntegerRange.equals(entityIntegerRange);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    EntityIntegerRangeDetailValue defaultEntityIntegerRangeDetailValue = getDefaultEntityIntegerRangeDetailValueForUpdate(entityAttribute);
+                    var defaultEntityIntegerRangeDetailValue = getDefaultEntityIntegerRangeDetailValueForUpdate(entityAttribute);
                     
                     defaultEntityIntegerRangeDetailValue.setIsDefault(Boolean.FALSE);
                     updateEntityIntegerRangeFromValue(defaultEntityIntegerRangeDetailValue, false, updatedBy);
@@ -7681,7 +7681,7 @@ public class CoreControl
     
     public EntityIntegerRangeChoicesBean getEntityIntegerRangeChoices(String defaultEntityIntegerRangeChoice, Language language,
             boolean allowNullChoice, EntityAttribute entityAttribute) {
-        List<EntityIntegerRange> entityIntegerRanges = getEntityIntegerRanges(entityAttribute);
+        var entityIntegerRanges = getEntityIntegerRanges(entityAttribute);
         var size = entityIntegerRanges.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -7697,7 +7697,7 @@ public class CoreControl
         }
         
         for(var entityIntegerRange : entityIntegerRanges) {
-            EntityIntegerRangeDetail entityIntegerRangeDetail = entityIntegerRange.getLastDetail();
+            var entityIntegerRangeDetail = entityIntegerRange.getLastDetail();
             var label = getBestEntityIntegerRangeDescription(entityIntegerRange, language);
             var value = entityIntegerRangeDetail.getEntityIntegerRangeName();
             
@@ -7714,7 +7714,7 @@ public class CoreControl
     }
     
     private void deleteEntityIntegerRange(EntityIntegerRange entityIntegerRange, boolean checkDefault, BasePK deletedBy) {
-        EntityIntegerRangeDetail entityIntegerRangeDetail = entityIntegerRange.getLastDetailForUpdate();
+        var entityIntegerRangeDetail = entityIntegerRange.getLastDetailForUpdate();
         
         deleteEntityIntegerRangeDescriptionsByEntityIntegerRange(entityIntegerRange, deletedBy);
         
@@ -7724,17 +7724,17 @@ public class CoreControl
 
         if(checkDefault) {
             // Check for default, and pick one if necessary
-            EntityAttribute entityAttribute = entityIntegerRangeDetail.getEntityAttribute();
-            EntityIntegerRange defaultEntityIntegerRange = getDefaultEntityIntegerRange(entityAttribute);
+            var entityAttribute = entityIntegerRangeDetail.getEntityAttribute();
+            var defaultEntityIntegerRange = getDefaultEntityIntegerRange(entityAttribute);
             if(defaultEntityIntegerRange == null) {
-                List<EntityIntegerRange> entityIntegerRanges = getEntityIntegerRangesForUpdate(entityAttribute);
+                var entityIntegerRanges = getEntityIntegerRangesForUpdate(entityAttribute);
 
                 if(!entityIntegerRanges.isEmpty()) {
-                    Iterator<EntityIntegerRange> iter = entityIntegerRanges.iterator();
+                    var iter = entityIntegerRanges.iterator();
                     if(iter.hasNext()) {
                         defaultEntityIntegerRange = iter.next();
                     }
-                    EntityIntegerRangeDetailValue entityIntegerRangeDetailValue = Objects.requireNonNull(defaultEntityIntegerRange).getLastDetailForUpdate().getEntityIntegerRangeDetailValue().clone();
+                    var entityIntegerRangeDetailValue = Objects.requireNonNull(defaultEntityIntegerRange).getLastDetailForUpdate().getEntityIntegerRangeDetailValue().clone();
 
                     entityIntegerRangeDetailValue.setIsDefault(Boolean.TRUE);
                     updateEntityIntegerRangeFromValue(entityIntegerRangeDetailValue, false, deletedBy);
@@ -7750,7 +7750,7 @@ public class CoreControl
     }
 
     public void deleteEntityIntegerRangesByEntityAttribute(EntityAttribute entityAttribute, BasePK deletedBy) {
-        List<EntityIntegerRange> entityIntegerRanges = getEntityIntegerRangesForUpdate(entityAttribute);
+        var entityIntegerRanges = getEntityIntegerRangesForUpdate(entityAttribute);
         
         entityIntegerRanges.forEach((entityIntegerRange) ->
                 deleteEntityIntegerRange(entityIntegerRange, false, deletedBy)
@@ -7762,7 +7762,7 @@ public class CoreControl
     // --------------------------------------------------------------------------------
     
     public EntityIntegerRangeDescription createEntityIntegerRangeDescription(EntityIntegerRange entityIntegerRange, Language language, String description, BasePK createdBy) {
-        EntityIntegerRangeDescription entityIntegerRangeDescription = EntityIntegerRangeDescriptionFactory.getInstance().create(entityIntegerRange, language, description, session.START_TIME_LONG,
+        var entityIntegerRangeDescription = EntityIntegerRangeDescriptionFactory.getInstance().create(entityIntegerRange, language, description, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
         sendEvent(entityIntegerRange.getPrimaryKey(), EventTypes.MODIFY, entityIntegerRangeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -7786,8 +7786,8 @@ public class CoreControl
                         "WHERE enird_enir_entityintegerrangeid = ? AND enird_lang_languageid = ? AND enird_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = EntityIntegerRangeDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = EntityIntegerRangeDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, entityIntegerRange.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -7834,8 +7834,8 @@ public class CoreControl
                         "WHERE enird_enir_entityintegerrangeid = ? AND enird_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = EntityIntegerRangeDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = EntityIntegerRangeDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, entityIntegerRange.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -7858,7 +7858,7 @@ public class CoreControl
     
     public String getBestEntityIntegerRangeDescription(EntityIntegerRange entityIntegerRange, Language language) {
         String description;
-        EntityIntegerRangeDescription entityIntegerRangeDescription = getEntityIntegerRangeDescription(entityIntegerRange, language);
+        var entityIntegerRangeDescription = getEntityIntegerRangeDescription(entityIntegerRange, language);
         
         if(entityIntegerRangeDescription == null && !language.getIsDefault()) {
             entityIntegerRangeDescription = getEntityIntegerRangeDescription(entityIntegerRange, getPartyControl().getDefaultLanguage());
@@ -7878,9 +7878,9 @@ public class CoreControl
     }
     
     public List<EntityIntegerRangeDescriptionTransfer> getEntityIntegerRangeDescriptionTransfersByEntityIntegerRange(UserVisit userVisit, EntityIntegerRange entityIntegerRange, EntityInstance entityInstance) {
-        List<EntityIntegerRangeDescription> entityIntegerRangeDescriptions = getEntityIntegerRangeDescriptionsByEntityIntegerRange(entityIntegerRange);
+        var entityIntegerRangeDescriptions = getEntityIntegerRangeDescriptionsByEntityIntegerRange(entityIntegerRange);
         List<EntityIntegerRangeDescriptionTransfer> entityIntegerRangeDescriptionTransfers = new ArrayList<>(entityIntegerRangeDescriptions.size());
-        EntityIntegerRangeDescriptionTransferCache entityIntegerRangeDescriptionTransferCache = getCoreTransferCaches(userVisit).getEntityIntegerRangeDescriptionTransferCache();
+        var entityIntegerRangeDescriptionTransferCache = getCoreTransferCaches(userVisit).getEntityIntegerRangeDescriptionTransferCache();
         
         entityIntegerRangeDescriptions.forEach((entityIntegerRangeDescription) ->
                 entityIntegerRangeDescriptionTransfers.add(entityIntegerRangeDescriptionTransferCache.getEntityIntegerRangeDescriptionTransfer(entityIntegerRangeDescription, entityInstance))
@@ -7891,14 +7891,14 @@ public class CoreControl
     
     public void updateEntityIntegerRangeDescriptionFromValue(EntityIntegerRangeDescriptionValue entityIntegerRangeDescriptionValue, BasePK updatedBy) {
         if(entityIntegerRangeDescriptionValue.hasBeenModified()) {
-            EntityIntegerRangeDescription entityIntegerRangeDescription = EntityIntegerRangeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, entityIntegerRangeDescriptionValue.getPrimaryKey());
+            var entityIntegerRangeDescription = EntityIntegerRangeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, entityIntegerRangeDescriptionValue.getPrimaryKey());
             
             entityIntegerRangeDescription.setThruTime(session.START_TIME_LONG);
             entityIntegerRangeDescription.store();
-            
-            EntityIntegerRange entityIntegerRange = entityIntegerRangeDescription.getEntityIntegerRange();
-            Language language = entityIntegerRangeDescription.getLanguage();
-            String description = entityIntegerRangeDescriptionValue.getDescription();
+
+            var entityIntegerRange = entityIntegerRangeDescription.getEntityIntegerRange();
+            var language = entityIntegerRangeDescription.getLanguage();
+            var description = entityIntegerRangeDescriptionValue.getDescription();
             
             entityIntegerRangeDescription = EntityIntegerRangeDescriptionFactory.getInstance().create(entityIntegerRange, language,
                     description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -7914,7 +7914,7 @@ public class CoreControl
     }
     
     public void deleteEntityIntegerRangeDescriptionsByEntityIntegerRange(EntityIntegerRange entityIntegerRange, BasePK deletedBy) {
-        List<EntityIntegerRangeDescription> entityIntegerRangeDescriptions = getEntityIntegerRangeDescriptionsByEntityIntegerRangeForUpdate(entityIntegerRange);
+        var entityIntegerRangeDescriptions = getEntityIntegerRangeDescriptionsByEntityIntegerRangeForUpdate(entityIntegerRange);
         
         entityIntegerRangeDescriptions.forEach((entityIntegerRangeDescription) -> 
                 deleteEntityIntegerRangeDescription(entityIntegerRangeDescription, deletedBy)
@@ -7927,20 +7927,20 @@ public class CoreControl
     
     public EntityLongRange createEntityLongRange(EntityAttribute entityAttribute, String entityLongRangeName, Long minimumLongValue, Long maximumLongValue,
             Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        EntityLongRange defaultEntityLongRange = getDefaultEntityLongRange(entityAttribute);
-        boolean defaultFound = defaultEntityLongRange != null;
+        var defaultEntityLongRange = getDefaultEntityLongRange(entityAttribute);
+        var defaultFound = defaultEntityLongRange != null;
         
         if(defaultFound && isDefault) {
-            EntityLongRangeDetailValue defaultEntityLongRangeDetailValue = getDefaultEntityLongRangeDetailValueForUpdate(entityAttribute);
+            var defaultEntityLongRangeDetailValue = getDefaultEntityLongRangeDetailValueForUpdate(entityAttribute);
             
             defaultEntityLongRangeDetailValue.setIsDefault(Boolean.FALSE);
             updateEntityLongRangeFromValue(defaultEntityLongRangeDetailValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        EntityLongRange entityLongRange = EntityLongRangeFactory.getInstance().create();
-        EntityLongRangeDetail entityLongRangeDetail = EntityLongRangeDetailFactory.getInstance().create(entityLongRange, entityAttribute, entityLongRangeName,
+
+        var entityLongRange = EntityLongRangeFactory.getInstance().create();
+        var entityLongRangeDetail = EntityLongRangeDetailFactory.getInstance().create(entityLongRange, entityAttribute, entityLongRangeName,
                 minimumLongValue, maximumLongValue, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -7956,8 +7956,8 @@ public class CoreControl
     
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.EntityLongRange */
     public EntityLongRange getEntityLongRangeByEntityInstance(EntityInstance entityInstance) {
-        EntityLongRangePK pk = new EntityLongRangePK(entityInstance.getEntityUniqueId());
-        EntityLongRange entityLongRange = EntityLongRangeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
+        var pk = new EntityLongRangePK(entityInstance.getEntityUniqueId());
+        var entityLongRange = EntityLongRangeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
         
         return entityLongRange;
     }
@@ -7980,8 +7980,8 @@ public class CoreControl
                         "AND enlrdt_ena_entityattributeid = ? AND enlrdt_isdefault = 1 " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = EntityLongRangeFactory.getInstance().prepareStatement(query);
+
+            var ps = EntityLongRangeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             
@@ -8023,8 +8023,8 @@ public class CoreControl
                         "AND enlrdt_ena_entityattributeid = ? AND enlrdt_entitylongrangename = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = EntityLongRangeFactory.getInstance().prepareStatement(query);
+
+            var ps = EntityLongRangeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             ps.setString(2, entityLongRangeName);
@@ -8071,8 +8071,8 @@ public class CoreControl
                         "WHERE enlr_activedetailid = enlrdt_entitylongrangedetailid AND enlrdt_ena_entityattributeid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = EntityLongRangeFactory.getInstance().prepareStatement(query);
+
+            var ps = EntityLongRangeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             
@@ -8106,7 +8106,7 @@ public class CoreControl
 
     public List<EntityLongRangeTransfer> getEntityLongRangeTransfers(UserVisit userVisit, Collection<EntityLongRange> entityLongRanges, EntityInstance entityInstance) {
         List<EntityLongRangeTransfer> entityLongRangeTransfers = new ArrayList<>(entityLongRanges.size());
-        EntityLongRangeTransferCache entityLongRangeTransferCache = getCoreTransferCaches(userVisit).getEntityLongRangeTransferCache();
+        var entityLongRangeTransferCache = getCoreTransferCaches(userVisit).getEntityLongRangeTransferCache();
 
         entityLongRanges.forEach((entityLongRange) ->
                 entityLongRangeTransfers.add(entityLongRangeTransferCache.getEntityLongRangeTransfer(entityLongRange, entityInstance))
@@ -8122,28 +8122,28 @@ public class CoreControl
     private void updateEntityLongRangeFromValue(EntityLongRangeDetailValue entityLongRangeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(entityLongRangeDetailValue.hasBeenModified()) {
-            EntityLongRange entityLongRange = EntityLongRangeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var entityLongRange = EntityLongRangeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      entityLongRangeDetailValue.getEntityLongRangePK());
-            EntityLongRangeDetail entityLongRangeDetail = entityLongRange.getActiveDetailForUpdate();
+            var entityLongRangeDetail = entityLongRange.getActiveDetailForUpdate();
             
             entityLongRangeDetail.setThruTime(session.START_TIME_LONG);
             entityLongRangeDetail.store();
-            
-            EntityLongRangePK entityLongRangePK = entityLongRangeDetail.getEntityLongRangePK(); // Not updated
-            EntityAttribute entityAttribute = entityLongRangeDetail.getEntityAttribute(); // Not updated
-            String entityLongRangeName = entityLongRangeDetailValue.getEntityLongRangeName();
-            Long minimumLongValue = entityLongRangeDetailValue.getMinimumLongValue();
-            Long maximumLongValue = entityLongRangeDetailValue.getMaximumLongValue();
-            Boolean isDefault = entityLongRangeDetailValue.getIsDefault();
-            Integer sortOrder = entityLongRangeDetailValue.getSortOrder();
+
+            var entityLongRangePK = entityLongRangeDetail.getEntityLongRangePK(); // Not updated
+            var entityAttribute = entityLongRangeDetail.getEntityAttribute(); // Not updated
+            var entityLongRangeName = entityLongRangeDetailValue.getEntityLongRangeName();
+            var minimumLongValue = entityLongRangeDetailValue.getMinimumLongValue();
+            var maximumLongValue = entityLongRangeDetailValue.getMaximumLongValue();
+            var isDefault = entityLongRangeDetailValue.getIsDefault();
+            var sortOrder = entityLongRangeDetailValue.getSortOrder();
             
             if(checkDefault) {
-                EntityLongRange defaultEntityLongRange = getDefaultEntityLongRange(entityAttribute);
-                boolean defaultFound = defaultEntityLongRange != null && !defaultEntityLongRange.equals(entityLongRange);
+                var defaultEntityLongRange = getDefaultEntityLongRange(entityAttribute);
+                var defaultFound = defaultEntityLongRange != null && !defaultEntityLongRange.equals(entityLongRange);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    EntityLongRangeDetailValue defaultEntityLongRangeDetailValue = getDefaultEntityLongRangeDetailValueForUpdate(entityAttribute);
+                    var defaultEntityLongRangeDetailValue = getDefaultEntityLongRangeDetailValueForUpdate(entityAttribute);
                     
                     defaultEntityLongRangeDetailValue.setIsDefault(Boolean.FALSE);
                     updateEntityLongRangeFromValue(defaultEntityLongRangeDetailValue, false, updatedBy);
@@ -8169,7 +8169,7 @@ public class CoreControl
     
     public EntityLongRangeChoicesBean getEntityLongRangeChoices(String defaultEntityLongRangeChoice, Language language,
             boolean allowNullChoice, EntityAttribute entityAttribute) {
-        List<EntityLongRange> entityLongRanges = getEntityLongRanges(entityAttribute);
+        var entityLongRanges = getEntityLongRanges(entityAttribute);
         var size = entityLongRanges.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -8185,7 +8185,7 @@ public class CoreControl
         }
         
         for(var entityLongRange : entityLongRanges) {
-            EntityLongRangeDetail entityLongRangeDetail = entityLongRange.getLastDetail();
+            var entityLongRangeDetail = entityLongRange.getLastDetail();
             var label = getBestEntityLongRangeDescription(entityLongRange, language);
             var value = entityLongRangeDetail.getEntityLongRangeName();
             
@@ -8202,7 +8202,7 @@ public class CoreControl
     }
     
     private void deleteEntityLongRange(EntityLongRange entityLongRange, boolean checkDefault, BasePK deletedBy) {
-        EntityLongRangeDetail entityLongRangeDetail = entityLongRange.getLastDetailForUpdate();
+        var entityLongRangeDetail = entityLongRange.getLastDetailForUpdate();
         
         deleteEntityLongRangeDescriptionsByEntityLongRange(entityLongRange, deletedBy);
         
@@ -8212,17 +8212,17 @@ public class CoreControl
 
         if(checkDefault) {
             // Check for default, and pick one if necessary
-            EntityAttribute entityAttribute = entityLongRangeDetail.getEntityAttribute();
-            EntityLongRange defaultEntityLongRange = getDefaultEntityLongRange(entityAttribute);
+            var entityAttribute = entityLongRangeDetail.getEntityAttribute();
+            var defaultEntityLongRange = getDefaultEntityLongRange(entityAttribute);
             if(defaultEntityLongRange == null) {
-                List<EntityLongRange> entityLongRanges = getEntityLongRangesForUpdate(entityAttribute);
+                var entityLongRanges = getEntityLongRangesForUpdate(entityAttribute);
 
                 if(!entityLongRanges.isEmpty()) {
-                    Iterator<EntityLongRange> iter = entityLongRanges.iterator();
+                    var iter = entityLongRanges.iterator();
                     if(iter.hasNext()) {
                         defaultEntityLongRange = iter.next();
                     }
-                    EntityLongRangeDetailValue entityLongRangeDetailValue = Objects.requireNonNull(defaultEntityLongRange).getLastDetailForUpdate().getEntityLongRangeDetailValue().clone();
+                    var entityLongRangeDetailValue = Objects.requireNonNull(defaultEntityLongRange).getLastDetailForUpdate().getEntityLongRangeDetailValue().clone();
 
                     entityLongRangeDetailValue.setIsDefault(Boolean.TRUE);
                     updateEntityLongRangeFromValue(entityLongRangeDetailValue, false, deletedBy);
@@ -8238,7 +8238,7 @@ public class CoreControl
     }
 
     public void deleteEntityLongRangesByEntityAttribute(EntityAttribute entityAttribute, BasePK deletedBy) {
-        List<EntityLongRange> entityLongRanges = getEntityLongRangesForUpdate(entityAttribute);
+        var entityLongRanges = getEntityLongRangesForUpdate(entityAttribute);
         
         entityLongRanges.forEach((entityLongRange) ->
                 deleteEntityLongRange(entityLongRange, false, deletedBy)
@@ -8250,7 +8250,7 @@ public class CoreControl
     // --------------------------------------------------------------------------------
     
     public EntityLongRangeDescription createEntityLongRangeDescription(EntityLongRange entityLongRange, Language language, String description, BasePK createdBy) {
-        EntityLongRangeDescription entityLongRangeDescription = EntityLongRangeDescriptionFactory.getInstance().create(entityLongRange, language, description, session.START_TIME_LONG,
+        var entityLongRangeDescription = EntityLongRangeDescriptionFactory.getInstance().create(entityLongRange, language, description, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
         sendEvent(entityLongRange.getPrimaryKey(), EventTypes.MODIFY, entityLongRangeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -8274,8 +8274,8 @@ public class CoreControl
                         "WHERE enlrd_enlr_entitylongrangeid = ? AND enlrd_lang_languageid = ? AND enlrd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = EntityLongRangeDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = EntityLongRangeDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, entityLongRange.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -8322,8 +8322,8 @@ public class CoreControl
                         "WHERE enlrd_enlr_entitylongrangeid = ? AND enlrd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = EntityLongRangeDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = EntityLongRangeDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, entityLongRange.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -8346,7 +8346,7 @@ public class CoreControl
     
     public String getBestEntityLongRangeDescription(EntityLongRange entityLongRange, Language language) {
         String description;
-        EntityLongRangeDescription entityLongRangeDescription = getEntityLongRangeDescription(entityLongRange, language);
+        var entityLongRangeDescription = getEntityLongRangeDescription(entityLongRange, language);
         
         if(entityLongRangeDescription == null && !language.getIsDefault()) {
             entityLongRangeDescription = getEntityLongRangeDescription(entityLongRange, getPartyControl().getDefaultLanguage());
@@ -8366,9 +8366,9 @@ public class CoreControl
     }
     
     public List<EntityLongRangeDescriptionTransfer> getEntityLongRangeDescriptionTransfersByEntityLongRange(UserVisit userVisit, EntityLongRange entityLongRange, EntityInstance entityInstance) {
-        List<EntityLongRangeDescription> entityLongRangeDescriptions = getEntityLongRangeDescriptionsByEntityLongRange(entityLongRange);
+        var entityLongRangeDescriptions = getEntityLongRangeDescriptionsByEntityLongRange(entityLongRange);
         List<EntityLongRangeDescriptionTransfer> entityLongRangeDescriptionTransfers = new ArrayList<>(entityLongRangeDescriptions.size());
-        EntityLongRangeDescriptionTransferCache entityLongRangeDescriptionTransferCache = getCoreTransferCaches(userVisit).getEntityLongRangeDescriptionTransferCache();
+        var entityLongRangeDescriptionTransferCache = getCoreTransferCaches(userVisit).getEntityLongRangeDescriptionTransferCache();
         
         entityLongRangeDescriptions.forEach((entityLongRangeDescription) ->
                 entityLongRangeDescriptionTransfers.add(entityLongRangeDescriptionTransferCache.getEntityLongRangeDescriptionTransfer(entityLongRangeDescription, entityInstance))
@@ -8379,14 +8379,14 @@ public class CoreControl
     
     public void updateEntityLongRangeDescriptionFromValue(EntityLongRangeDescriptionValue entityLongRangeDescriptionValue, BasePK updatedBy) {
         if(entityLongRangeDescriptionValue.hasBeenModified()) {
-            EntityLongRangeDescription entityLongRangeDescription = EntityLongRangeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, entityLongRangeDescriptionValue.getPrimaryKey());
+            var entityLongRangeDescription = EntityLongRangeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, entityLongRangeDescriptionValue.getPrimaryKey());
             
             entityLongRangeDescription.setThruTime(session.START_TIME_LONG);
             entityLongRangeDescription.store();
-            
-            EntityLongRange entityLongRange = entityLongRangeDescription.getEntityLongRange();
-            Language language = entityLongRangeDescription.getLanguage();
-            String description = entityLongRangeDescriptionValue.getDescription();
+
+            var entityLongRange = entityLongRangeDescription.getEntityLongRange();
+            var language = entityLongRangeDescription.getLanguage();
+            var description = entityLongRangeDescriptionValue.getDescription();
             
             entityLongRangeDescription = EntityLongRangeDescriptionFactory.getInstance().create(entityLongRange, language,
                     description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -8402,7 +8402,7 @@ public class CoreControl
     }
     
     public void deleteEntityLongRangeDescriptionsByEntityLongRange(EntityLongRange entityLongRange, BasePK deletedBy) {
-        List<EntityLongRangeDescription> entityLongRangeDescriptions = getEntityLongRangeDescriptionsByEntityLongRangeForUpdate(entityLongRange);
+        var entityLongRangeDescriptions = getEntityLongRangeDescriptionsByEntityLongRangeForUpdate(entityLongRange);
         
         entityLongRangeDescriptions.forEach((entityLongRangeDescription) -> 
                 deleteEntityLongRangeDescription(entityLongRangeDescription, deletedBy)
@@ -8414,8 +8414,8 @@ public class CoreControl
     // --------------------------------------------------------------------------------
     
     public Component createComponent(ComponentVendor componentVendor, String componentName, String description, BasePK createdBy) {
-        Component component = ComponentFactory.getInstance().create();
-        ComponentDetail componentDetail = ComponentDetailFactory.getInstance().create(componentVendor, component,
+        var component = ComponentFactory.getInstance().create();
+        var componentDetail = ComponentDetailFactory.getInstance().create(componentVendor, component,
                 componentName, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -8431,7 +8431,7 @@ public class CoreControl
         Component component;
         
         try {
-            PreparedStatement ps = ComponentFactory.getInstance().prepareStatement(
+            var ps = ComponentFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM components, componentdetails " +
                     "WHERE cpnt_componentid = cpntd_cpnt_componentid AND cpntd_cvnd_componentvendorid = ? " +
@@ -8465,7 +8465,7 @@ public class CoreControl
         ComponentVersion componentVersion;
         
         try {
-            PreparedStatement ps = ComponentVersionFactory.getInstance().prepareStatement(
+            var ps = ComponentVersionFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM componentversions " +
                     "WHERE cvrs_cpnt_componentid = ? AND cvrs_thrutime = ?");
@@ -8490,7 +8490,7 @@ public class CoreControl
     }
     
     public List<MimeTypeUsageType> getMimeTypeUsageTypes() {
-        PreparedStatement ps = MimeTypeUsageTypeFactory.getInstance().prepareStatement(
+        var ps = MimeTypeUsageTypeFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
                 "FROM mimetypeusagetypes " +
                 "ORDER BY mtyput_sortorder, mtyput_mimetypeusagetypename");
@@ -8502,7 +8502,7 @@ public class CoreControl
         MimeTypeUsageType mimeTypeUsageType;
         
         try {
-            PreparedStatement ps = MimeTypeUsageTypeFactory.getInstance().prepareStatement(
+            var ps = MimeTypeUsageTypeFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM mimetypeusagetypes " +
                     "WHERE mtyput_mimetypeusagetypename = ?");
@@ -8519,7 +8519,7 @@ public class CoreControl
     
     public MimeTypeUsageTypeChoicesBean getMimeTypeUsageTypeChoices(String defaultMimeTypeUsageTypeChoice, Language language,
             boolean allowNullChoice) {
-        List<MimeTypeUsageType> mimeTypeUsageTypes = getMimeTypeUsageTypes();
+        var mimeTypeUsageTypes = getMimeTypeUsageTypes();
         var size = mimeTypeUsageTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -8556,7 +8556,7 @@ public class CoreControl
 
     public List<MimeTypeUsageTypeTransfer> getMimeTypeUsageTypeTransfers(UserVisit userVisit, Collection<MimeTypeUsageType> mimeTypeUsageTypes) {
         List<MimeTypeUsageTypeTransfer> mimeTypeUsageTypeTransfers = new ArrayList<>(mimeTypeUsageTypes.size());
-        MimeTypeUsageTypeTransferCache mimeTypeUsageTypeTransferCache = getCoreTransferCaches(userVisit).getMimeTypeUsageTypeTransferCache();
+        var mimeTypeUsageTypeTransferCache = getCoreTransferCaches(userVisit).getMimeTypeUsageTypeTransferCache();
 
         mimeTypeUsageTypes.forEach((mimeTypeUsageType) ->
                 mimeTypeUsageTypeTransfers.add(mimeTypeUsageTypeTransferCache.getMimeTypeUsageTypeTransfer(mimeTypeUsageType))
@@ -8581,7 +8581,7 @@ public class CoreControl
         MimeTypeUsageTypeDescription mimeTypeUsageTypeDescription;
         
         try {
-            PreparedStatement ps = MimeTypeUsageTypeDescriptionFactory.getInstance().prepareStatement(
+            var ps = MimeTypeUsageTypeDescriptionFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM mimetypeusagetypedescriptions " +
                     "WHERE mtyputd_mtyput_mimetypeusagetypeid = ? AND mtyputd_lang_languageid = ?");
@@ -8599,7 +8599,7 @@ public class CoreControl
     
     public String getBestMimeTypeUsageTypeDescription(MimeTypeUsageType mimeTypeUsageType, Language language) {
         String description;
-        MimeTypeUsageTypeDescription mimeTypeUsageTypeDescription = getMimeTypeUsageTypeDescription(mimeTypeUsageType, language);
+        var mimeTypeUsageTypeDescription = getMimeTypeUsageTypeDescription(mimeTypeUsageType, language);
         
         if(mimeTypeUsageTypeDescription == null && !language.getIsDefault()) {
             mimeTypeUsageTypeDescription = getMimeTypeUsageTypeDescription(mimeTypeUsageType, getPartyControl().getDefaultLanguage());
@@ -8619,11 +8619,11 @@ public class CoreControl
     // --------------------------------------------------------------------------------
 
     public MimeType createMimeType(String mimeTypeName, EntityAttributeType entityAttributeType, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        MimeType defaultMimeType = getDefaultMimeType();
-        boolean defaultFound = defaultMimeType != null;
+        var defaultMimeType = getDefaultMimeType();
+        var defaultFound = defaultMimeType != null;
 
         if(defaultFound && isDefault) {
-            MimeTypeDetailValue defaultMimeTypeDetailValue = getDefaultMimeTypeDetailValueForUpdate();
+            var defaultMimeTypeDetailValue = getDefaultMimeTypeDetailValueForUpdate();
 
             defaultMimeTypeDetailValue.setIsDefault(Boolean.FALSE);
             updateMimeTypeFromValue(defaultMimeTypeDetailValue, false, createdBy);
@@ -8631,8 +8631,8 @@ public class CoreControl
             isDefault = Boolean.TRUE;
         }
 
-        MimeType mimeType = MimeTypeFactory.getInstance().create();
-        MimeTypeDetail mimeTypeDetail = MimeTypeDetailFactory.getInstance().create(mimeType, mimeTypeName, entityAttributeType, isDefault, sortOrder,
+        var mimeType = MimeTypeFactory.getInstance().create();
+        var mimeTypeDetail = MimeTypeDetailFactory.getInstance().create(mimeType, mimeTypeName, entityAttributeType, isDefault, sortOrder,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -8859,7 +8859,7 @@ public class CoreControl
 
     public List<MimeTypeTransfer> getMimeTypeTransfers(UserVisit userVisit, Collection<MimeType> mimeTypes) {
         List<MimeTypeTransfer> mimeTypeTransfers = new ArrayList<>(mimeTypes.size());
-        MimeTypeTransferCache mimeTypeTransferCache = getCoreTransferCaches(userVisit).getMimeTypeTransferCache();
+        var mimeTypeTransferCache = getCoreTransferCaches(userVisit).getMimeTypeTransferCache();
 
         mimeTypes.forEach((mimeType) ->
                 mimeTypeTransfers.add(mimeTypeTransferCache.getMimeTypeTransfer(mimeType))
@@ -8883,7 +8883,7 @@ public class CoreControl
     }
 
     public MimeTypeChoicesBean getMimeTypeChoices(String defaultMimeTypeChoice, Language language, boolean allowNullChoice) {
-        List<MimeType> mimeTypes = getMimeTypes();
+        var mimeTypes = getMimeTypes();
         var size = mimeTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -8899,7 +8899,7 @@ public class CoreControl
         }
 
         for(var mimeType : mimeTypes) {
-            MimeTypeDetail mimeTypeDetail = mimeType.getLastDetail();
+            var mimeTypeDetail = mimeType.getLastDetail();
 
             var label = getBestMimeTypeDescription(mimeType, language);
             var value = mimeTypeDetail.getMimeTypeName();
@@ -8918,7 +8918,7 @@ public class CoreControl
 
     public MimeTypeChoicesBean getMimeTypeChoices(MimeTypeUsageType mimeTypeUsageType, String defaultMimeTypeChoice, Language language,
             boolean allowNullChoice) {
-        List<MimeType> mimeTypes = getMimeTypesByMimeTypeUsageType(mimeTypeUsageType);
+        var mimeTypes = getMimeTypesByMimeTypeUsageType(mimeTypeUsageType);
         var size = mimeTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -8934,7 +8934,7 @@ public class CoreControl
         }
 
         for(var mimeType : mimeTypes) {
-            MimeTypeDetail mimeTypeDetail = mimeType.getLastDetail();
+            var mimeTypeDetail = mimeType.getLastDetail();
 
             var label = getBestMimeTypeDescription(mimeType, language);
             var value = mimeTypeDetail.getMimeTypeName();
@@ -8954,26 +8954,26 @@ public class CoreControl
     private void updateMimeTypeFromValue(MimeTypeDetailValue mimeTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(mimeTypeDetailValue.hasBeenModified()) {
-            MimeType mimeType = MimeTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var mimeType = MimeTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      mimeTypeDetailValue.getMimeTypePK());
-            MimeTypeDetail mimeTypeDetail = mimeType.getActiveDetailForUpdate();
+            var mimeTypeDetail = mimeType.getActiveDetailForUpdate();
 
             mimeTypeDetail.setThruTime(session.START_TIME_LONG);
             mimeTypeDetail.store();
 
-            MimeTypePK mimeTypePK = mimeTypeDetail.getMimeTypePK(); // Not updated
-            String mimeTypeName = mimeTypeDetailValue.getMimeTypeName();
-            EntityAttributeTypePK entityAttributeTypePK = mimeTypeDetail.getEntityAttributeTypePK(); // Not updated
-            Boolean isDefault = mimeTypeDetailValue.getIsDefault();
-            Integer sortOrder = mimeTypeDetailValue.getSortOrder();
+            var mimeTypePK = mimeTypeDetail.getMimeTypePK(); // Not updated
+            var mimeTypeName = mimeTypeDetailValue.getMimeTypeName();
+            var entityAttributeTypePK = mimeTypeDetail.getEntityAttributeTypePK(); // Not updated
+            var isDefault = mimeTypeDetailValue.getIsDefault();
+            var sortOrder = mimeTypeDetailValue.getSortOrder();
 
             if(checkDefault) {
-                MimeType defaultMimeType = getDefaultMimeType();
-                boolean defaultFound = defaultMimeType != null && !defaultMimeType.equals(mimeType);
+                var defaultMimeType = getDefaultMimeType();
+                var defaultFound = defaultMimeType != null && !defaultMimeType.equals(mimeType);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    MimeTypeDetailValue defaultMimeTypeDetailValue = getDefaultMimeTypeDetailValueForUpdate();
+                    var defaultMimeTypeDetailValue = getDefaultMimeTypeDetailValueForUpdate();
 
                     defaultMimeTypeDetailValue.setIsDefault(Boolean.FALSE);
                     updateMimeTypeFromValue(defaultMimeTypeDetailValue, false, updatedBy);
@@ -9000,22 +9000,22 @@ public class CoreControl
     public void deleteMimeType(MimeType mimeType, BasePK deletedBy) {
         deleteMimeTypeDescriptionsByMimeType(mimeType, deletedBy);
 
-        MimeTypeDetail mimeTypeDetail = mimeType.getLastDetailForUpdate();
+        var mimeTypeDetail = mimeType.getLastDetailForUpdate();
         mimeTypeDetail.setThruTime(session.START_TIME_LONG);
         mimeType.setActiveDetail(null);
         mimeType.store();
 
         // Check for default, and pick one if necessary
-        MimeType defaultMimeType = getDefaultMimeType();
+        var defaultMimeType = getDefaultMimeType();
         if(defaultMimeType == null) {
-            List<MimeType> mimeTypes = getMimeTypesForUpdate();
+            var mimeTypes = getMimeTypesForUpdate();
 
             if(!mimeTypes.isEmpty()) {
-                Iterator<MimeType> iter = mimeTypes.iterator();
+                var iter = mimeTypes.iterator();
                 if(iter.hasNext()) {
                     defaultMimeType = iter.next();
                 }
-                MimeTypeDetailValue mimeTypeDetailValue = Objects.requireNonNull(defaultMimeType).getLastDetailForUpdate().getMimeTypeDetailValue().clone();
+                var mimeTypeDetailValue = Objects.requireNonNull(defaultMimeType).getLastDetailForUpdate().getMimeTypeDetailValue().clone();
 
                 mimeTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateMimeTypeFromValue(mimeTypeDetailValue, false, deletedBy);
@@ -9031,7 +9031,7 @@ public class CoreControl
 
     public MimeTypeDescription createMimeTypeDescription(MimeType mimeType,
             Language language, String description, BasePK createdBy) {
-        MimeTypeDescription mimeTypeDescription = MimeTypeDescriptionFactory.getInstance().create(mimeType,
+        var mimeTypeDescription = MimeTypeDescriptionFactory.getInstance().create(mimeType,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(mimeType.getPrimaryKey(), EventTypes.MODIFY, mimeTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -9113,7 +9113,7 @@ public class CoreControl
 
     public String getBestMimeTypeDescription(MimeType mimeType, Language language) {
         String description;
-        MimeTypeDescription mimeTypeDescription = getMimeTypeDescription(mimeType, language);
+        var mimeTypeDescription = getMimeTypeDescription(mimeType, language);
 
         if(mimeTypeDescription == null && !language.getIsDefault()) {
             mimeTypeDescription = getMimeTypeDescription(mimeType, getPartyControl().getDefaultLanguage());
@@ -9133,9 +9133,9 @@ public class CoreControl
     }
 
     public List<MimeTypeDescriptionTransfer> getMimeTypeDescriptionTransfersByMimeType(UserVisit userVisit, MimeType mimeType) {
-        List<MimeTypeDescription> mimeTypeDescriptions = getMimeTypeDescriptionsByMimeType(mimeType);
+        var mimeTypeDescriptions = getMimeTypeDescriptionsByMimeType(mimeType);
         List<MimeTypeDescriptionTransfer> mimeTypeDescriptionTransfers = new ArrayList<>(mimeTypeDescriptions.size());
-        MimeTypeDescriptionTransferCache mimeTypeDescriptionTransferCache = getCoreTransferCaches(userVisit).getMimeTypeDescriptionTransferCache();
+        var mimeTypeDescriptionTransferCache = getCoreTransferCaches(userVisit).getMimeTypeDescriptionTransferCache();
 
         mimeTypeDescriptions.forEach((mimeTypeDescription) ->
                 mimeTypeDescriptionTransfers.add(mimeTypeDescriptionTransferCache.getMimeTypeDescriptionTransfer(mimeTypeDescription))
@@ -9146,15 +9146,15 @@ public class CoreControl
 
     public void updateMimeTypeDescriptionFromValue(MimeTypeDescriptionValue mimeTypeDescriptionValue, BasePK updatedBy) {
         if(mimeTypeDescriptionValue.hasBeenModified()) {
-            MimeTypeDescription mimeTypeDescription = MimeTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var mimeTypeDescription = MimeTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     mimeTypeDescriptionValue.getPrimaryKey());
 
             mimeTypeDescription.setThruTime(session.START_TIME_LONG);
             mimeTypeDescription.store();
 
-            MimeType mimeType = mimeTypeDescription.getMimeType();
-            Language language = mimeTypeDescription.getLanguage();
-            String description = mimeTypeDescriptionValue.getDescription();
+            var mimeType = mimeTypeDescription.getMimeType();
+            var language = mimeTypeDescription.getLanguage();
+            var description = mimeTypeDescriptionValue.getDescription();
 
             mimeTypeDescription = MimeTypeDescriptionFactory.getInstance().create(mimeType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -9171,7 +9171,7 @@ public class CoreControl
     }
 
     public void deleteMimeTypeDescriptionsByMimeType(MimeType mimeType, BasePK deletedBy) {
-        List<MimeTypeDescription> mimeTypeDescriptions = getMimeTypeDescriptionsByMimeTypeForUpdate(mimeType);
+        var mimeTypeDescriptions = getMimeTypeDescriptionsByMimeTypeForUpdate(mimeType);
 
         mimeTypeDescriptions.forEach((mimeTypeDescription) -> 
                 deleteMimeTypeDescription(mimeTypeDescription, deletedBy)
@@ -9190,7 +9190,7 @@ public class CoreControl
         MimeTypeUsage mimeTypeUsage;
         
         try {
-            PreparedStatement ps = MimeTypeUsageFactory.getInstance().prepareStatement(
+            var ps = MimeTypeUsageFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM mimetypeusages " +
                     "WHERE mtypu_mtyp_mimetypeid = ? AND mtypu_mtyput_mimetypeusagetypeid = ?");
@@ -9210,7 +9210,7 @@ public class CoreControl
         List<MimeTypeUsage> mimeTypeUsages;
         
         try {
-            PreparedStatement ps = MimeTypeUsageFactory.getInstance().prepareStatement(
+            var ps = MimeTypeUsageFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ "
                     + "FROM mimetypeusages, mimetypes, mimetypedetails "
                     + "WHERE mtypu_mtyp_mimetypeid = ? "
@@ -9233,7 +9233,7 @@ public class CoreControl
     
     public List<MimeTypeUsageTransfer> getMimeTypeUsageTransfersByMimeType(UserVisit userVisit, Collection<MimeTypeUsage> mimeTypeUsages) {
         List<MimeTypeUsageTransfer> mimeTypeUsageTransfers = new ArrayList<>(mimeTypeUsages.size());
-        MimeTypeUsageTransferCache mimeTypeUsageTransferCache = getCoreTransferCaches(userVisit).getMimeTypeUsageTransferCache();
+        var mimeTypeUsageTransferCache = getCoreTransferCaches(userVisit).getMimeTypeUsageTransferCache();
         
         mimeTypeUsages.forEach((mimeTypeUsage) ->
                 mimeTypeUsageTransfers.add(mimeTypeUsageTransferCache.getMimeTypeUsageTransfer(mimeTypeUsage))
@@ -9258,7 +9258,7 @@ public class CoreControl
         MimeTypeFileExtension mimeTypeFileExtension;
         
         try {
-            PreparedStatement ps = MimeTypeFileExtensionFactory.getInstance().prepareStatement(
+            var ps = MimeTypeFileExtensionFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM mimetypefileextensions " +
                     "WHERE mtypfe_mtyp_mimetypeid = ? AND mtypfe_isdefault = 1");
@@ -9277,7 +9277,7 @@ public class CoreControl
         MimeTypeFileExtension mimeTypeFileExtension;
         
         try {
-            PreparedStatement ps = MimeTypeFileExtensionFactory.getInstance().prepareStatement(
+            var ps = MimeTypeFileExtensionFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM mimetypefileextensions " +
                     "WHERE mtypfe_fileextension = ?");
@@ -9293,7 +9293,7 @@ public class CoreControl
     }
     
     public List<MimeTypeFileExtension> getMimeTypeFileExtensions() {
-        PreparedStatement ps = MimeTypeFileExtensionFactory.getInstance().prepareStatement(
+        var ps = MimeTypeFileExtensionFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
                 "FROM mimetypefileextensions " +
                 "ORDER BY mtypfe_fileextension");
@@ -9302,7 +9302,7 @@ public class CoreControl
     }
     
     public List<MimeTypeFileExtension> getMimeTypeFileExtensionsByMimeType(MimeType mimeType) {
-        PreparedStatement ps = MimeTypeFileExtensionFactory.getInstance().prepareStatement(
+        var ps = MimeTypeFileExtensionFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ "
                 + "FROM mimetypefileextensions "
                 + "WHERE mtypfe_mtyp_mimetypeid = ? "
@@ -9318,7 +9318,7 @@ public class CoreControl
     
     public List<MimeTypeFileExtensionTransfer> getMimeTypeFileExtensionTransfers(UserVisit userVisit, Collection<MimeTypeFileExtension> mimeTypeFileExtensions) {
         List<MimeTypeFileExtensionTransfer> mimeTypeFileExtensionTransfers = new ArrayList<>(mimeTypeFileExtensions.size());
-        MimeTypeFileExtensionTransferCache mimeTypeFileExtensionTransferCache = getCoreTransferCaches(userVisit).getMimeTypeFileExtensionTransferCache();
+        var mimeTypeFileExtensionTransferCache = getCoreTransferCaches(userVisit).getMimeTypeFileExtensionTransferCache();
         
         mimeTypeFileExtensions.forEach((mimeTypeFileExtension) ->
                 mimeTypeFileExtensionTransfers.add(mimeTypeFileExtensionTransferCache.getMimeTypeFileExtensionTransfer(mimeTypeFileExtension))
@@ -9340,11 +9340,11 @@ public class CoreControl
     // --------------------------------------------------------------------------------
 
     public Protocol createProtocol(String protocolName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        Protocol defaultProtocol = getDefaultProtocol();
-        boolean defaultFound = defaultProtocol != null;
+        var defaultProtocol = getDefaultProtocol();
+        var defaultFound = defaultProtocol != null;
 
         if(defaultFound && isDefault) {
-            ProtocolDetailValue defaultProtocolDetailValue = getDefaultProtocolDetailValueForUpdate();
+            var defaultProtocolDetailValue = getDefaultProtocolDetailValueForUpdate();
 
             defaultProtocolDetailValue.setIsDefault(Boolean.FALSE);
             updateProtocolFromValue(defaultProtocolDetailValue, false, createdBy);
@@ -9352,8 +9352,8 @@ public class CoreControl
             isDefault = Boolean.TRUE;
         }
 
-        Protocol protocol = ProtocolFactory.getInstance().create();
-        ProtocolDetail protocolDetail = ProtocolDetailFactory.getInstance().create(protocol, protocolName, isDefault, sortOrder, session.START_TIME_LONG,
+        var protocol = ProtocolFactory.getInstance().create();
+        var protocolDetail = ProtocolDetailFactory.getInstance().create(protocol, protocolName, isDefault, sortOrder, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -9478,9 +9478,9 @@ public class CoreControl
     }
 
     public List<ProtocolTransfer> getProtocolTransfers(UserVisit userVisit) {
-        List<Protocol> protocols = getProtocols();
+        var protocols = getProtocols();
         List<ProtocolTransfer> protocolTransfers = new ArrayList<>(protocols.size());
-        ProtocolTransferCache protocolTransferCache = getCoreTransferCaches(userVisit).getProtocolTransferCache();
+        var protocolTransferCache = getCoreTransferCaches(userVisit).getProtocolTransferCache();
 
         protocols.forEach((protocol) ->
                 protocolTransfers.add(protocolTransferCache.getProtocolTransfer(protocol))
@@ -9490,7 +9490,7 @@ public class CoreControl
     }
 
     public ProtocolChoicesBean getProtocolChoices(String defaultProtocolChoice, Language language, boolean allowNullChoice) {
-        List<Protocol> protocols = getProtocols();
+        var protocols = getProtocols();
         var size = protocols.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -9506,7 +9506,7 @@ public class CoreControl
         }
 
         for(var protocol : protocols) {
-            ProtocolDetail protocolDetail = protocol.getLastDetail();
+            var protocolDetail = protocol.getLastDetail();
 
             var label = getBestProtocolDescription(protocol, language);
             var value = protocolDetail.getProtocolName();
@@ -9525,25 +9525,25 @@ public class CoreControl
 
     private void updateProtocolFromValue(ProtocolDetailValue protocolDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(protocolDetailValue.hasBeenModified()) {
-            Protocol protocol = ProtocolFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var protocol = ProtocolFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      protocolDetailValue.getProtocolPK());
-            ProtocolDetail protocolDetail = protocol.getActiveDetailForUpdate();
+            var protocolDetail = protocol.getActiveDetailForUpdate();
 
             protocolDetail.setThruTime(session.START_TIME_LONG);
             protocolDetail.store();
 
-            ProtocolPK protocolPK = protocolDetail.getProtocolPK(); // Not updated
-            String protocolName = protocolDetailValue.getProtocolName();
-            Boolean isDefault = protocolDetailValue.getIsDefault();
-            Integer sortOrder = protocolDetailValue.getSortOrder();
+            var protocolPK = protocolDetail.getProtocolPK(); // Not updated
+            var protocolName = protocolDetailValue.getProtocolName();
+            var isDefault = protocolDetailValue.getIsDefault();
+            var sortOrder = protocolDetailValue.getSortOrder();
 
             if(checkDefault) {
-                Protocol defaultProtocol = getDefaultProtocol();
-                boolean defaultFound = defaultProtocol != null && !defaultProtocol.equals(protocol);
+                var defaultProtocol = getDefaultProtocol();
+                var defaultFound = defaultProtocol != null && !defaultProtocol.equals(protocol);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    ProtocolDetailValue defaultProtocolDetailValue = getDefaultProtocolDetailValueForUpdate();
+                    var defaultProtocolDetailValue = getDefaultProtocolDetailValueForUpdate();
 
                     defaultProtocolDetailValue.setIsDefault(Boolean.FALSE);
                     updateProtocolFromValue(defaultProtocolDetailValue, false, updatedBy);
@@ -9568,7 +9568,7 @@ public class CoreControl
     }
 
     private void deleteProtocol(Protocol protocol, boolean checkDefault, BasePK deletedBy) {
-        ProtocolDetail protocolDetail = protocol.getLastDetailForUpdate();
+        var protocolDetail = protocol.getLastDetailForUpdate();
 
         deleteServicesByProtocol(protocol, deletedBy);
         deleteProtocolDescriptionsByProtocol(protocol, deletedBy);
@@ -9579,17 +9579,17 @@ public class CoreControl
 
         if(checkDefault) {
             // Check for default, and pick one if necessary
-            Protocol defaultProtocol = getDefaultProtocol();
+            var defaultProtocol = getDefaultProtocol();
 
             if(defaultProtocol == null) {
-                List<Protocol> protocols = getProtocolsForUpdate();
+                var protocols = getProtocolsForUpdate();
 
                 if(!protocols.isEmpty()) {
-                    Iterator<Protocol> iter = protocols.iterator();
+                    var iter = protocols.iterator();
                     if(iter.hasNext()) {
                         defaultProtocol = iter.next();
                     }
-                    ProtocolDetailValue protocolDetailValue = Objects.requireNonNull(defaultProtocol).getLastDetailForUpdate().getProtocolDetailValue().clone();
+                    var protocolDetailValue = Objects.requireNonNull(defaultProtocol).getLastDetailForUpdate().getProtocolDetailValue().clone();
 
                     protocolDetailValue.setIsDefault(Boolean.TRUE);
                     updateProtocolFromValue(protocolDetailValue, false, deletedBy);
@@ -9617,7 +9617,7 @@ public class CoreControl
     // --------------------------------------------------------------------------------
 
     public ProtocolDescription createProtocolDescription(Protocol protocol, Language language, String description, BasePK createdBy) {
-        ProtocolDescription protocolDescription = ProtocolDescriptionFactory.getInstance().create(protocol, language, description,
+        var protocolDescription = ProtocolDescriptionFactory.getInstance().create(protocol, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(protocol.getPrimaryKey(), EventTypes.MODIFY, protocolDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -9696,7 +9696,7 @@ public class CoreControl
 
     public String getBestProtocolDescription(Protocol protocol, Language language) {
         String description;
-        ProtocolDescription protocolDescription = getProtocolDescription(protocol, language);
+        var protocolDescription = getProtocolDescription(protocol, language);
 
         if(protocolDescription == null && !language.getIsDefault()) {
             protocolDescription = getProtocolDescription(protocol, getPartyControl().getDefaultLanguage());
@@ -9716,9 +9716,9 @@ public class CoreControl
     }
 
     public List<ProtocolDescriptionTransfer> getProtocolDescriptionTransfersByProtocol(UserVisit userVisit, Protocol protocol) {
-        List<ProtocolDescription> protocolDescriptions = getProtocolDescriptionsByProtocol(protocol);
+        var protocolDescriptions = getProtocolDescriptionsByProtocol(protocol);
         List<ProtocolDescriptionTransfer> protocolDescriptionTransfers = new ArrayList<>(protocolDescriptions.size());
-        ProtocolDescriptionTransferCache protocolDescriptionTransferCache = getCoreTransferCaches(userVisit).getProtocolDescriptionTransferCache();
+        var protocolDescriptionTransferCache = getCoreTransferCaches(userVisit).getProtocolDescriptionTransferCache();
 
         protocolDescriptions.forEach((protocolDescription) ->
                 protocolDescriptionTransfers.add(protocolDescriptionTransferCache.getProtocolDescriptionTransfer(protocolDescription))
@@ -9729,15 +9729,15 @@ public class CoreControl
 
     public void updateProtocolDescriptionFromValue(ProtocolDescriptionValue protocolDescriptionValue, BasePK updatedBy) {
         if(protocolDescriptionValue.hasBeenModified()) {
-            ProtocolDescription protocolDescription = ProtocolDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var protocolDescription = ProtocolDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     protocolDescriptionValue.getPrimaryKey());
 
             protocolDescription.setThruTime(session.START_TIME_LONG);
             protocolDescription.store();
 
-            Protocol protocol = protocolDescription.getProtocol();
-            Language language = protocolDescription.getLanguage();
-            String description = protocolDescriptionValue.getDescription();
+            var protocol = protocolDescription.getProtocol();
+            var language = protocolDescription.getLanguage();
+            var description = protocolDescriptionValue.getDescription();
 
             protocolDescription = ProtocolDescriptionFactory.getInstance().create(protocol, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -9754,7 +9754,7 @@ public class CoreControl
     }
 
     public void deleteProtocolDescriptionsByProtocol(Protocol protocol, BasePK deletedBy) {
-        List<ProtocolDescription> protocolDescriptions = getProtocolDescriptionsByProtocolForUpdate(protocol);
+        var protocolDescriptions = getProtocolDescriptionsByProtocolForUpdate(protocol);
 
         protocolDescriptions.forEach((protocolDescription) -> 
                 deleteProtocolDescription(protocolDescription, deletedBy)
@@ -9766,11 +9766,11 @@ public class CoreControl
     // --------------------------------------------------------------------------------
 
     public Service createService(String serviceName, Integer port, Protocol protocol, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        Service defaultService = getDefaultService();
-        boolean defaultFound = defaultService != null;
+        var defaultService = getDefaultService();
+        var defaultFound = defaultService != null;
 
         if(defaultFound && isDefault) {
-            ServiceDetailValue defaultServiceDetailValue = getDefaultServiceDetailValueForUpdate();
+            var defaultServiceDetailValue = getDefaultServiceDetailValueForUpdate();
 
             defaultServiceDetailValue.setIsDefault(Boolean.FALSE);
             updateServiceFromValue(defaultServiceDetailValue, false, createdBy);
@@ -9778,8 +9778,8 @@ public class CoreControl
             isDefault = Boolean.TRUE;
         }
 
-        Service service = ServiceFactory.getInstance().create();
-        ServiceDetail serviceDetail = ServiceDetailFactory.getInstance().create(service, serviceName, port, protocol, isDefault, sortOrder,
+        var service = ServiceFactory.getInstance().create();
+        var serviceDetail = ServiceDetailFactory.getInstance().create(service, serviceName, port, protocol, isDefault, sortOrder,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -9937,9 +9937,9 @@ public class CoreControl
     }
 
     public List<ServiceTransfer> getServiceTransfers(UserVisit userVisit) {
-        List<Service> services = getServices();
+        var services = getServices();
         List<ServiceTransfer> serviceTransfers = new ArrayList<>(services.size());
-        ServiceTransferCache serviceTransferCache = getCoreTransferCaches(userVisit).getServiceTransferCache();
+        var serviceTransferCache = getCoreTransferCaches(userVisit).getServiceTransferCache();
 
         services.forEach((service) ->
                 serviceTransfers.add(serviceTransferCache.getServiceTransfer(service))
@@ -9949,7 +9949,7 @@ public class CoreControl
     }
 
     public ServiceChoicesBean getServiceChoices(String defaultServiceChoice, Language language, boolean allowNullChoice) {
-        List<Service> services = getServices();
+        var services = getServices();
         var size = services.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -9965,7 +9965,7 @@ public class CoreControl
         }
 
         for(var service : services) {
-            ServiceDetail serviceDetail = service.getLastDetail();
+            var serviceDetail = service.getLastDetail();
 
             var label = getBestServiceDescription(service, language);
             var value = serviceDetail.getServiceName();
@@ -9984,27 +9984,27 @@ public class CoreControl
 
     private void updateServiceFromValue(ServiceDetailValue serviceDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(serviceDetailValue.hasBeenModified()) {
-            Service service = ServiceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var service = ServiceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      serviceDetailValue.getServicePK());
-            ServiceDetail serviceDetail = service.getActiveDetailForUpdate();
+            var serviceDetail = service.getActiveDetailForUpdate();
 
             serviceDetail.setThruTime(session.START_TIME_LONG);
             serviceDetail.store();
 
-            ServicePK servicePK = serviceDetail.getServicePK(); // Not updated
-            String serviceName = serviceDetailValue.getServiceName();
-            Integer port = serviceDetailValue.getPort();
-            ProtocolPK protocolPK = serviceDetailValue.getProtocolPK();
-            Boolean isDefault = serviceDetailValue.getIsDefault();
-            Integer sortOrder = serviceDetailValue.getSortOrder();
+            var servicePK = serviceDetail.getServicePK(); // Not updated
+            var serviceName = serviceDetailValue.getServiceName();
+            var port = serviceDetailValue.getPort();
+            var protocolPK = serviceDetailValue.getProtocolPK();
+            var isDefault = serviceDetailValue.getIsDefault();
+            var sortOrder = serviceDetailValue.getSortOrder();
 
             if(checkDefault) {
-                Service defaultService = getDefaultService();
-                boolean defaultFound = defaultService != null && !defaultService.equals(service);
+                var defaultService = getDefaultService();
+                var defaultFound = defaultService != null && !defaultService.equals(service);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    ServiceDetailValue defaultServiceDetailValue = getDefaultServiceDetailValueForUpdate();
+                    var defaultServiceDetailValue = getDefaultServiceDetailValueForUpdate();
 
                     defaultServiceDetailValue.setIsDefault(Boolean.FALSE);
                     updateServiceFromValue(defaultServiceDetailValue, false, updatedBy);
@@ -10029,7 +10029,7 @@ public class CoreControl
     }
 
     private void deleteService(Service service, boolean checkDefault, BasePK deletedBy) {
-        ServiceDetail serviceDetail = service.getLastDetailForUpdate();
+        var serviceDetail = service.getLastDetailForUpdate();
 
         deleteServerServicesByService(service, deletedBy);
         deleteServiceDescriptionsByService(service, deletedBy);
@@ -10040,17 +10040,17 @@ public class CoreControl
 
         if(checkDefault) {
             // Check for default, and pick one if necessary
-            Service defaultService = getDefaultService();
+            var defaultService = getDefaultService();
 
             if(defaultService == null) {
-                List<Service> services = getServicesForUpdate();
+                var services = getServicesForUpdate();
 
                 if(!services.isEmpty()) {
-                    Iterator<Service> iter = services.iterator();
+                    var iter = services.iterator();
                     if(iter.hasNext()) {
                         defaultService = iter.next();
                     }
-                    ServiceDetailValue serviceDetailValue = Objects.requireNonNull(defaultService).getLastDetailForUpdate().getServiceDetailValue().clone();
+                    var serviceDetailValue = Objects.requireNonNull(defaultService).getLastDetailForUpdate().getServiceDetailValue().clone();
 
                     serviceDetailValue.setIsDefault(Boolean.TRUE);
                     updateServiceFromValue(serviceDetailValue, false, deletedBy);
@@ -10082,7 +10082,7 @@ public class CoreControl
     // --------------------------------------------------------------------------------
 
     public ServiceDescription createServiceDescription(Service service, Language language, String description, BasePK createdBy) {
-        ServiceDescription serviceDescription = ServiceDescriptionFactory.getInstance().create(service, language, description,
+        var serviceDescription = ServiceDescriptionFactory.getInstance().create(service, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(service.getPrimaryKey(), EventTypes.MODIFY, serviceDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -10161,7 +10161,7 @@ public class CoreControl
 
     public String getBestServiceDescription(Service service, Language language) {
         String description;
-        ServiceDescription serviceDescription = getServiceDescription(service, language);
+        var serviceDescription = getServiceDescription(service, language);
 
         if(serviceDescription == null && !language.getIsDefault()) {
             serviceDescription = getServiceDescription(service, getPartyControl().getDefaultLanguage());
@@ -10181,9 +10181,9 @@ public class CoreControl
     }
 
     public List<ServiceDescriptionTransfer> getServiceDescriptionTransfersByService(UserVisit userVisit, Service service) {
-        List<ServiceDescription> serviceDescriptions = getServiceDescriptionsByService(service);
+        var serviceDescriptions = getServiceDescriptionsByService(service);
         List<ServiceDescriptionTransfer> serviceDescriptionTransfers = new ArrayList<>(serviceDescriptions.size());
-        ServiceDescriptionTransferCache serviceDescriptionTransferCache = getCoreTransferCaches(userVisit).getServiceDescriptionTransferCache();
+        var serviceDescriptionTransferCache = getCoreTransferCaches(userVisit).getServiceDescriptionTransferCache();
 
         serviceDescriptions.forEach((serviceDescription) ->
                 serviceDescriptionTransfers.add(serviceDescriptionTransferCache.getServiceDescriptionTransfer(serviceDescription))
@@ -10194,15 +10194,15 @@ public class CoreControl
 
     public void updateServiceDescriptionFromValue(ServiceDescriptionValue serviceDescriptionValue, BasePK updatedBy) {
         if(serviceDescriptionValue.hasBeenModified()) {
-            ServiceDescription serviceDescription = ServiceDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var serviceDescription = ServiceDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     serviceDescriptionValue.getPrimaryKey());
 
             serviceDescription.setThruTime(session.START_TIME_LONG);
             serviceDescription.store();
 
-            Service service = serviceDescription.getService();
-            Language language = serviceDescription.getLanguage();
-            String description = serviceDescriptionValue.getDescription();
+            var service = serviceDescription.getService();
+            var language = serviceDescription.getLanguage();
+            var description = serviceDescriptionValue.getDescription();
 
             serviceDescription = ServiceDescriptionFactory.getInstance().create(service, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -10219,7 +10219,7 @@ public class CoreControl
     }
 
     public void deleteServiceDescriptionsByService(Service service, BasePK deletedBy) {
-        List<ServiceDescription> serviceDescriptions = getServiceDescriptionsByServiceForUpdate(service);
+        var serviceDescriptions = getServiceDescriptionsByServiceForUpdate(service);
 
         serviceDescriptions.forEach((serviceDescription) -> 
                 deleteServiceDescription(serviceDescription, deletedBy)
@@ -10231,11 +10231,11 @@ public class CoreControl
     // --------------------------------------------------------------------------------
 
     public Server createServer(String serverName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        Server defaultServer = getDefaultServer();
-        boolean defaultFound = defaultServer != null;
+        var defaultServer = getDefaultServer();
+        var defaultFound = defaultServer != null;
 
         if(defaultFound && isDefault) {
-            ServerDetailValue defaultServerDetailValue = getDefaultServerDetailValueForUpdate();
+            var defaultServerDetailValue = getDefaultServerDetailValueForUpdate();
 
             defaultServerDetailValue.setIsDefault(Boolean.FALSE);
             updateServerFromValue(defaultServerDetailValue, false, createdBy);
@@ -10243,8 +10243,8 @@ public class CoreControl
             isDefault = Boolean.TRUE;
         }
 
-        Server server = ServerFactory.getInstance().create();
-        ServerDetail serverDetail = ServerDetailFactory.getInstance().create(server, serverName, isDefault, sortOrder, session.START_TIME_LONG,
+        var server = ServerFactory.getInstance().create();
+        var serverDetail = ServerDetailFactory.getInstance().create(server, serverName, isDefault, sortOrder, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -10368,9 +10368,9 @@ public class CoreControl
     }
 
     public List<ServerTransfer> getServerTransfers(UserVisit userVisit) {
-        List<Server> servers = getServers();
+        var servers = getServers();
         List<ServerTransfer> serverTransfers = new ArrayList<>(servers.size());
-        ServerTransferCache serverTransferCache = getCoreTransferCaches(userVisit).getServerTransferCache();
+        var serverTransferCache = getCoreTransferCaches(userVisit).getServerTransferCache();
 
         servers.forEach((server) ->
                 serverTransfers.add(serverTransferCache.getServerTransfer(server))
@@ -10380,7 +10380,7 @@ public class CoreControl
     }
 
     public ServerChoicesBean getServerChoices(String defaultServerChoice, Language language, boolean allowNullChoice) {
-        List<Server> servers = getServers();
+        var servers = getServers();
         var size = servers.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -10396,7 +10396,7 @@ public class CoreControl
         }
 
         for(var server : servers) {
-            ServerDetail serverDetail = server.getLastDetail();
+            var serverDetail = server.getLastDetail();
 
             var label = getBestServerDescription(server, language);
             var value = serverDetail.getServerName();
@@ -10415,25 +10415,25 @@ public class CoreControl
 
     private void updateServerFromValue(ServerDetailValue serverDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(serverDetailValue.hasBeenModified()) {
-            Server server = ServerFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var server = ServerFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      serverDetailValue.getServerPK());
-            ServerDetail serverDetail = server.getActiveDetailForUpdate();
+            var serverDetail = server.getActiveDetailForUpdate();
 
             serverDetail.setThruTime(session.START_TIME_LONG);
             serverDetail.store();
 
-            ServerPK serverPK = serverDetail.getServerPK(); // Not updated
-            String serverName = serverDetailValue.getServerName();
-            Boolean isDefault = serverDetailValue.getIsDefault();
-            Integer sortOrder = serverDetailValue.getSortOrder();
+            var serverPK = serverDetail.getServerPK(); // Not updated
+            var serverName = serverDetailValue.getServerName();
+            var isDefault = serverDetailValue.getIsDefault();
+            var sortOrder = serverDetailValue.getSortOrder();
 
             if(checkDefault) {
-                Server defaultServer = getDefaultServer();
-                boolean defaultFound = defaultServer != null && !defaultServer.equals(server);
+                var defaultServer = getDefaultServer();
+                var defaultFound = defaultServer != null && !defaultServer.equals(server);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    ServerDetailValue defaultServerDetailValue = getDefaultServerDetailValueForUpdate();
+                    var defaultServerDetailValue = getDefaultServerDetailValueForUpdate();
 
                     defaultServerDetailValue.setIsDefault(Boolean.FALSE);
                     updateServerFromValue(defaultServerDetailValue, false, updatedBy);
@@ -10458,7 +10458,7 @@ public class CoreControl
     }
 
     private void deleteServer(Server server, boolean checkDefault, BasePK deletedBy) {
-        ServerDetail serverDetail = server.getLastDetailForUpdate();
+        var serverDetail = server.getLastDetailForUpdate();
 
         deleteServerServicesByServer(server, deletedBy);
         deleteServerDescriptionsByServer(server, deletedBy);
@@ -10469,17 +10469,17 @@ public class CoreControl
 
         if(checkDefault) {
             // Check for default, and pick one if necessary
-            Server defaultServer = getDefaultServer();
+            var defaultServer = getDefaultServer();
 
             if(defaultServer == null) {
-                List<Server> servers = getServersForUpdate();
+                var servers = getServersForUpdate();
 
                 if(!servers.isEmpty()) {
-                    Iterator<Server> iter = servers.iterator();
+                    var iter = servers.iterator();
                     if(iter.hasNext()) {
                         defaultServer = iter.next();
                     }
-                    ServerDetailValue serverDetailValue = Objects.requireNonNull(defaultServer).getLastDetailForUpdate().getServerDetailValue().clone();
+                    var serverDetailValue = Objects.requireNonNull(defaultServer).getLastDetailForUpdate().getServerDetailValue().clone();
 
                     serverDetailValue.setIsDefault(Boolean.TRUE);
                     updateServerFromValue(serverDetailValue, false, deletedBy);
@@ -10507,7 +10507,7 @@ public class CoreControl
     // --------------------------------------------------------------------------------
 
     public ServerDescription createServerDescription(Server server, Language language, String description, BasePK createdBy) {
-        ServerDescription serverDescription = ServerDescriptionFactory.getInstance().create(server, language, description,
+        var serverDescription = ServerDescriptionFactory.getInstance().create(server, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(server.getPrimaryKey(), EventTypes.MODIFY, serverDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -10586,7 +10586,7 @@ public class CoreControl
 
     public String getBestServerDescription(Server server, Language language) {
         String description;
-        ServerDescription serverDescription = getServerDescription(server, language);
+        var serverDescription = getServerDescription(server, language);
 
         if(serverDescription == null && !language.getIsDefault()) {
             serverDescription = getServerDescription(server, getPartyControl().getDefaultLanguage());
@@ -10606,9 +10606,9 @@ public class CoreControl
     }
 
     public List<ServerDescriptionTransfer> getServerDescriptionTransfersByServer(UserVisit userVisit, Server server) {
-        List<ServerDescription> serverDescriptions = getServerDescriptionsByServer(server);
+        var serverDescriptions = getServerDescriptionsByServer(server);
         List<ServerDescriptionTransfer> serverDescriptionTransfers = new ArrayList<>(serverDescriptions.size());
-        ServerDescriptionTransferCache serverDescriptionTransferCache = getCoreTransferCaches(userVisit).getServerDescriptionTransferCache();
+        var serverDescriptionTransferCache = getCoreTransferCaches(userVisit).getServerDescriptionTransferCache();
 
         serverDescriptions.forEach((serverDescription) ->
                 serverDescriptionTransfers.add(serverDescriptionTransferCache.getServerDescriptionTransfer(serverDescription))
@@ -10619,15 +10619,15 @@ public class CoreControl
 
     public void updateServerDescriptionFromValue(ServerDescriptionValue serverDescriptionValue, BasePK updatedBy) {
         if(serverDescriptionValue.hasBeenModified()) {
-            ServerDescription serverDescription = ServerDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var serverDescription = ServerDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     serverDescriptionValue.getPrimaryKey());
 
             serverDescription.setThruTime(session.START_TIME_LONG);
             serverDescription.store();
 
-            Server server = serverDescription.getServer();
-            Language language = serverDescription.getLanguage();
-            String description = serverDescriptionValue.getDescription();
+            var server = serverDescription.getServer();
+            var language = serverDescription.getLanguage();
+            var description = serverDescriptionValue.getDescription();
 
             serverDescription = ServerDescriptionFactory.getInstance().create(server, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -10644,7 +10644,7 @@ public class CoreControl
     }
 
     public void deleteServerDescriptionsByServer(Server server, BasePK deletedBy) {
-        List<ServerDescription> serverDescriptions = getServerDescriptionsByServerForUpdate(server);
+        var serverDescriptions = getServerDescriptionsByServerForUpdate(server);
 
         serverDescriptions.forEach((serverDescription) -> 
                 deleteServerDescription(serverDescription, deletedBy)
@@ -10656,7 +10656,7 @@ public class CoreControl
     // --------------------------------------------------------------------------------
 
     public ServerService createServerService(Server server, Service service, BasePK createdBy) {
-        ServerService serverService = ServerServiceFactory.getInstance().create(server, service, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        var serverService = ServerServiceFactory.getInstance().create(server, service, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(server.getPrimaryKey(), EventTypes.MODIFY, serverService.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -10770,9 +10770,9 @@ public class CoreControl
     }
 
     public List<ServerServiceTransfer> getServerServiceTransfersByServer(UserVisit userVisit, Server server) {
-        List<ServerService> serverServices = getServerServicesByServer(server);
+        var serverServices = getServerServicesByServer(server);
         List<ServerServiceTransfer> serverServiceTransfers = new ArrayList<>(serverServices.size());
-        ServerServiceTransferCache serverServiceTransferCache = getCoreTransferCaches(userVisit).getServerServiceTransferCache();
+        var serverServiceTransferCache = getCoreTransferCaches(userVisit).getServerServiceTransferCache();
 
         serverServices.forEach((serverService) ->
                 serverServiceTransfers.add(serverServiceTransferCache.getServerServiceTransfer(serverService))
@@ -10812,7 +10812,7 @@ public class CoreControl
     
     public EntityBooleanAttribute createEntityBooleanAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             Boolean booleanAttribute, BasePK createdBy) {
-        EntityBooleanAttribute entityBooleanAttribute = EntityBooleanAttributeFactory.getInstance().create(entityAttribute,
+        var entityBooleanAttribute = EntityBooleanAttributeFactory.getInstance().create(entityAttribute,
                 entityInstance, booleanAttribute,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
@@ -10832,7 +10832,7 @@ public class CoreControl
     private static final Map<EntityPermission, String> getEntityBooleanAttributeHistoryQueries;
 
     static {
-        Map<EntityPermission, String> queryMap = Map.of(
+        var queryMap = Map.of(
                 EntityPermission.READ_ONLY, """
                 SELECT _ALL_
                 FROM entitybooleanattributes
@@ -10865,8 +10865,8 @@ public class CoreControl
                         "WHERE enbla_ena_entityattributeid = ? AND enbla_eni_entityinstanceid = ? AND enbla_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = EntityBooleanAttributeFactory.getInstance().prepareStatement(query);
+
+            var ps = EntityBooleanAttributeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             ps.setLong(2, entityInstance.getPrimaryKey().getEntityId());
@@ -10900,7 +10900,7 @@ public class CoreControl
         List<EntityBooleanAttribute> entityBooleanAttributes;
         
         try {
-            PreparedStatement ps = EntityBooleanAttributeFactory.getInstance().prepareStatement(
+            var ps = EntityBooleanAttributeFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM entitybooleanattributes " +
                     "WHERE enbla_ena_entityattributeid = ? AND enbla_thrutime = ? " +
@@ -10921,7 +10921,7 @@ public class CoreControl
         List<EntityBooleanAttribute> entityBooleanAttributes;
         
         try {
-            PreparedStatement ps = EntityBooleanAttributeFactory.getInstance().prepareStatement(
+            var ps = EntityBooleanAttributeFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM entitybooleanattributes " +
                     "WHERE enbla_eni_entityinstanceid = ? AND enbla_thrutime = ? " +
@@ -10944,9 +10944,9 @@ public class CoreControl
     
     public void updateEntityBooleanAttributeFromValue(EntityBooleanAttributeValue entityBooleanAttributeValue, BasePK updatedBy) {
         if(entityBooleanAttributeValue.hasBeenModified()) {
-            EntityBooleanAttribute entityBooleanAttribute = EntityBooleanAttributeFactory.getInstance().getEntityFromValue(session, EntityPermission.READ_WRITE, entityBooleanAttributeValue);
-            EntityAttribute entityAttribute = entityBooleanAttribute.getEntityAttribute();
-            EntityInstance entityInstance = entityBooleanAttribute.getEntityInstance();
+            var entityBooleanAttribute = EntityBooleanAttributeFactory.getInstance().getEntityFromValue(session, EntityPermission.READ_WRITE, entityBooleanAttributeValue);
+            var entityAttribute = entityBooleanAttribute.getEntityAttribute();
+            var entityInstance = entityBooleanAttribute.getEntityInstance();
             
             if(entityAttribute.getLastDetail().getTrackRevisions()) {
                 entityBooleanAttribute.setThruTime(session.START_TIME_LONG);
@@ -10963,8 +10963,8 @@ public class CoreControl
     }
     
     public void deleteEntityBooleanAttribute(EntityBooleanAttribute entityBooleanAttribute, BasePK deletedBy) {
-        EntityAttribute entityAttribute = entityBooleanAttribute.getEntityAttribute();
-        EntityInstance entityInstance = entityBooleanAttribute.getEntityInstance();
+        var entityAttribute = entityBooleanAttribute.getEntityAttribute();
+        var entityInstance = entityBooleanAttribute.getEntityInstance();
         
         if(entityAttribute.getLastDetail().getTrackRevisions()) {
             entityBooleanAttribute.setThruTime(session.START_TIME_LONG);
@@ -10994,7 +10994,7 @@ public class CoreControl
     // --------------------------------------------------------------------------------
     
     public EntityDateAttribute createEntityDateAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance, Integer dateAttribute, BasePK createdBy) {
-        EntityDateAttribute entityDateAttribute = EntityDateAttributeFactory.getInstance().create(entityAttribute, entityInstance, dateAttribute, session.START_TIME_LONG,
+        var entityDateAttribute = EntityDateAttributeFactory.getInstance().create(entityAttribute, entityInstance, dateAttribute, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
         sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -11018,8 +11018,8 @@ public class CoreControl
                         "WHERE enda_ena_entityattributeid = ? AND enda_eni_entityinstanceid = ? AND enda_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = EntityDateAttributeFactory.getInstance().prepareStatement(query);
+
+            var ps = EntityDateAttributeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             ps.setLong(2, entityInstance.getPrimaryKey().getEntityId());
@@ -11053,7 +11053,7 @@ public class CoreControl
         List<EntityDateAttribute> entityDateAttributes;
         
         try {
-            PreparedStatement ps = EntityDateAttributeFactory.getInstance().prepareStatement(
+            var ps = EntityDateAttributeFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM entitydateattributes " +
                     "WHERE enda_ena_entityattributeid = ? AND enda_thrutime = ? " +
@@ -11074,7 +11074,7 @@ public class CoreControl
         List<EntityDateAttribute> entityDateAttributes;
         
         try {
-            PreparedStatement ps = EntityDateAttributeFactory.getInstance().prepareStatement(
+            var ps = EntityDateAttributeFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM entitydateattributes " +
                     "WHERE enda_eni_entityinstanceid = ? AND enda_thrutime = ? " +
@@ -11097,9 +11097,9 @@ public class CoreControl
     
     public void updateEntityDateAttributeFromValue(EntityDateAttributeValue entityDateAttributeValue, BasePK updatedBy) {
         if(entityDateAttributeValue.hasBeenModified()) {
-            EntityDateAttribute entityDateAttribute = EntityDateAttributeFactory.getInstance().getEntityFromValue(session, EntityPermission.READ_WRITE, entityDateAttributeValue);
-            EntityAttribute entityAttribute = entityDateAttribute.getEntityAttribute();
-            EntityInstance entityInstance = entityDateAttribute.getEntityInstance();
+            var entityDateAttribute = EntityDateAttributeFactory.getInstance().getEntityFromValue(session, EntityPermission.READ_WRITE, entityDateAttributeValue);
+            var entityAttribute = entityDateAttribute.getEntityAttribute();
+            var entityInstance = entityDateAttribute.getEntityInstance();
             
             if(entityAttribute.getLastDetail().getTrackRevisions()) {
                 entityDateAttribute.setThruTime(session.START_TIME_LONG);
@@ -11116,8 +11116,8 @@ public class CoreControl
     }
     
     public void deleteEntityDateAttribute(EntityDateAttribute entityDateAttribute, BasePK deletedBy) {
-        EntityAttribute entityAttribute = entityDateAttribute.getEntityAttribute();
-        EntityInstance entityInstance = entityDateAttribute.getEntityInstance();
+        var entityAttribute = entityDateAttribute.getEntityAttribute();
+        var entityInstance = entityDateAttribute.getEntityInstance();
         
         if(entityAttribute.getLastDetail().getTrackRevisions()) {
             entityDateAttribute.setThruTime(session.START_TIME_LONG);
@@ -11148,7 +11148,7 @@ public class CoreControl
     
     public EntityIntegerAttribute createEntityIntegerAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             Integer integerAttribute, BasePK createdBy) {
-        EntityIntegerAttribute entityIntegerAttribute = EntityIntegerAttributeFactory.getInstance().create(entityAttribute,
+        var entityIntegerAttribute = EntityIntegerAttributeFactory.getInstance().create(entityAttribute,
                 entityInstance, integerAttribute, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -11173,8 +11173,8 @@ public class CoreControl
                         "WHERE enia_ena_entityattributeid = ? AND enia_eni_entityinstanceid = ? AND enia_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = EntityIntegerAttributeFactory.getInstance().prepareStatement(query);
+
+            var ps = EntityIntegerAttributeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             ps.setLong(2, entityInstance.getPrimaryKey().getEntityId());
@@ -11208,7 +11208,7 @@ public class CoreControl
         List<EntityIntegerAttribute> entityIntegerAttributes;
         
         try {
-            PreparedStatement ps = EntityIntegerAttributeFactory.getInstance().prepareStatement(
+            var ps = EntityIntegerAttributeFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM entityintegerattributes " +
                     "WHERE enia_ena_entityattributeid = ? AND enia_thrutime = ? " +
@@ -11229,7 +11229,7 @@ public class CoreControl
         List<EntityIntegerAttribute> entityIntegerAttributes;
         
         try {
-            PreparedStatement ps = EntityIntegerAttributeFactory.getInstance().prepareStatement(
+            var ps = EntityIntegerAttributeFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM entityintegerattributes " +
                     "WHERE enia_eni_entityinstanceid = ? AND enia_thrutime = ? " +
@@ -11252,9 +11252,9 @@ public class CoreControl
     
     public void updateEntityIntegerAttributeFromValue(EntityIntegerAttributeValue entityIntegerAttributeValue, BasePK updatedBy) {
         if(entityIntegerAttributeValue.hasBeenModified()) {
-            EntityIntegerAttribute entityIntegerAttribute = EntityIntegerAttributeFactory.getInstance().getEntityFromValue(session, EntityPermission.READ_WRITE, entityIntegerAttributeValue);
-            EntityAttribute entityAttribute = entityIntegerAttribute.getEntityAttribute();
-            EntityInstance entityInstance = entityIntegerAttribute.getEntityInstance();
+            var entityIntegerAttribute = EntityIntegerAttributeFactory.getInstance().getEntityFromValue(session, EntityPermission.READ_WRITE, entityIntegerAttributeValue);
+            var entityAttribute = entityIntegerAttribute.getEntityAttribute();
+            var entityInstance = entityIntegerAttribute.getEntityInstance();
             
             if(entityAttribute.getLastDetail().getTrackRevisions()) {
                 entityIntegerAttribute.setThruTime(session.START_TIME_LONG);
@@ -11270,8 +11270,8 @@ public class CoreControl
         }
     }
     public void deleteEntityIntegerAttribute(EntityIntegerAttribute entityIntegerAttribute, BasePK deletedBy) {
-        EntityAttribute entityAttribute = entityIntegerAttribute.getEntityAttribute();
-        EntityInstance entityInstance = entityIntegerAttribute.getEntityInstance();
+        var entityAttribute = entityIntegerAttribute.getEntityAttribute();
+        var entityInstance = entityIntegerAttribute.getEntityInstance();
         
         if(entityAttribute.getLastDetail().getTrackRevisions()) {
             entityIntegerAttribute.setThruTime(session.START_TIME_LONG);
@@ -11302,7 +11302,7 @@ public class CoreControl
     
     public EntityListItemAttribute createEntityListItemAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             EntityListItem entityListItem, BasePK createdBy) {
-        EntityListItemAttribute entityListItemAttribute = EntityListItemAttributeFactory.getInstance().create(session,
+        var entityListItemAttribute = EntityListItemAttributeFactory.getInstance().create(session,
                 entityAttribute, entityInstance, entityListItem, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -11327,8 +11327,8 @@ public class CoreControl
                         "WHERE ela_ena_entityattributeid = ? AND ela_eni_entityinstanceid = ? AND ela_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = EntityListItemAttributeFactory.getInstance().prepareStatement(query);
+
+            var ps = EntityListItemAttributeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             ps.setLong(2, entityInstance.getPrimaryKey().getEntityId());
@@ -11376,8 +11376,8 @@ public class CoreControl
                         + "WHERE ela_eli_entitylistitemid = ? AND ela_thrutime = ? "
                         + "FOR UPDATE";
             }
-            
-            PreparedStatement ps = EntityListItemAttributeFactory.getInstance().prepareStatement(query);
+
+            var ps = EntityListItemAttributeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, entityListItem.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -11402,7 +11402,7 @@ public class CoreControl
         List<EntityListItemAttribute> entityListItemAttributes;
         
         try {
-            PreparedStatement ps = EntityListItemAttributeFactory.getInstance().prepareStatement(
+            var ps = EntityListItemAttributeFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM entitylistitemattributes " +
                     "WHERE ela_eni_entityinstanceid = ? AND ela_thrutime = ? " +
@@ -11425,9 +11425,9 @@ public class CoreControl
     
     public void updateEntityListItemAttributeFromValue(EntityListItemAttributeValue entityListItemAttributeValue, BasePK updatedBy) {
         if(entityListItemAttributeValue.hasBeenModified()) {
-            EntityListItemAttribute entityListItemAttribute = EntityListItemAttributeFactory.getInstance().getEntityFromValue(session, EntityPermission.READ_WRITE, entityListItemAttributeValue);
-            EntityAttribute entityAttribute = entityListItemAttribute.getEntityAttribute();
-            EntityInstance entityInstance = entityListItemAttribute.getEntityInstance();
+            var entityListItemAttribute = EntityListItemAttributeFactory.getInstance().getEntityFromValue(session, EntityPermission.READ_WRITE, entityListItemAttributeValue);
+            var entityAttribute = entityListItemAttribute.getEntityAttribute();
+            var entityInstance = entityListItemAttribute.getEntityInstance();
             
             if(entityAttribute.getLastDetail().getTrackRevisions()) {
                 entityListItemAttribute.setThruTime(session.START_TIME_LONG);
@@ -11444,8 +11444,8 @@ public class CoreControl
     }
     
     public void deleteEntityListItemAttribute(EntityListItemAttribute entityListItemAttribute, BasePK deletedBy) {
-        EntityAttribute entityAttribute = entityListItemAttribute.getEntityAttribute();
-        EntityInstance entityInstance = entityListItemAttribute.getEntityInstance();
+        var entityAttribute = entityListItemAttribute.getEntityAttribute();
+        var entityInstance = entityListItemAttribute.getEntityInstance();
         
         if(entityAttribute.getLastDetail().getTrackRevisions()) {
             entityListItemAttribute.setThruTime(session.START_TIME_LONG);
@@ -11476,7 +11476,7 @@ public class CoreControl
     
     public EntityLongAttribute createEntityLongAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             Long longAttribute, BasePK createdBy) {
-        EntityLongAttribute entityLongAttribute = EntityLongAttributeFactory.getInstance().create(entityAttribute,
+        var entityLongAttribute = EntityLongAttributeFactory.getInstance().create(entityAttribute,
                 entityInstance, longAttribute, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -11501,8 +11501,8 @@ public class CoreControl
                         "WHERE enla_ena_entityattributeid = ? AND enla_eni_entityinstanceid = ? AND enla_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = EntityLongAttributeFactory.getInstance().prepareStatement(query);
+
+            var ps = EntityLongAttributeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             ps.setLong(2, entityInstance.getPrimaryKey().getEntityId());
@@ -11536,7 +11536,7 @@ public class CoreControl
         List<EntityLongAttribute> entityLongAttributes;
         
         try {
-            PreparedStatement ps = EntityLongAttributeFactory.getInstance().prepareStatement(
+            var ps = EntityLongAttributeFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM entitylongattributes " +
                     "WHERE enla_ena_entityattributeid = ? AND enla_thrutime = ? " +
@@ -11557,7 +11557,7 @@ public class CoreControl
         List<EntityLongAttribute> entityLongAttributes;
         
         try {
-            PreparedStatement ps = EntityLongAttributeFactory.getInstance().prepareStatement(
+            var ps = EntityLongAttributeFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM entitylongattributes " +
                     "WHERE enla_eni_entityinstanceid = ? AND enla_thrutime = ? " +
@@ -11580,9 +11580,9 @@ public class CoreControl
     
     public void updateEntityLongAttributeFromValue(EntityLongAttributeValue entityLongAttributeValue, BasePK updatedBy) {
         if(entityLongAttributeValue.hasBeenModified()) {
-            EntityLongAttribute entityLongAttribute = EntityLongAttributeFactory.getInstance().getEntityFromValue(session, EntityPermission.READ_WRITE, entityLongAttributeValue);
-            EntityAttribute entityAttribute = entityLongAttribute.getEntityAttribute();
-            EntityInstance entityInstance = entityLongAttribute.getEntityInstance();
+            var entityLongAttribute = EntityLongAttributeFactory.getInstance().getEntityFromValue(session, EntityPermission.READ_WRITE, entityLongAttributeValue);
+            var entityAttribute = entityLongAttribute.getEntityAttribute();
+            var entityInstance = entityLongAttribute.getEntityInstance();
             
             if(entityAttribute.getLastDetail().getTrackRevisions()) {
                 entityLongAttribute.setThruTime(session.START_TIME_LONG);
@@ -11599,8 +11599,8 @@ public class CoreControl
     }
     
     public void deleteEntityLongAttribute(EntityLongAttribute entityLongAttribute, BasePK deletedBy) {
-        EntityAttribute entityAttribute = entityLongAttribute.getEntityAttribute();
-        EntityInstance entityInstance = entityLongAttribute.getEntityInstance();
+        var entityAttribute = entityLongAttribute.getEntityAttribute();
+        var entityInstance = entityLongAttribute.getEntityInstance();
         
         if(entityAttribute.getLastDetail().getTrackRevisions()) {
             entityLongAttribute.setThruTime(session.START_TIME_LONG);
@@ -11631,7 +11631,7 @@ public class CoreControl
     
     public EntityMultipleListItemAttribute createEntityMultipleListItemAttribute(EntityAttribute entityAttribute,
             EntityInstance entityInstance, EntityListItem entityListItem, BasePK createdBy) {
-        EntityMultipleListItemAttribute entityMultipleListItemAttribute = EntityMultipleListItemAttributeFactory.getInstance().create(session,
+        var entityMultipleListItemAttribute = EntityMultipleListItemAttributeFactory.getInstance().create(session,
                 entityAttribute, entityInstance, entityListItem, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -11651,7 +11651,7 @@ public class CoreControl
         List<EntityMultipleListItemAttribute> entityMultipleListItemAttributes;
         
         try {
-            PreparedStatement ps = EntityMultipleListItemAttributeFactory.getInstance().prepareStatement(
+            var ps = EntityMultipleListItemAttributeFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ "
                     + "FROM entitymultiplelistitemattributes, entitylistitems, entitylistitemdetails "
                     + "WHERE emlia_ena_entityattributeid = ? AND emlia_eni_entityinstanceid = ? AND emlia_thrutime = ? "
@@ -11690,8 +11690,8 @@ public class CoreControl
                         "AND emlia_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = EntityMultipleListItemAttributeFactory.getInstance().prepareStatement(query);
+
+            var ps = EntityMultipleListItemAttributeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             ps.setLong(2, entityInstance.getPrimaryKey().getEntityId());
@@ -11735,8 +11735,8 @@ public class CoreControl
                         + "WHERE emlia_eli_entitylistitemid = ? AND emlia_thrutime = ? "
                         + "FOR UPDATE";
             }
-            
-            PreparedStatement ps = EntityMultipleListItemAttributeFactory.getInstance().prepareStatement(query);
+
+            var ps = EntityMultipleListItemAttributeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, entityListItem.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -11761,7 +11761,7 @@ public class CoreControl
         List<EntityMultipleListItemAttribute> entityMultipleListItemAttributes;
         
         try {
-            PreparedStatement ps = EntityMultipleListItemAttributeFactory.getInstance().prepareStatement(
+            var ps = EntityMultipleListItemAttributeFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM entitymultiplelistitemattributes " +
                     "WHERE emlia_eni_entityinstanceid = ? AND emlia_thrutime = ? " +
@@ -11785,7 +11785,7 @@ public class CoreControl
     
     public List<EntityMultipleListItemAttributeTransfer> getEntityMultipleListItemAttributeTransfers(UserVisit userVisit, Collection<EntityMultipleListItemAttribute> entityMultipleListItemAttributes, EntityInstance entityInstance) {
         List<EntityMultipleListItemAttributeTransfer> entityMultipleListItemAttributeTransfers = new ArrayList<>(entityMultipleListItemAttributes.size());
-        EntityMultipleListItemAttributeTransferCache entityMultipleListItemAttributeTransferCache = getCoreTransferCaches(userVisit).getEntityMultipleListItemAttributeTransferCache();
+        var entityMultipleListItemAttributeTransferCache = getCoreTransferCaches(userVisit).getEntityMultipleListItemAttributeTransferCache();
         
         entityMultipleListItemAttributes.forEach((entityMultipleListItemAttribute) ->
                 entityMultipleListItemAttributeTransfers.add(entityMultipleListItemAttributeTransferCache.getEntityMultipleListItemAttributeTransfer(entityMultipleListItemAttribute, entityInstance))
@@ -11800,8 +11800,8 @@ public class CoreControl
     }
     
     public void deleteEntityMultipleListItemAttribute(EntityMultipleListItemAttribute entityMultipleListItemAttribute, BasePK deletedBy) {
-        EntityAttribute entityAttribute = entityMultipleListItemAttribute.getEntityAttribute();
-        EntityInstance entityInstance = entityMultipleListItemAttribute.getEntityInstance();
+        var entityAttribute = entityMultipleListItemAttribute.getEntityAttribute();
+        var entityInstance = entityMultipleListItemAttribute.getEntityInstance();
         
         if(entityAttribute.getLastDetail().getTrackRevisions()) {
             entityMultipleListItemAttribute.setThruTime(session.START_TIME_LONG);
@@ -11832,7 +11832,7 @@ public class CoreControl
     
     public EntityNameAttribute createEntityNameAttribute(EntityAttribute entityAttribute, String nameAttribute,
             EntityInstance entityInstance, BasePK createdBy) {
-        EntityNameAttribute entityNameAttribute = EntityNameAttributeFactory.getInstance().create(entityAttribute,
+        var entityNameAttribute = EntityNameAttributeFactory.getInstance().create(entityAttribute,
                 nameAttribute, entityInstance, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -11857,8 +11857,8 @@ public class CoreControl
                         "WHERE enna_ena_entityattributeid = ? AND enna_eni_entityinstanceid = ? AND enna_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = EntityNameAttributeFactory.getInstance().prepareStatement(query);
+
+            var ps = EntityNameAttributeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             ps.setLong(2, entityInstance.getPrimaryKey().getEntityId());
@@ -11892,7 +11892,7 @@ public class CoreControl
         List<EntityNameAttribute> entityNameAttributes;
         
         try {
-            PreparedStatement ps = EntityNameAttributeFactory.getInstance().prepareStatement(
+            var ps = EntityNameAttributeFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM entitynameattributes " +
                     "WHERE enna_ena_entityattributeid = ? AND enna_thrutime = ? " +
@@ -11913,7 +11913,7 @@ public class CoreControl
         List<EntityNameAttribute> entityNameAttributes;
         
         try {
-            PreparedStatement ps = EntityNameAttributeFactory.getInstance().prepareStatement(
+            var ps = EntityNameAttributeFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM entitynameattributes " +
                     "WHERE enna_eni_entityinstanceid = ? AND enna_thrutime = ? " +
@@ -11936,9 +11936,9 @@ public class CoreControl
     
     public void updateEntityNameAttributeFromValue(EntityNameAttributeValue entityNameAttributeValue, BasePK updatedBy) {
         if(entityNameAttributeValue.hasBeenModified()) {
-            EntityNameAttribute entityNameAttribute = EntityNameAttributeFactory.getInstance().getEntityFromValue(session, EntityPermission.READ_WRITE, entityNameAttributeValue);
-            EntityAttribute entityAttribute = entityNameAttribute.getEntityAttribute();
-            EntityInstance entityInstance = entityNameAttribute.getEntityInstance();
+            var entityNameAttribute = EntityNameAttributeFactory.getInstance().getEntityFromValue(session, EntityPermission.READ_WRITE, entityNameAttributeValue);
+            var entityAttribute = entityNameAttribute.getEntityAttribute();
+            var entityInstance = entityNameAttribute.getEntityInstance();
             
             if(entityAttribute.getLastDetail().getTrackRevisions()) {
                 entityNameAttribute.setThruTime(session.START_TIME_LONG);
@@ -11955,8 +11955,8 @@ public class CoreControl
     }
     
     public void deleteEntityNameAttribute(EntityNameAttribute entityNameAttribute, BasePK deletedBy) {
-        EntityAttribute entityAttribute = entityNameAttribute.getEntityAttribute();
-        EntityInstance entityInstance = entityNameAttribute.getEntityInstance();
+        var entityAttribute = entityNameAttribute.getEntityAttribute();
+        var entityInstance = entityNameAttribute.getEntityInstance();
         
         if(entityAttribute.getLastDetail().getTrackRevisions()) {
             entityNameAttribute.setThruTime(session.START_TIME_LONG);
@@ -11985,7 +11985,7 @@ public class CoreControl
         List<EntityNameAttribute> entityNameAttributes;
         
         try {
-            PreparedStatement ps = EntityNameAttributeFactory.getInstance().prepareStatement(
+            var ps = EntityNameAttributeFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM entitynameattributes " +
                     "WHERE enna_ena_entityattributeid = ? AND enna_nameattribute = ? AND enna_thrutime = ?");
@@ -12008,7 +12008,7 @@ public class CoreControl
     
     public EntityStringAttribute createEntityStringAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             Language language, String stringAttribute, BasePK createdBy) {
-        EntityStringAttribute entityStringAttribute = EntityStringAttributeFactory.getInstance().create(entityAttribute,
+        var entityStringAttribute = EntityStringAttributeFactory.getInstance().create(entityAttribute,
                 entityInstance, language, stringAttribute, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -12061,8 +12061,8 @@ public class CoreControl
                         "WHERE ensa_ena_entityattributeid = ? AND ensa_eni_entityinstanceid = ? AND ensa_lang_languageid = ? AND ensa_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = EntityStringAttributeFactory.getInstance().prepareStatement(query);
+
+            var ps = EntityStringAttributeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             ps.setLong(2, entityInstance.getPrimaryKey().getEntityId());
@@ -12086,7 +12086,7 @@ public class CoreControl
     }
     
     public EntityStringAttribute getBestEntityStringAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance, Language language) {
-        EntityStringAttribute entityStringAttribute = getEntityStringAttribute(entityAttribute, entityInstance, language);
+        var entityStringAttribute = getEntityStringAttribute(entityAttribute, entityInstance, language);
         
         if(entityStringAttribute == null && !language.getIsDefault()) {
             entityStringAttribute = getEntityStringAttribute(entityAttribute, entityInstance, getPartyControl().getDefaultLanguage());
@@ -12107,7 +12107,7 @@ public class CoreControl
         List<EntityStringAttribute> entityStringAttributes;
         
         try {
-            PreparedStatement ps = EntityStringAttributeFactory.getInstance().prepareStatement(
+            var ps = EntityStringAttributeFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM entitystringattributes " +
                     "WHERE ensa_ena_entityattributeid = ? AND ensa_thrutime = ? " +
@@ -12128,7 +12128,7 @@ public class CoreControl
         List<EntityStringAttribute> entityStringAttributes;
         
         try {
-            PreparedStatement ps = EntityStringAttributeFactory.getInstance().prepareStatement(
+            var ps = EntityStringAttributeFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM entitystringattributes " +
                     "WHERE ensa_eni_entityinstanceid = ? AND ensa_thrutime = ? " +
@@ -12151,10 +12151,10 @@ public class CoreControl
     
     public void updateEntityStringAttributeFromValue(EntityStringAttributeValue entityStringAttributeValue, BasePK updatedBy) {
         if(entityStringAttributeValue.hasBeenModified()) {
-            EntityStringAttribute entityStringAttribute = EntityStringAttributeFactory.getInstance().getEntityFromValue(session, EntityPermission.READ_WRITE, entityStringAttributeValue);
-            EntityAttribute entityAttribute = entityStringAttribute.getEntityAttribute();
-            EntityInstance entityInstance = entityStringAttribute.getEntityInstance();
-            Language language = entityStringAttribute.getLanguage();
+            var entityStringAttribute = EntityStringAttributeFactory.getInstance().getEntityFromValue(session, EntityPermission.READ_WRITE, entityStringAttributeValue);
+            var entityAttribute = entityStringAttribute.getEntityAttribute();
+            var entityInstance = entityStringAttribute.getEntityInstance();
+            var language = entityStringAttribute.getLanguage();
             
             if(entityAttribute.getLastDetail().getTrackRevisions()) {
                 entityStringAttribute.setThruTime(session.START_TIME_LONG);
@@ -12171,8 +12171,8 @@ public class CoreControl
     }
     
     public void deleteEntityStringAttribute(EntityStringAttribute entityStringAttribute, BasePK deletedBy) {
-        EntityAttribute entityAttribute = entityStringAttribute.getEntityAttribute();
-        EntityInstance entityInstance = entityStringAttribute.getEntityInstance();
+        var entityAttribute = entityStringAttribute.getEntityAttribute();
+        var entityInstance = entityStringAttribute.getEntityInstance();
         
         if(entityAttribute.getLastDetail().getTrackRevisions()) {
             entityStringAttribute.setThruTime(session.START_TIME_LONG);
@@ -12203,7 +12203,7 @@ public class CoreControl
     
     public EntityGeoPointAttribute createEntityGeoPointAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             Integer latitude, Integer longitude, Long elevation, Long altitude, BasePK createdBy) {
-        EntityGeoPointAttribute entityGeoPointAttribute = EntityGeoPointAttributeFactory.getInstance().create(entityAttribute, entityInstance, latitude,
+        var entityGeoPointAttribute = EntityGeoPointAttributeFactory.getInstance().create(entityAttribute, entityInstance, latitude,
                 longitude, elevation, altitude, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -12228,8 +12228,8 @@ public class CoreControl
                         "WHERE engeopnta_ena_entityattributeid = ? AND engeopnta_eni_entityinstanceid = ? AND engeopnta_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = EntityGeoPointAttributeFactory.getInstance().prepareStatement(query);
+
+            var ps = EntityGeoPointAttributeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             ps.setLong(2, entityInstance.getPrimaryKey().getEntityId());
@@ -12263,7 +12263,7 @@ public class CoreControl
         List<EntityGeoPointAttribute> entityGeoPointAttributes;
         
         try {
-            PreparedStatement ps = EntityGeoPointAttributeFactory.getInstance().prepareStatement(
+            var ps = EntityGeoPointAttributeFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM entitygeopointattributes " +
                     "WHERE engeopnta_ena_entityattributeid = ? AND engeopnta_thrutime = ? " +
@@ -12284,7 +12284,7 @@ public class CoreControl
         List<EntityGeoPointAttribute> entityGeoPointAttributes;
         
         try {
-            PreparedStatement ps = EntityGeoPointAttributeFactory.getInstance().prepareStatement(
+            var ps = EntityGeoPointAttributeFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM entitygeopointattributes " +
                     "WHERE engeopnta_eni_entityinstanceid = ? AND engeopnta_thrutime = ? " +
@@ -12307,9 +12307,9 @@ public class CoreControl
     
     public void updateEntityGeoPointAttributeFromValue(EntityGeoPointAttributeValue entityGeoPointAttributeValue, BasePK updatedBy) {
         if(entityGeoPointAttributeValue.hasBeenModified()) {
-            EntityGeoPointAttribute entityGeoPointAttribute = EntityGeoPointAttributeFactory.getInstance().getEntityFromValue(session, EntityPermission.READ_WRITE, entityGeoPointAttributeValue);
-            EntityAttribute entityAttribute = entityGeoPointAttribute.getEntityAttribute();
-            EntityInstance entityInstance = entityGeoPointAttribute.getEntityInstance();
+            var entityGeoPointAttribute = EntityGeoPointAttributeFactory.getInstance().getEntityFromValue(session, EntityPermission.READ_WRITE, entityGeoPointAttributeValue);
+            var entityAttribute = entityGeoPointAttribute.getEntityAttribute();
+            var entityInstance = entityGeoPointAttribute.getEntityInstance();
             
             if(entityAttribute.getLastDetail().getTrackRevisions()) {
                 entityGeoPointAttribute.setThruTime(session.START_TIME_LONG);
@@ -12327,8 +12327,8 @@ public class CoreControl
     }
     
     public void deleteEntityGeoPointAttribute(EntityGeoPointAttribute entityGeoPointAttribute, BasePK deletedBy) {
-        EntityAttribute entityAttribute = entityGeoPointAttribute.getEntityAttribute();
-        EntityInstance entityInstance = entityGeoPointAttribute.getEntityInstance();
+        var entityAttribute = entityGeoPointAttribute.getEntityAttribute();
+        var entityInstance = entityGeoPointAttribute.getEntityInstance();
         
         if(entityAttribute.getLastDetail().getTrackRevisions()) {
             entityGeoPointAttribute.setThruTime(session.START_TIME_LONG);
@@ -12358,7 +12358,7 @@ public class CoreControl
     // --------------------------------------------------------------------------------
     
     public EntityTimeAttribute createEntityTimeAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance, Long timeAttribute, BasePK createdBy) {
-        EntityTimeAttribute entityTimeAttribute = EntityTimeAttributeFactory.getInstance().create(entityAttribute, entityInstance, timeAttribute, session.START_TIME_LONG,
+        var entityTimeAttribute = EntityTimeAttributeFactory.getInstance().create(entityAttribute, entityInstance, timeAttribute, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
         sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -12382,8 +12382,8 @@ public class CoreControl
                         "WHERE enta_ena_entityattributeid = ? AND enta_eni_entityinstanceid = ? AND enta_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = EntityTimeAttributeFactory.getInstance().prepareStatement(query);
+
+            var ps = EntityTimeAttributeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             ps.setLong(2, entityInstance.getPrimaryKey().getEntityId());
@@ -12417,7 +12417,7 @@ public class CoreControl
         List<EntityTimeAttribute> entityTimeAttributes;
         
         try {
-            PreparedStatement ps = EntityTimeAttributeFactory.getInstance().prepareStatement(
+            var ps = EntityTimeAttributeFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM entitytimeattributes " +
                     "WHERE enta_ena_entityattributeid = ? AND enta_thrutime = ? " +
@@ -12438,7 +12438,7 @@ public class CoreControl
         List<EntityTimeAttribute> entityTimeAttributes;
         
         try {
-            PreparedStatement ps = EntityTimeAttributeFactory.getInstance().prepareStatement(
+            var ps = EntityTimeAttributeFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM entitytimeattributes " +
                     "WHERE enta_eni_entityinstanceid = ? AND enta_thrutime = ? " +
@@ -12461,9 +12461,9 @@ public class CoreControl
     
     public void updateEntityTimeAttributeFromValue(EntityTimeAttributeValue entityTimeAttributeValue, BasePK updatedBy) {
         if(entityTimeAttributeValue.hasBeenModified()) {
-            EntityTimeAttribute entityTimeAttribute = EntityTimeAttributeFactory.getInstance().getEntityFromValue(session, EntityPermission.READ_WRITE, entityTimeAttributeValue);
-            EntityAttribute entityAttribute = entityTimeAttribute.getEntityAttribute();
-            EntityInstance entityInstance = entityTimeAttribute.getEntityInstance();
+            var entityTimeAttribute = EntityTimeAttributeFactory.getInstance().getEntityFromValue(session, EntityPermission.READ_WRITE, entityTimeAttributeValue);
+            var entityAttribute = entityTimeAttribute.getEntityAttribute();
+            var entityInstance = entityTimeAttribute.getEntityInstance();
             
             if(entityAttribute.getLastDetail().getTrackRevisions()) {
                 entityTimeAttribute.setThruTime(session.START_TIME_LONG);
@@ -12480,8 +12480,8 @@ public class CoreControl
     }
     
     public void deleteEntityTimeAttribute(EntityTimeAttribute entityTimeAttribute, BasePK deletedBy) {
-        EntityAttribute entityAttribute = entityTimeAttribute.getEntityAttribute();
-        EntityInstance entityInstance = entityTimeAttribute.getEntityInstance();
+        var entityAttribute = entityTimeAttribute.getEntityAttribute();
+        var entityInstance = entityTimeAttribute.getEntityInstance();
         
         if(entityAttribute.getLastDetail().getTrackRevisions()) {
             entityTimeAttribute.setThruTime(session.START_TIME_LONG);
@@ -12512,7 +12512,7 @@ public class CoreControl
     
     public EntityBlobAttribute createEntityBlobAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             Language language, ByteArray blobAttribute, MimeType mimeType, BasePK createdBy) {
-        EntityBlobAttribute entityBlobAttribute = EntityBlobAttributeFactory.getInstance().create(entityAttribute,
+        var entityBlobAttribute = EntityBlobAttributeFactory.getInstance().create(entityAttribute,
                 entityInstance, language, blobAttribute, mimeType, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -12539,8 +12539,8 @@ public class CoreControl
                         "AND enba_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = EntityBlobAttributeFactory.getInstance().prepareStatement(query);
+
+            var ps = EntityBlobAttributeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             ps.setLong(2, entityInstance.getPrimaryKey().getEntityId());
@@ -12564,7 +12564,7 @@ public class CoreControl
     }
     
     public EntityBlobAttribute getBestEntityBlobAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance, Language language) {
-        EntityBlobAttribute entityBlobAttribute = getEntityBlobAttribute(entityAttribute, entityInstance, language);
+        var entityBlobAttribute = getEntityBlobAttribute(entityAttribute, entityInstance, language);
         
         if(entityBlobAttribute == null && !language.getIsDefault()) {
             entityBlobAttribute = getEntityBlobAttribute(entityAttribute, entityInstance, getPartyControl().getDefaultLanguage());
@@ -12585,7 +12585,7 @@ public class CoreControl
         List<EntityBlobAttribute> entityBlobAttributes;
         
         try {
-            PreparedStatement ps = EntityBlobAttributeFactory.getInstance().prepareStatement(
+            var ps = EntityBlobAttributeFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM entityblobattributes " +
                     "WHERE enba_ena_entityattributeid = ? AND enba_thrutime = ? " +
@@ -12606,7 +12606,7 @@ public class CoreControl
         List<EntityBlobAttribute> entityBlobAttributes;
         
         try {
-            PreparedStatement ps = EntityBlobAttributeFactory.getInstance().prepareStatement(
+            var ps = EntityBlobAttributeFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM entityblobattributes " +
                     "WHERE enba_eni_entityinstanceid = ? AND enba_thrutime = ? " +
@@ -12629,10 +12629,10 @@ public class CoreControl
     
     public void updateEntityBlobAttributeFromValue(EntityBlobAttributeValue entityBlobAttributeValue, BasePK updatedBy) {
         if(entityBlobAttributeValue.hasBeenModified()) {
-            EntityBlobAttribute entityBlobAttribute = EntityBlobAttributeFactory.getInstance().getEntityFromValue(session, EntityPermission.READ_WRITE, entityBlobAttributeValue);
-            EntityAttribute entityAttribute = entityBlobAttribute.getEntityAttribute();
-            EntityInstance entityInstance = entityBlobAttribute.getEntityInstance();
-            Language language = entityBlobAttribute.getLanguage();
+            var entityBlobAttribute = EntityBlobAttributeFactory.getInstance().getEntityFromValue(session, EntityPermission.READ_WRITE, entityBlobAttributeValue);
+            var entityAttribute = entityBlobAttribute.getEntityAttribute();
+            var entityInstance = entityBlobAttribute.getEntityInstance();
+            var language = entityBlobAttribute.getLanguage();
             
             if(entityAttribute.getLastDetail().getTrackRevisions()) {
                 entityBlobAttribute.setThruTime(session.START_TIME_LONG);
@@ -12649,8 +12649,8 @@ public class CoreControl
     }
     
     public void deleteEntityBlobAttribute(EntityBlobAttribute entityBlobAttribute, BasePK deletedBy) {
-        EntityAttribute entityAttribute = entityBlobAttribute.getEntityAttribute();
-        EntityInstance entityInstance = entityBlobAttribute.getEntityInstance();
+        var entityAttribute = entityBlobAttribute.getEntityAttribute();
+        var entityInstance = entityBlobAttribute.getEntityInstance();
         
         if(entityAttribute.getLastDetail().getTrackRevisions()) {
             entityBlobAttribute.setThruTime(session.START_TIME_LONG);
@@ -12681,7 +12681,7 @@ public class CoreControl
     
     public EntityClobAttribute createEntityClobAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             Language language, String clobAttribute, MimeType mimeType, BasePK createdBy) {
-        EntityClobAttribute entityClobAttribute = EntityClobAttributeFactory.getInstance().create(entityAttribute,
+        var entityClobAttribute = EntityClobAttributeFactory.getInstance().create(entityAttribute,
                 entityInstance, language, clobAttribute, mimeType, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -12708,8 +12708,8 @@ public class CoreControl
                         "AND enca_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = EntityClobAttributeFactory.getInstance().prepareStatement(query);
+
+            var ps = EntityClobAttributeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             ps.setLong(2, entityInstance.getPrimaryKey().getEntityId());
@@ -12733,7 +12733,7 @@ public class CoreControl
     }
     
     public EntityClobAttribute getBestEntityClobAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance, Language language) {
-        EntityClobAttribute entityClobAttribute = getEntityClobAttribute(entityAttribute, entityInstance, language);
+        var entityClobAttribute = getEntityClobAttribute(entityAttribute, entityInstance, language);
         
         if(entityClobAttribute == null && !language.getIsDefault()) {
             entityClobAttribute = getEntityClobAttribute(entityAttribute, entityInstance, getPartyControl().getDefaultLanguage());
@@ -12754,7 +12754,7 @@ public class CoreControl
         List<EntityClobAttribute> entityClobAttributes;
         
         try {
-            PreparedStatement ps = EntityClobAttributeFactory.getInstance().prepareStatement(
+            var ps = EntityClobAttributeFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM entityclobattributes " +
                     "WHERE enca_ena_entityattributeid = ? AND enca_thrutime = ? " +
@@ -12775,7 +12775,7 @@ public class CoreControl
         List<EntityClobAttribute> entityClobAttributes;
         
         try {
-            PreparedStatement ps = EntityClobAttributeFactory.getInstance().prepareStatement(
+            var ps = EntityClobAttributeFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM entityclobattributes " +
                     "WHERE enca_eni_entityinstanceid = ? AND enca_thrutime = ? " +
@@ -12798,10 +12798,10 @@ public class CoreControl
     
     public void updateEntityClobAttributeFromValue(EntityClobAttributeValue entityClobAttributeValue, BasePK updatedBy) {
         if(entityClobAttributeValue.hasBeenModified()) {
-            EntityClobAttribute entityClobAttribute = EntityClobAttributeFactory.getInstance().getEntityFromValue(session, EntityPermission.READ_WRITE, entityClobAttributeValue);
-            EntityAttribute entityAttribute = entityClobAttribute.getEntityAttribute();
-            EntityInstance entityInstance = entityClobAttribute.getEntityInstance();
-            Language language = entityClobAttribute.getLanguage();
+            var entityClobAttribute = EntityClobAttributeFactory.getInstance().getEntityFromValue(session, EntityPermission.READ_WRITE, entityClobAttributeValue);
+            var entityAttribute = entityClobAttribute.getEntityAttribute();
+            var entityInstance = entityClobAttribute.getEntityInstance();
+            var language = entityClobAttribute.getLanguage();
             
             if(entityAttribute.getLastDetail().getTrackRevisions()) {
                 entityClobAttribute.setThruTime(session.START_TIME_LONG);
@@ -12818,8 +12818,8 @@ public class CoreControl
     }
     
     public void deleteEntityClobAttribute(EntityClobAttribute entityClobAttribute, BasePK deletedBy) {
-        EntityAttribute entityAttribute = entityClobAttribute.getEntityAttribute();
-        EntityInstance entityInstance = entityClobAttribute.getEntityInstance();
+        var entityAttribute = entityClobAttribute.getEntityAttribute();
+        var entityInstance = entityClobAttribute.getEntityInstance();
         
         if(entityAttribute.getLastDetail().getTrackRevisions()) {
             entityClobAttribute.setThruTime(session.START_TIME_LONG);
@@ -12849,7 +12849,7 @@ public class CoreControl
     // --------------------------------------------------------------------------------
     
     public EntityAttributeEntityType createEntityAttributeEntityType(EntityAttribute entityAttribute, EntityType allowedEntityType, BasePK createdBy) {
-        EntityAttributeEntityType entityAttributeEntityType = EntityAttributeEntityTypeFactory.getInstance().create(entityAttribute, allowedEntityType,
+        var entityAttributeEntityType = EntityAttributeEntityTypeFactory.getInstance().create(entityAttribute, allowedEntityType,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityAttributeEntityType.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -12983,7 +12983,7 @@ public class CoreControl
     
     public List<EntityAttributeEntityTypeTransfer> getEntityAttributeEntityTypeTransfers(UserVisit userVisit, Collection<EntityAttributeEntityType> entityAttributeEntityTypes, EntityInstance entityInstance) {
         List<EntityAttributeEntityTypeTransfer> entityAttributeEntityTypeTransfers = new ArrayList<>(entityAttributeEntityTypes.size());
-        EntityAttributeEntityTypeTransferCache entityAttributeEntityTypeTransferCache = getCoreTransferCaches(userVisit).getEntityAttributeEntityTypeTransferCache();
+        var entityAttributeEntityTypeTransferCache = getCoreTransferCaches(userVisit).getEntityAttributeEntityTypeTransferCache();
 
         entityAttributeEntityTypes.forEach((entityAttributeEntityType) ->
                 entityAttributeEntityTypeTransfers.add(entityAttributeEntityTypeTransferCache.getEntityAttributeEntityTypeTransfer(entityAttributeEntityType, entityInstance))
@@ -13026,7 +13026,7 @@ public class CoreControl
     
     public EntityEntityAttribute createEntityEntityAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             EntityInstance entityInstanceAttribute, BasePK createdBy) {
-        EntityEntityAttribute entityEntityAttribute = EntityEntityAttributeFactory.getInstance().create(entityAttribute, entityInstance,
+        var entityEntityAttribute = EntityEntityAttributeFactory.getInstance().create(entityAttribute, entityInstance,
                 entityInstanceAttribute, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -13052,8 +13052,8 @@ public class CoreControl
                         "AND eea_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = EntityEntityAttributeFactory.getInstance().prepareStatement(query);
+
+            var ps = EntityEntityAttributeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             ps.setLong(2, entityInstance.getPrimaryKey().getEntityId());
@@ -13087,7 +13087,7 @@ public class CoreControl
         List<EntityEntityAttribute> entityEntityAttributes;
         
         try {
-            PreparedStatement ps = EntityEntityAttributeFactory.getInstance().prepareStatement(
+            var ps = EntityEntityAttributeFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM entityentityattributes " +
                     "WHERE eea_eni_entityinstanceid = ? AND eea_thrutime = ? " +
@@ -13108,7 +13108,7 @@ public class CoreControl
         List<EntityEntityAttribute> entityEntityAttributes;
         
         try {
-            PreparedStatement ps = EntityEntityAttributeFactory.getInstance().prepareStatement(
+            var ps = EntityEntityAttributeFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM entityentityattributes " +
                     "WHERE eea_eni_entityinstanceid = ? AND eea_thrutime = ? " +
@@ -13129,7 +13129,7 @@ public class CoreControl
         List<EntityEntityAttribute> entityEntityAttributes;
         
         try {
-            PreparedStatement ps = EntityEntityAttributeFactory.getInstance().prepareStatement(
+            var ps = EntityEntityAttributeFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM entityentityattributes " +
                     "WHERE eea_entityinstanceattributeid = ? AND eea_thrutime = ? " +
@@ -13152,9 +13152,9 @@ public class CoreControl
     
     public void updateEntityEntityAttributeFromValue(EntityEntityAttributeValue entityEntityAttributeValue, BasePK updatedBy) {
         if(entityEntityAttributeValue.hasBeenModified()) {
-            EntityEntityAttribute entityEntityAttribute = EntityEntityAttributeFactory.getInstance().getEntityFromValue(session, EntityPermission.READ_WRITE, entityEntityAttributeValue);
-            EntityAttribute entityAttribute = entityEntityAttribute.getEntityAttribute();
-            EntityInstance entityInstance = entityEntityAttribute.getEntityInstance();
+            var entityEntityAttribute = EntityEntityAttributeFactory.getInstance().getEntityFromValue(session, EntityPermission.READ_WRITE, entityEntityAttributeValue);
+            var entityAttribute = entityEntityAttribute.getEntityAttribute();
+            var entityInstance = entityEntityAttribute.getEntityInstance();
             
             if(entityAttribute.getLastDetail().getTrackRevisions()) {
                 entityEntityAttribute.setThruTime(session.START_TIME_LONG);
@@ -13171,8 +13171,8 @@ public class CoreControl
     }
     
     public void deleteEntityEntityAttribute(EntityEntityAttribute entityEntityAttribute, BasePK deletedBy) {
-        EntityAttribute entityAttribute = entityEntityAttribute.getEntityAttribute();
-        EntityInstance entityInstance = entityEntityAttribute.getEntityInstance();
+        var entityAttribute = entityEntityAttribute.getEntityAttribute();
+        var entityInstance = entityEntityAttribute.getEntityInstance();
         
         if(entityAttribute.getLastDetail().getTrackRevisions()) {
             entityEntityAttribute.setThruTime(session.START_TIME_LONG);
@@ -13204,7 +13204,7 @@ public class CoreControl
     
     public EntityCollectionAttribute createEntityCollectionAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             EntityInstance entityInstanceAttribute, BasePK createdBy) {
-        EntityCollectionAttribute entityCollectionAttribute = EntityCollectionAttributeFactory.getInstance().create(entityAttribute, entityInstance,
+        var entityCollectionAttribute = EntityCollectionAttributeFactory.getInstance().create(entityAttribute, entityInstance,
                 entityInstanceAttribute, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -13216,7 +13216,7 @@ public class CoreControl
         List<EntityCollectionAttribute> entityCollectionAttributes;
         
         try {
-            PreparedStatement ps = EntityCollectionAttributeFactory.getInstance().prepareStatement(
+            var ps = EntityCollectionAttributeFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ "
                     + "FROM entitycollectionattributes, entityinstances, entitytypes, entitytypedetails, componentvendors, componentvendordetails "
                     + "WHERE eca_ena_entityattributeid = ? AND eca_eni_entityinstanceid = ? AND eca_thrutime = ? "
@@ -13257,8 +13257,8 @@ public class CoreControl
                         "AND eca_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = EntityCollectionAttributeFactory.getInstance().prepareStatement(query);
+
+            var ps = EntityCollectionAttributeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             ps.setLong(2, entityInstance.getPrimaryKey().getEntityId());
@@ -13288,7 +13288,7 @@ public class CoreControl
         List<EntityCollectionAttribute> entityCollectionAttributes;
         
         try {
-            PreparedStatement ps = EntityCollectionAttributeFactory.getInstance().prepareStatement(
+            var ps = EntityCollectionAttributeFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM entitycollectionattributes " +
                     "WHERE eca_eni_entityinstanceid = ? AND eca_thrutime = ? " +
@@ -13309,7 +13309,7 @@ public class CoreControl
         List<EntityCollectionAttribute> entityCollectionAttributes;
         
         try {
-            PreparedStatement ps = EntityCollectionAttributeFactory.getInstance().prepareStatement(
+            var ps = EntityCollectionAttributeFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM entitycollectionattributes " +
                     "WHERE eca_eni_entityinstanceid = ? AND eca_thrutime = ? " +
@@ -13330,7 +13330,7 @@ public class CoreControl
         List<EntityCollectionAttribute> entityCollectionAttributes;
         
         try {
-            PreparedStatement ps = EntityCollectionAttributeFactory.getInstance().prepareStatement(
+            var ps = EntityCollectionAttributeFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM entitycollectionattributes " +
                     "WHERE eca_entityinstanceattributeid = ? AND eca_thrutime = ? " +
@@ -13353,7 +13353,7 @@ public class CoreControl
     
     public List<EntityCollectionAttributeTransfer> getEntityCollectionAttributeTransfers(UserVisit userVisit, Collection<EntityCollectionAttribute> entityCollectionAttributes, EntityInstance entityInstance) {
         List<EntityCollectionAttributeTransfer> entityCollectionAttributeTransfers = new ArrayList<>(entityCollectionAttributes.size());
-        EntityCollectionAttributeTransferCache entityCollectionAttributeTransferCache = getCoreTransferCaches(userVisit).getEntityCollectionAttributeTransferCache();
+        var entityCollectionAttributeTransferCache = getCoreTransferCaches(userVisit).getEntityCollectionAttributeTransferCache();
         
         entityCollectionAttributes.forEach((entityCollectionAttribute) ->
                 entityCollectionAttributeTransfers.add(entityCollectionAttributeTransferCache.getEntityCollectionAttributeTransfer(entityCollectionAttribute, entityInstance))
@@ -13368,8 +13368,8 @@ public class CoreControl
     }
     
     public void deleteEntityCollectionAttribute(EntityCollectionAttribute entityCollectionAttribute, BasePK deletedBy) {
-        EntityAttribute entityAttribute = entityCollectionAttribute.getEntityAttribute();
-        EntityInstance entityInstance = entityCollectionAttribute.getEntityInstance();
+        var entityAttribute = entityCollectionAttribute.getEntityAttribute();
+        var entityInstance = entityCollectionAttribute.getEntityInstance();
         
         if(entityAttribute.getLastDetail().getTrackRevisions()) {
             entityCollectionAttribute.setThruTime(session.START_TIME_LONG);
@@ -13400,7 +13400,7 @@ public class CoreControl
     // --------------------------------------------------------------------------------
     
     public BaseEncryptionKey createBaseEncryptionKey(ExecutionErrorAccumulator eea, BaseKey baseKey1, BaseKey baseKey2, PartyPK createdBy) {
-        BaseEncryptionKey activeBaseEncryptionKey = getActiveBaseEncryptionKey();
+        var activeBaseEncryptionKey = getActiveBaseEncryptionKey();
         BaseEncryptionKey baseEncryptionKey = null;
         
         if(activeBaseEncryptionKey != null) {
@@ -13409,12 +13409,12 @@ public class CoreControl
         
         if(!eea.hasExecutionErrors()) {
             var sequenceControl = Session.getModelController(SequenceControl.class);
-            Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.BASE_ENCRYPTION_KEY.name());
-            String baseEncryptionKeyName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
-            String sha1Hash = Sha1Utils.getInstance().encode(baseKey1, baseKey2);
+            var sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.BASE_ENCRYPTION_KEY.name());
+            var baseEncryptionKeyName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
+            var sha1Hash = Sha1Utils.getInstance().encode(baseKey1, baseKey2);
             baseEncryptionKey = createBaseEncryptionKey(baseEncryptionKeyName, sha1Hash, createdBy);
 
-            EntityInstance entityInstance = getEntityInstanceByBaseEntity(baseEncryptionKey);
+            var entityInstance = getEntityInstanceByBaseEntity(baseEncryptionKey);
             getWorkflowControl().addEntityToWorkflowUsingNames(null, Workflow_BASE_ENCRYPTION_KEY_STATUS, entityInstance, null, null,createdBy);
         }
         
@@ -13422,7 +13422,7 @@ public class CoreControl
     }
     
     public BaseEncryptionKey createBaseEncryptionKey(String baseEncryptionKeyName, String sha1Hash, BasePK createdBy) {
-        BaseEncryptionKey baseEncryptionKey = BaseEncryptionKeyFactory.getInstance().create(baseEncryptionKeyName,
+        var baseEncryptionKey = BaseEncryptionKeyFactory.getInstance().create(baseEncryptionKeyName,
                 sha1Hash);
         
         sendEvent(baseEncryptionKey.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
@@ -13442,8 +13442,8 @@ public class CoreControl
                     "FROM baseencryptionkeys " +
                     "FOR UPDATE";
         }
-        
-        PreparedStatement ps = BaseEncryptionKeyFactory.getInstance().prepareStatement(query);
+
+        var ps = BaseEncryptionKeyFactory.getInstance().prepareStatement(query);
         
         return BaseEncryptionKeyFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
     }
@@ -13457,7 +13457,7 @@ public class CoreControl
     }
     
     private BaseEncryptionKey getActiveBaseEncryptionKey(EntityPermission entityPermission) {
-        WorkflowStep workflowStep = getWorkflowControl().getWorkflowStepUsingNames(Workflow_BASE_ENCRYPTION_KEY_STATUS,
+        var workflowStep = getWorkflowControl().getWorkflowStepUsingNames(Workflow_BASE_ENCRYPTION_KEY_STATUS,
                 WorkflowStep_BASE_ENCRYPTION_KEY_STATUS_ACTIVE);
         BaseEncryptionKey baseEncryptionKey = null;
         
@@ -13465,7 +13465,7 @@ public class CoreControl
             List<BaseEncryptionKey> baseEncryptionKeys = null;
             
             try {
-                StringBuilder query = new StringBuilder("SELECT _ALL_ " +
+                var query = new StringBuilder("SELECT _ALL_ " +
                         "FROM componentvendors, componentvendordetails, entitytypes, entitytypedetails, entityinstances, " +
                         "baseencryptionkeys, workflowentitystatuses, entitytimes " +
                         "WHERE cvnd_activedetailid = cvndd_componentvendordetailid AND cvndd_componentvendorname = ? " +
@@ -13481,8 +13481,8 @@ public class CoreControl
                 } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                     query.append("FOR UPDATE");
                 }
-                
-                PreparedStatement ps = BaseEncryptionKeyFactory.getInstance().prepareStatement(query.toString());
+
+                var ps = BaseEncryptionKeyFactory.getInstance().prepareStatement(query.toString());
                 
                 ps.setString(1, ComponentVendors.ECHO_THREE.name());
                 ps.setString(2, EntityTypes.BaseEncryptionKey.name());
@@ -13526,8 +13526,8 @@ public class CoreControl
                         "WHERE bek_baseencryptionkeyname = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = BaseEncryptionKeyFactory.getInstance().prepareStatement(query);
+
+            var ps = BaseEncryptionKeyFactory.getInstance().prepareStatement(query);
             
             ps.setString(1, baseEncryptionKeyName);
             
@@ -13563,8 +13563,8 @@ public class CoreControl
                         "WHERE bek_sha1hash = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = BaseEncryptionKeyFactory.getInstance().prepareStatement(query);
+
+            var ps = BaseEncryptionKeyFactory.getInstance().prepareStatement(query);
             
             ps.setString(1, sha1Hash);
             
@@ -13593,9 +13593,9 @@ public class CoreControl
     }
     
     public List<BaseEncryptionKeyTransfer> getBaseEncryptionKeyTransfers(UserVisit userVisit) {
-        List<BaseEncryptionKey> baseEncryptionKeys = getBaseEncryptionKeys();
+        var baseEncryptionKeys = getBaseEncryptionKeys();
         List<BaseEncryptionKeyTransfer> baseEncryptionKeyTransfers = new ArrayList<>(baseEncryptionKeys.size());
-        BaseEncryptionKeyTransferCache baseEncryptionKeyTransferCache = getCoreTransferCaches(userVisit).getBaseEncryptionKeyTransferCache();
+        var baseEncryptionKeyTransferCache = getCoreTransferCaches(userVisit).getBaseEncryptionKeyTransferCache();
         
         baseEncryptionKeys.forEach((baseEncryptionKey) ->
                 baseEncryptionKeyTransfers.add(baseEncryptionKeyTransferCache.getBaseEncryptionKeyTransfer(baseEncryptionKey))
@@ -13607,14 +13607,14 @@ public class CoreControl
     public BaseEncryptionKeyStatusChoicesBean getBaseEncryptionKeyStatusChoices(String defaultBaseEncryptionKeyStatusChoice,
             Language language, boolean allowNullChoice, BaseEncryptionKey baseEncryptionKey, PartyPK partyPK) {
         var workflowControl = getWorkflowControl();
-        BaseEncryptionKeyStatusChoicesBean baseEncryptionKeyStatusChoicesBean = new BaseEncryptionKeyStatusChoicesBean();
+        var baseEncryptionKeyStatusChoicesBean = new BaseEncryptionKeyStatusChoicesBean();
         
         if(baseEncryptionKey == null) {
             workflowControl.getWorkflowEntranceChoices(baseEncryptionKeyStatusChoicesBean, defaultBaseEncryptionKeyStatusChoice, language, allowNullChoice,
                     workflowControl.getWorkflowByName(Workflow_BASE_ENCRYPTION_KEY_STATUS), partyPK);
         } else {
-            EntityInstance entityInstance = getCoreControl().getEntityInstanceByBasePK(baseEncryptionKey.getPrimaryKey());
-            WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(Workflow_BASE_ENCRYPTION_KEY_STATUS,
+            var entityInstance = getCoreControl().getEntityInstanceByBasePK(baseEncryptionKey.getPrimaryKey());
+            var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(Workflow_BASE_ENCRYPTION_KEY_STATUS,
                     entityInstance);
             
             workflowControl.getWorkflowDestinationChoices(baseEncryptionKeyStatusChoicesBean, defaultBaseEncryptionKeyStatusChoice, language, allowNullChoice,
@@ -13626,10 +13626,10 @@ public class CoreControl
     
     public void setBaseEncryptionKeyStatus(ExecutionErrorAccumulator eea, BaseEncryptionKey baseEncryptionKey, String baseEncryptionKeyStatusChoice, PartyPK modifiedBy) {
         var workflowControl = getWorkflowControl();
-        EntityInstance entityInstance = getEntityInstanceByBaseEntity(baseEncryptionKey);
-        WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(Workflow_BASE_ENCRYPTION_KEY_STATUS,
+        var entityInstance = getEntityInstanceByBaseEntity(baseEncryptionKey);
+        var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(Workflow_BASE_ENCRYPTION_KEY_STATUS,
                 entityInstance);
-        WorkflowDestination workflowDestination = baseEncryptionKeyStatusChoice == null? null:
+        var workflowDestination = baseEncryptionKeyStatusChoice == null? null:
             workflowControl.getWorkflowDestinationByName(workflowEntityStatus.getWorkflowStep(), baseEncryptionKeyStatusChoice);
         
         if(workflowDestination != null || baseEncryptionKeyStatusChoice == null) {
@@ -13663,8 +13663,8 @@ public class CoreControl
                         "WHERE eek_entityencryptionkeyname = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = EntityEncryptionKeyFactory.getInstance().prepareStatement(query);
+
+            var ps = EntityEncryptionKeyFactory.getInstance().prepareStatement(query);
             
             ps.setString(1, entityEncryptionKeyName);
             
@@ -13685,7 +13685,7 @@ public class CoreControl
     }
     
     public List<EntityEncryptionKey> getEntityEncryptionKeysForUpdate() {
-        PreparedStatement ps = EntityEncryptionKeyFactory.getInstance().prepareStatement(
+        var ps = EntityEncryptionKeyFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
                 "FROM entityencryptionkeys " +
                 "FOR UPDATE");
@@ -13706,17 +13706,17 @@ public class CoreControl
     public EventSubscriber createEventSubscriber(EntityInstance entityInstance, String description, Integer sortOrder,
             BasePK createdBy) {
         var sequenceControl = Session.getModelController(SequenceControl.class);
-        SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.EVENT_SUBSCRIBER.name());
-        Sequence sequence = sequenceControl.getDefaultSequence(sequenceType);
-        String eventSubscriberName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
+        var sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.EVENT_SUBSCRIBER.name());
+        var sequence = sequenceControl.getDefaultSequence(sequenceType);
+        var eventSubscriberName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
         
         return createEventSubscriber(eventSubscriberName, entityInstance, description, sortOrder, createdBy);
     }
     
     public EventSubscriber createEventSubscriber(String eventSubscriberName, EntityInstance entityInstance, String description,
             Integer sortOrder, BasePK createdBy) {
-        EventSubscriber eventSubscriber = EventSubscriberFactory.getInstance().create();
-        EventSubscriberDetail eventSubscriberDetail = EventSubscriberDetailFactory.getInstance().create(session,
+        var eventSubscriber = EventSubscriberFactory.getInstance().create();
+        var eventSubscriberDetail = EventSubscriberDetailFactory.getInstance().create(session,
                 eventSubscriber, eventSubscriberName, entityInstance, description, sortOrder, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
@@ -13748,8 +13748,8 @@ public class CoreControl
                         "WHERE evs_activedetailid = evsdt_eventsubscriberdetailid AND evsdt_eventsubscribername = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = EventSubscriberFactory.getInstance().prepareStatement(query);
+
+            var ps = EventSubscriberFactory.getInstance().prepareStatement(query);
             
             ps.setString(1, eventSubscriberName);
             
@@ -13786,8 +13786,8 @@ public class CoreControl
                         "WHERE evs_activedetailid = evsdt_eventsubscriberdetailid AND evsdt_eni_entityinstanceid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = EventSubscriberFactory.getInstance().prepareStatement(query);
+
+            var ps = EventSubscriberFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, entityInstance.getPrimaryKey().getEntityId());
             
@@ -13826,8 +13826,8 @@ public class CoreControl
     
     public void deleteEventSubscriber(EventSubscriber eventSubscriber, BasePK deletedBy) {
         removeQueuedSubscriberEventsByEventSubscriber(eventSubscriber);
-        
-        EventSubscriberDetail eventSubscriberDetail = eventSubscriber.getLastDetailForUpdate();
+
+        var eventSubscriberDetail = eventSubscriber.getLastDetailForUpdate();
         eventSubscriberDetail.setThruTime(session.START_TIME_LONG);
         eventSubscriber.setActiveDetail(null);
         eventSubscriber.store();
@@ -13871,8 +13871,8 @@ public class CoreControl
                         "WHERE qsev_evs_eventsubscriberid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = QueuedSubscriberEventFactory.getInstance().prepareStatement(query);
+
+            var ps = QueuedSubscriberEventFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, eventSubscriber.getPrimaryKey().getEntityId());
             
@@ -13911,7 +13911,7 @@ public class CoreControl
     
     public EventSubscriberEventType createEventSubscriberEventType(EventSubscriber eventSubscriber, EventType eventType,
             BasePK createdBy) {
-        EventSubscriberEventType eventSubscriberEventType = EventSubscriberEventTypeFactory.getInstance().create(session,
+        var eventSubscriberEventType = EventSubscriberEventTypeFactory.getInstance().create(session,
                 eventSubscriber, eventType, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(eventSubscriber.getPrimaryKey(), EventTypes.MODIFY, eventSubscriberEventType.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -13937,8 +13937,8 @@ public class CoreControl
                         "WHERE evsevt_evty_eventtypeid = ? AND evsevt_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = EventSubscriberEventTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = EventSubscriberEventTypeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, eventType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -13965,7 +13965,7 @@ public class CoreControl
     
     public EventSubscriberEntityType createEventSubscriberEntityType(EventSubscriber eventSubscriber, EntityType entityType,
             EventType eventType, BasePK createdBy) {
-        EventSubscriberEntityType eventSubscriberEntityType = EventSubscriberEntityTypeFactory.getInstance().create(session,
+        var eventSubscriberEntityType = EventSubscriberEntityTypeFactory.getInstance().create(session,
                 eventSubscriber, entityType, eventType, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(eventSubscriber.getPrimaryKey(), EventTypes.MODIFY, eventSubscriberEntityType.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -13992,8 +13992,8 @@ public class CoreControl
                         "WHERE evset_ent_entitytypeid = ? AND evset_evty_eventtypeid = ? AND evset_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = EventSubscriberEntityTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = EventSubscriberEntityTypeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, entityType.getPrimaryKey().getEntityId());
             ps.setLong(2, eventType.getPrimaryKey().getEntityId());
@@ -14021,7 +14021,7 @@ public class CoreControl
     
     public EventSubscriberEntityInstance createEventSubscriberEntityInstance(EventSubscriber eventSubscriber,
             EntityInstance entityInstance, EventType eventType, BasePK createdBy) {
-        EventSubscriberEntityInstance eventSubscriberEntityInstance = EventSubscriberEntityInstanceFactory.getInstance().create(session,
+        var eventSubscriberEntityInstance = EventSubscriberEntityInstanceFactory.getInstance().create(session,
                 eventSubscriber, entityInstance, eventType, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(eventSubscriber.getPrimaryKey(), EventTypes.MODIFY, eventSubscriberEntityInstance.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -14048,8 +14048,8 @@ public class CoreControl
                         "WHERE evsei_eni_entityinstanceid = ? AND evsei_evty_eventtypeid = ? AND evsei_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = EventSubscriberEntityInstanceFactory.getInstance().prepareStatement(query);
+
+            var ps = EventSubscriberEntityInstanceFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, entityInstance.getPrimaryKey().getEntityId());
             ps.setLong(2, eventType.getPrimaryKey().getEntityId());
@@ -14261,7 +14261,7 @@ public class CoreControl
     // --------------------------------------------------------------------------------
     
     public PartyEntityType createPartyEntityType(Party party, EntityType entityType, Boolean confirmDelete, BasePK createdBy) {
-        PartyEntityType partyEntityType = PartyEntityTypeFactory.getInstance().create(party, entityType, confirmDelete, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        var partyEntityType = PartyEntityTypeFactory.getInstance().create(party, entityType, confirmDelete, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partyEntityType.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -14284,8 +14284,8 @@ public class CoreControl
                         "WHERE pent_par_partyid = ? AND pent_ent_entitytypeid = ? AND pent_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PartyEntityTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = PartyEntityTypeFactory.getInstance().prepareStatement(query);
 
             ps.setLong(1, party.getPrimaryKey().getEntityId());
             ps.setLong(2, entityType.getPrimaryKey().getEntityId());
@@ -14334,8 +14334,8 @@ public class CoreControl
                         "WHERE pent_par_partyid = ? AND pent_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PartyEntityTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = PartyEntityTypeFactory.getInstance().prepareStatement(query);
 
             ps.setLong(1, party.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -14361,9 +14361,9 @@ public class CoreControl
     }
 
     public List<PartyEntityTypeTransfer> getPartyEntityTypeTransfersByParty(UserVisit userVisit, Party party) {
-        List<PartyEntityType> partyEntityTypes = getPartyEntityTypesByParty(party);
+        var partyEntityTypes = getPartyEntityTypesByParty(party);
         List<PartyEntityTypeTransfer> partyEntityTypeTransfers = new ArrayList<>(partyEntityTypes.size());
-        PartyEntityTypeTransferCache partyEntityTypeTransferCache = getCoreTransferCaches(userVisit).getPartyEntityTypeTransferCache();
+        var partyEntityTypeTransferCache = getCoreTransferCaches(userVisit).getPartyEntityTypeTransferCache();
 
         partyEntityTypes.forEach((partyEntityType) ->
                 partyEntityTypeTransfers.add(partyEntityTypeTransferCache.getPartyEntityTypeTransfer(partyEntityType))
@@ -14374,14 +14374,14 @@ public class CoreControl
 
     public void updatePartyEntityTypeFromValue(PartyEntityTypeValue partyEntityTypeValue, BasePK updatedBy) {
         if(partyEntityTypeValue.hasBeenModified()) {
-            PartyEntityType partyEntityType = PartyEntityTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, partyEntityTypeValue.getPrimaryKey());
+            var partyEntityType = PartyEntityTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, partyEntityTypeValue.getPrimaryKey());
 
             partyEntityType.setThruTime(session.START_TIME_LONG);
             partyEntityType.store();
 
-            PartyPK partyPK = partyEntityType.getPartyPK(); // Not updated
-            EntityTypePK entityTypePK = partyEntityType.getEntityTypePK(); // Not updated
-            Boolean confirmDelete = partyEntityTypeValue.getConfirmDelete();
+            var partyPK = partyEntityType.getPartyPK(); // Not updated
+            var entityTypePK = partyEntityType.getEntityTypePK(); // Not updated
+            var confirmDelete = partyEntityTypeValue.getConfirmDelete();
 
             partyEntityType = PartyEntityTypeFactory.getInstance().create(partyPK, entityTypePK, confirmDelete, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
@@ -14406,11 +14406,11 @@ public class CoreControl
     // --------------------------------------------------------------------------------
 
     public Application createApplication(String applicationName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        Application defaultApplication = getDefaultApplication();
-        boolean defaultFound = defaultApplication != null;
+        var defaultApplication = getDefaultApplication();
+        var defaultFound = defaultApplication != null;
 
         if(defaultFound && isDefault) {
-            ApplicationDetailValue defaultApplicationDetailValue = getDefaultApplicationDetailValueForUpdate();
+            var defaultApplicationDetailValue = getDefaultApplicationDetailValueForUpdate();
 
             defaultApplicationDetailValue.setIsDefault(Boolean.FALSE);
             updateApplicationFromValue(defaultApplicationDetailValue, false, createdBy);
@@ -14418,8 +14418,8 @@ public class CoreControl
             isDefault = Boolean.TRUE;
         }
 
-        Application application = ApplicationFactory.getInstance().create();
-        ApplicationDetail applicationDetail = ApplicationDetailFactory.getInstance().create(application, applicationName, isDefault, sortOrder, session.START_TIME_LONG,
+        var application = ApplicationFactory.getInstance().create();
+        var applicationDetail = ApplicationDetailFactory.getInstance().create(application, applicationName, isDefault, sortOrder, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -14550,9 +14550,9 @@ public class CoreControl
     }
 
     public List<ApplicationTransfer> getApplicationTransfers(UserVisit userVisit) {
-        List<Application> applications = getApplications();
+        var applications = getApplications();
         List<ApplicationTransfer> applicationTransfers = new ArrayList<>(applications.size());
-        ApplicationTransferCache applicationTransferCache = getCoreTransferCaches(userVisit).getApplicationTransferCache();
+        var applicationTransferCache = getCoreTransferCaches(userVisit).getApplicationTransferCache();
 
         applications.forEach((application) ->
                 applicationTransfers.add(applicationTransferCache.getApplicationTransfer(application))
@@ -14562,7 +14562,7 @@ public class CoreControl
     }
 
     public ApplicationChoicesBean getApplicationChoices(String defaultApplicationChoice, Language language, boolean allowNullChoice) {
-        List<Application> applications = getApplications();
+        var applications = getApplications();
         var size = applications.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -14578,7 +14578,7 @@ public class CoreControl
         }
 
         for(var application : applications) {
-            ApplicationDetail applicationDetail = application.getLastDetail();
+            var applicationDetail = application.getLastDetail();
 
             var label = getBestApplicationDescription(application, language);
             var value = applicationDetail.getApplicationName();
@@ -14597,25 +14597,25 @@ public class CoreControl
 
     private void updateApplicationFromValue(ApplicationDetailValue applicationDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(applicationDetailValue.hasBeenModified()) {
-            Application application = ApplicationFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var application = ApplicationFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      applicationDetailValue.getApplicationPK());
-            ApplicationDetail applicationDetail = application.getActiveDetailForUpdate();
+            var applicationDetail = application.getActiveDetailForUpdate();
 
             applicationDetail.setThruTime(session.START_TIME_LONG);
             applicationDetail.store();
 
-            ApplicationPK applicationPK = applicationDetail.getApplicationPK(); // Not updated
-            String applicationName = applicationDetailValue.getApplicationName();
-            Boolean isDefault = applicationDetailValue.getIsDefault();
-            Integer sortOrder = applicationDetailValue.getSortOrder();
+            var applicationPK = applicationDetail.getApplicationPK(); // Not updated
+            var applicationName = applicationDetailValue.getApplicationName();
+            var isDefault = applicationDetailValue.getIsDefault();
+            var sortOrder = applicationDetailValue.getSortOrder();
 
             if(checkDefault) {
-                Application defaultApplication = getDefaultApplication();
-                boolean defaultFound = defaultApplication != null && !defaultApplication.equals(application);
+                var defaultApplication = getDefaultApplication();
+                var defaultFound = defaultApplication != null && !defaultApplication.equals(application);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    ApplicationDetailValue defaultApplicationDetailValue = getDefaultApplicationDetailValueForUpdate();
+                    var defaultApplicationDetailValue = getDefaultApplicationDetailValueForUpdate();
 
                     defaultApplicationDetailValue.setIsDefault(Boolean.FALSE);
                     updateApplicationFromValue(defaultApplicationDetailValue, false, updatedBy);
@@ -14640,7 +14640,7 @@ public class CoreControl
     }
 
     private void deleteApplication(Application application, boolean checkDefault, BasePK deletedBy) {
-        ApplicationDetail applicationDetail = application.getLastDetailForUpdate();
+        var applicationDetail = application.getLastDetailForUpdate();
 
         deleteApplicationDescriptionsByApplication(application, deletedBy);
         deleteApplicationEditorsByApplication(application, deletedBy);
@@ -14652,17 +14652,17 @@ public class CoreControl
 
         if(checkDefault) {
             // Check for default, and pick one if necessary
-            Application defaultApplication = getDefaultApplication();
+            var defaultApplication = getDefaultApplication();
 
             if(defaultApplication == null) {
-                List<Application> applications = getApplicationsForUpdate();
+                var applications = getApplicationsForUpdate();
 
                 if(!applications.isEmpty()) {
-                    Iterator<Application> iter = applications.iterator();
+                    var iter = applications.iterator();
                     if(iter.hasNext()) {
                         defaultApplication = iter.next();
                     }
-                    ApplicationDetailValue applicationDetailValue = Objects.requireNonNull(defaultApplication).getLastDetailForUpdate().getApplicationDetailValue().clone();
+                    var applicationDetailValue = Objects.requireNonNull(defaultApplication).getLastDetailForUpdate().getApplicationDetailValue().clone();
 
                     applicationDetailValue.setIsDefault(Boolean.TRUE);
                     updateApplicationFromValue(applicationDetailValue, false, deletedBy);
@@ -14690,7 +14690,7 @@ public class CoreControl
     // --------------------------------------------------------------------------------
 
     public ApplicationDescription createApplicationDescription(Application application, Language language, String description, BasePK createdBy) {
-        ApplicationDescription applicationDescription = ApplicationDescriptionFactory.getInstance().create(application, language, description,
+        var applicationDescription = ApplicationDescriptionFactory.getInstance().create(application, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(application.getPrimaryKey(), EventTypes.MODIFY, applicationDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -14769,7 +14769,7 @@ public class CoreControl
 
     public String getBestApplicationDescription(Application application, Language language) {
         String description;
-        ApplicationDescription applicationDescription = getApplicationDescription(application, language);
+        var applicationDescription = getApplicationDescription(application, language);
 
         if(applicationDescription == null && !language.getIsDefault()) {
             applicationDescription = getApplicationDescription(application, getPartyControl().getDefaultLanguage());
@@ -14789,9 +14789,9 @@ public class CoreControl
     }
 
     public List<ApplicationDescriptionTransfer> getApplicationDescriptionTransfersByApplication(UserVisit userVisit, Application application) {
-        List<ApplicationDescription> applicationDescriptions = getApplicationDescriptionsByApplication(application);
+        var applicationDescriptions = getApplicationDescriptionsByApplication(application);
         List<ApplicationDescriptionTransfer> applicationDescriptionTransfers = new ArrayList<>(applicationDescriptions.size());
-        ApplicationDescriptionTransferCache applicationDescriptionTransferCache = getCoreTransferCaches(userVisit).getApplicationDescriptionTransferCache();
+        var applicationDescriptionTransferCache = getCoreTransferCaches(userVisit).getApplicationDescriptionTransferCache();
 
         applicationDescriptions.forEach((applicationDescription) ->
                 applicationDescriptionTransfers.add(applicationDescriptionTransferCache.getApplicationDescriptionTransfer(applicationDescription))
@@ -14802,15 +14802,15 @@ public class CoreControl
 
     public void updateApplicationDescriptionFromValue(ApplicationDescriptionValue applicationDescriptionValue, BasePK updatedBy) {
         if(applicationDescriptionValue.hasBeenModified()) {
-            ApplicationDescription applicationDescription = ApplicationDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var applicationDescription = ApplicationDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     applicationDescriptionValue.getPrimaryKey());
 
             applicationDescription.setThruTime(session.START_TIME_LONG);
             applicationDescription.store();
 
-            Application application = applicationDescription.getApplication();
-            Language language = applicationDescription.getLanguage();
-            String description = applicationDescriptionValue.getDescription();
+            var application = applicationDescription.getApplication();
+            var language = applicationDescription.getLanguage();
+            var description = applicationDescriptionValue.getDescription();
 
             applicationDescription = ApplicationDescriptionFactory.getInstance().create(application, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -14827,7 +14827,7 @@ public class CoreControl
     }
 
     public void deleteApplicationDescriptionsByApplication(Application application, BasePK deletedBy) {
-        List<ApplicationDescription> applicationDescriptions = getApplicationDescriptionsByApplicationForUpdate(application);
+        var applicationDescriptions = getApplicationDescriptionsByApplicationForUpdate(application);
 
         applicationDescriptions.forEach((applicationDescription) -> 
                 deleteApplicationDescription(applicationDescription, deletedBy)
@@ -14840,11 +14840,11 @@ public class CoreControl
 
     public Editor createEditor(String editorName, Boolean hasDimensions, Integer minimumHeight, Integer minimumWidth, Integer maximumHeight,
             Integer maximumWidth, Integer defaultHeight, Integer defaultWidth, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        Editor defaultEditor = getDefaultEditor();
-        boolean defaultFound = defaultEditor != null;
+        var defaultEditor = getDefaultEditor();
+        var defaultFound = defaultEditor != null;
 
         if(defaultFound && isDefault) {
-            EditorDetailValue defaultEditorDetailValue = getDefaultEditorDetailValueForUpdate();
+            var defaultEditorDetailValue = getDefaultEditorDetailValueForUpdate();
 
             defaultEditorDetailValue.setIsDefault(Boolean.FALSE);
             updateEditorFromValue(defaultEditorDetailValue, false, createdBy);
@@ -14852,8 +14852,8 @@ public class CoreControl
             isDefault = Boolean.TRUE;
         }
 
-        Editor editor = EditorFactory.getInstance().create();
-        EditorDetail editorDetail = EditorDetailFactory.getInstance().create(editor, editorName, hasDimensions, minimumHeight, minimumWidth, maximumHeight,
+        var editor = EditorFactory.getInstance().create();
+        var editorDetail = EditorDetailFactory.getInstance().create(editor, editorName, hasDimensions, minimumHeight, minimumWidth, maximumHeight,
                 maximumWidth, defaultHeight, defaultWidth, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -14977,9 +14977,9 @@ public class CoreControl
     }
 
     public List<EditorTransfer> getEditorTransfers(UserVisit userVisit) {
-        List<Editor> editors = getEditors();
+        var editors = getEditors();
         List<EditorTransfer> editorTransfers = new ArrayList<>(editors.size());
-        EditorTransferCache editorTransferCache = getCoreTransferCaches(userVisit).getEditorTransferCache();
+        var editorTransferCache = getCoreTransferCaches(userVisit).getEditorTransferCache();
 
         editors.forEach((editor) ->
                 editorTransfers.add(editorTransferCache.getEditorTransfer(editor))
@@ -14989,7 +14989,7 @@ public class CoreControl
     }
 
     public EditorChoicesBean getEditorChoices(String defaultEditorChoice, Language language, boolean allowNullChoice) {
-        List<Editor> editors = getEditors();
+        var editors = getEditors();
         var size = editors.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -15005,7 +15005,7 @@ public class CoreControl
         }
 
         for(var editor : editors) {
-            EditorDetail editorDetail = editor.getLastDetail();
+            var editorDetail = editor.getLastDetail();
 
             var label = getBestEditorDescription(editor, language);
             var value = editorDetail.getEditorName();
@@ -15024,32 +15024,32 @@ public class CoreControl
 
     private void updateEditorFromValue(EditorDetailValue editorDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(editorDetailValue.hasBeenModified()) {
-            Editor editor = EditorFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var editor = EditorFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      editorDetailValue.getEditorPK());
-            EditorDetail editorDetail = editor.getActiveDetailForUpdate();
+            var editorDetail = editor.getActiveDetailForUpdate();
 
             editorDetail.setThruTime(session.START_TIME_LONG);
             editorDetail.store();
 
-            EditorPK editorPK = editorDetail.getEditorPK(); // Not updated
-            String editorName = editorDetailValue.getEditorName();
-            Boolean hasDimensions = editorDetailValue.getHasDimensions();
-            Integer minimumHeight = editorDetailValue.getMinimumHeight();
-            Integer minimumWidth = editorDetailValue.getMinimumWidth();
-            Integer maximumHeight = editorDetailValue.getMaximumHeight();
-            Integer maximumWidth = editorDetailValue.getMaximumWidth();
-            Integer defaultHeight = editorDetailValue.getDefaultHeight();
-            Integer defaultWidth = editorDetailValue.getDefaultWidth();
-            Boolean isDefault = editorDetailValue.getIsDefault();
-            Integer sortOrder = editorDetailValue.getSortOrder();
+            var editorPK = editorDetail.getEditorPK(); // Not updated
+            var editorName = editorDetailValue.getEditorName();
+            var hasDimensions = editorDetailValue.getHasDimensions();
+            var minimumHeight = editorDetailValue.getMinimumHeight();
+            var minimumWidth = editorDetailValue.getMinimumWidth();
+            var maximumHeight = editorDetailValue.getMaximumHeight();
+            var maximumWidth = editorDetailValue.getMaximumWidth();
+            var defaultHeight = editorDetailValue.getDefaultHeight();
+            var defaultWidth = editorDetailValue.getDefaultWidth();
+            var isDefault = editorDetailValue.getIsDefault();
+            var sortOrder = editorDetailValue.getSortOrder();
 
             if(checkDefault) {
-                Editor defaultEditor = getDefaultEditor();
-                boolean defaultFound = defaultEditor != null && !defaultEditor.equals(editor);
+                var defaultEditor = getDefaultEditor();
+                var defaultFound = defaultEditor != null && !defaultEditor.equals(editor);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    EditorDetailValue defaultEditorDetailValue = getDefaultEditorDetailValueForUpdate();
+                    var defaultEditorDetailValue = getDefaultEditorDetailValueForUpdate();
 
                     defaultEditorDetailValue.setIsDefault(Boolean.FALSE);
                     updateEditorFromValue(defaultEditorDetailValue, false, updatedBy);
@@ -15074,7 +15074,7 @@ public class CoreControl
     }
 
     private void deleteEditor(Editor editor, boolean checkDefault, BasePK deletedBy) {
-        EditorDetail editorDetail = editor.getLastDetailForUpdate();
+        var editorDetail = editor.getLastDetailForUpdate();
 
         deleteEditorDescriptionsByEditor(editor, deletedBy);
         deleteApplicationEditorsByEditor(editor, deletedBy);
@@ -15085,17 +15085,17 @@ public class CoreControl
 
         if(checkDefault) {
             // Check for default, and pick one if necessary
-            Editor defaultEditor = getDefaultEditor();
+            var defaultEditor = getDefaultEditor();
 
             if(defaultEditor == null) {
-                List<Editor> editors = getEditorsForUpdate();
+                var editors = getEditorsForUpdate();
 
                 if(!editors.isEmpty()) {
-                    Iterator<Editor> iter = editors.iterator();
+                    var iter = editors.iterator();
                     if(iter.hasNext()) {
                         defaultEditor = iter.next();
                     }
-                    EditorDetailValue editorDetailValue = Objects.requireNonNull(defaultEditor).getLastDetailForUpdate().getEditorDetailValue().clone();
+                    var editorDetailValue = Objects.requireNonNull(defaultEditor).getLastDetailForUpdate().getEditorDetailValue().clone();
 
                     editorDetailValue.setIsDefault(Boolean.TRUE);
                     updateEditorFromValue(editorDetailValue, false, deletedBy);
@@ -15123,7 +15123,7 @@ public class CoreControl
     // --------------------------------------------------------------------------------
 
     public EditorDescription createEditorDescription(Editor editor, Language language, String description, BasePK createdBy) {
-        EditorDescription editorDescription = EditorDescriptionFactory.getInstance().create(editor, language, description,
+        var editorDescription = EditorDescriptionFactory.getInstance().create(editor, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(editor.getPrimaryKey(), EventTypes.MODIFY, editorDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -15202,7 +15202,7 @@ public class CoreControl
 
     public String getBestEditorDescription(Editor editor, Language language) {
         String description;
-        EditorDescription editorDescription = getEditorDescription(editor, language);
+        var editorDescription = getEditorDescription(editor, language);
 
         if(editorDescription == null && !language.getIsDefault()) {
             editorDescription = getEditorDescription(editor, getPartyControl().getDefaultLanguage());
@@ -15222,9 +15222,9 @@ public class CoreControl
     }
 
     public List<EditorDescriptionTransfer> getEditorDescriptionTransfersByEditor(UserVisit userVisit, Editor editor) {
-        List<EditorDescription> editorDescriptions = getEditorDescriptionsByEditor(editor);
+        var editorDescriptions = getEditorDescriptionsByEditor(editor);
         List<EditorDescriptionTransfer> editorDescriptionTransfers = new ArrayList<>(editorDescriptions.size());
-        EditorDescriptionTransferCache editorDescriptionTransferCache = getCoreTransferCaches(userVisit).getEditorDescriptionTransferCache();
+        var editorDescriptionTransferCache = getCoreTransferCaches(userVisit).getEditorDescriptionTransferCache();
 
         editorDescriptions.forEach((editorDescription) ->
                 editorDescriptionTransfers.add(editorDescriptionTransferCache.getEditorDescriptionTransfer(editorDescription))
@@ -15235,15 +15235,15 @@ public class CoreControl
 
     public void updateEditorDescriptionFromValue(EditorDescriptionValue editorDescriptionValue, BasePK updatedBy) {
         if(editorDescriptionValue.hasBeenModified()) {
-            EditorDescription editorDescription = EditorDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var editorDescription = EditorDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     editorDescriptionValue.getPrimaryKey());
 
             editorDescription.setThruTime(session.START_TIME_LONG);
             editorDescription.store();
 
-            Editor editor = editorDescription.getEditor();
-            Language language = editorDescription.getLanguage();
-            String description = editorDescriptionValue.getDescription();
+            var editor = editorDescription.getEditor();
+            var language = editorDescription.getLanguage();
+            var description = editorDescriptionValue.getDescription();
 
             editorDescription = EditorDescriptionFactory.getInstance().create(editor, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -15260,7 +15260,7 @@ public class CoreControl
     }
 
     public void deleteEditorDescriptionsByEditor(Editor editor, BasePK deletedBy) {
-        List<EditorDescription> editorDescriptions = getEditorDescriptionsByEditorForUpdate(editor);
+        var editorDescriptions = getEditorDescriptionsByEditorForUpdate(editor);
 
         editorDescriptions.forEach((editorDescription) -> 
                 deleteEditorDescription(editorDescription, deletedBy)
@@ -15272,11 +15272,11 @@ public class CoreControl
     // --------------------------------------------------------------------------------
 
     public ApplicationEditor createApplicationEditor(Application application, Editor editor, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        ApplicationEditor defaultApplicationEditor = getDefaultApplicationEditor(application);
-        boolean defaultFound = defaultApplicationEditor != null;
+        var defaultApplicationEditor = getDefaultApplicationEditor(application);
+        var defaultFound = defaultApplicationEditor != null;
 
         if(defaultFound && isDefault) {
-            ApplicationEditorDetailValue defaultApplicationEditorDetailValue = getDefaultApplicationEditorDetailValueForUpdate(application);
+            var defaultApplicationEditorDetailValue = getDefaultApplicationEditorDetailValueForUpdate(application);
 
             defaultApplicationEditorDetailValue.setIsDefault(Boolean.FALSE);
             updateApplicationEditorFromValue(defaultApplicationEditorDetailValue, false, createdBy);
@@ -15284,8 +15284,8 @@ public class CoreControl
             isDefault = Boolean.TRUE;
         }
 
-        ApplicationEditor applicationEditor = ApplicationEditorFactory.getInstance().create();
-        ApplicationEditorDetail applicationEditorDetail = ApplicationEditorDetailFactory.getInstance().create(applicationEditor, application, editor, isDefault,
+        var applicationEditor = ApplicationEditorFactory.getInstance().create();
+        var applicationEditorDetail = ApplicationEditorDetailFactory.getInstance().create(applicationEditor, application, editor, isDefault,
                 sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -15447,7 +15447,7 @@ public class CoreControl
 
     public List<ApplicationEditorTransfer> getApplicationEditorTransfers(List<ApplicationEditor> applicationEditors, UserVisit userVisit) {
         List<ApplicationEditorTransfer> applicationEditorTransfers = new ArrayList<>(applicationEditors.size());
-        ApplicationEditorTransferCache applicationEditorTransferCache = getCoreTransferCaches(userVisit).getApplicationEditorTransferCache();
+        var applicationEditorTransferCache = getCoreTransferCaches(userVisit).getApplicationEditorTransferCache();
 
         applicationEditors.forEach((applicationEditor) ->
                 applicationEditorTransfers.add(applicationEditorTransferCache.getApplicationEditorTransfer(applicationEditor))
@@ -15466,7 +15466,7 @@ public class CoreControl
     
     public ApplicationEditorChoicesBean getApplicationEditorChoices(String defaultApplicationEditorChoice, Language language, boolean allowNullChoice,
             Application application) {
-        List<ApplicationEditor> applicationEditors = getApplicationEditorsByApplication(application);
+        var applicationEditors = getApplicationEditorsByApplication(application);
         var size = applicationEditors.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -15482,8 +15482,8 @@ public class CoreControl
         }
 
         for(var applicationEditor : applicationEditors) {
-            ApplicationEditorDetail applicationEditorDetail = applicationEditor.getLastDetail();
-            Editor editor = applicationEditorDetail.getEditor();
+            var applicationEditorDetail = applicationEditor.getLastDetail();
+            var editor = applicationEditorDetail.getEditor();
 
             var label = getBestEditorDescription(editor, language);
             var value = editor.getLastDetail().getEditorName();
@@ -15502,27 +15502,27 @@ public class CoreControl
 
     private void updateApplicationEditorFromValue(ApplicationEditorDetailValue applicationEditorDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(applicationEditorDetailValue.hasBeenModified()) {
-            ApplicationEditor applicationEditor = ApplicationEditorFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var applicationEditor = ApplicationEditorFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      applicationEditorDetailValue.getApplicationEditorPK());
-            ApplicationEditorDetail applicationEditorDetail = applicationEditor.getActiveDetailForUpdate();
+            var applicationEditorDetail = applicationEditor.getActiveDetailForUpdate();
 
             applicationEditorDetail.setThruTime(session.START_TIME_LONG);
             applicationEditorDetail.store();
 
-            ApplicationEditorPK applicationEditorPK = applicationEditorDetail.getApplicationEditorPK(); // Not updated
-            Application application = applicationEditorDetail.getApplication();
-            ApplicationPK applicationPK = application.getPrimaryKey(); // Not updated
-            EditorPK editorPK = applicationEditorDetail.getEditorPK(); // Not updated
-            Boolean isDefault = applicationEditorDetailValue.getIsDefault();
-            Integer sortOrder = applicationEditorDetailValue.getSortOrder();
+            var applicationEditorPK = applicationEditorDetail.getApplicationEditorPK(); // Not updated
+            var application = applicationEditorDetail.getApplication();
+            var applicationPK = application.getPrimaryKey(); // Not updated
+            var editorPK = applicationEditorDetail.getEditorPK(); // Not updated
+            var isDefault = applicationEditorDetailValue.getIsDefault();
+            var sortOrder = applicationEditorDetailValue.getSortOrder();
 
             if(checkDefault) {
-                ApplicationEditor defaultApplicationEditor = getDefaultApplicationEditor(application);
-                boolean defaultFound = defaultApplicationEditor != null && !defaultApplicationEditor.equals(applicationEditor);
+                var defaultApplicationEditor = getDefaultApplicationEditor(application);
+                var defaultFound = defaultApplicationEditor != null && !defaultApplicationEditor.equals(applicationEditor);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    ApplicationEditorDetailValue defaultApplicationEditorDetailValue = getDefaultApplicationEditorDetailValueForUpdate(application);
+                    var defaultApplicationEditorDetailValue = getDefaultApplicationEditorDetailValueForUpdate(application);
 
                     defaultApplicationEditorDetailValue.setIsDefault(Boolean.FALSE);
                     updateApplicationEditorFromValue(defaultApplicationEditorDetailValue, false, updatedBy);
@@ -15547,8 +15547,8 @@ public class CoreControl
     }
 
     private void deleteApplicationEditor(ApplicationEditor applicationEditor, boolean checkDefault, BasePK deletedBy) {
-        ApplicationEditorDetail applicationEditorDetail = applicationEditor.getLastDetailForUpdate();
-        Application application = applicationEditorDetail.getApplication();
+        var applicationEditorDetail = applicationEditor.getLastDetailForUpdate();
+        var application = applicationEditorDetail.getApplication();
 
         deleteApplicationEditorUsesByDefaultApplicationEditor(applicationEditor, deletedBy);
         deletePartyApplicationEditorUsesByApplicationEditor(applicationEditor, deletedBy);
@@ -15559,17 +15559,17 @@ public class CoreControl
 
         if(checkDefault) {
             // Check for default, and pick one if necessary
-            ApplicationEditor defaultApplicationEditor = getDefaultApplicationEditor(application);
+            var defaultApplicationEditor = getDefaultApplicationEditor(application);
 
             if(defaultApplicationEditor == null) {
-                List<ApplicationEditor> applicationEditors = getApplicationEditorsByApplicationForUpdate(application);
+                var applicationEditors = getApplicationEditorsByApplicationForUpdate(application);
 
                 if(!applicationEditors.isEmpty()) {
-                    Iterator<ApplicationEditor> iter = applicationEditors.iterator();
+                    var iter = applicationEditors.iterator();
                     if(iter.hasNext()) {
                         defaultApplicationEditor = iter.next();
                     }
-                    ApplicationEditorDetailValue applicationEditorDetailValue = Objects.requireNonNull(defaultApplicationEditor).getLastDetailForUpdate().getApplicationEditorDetailValue().clone();
+                    var applicationEditorDetailValue = Objects.requireNonNull(defaultApplicationEditor).getLastDetailForUpdate().getApplicationEditorDetailValue().clone();
 
                     applicationEditorDetailValue.setIsDefault(Boolean.TRUE);
                     updateApplicationEditorFromValue(applicationEditorDetailValue, false, deletedBy);
@@ -15606,11 +15606,11 @@ public class CoreControl
 
     public ApplicationEditorUse createApplicationEditorUse(Application application, String applicationEditorUseName, ApplicationEditor defaultApplicationEditor,
             Integer defaultHeight, Integer defaultWidth, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        ApplicationEditorUse defaultApplicationEditorUse = getDefaultApplicationEditorUse(application);
-        boolean defaultFound = defaultApplicationEditorUse != null;
+        var defaultApplicationEditorUse = getDefaultApplicationEditorUse(application);
+        var defaultFound = defaultApplicationEditorUse != null;
 
         if(defaultFound && isDefault) {
-            ApplicationEditorUseDetailValue defaultApplicationEditorUseDetailValue = getDefaultApplicationEditorUseDetailValueForUpdate(application);
+            var defaultApplicationEditorUseDetailValue = getDefaultApplicationEditorUseDetailValueForUpdate(application);
 
             defaultApplicationEditorUseDetailValue.setIsDefault(Boolean.FALSE);
             updateApplicationEditorUseFromValue(defaultApplicationEditorUseDetailValue, false, createdBy);
@@ -15618,8 +15618,8 @@ public class CoreControl
             isDefault = Boolean.TRUE;
         }
 
-        ApplicationEditorUse applicationEditorUse = ApplicationEditorUseFactory.getInstance().create();
-        ApplicationEditorUseDetail applicationEditorUseDetail = ApplicationEditorUseDetailFactory.getInstance().create(applicationEditorUse, application,
+        var applicationEditorUse = ApplicationEditorUseFactory.getInstance().create();
+        var applicationEditorUseDetail = ApplicationEditorUseDetailFactory.getInstance().create(applicationEditorUse, application,
                 applicationEditorUseName, defaultApplicationEditor, defaultHeight, defaultWidth, isDefault, sortOrder, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
 
@@ -15782,7 +15782,7 @@ public class CoreControl
 
     public List<ApplicationEditorUseTransfer> getApplicationEditorUseTransfers(List<ApplicationEditorUse> applicationEditorUses, UserVisit userVisit) {
         List<ApplicationEditorUseTransfer> applicationEditorUseTransfers = new ArrayList<>(applicationEditorUses.size());
-        ApplicationEditorUseTransferCache applicationEditorUseTransferCache = getCoreTransferCaches(userVisit).getApplicationEditorUseTransferCache();
+        var applicationEditorUseTransferCache = getCoreTransferCaches(userVisit).getApplicationEditorUseTransferCache();
 
         applicationEditorUses.forEach((applicationEditorUse) ->
                 applicationEditorUseTransfers.add(applicationEditorUseTransferCache.getApplicationEditorUseTransfer(applicationEditorUse))
@@ -15801,7 +15801,7 @@ public class CoreControl
     
     public ApplicationEditorUseChoicesBean getApplicationEditorUseChoices(String defaultApplicationEditorUseChoice, Language language, boolean allowNullChoice,
             Application application) {
-        List<ApplicationEditorUse> applicationEditorUses = getApplicationEditorUsesByApplication(application);
+        var applicationEditorUses = getApplicationEditorUsesByApplication(application);
         var size = applicationEditorUses.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -15817,7 +15817,7 @@ public class CoreControl
         }
 
         for(var applicationEditorUse : applicationEditorUses) {
-            ApplicationEditorUseDetail applicationEditorUseDetail = applicationEditorUse.getLastDetail();
+            var applicationEditorUseDetail = applicationEditorUse.getLastDetail();
 
             var label = getBestApplicationEditorUseDescription(applicationEditorUse, language);
             var value = applicationEditorUseDetail.getApplicationEditorUseName();
@@ -15836,30 +15836,30 @@ public class CoreControl
 
     private void updateApplicationEditorUseFromValue(ApplicationEditorUseDetailValue applicationEditorUseDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(applicationEditorUseDetailValue.hasBeenModified()) {
-            ApplicationEditorUse applicationEditorUse = ApplicationEditorUseFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var applicationEditorUse = ApplicationEditorUseFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      applicationEditorUseDetailValue.getApplicationEditorUsePK());
-            ApplicationEditorUseDetail applicationEditorUseDetail = applicationEditorUse.getActiveDetailForUpdate();
+            var applicationEditorUseDetail = applicationEditorUse.getActiveDetailForUpdate();
 
             applicationEditorUseDetail.setThruTime(session.START_TIME_LONG);
             applicationEditorUseDetail.store();
 
-            ApplicationEditorUsePK applicationEditorUsePK = applicationEditorUseDetail.getApplicationEditorUsePK(); // Not updated
-            Application application = applicationEditorUseDetail.getApplication();
-            ApplicationPK applicationPK = application.getPrimaryKey(); // Not updated
-            String applicationEditorUseName = applicationEditorUseDetailValue.getApplicationEditorUseName();
-            ApplicationEditorPK defaultApplicationEditorPK = applicationEditorUseDetailValue.getDefaultApplicationEditorPK();
-            Integer defaultHeight = applicationEditorUseDetailValue.getDefaultHeight();
-            Integer defaultWidth = applicationEditorUseDetailValue.getDefaultWidth();
-            Boolean isDefault = applicationEditorUseDetailValue.getIsDefault();
-            Integer sortOrder = applicationEditorUseDetailValue.getSortOrder();
+            var applicationEditorUsePK = applicationEditorUseDetail.getApplicationEditorUsePK(); // Not updated
+            var application = applicationEditorUseDetail.getApplication();
+            var applicationPK = application.getPrimaryKey(); // Not updated
+            var applicationEditorUseName = applicationEditorUseDetailValue.getApplicationEditorUseName();
+            var defaultApplicationEditorPK = applicationEditorUseDetailValue.getDefaultApplicationEditorPK();
+            var defaultHeight = applicationEditorUseDetailValue.getDefaultHeight();
+            var defaultWidth = applicationEditorUseDetailValue.getDefaultWidth();
+            var isDefault = applicationEditorUseDetailValue.getIsDefault();
+            var sortOrder = applicationEditorUseDetailValue.getSortOrder();
 
             if(checkDefault) {
-                ApplicationEditorUse defaultApplicationEditorUse = getDefaultApplicationEditorUse(application);
-                boolean defaultFound = defaultApplicationEditorUse != null && !defaultApplicationEditorUse.equals(applicationEditorUse);
+                var defaultApplicationEditorUse = getDefaultApplicationEditorUse(application);
+                var defaultFound = defaultApplicationEditorUse != null && !defaultApplicationEditorUse.equals(applicationEditorUse);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    ApplicationEditorUseDetailValue defaultApplicationEditorUseDetailValue = getDefaultApplicationEditorUseDetailValueForUpdate(application);
+                    var defaultApplicationEditorUseDetailValue = getDefaultApplicationEditorUseDetailValueForUpdate(application);
 
                     defaultApplicationEditorUseDetailValue.setIsDefault(Boolean.FALSE);
                     updateApplicationEditorUseFromValue(defaultApplicationEditorUseDetailValue, false, updatedBy);
@@ -15884,8 +15884,8 @@ public class CoreControl
     }
 
     private void deleteApplicationEditorUse(ApplicationEditorUse applicationEditorUse, boolean checkDefault, BasePK deletedBy) {
-        ApplicationEditorUseDetail applicationEditorUseDetail = applicationEditorUse.getLastDetailForUpdate();
-        Application application = applicationEditorUseDetail.getApplication();
+        var applicationEditorUseDetail = applicationEditorUse.getLastDetailForUpdate();
+        var application = applicationEditorUseDetail.getApplication();
 
         deleteApplicationEditorUseDescriptionsByApplicationEditorUse(applicationEditorUse, deletedBy);
         deletePartyApplicationEditorUsesByParty(applicationEditorUse, deletedBy);
@@ -15896,17 +15896,17 @@ public class CoreControl
 
         if(checkDefault) {
             // Check for default, and pick one if necessary
-            ApplicationEditorUse defaultApplicationEditorUse = getDefaultApplicationEditorUse(application);
+            var defaultApplicationEditorUse = getDefaultApplicationEditorUse(application);
 
             if(defaultApplicationEditorUse == null) {
-                List<ApplicationEditorUse> applicationEditorUses = getApplicationEditorUsesByApplicationForUpdate(application);
+                var applicationEditorUses = getApplicationEditorUsesByApplicationForUpdate(application);
 
                 if(!applicationEditorUses.isEmpty()) {
-                    Iterator<ApplicationEditorUse> iter = applicationEditorUses.iterator();
+                    var iter = applicationEditorUses.iterator();
                     if(iter.hasNext()) {
                         defaultApplicationEditorUse = iter.next();
                     }
-                    ApplicationEditorUseDetailValue applicationEditorUseDetailValue = Objects.requireNonNull(defaultApplicationEditorUse).getLastDetailForUpdate().getApplicationEditorUseDetailValue().clone();
+                    var applicationEditorUseDetailValue = Objects.requireNonNull(defaultApplicationEditorUse).getLastDetailForUpdate().getApplicationEditorUseDetailValue().clone();
 
                     applicationEditorUseDetailValue.setIsDefault(Boolean.TRUE);
                     updateApplicationEditorUseFromValue(applicationEditorUseDetailValue, false, deletedBy);
@@ -15943,7 +15943,7 @@ public class CoreControl
 
     public ApplicationEditorUseDescription createApplicationEditorUseDescription(ApplicationEditorUse applicationEditorUse, Language language,
             String description, BasePK createdBy) {
-        ApplicationEditorUseDescription applicationEditorUseDescription = ApplicationEditorUseDescriptionFactory.getInstance().create(applicationEditorUse,
+        var applicationEditorUseDescription = ApplicationEditorUseDescriptionFactory.getInstance().create(applicationEditorUse,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(applicationEditorUse.getPrimaryKey(), EventTypes.MODIFY, applicationEditorUseDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -16022,7 +16022,7 @@ public class CoreControl
 
     public String getBestApplicationEditorUseDescription(ApplicationEditorUse applicationEditorUse, Language language) {
         String description;
-        ApplicationEditorUseDescription applicationEditorUseDescription = getApplicationEditorUseDescription(applicationEditorUse, language);
+        var applicationEditorUseDescription = getApplicationEditorUseDescription(applicationEditorUse, language);
 
         if(applicationEditorUseDescription == null && !language.getIsDefault()) {
             applicationEditorUseDescription = getApplicationEditorUseDescription(applicationEditorUse, getPartyControl().getDefaultLanguage());
@@ -16042,9 +16042,9 @@ public class CoreControl
     }
 
     public List<ApplicationEditorUseDescriptionTransfer> getApplicationEditorUseDescriptionTransfersByApplicationEditorUse(UserVisit userVisit, ApplicationEditorUse applicationEditorUse) {
-        List<ApplicationEditorUseDescription> applicationEditorUseDescriptions = getApplicationEditorUseDescriptionsByApplicationEditorUse(applicationEditorUse);
+        var applicationEditorUseDescriptions = getApplicationEditorUseDescriptionsByApplicationEditorUse(applicationEditorUse);
         List<ApplicationEditorUseDescriptionTransfer> applicationEditorUseDescriptionTransfers = new ArrayList<>(applicationEditorUseDescriptions.size());
-        ApplicationEditorUseDescriptionTransferCache applicationEditorUseDescriptionTransferCache = getCoreTransferCaches(userVisit).getApplicationEditorUseDescriptionTransferCache();
+        var applicationEditorUseDescriptionTransferCache = getCoreTransferCaches(userVisit).getApplicationEditorUseDescriptionTransferCache();
 
         applicationEditorUseDescriptions.forEach((applicationEditorUseDescription) ->
                 applicationEditorUseDescriptionTransfers.add(applicationEditorUseDescriptionTransferCache.getApplicationEditorUseDescriptionTransfer(applicationEditorUseDescription))
@@ -16055,15 +16055,15 @@ public class CoreControl
 
     public void updateApplicationEditorUseDescriptionFromValue(ApplicationEditorUseDescriptionValue applicationEditorUseDescriptionValue, BasePK updatedBy) {
         if(applicationEditorUseDescriptionValue.hasBeenModified()) {
-            ApplicationEditorUseDescription applicationEditorUseDescription = ApplicationEditorUseDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var applicationEditorUseDescription = ApplicationEditorUseDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     applicationEditorUseDescriptionValue.getPrimaryKey());
 
             applicationEditorUseDescription.setThruTime(session.START_TIME_LONG);
             applicationEditorUseDescription.store();
 
-            ApplicationEditorUse applicationEditorUse = applicationEditorUseDescription.getApplicationEditorUse();
-            Language language = applicationEditorUseDescription.getLanguage();
-            String description = applicationEditorUseDescriptionValue.getDescription();
+            var applicationEditorUse = applicationEditorUseDescription.getApplicationEditorUse();
+            var language = applicationEditorUseDescription.getLanguage();
+            var description = applicationEditorUseDescriptionValue.getDescription();
 
             applicationEditorUseDescription = ApplicationEditorUseDescriptionFactory.getInstance().create(applicationEditorUse, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -16080,7 +16080,7 @@ public class CoreControl
     }
 
     public void deleteApplicationEditorUseDescriptionsByApplicationEditorUse(ApplicationEditorUse applicationEditorUse, BasePK deletedBy) {
-        List<ApplicationEditorUseDescription> applicationEditorUseDescriptions = getApplicationEditorUseDescriptionsByApplicationEditorUseForUpdate(applicationEditorUse);
+        var applicationEditorUseDescriptions = getApplicationEditorUseDescriptionsByApplicationEditorUseForUpdate(applicationEditorUse);
 
         applicationEditorUseDescriptions.forEach((applicationEditorUseDescription) -> 
                 deleteApplicationEditorUseDescription(applicationEditorUseDescription, deletedBy)
@@ -16093,8 +16093,8 @@ public class CoreControl
 
     public PartyApplicationEditorUse createPartyApplicationEditorUse(Party party, ApplicationEditorUse applicationEditorUse,
             ApplicationEditor applicationEditor, Integer preferredHeight, Integer preferredWidth, BasePK createdBy) {
-        PartyApplicationEditorUse partyApplicationEditorUse = PartyApplicationEditorUseFactory.getInstance().create();
-        PartyApplicationEditorUseDetail partyApplicationEditorUseDetail = PartyApplicationEditorUseDetailFactory.getInstance().create(partyApplicationEditorUse,
+        var partyApplicationEditorUse = PartyApplicationEditorUseFactory.getInstance().create();
+        var partyApplicationEditorUseDetail = PartyApplicationEditorUseDetailFactory.getInstance().create(partyApplicationEditorUse,
                 party, applicationEditorUse, applicationEditor, preferredHeight, preferredWidth, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -16256,7 +16256,7 @@ public class CoreControl
 
     public List<PartyApplicationEditorUseTransfer> getPartyApplicationEditorUseTransfers(List<PartyApplicationEditorUse> partyApplicationEditorUses, UserVisit userVisit) {
         List<PartyApplicationEditorUseTransfer> partyApplicationEditorUseTransfers = new ArrayList<>(partyApplicationEditorUses.size());
-        PartyApplicationEditorUseTransferCache partyApplicationEditorUseTransferCache = getCoreTransferCaches(userVisit).getPartyApplicationEditorUseTransferCache();
+        var partyApplicationEditorUseTransferCache = getCoreTransferCaches(userVisit).getPartyApplicationEditorUseTransferCache();
 
         partyApplicationEditorUses.forEach((partyApplicationEditorUse) ->
                 partyApplicationEditorUseTransfers.add(partyApplicationEditorUseTransferCache.getPartyApplicationEditorUseTransfer(partyApplicationEditorUse))
@@ -16279,19 +16279,19 @@ public class CoreControl
     
     public void updatePartyApplicationEditorUseFromValue(PartyApplicationEditorUseDetailValue partyApplicationEditorUseDetailValue, BasePK updatedBy) {
         if(partyApplicationEditorUseDetailValue.hasBeenModified()) {
-            PartyApplicationEditorUse partyApplicationEditorUse = PartyApplicationEditorUseFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var partyApplicationEditorUse = PartyApplicationEditorUseFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      partyApplicationEditorUseDetailValue.getPartyApplicationEditorUsePK());
-            PartyApplicationEditorUseDetail partyApplicationEditorUseDetail = partyApplicationEditorUse.getActiveDetailForUpdate();
+            var partyApplicationEditorUseDetail = partyApplicationEditorUse.getActiveDetailForUpdate();
 
             partyApplicationEditorUseDetail.setThruTime(session.START_TIME_LONG);
             partyApplicationEditorUseDetail.store();
 
-            PartyApplicationEditorUsePK partyApplicationEditorUsePK = partyApplicationEditorUseDetail.getPartyApplicationEditorUsePK(); // Not updated
-            PartyPK partyPK = partyApplicationEditorUseDetail.getPartyPK(); // Not updated
-            ApplicationEditorUsePK applicationEditorUsePK = partyApplicationEditorUseDetail.getApplicationEditorUsePK(); // Not updated
-            ApplicationEditorPK applicationEditorPK = partyApplicationEditorUseDetailValue.getApplicationEditorPK();
-            Integer preferredHeight = partyApplicationEditorUseDetailValue.getPreferredHeight();
-            Integer preferredWidth = partyApplicationEditorUseDetailValue.getPreferredWidth();
+            var partyApplicationEditorUsePK = partyApplicationEditorUseDetail.getPartyApplicationEditorUsePK(); // Not updated
+            var partyPK = partyApplicationEditorUseDetail.getPartyPK(); // Not updated
+            var applicationEditorUsePK = partyApplicationEditorUseDetail.getApplicationEditorUsePK(); // Not updated
+            var applicationEditorPK = partyApplicationEditorUseDetailValue.getApplicationEditorPK();
+            var preferredHeight = partyApplicationEditorUseDetailValue.getPreferredHeight();
+            var preferredWidth = partyApplicationEditorUseDetailValue.getPreferredWidth();
             
             partyApplicationEditorUseDetail = PartyApplicationEditorUseDetailFactory.getInstance().create(partyApplicationEditorUsePK, partyPK,
                     applicationEditorUsePK, applicationEditorPK, preferredHeight, preferredWidth, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -16304,7 +16304,7 @@ public class CoreControl
     }
 
     public void deletePartyApplicationEditorUse(PartyApplicationEditorUse partyApplicationEditorUse, BasePK deletedBy) {
-        PartyApplicationEditorUseDetail partyApplicationEditorUseDetail = partyApplicationEditorUse.getLastDetailForUpdate();
+        var partyApplicationEditorUseDetail = partyApplicationEditorUse.getLastDetailForUpdate();
 
         partyApplicationEditorUseDetail.setThruTime(session.START_TIME_LONG);
         partyApplicationEditorUse.setActiveDetail(null);
@@ -16336,11 +16336,11 @@ public class CoreControl
     // --------------------------------------------------------------------------------
 
     public Color createColor(String colorName, Integer red, Integer green, Integer blue, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        Color defaultColor = getDefaultColor();
-        boolean defaultFound = defaultColor != null;
+        var defaultColor = getDefaultColor();
+        var defaultFound = defaultColor != null;
 
         if(defaultFound && isDefault) {
-            ColorDetailValue defaultColorDetailValue = getDefaultColorDetailValueForUpdate();
+            var defaultColorDetailValue = getDefaultColorDetailValueForUpdate();
 
             defaultColorDetailValue.setIsDefault(Boolean.FALSE);
             updateColorFromValue(defaultColorDetailValue, false, createdBy);
@@ -16348,8 +16348,8 @@ public class CoreControl
             isDefault = Boolean.TRUE;
         }
 
-        Color color = ColorFactory.getInstance().create();
-        ColorDetail colorDetail = ColorDetailFactory.getInstance().create(color, colorName, red, green, blue, isDefault, sortOrder, session.START_TIME_LONG,
+        var color = ColorFactory.getInstance().create();
+        var colorDetail = ColorDetailFactory.getInstance().create(color, colorName, red, green, blue, isDefault, sortOrder, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -16497,7 +16497,7 @@ public class CoreControl
 
     public List<ColorTransfer> getColorTransfers(UserVisit userVisit, Collection<Color> entities) {
         List<ColorTransfer> transfers = new ArrayList<>(entities.size());
-        ColorTransferCache transferCache = getCoreTransferCaches(userVisit).getColorTransferCache();
+        var transferCache = getCoreTransferCaches(userVisit).getColorTransferCache();
         
         entities.forEach((entity) ->
                 transfers.add(transferCache.getColorTransfer(entity))
@@ -16511,7 +16511,7 @@ public class CoreControl
     }
 
     public ColorChoicesBean getColorChoices(String defaultColorChoice, Language language, boolean allowNullChoice) {
-        List<Color> colors = getColors();
+        var colors = getColors();
         var size = colors.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -16527,7 +16527,7 @@ public class CoreControl
         }
 
         for(var color : colors) {
-            ColorDetail colorDetail = color.getLastDetail();
+            var colorDetail = color.getLastDetail();
 
             var label = getBestColorDescription(color, language);
             var value = colorDetail.getColorName();
@@ -16546,28 +16546,28 @@ public class CoreControl
 
     private void updateColorFromValue(ColorDetailValue colorDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(colorDetailValue.hasBeenModified()) {
-            Color color = ColorFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var color = ColorFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      colorDetailValue.getColorPK());
-            ColorDetail colorDetail = color.getActiveDetailForUpdate();
+            var colorDetail = color.getActiveDetailForUpdate();
 
             colorDetail.setThruTime(session.START_TIME_LONG);
             colorDetail.store();
 
-            ColorPK colorPK = colorDetail.getColorPK(); // Not updated
-            String colorName = colorDetailValue.getColorName();
-            Integer red = colorDetailValue.getRed();
-            Integer green = colorDetailValue.getGreen();
-            Integer blue = colorDetailValue.getBlue();
-            Boolean isDefault = colorDetailValue.getIsDefault();
-            Integer sortOrder = colorDetailValue.getSortOrder();
+            var colorPK = colorDetail.getColorPK(); // Not updated
+            var colorName = colorDetailValue.getColorName();
+            var red = colorDetailValue.getRed();
+            var green = colorDetailValue.getGreen();
+            var blue = colorDetailValue.getBlue();
+            var isDefault = colorDetailValue.getIsDefault();
+            var sortOrder = colorDetailValue.getSortOrder();
 
             if(checkDefault) {
-                Color defaultColor = getDefaultColor();
-                boolean defaultFound = defaultColor != null && !defaultColor.equals(color);
+                var defaultColor = getDefaultColor();
+                var defaultFound = defaultColor != null && !defaultColor.equals(color);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    ColorDetailValue defaultColorDetailValue = getDefaultColorDetailValueForUpdate();
+                    var defaultColorDetailValue = getDefaultColorDetailValueForUpdate();
 
                     defaultColorDetailValue.setIsDefault(Boolean.FALSE);
                     updateColorFromValue(defaultColorDetailValue, false, updatedBy);
@@ -16592,7 +16592,7 @@ public class CoreControl
     }
 
     private void deleteColor(Color color, boolean checkDefault, BasePK deletedBy) {
-        ColorDetail colorDetail = color.getLastDetailForUpdate();
+        var colorDetail = color.getLastDetailForUpdate();
 
         deleteAppearancesByColor(color, deletedBy);
         deleteColorDescriptionsByColor(color, deletedBy);
@@ -16603,17 +16603,17 @@ public class CoreControl
 
         if(checkDefault) {
             // Check for default, and pick one if necessary
-            Color defaultColor = getDefaultColor();
+            var defaultColor = getDefaultColor();
 
             if(defaultColor == null) {
-                List<Color> colors = getColorsForUpdate();
+                var colors = getColorsForUpdate();
 
                 if(!colors.isEmpty()) {
-                    Iterator<Color> iter = colors.iterator();
+                    var iter = colors.iterator();
                     if(iter.hasNext()) {
                         defaultColor = iter.next();
                     }
-                    ColorDetailValue colorDetailValue = Objects.requireNonNull(defaultColor).getLastDetailForUpdate().getColorDetailValue().clone();
+                    var colorDetailValue = Objects.requireNonNull(defaultColor).getLastDetailForUpdate().getColorDetailValue().clone();
 
                     colorDetailValue.setIsDefault(Boolean.TRUE);
                     updateColorFromValue(colorDetailValue, false, deletedBy);
@@ -16641,7 +16641,7 @@ public class CoreControl
     // --------------------------------------------------------------------------------
 
     public ColorDescription createColorDescription(Color color, Language language, String description, BasePK createdBy) {
-        ColorDescription colorDescription = ColorDescriptionFactory.getInstance().create(color, language, description,
+        var colorDescription = ColorDescriptionFactory.getInstance().create(color, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(color.getPrimaryKey(), EventTypes.MODIFY, colorDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -16720,7 +16720,7 @@ public class CoreControl
 
     public String getBestColorDescription(Color color, Language language) {
         String description;
-        ColorDescription colorDescription = getColorDescription(color, language);
+        var colorDescription = getColorDescription(color, language);
 
         if(colorDescription == null && !language.getIsDefault()) {
             colorDescription = getColorDescription(color, getPartyControl().getDefaultLanguage());
@@ -16740,9 +16740,9 @@ public class CoreControl
     }
 
     public List<ColorDescriptionTransfer> getColorDescriptionTransfersByColor(UserVisit userVisit, Color color) {
-        List<ColorDescription> colorDescriptions = getColorDescriptionsByColor(color);
+        var colorDescriptions = getColorDescriptionsByColor(color);
         List<ColorDescriptionTransfer> colorDescriptionTransfers = new ArrayList<>(colorDescriptions.size());
-        ColorDescriptionTransferCache colorDescriptionTransferCache = getCoreTransferCaches(userVisit).getColorDescriptionTransferCache();
+        var colorDescriptionTransferCache = getCoreTransferCaches(userVisit).getColorDescriptionTransferCache();
 
         colorDescriptions.forEach((colorDescription) ->
                 colorDescriptionTransfers.add(colorDescriptionTransferCache.getColorDescriptionTransfer(colorDescription))
@@ -16753,15 +16753,15 @@ public class CoreControl
 
     public void updateColorDescriptionFromValue(ColorDescriptionValue colorDescriptionValue, BasePK updatedBy) {
         if(colorDescriptionValue.hasBeenModified()) {
-            ColorDescription colorDescription = ColorDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var colorDescription = ColorDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     colorDescriptionValue.getPrimaryKey());
 
             colorDescription.setThruTime(session.START_TIME_LONG);
             colorDescription.store();
 
-            Color color = colorDescription.getColor();
-            Language language = colorDescription.getLanguage();
-            String description = colorDescriptionValue.getDescription();
+            var color = colorDescription.getColor();
+            var language = colorDescription.getLanguage();
+            var description = colorDescriptionValue.getDescription();
 
             colorDescription = ColorDescriptionFactory.getInstance().create(color, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -16778,7 +16778,7 @@ public class CoreControl
     }
 
     public void deleteColorDescriptionsByColor(Color color, BasePK deletedBy) {
-        List<ColorDescription> colorDescriptions = getColorDescriptionsByColorForUpdate(color);
+        var colorDescriptions = getColorDescriptionsByColorForUpdate(color);
 
         colorDescriptions.forEach((colorDescription) -> 
                 deleteColorDescription(colorDescription, deletedBy)
@@ -16790,11 +16790,11 @@ public class CoreControl
     // --------------------------------------------------------------------------------
 
     public FontStyle createFontStyle(String fontStyleName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        FontStyle defaultFontStyle = getDefaultFontStyle();
-        boolean defaultFound = defaultFontStyle != null;
+        var defaultFontStyle = getDefaultFontStyle();
+        var defaultFound = defaultFontStyle != null;
 
         if(defaultFound && isDefault) {
-            FontStyleDetailValue defaultFontStyleDetailValue = getDefaultFontStyleDetailValueForUpdate();
+            var defaultFontStyleDetailValue = getDefaultFontStyleDetailValueForUpdate();
 
             defaultFontStyleDetailValue.setIsDefault(Boolean.FALSE);
             updateFontStyleFromValue(defaultFontStyleDetailValue, false, createdBy);
@@ -16802,8 +16802,8 @@ public class CoreControl
             isDefault = Boolean.TRUE;
         }
 
-        FontStyle fontStyle = FontStyleFactory.getInstance().create();
-        FontStyleDetail fontStyleDetail = FontStyleDetailFactory.getInstance().create(fontStyle, fontStyleName, isDefault, sortOrder, session.START_TIME_LONG,
+        var fontStyle = FontStyleFactory.getInstance().create();
+        var fontStyleDetail = FontStyleDetailFactory.getInstance().create(fontStyle, fontStyleName, isDefault, sortOrder, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -16951,7 +16951,7 @@ public class CoreControl
 
     public List<FontStyleTransfer> getFontStyleTransfers(UserVisit userVisit, Collection<FontStyle> entities) {
         List<FontStyleTransfer> transfers = new ArrayList<>(entities.size());
-        FontStyleTransferCache transferCache = getCoreTransferCaches(userVisit).getFontStyleTransferCache();
+        var transferCache = getCoreTransferCaches(userVisit).getFontStyleTransferCache();
         
         entities.forEach((entity) ->
                 transfers.add(transferCache.getFontStyleTransfer(entity))
@@ -16965,7 +16965,7 @@ public class CoreControl
     }
 
     public FontStyleChoicesBean getFontStyleChoices(String defaultFontStyleChoice, Language language, boolean allowNullChoice) {
-        List<FontStyle> fontStyles = getFontStyles();
+        var fontStyles = getFontStyles();
         var size = fontStyles.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -16981,7 +16981,7 @@ public class CoreControl
         }
 
         for(var fontStyle : fontStyles) {
-            FontStyleDetail fontStyleDetail = fontStyle.getLastDetail();
+            var fontStyleDetail = fontStyle.getLastDetail();
 
             var label = getBestFontStyleDescription(fontStyle, language);
             var value = fontStyleDetail.getFontStyleName();
@@ -17000,25 +17000,25 @@ public class CoreControl
 
     private void updateFontStyleFromValue(FontStyleDetailValue fontStyleDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(fontStyleDetailValue.hasBeenModified()) {
-            FontStyle fontStyle = FontStyleFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var fontStyle = FontStyleFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      fontStyleDetailValue.getFontStylePK());
-            FontStyleDetail fontStyleDetail = fontStyle.getActiveDetailForUpdate();
+            var fontStyleDetail = fontStyle.getActiveDetailForUpdate();
 
             fontStyleDetail.setThruTime(session.START_TIME_LONG);
             fontStyleDetail.store();
 
-            FontStylePK fontStylePK = fontStyleDetail.getFontStylePK(); // Not updated
-            String fontStyleName = fontStyleDetailValue.getFontStyleName();
-            Boolean isDefault = fontStyleDetailValue.getIsDefault();
-            Integer sortOrder = fontStyleDetailValue.getSortOrder();
+            var fontStylePK = fontStyleDetail.getFontStylePK(); // Not updated
+            var fontStyleName = fontStyleDetailValue.getFontStyleName();
+            var isDefault = fontStyleDetailValue.getIsDefault();
+            var sortOrder = fontStyleDetailValue.getSortOrder();
 
             if(checkDefault) {
-                FontStyle defaultFontStyle = getDefaultFontStyle();
-                boolean defaultFound = defaultFontStyle != null && !defaultFontStyle.equals(fontStyle);
+                var defaultFontStyle = getDefaultFontStyle();
+                var defaultFound = defaultFontStyle != null && !defaultFontStyle.equals(fontStyle);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    FontStyleDetailValue defaultFontStyleDetailValue = getDefaultFontStyleDetailValueForUpdate();
+                    var defaultFontStyleDetailValue = getDefaultFontStyleDetailValueForUpdate();
 
                     defaultFontStyleDetailValue.setIsDefault(Boolean.FALSE);
                     updateFontStyleFromValue(defaultFontStyleDetailValue, false, updatedBy);
@@ -17043,7 +17043,7 @@ public class CoreControl
     }
 
     private void deleteFontStyle(FontStyle fontStyle, boolean checkDefault, BasePK deletedBy) {
-        FontStyleDetail fontStyleDetail = fontStyle.getLastDetailForUpdate();
+        var fontStyleDetail = fontStyle.getLastDetailForUpdate();
 
         deleteAppearancesByFontStyle(fontStyle, deletedBy);
         deleteFontStyleDescriptionsByFontStyle(fontStyle, deletedBy);
@@ -17054,17 +17054,17 @@ public class CoreControl
 
         if(checkDefault) {
             // Check for default, and pick one if necessary
-            FontStyle defaultFontStyle = getDefaultFontStyle();
+            var defaultFontStyle = getDefaultFontStyle();
 
             if(defaultFontStyle == null) {
-                List<FontStyle> fontStyles = getFontStylesForUpdate();
+                var fontStyles = getFontStylesForUpdate();
 
                 if(!fontStyles.isEmpty()) {
-                    Iterator<FontStyle> iter = fontStyles.iterator();
+                    var iter = fontStyles.iterator();
                     if(iter.hasNext()) {
                         defaultFontStyle = iter.next();
                     }
-                    FontStyleDetailValue fontStyleDetailValue = Objects.requireNonNull(defaultFontStyle).getLastDetailForUpdate().getFontStyleDetailValue().clone();
+                    var fontStyleDetailValue = Objects.requireNonNull(defaultFontStyle).getLastDetailForUpdate().getFontStyleDetailValue().clone();
 
                     fontStyleDetailValue.setIsDefault(Boolean.TRUE);
                     updateFontStyleFromValue(fontStyleDetailValue, false, deletedBy);
@@ -17092,7 +17092,7 @@ public class CoreControl
     // --------------------------------------------------------------------------------
 
     public FontStyleDescription createFontStyleDescription(FontStyle fontStyle, Language language, String description, BasePK createdBy) {
-        FontStyleDescription fontStyleDescription = FontStyleDescriptionFactory.getInstance().create(fontStyle, language, description,
+        var fontStyleDescription = FontStyleDescriptionFactory.getInstance().create(fontStyle, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(fontStyle.getPrimaryKey(), EventTypes.MODIFY, fontStyleDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -17171,7 +17171,7 @@ public class CoreControl
 
     public String getBestFontStyleDescription(FontStyle fontStyle, Language language) {
         String description;
-        FontStyleDescription fontStyleDescription = getFontStyleDescription(fontStyle, language);
+        var fontStyleDescription = getFontStyleDescription(fontStyle, language);
 
         if(fontStyleDescription == null && !language.getIsDefault()) {
             fontStyleDescription = getFontStyleDescription(fontStyle, getPartyControl().getDefaultLanguage());
@@ -17191,9 +17191,9 @@ public class CoreControl
     }
 
     public List<FontStyleDescriptionTransfer> getFontStyleDescriptionTransfersByFontStyle(UserVisit userVisit, FontStyle fontStyle) {
-        List<FontStyleDescription> fontStyleDescriptions = getFontStyleDescriptionsByFontStyle(fontStyle);
+        var fontStyleDescriptions = getFontStyleDescriptionsByFontStyle(fontStyle);
         List<FontStyleDescriptionTransfer> fontStyleDescriptionTransfers = new ArrayList<>(fontStyleDescriptions.size());
-        FontStyleDescriptionTransferCache fontStyleDescriptionTransferCache = getCoreTransferCaches(userVisit).getFontStyleDescriptionTransferCache();
+        var fontStyleDescriptionTransferCache = getCoreTransferCaches(userVisit).getFontStyleDescriptionTransferCache();
 
         fontStyleDescriptions.forEach((fontStyleDescription) ->
                 fontStyleDescriptionTransfers.add(fontStyleDescriptionTransferCache.getFontStyleDescriptionTransfer(fontStyleDescription))
@@ -17204,15 +17204,15 @@ public class CoreControl
 
     public void updateFontStyleDescriptionFromValue(FontStyleDescriptionValue fontStyleDescriptionValue, BasePK updatedBy) {
         if(fontStyleDescriptionValue.hasBeenModified()) {
-            FontStyleDescription fontStyleDescription = FontStyleDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var fontStyleDescription = FontStyleDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     fontStyleDescriptionValue.getPrimaryKey());
 
             fontStyleDescription.setThruTime(session.START_TIME_LONG);
             fontStyleDescription.store();
 
-            FontStyle fontStyle = fontStyleDescription.getFontStyle();
-            Language language = fontStyleDescription.getLanguage();
-            String description = fontStyleDescriptionValue.getDescription();
+            var fontStyle = fontStyleDescription.getFontStyle();
+            var language = fontStyleDescription.getLanguage();
+            var description = fontStyleDescriptionValue.getDescription();
 
             fontStyleDescription = FontStyleDescriptionFactory.getInstance().create(fontStyle, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -17229,7 +17229,7 @@ public class CoreControl
     }
 
     public void deleteFontStyleDescriptionsByFontStyle(FontStyle fontStyle, BasePK deletedBy) {
-        List<FontStyleDescription> fontStyleDescriptions = getFontStyleDescriptionsByFontStyleForUpdate(fontStyle);
+        var fontStyleDescriptions = getFontStyleDescriptionsByFontStyleForUpdate(fontStyle);
 
         fontStyleDescriptions.forEach((fontStyleDescription) -> 
                 deleteFontStyleDescription(fontStyleDescription, deletedBy)
@@ -17241,11 +17241,11 @@ public class CoreControl
     // --------------------------------------------------------------------------------
 
     public FontWeight createFontWeight(String fontWeightName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        FontWeight defaultFontWeight = getDefaultFontWeight();
-        boolean defaultFound = defaultFontWeight != null;
+        var defaultFontWeight = getDefaultFontWeight();
+        var defaultFound = defaultFontWeight != null;
 
         if(defaultFound && isDefault) {
-            FontWeightDetailValue defaultFontWeightDetailValue = getDefaultFontWeightDetailValueForUpdate();
+            var defaultFontWeightDetailValue = getDefaultFontWeightDetailValueForUpdate();
 
             defaultFontWeightDetailValue.setIsDefault(Boolean.FALSE);
             updateFontWeightFromValue(defaultFontWeightDetailValue, false, createdBy);
@@ -17253,8 +17253,8 @@ public class CoreControl
             isDefault = Boolean.TRUE;
         }
 
-        FontWeight fontWeight = FontWeightFactory.getInstance().create();
-        FontWeightDetail fontWeightDetail = FontWeightDetailFactory.getInstance().create(fontWeight, fontWeightName, isDefault, sortOrder, session.START_TIME_LONG,
+        var fontWeight = FontWeightFactory.getInstance().create();
+        var fontWeightDetail = FontWeightDetailFactory.getInstance().create(fontWeight, fontWeightName, isDefault, sortOrder, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -17402,7 +17402,7 @@ public class CoreControl
 
     public List<FontWeightTransfer> getFontWeightTransfers(UserVisit userVisit, Collection<FontWeight> entities) {
         List<FontWeightTransfer> transfers = new ArrayList<>(entities.size());
-        FontWeightTransferCache transferCache = getCoreTransferCaches(userVisit).getFontWeightTransferCache();
+        var transferCache = getCoreTransferCaches(userVisit).getFontWeightTransferCache();
         
         entities.forEach((entity) ->
                 transfers.add(transferCache.getFontWeightTransfer(entity))
@@ -17416,7 +17416,7 @@ public class CoreControl
     }
 
     public FontWeightChoicesBean getFontWeightChoices(String defaultFontWeightChoice, Language language, boolean allowNullChoice) {
-        List<FontWeight> fontWeights = getFontWeights();
+        var fontWeights = getFontWeights();
         var size = fontWeights.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -17432,7 +17432,7 @@ public class CoreControl
         }
 
         for(var fontWeight : fontWeights) {
-            FontWeightDetail fontWeightDetail = fontWeight.getLastDetail();
+            var fontWeightDetail = fontWeight.getLastDetail();
 
             var label = getBestFontWeightDescription(fontWeight, language);
             var value = fontWeightDetail.getFontWeightName();
@@ -17451,25 +17451,25 @@ public class CoreControl
 
     private void updateFontWeightFromValue(FontWeightDetailValue fontWeightDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(fontWeightDetailValue.hasBeenModified()) {
-            FontWeight fontWeight = FontWeightFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var fontWeight = FontWeightFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      fontWeightDetailValue.getFontWeightPK());
-            FontWeightDetail fontWeightDetail = fontWeight.getActiveDetailForUpdate();
+            var fontWeightDetail = fontWeight.getActiveDetailForUpdate();
 
             fontWeightDetail.setThruTime(session.START_TIME_LONG);
             fontWeightDetail.store();
 
-            FontWeightPK fontWeightPK = fontWeightDetail.getFontWeightPK(); // Not updated
-            String fontWeightName = fontWeightDetailValue.getFontWeightName();
-            Boolean isDefault = fontWeightDetailValue.getIsDefault();
-            Integer sortOrder = fontWeightDetailValue.getSortOrder();
+            var fontWeightPK = fontWeightDetail.getFontWeightPK(); // Not updated
+            var fontWeightName = fontWeightDetailValue.getFontWeightName();
+            var isDefault = fontWeightDetailValue.getIsDefault();
+            var sortOrder = fontWeightDetailValue.getSortOrder();
 
             if(checkDefault) {
-                FontWeight defaultFontWeight = getDefaultFontWeight();
-                boolean defaultFound = defaultFontWeight != null && !defaultFontWeight.equals(fontWeight);
+                var defaultFontWeight = getDefaultFontWeight();
+                var defaultFound = defaultFontWeight != null && !defaultFontWeight.equals(fontWeight);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    FontWeightDetailValue defaultFontWeightDetailValue = getDefaultFontWeightDetailValueForUpdate();
+                    var defaultFontWeightDetailValue = getDefaultFontWeightDetailValueForUpdate();
 
                     defaultFontWeightDetailValue.setIsDefault(Boolean.FALSE);
                     updateFontWeightFromValue(defaultFontWeightDetailValue, false, updatedBy);
@@ -17494,7 +17494,7 @@ public class CoreControl
     }
 
     private void deleteFontWeight(FontWeight fontWeight, boolean checkDefault, BasePK deletedBy) {
-        FontWeightDetail fontWeightDetail = fontWeight.getLastDetailForUpdate();
+        var fontWeightDetail = fontWeight.getLastDetailForUpdate();
 
         deleteAppearancesByFontWeight(fontWeight, deletedBy);
         deleteFontWeightDescriptionsByFontWeight(fontWeight, deletedBy);
@@ -17505,17 +17505,17 @@ public class CoreControl
 
         if(checkDefault) {
             // Check for default, and pick one if necessary
-            FontWeight defaultFontWeight = getDefaultFontWeight();
+            var defaultFontWeight = getDefaultFontWeight();
 
             if(defaultFontWeight == null) {
-                List<FontWeight> fontWeights = getFontWeightsForUpdate();
+                var fontWeights = getFontWeightsForUpdate();
 
                 if(!fontWeights.isEmpty()) {
-                    Iterator<FontWeight> iter = fontWeights.iterator();
+                    var iter = fontWeights.iterator();
                     if(iter.hasNext()) {
                         defaultFontWeight = iter.next();
                     }
-                    FontWeightDetailValue fontWeightDetailValue = Objects.requireNonNull(defaultFontWeight).getLastDetailForUpdate().getFontWeightDetailValue().clone();
+                    var fontWeightDetailValue = Objects.requireNonNull(defaultFontWeight).getLastDetailForUpdate().getFontWeightDetailValue().clone();
 
                     fontWeightDetailValue.setIsDefault(Boolean.TRUE);
                     updateFontWeightFromValue(fontWeightDetailValue, false, deletedBy);
@@ -17543,7 +17543,7 @@ public class CoreControl
     // --------------------------------------------------------------------------------
 
     public FontWeightDescription createFontWeightDescription(FontWeight fontWeight, Language language, String description, BasePK createdBy) {
-        FontWeightDescription fontWeightDescription = FontWeightDescriptionFactory.getInstance().create(fontWeight, language, description,
+        var fontWeightDescription = FontWeightDescriptionFactory.getInstance().create(fontWeight, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(fontWeight.getPrimaryKey(), EventTypes.MODIFY, fontWeightDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -17622,7 +17622,7 @@ public class CoreControl
 
     public String getBestFontWeightDescription(FontWeight fontWeight, Language language) {
         String description;
-        FontWeightDescription fontWeightDescription = getFontWeightDescription(fontWeight, language);
+        var fontWeightDescription = getFontWeightDescription(fontWeight, language);
 
         if(fontWeightDescription == null && !language.getIsDefault()) {
             fontWeightDescription = getFontWeightDescription(fontWeight, getPartyControl().getDefaultLanguage());
@@ -17642,9 +17642,9 @@ public class CoreControl
     }
 
     public List<FontWeightDescriptionTransfer> getFontWeightDescriptionTransfersByFontWeight(UserVisit userVisit, FontWeight fontWeight) {
-        List<FontWeightDescription> fontWeightDescriptions = getFontWeightDescriptionsByFontWeight(fontWeight);
+        var fontWeightDescriptions = getFontWeightDescriptionsByFontWeight(fontWeight);
         List<FontWeightDescriptionTransfer> fontWeightDescriptionTransfers = new ArrayList<>(fontWeightDescriptions.size());
-        FontWeightDescriptionTransferCache fontWeightDescriptionTransferCache = getCoreTransferCaches(userVisit).getFontWeightDescriptionTransferCache();
+        var fontWeightDescriptionTransferCache = getCoreTransferCaches(userVisit).getFontWeightDescriptionTransferCache();
 
         fontWeightDescriptions.forEach((fontWeightDescription) ->
                 fontWeightDescriptionTransfers.add(fontWeightDescriptionTransferCache.getFontWeightDescriptionTransfer(fontWeightDescription))
@@ -17655,15 +17655,15 @@ public class CoreControl
 
     public void updateFontWeightDescriptionFromValue(FontWeightDescriptionValue fontWeightDescriptionValue, BasePK updatedBy) {
         if(fontWeightDescriptionValue.hasBeenModified()) {
-            FontWeightDescription fontWeightDescription = FontWeightDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var fontWeightDescription = FontWeightDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     fontWeightDescriptionValue.getPrimaryKey());
 
             fontWeightDescription.setThruTime(session.START_TIME_LONG);
             fontWeightDescription.store();
 
-            FontWeight fontWeight = fontWeightDescription.getFontWeight();
-            Language language = fontWeightDescription.getLanguage();
-            String description = fontWeightDescriptionValue.getDescription();
+            var fontWeight = fontWeightDescription.getFontWeight();
+            var language = fontWeightDescription.getLanguage();
+            var description = fontWeightDescriptionValue.getDescription();
 
             fontWeightDescription = FontWeightDescriptionFactory.getInstance().create(fontWeight, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -17680,7 +17680,7 @@ public class CoreControl
     }
 
     public void deleteFontWeightDescriptionsByFontWeight(FontWeight fontWeight, BasePK deletedBy) {
-        List<FontWeightDescription> fontWeightDescriptions = getFontWeightDescriptionsByFontWeightForUpdate(fontWeight);
+        var fontWeightDescriptions = getFontWeightDescriptionsByFontWeightForUpdate(fontWeight);
 
         fontWeightDescriptions.forEach((fontWeightDescription) -> 
                 deleteFontWeightDescription(fontWeightDescription, deletedBy)
@@ -17692,11 +17692,11 @@ public class CoreControl
     // --------------------------------------------------------------------------------
 
     public TextDecoration createTextDecoration(String textDecorationName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        TextDecoration defaultTextDecoration = getDefaultTextDecoration();
-        boolean defaultFound = defaultTextDecoration != null;
+        var defaultTextDecoration = getDefaultTextDecoration();
+        var defaultFound = defaultTextDecoration != null;
 
         if(defaultFound && isDefault) {
-            TextDecorationDetailValue defaultTextDecorationDetailValue = getDefaultTextDecorationDetailValueForUpdate();
+            var defaultTextDecorationDetailValue = getDefaultTextDecorationDetailValueForUpdate();
 
             defaultTextDecorationDetailValue.setIsDefault(Boolean.FALSE);
             updateTextDecorationFromValue(defaultTextDecorationDetailValue, false, createdBy);
@@ -17704,8 +17704,8 @@ public class CoreControl
             isDefault = Boolean.TRUE;
         }
 
-        TextDecoration textDecoration = TextDecorationFactory.getInstance().create();
-        TextDecorationDetail textDecorationDetail = TextDecorationDetailFactory.getInstance().create(textDecoration, textDecorationName, isDefault, sortOrder, session.START_TIME_LONG,
+        var textDecoration = TextDecorationFactory.getInstance().create();
+        var textDecorationDetail = TextDecorationDetailFactory.getInstance().create(textDecoration, textDecorationName, isDefault, sortOrder, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -17853,7 +17853,7 @@ public class CoreControl
 
     public List<TextDecorationTransfer> getTextDecorationTransfers(UserVisit userVisit, Collection<TextDecoration> entities) {
         List<TextDecorationTransfer> transfers = new ArrayList<>(entities.size());
-        TextDecorationTransferCache transferCache = getCoreTransferCaches(userVisit).getTextDecorationTransferCache();
+        var transferCache = getCoreTransferCaches(userVisit).getTextDecorationTransferCache();
         
         entities.forEach((entity) ->
                 transfers.add(transferCache.getTextDecorationTransfer(entity))
@@ -17867,7 +17867,7 @@ public class CoreControl
     }
 
     public TextDecorationChoicesBean getTextDecorationChoices(String defaultTextDecorationChoice, Language language, boolean allowNullChoice) {
-        List<TextDecoration> textDecorations = getTextDecorations();
+        var textDecorations = getTextDecorations();
         var size = textDecorations.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -17883,7 +17883,7 @@ public class CoreControl
         }
 
         for(var textDecoration : textDecorations) {
-            TextDecorationDetail textDecorationDetail = textDecoration.getLastDetail();
+            var textDecorationDetail = textDecoration.getLastDetail();
 
             var label = getBestTextDecorationDescription(textDecoration, language);
             var value = textDecorationDetail.getTextDecorationName();
@@ -17902,25 +17902,25 @@ public class CoreControl
 
     private void updateTextDecorationFromValue(TextDecorationDetailValue textDecorationDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(textDecorationDetailValue.hasBeenModified()) {
-            TextDecoration textDecoration = TextDecorationFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var textDecoration = TextDecorationFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      textDecorationDetailValue.getTextDecorationPK());
-            TextDecorationDetail textDecorationDetail = textDecoration.getActiveDetailForUpdate();
+            var textDecorationDetail = textDecoration.getActiveDetailForUpdate();
 
             textDecorationDetail.setThruTime(session.START_TIME_LONG);
             textDecorationDetail.store();
 
-            TextDecorationPK textDecorationPK = textDecorationDetail.getTextDecorationPK(); // Not updated
-            String textDecorationName = textDecorationDetailValue.getTextDecorationName();
-            Boolean isDefault = textDecorationDetailValue.getIsDefault();
-            Integer sortOrder = textDecorationDetailValue.getSortOrder();
+            var textDecorationPK = textDecorationDetail.getTextDecorationPK(); // Not updated
+            var textDecorationName = textDecorationDetailValue.getTextDecorationName();
+            var isDefault = textDecorationDetailValue.getIsDefault();
+            var sortOrder = textDecorationDetailValue.getSortOrder();
 
             if(checkDefault) {
-                TextDecoration defaultTextDecoration = getDefaultTextDecoration();
-                boolean defaultFound = defaultTextDecoration != null && !defaultTextDecoration.equals(textDecoration);
+                var defaultTextDecoration = getDefaultTextDecoration();
+                var defaultFound = defaultTextDecoration != null && !defaultTextDecoration.equals(textDecoration);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    TextDecorationDetailValue defaultTextDecorationDetailValue = getDefaultTextDecorationDetailValueForUpdate();
+                    var defaultTextDecorationDetailValue = getDefaultTextDecorationDetailValueForUpdate();
 
                     defaultTextDecorationDetailValue.setIsDefault(Boolean.FALSE);
                     updateTextDecorationFromValue(defaultTextDecorationDetailValue, false, updatedBy);
@@ -17945,7 +17945,7 @@ public class CoreControl
     }
 
     private void deleteTextDecoration(TextDecoration textDecoration, boolean checkDefault, BasePK deletedBy) {
-        TextDecorationDetail textDecorationDetail = textDecoration.getLastDetailForUpdate();
+        var textDecorationDetail = textDecoration.getLastDetailForUpdate();
 
         deleteAppearanceTextDecorationsByTextDecoration(textDecoration, deletedBy);
         deleteTextDecorationDescriptionsByTextDecoration(textDecoration, deletedBy);
@@ -17956,17 +17956,17 @@ public class CoreControl
 
         if(checkDefault) {
             // Check for default, and pick one if necessary
-            TextDecoration defaultTextDecoration = getDefaultTextDecoration();
+            var defaultTextDecoration = getDefaultTextDecoration();
 
             if(defaultTextDecoration == null) {
-                List<TextDecoration> textDecorations = getTextDecorationsForUpdate();
+                var textDecorations = getTextDecorationsForUpdate();
 
                 if(!textDecorations.isEmpty()) {
-                    Iterator<TextDecoration> iter = textDecorations.iterator();
+                    var iter = textDecorations.iterator();
                     if(iter.hasNext()) {
                         defaultTextDecoration = iter.next();
                     }
-                    TextDecorationDetailValue textDecorationDetailValue = Objects.requireNonNull(defaultTextDecoration).getLastDetailForUpdate().getTextDecorationDetailValue().clone();
+                    var textDecorationDetailValue = Objects.requireNonNull(defaultTextDecoration).getLastDetailForUpdate().getTextDecorationDetailValue().clone();
 
                     textDecorationDetailValue.setIsDefault(Boolean.TRUE);
                     updateTextDecorationFromValue(textDecorationDetailValue, false, deletedBy);
@@ -17994,7 +17994,7 @@ public class CoreControl
     // --------------------------------------------------------------------------------
 
     public TextDecorationDescription createTextDecorationDescription(TextDecoration textDecoration, Language language, String description, BasePK createdBy) {
-        TextDecorationDescription textDecorationDescription = TextDecorationDescriptionFactory.getInstance().create(textDecoration, language, description,
+        var textDecorationDescription = TextDecorationDescriptionFactory.getInstance().create(textDecoration, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(textDecoration.getPrimaryKey(), EventTypes.MODIFY, textDecorationDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -18073,7 +18073,7 @@ public class CoreControl
 
     public String getBestTextDecorationDescription(TextDecoration textDecoration, Language language) {
         String description;
-        TextDecorationDescription textDecorationDescription = getTextDecorationDescription(textDecoration, language);
+        var textDecorationDescription = getTextDecorationDescription(textDecoration, language);
 
         if(textDecorationDescription == null && !language.getIsDefault()) {
             textDecorationDescription = getTextDecorationDescription(textDecoration, getPartyControl().getDefaultLanguage());
@@ -18093,9 +18093,9 @@ public class CoreControl
     }
 
     public List<TextDecorationDescriptionTransfer> getTextDecorationDescriptionTransfersByTextDecoration(UserVisit userVisit, TextDecoration textDecoration) {
-        List<TextDecorationDescription> textDecorationDescriptions = getTextDecorationDescriptionsByTextDecoration(textDecoration);
+        var textDecorationDescriptions = getTextDecorationDescriptionsByTextDecoration(textDecoration);
         List<TextDecorationDescriptionTransfer> textDecorationDescriptionTransfers = new ArrayList<>(textDecorationDescriptions.size());
-        TextDecorationDescriptionTransferCache textDecorationDescriptionTransferCache = getCoreTransferCaches(userVisit).getTextDecorationDescriptionTransferCache();
+        var textDecorationDescriptionTransferCache = getCoreTransferCaches(userVisit).getTextDecorationDescriptionTransferCache();
 
         textDecorationDescriptions.forEach((textDecorationDescription) ->
                 textDecorationDescriptionTransfers.add(textDecorationDescriptionTransferCache.getTextDecorationDescriptionTransfer(textDecorationDescription))
@@ -18106,15 +18106,15 @@ public class CoreControl
 
     public void updateTextDecorationDescriptionFromValue(TextDecorationDescriptionValue textDecorationDescriptionValue, BasePK updatedBy) {
         if(textDecorationDescriptionValue.hasBeenModified()) {
-            TextDecorationDescription textDecorationDescription = TextDecorationDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var textDecorationDescription = TextDecorationDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     textDecorationDescriptionValue.getPrimaryKey());
 
             textDecorationDescription.setThruTime(session.START_TIME_LONG);
             textDecorationDescription.store();
 
-            TextDecoration textDecoration = textDecorationDescription.getTextDecoration();
-            Language language = textDecorationDescription.getLanguage();
-            String description = textDecorationDescriptionValue.getDescription();
+            var textDecoration = textDecorationDescription.getTextDecoration();
+            var language = textDecorationDescription.getLanguage();
+            var description = textDecorationDescriptionValue.getDescription();
 
             textDecorationDescription = TextDecorationDescriptionFactory.getInstance().create(textDecoration, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -18131,7 +18131,7 @@ public class CoreControl
     }
 
     public void deleteTextDecorationDescriptionsByTextDecoration(TextDecoration textDecoration, BasePK deletedBy) {
-        List<TextDecorationDescription> textDecorationDescriptions = getTextDecorationDescriptionsByTextDecorationForUpdate(textDecoration);
+        var textDecorationDescriptions = getTextDecorationDescriptionsByTextDecorationForUpdate(textDecoration);
 
         textDecorationDescriptions.forEach((textDecorationDescription) -> 
                 deleteTextDecorationDescription(textDecorationDescription, deletedBy)
@@ -18143,11 +18143,11 @@ public class CoreControl
     // --------------------------------------------------------------------------------
 
     public TextTransformation createTextTransformation(String textTransformationName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        TextTransformation defaultTextTransformation = getDefaultTextTransformation();
-        boolean defaultFound = defaultTextTransformation != null;
+        var defaultTextTransformation = getDefaultTextTransformation();
+        var defaultFound = defaultTextTransformation != null;
 
         if(defaultFound && isDefault) {
-            TextTransformationDetailValue defaultTextTransformationDetailValue = getDefaultTextTransformationDetailValueForUpdate();
+            var defaultTextTransformationDetailValue = getDefaultTextTransformationDetailValueForUpdate();
 
             defaultTextTransformationDetailValue.setIsDefault(Boolean.FALSE);
             updateTextTransformationFromValue(defaultTextTransformationDetailValue, false, createdBy);
@@ -18155,8 +18155,8 @@ public class CoreControl
             isDefault = Boolean.TRUE;
         }
 
-        TextTransformation textTransformation = TextTransformationFactory.getInstance().create();
-        TextTransformationDetail textTransformationDetail = TextTransformationDetailFactory.getInstance().create(textTransformation, textTransformationName, isDefault, sortOrder, session.START_TIME_LONG,
+        var textTransformation = TextTransformationFactory.getInstance().create();
+        var textTransformationDetail = TextTransformationDetailFactory.getInstance().create(textTransformation, textTransformationName, isDefault, sortOrder, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -18304,7 +18304,7 @@ public class CoreControl
 
     public List<TextTransformationTransfer> getTextTransformationTransfers(UserVisit userVisit, Collection<TextTransformation> entities) {
         List<TextTransformationTransfer> transfers = new ArrayList<>(entities.size());
-        TextTransformationTransferCache transferCache = getCoreTransferCaches(userVisit).getTextTransformationTransferCache();
+        var transferCache = getCoreTransferCaches(userVisit).getTextTransformationTransferCache();
         
         entities.forEach((entity) ->
                 transfers.add(transferCache.getTextTransformationTransfer(entity))
@@ -18318,7 +18318,7 @@ public class CoreControl
     }
 
     public TextTransformationChoicesBean getTextTransformationChoices(String defaultTextTransformationChoice, Language language, boolean allowNullChoice) {
-        List<TextTransformation> textTransformations = getTextTransformations();
+        var textTransformations = getTextTransformations();
         var size = textTransformations.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -18334,7 +18334,7 @@ public class CoreControl
         }
 
         for(var textTransformation : textTransformations) {
-            TextTransformationDetail textTransformationDetail = textTransformation.getLastDetail();
+            var textTransformationDetail = textTransformation.getLastDetail();
 
             var label = getBestTextTransformationDescription(textTransformation, language);
             var value = textTransformationDetail.getTextTransformationName();
@@ -18353,25 +18353,25 @@ public class CoreControl
 
     private void updateTextTransformationFromValue(TextTransformationDetailValue textTransformationDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(textTransformationDetailValue.hasBeenModified()) {
-            TextTransformation textTransformation = TextTransformationFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var textTransformation = TextTransformationFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      textTransformationDetailValue.getTextTransformationPK());
-            TextTransformationDetail textTransformationDetail = textTransformation.getActiveDetailForUpdate();
+            var textTransformationDetail = textTransformation.getActiveDetailForUpdate();
 
             textTransformationDetail.setThruTime(session.START_TIME_LONG);
             textTransformationDetail.store();
 
-            TextTransformationPK textTransformationPK = textTransformationDetail.getTextTransformationPK(); // Not updated
-            String textTransformationName = textTransformationDetailValue.getTextTransformationName();
-            Boolean isDefault = textTransformationDetailValue.getIsDefault();
-            Integer sortOrder = textTransformationDetailValue.getSortOrder();
+            var textTransformationPK = textTransformationDetail.getTextTransformationPK(); // Not updated
+            var textTransformationName = textTransformationDetailValue.getTextTransformationName();
+            var isDefault = textTransformationDetailValue.getIsDefault();
+            var sortOrder = textTransformationDetailValue.getSortOrder();
 
             if(checkDefault) {
-                TextTransformation defaultTextTransformation = getDefaultTextTransformation();
-                boolean defaultFound = defaultTextTransformation != null && !defaultTextTransformation.equals(textTransformation);
+                var defaultTextTransformation = getDefaultTextTransformation();
+                var defaultFound = defaultTextTransformation != null && !defaultTextTransformation.equals(textTransformation);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    TextTransformationDetailValue defaultTextTransformationDetailValue = getDefaultTextTransformationDetailValueForUpdate();
+                    var defaultTextTransformationDetailValue = getDefaultTextTransformationDetailValueForUpdate();
 
                     defaultTextTransformationDetailValue.setIsDefault(Boolean.FALSE);
                     updateTextTransformationFromValue(defaultTextTransformationDetailValue, false, updatedBy);
@@ -18396,7 +18396,7 @@ public class CoreControl
     }
 
     private void deleteTextTransformation(TextTransformation textTransformation, boolean checkDefault, BasePK deletedBy) {
-        TextTransformationDetail textTransformationDetail = textTransformation.getLastDetailForUpdate();
+        var textTransformationDetail = textTransformation.getLastDetailForUpdate();
 
         deleteAppearanceTextTransformationsByTextTransformation(textTransformation, deletedBy);
         deleteTextTransformationDescriptionsByTextTransformation(textTransformation, deletedBy);
@@ -18407,17 +18407,17 @@ public class CoreControl
 
         if(checkDefault) {
             // Check for default, and pick one if necessary
-            TextTransformation defaultTextTransformation = getDefaultTextTransformation();
+            var defaultTextTransformation = getDefaultTextTransformation();
 
             if(defaultTextTransformation == null) {
-                List<TextTransformation> textTransformations = getTextTransformationsForUpdate();
+                var textTransformations = getTextTransformationsForUpdate();
 
                 if(!textTransformations.isEmpty()) {
-                    Iterator<TextTransformation> iter = textTransformations.iterator();
+                    var iter = textTransformations.iterator();
                     if(iter.hasNext()) {
                         defaultTextTransformation = iter.next();
                     }
-                    TextTransformationDetailValue textTransformationDetailValue = Objects.requireNonNull(defaultTextTransformation).getLastDetailForUpdate().getTextTransformationDetailValue().clone();
+                    var textTransformationDetailValue = Objects.requireNonNull(defaultTextTransformation).getLastDetailForUpdate().getTextTransformationDetailValue().clone();
 
                     textTransformationDetailValue.setIsDefault(Boolean.TRUE);
                     updateTextTransformationFromValue(textTransformationDetailValue, false, deletedBy);
@@ -18445,7 +18445,7 @@ public class CoreControl
     // --------------------------------------------------------------------------------
 
     public TextTransformationDescription createTextTransformationDescription(TextTransformation textTransformation, Language language, String description, BasePK createdBy) {
-        TextTransformationDescription textTransformationDescription = TextTransformationDescriptionFactory.getInstance().create(textTransformation, language, description,
+        var textTransformationDescription = TextTransformationDescriptionFactory.getInstance().create(textTransformation, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(textTransformation.getPrimaryKey(), EventTypes.MODIFY, textTransformationDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -18524,7 +18524,7 @@ public class CoreControl
 
     public String getBestTextTransformationDescription(TextTransformation textTransformation, Language language) {
         String description;
-        TextTransformationDescription textTransformationDescription = getTextTransformationDescription(textTransformation, language);
+        var textTransformationDescription = getTextTransformationDescription(textTransformation, language);
 
         if(textTransformationDescription == null && !language.getIsDefault()) {
             textTransformationDescription = getTextTransformationDescription(textTransformation, getPartyControl().getDefaultLanguage());
@@ -18544,9 +18544,9 @@ public class CoreControl
     }
 
     public List<TextTransformationDescriptionTransfer> getTextTransformationDescriptionTransfersByTextTransformation(UserVisit userVisit, TextTransformation textTransformation) {
-        List<TextTransformationDescription> textTransformationDescriptions = getTextTransformationDescriptionsByTextTransformation(textTransformation);
+        var textTransformationDescriptions = getTextTransformationDescriptionsByTextTransformation(textTransformation);
         List<TextTransformationDescriptionTransfer> textTransformationDescriptionTransfers = new ArrayList<>(textTransformationDescriptions.size());
-        TextTransformationDescriptionTransferCache textTransformationDescriptionTransferCache = getCoreTransferCaches(userVisit).getTextTransformationDescriptionTransferCache();
+        var textTransformationDescriptionTransferCache = getCoreTransferCaches(userVisit).getTextTransformationDescriptionTransferCache();
 
         textTransformationDescriptions.forEach((textTransformationDescription) ->
                 textTransformationDescriptionTransfers.add(textTransformationDescriptionTransferCache.getTextTransformationDescriptionTransfer(textTransformationDescription))
@@ -18557,15 +18557,15 @@ public class CoreControl
 
     public void updateTextTransformationDescriptionFromValue(TextTransformationDescriptionValue textTransformationDescriptionValue, BasePK updatedBy) {
         if(textTransformationDescriptionValue.hasBeenModified()) {
-            TextTransformationDescription textTransformationDescription = TextTransformationDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var textTransformationDescription = TextTransformationDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     textTransformationDescriptionValue.getPrimaryKey());
 
             textTransformationDescription.setThruTime(session.START_TIME_LONG);
             textTransformationDescription.store();
 
-            TextTransformation textTransformation = textTransformationDescription.getTextTransformation();
-            Language language = textTransformationDescription.getLanguage();
-            String description = textTransformationDescriptionValue.getDescription();
+            var textTransformation = textTransformationDescription.getTextTransformation();
+            var language = textTransformationDescription.getLanguage();
+            var description = textTransformationDescriptionValue.getDescription();
 
             textTransformationDescription = TextTransformationDescriptionFactory.getInstance().create(textTransformation, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -18582,7 +18582,7 @@ public class CoreControl
     }
 
     public void deleteTextTransformationDescriptionsByTextTransformation(TextTransformation textTransformation, BasePK deletedBy) {
-        List<TextTransformationDescription> textTransformationDescriptions = getTextTransformationDescriptionsByTextTransformationForUpdate(textTransformation);
+        var textTransformationDescriptions = getTextTransformationDescriptionsByTextTransformationForUpdate(textTransformation);
 
         textTransformationDescriptions.forEach((textTransformationDescription) -> 
                 deleteTextTransformationDescription(textTransformationDescription, deletedBy)
@@ -18595,11 +18595,11 @@ public class CoreControl
 
     public Appearance createAppearance(String appearanceName, Color textColor, Color backgroundColor, FontStyle fontStyle, FontWeight fontWeight,
             Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        Appearance defaultAppearance = getDefaultAppearance();
-        boolean defaultFound = defaultAppearance != null;
+        var defaultAppearance = getDefaultAppearance();
+        var defaultFound = defaultAppearance != null;
 
         if(defaultFound && isDefault) {
-            AppearanceDetailValue defaultAppearanceDetailValue = getDefaultAppearanceDetailValueForUpdate();
+            var defaultAppearanceDetailValue = getDefaultAppearanceDetailValueForUpdate();
 
             defaultAppearanceDetailValue.setIsDefault(Boolean.FALSE);
             updateAppearanceFromValue(defaultAppearanceDetailValue, false, createdBy);
@@ -18607,8 +18607,8 @@ public class CoreControl
             isDefault = Boolean.TRUE;
         }
 
-        Appearance appearance = AppearanceFactory.getInstance().create();
-        AppearanceDetail appearanceDetail = AppearanceDetailFactory.getInstance().create(appearance, appearanceName, textColor, backgroundColor, fontStyle,
+        var appearance = AppearanceFactory.getInstance().create();
+        var appearanceDetail = AppearanceDetailFactory.getInstance().create(appearance, appearanceName, textColor, backgroundColor, fontStyle,
                 fontWeight, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -18885,7 +18885,7 @@ public class CoreControl
 
     public List<AppearanceTransfer> getAppearanceTransfers(UserVisit userVisit, Collection<Appearance> appearances) {
         List<AppearanceTransfer> appearanceTransfers = new ArrayList<>(appearances.size());
-        AppearanceTransferCache appearanceTransferCache = getCoreTransferCaches(userVisit).getAppearanceTransferCache();
+        var appearanceTransferCache = getCoreTransferCaches(userVisit).getAppearanceTransferCache();
 
         appearances.forEach((appearance) ->
                 appearanceTransfers.add(appearanceTransferCache.getAppearanceTransfer(appearance))
@@ -18899,7 +18899,7 @@ public class CoreControl
     }
 
     public AppearanceChoicesBean getAppearanceChoices(String defaultAppearanceChoice, Language language, boolean allowNullChoice) {
-        List<Appearance> appearances = getAppearances();
+        var appearances = getAppearances();
         var size = appearances.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -18915,7 +18915,7 @@ public class CoreControl
         }
 
         for(var appearance : appearances) {
-            AppearanceDetail appearanceDetail = appearance.getLastDetail();
+            var appearanceDetail = appearance.getLastDetail();
 
             var label = getBestAppearanceDescription(appearance, language);
             var value = appearanceDetail.getAppearanceName();
@@ -18934,29 +18934,29 @@ public class CoreControl
 
     private void updateAppearanceFromValue(AppearanceDetailValue appearanceDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(appearanceDetailValue.hasBeenModified()) {
-            Appearance appearance = AppearanceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var appearance = AppearanceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      appearanceDetailValue.getAppearancePK());
-            AppearanceDetail appearanceDetail = appearance.getActiveDetailForUpdate();
+            var appearanceDetail = appearance.getActiveDetailForUpdate();
 
             appearanceDetail.setThruTime(session.START_TIME_LONG);
             appearanceDetail.store();
 
-            AppearancePK appearancePK = appearanceDetail.getAppearancePK(); // Not updated
-            String appearanceName = appearanceDetailValue.getAppearanceName();
-            ColorPK textColorPK = appearanceDetailValue.getTextColorPK();
-            ColorPK backgroundColorPK = appearanceDetailValue.getBackgroundColorPK();
-            FontStylePK fontStylePK = appearanceDetailValue.getFontStylePK();
-            FontWeightPK fontWeightPK = appearanceDetailValue.getFontWeightPK();
-            Boolean isDefault = appearanceDetailValue.getIsDefault();
-            Integer sortOrder = appearanceDetailValue.getSortOrder();
+            var appearancePK = appearanceDetail.getAppearancePK(); // Not updated
+            var appearanceName = appearanceDetailValue.getAppearanceName();
+            var textColorPK = appearanceDetailValue.getTextColorPK();
+            var backgroundColorPK = appearanceDetailValue.getBackgroundColorPK();
+            var fontStylePK = appearanceDetailValue.getFontStylePK();
+            var fontWeightPK = appearanceDetailValue.getFontWeightPK();
+            var isDefault = appearanceDetailValue.getIsDefault();
+            var sortOrder = appearanceDetailValue.getSortOrder();
 
             if(checkDefault) {
-                Appearance defaultAppearance = getDefaultAppearance();
-                boolean defaultFound = defaultAppearance != null && !defaultAppearance.equals(appearance);
+                var defaultAppearance = getDefaultAppearance();
+                var defaultFound = defaultAppearance != null && !defaultAppearance.equals(appearance);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    AppearanceDetailValue defaultAppearanceDetailValue = getDefaultAppearanceDetailValueForUpdate();
+                    var defaultAppearanceDetailValue = getDefaultAppearanceDetailValueForUpdate();
 
                     defaultAppearanceDetailValue.setIsDefault(Boolean.FALSE);
                     updateAppearanceFromValue(defaultAppearanceDetailValue, false, updatedBy);
@@ -18981,7 +18981,7 @@ public class CoreControl
     }
 
     private void deleteAppearance(Appearance appearance, boolean checkDefault, BasePK deletedBy) {
-        AppearanceDetail appearanceDetail = appearance.getLastDetailForUpdate();
+        var appearanceDetail = appearance.getLastDetailForUpdate();
 
         deleteAppearanceTextDecorationsByAppearance(appearance, deletedBy);
         deleteAppearanceTextTransformationsByAppearance(appearance, deletedBy);
@@ -18994,17 +18994,17 @@ public class CoreControl
 
         if(checkDefault) {
             // Check for default, and pick one if necessary
-            Appearance defaultAppearance = getDefaultAppearance();
+            var defaultAppearance = getDefaultAppearance();
 
             if(defaultAppearance == null) {
-                List<Appearance> appearances = getAppearancesForUpdate();
+                var appearances = getAppearancesForUpdate();
 
                 if(!appearances.isEmpty()) {
-                    Iterator<Appearance> iter = appearances.iterator();
+                    var iter = appearances.iterator();
                     if(iter.hasNext()) {
                         defaultAppearance = iter.next();
                     }
-                    AppearanceDetailValue appearanceDetailValue = Objects.requireNonNull(defaultAppearance).getLastDetailForUpdate().getAppearanceDetailValue().clone();
+                    var appearanceDetailValue = Objects.requireNonNull(defaultAppearance).getLastDetailForUpdate().getAppearanceDetailValue().clone();
 
                     appearanceDetailValue.setIsDefault(Boolean.TRUE);
                     updateAppearanceFromValue(appearanceDetailValue, false, deletedBy);
@@ -19053,7 +19053,7 @@ public class CoreControl
     // --------------------------------------------------------------------------------
 
     public AppearanceDescription createAppearanceDescription(Appearance appearance, Language language, String description, BasePK createdBy) {
-        AppearanceDescription appearanceDescription = AppearanceDescriptionFactory.getInstance().create(appearance, language, description,
+        var appearanceDescription = AppearanceDescriptionFactory.getInstance().create(appearance, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(appearance.getPrimaryKey(), EventTypes.MODIFY, appearanceDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -19132,7 +19132,7 @@ public class CoreControl
 
     public String getBestAppearanceDescription(Appearance appearance, Language language) {
         String description;
-        AppearanceDescription appearanceDescription = getAppearanceDescription(appearance, language);
+        var appearanceDescription = getAppearanceDescription(appearance, language);
 
         if(appearanceDescription == null && !language.getIsDefault()) {
             appearanceDescription = getAppearanceDescription(appearance, getPartyControl().getDefaultLanguage());
@@ -19152,9 +19152,9 @@ public class CoreControl
     }
 
     public List<AppearanceDescriptionTransfer> getAppearanceDescriptionTransfersByAppearance(UserVisit userVisit, Appearance appearance) {
-        List<AppearanceDescription> appearanceDescriptions = getAppearanceDescriptionsByAppearance(appearance);
+        var appearanceDescriptions = getAppearanceDescriptionsByAppearance(appearance);
         List<AppearanceDescriptionTransfer> appearanceDescriptionTransfers = new ArrayList<>(appearanceDescriptions.size());
-        AppearanceDescriptionTransferCache appearanceDescriptionTransferCache = getCoreTransferCaches(userVisit).getAppearanceDescriptionTransferCache();
+        var appearanceDescriptionTransferCache = getCoreTransferCaches(userVisit).getAppearanceDescriptionTransferCache();
 
         appearanceDescriptions.forEach((appearanceDescription) ->
                 appearanceDescriptionTransfers.add(appearanceDescriptionTransferCache.getAppearanceDescriptionTransfer(appearanceDescription))
@@ -19165,15 +19165,15 @@ public class CoreControl
 
     public void updateAppearanceDescriptionFromValue(AppearanceDescriptionValue appearanceDescriptionValue, BasePK updatedBy) {
         if(appearanceDescriptionValue.hasBeenModified()) {
-            AppearanceDescription appearanceDescription = AppearanceDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var appearanceDescription = AppearanceDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     appearanceDescriptionValue.getPrimaryKey());
 
             appearanceDescription.setThruTime(session.START_TIME_LONG);
             appearanceDescription.store();
 
-            Appearance appearance = appearanceDescription.getAppearance();
-            Language language = appearanceDescription.getLanguage();
-            String description = appearanceDescriptionValue.getDescription();
+            var appearance = appearanceDescription.getAppearance();
+            var language = appearanceDescription.getLanguage();
+            var description = appearanceDescriptionValue.getDescription();
 
             appearanceDescription = AppearanceDescriptionFactory.getInstance().create(appearance, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -19190,7 +19190,7 @@ public class CoreControl
     }
 
     public void deleteAppearanceDescriptionsByAppearance(Appearance appearance, BasePK deletedBy) {
-        List<AppearanceDescription> appearanceDescriptions = getAppearanceDescriptionsByAppearanceForUpdate(appearance);
+        var appearanceDescriptions = getAppearanceDescriptionsByAppearanceForUpdate(appearance);
 
         appearanceDescriptions.forEach((appearanceDescription) -> 
                 deleteAppearanceDescription(appearanceDescription, deletedBy)
@@ -19202,7 +19202,7 @@ public class CoreControl
     // --------------------------------------------------------------------------------
 
     public AppearanceTextDecoration createAppearanceTextDecoration(Appearance appearance, TextDecoration textDecoration, BasePK createdBy) {
-        AppearanceTextDecoration appearanceTextDecoration = AppearanceTextDecorationFactory.getInstance().create(appearance, textDecoration,
+        var appearanceTextDecoration = AppearanceTextDecorationFactory.getInstance().create(appearance, textDecoration,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(appearance.getPrimaryKey(), EventTypes.MODIFY, appearanceTextDecoration.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -19318,7 +19318,7 @@ public class CoreControl
 
     public List<AppearanceTextDecorationTransfer> getAppearanceTextDecorationTransfers(UserVisit userVisit, Collection<AppearanceTextDecoration> appearanceTextDecorations) {
         List<AppearanceTextDecorationTransfer> appearanceTextDecorationTransfers = new ArrayList<>(appearanceTextDecorations.size());
-        AppearanceTextDecorationTransferCache appearanceTextDecorationTransferCache = getCoreTransferCaches(userVisit).getAppearanceTextDecorationTransferCache();
+        var appearanceTextDecorationTransferCache = getCoreTransferCaches(userVisit).getAppearanceTextDecorationTransferCache();
 
         appearanceTextDecorations.forEach((appearanceTextDecoration) ->
                 appearanceTextDecorationTransfers.add(appearanceTextDecorationTransferCache.getAppearanceTextDecorationTransfer(appearanceTextDecoration))
@@ -19360,7 +19360,7 @@ public class CoreControl
     // --------------------------------------------------------------------------------
 
     public AppearanceTextTransformation createAppearanceTextTransformation(Appearance appearance, TextTransformation textTransformation, BasePK createdBy) {
-        AppearanceTextTransformation appearanceTextTransformation = AppearanceTextTransformationFactory.getInstance().create(appearance, textTransformation,
+        var appearanceTextTransformation = AppearanceTextTransformationFactory.getInstance().create(appearance, textTransformation,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(appearance.getPrimaryKey(), EventTypes.MODIFY, appearanceTextTransformation.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -19476,7 +19476,7 @@ public class CoreControl
 
     public List<AppearanceTextTransformationTransfer> getAppearanceTextTransformationTransfers(UserVisit userVisit, Collection<AppearanceTextTransformation> appearanceTextTransformations) {
         List<AppearanceTextTransformationTransfer> appearanceTextTransformationTransfers = new ArrayList<>(appearanceTextTransformations.size());
-        AppearanceTextTransformationTransferCache appearanceTextTransformationTransferCache = getCoreTransferCaches(userVisit).getAppearanceTextTransformationTransferCache();
+        var appearanceTextTransformationTransferCache = getCoreTransferCaches(userVisit).getAppearanceTextTransformationTransferCache();
 
         appearanceTextTransformations.forEach((appearanceTextTransformation) ->
                 appearanceTextTransformationTransfers.add(appearanceTextTransformationTransferCache.getAppearanceTextTransformationTransfer(appearanceTextTransformation))
@@ -19518,7 +19518,7 @@ public class CoreControl
     // --------------------------------------------------------------------------------
 
     public EntityAppearance createEntityAppearance(EntityInstance entityInstance, Appearance appearance, BasePK createdBy) {
-        EntityAppearance entityAppearance = EntityAppearanceFactory.getInstance().create(entityInstance, appearance, session.START_TIME_LONG,
+        var entityAppearance = EntityAppearanceFactory.getInstance().create(entityInstance, appearance, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
 
         sendEvent(entityInstance, EventTypes.MODIFY, entityAppearance.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -19624,9 +19624,9 @@ public class CoreControl
     }
 
     public List<EntityAppearanceTransfer> getEntityAppearanceTransfersByAppearance(UserVisit userVisit, Appearance appearance) {
-        List<EntityAppearance> entityAppearances = getEntityAppearancesByAppearance(appearance);
+        var entityAppearances = getEntityAppearancesByAppearance(appearance);
         List<EntityAppearanceTransfer> entityAppearanceTransfers = new ArrayList<>(entityAppearances.size());
-        EntityAppearanceTransferCache entityAppearanceTransferCache = getCoreTransferCaches(userVisit).getEntityAppearanceTransferCache();
+        var entityAppearanceTransferCache = getCoreTransferCaches(userVisit).getEntityAppearanceTransferCache();
 
         entityAppearances.forEach((entityAppearance) ->
                 entityAppearanceTransfers.add(entityAppearanceTransferCache.getEntityAppearanceTransfer(entityAppearance))
@@ -19637,14 +19637,14 @@ public class CoreControl
 
     public void updateEntityAppearanceFromValue(EntityAppearanceValue entityAppearanceValue, BasePK updatedBy) {
         if(entityAppearanceValue.hasBeenModified()) {
-            EntityAppearance entityAppearance = EntityAppearanceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var entityAppearance = EntityAppearanceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     entityAppearanceValue.getPrimaryKey());
 
             entityAppearance.setThruTime(session.START_TIME_LONG);
             entityAppearance.store();
 
-            EntityInstance entityInstance = entityAppearance.getEntityInstance(); // Not updated.
-            AppearancePK appearancePK = entityAppearanceValue.getAppearancePK();
+            var entityInstance = entityAppearance.getEntityInstance(); // Not updated.
+            var appearancePK = entityAppearanceValue.getAppearancePK();
 
             entityAppearance = EntityAppearanceFactory.getInstance().create(entityInstance.getPrimaryKey(), appearancePK, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 

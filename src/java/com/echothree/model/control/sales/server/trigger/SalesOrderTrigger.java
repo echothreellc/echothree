@@ -33,7 +33,7 @@ public class SalesOrderTrigger
 
     private void unallocateInventory(final Session session, final WorkflowEntityStatus workflowEntityStatus, final PartyPK triggeredBy) {
         var orderControl = Session.getModelController(OrderControl.class);
-        Order order = orderControl.getOrderByEntityInstance(workflowEntityStatus.getEntityInstance());
+        var order = orderControl.getOrderByEntityInstance(workflowEntityStatus.getEntityInstance());
         
         SalesOrderLogic.getInstance().setSalesOrderStatus(session, null, order, SalesOrderStatusConstants.WorkflowDestination_ENTRY_ALLOCATED_TO_UNALLOCATED, triggeredBy);
     }
@@ -41,7 +41,7 @@ public class SalesOrderTrigger
     @Override
     public void handleTrigger(final Session session, final ExecutionErrorAccumulator eea, final WorkflowEntityStatus workflowEntityStatus,
             final Order order, final PartyPK triggeredBy) {
-        String workflowStepName = getWorkflowStepName(workflowEntityStatus);
+        var workflowStepName = getWorkflowStepName(workflowEntityStatus);
         
         if(workflowStepName.equals(SalesOrderStatusConstants.WorkflowStep_ENTRY_ALLOCATED)) {
             unallocateInventory(session, workflowEntityStatus, triggeredBy);

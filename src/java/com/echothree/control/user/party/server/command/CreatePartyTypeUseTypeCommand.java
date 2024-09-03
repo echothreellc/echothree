@@ -51,8 +51,8 @@ public class CreatePartyTypeUseTypeCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        String partyTypeUseTypeName = form.getPartyTypeUseTypeName();
-        PartyTypeUseType partyTypeUseType = partyControl.getPartyTypeUseTypeByName(partyTypeUseTypeName);
+        var partyTypeUseTypeName = form.getPartyTypeUseTypeName();
+        var partyTypeUseType = partyControl.getPartyTypeUseTypeByName(partyTypeUseTypeName);
         
         if(partyTypeUseType == null) {
             var isDefault = Boolean.valueOf(form.getIsDefault());

@@ -55,13 +55,13 @@ public class ItemPriceTypeTransferCache
 
     @Override
     public ItemPriceTypeTransfer getTransfer(ItemPriceType itemPriceType) {
-        ItemPriceTypeTransfer itemPriceTypeTransfer = get(itemPriceType);
+        var itemPriceTypeTransfer = get(itemPriceType);
 
         if(itemPriceTypeTransfer == null) {
-            String itemPriceTypeName = filterItemPriceTypeName ? null : itemPriceType.getItemPriceTypeName();
-            Boolean isDefault = filterIsDefault ? null : itemPriceType.getIsDefault();
-            Integer sortOrder = filterSortOrder ? null : itemPriceType.getSortOrder();
-            String description = filterDescription ? null : itemControl.getBestItemPriceTypeDescription(itemPriceType, getLanguage());
+            var itemPriceTypeName = filterItemPriceTypeName ? null : itemPriceType.getItemPriceTypeName();
+            var isDefault = filterIsDefault ? null : itemPriceType.getIsDefault();
+            var sortOrder = filterSortOrder ? null : itemPriceType.getSortOrder();
+            var description = filterDescription ? null : itemControl.getBestItemPriceTypeDescription(itemPriceType, getLanguage());
 
             itemPriceTypeTransfer = new ItemPriceTypeTransfer(itemPriceTypeName, isDefault, sortOrder, description);
             put(itemPriceType, itemPriceTypeTransfer);

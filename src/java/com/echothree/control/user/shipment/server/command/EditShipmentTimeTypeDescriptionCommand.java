@@ -91,17 +91,17 @@ public class EditShipmentTimeTypeDescriptionCommand
     public ShipmentTimeTypeDescription getEntity(EditShipmentTimeTypeDescriptionResult result) {
         var shipmentControl = Session.getModelController(ShipmentControl.class);
         ShipmentTimeTypeDescription shipmentTimeTypeDescription = null;
-        String shipmentTypeName = spec.getShipmentTypeName();
-        ShipmentType shipmentType = shipmentControl.getShipmentTypeByName(shipmentTypeName);
+        var shipmentTypeName = spec.getShipmentTypeName();
+        var shipmentType = shipmentControl.getShipmentTypeByName(shipmentTypeName);
 
         if(shipmentType != null) {
-            String shipmentTimeTypeName = spec.getShipmentTimeTypeName();
-            ShipmentTimeType shipmentTimeType = shipmentControl.getShipmentTimeTypeByName(shipmentType, shipmentTimeTypeName);
+            var shipmentTimeTypeName = spec.getShipmentTimeTypeName();
+            var shipmentTimeType = shipmentControl.getShipmentTimeTypeByName(shipmentType, shipmentTimeTypeName);
 
             if(shipmentTimeType != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = spec.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = spec.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                 if(language != null) {
                     if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -146,7 +146,7 @@ public class EditShipmentTimeTypeDescriptionCommand
     @Override
     public void doUpdate(ShipmentTimeTypeDescription shipmentTimeTypeDescription) {
         var shipmentControl = Session.getModelController(ShipmentControl.class);
-        ShipmentTimeTypeDescriptionValue shipmentTimeTypeDescriptionValue = shipmentControl.getShipmentTimeTypeDescriptionValue(shipmentTimeTypeDescription);
+        var shipmentTimeTypeDescriptionValue = shipmentControl.getShipmentTimeTypeDescriptionValue(shipmentTimeTypeDescription);
         shipmentTimeTypeDescriptionValue.setDescription(edit.getDescription());
 
         shipmentControl.updateShipmentTimeTypeDescriptionFromValue(shipmentTimeTypeDescriptionValue, getPartyPK());

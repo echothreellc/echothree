@@ -65,9 +65,9 @@ public class GetScaleUseTypeCommand
     @Override
     protected BaseResult execute() {
         var scaleControl = Session.getModelController(ScaleControl.class);
-        GetScaleUseTypeResult result = ScaleResultFactory.getGetScaleUseTypeResult();
-        String scaleUseTypeName = form.getScaleUseTypeName();
-        ScaleUseType scaleUseType = scaleControl.getScaleUseTypeByName(scaleUseTypeName);
+        var result = ScaleResultFactory.getGetScaleUseTypeResult();
+        var scaleUseTypeName = form.getScaleUseTypeName();
+        var scaleUseType = scaleControl.getScaleUseTypeByName(scaleUseTypeName);
         
         if(scaleUseType != null) {
             result.setScaleUseType(scaleControl.getScaleUseTypeTransfer(getUserVisit(), scaleUseType));

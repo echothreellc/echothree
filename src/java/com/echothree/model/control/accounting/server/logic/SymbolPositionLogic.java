@@ -46,7 +46,7 @@ public class SymbolPositionLogic
 
     public SymbolPosition getSymbolPositionByName(final ExecutionErrorAccumulator eea, final String symbolPositionName) {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        SymbolPosition symbolPosition = accountingControl.getSymbolPositionByName(symbolPositionName);
+        var symbolPosition = accountingControl.getSymbolPositionByName(symbolPositionName);
 
         if(symbolPosition == null) {
             handleExecutionError(UnknownSymbolPositionNameException.class, eea, ExecutionErrors.UnknownSymbolPositionName.name(), symbolPositionName);

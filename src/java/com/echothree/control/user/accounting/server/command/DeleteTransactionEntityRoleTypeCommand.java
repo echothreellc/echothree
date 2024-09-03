@@ -65,12 +65,12 @@ public class DeleteTransactionEntityRoleTypeCommand
     @Override
     protected BaseResult execute() {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        String transactionTypeName = form.getTransactionTypeName();
-        TransactionType transactionType = accountingControl.getTransactionTypeByName(transactionTypeName);
+        var transactionTypeName = form.getTransactionTypeName();
+        var transactionType = accountingControl.getTransactionTypeByName(transactionTypeName);
         
         if(transactionType != null) {
-            String transactionEntityRoleTypeName = form.getTransactionEntityRoleTypeName();
-            TransactionEntityRoleType transactionEntityRoleType = accountingControl.getTransactionEntityRoleTypeByNameForUpdate(transactionType, transactionEntityRoleTypeName);
+            var transactionEntityRoleTypeName = form.getTransactionEntityRoleTypeName();
+            var transactionEntityRoleType = accountingControl.getTransactionEntityRoleTypeByNameForUpdate(transactionType, transactionEntityRoleTypeName);
             
             if(transactionEntityRoleType != null) {
                 accountingControl.deleteTransactionEntityRoleType(transactionEntityRoleType, getPartyPK());

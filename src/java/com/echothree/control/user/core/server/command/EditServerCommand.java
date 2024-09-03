@@ -89,7 +89,7 @@ public class EditServerCommand
     public Server getEntity(EditServerResult result) {
         var coreControl = getCoreControl();
         Server server = null;
-        String serverName = spec.getServerName();
+        var serverName = spec.getServerName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
             server = coreControl.getServerByName(serverName);
@@ -121,8 +121,8 @@ public class EditServerCommand
     @Override
     public void doLock(ServerEdit edit, Server server) {
         var coreControl = getCoreControl();
-        ServerDescription serverDescription = coreControl.getServerDescription(server, getPreferredLanguage());
-        ServerDetail serverDetail = server.getLastDetail();
+        var serverDescription = coreControl.getServerDescription(server, getPreferredLanguage());
+        var serverDetail = server.getLastDetail();
 
         edit.setServerName(serverDetail.getServerName());
         edit.setIsDefault(serverDetail.getIsDefault().toString());
@@ -136,8 +136,8 @@ public class EditServerCommand
     @Override
     public void canUpdate(Server server) {
         var coreControl = getCoreControl();
-        String serverName = edit.getServerName();
-        Server duplicateServer = coreControl.getServerByName(serverName);
+        var serverName = edit.getServerName();
+        var duplicateServer = coreControl.getServerByName(serverName);
 
         if(duplicateServer != null && !server.equals(duplicateServer)) {
             addExecutionError(ExecutionErrors.DuplicateServerName.name(), serverName);
@@ -148,9 +148,9 @@ public class EditServerCommand
     public void doUpdate(Server server) {
         var coreControl = getCoreControl();
         var partyPK = getPartyPK();
-        ServerDetailValue serverDetailValue = coreControl.getServerDetailValueForUpdate(server);
-        ServerDescription serverDescription = coreControl.getServerDescriptionForUpdate(server, getPreferredLanguage());
-        String description = edit.getDescription();
+        var serverDetailValue = coreControl.getServerDetailValueForUpdate(server);
+        var serverDescription = coreControl.getServerDescriptionForUpdate(server, getPreferredLanguage());
+        var description = edit.getDescription();
 
         serverDetailValue.setServerName(edit.getServerName());
         serverDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
@@ -165,7 +165,7 @@ public class EditServerCommand
                 coreControl.deleteServerDescription(serverDescription, partyPK);
             } else {
                 if(serverDescription != null && description != null) {
-                    ServerDescriptionValue serverDescriptionValue = coreControl.getServerDescriptionValue(serverDescription);
+                    var serverDescriptionValue = coreControl.getServerDescriptionValue(serverDescription);
 
                     serverDescriptionValue.setDescription(description);
                     coreControl.updateServerDescriptionFromValue(serverDescriptionValue, partyPK);

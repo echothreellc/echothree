@@ -50,14 +50,14 @@ public class SetPostalAddressStatusCommand
     @Override
     protected BaseResult execute() {
         var contactControl = Session.getModelController(ContactControl.class);
-        String contactMechanismName = form.getContactMechanismName();
-        ContactMechanism contactMechanism = contactControl.getContactMechanismByName(contactMechanismName);
+        var contactMechanismName = form.getContactMechanismName();
+        var contactMechanism = contactControl.getContactMechanismByName(contactMechanismName);
 
         if(contactMechanism != null) {
-            String contactMechanismTypeName = contactMechanism.getLastDetail().getContactMechanismType().getContactMechanismTypeName();
+            var contactMechanismTypeName = contactMechanism.getLastDetail().getContactMechanismType().getContactMechanismTypeName();
 
             if(contactMechanismTypeName.equals(ContactMechanismTypes.POSTAL_ADDRESS.name())) {
-                String contactMechanismStatusChoice = form.getPostalAddressStatusChoice();
+                var contactMechanismStatusChoice = form.getPostalAddressStatusChoice();
 
                 contactControl.setPostalAddressStatus(this, contactMechanism, contactMechanismStatusChoice, getPartyPK());
             } else {

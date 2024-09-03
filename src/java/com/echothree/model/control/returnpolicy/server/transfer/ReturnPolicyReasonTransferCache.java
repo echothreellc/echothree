@@ -32,13 +32,13 @@ public class ReturnPolicyReasonTransferCache
     }
     
     public ReturnPolicyReasonTransfer getReturnPolicyReasonTransfer(ReturnPolicyReason returnPolicyReason) {
-        ReturnPolicyReasonTransfer returnPolicyReasonTransfer = get(returnPolicyReason);
+        var returnPolicyReasonTransfer = get(returnPolicyReason);
         
         if(returnPolicyReasonTransfer == null) {
-            ReturnPolicyTransfer returnPolicy = returnPolicyControl.getReturnPolicyTransfer(userVisit, returnPolicyReason.getReturnPolicy());
-            ReturnReasonTransfer returnReason = returnPolicyControl.getReturnReasonTransfer(userVisit, returnPolicyReason.getReturnReason());
-            Boolean isDefault = returnPolicyReason.getIsDefault();
-            Integer sortOrder = returnPolicyReason.getSortOrder();
+            var returnPolicy = returnPolicyControl.getReturnPolicyTransfer(userVisit, returnPolicyReason.getReturnPolicy());
+            var returnReason = returnPolicyControl.getReturnReasonTransfer(userVisit, returnPolicyReason.getReturnReason());
+            var isDefault = returnPolicyReason.getIsDefault();
+            var sortOrder = returnPolicyReason.getSortOrder();
             
             returnPolicyReasonTransfer = new ReturnPolicyReasonTransfer(returnPolicy, returnReason, isDefault, sortOrder);
             put(returnPolicyReason, returnPolicyReasonTransfer);

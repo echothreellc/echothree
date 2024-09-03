@@ -54,13 +54,13 @@ public class MimeTypeUsageTypeTransferCache
     }
     
     public MimeTypeUsageTypeTransfer getMimeTypeUsageTypeTransfer(MimeTypeUsageType mimeTypeUsageType) {
-        MimeTypeUsageTypeTransfer mimeTypeUsageTypeTransfer = get(mimeTypeUsageType);
+        var mimeTypeUsageTypeTransfer = get(mimeTypeUsageType);
         
         if(mimeTypeUsageTypeTransfer == null) {
-            String mimeTypeUsageTypeName = mimeTypeUsageType.getMimeTypeUsageTypeName();
-            Boolean isDefault = mimeTypeUsageType.getIsDefault();
-            Integer sortOrder = mimeTypeUsageType.getSortOrder();
-            String description = coreControl.getBestMimeTypeUsageTypeDescription(mimeTypeUsageType, getLanguage());
+            var mimeTypeUsageTypeName = mimeTypeUsageType.getMimeTypeUsageTypeName();
+            var isDefault = mimeTypeUsageType.getIsDefault();
+            var sortOrder = mimeTypeUsageType.getSortOrder();
+            var description = coreControl.getBestMimeTypeUsageTypeDescription(mimeTypeUsageType, getLanguage());
             
             mimeTypeUsageTypeTransfer = new MimeTypeUsageTypeTransfer(mimeTypeUsageTypeName, isDefault, sortOrder, description);
             put(mimeTypeUsageType, mimeTypeUsageTypeTransfer);

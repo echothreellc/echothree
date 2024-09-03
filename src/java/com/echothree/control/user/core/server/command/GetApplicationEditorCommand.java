@@ -67,17 +67,17 @@ public class GetApplicationEditorCommand
     
     @Override
     protected BaseResult execute() {
-        GetApplicationEditorResult result = CoreResultFactory.getGetApplicationEditorResult();
-        String applicationName = form.getApplicationName();
-        Application application = ApplicationLogic.getInstance().getApplicationByName(this, applicationName);
+        var result = CoreResultFactory.getGetApplicationEditorResult();
+        var applicationName = form.getApplicationName();
+        var application = ApplicationLogic.getInstance().getApplicationByName(this, applicationName);
         
         if(!hasExecutionErrors()) {
-            String editorName = form.getEditorName();
-            Editor editor = ApplicationLogic.getInstance().getEditorByName(this, editorName);
+            var editorName = form.getEditorName();
+            var editor = ApplicationLogic.getInstance().getEditorByName(this, editorName);
             
             if(!hasExecutionErrors()) {
                 var coreControl = getCoreControl();
-                ApplicationEditor applicationEditor = coreControl.getApplicationEditor(application, editor);
+                var applicationEditor = coreControl.getApplicationEditor(application, editor);
                 
                 if(applicationEditor != null) {
                     result.setApplicationEditor(coreControl.getApplicationEditorTransfer(getUserVisit(), applicationEditor));

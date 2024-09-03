@@ -91,7 +91,7 @@ public class EditSubscriptionKindCommand
     public SubscriptionKind getEntity(EditSubscriptionKindResult result) {
         var subscriptionControl = Session.getModelController(SubscriptionControl.class);
         SubscriptionKind subscriptionKind = null;
-        String subscriptionKindName = spec.getSubscriptionKindName();
+        var subscriptionKindName = spec.getSubscriptionKindName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
             subscriptionKind = subscriptionControl.getSubscriptionKindByName(subscriptionKindName);
@@ -121,8 +121,8 @@ public class EditSubscriptionKindCommand
     @Override
     public void doLock(SubscriptionKindEdit edit, SubscriptionKind subscriptionKind) {
         var subscriptionControl = Session.getModelController(SubscriptionControl.class);
-        SubscriptionKindDescription subscriptionKindDescription = subscriptionControl.getSubscriptionKindDescription(subscriptionKind, getPreferredLanguage());
-        SubscriptionKindDetail subscriptionKindDetail = subscriptionKind.getLastDetail();
+        var subscriptionKindDescription = subscriptionControl.getSubscriptionKindDescription(subscriptionKind, getPreferredLanguage());
+        var subscriptionKindDetail = subscriptionKind.getLastDetail();
 
         edit.setSubscriptionKindName(subscriptionKindDetail.getSubscriptionKindName());
         edit.setIsDefault(subscriptionKindDetail.getIsDefault().toString());
@@ -136,8 +136,8 @@ public class EditSubscriptionKindCommand
     @Override
     public void canUpdate(SubscriptionKind subscriptionKind) {
         var subscriptionControl = Session.getModelController(SubscriptionControl.class);
-        String subscriptionKindName = edit.getSubscriptionKindName();
-        SubscriptionKind duplicateSubscriptionKind = subscriptionControl.getSubscriptionKindByName(subscriptionKindName);
+        var subscriptionKindName = edit.getSubscriptionKindName();
+        var duplicateSubscriptionKind = subscriptionControl.getSubscriptionKindByName(subscriptionKindName);
 
         if(duplicateSubscriptionKind != null && !subscriptionKind.equals(duplicateSubscriptionKind)) {
             addExecutionError(ExecutionErrors.DuplicateSubscriptionKindName.name(), subscriptionKindName);
@@ -148,9 +148,9 @@ public class EditSubscriptionKindCommand
     public void doUpdate(SubscriptionKind subscriptionKind) {
         var subscriptionControl = Session.getModelController(SubscriptionControl.class);
         var partyPK = getPartyPK();
-        SubscriptionKindDetailValue subscriptionKindDetailValue = subscriptionControl.getSubscriptionKindDetailValueForUpdate(subscriptionKind);
-        SubscriptionKindDescription subscriptionKindDescription = subscriptionControl.getSubscriptionKindDescriptionForUpdate(subscriptionKind, getPreferredLanguage());
-        String description = edit.getDescription();
+        var subscriptionKindDetailValue = subscriptionControl.getSubscriptionKindDetailValueForUpdate(subscriptionKind);
+        var subscriptionKindDescription = subscriptionControl.getSubscriptionKindDescriptionForUpdate(subscriptionKind, getPreferredLanguage());
+        var description = edit.getDescription();
 
         subscriptionKindDetailValue.setSubscriptionKindName(edit.getSubscriptionKindName());
         subscriptionKindDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
@@ -163,7 +163,7 @@ public class EditSubscriptionKindCommand
         } else if(subscriptionKindDescription != null && description == null) {
             subscriptionControl.deleteSubscriptionKindDescription(subscriptionKindDescription, partyPK);
         } else if(subscriptionKindDescription != null && description != null) {
-            SubscriptionKindDescriptionValue subscriptionKindDescriptionValue = subscriptionControl.getSubscriptionKindDescriptionValue(subscriptionKindDescription);
+            var subscriptionKindDescriptionValue = subscriptionControl.getSubscriptionKindDescriptionValue(subscriptionKindDescription);
 
             subscriptionKindDescriptionValue.setDescription(description);
             subscriptionControl.updateSubscriptionKindDescriptionFromValue(subscriptionKindDescriptionValue, partyPK);

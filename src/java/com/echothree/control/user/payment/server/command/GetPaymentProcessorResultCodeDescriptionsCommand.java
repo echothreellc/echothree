@@ -65,9 +65,9 @@ public class GetPaymentProcessorResultCodeDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var paymentProcessorResultCodeControl = Session.getModelController(PaymentProcessorResultCodeControl.class);
-        GetPaymentProcessorResultCodeDescriptionsResult result = PaymentResultFactory.getGetPaymentProcessorResultCodeDescriptionsResult();
-        String paymentProcessorResultCodeName = form.getPaymentProcessorResultCodeName();
-        PaymentProcessorResultCode paymentProcessorResultCode = paymentProcessorResultCodeControl.getPaymentProcessorResultCodeByName(paymentProcessorResultCodeName);
+        var result = PaymentResultFactory.getGetPaymentProcessorResultCodeDescriptionsResult();
+        var paymentProcessorResultCodeName = form.getPaymentProcessorResultCodeName();
+        var paymentProcessorResultCode = paymentProcessorResultCodeControl.getPaymentProcessorResultCodeByName(paymentProcessorResultCodeName);
         
         if(paymentProcessorResultCode != null) {
             result.setPaymentProcessorResultCode(paymentProcessorResultCodeControl.getPaymentProcessorResultCodeTransfer(getUserVisit(), paymentProcessorResultCode));

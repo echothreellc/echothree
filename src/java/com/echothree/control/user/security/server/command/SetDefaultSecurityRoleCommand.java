@@ -64,12 +64,12 @@ public class SetDefaultSecurityRoleCommand
     @Override
     protected BaseResult execute() {
         var securityControl = Session.getModelController(SecurityControl.class);
-        String securityRoleGroupName = form.getSecurityRoleGroupName();
-        SecurityRoleGroup securityRoleGroup = securityControl.getSecurityRoleGroupByName(securityRoleGroupName);
+        var securityRoleGroupName = form.getSecurityRoleGroupName();
+        var securityRoleGroup = securityControl.getSecurityRoleGroupByName(securityRoleGroupName);
         
         if(securityRoleGroup != null) {
-            String securityRoleName = form.getSecurityRoleName();
-            SecurityRoleDetailValue securityRoleDetailValue = securityControl.getSecurityRoleDetailValueByNameForUpdate(securityRoleGroup,
+            var securityRoleName = form.getSecurityRoleName();
+            var securityRoleDetailValue = securityControl.getSecurityRoleDetailValueByNameForUpdate(securityRoleGroup,
                     securityRoleName);
             
             if(securityRoleDetailValue != null) {

@@ -61,8 +61,8 @@ public class SetDefaultTextDecorationCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String textDecorationName = form.getTextDecorationName();
-        TextDecorationDetailValue textDecorationDetailValue = coreControl.getTextDecorationDetailValueByNameForUpdate(textDecorationName);
+        var textDecorationName = form.getTextDecorationName();
+        var textDecorationDetailValue = coreControl.getTextDecorationDetailValueByNameForUpdate(textDecorationName);
         
         if(textDecorationDetailValue != null) {
             textDecorationDetailValue.setIsDefault(Boolean.TRUE);

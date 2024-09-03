@@ -121,7 +121,7 @@ public abstract class BaseEvaluator
     }
     
     protected String getLanguageIsoName() {
-        Language language = index.getLastDetail().getLanguage();
+        var language = index.getLastDetail().getLanguage();
         
         return language == null ? null : language.getLanguageIsoName();
     }
@@ -160,7 +160,7 @@ public abstract class BaseEvaluator
     
     protected void parseQuery(final ExecutionErrorAccumulator eea, final String field, final String[] fields) {
         if(q != null) {
-            QueryParser qp = fields == null ? new AttributeQueryParser(eea, getDateFields(), getDateTimeFields(), entityType, userVisit, field, getCachedAnalyzer(null, getLanguage()))
+            var qp = fields == null ? new AttributeQueryParser(eea, getDateFields(), getDateTimeFields(), entityType, userVisit, field, getCachedAnalyzer(null, getLanguage()))
                     : new AttributeMultiFieldQueryParser(eea, getDateFields(), getDateTimeFields(), entityType, userVisit, fields, getCachedAnalyzer(null, getLanguage()));
 
             switch(SearchDefaultOperators.valueOf(getSearchDefaultOperatorName())) {

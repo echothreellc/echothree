@@ -72,24 +72,24 @@ public class OfferItemSelectorEvaluator
     
     
     OfferItemPrice createOfferItemPrice(Offer offer, OfferItem offerItem, ItemPriceType itemPriceType, ItemPrice itemPrice) {
-        InventoryCondition inventoryCondition = itemPrice.getInventoryCondition();
-        UnitOfMeasureType unitOfMeasureType = itemPrice.getUnitOfMeasureType();
-        Currency currency = itemPrice.getCurrency();
-        OfferItemPrice offerItemPrice = OfferItemLogic.getInstance().createOfferItemPrice(offerItem, inventoryCondition, unitOfMeasureType, currency, evaluatedBy);
+        var inventoryCondition = itemPrice.getInventoryCondition();
+        var unitOfMeasureType = itemPrice.getUnitOfMeasureType();
+        var currency = itemPrice.getCurrency();
+        var offerItemPrice = OfferItemLogic.getInstance().createOfferItemPrice(offerItem, inventoryCondition, unitOfMeasureType, currency, evaluatedBy);
         
         if(itemPriceType.equals(fixedItemPriceType)) {
-            Item item = offerItem.getItem();
-            ItemFixedPrice itemFixedPrice = itemControl.getItemFixedPrice(itemPrice);
-            Filter filter = offer.getLastDetail().getOfferItemPriceFilter();
-            FilteredItemFixedPrice filteredItemFixedPrice = offerItemPriceFilterEvaluator.evaluate(item, itemPrice, itemFixedPrice,
+            var item = offerItem.getItem();
+            var itemFixedPrice = itemControl.getItemFixedPrice(itemPrice);
+            var filter = offer.getLastDetail().getOfferItemPriceFilter();
+            var filteredItemFixedPrice = offerItemPriceFilterEvaluator.evaluate(item, itemPrice, itemFixedPrice,
                     filter);
 
             OfferItemLogic.getInstance().createOfferItemFixedPrice(offerItemPrice, filteredItemFixedPrice.getUnitPrice(), evaluatedBy);
         } else if(itemPriceType.equals(variableItemPriceType)) {
-            ItemVariablePrice itemVariablePrice = itemControl.getItemVariablePrice(itemPrice);
-            Long minimumUnitPrice = itemVariablePrice.getMinimumUnitPrice();
-            Long maximumUnitPrice = itemVariablePrice.getMaximumUnitPrice();
-            Long unitPriceIncrement = itemVariablePrice.getUnitPriceIncrement();
+            var itemVariablePrice = itemControl.getItemVariablePrice(itemPrice);
+            var minimumUnitPrice = itemVariablePrice.getMinimumUnitPrice();
+            var maximumUnitPrice = itemVariablePrice.getMaximumUnitPrice();
+            var unitPriceIncrement = itemVariablePrice.getUnitPriceIncrement();
 
             OfferItemLogic.getInstance().createOfferItemVariablePrice(offerItemPrice, minimumUnitPrice, maximumUnitPrice, unitPriceIncrement, evaluatedBy);
         } else
@@ -101,33 +101,33 @@ public class OfferItemSelectorEvaluator
     void updateOfferItemPrice(Offer offer, OfferItem offerItem, OfferItemPrice offerItemPrice, ItemPriceType itemPriceType,
             ItemPrice itemPrice) {
         if(itemPriceType.equals(fixedItemPriceType)) {
-            Item item = offerItem.getItem();
-            OfferItemFixedPrice offerItemFixedPrice = offerItemControl.getOfferItemFixedPrice(offerItemPrice);
-            ItemFixedPrice itemFixedPrice = itemControl.getItemFixedPrice(itemPrice);
-            Filter filter = offer.getLastDetail().getOfferItemPriceFilter();
-            
-            FilteredItemFixedPrice filteredItemFixedPrice = offerItemPriceFilterEvaluator.evaluate(item, itemPrice, itemFixedPrice,
+            var item = offerItem.getItem();
+            var offerItemFixedPrice = offerItemControl.getOfferItemFixedPrice(offerItemPrice);
+            var itemFixedPrice = itemControl.getItemFixedPrice(itemPrice);
+            var filter = offer.getLastDetail().getOfferItemPriceFilter();
+
+            var filteredItemFixedPrice = offerItemPriceFilterEvaluator.evaluate(item, itemPrice, itemFixedPrice,
                     filter);
-            Long unitPrice = filteredItemFixedPrice.getUnitPrice();
+            var unitPrice = filteredItemFixedPrice.getUnitPrice();
             
             if(!offerItemFixedPrice.getUnitPrice().equals(unitPrice)) {
-                OfferItemFixedPriceValue offerItemFixedPriceValue = offerItemControl.getOfferItemFixedPriceValueForUpdate(offerItemPrice);
+                var offerItemFixedPriceValue = offerItemControl.getOfferItemFixedPriceValueForUpdate(offerItemPrice);
 
                 offerItemFixedPriceValue.setUnitPrice(unitPrice);
 
                 OfferItemLogic.getInstance().updateOfferItemFixedPriceFromValue(offerItemFixedPriceValue, evaluatedBy);
             }
         } else if(itemPriceType.equals(variableItemPriceType)) {
-            OfferItemVariablePrice offerItemVariablePrice = offerItemControl.getOfferItemVariablePrice(offerItemPrice);
-            ItemVariablePrice itemVariablePrice = itemControl.getItemVariablePrice(itemPrice);
-            Long minimumUnitPrice = itemVariablePrice.getMinimumUnitPrice();
-            Long maximumUnitPrice = itemVariablePrice.getMaximumUnitPrice();
-            Long unitPriceIncrement = itemVariablePrice.getUnitPriceIncrement();
+            var offerItemVariablePrice = offerItemControl.getOfferItemVariablePrice(offerItemPrice);
+            var itemVariablePrice = itemControl.getItemVariablePrice(itemPrice);
+            var minimumUnitPrice = itemVariablePrice.getMinimumUnitPrice();
+            var maximumUnitPrice = itemVariablePrice.getMaximumUnitPrice();
+            var unitPriceIncrement = itemVariablePrice.getUnitPriceIncrement();
             
             if(!offerItemVariablePrice.getMinimumUnitPrice().equals(minimumUnitPrice)
             || !offerItemVariablePrice.getMaximumUnitPrice().equals(maximumUnitPrice)
             || !offerItemVariablePrice.getUnitPriceIncrement().equals(unitPriceIncrement)) {
-                OfferItemVariablePriceValue offerItemVariablePriceValue = offerItemControl.getOfferItemVariablePriceValueForUpdate(offerItemPrice);
+                var offerItemVariablePriceValue = offerItemControl.getOfferItemVariablePriceValueForUpdate(offerItemPrice);
 
                 offerItemVariablePriceValue.setMinimumUnitPrice(minimumUnitPrice);
                 offerItemVariablePriceValue.setMaximumUnitPrice(maximumUnitPrice);
@@ -148,9 +148,9 @@ public class OfferItemSelectorEvaluator
             log.info("--- OfferItemSelectorEvaluator.createItemInOffers(offers = " + offers + ", item = " + item + ")");
         
         offers.forEach((offer) -> {
-            OfferItem offerItem = offerItemControl.getOfferItem(offer, item);
-            ItemPriceType itemPriceType = item.getLastDetail().getItemPriceType();
-            List<ItemPrice> itemPrices = itemControl.getItemPricesByItem(item);
+            var offerItem = offerItemControl.getOfferItem(offer, item);
+            var itemPriceType = item.getLastDetail().getItemPriceType();
+            var itemPrices = itemControl.getItemPricesByItem(item);
             if (offerItem == null) {
                 // New item in this offer, create it, don't worry about sync'ing prices.
                 offerItem = OfferItemLogic.getInstance().createOfferItem(offer, item, evaluatedBy);
@@ -161,10 +161,10 @@ public class OfferItemSelectorEvaluator
             } else {
                 HashSet<OfferItemPrice> offerItemPrices = new HashSet<>(offerItemControl.getOfferItemPricesByOfferItem(offerItem));
                 for(var itemPrice : itemPrices) {
-                    InventoryCondition inventoryCondition = itemPrice.getInventoryCondition();
-                    UnitOfMeasureType unitOfMeasureType = itemPrice.getUnitOfMeasureType();
-                    Currency currency = itemPrice.getCurrency();
-                    OfferItemPrice offerItemPrice = offerItemControl.getOfferItemPrice(offerItem, inventoryCondition, unitOfMeasureType,
+                    var inventoryCondition = itemPrice.getInventoryCondition();
+                    var unitOfMeasureType = itemPrice.getUnitOfMeasureType();
+                    var currency = itemPrice.getCurrency();
+                    var offerItemPrice = offerItemControl.getOfferItemPrice(offerItem, inventoryCondition, unitOfMeasureType,
                             currency);
                     
                     if(offerItemPrice == null) {
@@ -193,7 +193,7 @@ public class OfferItemSelectorEvaluator
     Long addItemEntitiesToOffer(List<Offer> offers, CachedSelectorWithTime cachedSelectorWithTime, List<EntityTime> entityTimes, long remainingTime) {
         if(BaseSelectorEvaluatorDebugFlags.OfferItemSelectorEvaluator)
             log.info(">>> OfferItemSelectorEvaluator.addItemEntitiesToOffer");
-        long startTime = System.currentTimeMillis();
+        var startTime = System.currentTimeMillis();
         long entityCount = 0;
         Long selectionTime = null;
         
@@ -203,15 +203,15 @@ public class OfferItemSelectorEvaluator
                 if((System.currentTimeMillis() - startTime) > remainingTime)
                     break;
             }
-            
-            EntityInstance entityInstance = entityTime.getEntityInstance();
-            Item item = itemControl.getItemByEntityInstance(entityInstance);
+
+            var entityInstance = entityTime.getEntityInstance();
+            var item = itemControl.getItemByEntityInstance(entityInstance);
 
             selectionTime = entityTime.getCreatedTime();
             
             if(item != null) {
                 if(entityTime.getDeletedTime() == null) {
-                    Boolean selected = isItemSelected(cachedSelectorWithTime, entityInstance, item);
+                    var selected = isItemSelected(cachedSelectorWithTime, entityInstance, item);
 
                     if(selected) {
                         createItemInOffers(offers, item);
@@ -228,7 +228,7 @@ public class OfferItemSelectorEvaluator
     Long updateItemEntitiesInOffer(List<Offer> offers, CachedSelectorWithTime cachedSelectorWithTime, List<EntityTime> entityTimes, long remainingTime) {
         if(BaseSelectorEvaluatorDebugFlags.OfferItemSelectorEvaluator)
             log.info(">>> OfferItemSelectorEvaluator.updateItemEntitiesInOffer");
-        long startTime = System.currentTimeMillis();
+        var startTime = System.currentTimeMillis();
         long entityCount = 0;
         Long selectionTime = null;
         
@@ -238,15 +238,15 @@ public class OfferItemSelectorEvaluator
                 if((System.currentTimeMillis() - startTime) > remainingTime)
                     break;
             }
-            
-            EntityInstance entityInstance = entityTime.getEntityInstance();
-            Item item = itemControl.getItemByEntityInstance(entityInstance);
+
+            var entityInstance = entityTime.getEntityInstance();
+            var item = itemControl.getItemByEntityInstance(entityInstance);
 
             selectionTime = entityTime.getModifiedTime();
 
             if(item != null) {
                 if(entityTime.getDeletedTime() == null) {
-                    Boolean selected = isItemSelected(cachedSelectorWithTime, entityInstance, item);
+                    var selected = isItemSelected(cachedSelectorWithTime, entityInstance, item);
 
                     if(selected) {
                         createItemInOffers(offers, item);
@@ -266,7 +266,7 @@ public class OfferItemSelectorEvaluator
     Long removeItemEntitiesFromOffer(List<Offer> offers, List<EntityTime> entityTimes, long remainingTime) {
         if(BaseSelectorEvaluatorDebugFlags.OfferItemSelectorEvaluator)
             log.info(">>> OfferItemSelectorEvaluator.removeItemEntitiesFromOffer");
-        long startTime = System.currentTimeMillis();
+        var startTime = System.currentTimeMillis();
         long entityCount = 0;
         Long selectionTime = null;
         
@@ -276,9 +276,9 @@ public class OfferItemSelectorEvaluator
                 if((System.currentTimeMillis() - startTime) > remainingTime)
                     break;
             }
-            
-            EntityInstance entityInstance = entityTime.getEntityInstance();
-            Item item = itemControl.getItemByEntityInstance(entityInstance);
+
+            var entityInstance = entityTime.getEntityInstance();
+            var item = itemControl.getItemByEntityInstance(entityInstance);
 
             selectionTime = entityTime.getDeletedTime();
             
@@ -297,29 +297,29 @@ public class OfferItemSelectorEvaluator
             log.info(">>> OfferItemSelectorEvaluator.evaluate");
         
         long remainingTime = maximumTime;
-        ComponentVendor componentVendor = coreControl.getComponentVendorByName(ComponentVendors.ECHO_THREE.name());
+        var componentVendor = coreControl.getComponentVendorByName(ComponentVendors.ECHO_THREE.name());
         
         if(componentVendor != null) {
-            EntityType entityType = coreControl.getEntityTypeByName(componentVendor, EntityTypes.Item.name());
+            var entityType = coreControl.getEntityTypeByName(componentVendor, EntityTypes.Item.name());
             
             if(entityType != null) {
-                List<Selector> offerItemSelectors = offerControl.getDistinctOfferItemSelectors();
+                var offerItemSelectors = offerControl.getDistinctOfferItemSelectors();
                 
                 for(var offerItemSelector : offerItemSelectors) {
-                    List<Offer> offers = offerControl.getOffersByOfferItemSelector(offerItemSelector);
+                    var offers = offerControl.getOffersByOfferItemSelector(offerItemSelector);
                     CachedSelectorWithTime cachedSelectorWithTime = new CachedSelectorWithTime(offerItemSelector);
                     
                     if(BaseSelectorEvaluatorDebugFlags.OfferItemSelectorEvaluator) {
                         log.info("--- offerItemSelector = " + offerItemSelector);
                         log.info("--- offers = " + offers);
                     }
-                    
-                    EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(offerItemSelector.getPrimaryKey());
-                    EntityTime entityTime = coreControl.getEntityTime(entityInstance);
-                    Long entityCreatedTime = entityTime.getCreatedTime();
-                    Long entityModifiedTime = entityTime.getModifiedTime();
-                    Long lastModifiedTime = entityModifiedTime != null? entityModifiedTime: entityCreatedTime;
-                    Long lastEvaluationTime = cachedSelectorWithTime.getLastEvaluationTime();
+
+                    var entityInstance = coreControl.getEntityInstanceByBasePK(offerItemSelector.getPrimaryKey());
+                    var entityTime = coreControl.getEntityTime(entityInstance);
+                    var entityCreatedTime = entityTime.getCreatedTime();
+                    var entityModifiedTime = entityTime.getModifiedTime();
+                    var lastModifiedTime = entityModifiedTime != null? entityModifiedTime: entityCreatedTime;
+                    var lastEvaluationTime = cachedSelectorWithTime.getLastEvaluationTime();
                     
                     if(lastEvaluationTime != null) {
                         if(lastModifiedTime > lastEvaluationTime) {
@@ -333,8 +333,8 @@ public class OfferItemSelectorEvaluator
                             cachedSelectorWithTime.setMaxEntityDeletedTime(null);
                         }
                     }
-                    
-                    Long selectionTime = cachedSelectorWithTime.getMaxEntityCreatedTime();
+
+                    var selectionTime = cachedSelectorWithTime.getMaxEntityCreatedTime();
                     
                     List<EntityTime> entityTimes;
                     if(selectionTime == null) {
@@ -346,8 +346,8 @@ public class OfferItemSelectorEvaluator
                     if(entityTimes != null) {
                         if(BaseSelectorEvaluatorDebugFlags.OfferItemSelectorEvaluator)
                             log.info("--- entityTimes.size() = " + entityTimes.size());
-                        
-                        long indexingStartTime = System.currentTimeMillis();
+
+                        var indexingStartTime = System.currentTimeMillis();
                         selectionTime = addItemEntitiesToOffer(offers, cachedSelectorWithTime, entityTimes, remainingTime);
                         remainingTime -= System.currentTimeMillis() - indexingStartTime;
                     }
@@ -367,8 +367,8 @@ public class OfferItemSelectorEvaluator
                         if(entityTimes != null) {
                             if(BaseSelectorEvaluatorDebugFlags.OfferItemSelectorEvaluator)
                                 log.info("--- entityTimes.size() = " + entityTimes.size());
-                            
-                            long indexingStartTime = System.currentTimeMillis();
+
+                            var indexingStartTime = System.currentTimeMillis();
                             selectionTime = updateItemEntitiesInOffer(offers, cachedSelectorWithTime, entityTimes, remainingTime);
                             remainingTime -= System.currentTimeMillis() - indexingStartTime;
                         }
@@ -389,8 +389,8 @@ public class OfferItemSelectorEvaluator
                         if(entityTimes != null) {
                             if(BaseSelectorEvaluatorDebugFlags.OfferItemSelectorEvaluator)
                                 log.info("--- entityTimes.size() = " + entityTimes.size());
-                            
-                            long indexingStartTime = System.currentTimeMillis();
+
+                            var indexingStartTime = System.currentTimeMillis();
                             selectionTime = removeItemEntitiesFromOffer(offers, entityTimes, remainingTime);
                             remainingTime -= System.currentTimeMillis() - indexingStartTime;
                         }

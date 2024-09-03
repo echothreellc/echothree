@@ -65,9 +65,9 @@ public class GetLetterSourceDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var letterControl = Session.getModelController(LetterControl.class);
-        GetLetterSourceDescriptionsResult result = LetterResultFactory.getGetLetterSourceDescriptionsResult();
-        String letterSourceName = form.getLetterSourceName();
-        LetterSource letterSource = letterControl.getLetterSourceByName(letterSourceName);
+        var result = LetterResultFactory.getGetLetterSourceDescriptionsResult();
+        var letterSourceName = form.getLetterSourceName();
+        var letterSource = letterControl.getLetterSourceByName(letterSourceName);
         
         if(letterSource != null) {
             result.setLetterSource(letterControl.getLetterSourceTransfer(getUserVisit(), letterSource));

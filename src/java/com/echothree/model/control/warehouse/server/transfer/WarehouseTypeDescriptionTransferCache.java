@@ -32,11 +32,11 @@ public class WarehouseTypeDescriptionTransferCache
     }
 
     public WarehouseTypeDescriptionTransfer getTransfer(WarehouseTypeDescription warehouseTypeDescription) {
-        WarehouseTypeDescriptionTransfer warehouseTypeDescriptionTransfer = get(warehouseTypeDescription);
+        var warehouseTypeDescriptionTransfer = get(warehouseTypeDescription);
         
         if(warehouseTypeDescriptionTransfer == null) {
-            WarehouseTypeTransfer warehouseTypeTransfer = warehouseControl.getWarehouseTypeTransfer(userVisit, warehouseTypeDescription.getWarehouseType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, warehouseTypeDescription.getLanguage());
+            var warehouseTypeTransfer = warehouseControl.getWarehouseTypeTransfer(userVisit, warehouseTypeDescription.getWarehouseType());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, warehouseTypeDescription.getLanguage());
             
             warehouseTypeDescriptionTransfer = new WarehouseTypeDescriptionTransfer(languageTransfer, warehouseTypeTransfer, warehouseTypeDescription.getDescription());
             put(warehouseTypeDescription, warehouseTypeDescriptionTransfer);

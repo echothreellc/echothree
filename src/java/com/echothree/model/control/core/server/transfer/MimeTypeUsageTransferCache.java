@@ -35,11 +35,11 @@ public class MimeTypeUsageTransferCache
     }
     
     public MimeTypeUsageTransfer getMimeTypeUsageTransfer(MimeTypeUsage mimeTypeUsage) {
-        MimeTypeUsageTransfer mimeTypeUsageTransfer = get(mimeTypeUsage);
+        var mimeTypeUsageTransfer = get(mimeTypeUsage);
         
         if(mimeTypeUsageTransfer == null) {
-            MimeTypeTransfer mimeType = coreControl.getMimeTypeTransfer(userVisit, mimeTypeUsage.getMimeType());
-            MimeTypeUsageTypeTransfer mimeTypeUsageType = coreControl.getMimeTypeUsageTypeTransfer(userVisit,
+            var mimeType = coreControl.getMimeTypeTransfer(userVisit, mimeTypeUsage.getMimeType());
+            var mimeTypeUsageType = coreControl.getMimeTypeUsageTypeTransfer(userVisit,
                     mimeTypeUsage.getMimeTypeUsageType());
             
             mimeTypeUsageTransfer = new MimeTypeUsageTransfer(mimeType, mimeTypeUsageType);

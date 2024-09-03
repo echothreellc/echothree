@@ -89,13 +89,13 @@ public class EditCampaignTermDescriptionCommand
     public CampaignTermDescription getEntity(EditCampaignTermDescriptionResult result) {
         var campaignControl = Session.getModelController(CampaignControl.class);
         CampaignTermDescription campaignTermDescription = null;
-        String campaignTermName = spec.getCampaignTermName();
-        CampaignTerm campaignTerm = campaignControl.getCampaignTermByName(campaignTermName);
+        var campaignTermName = spec.getCampaignTermName();
+        var campaignTerm = campaignControl.getCampaignTermByName(campaignTermName);
 
         if(campaignTerm != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -137,7 +137,7 @@ public class EditCampaignTermDescriptionCommand
     @Override
     public void doUpdate(CampaignTermDescription campaignTermDescription) {
         var campaignControl = Session.getModelController(CampaignControl.class);
-        CampaignTermDescriptionValue campaignTermDescriptionValue = campaignControl.getCampaignTermDescriptionValue(campaignTermDescription);
+        var campaignTermDescriptionValue = campaignControl.getCampaignTermDescriptionValue(campaignTermDescription);
         campaignTermDescriptionValue.setDescription(edit.getDescription());
 
         campaignControl.updateCampaignTermDescriptionFromValue(campaignTermDescriptionValue, getPartyPK());

@@ -76,9 +76,9 @@ public class GetOfferChainTypesCommand
     @Override
     protected Collection<OfferChainType> getEntities() {
         var offerControl = Session.getModelController(OfferControl.class);
-        String offerName = form.getOfferName();
-        String chainKindName = form.getChainKindName();
-        String chainTypeName = form.getChainTypeName();
+        var offerName = form.getOfferName();
+        var chainKindName = form.getChainKindName();
+        var chainTypeName = form.getChainTypeName();
         var parameterCount = (offerName != null ? 1 : 0) + (chainKindName != null && chainTypeName != null ? 1 : 0);
         Collection<OfferChainType> offerChainTypes = null;
         
@@ -93,7 +93,7 @@ public class GetOfferChainTypesCommand
                 }
             } else {
                 var chainControl = Session.getModelController(ChainControl.class);
-                ChainKind chainKind = chainControl.getChainKindByName(chainKindName);
+                var chainKind = chainControl.getChainKindByName(chainKindName);
                 
                 if(chainKind != null) {
                     chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
@@ -117,11 +117,11 @@ public class GetOfferChainTypesCommand
     
     @Override
     protected BaseResult getResult(Collection<OfferChainType> entities) {
-        GetOfferChainTypesResult result = OfferResultFactory.getGetOfferChainTypesResult();
+        var result = OfferResultFactory.getGetOfferChainTypesResult();
 
         if(entities != null) {
             var offerControl = Session.getModelController(OfferControl.class);
-            UserVisit userVisit = getUserVisit();
+            var userVisit = getUserVisit();
          
             if(offer != null) {
                 result.setOffer(offerControl.getOfferTransfer(userVisit, offer));

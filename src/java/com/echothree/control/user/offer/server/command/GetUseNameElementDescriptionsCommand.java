@@ -65,9 +65,9 @@ public class GetUseNameElementDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var useNameElementControl = Session.getModelController(UseNameElementControl.class);
-        GetUseNameElementDescriptionsResult result = OfferResultFactory.getGetUseNameElementDescriptionsResult();
-        String useNameElementName = form.getUseNameElementName();
-        UseNameElement useNameElement = useNameElementControl.getUseNameElementByName(useNameElementName);
+        var result = OfferResultFactory.getGetUseNameElementDescriptionsResult();
+        var useNameElementName = form.getUseNameElementName();
+        var useNameElement = useNameElementControl.getUseNameElementByName(useNameElementName);
         
         if(useNameElement != null) {
             result.setUseNameElement(useNameElementControl.getUseNameElementTransfer(getUserVisit(), useNameElement));

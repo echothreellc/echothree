@@ -69,17 +69,17 @@ public class GetItemPurchasingCategoryDescriptionCommand
     @Override
     protected BaseResult execute() {
         var vendorControl = Session.getModelController(VendorControl.class);
-        GetItemPurchasingCategoryDescriptionResult result = VendorResultFactory.getGetItemPurchasingCategoryDescriptionResult();
-        String itemPurchasingCategoryName = form.getItemPurchasingCategoryName();
-        ItemPurchasingCategory itemPurchasingCategory = vendorControl.getItemPurchasingCategoryByName(itemPurchasingCategoryName);
+        var result = VendorResultFactory.getGetItemPurchasingCategoryDescriptionResult();
+        var itemPurchasingCategoryName = form.getItemPurchasingCategoryName();
+        var itemPurchasingCategory = vendorControl.getItemPurchasingCategoryByName(itemPurchasingCategoryName);
         
         if(itemPurchasingCategory != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                ItemPurchasingCategoryDescription itemPurchasingCategoryDescription = vendorControl.getItemPurchasingCategoryDescription(itemPurchasingCategory, language);
+                var itemPurchasingCategoryDescription = vendorControl.getItemPurchasingCategoryDescription(itemPurchasingCategory, language);
                 
                 if(itemPurchasingCategoryDescription != null) {
                     result.setItemPurchasingCategoryDescription(vendorControl.getItemPurchasingCategoryDescriptionTransfer(getUserVisit(), itemPurchasingCategoryDescription));

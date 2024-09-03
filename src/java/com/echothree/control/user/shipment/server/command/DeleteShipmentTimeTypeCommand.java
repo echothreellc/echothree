@@ -65,12 +65,12 @@ public class DeleteShipmentTimeTypeCommand
     @Override
     protected BaseResult execute() {
         var shipmentControl = Session.getModelController(ShipmentControl.class);
-        String shipmentTypeName = form.getShipmentTypeName();
-        ShipmentType shipmentType = shipmentControl.getShipmentTypeByName(shipmentTypeName);
+        var shipmentTypeName = form.getShipmentTypeName();
+        var shipmentType = shipmentControl.getShipmentTypeByName(shipmentTypeName);
 
         if(shipmentType != null) {
-            String shipmentTimeTypeName = form.getShipmentTimeTypeName();
-            ShipmentTimeType shipmentTimeType = shipmentControl.getShipmentTimeTypeByNameForUpdate(shipmentType, shipmentTimeTypeName);
+            var shipmentTimeTypeName = form.getShipmentTimeTypeName();
+            var shipmentTimeType = shipmentControl.getShipmentTimeTypeByNameForUpdate(shipmentType, shipmentTimeTypeName);
 
             if(shipmentTimeType != null) {
                 shipmentControl.deleteShipmentTimeType(shipmentTimeType, getPartyPK());

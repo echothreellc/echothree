@@ -88,10 +88,10 @@ public class CreateFilterAdjustmentFixedAmountCommand
     @Override
     protected ValidationResult validate() {
         Validator validator = new Validator(this);
-        ValidationResult validationResult = validator.validate(form, FORM_FIELD_DEFINITIONS);
+        var validationResult = validator.validate(form, FORM_FIELD_DEFINITIONS);
         
         if(!validationResult.getHasErrors()) {
-            String filterKindName = form.getFilterKindName();
+            var filterKindName = form.getFilterKindName();
             
             if(filterKindName.equals(FilterKinds.COST.name())) {
                 validationResult = validator.validate(form, costFormFieldDefinitions);
@@ -106,19 +106,19 @@ public class CreateFilterAdjustmentFixedAmountCommand
     @Override
     protected BaseResult execute() {
         var filterControl = Session.getModelController(FilterControl.class);
-        String filterKindName = form.getFilterKindName();
-        FilterKind filterKind = filterControl.getFilterKindByName(filterKindName);
+        var filterKindName = form.getFilterKindName();
+        var filterKind = filterControl.getFilterKindByName(filterKindName);
         
         if(filterKind != null) {
-            String filterAdjustmentName = form.getFilterAdjustmentName();
-            FilterAdjustment filterAdjustment = filterControl.getFilterAdjustmentByName(filterKind, filterAdjustmentName);
+            var filterAdjustmentName = form.getFilterAdjustmentName();
+            var filterAdjustment = filterControl.getFilterAdjustmentByName(filterKind, filterAdjustmentName);
             
             if(filterAdjustment != null) {
-                String filterAdjustmentTypeName = filterAdjustment.getLastDetail().getFilterAdjustmentType().getFilterAdjustmentTypeName();
+                var filterAdjustmentTypeName = filterAdjustment.getLastDetail().getFilterAdjustmentType().getFilterAdjustmentTypeName();
                 
                 if(filterAdjustmentTypeName.equals(FilterAdjustmentTypes.FIXED_AMOUNT.name())) {
                     var uomControl = Session.getModelController(UomControl.class);
-                    String unitOfMeasureName = form.getUnitOfMeasureName();
+                    var unitOfMeasureName = form.getUnitOfMeasureName();
                     String unitOfMeasureKindName = null;
                     String unitOfMeasureTypeName = null;
                     
@@ -135,23 +135,23 @@ public class CreateFilterAdjustmentFixedAmountCommand
                     }
                     
                     if(unitOfMeasureKindName != null && unitOfMeasureTypeName != null) {
-                        UnitOfMeasureKind unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);
+                        var unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);
                         
                         if(unitOfMeasureKind != null) {
-                            UnitOfMeasureType unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind,
+                            var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind,
                                     unitOfMeasureTypeName);
                             
                             if(unitOfMeasureType != null) {
                                 var accountingControl = Session.getModelController(AccountingControl.class);
-                                String currencyIsoName = form.getCurrencyIsoName();
-                                Currency currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
+                                var currencyIsoName = form.getCurrencyIsoName();
+                                var currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
                                 
                                 if(currency != null) {
-                                    FilterAdjustmentFixedAmount filterAdjustmentFixedAmount = filterControl.getFilterAdjustmentFixedAmount(filterAdjustment,
+                                    var filterAdjustmentFixedAmount = filterControl.getFilterAdjustmentFixedAmount(filterAdjustment,
                                             unitOfMeasureType, currency);
                                     
                                     if(filterAdjustmentFixedAmount == null) {
-                                        Long unitAmount = Long.valueOf(form.getUnitAmount());
+                                        var unitAmount = Long.valueOf(form.getUnitAmount());
                                         
                                         filterControl.createFilterAdjustmentFixedAmount(filterAdjustment, unitOfMeasureType,
                                                 currency, unitAmount, getPartyPK());

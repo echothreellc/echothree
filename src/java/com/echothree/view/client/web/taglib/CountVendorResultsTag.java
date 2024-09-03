@@ -79,11 +79,11 @@ public class CountVendorResultsTag
     public int doStartTag()
             throws JspException {
         try {
-            CountVendorResultsForm commandForm = SearchUtil.getHome().getCountVendorResultsForm();
+            var commandForm = SearchUtil.getHome().getCountVendorResultsForm();
 
             commandForm.setSearchTypeName(searchTypeName);
 
-            CommandResult commandResult = SearchUtil.getHome().countVendorResults(getUserVisitPK(), commandForm);
+            var commandResult = SearchUtil.getHome().countVendorResults(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -91,8 +91,8 @@ public class CountVendorResultsTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                CountVendorResultsResult result = (CountVendorResultsResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (CountVendorResultsResult)executionResult.getResult();
 
                 pageContext.setAttribute(countVar, result.getCount(), scope);
             }

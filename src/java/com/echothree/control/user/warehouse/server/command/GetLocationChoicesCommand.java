@@ -67,13 +67,13 @@ public class GetLocationChoicesCommand
     @Override
     protected BaseResult execute() {
         var warehouseControl = Session.getModelController(WarehouseControl.class);
-        GetLocationChoicesResult result = WarehouseResultFactory.getGetLocationChoicesResult();
-        String warehouseName = form.getWarehouseName();
-        Warehouse warehouse = warehouseControl.getWarehouseByName(warehouseName);
+        var result = WarehouseResultFactory.getGetLocationChoicesResult();
+        var warehouseName = form.getWarehouseName();
+        var warehouse = warehouseControl.getWarehouseByName(warehouseName);
         
         if(warehouse != null) {
-            String defaultLocationChoice = form.getDefaultLocationChoice();
-            Party warehouseParty = warehouse.getParty();
+            var defaultLocationChoice = form.getDefaultLocationChoice();
+            var warehouseParty = warehouse.getParty();
             
             result.setLocationChoices(warehouseControl.getLocationChoicesByWarehouseParty(defaultLocationChoice,
             getPreferredLanguage(), warehouseParty));

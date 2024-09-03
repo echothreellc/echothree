@@ -68,16 +68,16 @@ public class CreatePaymentProcessorActionTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var paymentProcessorActionTypeControl = Session.getModelController(PaymentProcessorActionTypeControl.class);
-        String paymentProcessorActionTypeName = form.getPaymentProcessorActionTypeName();
-        PaymentProcessorActionType paymentProcessorActionType = paymentProcessorActionTypeControl.getPaymentProcessorActionTypeByName(paymentProcessorActionTypeName);
+        var paymentProcessorActionTypeName = form.getPaymentProcessorActionTypeName();
+        var paymentProcessorActionType = paymentProcessorActionTypeControl.getPaymentProcessorActionTypeByName(paymentProcessorActionTypeName);
         
         if(paymentProcessorActionType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                PaymentProcessorActionTypeDescription paymentProcessorActionTypeDescription = paymentProcessorActionTypeControl.getPaymentProcessorActionTypeDescription(paymentProcessorActionType, language);
+                var paymentProcessorActionTypeDescription = paymentProcessorActionTypeControl.getPaymentProcessorActionTypeDescription(paymentProcessorActionType, language);
                 
                 if(paymentProcessorActionTypeDescription == null) {
                     var description = form.getDescription();

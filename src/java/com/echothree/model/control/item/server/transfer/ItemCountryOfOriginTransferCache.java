@@ -38,13 +38,13 @@ public class ItemCountryOfOriginTransferCache
     
     @Override
     public ItemCountryOfOriginTransfer getTransfer(ItemCountryOfOrigin itemCountryOfOrigin) {
-        ItemCountryOfOriginTransfer itemCountryOfOriginTransfer = get(itemCountryOfOrigin);
+        var itemCountryOfOriginTransfer = get(itemCountryOfOrigin);
         
         if(itemCountryOfOriginTransfer == null) {
-            ItemTransfer item = itemControl.getItemTransfer(userVisit, itemCountryOfOrigin.getItem());
-            CountryTransfer countryGeoCode = geoControl.getCountryTransfer(userVisit, itemCountryOfOrigin.getCountryGeoCode());
-            Integer unformattedPercent = itemCountryOfOrigin.getPercent();
-            String percent = PercentUtils.getInstance().formatFractionalPercent(unformattedPercent);
+            var item = itemControl.getItemTransfer(userVisit, itemCountryOfOrigin.getItem());
+            var countryGeoCode = geoControl.getCountryTransfer(userVisit, itemCountryOfOrigin.getCountryGeoCode());
+            var unformattedPercent = itemCountryOfOrigin.getPercent();
+            var percent = PercentUtils.getInstance().formatFractionalPercent(unformattedPercent);
             
             itemCountryOfOriginTransfer = new ItemCountryOfOriginTransfer(item, countryGeoCode, unformattedPercent, percent);
             put(itemCountryOfOrigin, itemCountryOfOriginTransfer);

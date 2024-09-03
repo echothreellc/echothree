@@ -64,8 +64,8 @@ public class CreateFontStyleCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String fontStyleName = form.getFontStyleName();
-        FontStyle fontStyle = coreControl.getFontStyleByName(fontStyleName);
+        var fontStyleName = form.getFontStyleName();
+        var fontStyle = coreControl.getFontStyleByName(fontStyleName);
         
         if(fontStyle == null) {
             var partyPK = getPartyPK();

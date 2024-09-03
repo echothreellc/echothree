@@ -58,21 +58,21 @@ public class GetWorkRequirementScopeCommand
     @Override
     protected BaseResult execute() {
         var workEffortControl = Session.getModelController(WorkEffortControl.class);
-        GetWorkRequirementScopeResult result = WorkRequirementResultFactory.getGetWorkRequirementScopeResult();
-        String workEffortTypeName = form.getWorkEffortTypeName();
-        WorkEffortType workEffortType = workEffortControl.getWorkEffortTypeByName(workEffortTypeName);
+        var result = WorkRequirementResultFactory.getGetWorkRequirementScopeResult();
+        var workEffortTypeName = form.getWorkEffortTypeName();
+        var workEffortType = workEffortControl.getWorkEffortTypeByName(workEffortTypeName);
         
         if(workEffortType != null) {
-            String workEffortScopeName = form.getWorkEffortScopeName();
-            WorkEffortScope workEffortScope = workEffortControl.getWorkEffortScopeByName(workEffortType, workEffortScopeName);
+            var workEffortScopeName = form.getWorkEffortScopeName();
+            var workEffortScope = workEffortControl.getWorkEffortScopeByName(workEffortType, workEffortScopeName);
             
             if(workEffortScope != null) {
                 var workRequirementControl = Session.getModelController(WorkRequirementControl.class);
-                String workRequirementTypeName = form.getWorkRequirementTypeName();
-                WorkRequirementType workRequirementType = workRequirementControl.getWorkRequirementTypeByName(workEffortType, workRequirementTypeName);
+                var workRequirementTypeName = form.getWorkRequirementTypeName();
+                var workRequirementType = workRequirementControl.getWorkRequirementTypeByName(workEffortType, workRequirementTypeName);
                 
                 if(workRequirementType != null) {
-                    WorkRequirementScope workRequirementScope = workRequirementControl.getWorkRequirementScope(workEffortScope, workRequirementType);
+                    var workRequirementScope = workRequirementControl.getWorkRequirementScope(workEffortScope, workRequirementType);
                     
                     result.setWorkRequirementScope(workRequirementControl.getWorkRequirementScopeTransfer(getUserVisit(), workRequirementScope));
                     

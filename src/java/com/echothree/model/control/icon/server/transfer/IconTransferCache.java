@@ -38,14 +38,14 @@ public class IconTransferCache
     }
     
     public IconTransfer getIconTransfer(Icon icon) {
-        IconTransfer iconTransfer = get(icon);
+        var iconTransfer = get(icon);
         
         if(iconTransfer == null) {
-            IconDetail iconDetail = icon.getLastDetail();
-            String iconName = iconDetail.getIconName();
-            DocumentTransfer document = documentControl.getDocumentTransfer(userVisit, iconDetail.getDocument());
-            Boolean isDefault = iconDetail.getIsDefault();
-            Integer sortOrder = iconDetail.getSortOrder();
+            var iconDetail = icon.getLastDetail();
+            var iconName = iconDetail.getIconName();
+            var document = documentControl.getDocumentTransfer(userVisit, iconDetail.getDocument());
+            var isDefault = iconDetail.getIsDefault();
+            var sortOrder = iconDetail.getSortOrder();
             
             iconTransfer = new IconTransfer(iconName, document, isDefault, sortOrder);
             put(icon, iconTransfer);

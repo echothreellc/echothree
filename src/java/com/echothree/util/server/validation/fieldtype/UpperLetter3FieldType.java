@@ -34,9 +34,9 @@ public class UpperLetter3FieldType
     
     @Override
     public String validate() {
-        boolean hadErrors = false;
-        
-        Matcher m = Patterns.UpperLetter3.matcher(fieldValue);
+        var hadErrors = false;
+
+        var m = Patterns.UpperLetter3.matcher(fieldValue);
         if(!m.matches()) {
             validationMessages.add(fieldName, new Message(Validator.ERROR_INVALID_FORMAT));
             hadErrors = true;

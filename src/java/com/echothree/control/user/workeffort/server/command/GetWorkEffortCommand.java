@@ -52,9 +52,9 @@ public class GetWorkEffortCommand
     @Override
     protected BaseResult execute() {
         var workEffortControl = Session.getModelController(WorkEffortControl.class);
-        GetWorkEffortResult result = WorkEffortResultFactory.getGetWorkEffortResult();
-        String workEffortName = form.getWorkEffortName();
-        WorkEffort workEffort = workEffortControl.getWorkEffortByName(workEffortName);
+        var result = WorkEffortResultFactory.getGetWorkEffortResult();
+        var workEffortName = form.getWorkEffortName();
+        var workEffort = workEffortControl.getWorkEffortByName(workEffortName);
         
         if(workEffort != null) {
             result.setWorkEffort(workEffortControl.getWorkEffortTransfer(getUserVisit(), workEffort));

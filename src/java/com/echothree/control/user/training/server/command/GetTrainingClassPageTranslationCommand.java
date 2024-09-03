@@ -73,25 +73,25 @@ public class GetTrainingClassPageTranslationCommand
     @Override
     protected BaseResult execute() {
         var trainingControl = Session.getModelController(TrainingControl.class);
-        GetTrainingClassPageTranslationResult result = TrainingResultFactory.getGetTrainingClassPageTranslationResult();
-        String trainingClassName = form.getTrainingClassName();
-        TrainingClass trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
+        var result = TrainingResultFactory.getGetTrainingClassPageTranslationResult();
+        var trainingClassName = form.getTrainingClassName();
+        var trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
 
         if(trainingClass != null) {
-            String trainingClassSectionName = form.getTrainingClassSectionName();
-            TrainingClassSection trainingClassSection = trainingControl.getTrainingClassSectionByName(trainingClass, trainingClassSectionName);
+            var trainingClassSectionName = form.getTrainingClassSectionName();
+            var trainingClassSection = trainingControl.getTrainingClassSectionByName(trainingClass, trainingClassSectionName);
 
             if(trainingClassSection != null) {
-                String trainingClassPageName = form.getTrainingClassPageName();
-                TrainingClassPage trainingClassPage = trainingControl.getTrainingClassPageByName(trainingClassSection, trainingClassPageName);
+                var trainingClassPageName = form.getTrainingClassPageName();
+                var trainingClassPage = trainingControl.getTrainingClassPageByName(trainingClassSection, trainingClassPageName);
 
                 if(trainingClassPage != null) {
                     var partyControl = Session.getModelController(PartyControl.class);
-                    String languageIsoName = form.getLanguageIsoName();
-                    Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                    var languageIsoName = form.getLanguageIsoName();
+                    var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                     if(language != null) {
-                        TrainingClassPageTranslation trainingClassPageTranslation = trainingControl.getTrainingClassPageTranslation(trainingClassPage, language);
+                        var trainingClassPageTranslation = trainingControl.getTrainingClassPageTranslation(trainingClassPage, language);
 
                         if(trainingClassPageTranslation != null) {
                             result.setTrainingClassPageTranslation(trainingControl.getTrainingClassPageTranslationTransfer(getUserVisit(),

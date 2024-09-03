@@ -61,7 +61,7 @@ public class GetSubscriptionKindsCommand
     @Override
     protected BaseResult execute() {
         var subscriptionControl = Session.getModelController(SubscriptionControl.class);
-        GetSubscriptionKindsResult result = SubscriptionResultFactory.getGetSubscriptionKindsResult();
+        var result = SubscriptionResultFactory.getGetSubscriptionKindsResult();
         
         result.setSubscriptionKinds(subscriptionControl.getSubscriptionKindTransfers(getUserVisit()));
         

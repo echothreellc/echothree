@@ -61,8 +61,8 @@ public class DeleteTextTransformationCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String textTransformationName = form.getTextTransformationName();
-        TextTransformation textTransformation = coreControl.getTextTransformationByNameForUpdate(textTransformationName);
+        var textTransformationName = form.getTextTransformationName();
+        var textTransformation = coreControl.getTextTransformationByNameForUpdate(textTransformationName);
         
         if(textTransformation != null) {
             coreControl.deleteTextTransformation(textTransformation, getPartyPK());

@@ -39,15 +39,15 @@ public class PartyContactMechanismAliasTransferCache
     }
     
     public PartyContactMechanismAliasTransfer getPartyContactMechanismAliasTransfer(PartyContactMechanismAlias partyContactMechanismAlias) {
-        PartyContactMechanismAliasTransfer partyContactMechanismAliasTransfer = get(partyContactMechanismAlias);
+        var partyContactMechanismAliasTransfer = get(partyContactMechanismAlias);
         
         if(partyContactMechanismAliasTransfer == null) {
-            PartyTransfer party = partyControl.getPartyTransfer(userVisit, partyContactMechanismAlias.getParty());
-            ContactMechanismTransfer contactMechanism = contactControl.getContactMechanismTransfer(userVisit,
+            var party = partyControl.getPartyTransfer(userVisit, partyContactMechanismAlias.getParty());
+            var contactMechanism = contactControl.getContactMechanismTransfer(userVisit,
                     partyContactMechanismAlias.getContactMechanism());
-            ContactMechanismAliasTypeTransfer contactMechanismAliasType = contactControl.getContactMechanismAliasTypeTransfer(userVisit,
+            var contactMechanismAliasType = contactControl.getContactMechanismAliasTypeTransfer(userVisit,
                     partyContactMechanismAlias.getContactMechanismAliasType());
-            String alias = partyContactMechanismAlias.getAlias();
+            var alias = partyContactMechanismAlias.getAlias();
             
             partyContactMechanismAliasTransfer = new PartyContactMechanismAliasTransfer(party, contactMechanism,
                     contactMechanismAliasType, alias);

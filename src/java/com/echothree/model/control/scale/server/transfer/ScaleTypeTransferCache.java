@@ -37,14 +37,14 @@ public class ScaleTypeTransferCache
     }
 
     public ScaleTypeTransfer getScaleTypeTransfer(ScaleType scaleType) {
-        ScaleTypeTransfer scaleTypeTransfer = get(scaleType);
+        var scaleTypeTransfer = get(scaleType);
 
         if(scaleTypeTransfer == null) {
-            ScaleTypeDetail scaleTypeDetail = scaleType.getLastDetail();
-            String scaleTypeName = scaleTypeDetail.getScaleTypeName();
-            Boolean isDefault = scaleTypeDetail.getIsDefault();
-            Integer sortOrder = scaleTypeDetail.getSortOrder();
-            String description = scaleControl.getBestScaleTypeDescription(scaleType, getLanguage());
+            var scaleTypeDetail = scaleType.getLastDetail();
+            var scaleTypeName = scaleTypeDetail.getScaleTypeName();
+            var isDefault = scaleTypeDetail.getIsDefault();
+            var sortOrder = scaleTypeDetail.getSortOrder();
+            var description = scaleControl.getBestScaleTypeDescription(scaleType, getLanguage());
 
             scaleTypeTransfer = new ScaleTypeTransfer(scaleTypeName, isDefault, sortOrder, description);
             put(scaleType, scaleTypeTransfer);

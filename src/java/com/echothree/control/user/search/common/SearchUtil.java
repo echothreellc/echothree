@@ -30,7 +30,7 @@ public class SearchUtil {
     public static SearchLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
 
             cachedLocal = (SearchLocal)ctx.lookup("ejb:echothree/echothree-server/SearchBean!com.echothree.control.user.search.server.SearchLocal");
         }
@@ -42,7 +42,7 @@ public class SearchUtil {
     public static SearchRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
             
             cachedRemote = (SearchRemote)ctx.lookup("ejb:echothree/echothree-server/SearchBean!com.echothree.control.user.search.common.SearchRemote");
         }

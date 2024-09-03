@@ -64,25 +64,25 @@ public class EditRecoveryQuestionDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        UserControl userControl = getUserControl();
-        EditRecoveryQuestionDescriptionResult result = UserResultFactory.getEditRecoveryQuestionDescriptionResult();
-        String recoveryQuestionName = spec.getRecoveryQuestionName();
-        RecoveryQuestion recoveryQuestion = userControl.getRecoveryQuestionByName(recoveryQuestionName);
+        var userControl = getUserControl();
+        var result = UserResultFactory.getEditRecoveryQuestionDescriptionResult();
+        var recoveryQuestionName = spec.getRecoveryQuestionName();
+        var recoveryQuestion = userControl.getRecoveryQuestionByName(recoveryQuestionName);
         
         if(recoveryQuestion != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK)) {
-                    RecoveryQuestionDescription recoveryQuestionDescription = userControl.getRecoveryQuestionDescription(recoveryQuestion, language);
+                    var recoveryQuestionDescription = userControl.getRecoveryQuestionDescription(recoveryQuestion, language);
                     
                     if(recoveryQuestionDescription != null) {
                         result.setRecoveryQuestionDescription(userControl.getRecoveryQuestionDescriptionTransfer(getUserVisit(), recoveryQuestionDescription));
                         
                         if(lockEntity(recoveryQuestion)) {
-                            RecoveryQuestionDescriptionEdit edit = UserEditFactory.getRecoveryQuestionDescriptionEdit();
+                            var edit = UserEditFactory.getRecoveryQuestionDescriptionEdit();
                             
                             result.setEdit(edit);
                             edit.setDescription(recoveryQuestionDescription.getDescription());
@@ -95,12 +95,12 @@ public class EditRecoveryQuestionDescriptionCommand
                         addExecutionError(ExecutionErrors.UnknownRecoveryQuestionDescription.name());
                     }
                 } else if(editMode.equals(EditMode.UPDATE)) {
-                    RecoveryQuestionDescriptionValue recoveryQuestionDescriptionValue = userControl.getRecoveryQuestionDescriptionValueForUpdate(recoveryQuestion, language);
+                    var recoveryQuestionDescriptionValue = userControl.getRecoveryQuestionDescriptionValueForUpdate(recoveryQuestion, language);
                     
                     if(recoveryQuestionDescriptionValue != null) {
                         if(lockEntityForUpdate(recoveryQuestion)) {
                             try {
-                                String description = edit.getDescription();
+                                var description = edit.getDescription();
                                 
                                 recoveryQuestionDescriptionValue.setDescription(description);
                                 

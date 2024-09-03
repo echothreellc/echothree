@@ -30,7 +30,7 @@ public class TrackUtil {
     public static TrackLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
 
             cachedLocal = (TrackLocal)ctx.lookup("ejb:echothree/echothree-server/TrackBean!com.echothree.control.user.track.server.TrackLocal");
         }
@@ -42,7 +42,7 @@ public class TrackUtil {
     public static TrackRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
             
             cachedRemote = (TrackRemote)ctx.lookup("ejb:echothree/echothree-server/TrackBean!com.echothree.control.user.track.common.TrackRemote");
         }

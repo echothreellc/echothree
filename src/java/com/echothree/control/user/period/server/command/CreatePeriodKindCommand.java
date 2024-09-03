@@ -71,20 +71,20 @@ public class CreatePeriodKindCommand
     @Override
     protected BaseResult execute() {
         var periodControl = Session.getModelController(PeriodControl.class);
-        String workflowName = form.getWorkflowName();
-        String workflowEntranceName = form.getWorkflowEntranceName();
+        var workflowName = form.getWorkflowName();
+        var workflowEntranceName = form.getWorkflowEntranceName();
         var parameterCount = (workflowName == null ? 0 : 1) + (workflowEntranceName == null ? 0 : 1);
 
         if(parameterCount == 0 || parameterCount == 2) {
-            String periodKindName = form.getPeriodKindName();
-            PeriodKind periodKind = periodControl.getPeriodKindByName(periodKindName);
+            var periodKindName = form.getPeriodKindName();
+            var periodKind = periodControl.getPeriodKindByName(periodKindName);
 
             if(periodKind == null) {
                 var workflowControl = Session.getModelController(WorkflowControl.class);
-                Workflow workflow = workflowName == null? null: workflowControl.getWorkflowByName(workflowName);
+                var workflow = workflowName == null? null: workflowControl.getWorkflowByName(workflowName);
 
                 if(workflowName == null || workflow != null) {
-                    WorkflowEntrance workflowEntrance = workflowEntranceName == null? null: workflowControl.getWorkflowEntranceByName(workflow, workflowEntranceName);
+                    var workflowEntrance = workflowEntranceName == null? null: workflowControl.getWorkflowEntranceByName(workflow, workflowEntranceName);
 
                     if(workflowEntranceName == null || workflowEntrance != null) {
                         var partyPK = getPartyPK();

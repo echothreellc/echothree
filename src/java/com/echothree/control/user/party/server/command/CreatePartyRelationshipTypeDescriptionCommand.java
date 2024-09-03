@@ -52,15 +52,15 @@ public class CreatePartyRelationshipTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        String partyRelationshipTypeName = form.getPartyRelationshipTypeName();
-        PartyRelationshipType partyRelationshipType = partyControl.getPartyRelationshipTypeByName(partyRelationshipTypeName);
+        var partyRelationshipTypeName = form.getPartyRelationshipTypeName();
+        var partyRelationshipType = partyControl.getPartyRelationshipTypeByName(partyRelationshipTypeName);
         
         if(partyRelationshipType != null) {
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                PartyRelationshipTypeDescription partyRelationshipTypeDescription = partyControl.getPartyRelationshipTypeDescription(partyRelationshipType, language);
+                var partyRelationshipTypeDescription = partyControl.getPartyRelationshipTypeDescription(partyRelationshipType, language);
                 
                 if(partyRelationshipTypeDescription == null) {
                     var description = form.getDescription();

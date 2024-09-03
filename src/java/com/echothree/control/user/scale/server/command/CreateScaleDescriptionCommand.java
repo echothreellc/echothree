@@ -54,16 +54,16 @@ public class CreateScaleDescriptionCommand
    @Override
     protected BaseResult execute() {
         var scaleControl = Session.getModelController(ScaleControl.class);
-        String scaleName = form.getScaleName();
-        Scale scale = scaleControl.getScaleByName(scaleName);
+       var scaleName = form.getScaleName();
+       var scale = scaleControl.getScaleByName(scaleName);
         
         if(scale != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                ScaleDescription scaleDescription = scaleControl.getScaleDescription(scale, language);
+                var scaleDescription = scaleControl.getScaleDescription(scale, language);
                 
                 if(scaleDescription == null) {
                     var description = form.getDescription();

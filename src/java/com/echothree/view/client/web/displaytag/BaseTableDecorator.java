@@ -27,13 +27,13 @@ public class BaseTableDecorator
         extends TableDecorator {
     
     public String computeURL(String path, Map parameters) {
-        PageContext pageContext = getPageContext();
+        var pageContext = getPageContext();
         StringBuilder url = new StringBuilder(path);
         String urlResult;
         
         if(parameters != null && parameters.size() > 0) {
-            Set keySet = parameters.keySet();
-            boolean separator = false;
+            var keySet = parameters.keySet();
+            var separator = false;
             
             if(path.indexOf('?') == -1) {
                 url.append('?');
@@ -41,9 +41,9 @@ public class BaseTableDecorator
                 separator = true;
             }
             
-            for(Iterator keys = keySet.iterator(); keys.hasNext();) {
-                String key = (String)keys.next();
-                String value = (String)parameters.get(key);
+            for(var keys = keySet.iterator(); keys.hasNext();) {
+                var key = (String)keys.next();
+                var value = (String)parameters.get(key);
                 
                 if(separator) {
                     url.append('&');
@@ -59,7 +59,7 @@ public class BaseTableDecorator
         }
         
         if(pageContext.getSession() != null) {
-            HttpServletResponse response = (HttpServletResponse)pageContext.getResponse();
+            var response = (HttpServletResponse)pageContext.getResponse();
             
             urlResult = response.encodeURL(url.toString());
         } else {

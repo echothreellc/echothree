@@ -65,21 +65,21 @@ public class LocationTransferCache
     }
     
     public LocationTransfer getLocationTransfer(Location location) {
-        LocationTransfer locationTransfer = get(location);
+        var locationTransfer = get(location);
         
         if(locationTransfer == null) {
-            LocationDetail locationDetail = location.getLastDetail();
-            Warehouse warehouse = warehouseControl.getWarehouse(locationDetail.getWarehouseParty());
-            WarehouseTransfer warehouseTransfer = warehouseControl.getWarehouseTransfer(userVisit, warehouse);
-            String locationName = locationDetail.getLocationName();
-            LocationTypeTransfer locationTypeTransfer = warehouseControl.getLocationTypeTransfer(userVisit, locationDetail.getLocationType());
-            LocationUseTypeTransfer locationUseTypeTransfer = locationUseTypeControl.getLocationUseTypeTransfer(userVisit, locationDetail.getLocationUseType());
-            Integer velocity = locationDetail.getVelocity();
-            InventoryLocationGroupTransfer inventoryLocationGroup = inventoryControl.getInventoryLocationGroupTransfer(userVisit, locationDetail.getInventoryLocationGroup());
-            String description = warehouseControl.getBestLocationDescription(location, getLanguage());
-            
-            EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(location.getPrimaryKey());
-            WorkflowEntityStatusTransfer locationStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
+            var locationDetail = location.getLastDetail();
+            var warehouse = warehouseControl.getWarehouse(locationDetail.getWarehouseParty());
+            var warehouseTransfer = warehouseControl.getWarehouseTransfer(userVisit, warehouse);
+            var locationName = locationDetail.getLocationName();
+            var locationTypeTransfer = warehouseControl.getLocationTypeTransfer(userVisit, locationDetail.getLocationType());
+            var locationUseTypeTransfer = locationUseTypeControl.getLocationUseTypeTransfer(userVisit, locationDetail.getLocationUseType());
+            var velocity = locationDetail.getVelocity();
+            var inventoryLocationGroup = inventoryControl.getInventoryLocationGroupTransfer(userVisit, locationDetail.getInventoryLocationGroup());
+            var description = warehouseControl.getBestLocationDescription(location, getLanguage());
+
+            var entityInstance = coreControl.getEntityInstanceByBasePK(location.getPrimaryKey());
+            var locationStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
                     LocationStatusConstants.Workflow_LOCATION_STATUS, entityInstance);
             
             locationTransfer = new LocationTransfer(warehouseTransfer, locationName, locationTypeTransfer, locationUseTypeTransfer,
@@ -91,7 +91,7 @@ public class LocationTransferCache
             }
             
             if(includeVolume) {
-                LocationVolume locationVolume = warehouseControl.getLocationVolume(location);
+                var locationVolume = warehouseControl.getLocationVolume(location);
                 
                 if(locationVolume != null) {
                     locationTransfer.setLocationVolume(warehouseControl.getLocationVolumeTransfer(userVisit, locationVolume));

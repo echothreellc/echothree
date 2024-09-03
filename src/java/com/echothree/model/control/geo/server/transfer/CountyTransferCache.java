@@ -49,23 +49,23 @@ public class CountyTransferCache
     }
     
     public CountyTransfer getCountyTransfer(GeoCode geoCode) {
-        CountyTransfer countyTransfer = get(geoCode);
+        var countyTransfer = get(geoCode);
         
         if(countyTransfer == null) {
-            GeoCodeDetail geoCodeDetail = geoCode.getLastDetail();
-            String geoCodeName = geoCodeDetail.getGeoCodeName();
-            GeoCodeTypeTransfer geoCodeType = geoControl.getGeoCodeTypeTransfer(userVisit, geoCodeDetail.getGeoCodeType());
-            GeoCodeScopeTransfer geoCodeScope = geoControl.getGeoCodeScopeTransfer(userVisit, geoCodeDetail.getGeoCodeScope());
-            Boolean isDefault = geoCodeDetail.getIsDefault();
-            Integer sortOrder = geoCodeDetail.getSortOrder();
-            String description = geoControl.getBestGeoCodeDescription(geoCode, getLanguage());
-            
-            GeoCodeType stateGeoCodeType = geoControl.getGeoCodeTypeByName(GeoConstants.GeoCodeType_STATE);
-            List<GeoCodeRelationship> geoCodeRelationships = geoControl.getGeoCodeRelationshipsByFromGeoCodeAndGeoCodeType(geoCode, stateGeoCodeType);
+            var geoCodeDetail = geoCode.getLastDetail();
+            var geoCodeName = geoCodeDetail.getGeoCodeName();
+            var geoCodeType = geoControl.getGeoCodeTypeTransfer(userVisit, geoCodeDetail.getGeoCodeType());
+            var geoCodeScope = geoControl.getGeoCodeScopeTransfer(userVisit, geoCodeDetail.getGeoCodeScope());
+            var isDefault = geoCodeDetail.getIsDefault();
+            var sortOrder = geoCodeDetail.getSortOrder();
+            var description = geoControl.getBestGeoCodeDescription(geoCode, getLanguage());
+
+            var stateGeoCodeType = geoControl.getGeoCodeTypeByName(GeoConstants.GeoCodeType_STATE);
+            var geoCodeRelationships = geoControl.getGeoCodeRelationshipsByFromGeoCodeAndGeoCodeType(geoCode, stateGeoCodeType);
             if(geoCodeRelationships.size() != 1) {
                 getLog().error("non-1 geoCodeRelationships.size()");
             }
-            StateTransfer state = geoControl.getStateTransfer(userVisit, geoCodeRelationships.iterator().next().getToGeoCode());
+            var state = geoControl.getStateTransfer(userVisit, geoCodeRelationships.iterator().next().getToGeoCode());
             
             countyTransfer = new CountyTransfer(state, geoCodeName, geoCodeType, geoCodeScope, isDefault, sortOrder, description);
             put(geoCode, countyTransfer);

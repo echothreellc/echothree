@@ -124,7 +124,7 @@ public class EditCountryCommand
     public GeoCode getEntity(EditCountryResult result) {
         var geoControl = Session.getModelController(GeoControl.class);
         GeoCode geoCode = null;
-        String geoCodeName = spec.getGeoCodeName();
+        var geoCodeName = spec.getGeoCodeName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
             geoCode = geoControl.getGeoCodeByName(geoCodeName);
@@ -133,7 +133,7 @@ public class EditCountryCommand
         }
 
         if(geoCode != null) {
-            String geoCodeTypeName = geoCode.getLastDetail().getGeoCodeType().getLastDetail().getGeoCodeTypeName();
+            var geoCodeTypeName = geoCode.getLastDetail().getGeoCodeType().getLastDetail().getGeoCodeTypeName();
             
             if(!geoCodeTypeName.equals(GeoConstants.GeoCodeType_COUNTRY)) {
                 addExecutionError(ExecutionErrors.InvalidGeoCodeType.name(), geoCodeTypeName);
@@ -161,13 +161,13 @@ public class EditCountryCommand
     public void doLock(CountryEdit edit, GeoCode geoCode) {
         var geoControl = Session.getModelController(GeoControl.class);
         var geoCodeAliasLogic = GeoCodeAliasLogic.getInstance();
-        GeoCodeDescription geoCodeDescription = geoControl.getGeoCodeDescription(geoCode, getPreferredLanguage());
-        GeoCodeDetail geoCodeDetail = geoCode.getLastDetail();
-        GeoCodeCountry geoCodeCountry = geoControl.getGeoCodeCountry(geoCode);
-        Integer postalCodeLength = geoCodeCountry.getPostalCodeGeoCodeLength();
-        Integer postalCodeGeoCodeLength = geoCodeCountry.getPostalCodeGeoCodeLength();
+        var geoCodeDescription = geoControl.getGeoCodeDescription(geoCode, getPreferredLanguage());
+        var geoCodeDetail = geoCode.getLastDetail();
+        var geoCodeCountry = geoControl.getGeoCodeCountry(geoCode);
+        var postalCodeLength = geoCodeCountry.getPostalCodeGeoCodeLength();
+        var postalCodeGeoCodeLength = geoCodeCountry.getPostalCodeGeoCodeLength();
 
-        GeoCodeAlias geoCodeAlias = geoCodeAliasLogic.getGeoCodeAliasUsingNames(null, geoCode, GeoConstants.GeoCodeAliasType_COUNTRY_NAME);
+        var geoCodeAlias = geoCodeAliasLogic.getGeoCodeAliasUsingNames(null, geoCode, GeoConstants.GeoCodeAliasType_COUNTRY_NAME);
         edit.setCountryName(geoCodeAlias.getAlias());
 
         geoCodeAlias = geoCodeAliasLogic.getGeoCodeAliasUsingNames(null, geoCode, GeoConstants.GeoCodeAliasType_ISO_3_NUMBER);
@@ -209,35 +209,35 @@ public class EditCountryCommand
     @Override
     public void canUpdate(GeoCode geoCode) {
         var geoCodeTypeLogic = GeoCodeTypeLogic.getInstance();
-        GeoCodeType geoCodeType = geoCodeTypeLogic.getGeoCodeTypeByName(this, GeoConstants.GeoCodeType_COUNTRY);
+        var geoCodeType = geoCodeTypeLogic.getGeoCodeTypeByName(this, GeoConstants.GeoCodeType_COUNTRY);
 
         if(!hasExecutionErrors()) {
             var geoCodeScopeLogic = GeoCodeScopeLogic.getInstance();
-            GeoCodeScope geoCodeScope = geoCodeScopeLogic.getGeoCodeScopeByName(this, GeoConstants.GeoCodeScope_COUNTRIES);
+            var geoCodeScope = geoCodeScopeLogic.getGeoCodeScopeByName(this, GeoConstants.GeoCodeScope_COUNTRIES);
 
             if(!hasExecutionErrors()) {
                 var geoCodeLogic = GeoCodeLogic.getInstance();
-                String iso3Number = edit.getIso3Number();
-                GeoCode duplicateGeoCode = geoCodeLogic.getGeoCodeByAlias(this, geoCodeType, geoCodeScope, GeoConstants.GeoCodeAliasType_ISO_3_NUMBER, iso3Number);
+                var iso3Number = edit.getIso3Number();
+                var duplicateGeoCode = geoCodeLogic.getGeoCodeByAlias(this, geoCodeType, geoCodeScope, GeoConstants.GeoCodeAliasType_ISO_3_NUMBER, iso3Number);
 
                 if((duplicateGeoCode == null || duplicateGeoCode.equals(geoCode)) && !hasExecutionErrors()) {
-                    String iso3Letter = edit.getIso3Letter();
+                    var iso3Letter = edit.getIso3Letter();
 
                     duplicateGeoCode = geoCodeLogic.getGeoCodeByAlias(this, geoCodeType, geoCodeScope, GeoConstants.GeoCodeAliasType_ISO_3_LETTER, iso3Letter);
 
                     if((duplicateGeoCode == null || duplicateGeoCode.equals(geoCode)) && !hasExecutionErrors()) {
-                        String iso2Letter = edit.getIso2Letter();
+                        var iso2Letter = edit.getIso2Letter();
 
                         duplicateGeoCode = geoCodeLogic.getGeoCodeByAlias(this, geoCodeType, geoCodeScope, GeoConstants.GeoCodeAliasType_ISO_2_LETTER, iso2Letter);
 
                         if((duplicateGeoCode == null || duplicateGeoCode.equals(geoCode)) && !hasExecutionErrors()) {
-                            String countryName = edit.getCountryName();
+                            var countryName = edit.getCountryName();
 
                             duplicateGeoCode = geoCodeLogic.getGeoCodeByAlias(this, geoCodeType, geoCodeScope, GeoConstants.GeoCodeAliasType_COUNTRY_NAME, countryName);
 
                             if((duplicateGeoCode == null || duplicateGeoCode.equals(geoCode)) && !hasExecutionErrors()) {
                                 var contactControl = Session.getModelController(ContactControl.class);
-                                String postalAddressFormatName = edit.getPostalAddressFormatName();
+                                var postalAddressFormatName = edit.getPostalAddressFormatName();
 
                                 postalAddressFormat = contactControl.getPostalAddressFormatByName(postalAddressFormatName);
 
@@ -273,16 +273,16 @@ public class EditCountryCommand
         var geoControl = Session.getModelController(GeoControl.class);
         var geoCodeAliasLogic = GeoCodeAliasLogic.getInstance();
         var partyPK = getPartyPK();
-        GeoCodeDetailValue geoCodeDetailValue = geoControl.getGeoCodeDetailValueForUpdate(geoCode);
-        GeoCodeDescription geoCodeDescription = geoControl.getGeoCodeDescriptionForUpdate(geoCode, getPreferredLanguage());
-        GeoCodeCountryValue geoCodeCountryValue = geoControl.getGeoCodeCountryValueForUpdate(geoCode);
-        String strPostalCodeLength = edit.getPostalCodeLength();
-        Integer postalCodeLength = strPostalCodeLength == null ? null : Integer.valueOf(strPostalCodeLength);
-        String strPostalCodeGeoCodeLength = edit.getPostalCodeGeoCodeLength();
-        Integer postalCodeGeoCodeLength = strPostalCodeGeoCodeLength == null ? null : Integer.valueOf(strPostalCodeGeoCodeLength);
-        String description = edit.getDescription();
+        var geoCodeDetailValue = geoControl.getGeoCodeDetailValueForUpdate(geoCode);
+        var geoCodeDescription = geoControl.getGeoCodeDescriptionForUpdate(geoCode, getPreferredLanguage());
+        var geoCodeCountryValue = geoControl.getGeoCodeCountryValueForUpdate(geoCode);
+        var strPostalCodeLength = edit.getPostalCodeLength();
+        var postalCodeLength = strPostalCodeLength == null ? null : Integer.valueOf(strPostalCodeLength);
+        var strPostalCodeGeoCodeLength = edit.getPostalCodeGeoCodeLength();
+        var postalCodeGeoCodeLength = strPostalCodeGeoCodeLength == null ? null : Integer.valueOf(strPostalCodeGeoCodeLength);
+        var description = edit.getDescription();
 
-        GeoCodeAliasValue geoCodeAliasValue = geoCodeAliasLogic.getGeoCodeAliasValueUsingNames(null, geoCode, GeoConstants.GeoCodeAliasType_COUNTRY_NAME);
+        var geoCodeAliasValue = geoCodeAliasLogic.getGeoCodeAliasValueUsingNames(null, geoCode, GeoConstants.GeoCodeAliasType_COUNTRY_NAME);
         geoCodeAliasValue.setAlias(edit.getCountryName());
         geoControl.updateGeoCodeAliasFromValue(geoCodeAliasValue, partyPK);
 
@@ -329,7 +329,7 @@ public class EditCountryCommand
                 geoControl.deleteGeoCodeDescription(geoCodeDescription, partyPK);
             } else {
                 if(geoCodeDescription != null && description != null) {
-                    GeoCodeDescriptionValue geoCodeDescriptionValue = geoControl.getGeoCodeDescriptionValue(geoCodeDescription);
+                    var geoCodeDescriptionValue = geoControl.getGeoCodeDescriptionValue(geoCodeDescription);
 
                     geoCodeDescriptionValue.setDescription(description);
                     geoControl.updateGeoCodeDescriptionFromValue(geoCodeDescriptionValue, partyPK);

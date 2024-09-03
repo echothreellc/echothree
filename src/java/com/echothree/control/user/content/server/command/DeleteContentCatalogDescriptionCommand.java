@@ -69,20 +69,20 @@ public class DeleteContentCatalogDescriptionCommand
     @Override
     protected BaseResult execute() {
         var contentControl = Session.getModelController(ContentControl.class);
-        String contentCollectionName = form.getContentCollectionName();
-        ContentCollection contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
+        var contentCollectionName = form.getContentCollectionName();
+        var contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
         
         if(contentCollection != null) {
-            String contentCatalogName = form.getContentCatalogName();
-            ContentCatalog contentCatalog = contentControl.getContentCatalogByName(contentCollection, contentCatalogName);
+            var contentCatalogName = form.getContentCatalogName();
+            var contentCatalog = contentControl.getContentCatalogByName(contentCollection, contentCatalogName);
             
             if(contentCatalog != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = form.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = form.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
                 
                 if(language != null) {
-                    ContentCatalogDescription contentCatalogDescription = contentControl.getContentCatalogDescriptionForUpdate(contentCatalog, language);
+                    var contentCatalogDescription = contentControl.getContentCatalogDescriptionForUpdate(contentCatalog, language);
                     
                     if(contentCatalogDescription != null) {
                         contentControl.deleteContentCatalogDescription(contentCatalogDescription, getPartyPK());

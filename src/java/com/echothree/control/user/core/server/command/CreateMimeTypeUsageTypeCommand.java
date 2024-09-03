@@ -49,8 +49,8 @@ public class CreateMimeTypeUsageTypeCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String mimeTypeUsageTypeName = form.getMimeTypeUsageTypeName();
-        MimeTypeUsageType mimeTypeUsageType = coreControl.getMimeTypeUsageTypeByName(mimeTypeUsageTypeName);
+        var mimeTypeUsageTypeName = form.getMimeTypeUsageTypeName();
+        var mimeTypeUsageType = coreControl.getMimeTypeUsageTypeByName(mimeTypeUsageTypeName);
         
         if(mimeTypeUsageType == null) {
             var isDefault = Boolean.valueOf(form.getIsDefault());

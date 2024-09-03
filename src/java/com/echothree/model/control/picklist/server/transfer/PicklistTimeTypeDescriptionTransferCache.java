@@ -32,11 +32,11 @@ public class PicklistTimeTypeDescriptionTransferCache
     }
     
     public PicklistTimeTypeDescriptionTransfer getPicklistTimeTypeDescriptionTransfer(PicklistTimeTypeDescription picklistTimeTypeDescription) {
-        PicklistTimeTypeDescriptionTransfer picklistTimeTypeDescriptionTransfer = get(picklistTimeTypeDescription);
+        var picklistTimeTypeDescriptionTransfer = get(picklistTimeTypeDescription);
         
         if(picklistTimeTypeDescriptionTransfer == null) {
-            PicklistTimeTypeTransfer picklistTimeTypeTransfer = picklistControl.getPicklistTimeTypeTransfer(userVisit, picklistTimeTypeDescription.getPicklistTimeType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, picklistTimeTypeDescription.getLanguage());
+            var picklistTimeTypeTransfer = picklistControl.getPicklistTimeTypeTransfer(userVisit, picklistTimeTypeDescription.getPicklistTimeType());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, picklistTimeTypeDescription.getLanguage());
             
             picklistTimeTypeDescriptionTransfer = new PicklistTimeTypeDescriptionTransfer(languageTransfer, picklistTimeTypeTransfer, picklistTimeTypeDescription.getDescription());
             put(picklistTimeTypeDescription, picklistTimeTypeDescriptionTransfer);

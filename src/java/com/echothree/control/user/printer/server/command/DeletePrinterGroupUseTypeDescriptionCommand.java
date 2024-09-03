@@ -53,16 +53,16 @@ public class DeletePrinterGroupUseTypeDescriptionCommand
    @Override
     protected BaseResult execute() {
         var printerControl = Session.getModelController(PrinterControl.class);
-        String printerGroupUseTypeName = form.getPrinterGroupUseTypeName();
-        PrinterGroupUseType printerGroupUseType = printerControl.getPrinterGroupUseTypeByName(printerGroupUseTypeName);
+       var printerGroupUseTypeName = form.getPrinterGroupUseTypeName();
+       var printerGroupUseType = printerControl.getPrinterGroupUseTypeByName(printerGroupUseTypeName);
         
         if(printerGroupUseType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                PrinterGroupUseTypeDescription printerGroupUseTypeDescription = printerControl.getPrinterGroupUseTypeDescriptionForUpdate(printerGroupUseType, language);
+                var printerGroupUseTypeDescription = printerControl.getPrinterGroupUseTypeDescriptionForUpdate(printerGroupUseType, language);
                 
                 if(printerGroupUseTypeDescription != null) {
                     printerControl.deletePrinterGroupUseTypeDescription(printerGroupUseTypeDescription, getPartyPK());

@@ -68,16 +68,16 @@ public class CreateWarehouseTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var warehouseControl = Session.getModelController(WarehouseControl.class);
-        String warehouseTypeName = form.getWarehouseTypeName();
-        WarehouseType warehouseType = warehouseControl.getWarehouseTypeByName(warehouseTypeName);
+        var warehouseTypeName = form.getWarehouseTypeName();
+        var warehouseType = warehouseControl.getWarehouseTypeByName(warehouseTypeName);
         
         if(warehouseType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                WarehouseTypeDescription warehouseTypeDescription = warehouseControl.getWarehouseTypeDescription(warehouseType, language);
+                var warehouseTypeDescription = warehouseControl.getWarehouseTypeDescription(warehouseType, language);
                 
                 if(warehouseTypeDescription == null) {
                     var description = form.getDescription();

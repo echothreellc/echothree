@@ -53,11 +53,11 @@ public class CreateTimeZoneCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        String javaTimeZoneName = form.getJavaTimeZoneName();
-        TimeZone timeZone = partyControl.getTimeZoneByJavaName(javaTimeZoneName);
+        var javaTimeZoneName = form.getJavaTimeZoneName();
+        var timeZone = partyControl.getTimeZoneByJavaName(javaTimeZoneName);
         
         if(timeZone == null) {
-            String unixTimeZoneName = form.getUnixTimeZoneName();
+            var unixTimeZoneName = form.getUnixTimeZoneName();
             
             timeZone = partyControl.getTimeZoneByJavaName(javaTimeZoneName);
             

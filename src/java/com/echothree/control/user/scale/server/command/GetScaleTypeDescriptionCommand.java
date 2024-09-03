@@ -69,17 +69,17 @@ public class GetScaleTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var scaleControl = Session.getModelController(ScaleControl.class);
-        GetScaleTypeDescriptionResult result = ScaleResultFactory.getGetScaleTypeDescriptionResult();
-        String scaleTypeName = form.getScaleTypeName();
-        ScaleType scaleType = scaleControl.getScaleTypeByName(scaleTypeName);
+        var result = ScaleResultFactory.getGetScaleTypeDescriptionResult();
+        var scaleTypeName = form.getScaleTypeName();
+        var scaleType = scaleControl.getScaleTypeByName(scaleTypeName);
         
         if(scaleType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                ScaleTypeDescription scaleTypeDescription = scaleControl.getScaleTypeDescription(scaleType, language);
+                var scaleTypeDescription = scaleControl.getScaleTypeDescription(scaleType, language);
                 
                 if(scaleTypeDescription != null) {
                     result.setScaleTypeDescription(scaleControl.getScaleTypeDescriptionTransfer(getUserVisit(), scaleTypeDescription));

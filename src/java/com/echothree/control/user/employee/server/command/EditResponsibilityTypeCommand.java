@@ -67,19 +67,19 @@ public class EditResponsibilityTypeCommand
     @Override
     protected BaseResult execute() {
         var employeeControl = Session.getModelController(EmployeeControl.class);
-        EditResponsibilityTypeResult result = EmployeeResultFactory.getEditResponsibilityTypeResult();
+        var result = EmployeeResultFactory.getEditResponsibilityTypeResult();
         
         if(editMode.equals(EditMode.LOCK)) {
-            String responsibilityTypeName = spec.getResponsibilityTypeName();
-            ResponsibilityType responsibilityType = employeeControl.getResponsibilityTypeByName(responsibilityTypeName);
+            var responsibilityTypeName = spec.getResponsibilityTypeName();
+            var responsibilityType = employeeControl.getResponsibilityTypeByName(responsibilityTypeName);
             
             if(responsibilityType != null) {
                 result.setResponsibilityType(employeeControl.getResponsibilityTypeTransfer(getUserVisit(), responsibilityType));
                 
                 if(lockEntity(responsibilityType)) {
-                    ResponsibilityTypeDescription responsibilityTypeDescription = employeeControl.getResponsibilityTypeDescription(responsibilityType, getPreferredLanguage());
-                    ResponsibilityTypeEdit edit = EmployeeEditFactory.getResponsibilityTypeEdit();
-                    ResponsibilityTypeDetail responsibilityTypeDetail = responsibilityType.getLastDetail();
+                    var responsibilityTypeDescription = employeeControl.getResponsibilityTypeDescription(responsibilityType, getPreferredLanguage());
+                    var edit = EmployeeEditFactory.getResponsibilityTypeEdit();
+                    var responsibilityTypeDetail = responsibilityType.getLastDetail();
                     
                     result.setEdit(edit);
                     edit.setResponsibilityTypeName(responsibilityTypeDetail.getResponsibilityTypeName());
@@ -97,16 +97,16 @@ public class EditResponsibilityTypeCommand
                 addExecutionError(ExecutionErrors.UnknownResponsibilityTypeName.name(), responsibilityTypeName);
             }
         } else if(editMode.equals(EditMode.UPDATE)) {
-            String responsibilityTypeName = spec.getResponsibilityTypeName();
-            ResponsibilityType responsibilityType = employeeControl.getResponsibilityTypeByNameForUpdate(responsibilityTypeName);
+            var responsibilityTypeName = spec.getResponsibilityTypeName();
+            var responsibilityType = employeeControl.getResponsibilityTypeByNameForUpdate(responsibilityTypeName);
             
             if(responsibilityType != null) {
                 if(lockEntityForUpdate(responsibilityType)) {
                     try {
                         var partyPK = getPartyPK();
-                        ResponsibilityTypeDetailValue responsibilityTypeDetailValue = employeeControl.getResponsibilityTypeDetailValueForUpdate(responsibilityType);
-                        ResponsibilityTypeDescription responsibilityTypeDescription = employeeControl.getResponsibilityTypeDescriptionForUpdate(responsibilityType, getPreferredLanguage());
-                        String description = edit.getDescription();
+                        var responsibilityTypeDetailValue = employeeControl.getResponsibilityTypeDetailValueForUpdate(responsibilityType);
+                        var responsibilityTypeDescription = employeeControl.getResponsibilityTypeDescriptionForUpdate(responsibilityType, getPreferredLanguage());
+                        var description = edit.getDescription();
                         
                         responsibilityTypeDetailValue.setResponsibilityTypeName(edit.getResponsibilityTypeName());
                         responsibilityTypeDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
@@ -119,7 +119,7 @@ public class EditResponsibilityTypeCommand
                         } else if(responsibilityTypeDescription != null && description == null) {
                             employeeControl.deleteResponsibilityTypeDescription(responsibilityTypeDescription, partyPK);
                         } else if(responsibilityTypeDescription != null && description != null) {
-                            ResponsibilityTypeDescriptionValue responsibilityTypeDescriptionValue = employeeControl.getResponsibilityTypeDescriptionValue(responsibilityTypeDescription);
+                            var responsibilityTypeDescriptionValue = employeeControl.getResponsibilityTypeDescriptionValue(responsibilityTypeDescription);
                             
                             responsibilityTypeDescriptionValue.setDescription(description);
                             employeeControl.updateResponsibilityTypeDescriptionFromValue(responsibilityTypeDescriptionValue, partyPK);

@@ -58,7 +58,7 @@ public class ShipmentAliasUtil {
         String securityRoleGroupName = null;
 
         if(spec != null) {
-            String shipmentTypeName = spec.getShipmentTypeName();
+            var shipmentTypeName = spec.getShipmentTypeName();
             
             if(shipmentTypeName != null) {
                 securityRoleGroupName = getSecurityRoleGroupNameByShipmentTypeName(shipmentTypeName);

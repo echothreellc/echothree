@@ -63,9 +63,9 @@ public class GetGlResourceTypeChoicesCommand
     @Override
     protected BaseResult execute() {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        GetGlResourceTypeChoicesResult result = AccountingResultFactory.getGetGlResourceTypeChoicesResult();
-        String defaultGlResourceTypeChoice = form.getDefaultGlResourceTypeChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = AccountingResultFactory.getGetGlResourceTypeChoicesResult();
+        var defaultGlResourceTypeChoice = form.getDefaultGlResourceTypeChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setGlResourceTypeChoices(accountingControl.getGlResourceTypeChoices(defaultGlResourceTypeChoice,
                 getPreferredLanguage(), allowNullChoice));

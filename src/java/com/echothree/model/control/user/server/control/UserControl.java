@@ -181,19 +181,19 @@ public class UserControl
         
         do {
             StringBuilder userKeyNameBuilder = new StringBuilder(40);
-            Random random = EncryptionUtils.getInstance().getRandom();
+            var random = EncryptionUtils.getInstance().getRandom();
             
-            for(int i = 0; i < 40; i++) {
+            for(var i = 0; i < 40; i++) {
                 userKeyNameBuilder.append(characterArray[random.nextInt(characterCount)]);
             }
             
             userKeyName = userKeyNameBuilder.toString();
-            UserKeyDetail userKeyDetail = getUserKeyDetailByName(userKeyName);
+            var userKeyDetail = getUserKeyDetailByName(userKeyName);
             userKey = userKeyDetail == null? null: userKeyDetail.getUserKey();
         } while(userKey != null);
         
         userKey = UserKeyFactory.getInstance().create();
-        UserKeyDetail userKeyDetail = UserKeyDetailFactory.getInstance().create(userKey, userKeyName, (Party)null, (PartyRelationship)null,
+        var userKeyDetail = UserKeyDetailFactory.getInstance().create(userKey, userKeyName, (Party)null, (PartyRelationship)null,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -283,8 +283,8 @@ public class UserControl
                         "WHERE ukeydt_userkeyname = ? AND ukeydt_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = UserKeyDetailFactory.getInstance().prepareStatement(query);
+
+            var ps = UserKeyDetailFactory.getInstance().prepareStatement(query);
             
             ps.setString(1, userKeyName);
             ps.setLong(2, Session.MAX_TIME);
@@ -306,7 +306,7 @@ public class UserControl
     }
     
     public UserKeyDetailValue getUserKeyDetailValueByNameForUpdate(String userKeyName) {
-        UserKeyDetail userKeyDetail = getUserKeyDetailByNameForUpdate(userKeyName);
+        var userKeyDetail = getUserKeyDetailByNameForUpdate(userKeyName);
         
         return userKeyDetail == null? null: userKeyDetail.getUserKeyDetailValue().clone();
     }
@@ -324,15 +324,15 @@ public class UserControl
     }
     
     public void updateUserKeyFromValue(UserKeyDetailValue userKeyDetailValue) {
-        UserKeyPK userKeyPK = userKeyDetailValue.getUserKeyPK();
-        UserKey userKey = UserKeyFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, userKeyPK);
-        UserKeyDetail userKeyDetail = userKey.getLastDetailForUpdate();
+        var userKeyPK = userKeyDetailValue.getUserKeyPK();
+        var userKey = UserKeyFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, userKeyPK);
+        var userKeyDetail = userKey.getLastDetailForUpdate();
         
         userKeyDetail.setThruTime(session.START_TIME_LONG);
         userKeyDetail.store();
-        
-        PartyPK partyPK = userKeyDetailValue.getPartyPK();
-        PartyRelationshipPK partyRelationshipPK = userKeyDetailValue.getPartyRelationshipPK();
+
+        var partyPK = userKeyDetailValue.getPartyPK();
+        var partyRelationshipPK = userKeyDetailValue.getPartyRelationshipPK();
         
         userKeyDetail = UserKeyDetailFactory.getInstance().create(userKeyPK, userKeyDetail.getUserKeyName(), partyPK, partyRelationshipPK,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -362,7 +362,7 @@ public class UserControl
     }
 
     public void removeUserKey(final UserKey userKey) {
-        for(UserVisit userVisit: getUserVisitsByUserKey(userKey)) {
+        for(var userVisit: getUserVisitsByUserKey(userKey)) {
             userVisit = UserVisitFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, userVisit.getPrimaryKey());
             
             userVisit.setUserKey(null);
@@ -384,7 +384,7 @@ public class UserControl
         UserKeyStatus userKeyStatus;
         
         try {
-            PreparedStatement ps = UserKeyStatusFactory.getInstance().prepareStatement(
+            var ps = UserKeyStatusFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM userkeystatuses " +
                     "WHERE ukeyst_ukey_userkeyid = ? " +
@@ -406,13 +406,13 @@ public class UserControl
     
     public UserVisitGroup getActiveUserVisitGroup() {
         UserVisitGroup userVisitGroup = null;
-        WorkflowStep workflowStep = getWorkflowControl().getWorkflowStepUsingNames(Workflow_USER_VISIT_GROUP_STATUS, WorkflowStep_USER_VISIT_GROUP_STATUS_ACTIVE);
+        var workflowStep = getWorkflowControl().getWorkflowStepUsingNames(Workflow_USER_VISIT_GROUP_STATUS, WorkflowStep_USER_VISIT_GROUP_STATUS_ACTIVE);
 
         if(workflowStep != null) {
             List<UserVisitGroup> userVisitGroups = null;
 
             try {
-                PreparedStatement ps = UserVisitGroupFactory.getInstance().prepareStatement(
+                var ps = UserVisitGroupFactory.getInstance().prepareStatement(
                         "SELECT _ALL_ " +
                         "FROM componentvendors, componentvendordetails, entitytypes, entitytypedetails, entityinstances, " +
                         "uservisitgroups, uservisitgroupdetails, workflowentitystatuses, entitytimes " +
@@ -453,15 +453,15 @@ public class UserControl
         var workflow = workflowControl.getWorkflowByName(Workflow_USER_VISIT_GROUP_STATUS);
         
         if(workflow != null) {
-            WorkflowEntrance workflowEntrance = workflowControl.getDefaultWorkflowEntrance(workflow);
+            var workflowEntrance = workflowControl.getDefaultWorkflowEntrance(workflow);
             
             if(workflowEntrance != null && (workflowControl.countWorkflowEntranceStepsByWorkflowEntrance(workflowEntrance) > 0)) {
-                Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.USER_VISIT_GROUP.name());
-                String userVisitGroupName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
+                var sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.USER_VISIT_GROUP.name());
+                var userVisitGroupName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
                 
                 userVisitGroup = createUserVisitGroup(userVisitGroupName, createdBy);
 
-                EntityInstance entityInstance = getEntityInstanceByBaseEntity(userVisitGroup);
+                var entityInstance = getEntityInstanceByBaseEntity(userVisitGroup);
                 getWorkflowControl().addEntityToWorkflow(workflowEntrance, entityInstance, null, null, createdBy);
             }
         }
@@ -470,8 +470,8 @@ public class UserControl
     }
     
     public UserVisitGroup createUserVisitGroup(String userVisitGroupName, BasePK createdBy) {
-        UserVisitGroup userVisitGroup = UserVisitGroupFactory.getInstance().create();
-        UserVisitGroupDetail userVisitGroupDetail = UserVisitGroupDetailFactory.getInstance().create(userVisitGroup, userVisitGroupName,
+        var userVisitGroup = UserVisitGroupFactory.getInstance().create();
+        var userVisitGroupDetail = UserVisitGroupDetailFactory.getInstance().create(userVisitGroup, userVisitGroupName,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -506,8 +506,8 @@ public class UserControl
                         "WHERE uvisgrp_activedetailid = uvisgrpdt_uservisitgroupdetailid AND uvisgrpdt_uservisitgroupname = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = UserVisitGroupFactory.getInstance().prepareStatement(query);
+
+            var ps = UserVisitGroupFactory.getInstance().prepareStatement(query);
             
             ps.setString(1, userVisitGroupName);
             
@@ -545,8 +545,8 @@ public class UserControl
                     "WHERE uvisgrp_activedetailid = uvisgrpdt_uservisitgroupdetailid " +
                     "FOR UPDATE";
         }
-        
-        PreparedStatement ps = UserVisitGroupFactory.getInstance().prepareStatement(query);
+
+        var ps = UserVisitGroupFactory.getInstance().prepareStatement(query);
         
         return UserVisitGroupFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
     }
@@ -565,7 +565,7 @@ public class UserControl
     
     public List<UserVisitGroupTransfer> getUserVisitGroupTransfers(UserVisit userVisit, Collection<UserVisitGroup> userVisitGroups) {
         List<UserVisitGroupTransfer> userVisitGroupTransfers = new ArrayList<>(userVisitGroups.size());
-        UserVisitGroupTransferCache userVisitGroupTransferCache = getUserTransferCaches(userVisit).getUserVisitGroupTransferCache();
+        var userVisitGroupTransferCache = getUserTransferCaches(userVisit).getUserVisitGroupTransferCache();
         
         userVisitGroups.forEach((userVisitGroup) ->
                 userVisitGroupTransfers.add(userVisitGroupTransferCache.getUserVisitGroupTransfer(userVisitGroup))
@@ -587,8 +587,8 @@ public class UserControl
             workflowControl.getWorkflowEntranceChoices(userVisitGroupStatusChoicesBean, defaultUserVisitGroupStatusChoice, language, allowNullChoice,
                     workflowControl.getWorkflowByName(Workflow_USER_VISIT_GROUP_STATUS), partyPK);
         } else {
-            EntityInstance entityInstance = getCoreControl().getEntityInstanceByBasePK(userVisitGroup.getPrimaryKey());
-            WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(Workflow_USER_VISIT_GROUP_STATUS,
+            var entityInstance = getCoreControl().getEntityInstanceByBasePK(userVisitGroup.getPrimaryKey());
+            var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(Workflow_USER_VISIT_GROUP_STATUS,
                     entityInstance);
             
             workflowControl.getWorkflowDestinationChoices(userVisitGroupStatusChoicesBean, defaultUserVisitGroupStatusChoice, language, allowNullChoice,
@@ -600,9 +600,9 @@ public class UserControl
     
     public void setUserVisitGroupStatus(ExecutionErrorAccumulator eea, UserVisitGroup userVisitGroup, String userVisitGroupStatusChoice, PartyPK modifiedBy) {
         var workflowControl = getWorkflowControl();
-        EntityInstance entityInstance = getEntityInstanceByBaseEntity(userVisitGroup);
-        WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(Workflow_USER_VISIT_GROUP_STATUS, entityInstance);
-        WorkflowDestination workflowDestination = userVisitGroupStatusChoice == null? null:
+        var entityInstance = getEntityInstanceByBaseEntity(userVisitGroup);
+        var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(Workflow_USER_VISIT_GROUP_STATUS, entityInstance);
+        var workflowDestination = userVisitGroupStatusChoice == null? null:
             workflowControl.getWorkflowDestinationByName(workflowEntityStatus.getWorkflowStep(), userVisitGroupStatusChoice);
         
         if(workflowDestination != null || userVisitGroupStatusChoice == null) {
@@ -618,7 +618,7 @@ public class UserControl
     
     public UserVisit createUserVisit(UserKey userKey, Language preferredLanguage, Currency preferredCurrency, TimeZone preferredTimeZone,
             DateTimeFormat preferredDateTimeFormat, OfferUse offerUse, AssociateReferral associateReferral, Long retainUntilTime) {
-        UserVisitGroup userVisitGroup = getActiveUserVisitGroup();
+        var userVisitGroup = getActiveUserVisitGroup();
 
         if(preferredCurrency == null) {
             var accountingControl = Session.getModelController(AccountingControl.class);
@@ -638,7 +638,7 @@ public class UserControl
             preferredDateTimeFormat = getPartyControl().getDefaultDateTimeFormat();
         }
 
-        UserVisit userVisit = UserVisitFactory.getInstance().create(userVisitGroup, userKey, preferredLanguage, preferredCurrency,
+        var userVisit = UserVisitFactory.getInstance().create(userVisitGroup, userKey, preferredLanguage, preferredCurrency,
                 preferredTimeZone, preferredDateTimeFormat, session.START_TIME_LONG, offerUse, associateReferral, retainUntilTime,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
@@ -726,15 +726,15 @@ public class UserControl
      * to the UserSession, if there is one.
      */
     public void setUserVisitPreferredLanguage(final UserVisit userVisit, final Language language, final BasePK updatedBy) {
-        UserSession userSession = getUserSessionByUserVisit(userVisit);
+        var userSession = getUserSessionByUserVisit(userVisit);
         
         userVisit.setPreferredLanguage(language);
         
         if(userSession != null) {
-            PartyPK partyPK = userSession.getPartyPK();
+            var partyPK = userSession.getPartyPK();
             
             if(partyPK != null) {
-                PartyDetailValue partyDetailValue = getPartyControl().getPartyDetailValueByPKForUpdate(userSession.getPartyPK());
+                var partyDetailValue = getPartyControl().getPartyDetailValueByPKForUpdate(userSession.getPartyPK());
                 
                 partyDetailValue.setPreferredLanguagePK(language.getIsDefault() ? null : language.getPrimaryKey());
                 getPartyControl().updatePartyFromValue(partyDetailValue, updatedBy);
@@ -774,15 +774,15 @@ public class UserControl
      * to the UserSession, if there is one.
      */
     public void setUserVisitPreferredCurrency(final UserVisit userVisit, final Currency currency, final BasePK updatedBy) {
-        UserSession userSession = getUserSessionByUserVisit(userVisit);
+        var userSession = getUserSessionByUserVisit(userVisit);
         
         userVisit.setPreferredCurrency(currency);
         
         if(userSession != null) {
-            PartyPK partyPK = userSession.getPartyPK();
+            var partyPK = userSession.getPartyPK();
             
             if(partyPK != null) {
-                PartyDetailValue partyDetailValue = getPartyControl().getPartyDetailValueByPKForUpdate(userSession.getPartyPK());
+                var partyDetailValue = getPartyControl().getPartyDetailValueByPKForUpdate(userSession.getPartyPK());
                 
                 partyDetailValue.setPreferredCurrencyPK(currency.getIsDefault() ? null : currency.getPrimaryKey());
                 getPartyControl().updatePartyFromValue(partyDetailValue, updatedBy);
@@ -826,16 +826,16 @@ public class UserControl
      * to the UserSession, if there is one.
      */
     public void setUserVisitPreferredTimeZone(final UserVisit userVisit, final TimeZone timeZone, final BasePK updatedBy) {
-        UserSession userSession = getUserSessionByUserVisit(userVisit);
+        var userSession = getUserSessionByUserVisit(userVisit);
 
         userVisit.setPreferredTimeZone(timeZone);
         
         if(userSession != null) {
-            PartyPK partyPK = userSession.getPartyPK();
+            var partyPK = userSession.getPartyPK();
             
             if(partyPK != null) {
-                PartyDetailValue partyDetailValue = getPartyControl().getPartyDetailValueByPKForUpdate(userSession.getPartyPK());
-                TimeZoneDetail timeZoneDetail = timeZone.getLastDetail();
+                var partyDetailValue = getPartyControl().getPartyDetailValueByPKForUpdate(userSession.getPartyPK());
+                var timeZoneDetail = timeZone.getLastDetail();
 
                 partyDetailValue.setPreferredTimeZonePK(timeZoneDetail.getIsDefault() ? null : timeZone.getPrimaryKey());
                 getPartyControl().updatePartyFromValue(partyDetailValue, updatedBy);
@@ -875,16 +875,16 @@ public class UserControl
      * to the UserSession, if there is one.
      */
     public void setUserVisitPreferredDateTimeFormat(final UserVisit userVisit, final DateTimeFormat dateTimeFormat, final BasePK updatedBy) {
-        UserSession userSession = getUserSessionByUserVisit(userVisit);
-        DateTimeFormatDetail dateTimeFormatDetail = dateTimeFormat.getLastDetail();
+        var userSession = getUserSessionByUserVisit(userVisit);
+        var dateTimeFormatDetail = dateTimeFormat.getLastDetail();
         
         userVisit.setPreferredDateTimeFormat(dateTimeFormat);
         
         if(userSession != null) {
-            PartyPK partyPK = userSession.getPartyPK();
+            var partyPK = userSession.getPartyPK();
             
             if(partyPK != null) {
-                PartyDetailValue partyDetailValue = getPartyControl().getPartyDetailValueByPKForUpdate(userSession.getPartyPK());
+                var partyDetailValue = getPartyControl().getPartyDetailValueByPKForUpdate(userSession.getPartyPK());
                 
                 partyDetailValue.setPreferredDateTimeFormatPK(dateTimeFormatDetail.getIsDefault() ? null : dateTimeFormat.getPrimaryKey());
                 getPartyControl().updatePartyFromValue(partyDetailValue, updatedBy);
@@ -923,8 +923,8 @@ public class UserControl
     /** Associate a Party with a UserVisit, copy all Preferred* properties to the UserVisit.
      */
     public UserSession associatePartyToUserVisit(UserVisit userVisit, Party party, PartyRelationship partyRelationship, Long identityVerifiedTime) {
-        UserSession userSession = getUserSessionByUserVisitForUpdate(userVisit);
-        PartyDetail partyDetail = party.getLastDetail();
+        var userSession = getUserSessionByUserVisitForUpdate(userVisit);
+        var partyDetail = party.getLastDetail();
         
         if(userSession != null) {
             userSession.setThruTime(session.START_TIME_LONG);
@@ -932,23 +932,23 @@ public class UserControl
         }
         
         userSession = createUserSession(userVisit, party, partyRelationship, identityVerifiedTime);
-        
-        Language preferredLanguage = partyDetail.getPreferredLanguage();
+
+        var preferredLanguage = partyDetail.getPreferredLanguage();
         if(preferredLanguage != null) {
             userVisit.setPreferredLanguage(preferredLanguage);
         }
-        
-        Currency preferredCurrency = partyDetail.getPreferredCurrency();
+
+        var preferredCurrency = partyDetail.getPreferredCurrency();
         if(preferredCurrency != null) {
             userVisit.setPreferredCurrency(preferredCurrency);
         }
-        
-        TimeZone timeZone = partyDetail.getPreferredTimeZone();
+
+        var timeZone = partyDetail.getPreferredTimeZone();
         if(timeZone != null) {
             userVisit.setPreferredTimeZone(timeZone);
         }
-        
-        DateTimeFormat dateTimeFormat = partyDetail.getPreferredDateTimeFormat();
+
+        var dateTimeFormat = partyDetail.getPreferredDateTimeFormat();
         if(dateTimeFormat != null) {
             userVisit.setPreferredDateTimeFormat(dateTimeFormat);
         }
@@ -1066,7 +1066,7 @@ public class UserControl
     }
     
     public void removeUserVisitStatusByUserVisit(UserVisit userVisit) {
-        UserVisitStatus userVisitStatus = getUserVisitStatusForUpdate(userVisit);
+        var userVisitStatus = getUserVisitStatusForUpdate(userVisit);
         
         if(userVisitStatus != null) {
             userVisitStatus.remove();
@@ -1091,13 +1091,13 @@ public class UserControl
      * function directly.
      */
     public UserSession createUserSession(UserVisit userVisit, Party party, PartyRelationship partyRelationship, Long identityVerifiedTime) {
-        PartyType partyType = party.getLastDetail().getPartyType();
-        PartyTypeAuditPolicy partyTypeAuditPolicy = getPartyControl().getPartyTypeAuditPolicy(partyType);
-        Long retainUserVisitsTime = partyTypeAuditPolicy == null? null: partyTypeAuditPolicy.getLastDetail().getRetainUserVisitsTime();
+        var partyType = party.getLastDetail().getPartyType();
+        var partyTypeAuditPolicy = getPartyControl().getPartyTypeAuditPolicy(partyType);
+        var retainUserVisitsTime = partyTypeAuditPolicy == null? null: partyTypeAuditPolicy.getLastDetail().getRetainUserVisitsTime();
         
         if(retainUserVisitsTime != null) {
-            long retainUntilTime = session.START_TIME + retainUserVisitsTime;
-            Long currentRetainUntilTime = userVisit.getRetainUntilTime();
+            var retainUntilTime = session.START_TIME + retainUserVisitsTime;
+            var currentRetainUntilTime = userVisit.getRetainUntilTime();
             
             if(currentRetainUntilTime == null || (retainUntilTime > currentRetainUntilTime)) {
                 userVisit.setRetainUntilTime(retainUntilTime);
@@ -1171,7 +1171,7 @@ public class UserControl
         UserSession userSession;
         
         try {
-            PreparedStatement ps = UserSessionFactory.getInstance().prepareStatement(
+            var ps = UserSessionFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM usersessions " +
                     "WHERE usess_uvis_uservisitid = ? AND usess_thrutime = ?");
@@ -1191,7 +1191,7 @@ public class UserControl
         UserSession userSession;
         
         try {
-            PreparedStatement ps = UserSessionFactory.getInstance().prepareStatement(
+            var ps = UserSessionFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM usersessions " +
                     "WHERE usess_uvis_uservisitid = ? AND usess_thrutime = ? " +
@@ -1230,20 +1230,20 @@ public class UserControl
     // --------------------------------------------------------------------------------
     
     public RecoveryQuestion createRecoveryQuestion(String recoveryQuestionName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        RecoveryQuestion defaultRecoveryQuestion = getDefaultRecoveryQuestion();
-        boolean defaultFound = defaultRecoveryQuestion != null;
+        var defaultRecoveryQuestion = getDefaultRecoveryQuestion();
+        var defaultFound = defaultRecoveryQuestion != null;
         
         if(defaultFound && isDefault) {
-            RecoveryQuestionDetailValue defaultRecoveryQuestionDetailValue = getDefaultRecoveryQuestionDetailValueForUpdate();
+            var defaultRecoveryQuestionDetailValue = getDefaultRecoveryQuestionDetailValueForUpdate();
             
             defaultRecoveryQuestionDetailValue.setIsDefault(Boolean.FALSE);
             updateRecoveryQuestionFromValue(defaultRecoveryQuestionDetailValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        RecoveryQuestion recoveryQuestion = RecoveryQuestionFactory.getInstance().create();
-        RecoveryQuestionDetail recoveryQuestionDetail = RecoveryQuestionDetailFactory.getInstance().create(recoveryQuestion,
+
+        var recoveryQuestion = RecoveryQuestionFactory.getInstance().create();
+        var recoveryQuestionDetail = RecoveryQuestionDetailFactory.getInstance().create(recoveryQuestion,
                 recoveryQuestionName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -1272,8 +1272,8 @@ public class UserControl
                     "WHERE rqus_activedetailid = rqusdt_recoveryquestiondetailid " +
                     "FOR UPDATE";
         }
-        
-        PreparedStatement ps = RecoveryQuestionFactory.getInstance().prepareStatement(query);
+
+        var ps = RecoveryQuestionFactory.getInstance().prepareStatement(query);
         
         return RecoveryQuestionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
     }
@@ -1299,8 +1299,8 @@ public class UserControl
                     "WHERE rqus_activedetailid = rqusdt_recoveryquestiondetailid AND rqusdt_isdefault = 1 " +
                     "FOR UPDATE";
         }
-        
-        PreparedStatement ps = RecoveryQuestionFactory.getInstance().prepareStatement(query);
+
+        var ps = RecoveryQuestionFactory.getInstance().prepareStatement(query);
         
         return RecoveryQuestionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
     }
@@ -1333,8 +1333,8 @@ public class UserControl
                         "WHERE rqus_activedetailid = rqusdt_recoveryquestiondetailid AND rqusdt_recoveryquestionname = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = RecoveryQuestionFactory.getInstance().prepareStatement(query);
+
+            var ps = RecoveryQuestionFactory.getInstance().prepareStatement(query);
             
             ps.setString(1, recoveryQuestionName);
             
@@ -1379,7 +1379,7 @@ public class UserControl
     
     public RecoveryQuestionChoicesBean getRecoveryQuestionChoices(String defaultRecoveryQuestionChoice, Language language,
             boolean allowNullChoice) {
-        List<RecoveryQuestion> recoveryQuestions = getRecoveryQuestions();
+        var recoveryQuestions = getRecoveryQuestions();
         var size = recoveryQuestions.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -1391,7 +1391,7 @@ public class UserControl
         }
         
         for(var recoveryQuestion : recoveryQuestions) {
-            RecoveryQuestionDetail recoveryQuestionDetail = recoveryQuestion.getLastDetail();
+            var recoveryQuestionDetail = recoveryQuestion.getLastDetail();
             var label = getBestRecoveryQuestionDescription(recoveryQuestion, language);
             var value = recoveryQuestionDetail.getRecoveryQuestionName();
             
@@ -1412,7 +1412,7 @@ public class UserControl
     
     public List<RecoveryQuestionTransfer> getRecoveryQuestionTransfers(UserVisit userVisit, Collection<RecoveryQuestion> recoveryQuestions) {
         List<RecoveryQuestionTransfer> recoveryQuestionTransfers = new ArrayList<>(recoveryQuestions.size());
-        RecoveryQuestionTransferCache recoveryQuestionTransferCache = getUserTransferCaches(userVisit).getRecoveryQuestionTransferCache();
+        var recoveryQuestionTransferCache = getUserTransferCaches(userVisit).getRecoveryQuestionTransferCache();
         
         recoveryQuestions.forEach((recoveryQuestion) ->
                 recoveryQuestionTransfers.add(recoveryQuestionTransferCache.getRecoveryQuestionTransfer(recoveryQuestion))
@@ -1428,25 +1428,25 @@ public class UserControl
     private void updateRecoveryQuestionFromValue(RecoveryQuestionDetailValue recoveryQuestionDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(recoveryQuestionDetailValue.hasBeenModified()) {
-            RecoveryQuestion recoveryQuestion = RecoveryQuestionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var recoveryQuestion = RecoveryQuestionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      recoveryQuestionDetailValue.getRecoveryQuestionPK());
-            RecoveryQuestionDetail recoveryQuestionDetail = recoveryQuestion.getActiveDetailForUpdate();
+            var recoveryQuestionDetail = recoveryQuestion.getActiveDetailForUpdate();
             
             recoveryQuestionDetail.setThruTime(session.START_TIME_LONG);
             recoveryQuestionDetail.store();
-            
-            RecoveryQuestionPK recoveryQuestionPK = recoveryQuestionDetail.getRecoveryQuestionPK();
-            String recoveryQuestionName = recoveryQuestionDetailValue.getRecoveryQuestionName();
-            Boolean isDefault = recoveryQuestionDetailValue.getIsDefault();
-            Integer sortOrder = recoveryQuestionDetailValue.getSortOrder();
+
+            var recoveryQuestionPK = recoveryQuestionDetail.getRecoveryQuestionPK();
+            var recoveryQuestionName = recoveryQuestionDetailValue.getRecoveryQuestionName();
+            var isDefault = recoveryQuestionDetailValue.getIsDefault();
+            var sortOrder = recoveryQuestionDetailValue.getSortOrder();
             
             if(checkDefault) {
-                RecoveryQuestion defaultRecoveryQuestion = getDefaultRecoveryQuestion();
-                boolean defaultFound = defaultRecoveryQuestion != null && !defaultRecoveryQuestion.equals(recoveryQuestion);
+                var defaultRecoveryQuestion = getDefaultRecoveryQuestion();
+                var defaultFound = defaultRecoveryQuestion != null && !defaultRecoveryQuestion.equals(recoveryQuestion);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    RecoveryQuestionDetailValue defaultRecoveryQuestionDetailValue = getDefaultRecoveryQuestionDetailValueForUpdate();
+                    var defaultRecoveryQuestionDetailValue = getDefaultRecoveryQuestionDetailValueForUpdate();
                     
                     defaultRecoveryQuestionDetailValue.setIsDefault(Boolean.FALSE);
                     updateRecoveryQuestionFromValue(defaultRecoveryQuestionDetailValue, false, updatedBy);
@@ -1473,23 +1473,23 @@ public class UserControl
     public void deleteRecoveryQuestion(RecoveryQuestion recoveryQuestion, BasePK deletedBy) {
         deleteRecoveryQuestionDescriptionsByRecoveryQuestion(recoveryQuestion, deletedBy);
         deleteRecoveryAnswersByRecoveryQuestion(recoveryQuestion, deletedBy);
-        
-        RecoveryQuestionDetail recoveryQuestionDetail = recoveryQuestion.getLastDetailForUpdate();
+
+        var recoveryQuestionDetail = recoveryQuestion.getLastDetailForUpdate();
         recoveryQuestionDetail.setThruTime(session.START_TIME_LONG);
         recoveryQuestion.setActiveDetail(null);
         recoveryQuestion.store();
         
         // Check for default, and pick one if necessary
-        RecoveryQuestion defaultRecoveryQuestion = getDefaultRecoveryQuestion();
+        var defaultRecoveryQuestion = getDefaultRecoveryQuestion();
         if(defaultRecoveryQuestion == null) {
-            List<RecoveryQuestion> recoveryQuestions = getRecoveryQuestionsForUpdate();
+            var recoveryQuestions = getRecoveryQuestionsForUpdate();
             
             if(!recoveryQuestions.isEmpty()) {
-                Iterator<RecoveryQuestion> iter = recoveryQuestions.iterator();
+                var iter = recoveryQuestions.iterator();
                 if(iter.hasNext()) {
                     defaultRecoveryQuestion = iter.next();
                 }
-                RecoveryQuestionDetailValue recoveryQuestionDetailValue = Objects.requireNonNull(defaultRecoveryQuestion).getLastDetailForUpdate().getRecoveryQuestionDetailValue().clone();
+                var recoveryQuestionDetailValue = Objects.requireNonNull(defaultRecoveryQuestion).getLastDetailForUpdate().getRecoveryQuestionDetailValue().clone();
                 
                 recoveryQuestionDetailValue.setIsDefault(Boolean.TRUE);
                 updateRecoveryQuestionFromValue(recoveryQuestionDetailValue, false, deletedBy);
@@ -1509,7 +1509,7 @@ public class UserControl
     
     public RecoveryQuestionDescription createRecoveryQuestionDescription(RecoveryQuestion recoveryQuestion, Language language,
             String description, BasePK createdBy) {
-        RecoveryQuestionDescription recoveryQuestionDescription = RecoveryQuestionDescriptionFactory.getInstance().create(session,
+        var recoveryQuestionDescription = RecoveryQuestionDescriptionFactory.getInstance().create(session,
                 recoveryQuestion, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(recoveryQuestion.getPrimaryKey(), EventTypes.MODIFY, recoveryQuestionDescription.getPrimaryKey(),
@@ -1535,8 +1535,8 @@ public class UserControl
                         "WHERE rqusd_rqus_recoveryquestionid = ? AND rqusd_lang_languageid = ? AND rqusd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = RecoveryQuestionDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = RecoveryQuestionDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, recoveryQuestion.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -1584,8 +1584,8 @@ public class UserControl
                         "WHERE rqusd_rqus_recoveryquestionid = ? AND rqusd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = RecoveryQuestionDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = RecoveryQuestionDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, recoveryQuestion.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1608,7 +1608,7 @@ public class UserControl
     
     public String getBestRecoveryQuestionDescription(RecoveryQuestion recoveryQuestion, Language language) {
         String description;
-        RecoveryQuestionDescription recoveryQuestionDescription = getRecoveryQuestionDescription(recoveryQuestion, language);
+        var recoveryQuestionDescription = getRecoveryQuestionDescription(recoveryQuestion, language);
         
         if(recoveryQuestionDescription == null && !language.getIsDefault()) {
             recoveryQuestionDescription = getRecoveryQuestionDescription(recoveryQuestion, getPartyControl().getDefaultLanguage());
@@ -1628,9 +1628,9 @@ public class UserControl
     }
     
     public List<RecoveryQuestionDescriptionTransfer> getRecoveryQuestionDescriptionTransfers(UserVisit userVisit, RecoveryQuestion recoveryQuestion) {
-        List<RecoveryQuestionDescription> recoveryQuestionDescriptions = getRecoveryQuestionDescriptionsByRecoveryQuestion(recoveryQuestion);
+        var recoveryQuestionDescriptions = getRecoveryQuestionDescriptionsByRecoveryQuestion(recoveryQuestion);
         List<RecoveryQuestionDescriptionTransfer> recoveryQuestionDescriptionTransfers = new ArrayList<>(recoveryQuestionDescriptions.size());
-        RecoveryQuestionDescriptionTransferCache recoveryQuestionDescriptionTransferCache = getUserTransferCaches(userVisit).getRecoveryQuestionDescriptionTransferCache();
+        var recoveryQuestionDescriptionTransferCache = getUserTransferCaches(userVisit).getRecoveryQuestionDescriptionTransferCache();
         
         recoveryQuestionDescriptions.forEach((recoveryQuestionDescription) ->
                 recoveryQuestionDescriptionTransfers.add(recoveryQuestionDescriptionTransferCache.getRecoveryQuestionDescriptionTransfer(recoveryQuestionDescription))
@@ -1641,15 +1641,15 @@ public class UserControl
     
     public void updateRecoveryQuestionDescriptionFromValue(RecoveryQuestionDescriptionValue recoveryQuestionDescriptionValue, BasePK updatedBy) {
         if(recoveryQuestionDescriptionValue.hasBeenModified()) {
-            RecoveryQuestionDescription recoveryQuestionDescription = RecoveryQuestionDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var recoveryQuestionDescription = RecoveryQuestionDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      recoveryQuestionDescriptionValue.getPrimaryKey());
             
             recoveryQuestionDescription.setThruTime(session.START_TIME_LONG);
             recoveryQuestionDescription.store();
-            
-            RecoveryQuestion recoveryQuestion = recoveryQuestionDescription.getRecoveryQuestion();
-            Language language = recoveryQuestionDescription.getLanguage();
-            String description = recoveryQuestionDescriptionValue.getDescription();
+
+            var recoveryQuestion = recoveryQuestionDescription.getRecoveryQuestion();
+            var language = recoveryQuestionDescription.getLanguage();
+            var description = recoveryQuestionDescriptionValue.getDescription();
             
             recoveryQuestionDescription = RecoveryQuestionDescriptionFactory.getInstance().create(recoveryQuestion, language,
                     description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1667,7 +1667,7 @@ public class UserControl
     }
     
     public void deleteRecoveryQuestionDescriptionsByRecoveryQuestion(RecoveryQuestion recoveryQuestion, BasePK deletedBy) {
-        List<RecoveryQuestionDescription> recoveryQuestionDescriptions = getRecoveryQuestionDescriptionsByRecoveryQuestionForUpdate(recoveryQuestion);
+        var recoveryQuestionDescriptions = getRecoveryQuestionDescriptionsByRecoveryQuestionForUpdate(recoveryQuestion);
         
         recoveryQuestionDescriptions.forEach((recoveryQuestionDescription) -> 
                 deleteRecoveryQuestionDescription(recoveryQuestionDescription, deletedBy)
@@ -1679,8 +1679,8 @@ public class UserControl
     // --------------------------------------------------------------------------------
     
     public RecoveryAnswer createRecoveryAnswer(Party party, RecoveryQuestion recoveryQuestion, String answer, BasePK createdBy) {
-        RecoveryAnswer recoveryAnswer = RecoveryAnswerFactory.getInstance().create();
-        RecoveryAnswerDetail recoveryAnswerDetail = RecoveryAnswerDetailFactory.getInstance().create(recoveryAnswer,
+        var recoveryAnswer = RecoveryAnswerFactory.getInstance().create();
+        var recoveryAnswerDetail = RecoveryAnswerDetailFactory.getInstance().create(recoveryAnswer,
                 party, recoveryQuestion, answer, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -1779,7 +1779,7 @@ public class UserControl
     }
     
     public RecoveryAnswerTransfer getRecoveryAnswerTransfer(UserVisit userVisit, Party party) {
-        RecoveryAnswer recoveryAnswer = getRecoveryAnswer(party);
+        var recoveryAnswer = getRecoveryAnswer(party);
         
         return recoveryAnswer == null? null: getRecoveryAnswerTransfer(userVisit, recoveryAnswer);
     }
@@ -1790,16 +1790,16 @@ public class UserControl
     
     public void updateRecoveryAnswerFromValue(RecoveryAnswerDetailValue recoveryAnswerDetailValue, BasePK updatedBy) {
         if(recoveryAnswerDetailValue.hasBeenModified()) {
-            RecoveryAnswer recoveryAnswer = RecoveryAnswerFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, recoveryAnswerDetailValue.getRecoveryAnswerPK());
-            RecoveryAnswerDetail recoveryAnswerDetail = recoveryAnswer.getActiveDetailForUpdate();
+            var recoveryAnswer = RecoveryAnswerFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, recoveryAnswerDetailValue.getRecoveryAnswerPK());
+            var recoveryAnswerDetail = recoveryAnswer.getActiveDetailForUpdate();
 
             recoveryAnswerDetail.setThruTime(session.START_TIME_LONG);
             recoveryAnswerDetail.store();
 
-            RecoveryAnswerPK recoveryAnswerPK = recoveryAnswerDetail.getRecoveryAnswerPK();
-            PartyPK partyPK = recoveryAnswerDetail.getPartyPK(); // Not updated
-            RecoveryQuestionPK recoveryQuestionPK = recoveryAnswerDetailValue.getRecoveryQuestionPK();
-            String answer = recoveryAnswerDetailValue.getAnswer();
+            var recoveryAnswerPK = recoveryAnswerDetail.getRecoveryAnswerPK();
+            var partyPK = recoveryAnswerDetail.getPartyPK(); // Not updated
+            var recoveryQuestionPK = recoveryAnswerDetailValue.getRecoveryQuestionPK();
+            var answer = recoveryAnswerDetailValue.getAnswer();
 
             recoveryAnswerDetail = RecoveryAnswerDetailFactory.getInstance().create(recoveryAnswerPK, partyPK, recoveryQuestionPK, answer,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1812,7 +1812,7 @@ public class UserControl
     }
     
     public void deleteRecoveryAnswer(RecoveryAnswer recoveryAnswer, BasePK deletedBy) {
-        RecoveryAnswerDetail recoveryAnswerDetail = recoveryAnswer.getLastDetailForUpdate();
+        var recoveryAnswerDetail = recoveryAnswer.getLastDetailForUpdate();
         recoveryAnswerDetail.setThruTime(session.START_TIME_LONG);
         recoveryAnswer.setActiveDetail(null);
         recoveryAnswer.store();
@@ -1821,7 +1821,7 @@ public class UserControl
     }
     
     public void deleteRecoveryAnswerByParty(Party party, BasePK deletedBy) {
-        RecoveryAnswer recoveryAnswer = getRecoveryAnswerForUpdate(party);
+        var recoveryAnswer = getRecoveryAnswerForUpdate(party);
         
         if(recoveryAnswer != null) {
             deleteRecoveryAnswer(recoveryAnswer, deletedBy);
@@ -1847,7 +1847,7 @@ public class UserControl
     }
     
     public List<UserLoginPasswordEncoderType> getUserLoginPasswordEncoderTypes() {
-        PreparedStatement ps = UserLoginPasswordEncoderTypeFactory.getInstance().prepareStatement(
+        var ps = UserLoginPasswordEncoderTypeFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
                 "FROM userloginpasswordencodertypes " +
                 "ORDER BY ulogpet_userloginpasswordencodertypename");
@@ -1859,7 +1859,7 @@ public class UserControl
         UserLoginPasswordEncoderType sequenceEncoderType;
         
         try {
-            PreparedStatement ps = UserLoginPasswordEncoderTypeFactory.getInstance().prepareStatement(
+            var ps = UserLoginPasswordEncoderTypeFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM userloginpasswordencodertypes " +
                     "WHERE ulogpet_userloginpasswordencodertypename = ?");
@@ -1892,7 +1892,7 @@ public class UserControl
         UserLoginPasswordEncoderTypeDescription sequenceEncoderTypeDescription;
         
         try {
-            PreparedStatement ps = UserLoginPasswordEncoderTypeDescriptionFactory.getInstance().prepareStatement(
+            var ps = UserLoginPasswordEncoderTypeDescriptionFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM userloginpasswordencodertypedescriptions " +
                     "WHERE ulogpetd_ulogpet_userloginpasswordencodertypeid = ? AND ulogpetd_lang_languageid = ?");
@@ -1911,7 +1911,7 @@ public class UserControl
     
     public String getBestUserLoginPasswordEncoderTypeDescription(UserLoginPasswordEncoderType userLoginPasswordEncoderType, Language language) {
         String description;
-        UserLoginPasswordEncoderTypeDescription userLoginPasswordEncoderTypeDescription = getUserLoginPasswordEncoderTypeDescription(userLoginPasswordEncoderType,
+        var userLoginPasswordEncoderTypeDescription = getUserLoginPasswordEncoderTypeDescription(userLoginPasswordEncoderType,
                 language);
         
         if(userLoginPasswordEncoderTypeDescription == null && !language.getIsDefault()) {
@@ -1941,7 +1941,7 @@ public class UserControl
         UserLoginPasswordType userLoginPasswordType;
         
         try {
-            PreparedStatement ps = UserLoginPasswordTypeFactory.getInstance().prepareStatement(
+            var ps = UserLoginPasswordTypeFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM userloginpasswordtypes " +
                     "WHERE ulogpt_userloginpasswordtypename = ?");
@@ -1972,7 +1972,7 @@ public class UserControl
         UserLoginPasswordTypeDescription userLoginPasswordTypeDescription;
         
         try {
-            PreparedStatement ps = UserLoginPasswordTypeDescriptionFactory.getInstance().prepareStatement(
+            var ps = UserLoginPasswordTypeDescriptionFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM userloginpasswordtypedescriptions " +
                     "WHERE ulogptd_ulogpt_userloginpasswordtypeid = ? AND ulogptd_lang_languageid = ?");
@@ -1990,7 +1990,7 @@ public class UserControl
     
     public String getBestUserLoginPasswordTypeDescription(UserLoginPasswordType userLoginPasswordType, Language language) {
         String description;
-        UserLoginPasswordTypeDescription userLoginPasswordTypeDescription = getUserLoginPasswordTypeDescription(userLoginPasswordType,
+        var userLoginPasswordTypeDescription = getUserLoginPasswordTypeDescription(userLoginPasswordType,
                 language);
 
         if(userLoginPasswordTypeDescription == null && !language.getIsDefault()) {
@@ -2012,7 +2012,7 @@ public class UserControl
     // --------------------------------------------------------------------------------
     
     public UserLoginPassword createUserLoginPassword(Party party, UserLoginPasswordType userLoginPasswordType, BasePK createdBy) {
-        UserLoginPassword userLoginPassword = UserLoginPasswordFactory.getInstance().create(party, userLoginPasswordType,
+        var userLoginPassword = UserLoginPasswordFactory.getInstance().create(party, userLoginPasswordType,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, userLoginPassword.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2096,7 +2096,7 @@ public class UserControl
 
     public List<UserLoginPasswordTransfer> getUserLoginPasswordTransfers(UserVisit userVisit, Collection<UserLoginPassword> userLoginPasswords) {
         List<UserLoginPasswordTransfer> userLoginPasswordTransfers = new ArrayList<>(userLoginPasswords.size());
-        UserLoginPasswordTransferCache userLoginPasswordTransferCache = getUserTransferCaches(userVisit).getUserLoginPasswordTransferCache();
+        var userLoginPasswordTransferCache = getUserTransferCaches(userVisit).getUserLoginPasswordTransferCache();
 
         userLoginPasswords.forEach((userLoginPassword) ->
                 userLoginPasswordTransfers.add(userLoginPasswordTransferCache.getUserLoginPasswordTransfer(userLoginPassword))
@@ -2110,7 +2110,7 @@ public class UserControl
     }
 
     public void deleteUserLoginPassword(UserLoginPassword userLoginPassword, BasePK deletedBy) {
-        String userLoginPasswordTypeName = userLoginPassword.getUserLoginPasswordType().getUserLoginPasswordTypeName();
+        var userLoginPasswordTypeName = userLoginPassword.getUserLoginPasswordType().getUserLoginPasswordTypeName();
         
         userLoginPassword.setThruTime(session.START_TIME_LONG);
         userLoginPassword.store();
@@ -2139,14 +2139,14 @@ public class UserControl
     
     public UserLoginPasswordString createUserLoginPasswordString(UserLoginPassword userLoginPassword, String password, Long changedTime, Boolean wasReset,
             BasePK createdBy) {
-        UserLoginPasswordEncoderType userLoginPasswordEncoderType = userLoginPassword.getUserLoginPasswordType().getUserLoginPasswordEncoderType();
+        var userLoginPasswordEncoderType = userLoginPassword.getUserLoginPasswordType().getUserLoginPasswordEncoderType();
         String salt = null;
         
         if(userLoginPasswordEncoderType != null) {
-            String userLoginPasswordEncoderTypeName = userLoginPasswordEncoderType.getUserLoginPasswordEncoderTypeName();
+            var userLoginPasswordEncoderTypeName = userLoginPasswordEncoderType.getUserLoginPasswordEncoderTypeName();
             
             if(userLoginPasswordEncoderTypeName.equals(UserConstants.UserLoginPasswordEncoderType_SHA1)) {
-                Sha1Utils passwordUtils = Sha1Utils.getInstance();
+                var passwordUtils = Sha1Utils.getInstance();
                 
                 salt = passwordUtils.generateSalt();
                 password = passwordUtils.encode(salt, password);
@@ -2154,8 +2154,8 @@ public class UserControl
             
             // UserLoginPasswordEncoderType_TEXT requires no further action.
         }
-        
-        UserLoginPasswordString userLoginPasswordString = UserLoginPasswordStringFactory.getInstance().create(session,
+
+        var userLoginPasswordString = UserLoginPasswordStringFactory.getInstance().create(session,
                 userLoginPassword, salt, password, changedTime, wasReset, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(userLoginPassword.getPartyPK(), EventTypes.MODIFY, userLoginPasswordString.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2167,7 +2167,7 @@ public class UserControl
         UserLoginPasswordString userLoginPasswordString;
         
         try {
-            PreparedStatement ps = UserLoginPasswordStringFactory.getInstance().prepareStatement(
+            var ps = UserLoginPasswordStringFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM userloginpasswordstrings " +
                     "WHERE ulogps_ulogp_userloginpasswordid = ? AND ulogps_thrutime = ?");
@@ -2204,7 +2204,7 @@ public class UserControl
         List<UserLoginPasswordString> userLoginPasswordStrings;
         
         try {
-            PreparedStatement ps = UserLoginPasswordStringFactory.getInstance().prepareStatement(
+            var ps = UserLoginPasswordStringFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM userloginpasswordstrings " +
                     "WHERE ulogps_ulogp_userloginpasswordid = ? ORDER BY ulogps_fromtime DESC LIMIT " + limit);
@@ -2229,27 +2229,27 @@ public class UserControl
     
     public void updateUserLoginPasswordStringFromValue(UserLoginPasswordStringValue userLoginPasswordStringValue, BasePK updatedBy) {
         if(userLoginPasswordStringValue.hasBeenModified()) {
-            UserLoginPasswordString userLoginPasswordString = UserLoginPasswordStringFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var userLoginPasswordString = UserLoginPasswordStringFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      userLoginPasswordStringValue.getPrimaryKey());
             
             userLoginPasswordString.setThruTime(session.START_TIME_LONG);
             userLoginPasswordString.store();
-            
-            UserLoginPassword userLoginPassword = userLoginPasswordString.getUserLoginPassword();
-            UserLoginPasswordPK userLoginPasswordPK = userLoginPassword.getPrimaryKey();
-            String salt = userLoginPasswordStringValue.getSalt();
-            String password = userLoginPasswordStringValue.getPassword();
-            Long changedTime = userLoginPasswordStringValue.getChangedTime();
-            Boolean wasReset = userLoginPasswordStringValue.getWasReset();
+
+            var userLoginPassword = userLoginPasswordString.getUserLoginPassword();
+            var userLoginPasswordPK = userLoginPassword.getPrimaryKey();
+            var salt = userLoginPasswordStringValue.getSalt();
+            var password = userLoginPasswordStringValue.getPassword();
+            var changedTime = userLoginPasswordStringValue.getChangedTime();
+            var wasReset = userLoginPasswordStringValue.getWasReset();
             
             if(userLoginPasswordStringValue.getSaltHasBeenModified() || userLoginPasswordStringValue.getPasswordHasBeenModified()) {
-                UserLoginPasswordEncoderType userLoginPasswordEncoderType = userLoginPassword.getUserLoginPasswordType().getUserLoginPasswordEncoderType();
+                var userLoginPasswordEncoderType = userLoginPassword.getUserLoginPasswordType().getUserLoginPasswordEncoderType();
                 
                 if(userLoginPasswordEncoderType != null) {
-                    String userLoginPasswordEncoderTypeName = userLoginPasswordEncoderType.getUserLoginPasswordEncoderTypeName();
+                    var userLoginPasswordEncoderTypeName = userLoginPasswordEncoderType.getUserLoginPasswordEncoderTypeName();
                     
                     if(userLoginPasswordEncoderTypeName.equals(UserConstants.UserLoginPasswordEncoderType_SHA1)) {
-                        Sha1Utils passwordUtils = Sha1Utils.getInstance();
+                        var passwordUtils = Sha1Utils.getInstance();
                         
                         salt = passwordUtils.generateSalt();
                         password = passwordUtils.encode(salt, password);
@@ -2278,7 +2278,7 @@ public class UserControl
     // --------------------------------------------------------------------------------
     
     public UserLogin createUserLogin(Party party, String username, BasePK createdBy) {
-        UserLogin userLogin = UserLoginFactory.getInstance().create(party, username, session.START_TIME_LONG,
+        var userLogin = UserLoginFactory.getInstance().create(party, username, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, userLogin.getPrimaryKey(), null, createdBy);
@@ -2304,8 +2304,8 @@ public class UserControl
                         "WHERE ulog_par_partyid = ? AND ulog_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = UserLoginFactory.getInstance().prepareStatement(query);
+
+            var ps = UserLoginFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, party.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -2350,8 +2350,8 @@ public class UserControl
                         "WHERE ulog_username = ? AND ulog_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = UserLoginFactory.getInstance().prepareStatement(query);
+
+            var ps = UserLoginFactory.getInstance().prepareStatement(query);
             
             ps.setString(1, username);
             ps.setLong(2, Session.MAX_TIME);
@@ -2373,7 +2373,7 @@ public class UserControl
     }
     
     public UserLoginTransfer getUserLoginTransfer(UserVisit userVisit, Party party) {
-        UserLogin userLogin = getUserLogin(party);
+        var userLogin = getUserLogin(party);
         
         return userLogin == null? null: getUserLoginTransfer(userVisit, userLogin);
     }
@@ -2384,14 +2384,14 @@ public class UserControl
     
     public void updateUserLoginFromValue(UserLoginValue userLoginValue, BasePK updatedBy) {
         if(userLoginValue.hasBeenModified()) {
-            UserLogin userLogin = UserLoginFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var userLogin = UserLoginFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     userLoginValue.getPrimaryKey());
             
             userLogin.setThruTime(session.START_TIME_LONG);
             userLogin.store();
-            
-            PartyPK partyPK = userLogin.getPartyPK(); // Not updated
-            String username = userLoginValue.getUsername();
+
+            var partyPK = userLogin.getPartyPK(); // Not updated
+            var username = userLoginValue.getUsername();
             
             userLogin = UserLoginFactory.getInstance().create(partyPK, username, session.START_TIME_LONG,
                     Session.MAX_TIME_LONG);
@@ -2401,7 +2401,7 @@ public class UserControl
     }
     
     public void deleteUserLogin(UserLogin userLogin, BasePK deletedBy) {
-        Party party = userLogin.getParty();
+        var party = userLogin.getParty();
         
         deleteUserLoginPasswordsByParty(party, deletedBy);
         deleteRecoveryAnswerByParty(party, deletedBy);
@@ -2413,7 +2413,7 @@ public class UserControl
     }
     
     public void deleteUserLoginByParty(Party party, BasePK deletedBy) {
-        UserLogin userLogin = getUserLoginForUpdate(party);
+        var userLogin = getUserLoginForUpdate(party);
         
         if(userLogin != null) {
             deleteUserLogin(userLogin, deletedBy);
@@ -2444,8 +2444,8 @@ public class UserControl
                         "WHERE ulogst_par_partyid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = UserLoginStatusFactory.getInstance().prepareStatement(query);
+
+            var ps = UserLoginStatusFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, party.getPrimaryKey().getEntityId());
             
@@ -2470,7 +2470,7 @@ public class UserControl
     }
     
     public void removeUserLoginStatusByParty(Party party) {
-        UserLoginStatus userLoginStatus = getUserLoginStatusForUpdate(party);
+        var userLoginStatus = getUserLoginStatusForUpdate(party);
         
         if(userLoginStatus != null) {
             removeUserLoginStatus(userLoginStatus);
@@ -2485,7 +2485,7 @@ public class UserControl
         Party party = null;
 
         if(userVisit != null) {
-            UserSession userSession = getUserSessionByUserVisit(userVisit);
+            var userSession = getUserSessionByUserVisit(userVisit);
 
             if(userSession != null) {
                 party = userSession.getParty();
@@ -2506,7 +2506,7 @@ public class UserControl
     }
 
     public PartyPK getPartyPKFromUserVisitPK(UserVisitPK userVisitPK) {
-        Party party = getPartyFromUserVisitPK(userVisitPK);
+        var party = getPartyFromUserVisitPK(userVisitPK);
         return party == null? null: party.getPrimaryKey();
     }
     

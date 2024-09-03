@@ -38,12 +38,12 @@ public class PartyTypeContactListGroupTransferCache
     }
     
     public PartyTypeContactListGroupTransfer getPartyTypeContactListGroupTransfer(PartyTypeContactListGroup partyTypeContactListGroup) {
-        PartyTypeContactListGroupTransfer partyTypeContactListGroupTransfer = get(partyTypeContactListGroup);
+        var partyTypeContactListGroupTransfer = get(partyTypeContactListGroup);
         
         if(partyTypeContactListGroupTransfer == null) {
-            PartyTypeTransfer partyTypeTransfer = partyControl.getPartyTypeTransfer(userVisit, partyTypeContactListGroup.getPartyType());
-            ContactListGroupTransfer contactListGroupTransfer = contactListControl.getContactListGroupTransfer(userVisit, partyTypeContactListGroup.getContactListGroup());
-            Boolean addWhenCreated = partyTypeContactListGroup.getAddWhenCreated();
+            var partyTypeTransfer = partyControl.getPartyTypeTransfer(userVisit, partyTypeContactListGroup.getPartyType());
+            var contactListGroupTransfer = contactListControl.getContactListGroupTransfer(userVisit, partyTypeContactListGroup.getContactListGroup());
+            var addWhenCreated = partyTypeContactListGroup.getAddWhenCreated();
             
             partyTypeContactListGroupTransfer = new PartyTypeContactListGroupTransfer(partyTypeTransfer, contactListGroupTransfer, addWhenCreated);
             put(partyTypeContactListGroup, partyTypeContactListGroupTransfer);

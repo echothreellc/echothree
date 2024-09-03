@@ -169,53 +169,53 @@ public class VendorTransferCache
     }
 
     public VendorTransfer getTransfer(Party party) {
-        VendorTransfer vendorTransfer = get(party);
+        var vendorTransfer = get(party);
 
         if(vendorTransfer == null) {
-            PartyDetail partyDetail = party.getLastDetail();
-            String partyName = partyDetail.getPartyName();
-            PartyTypeTransfer partyTypeTransfer = partyControl.getPartyTypeTransfer(userVisit, partyDetail.getPartyType());
-            Language preferredLanguage = partyDetail.getPreferredLanguage();
-            LanguageTransfer preferredLanguageTransfer = preferredLanguage == null ? null : partyControl.getLanguageTransfer(userVisit, preferredLanguage);
-            Currency preferredCurrency = partyDetail.getPreferredCurrency();
-            CurrencyTransfer preferredCurrencyTransfer = preferredCurrency == null ? null : accountingControl.getCurrencyTransfer(userVisit, preferredCurrency);
-            TimeZone preferredTimeZone = partyDetail.getPreferredTimeZone();
-            TimeZoneTransfer preferredTimeZoneTransfer = preferredTimeZone == null ? null : partyControl.getTimeZoneTransfer(userVisit, preferredTimeZone);
-            DateTimeFormat preferredDateTimeFormat = partyDetail.getPreferredDateTimeFormat();
-            DateTimeFormatTransfer preferredDateTimeFormatTransfer = preferredDateTimeFormat == null ? null : partyControl.getDateTimeFormatTransfer(userVisit, preferredDateTimeFormat);
-            Vendor vendor = vendorControl.getVendor(party);
-            String vendorName = vendor.getVendorName();
-            VendorTypeTransfer vendorType = vendorControl.getVendorTypeTransfer(userVisit, vendor.getVendorType());
-            Integer minimumPurchaseOrderLines = vendor.getMinimumPurchaseOrderLines();
-            Integer maximumPurchaseOrderLines = vendor.getMaximumPurchaseOrderLines();
-            Currency currency = partyControl.getPreferredCurrency(party);
-            Long unformattedMinimumPurchaseOrderAmount = vendor.getMinimumPurchaseOrderAmount();
-            String minimumPurchaseOrderAmount = AmountUtils.getInstance().formatCostLine(currency, unformattedMinimumPurchaseOrderAmount);
-            Long unformattedMaximumPurchaseOrderAmount = vendor.getMaximumPurchaseOrderAmount();
-            String maximumPurchaseOrderAmount = AmountUtils.getInstance().formatCostLine(currency, unformattedMaximumPurchaseOrderAmount);
-            Boolean useItemPurchasingCategories = vendor.getUseItemPurchasingCategories();
-            ItemAliasType defaultItemAliasType = vendor.getDefaultItemAliasType();
-            ItemAliasTypeTransfer defaultItemAliasTypeTransfer = defaultItemAliasType == null ? null : itemControl.getItemAliasTypeTransfer(userVisit, defaultItemAliasType);
-            CancellationPolicy cancellationPolicy = vendor.getCancellationPolicy();
-            CancellationPolicyTransfer cancellationPolicyTransfer = cancellationPolicy == null ? null : cancellationPolicyControl.getCancellationPolicyTransfer(userVisit, cancellationPolicy);
-            ReturnPolicy returnPolicy = vendor.getReturnPolicy();
-            ReturnPolicyTransfer returnPolicyTransfer = returnPolicy == null ? null : returnPolicyControl.getReturnPolicyTransfer(userVisit, returnPolicy);
-            GlAccount apGlAccount = vendor.getApGlAccount();
-            GlAccountTransfer apGlAccountTransfer = apGlAccount == null ? null : accountingControl.getGlAccountTransfer(userVisit, apGlAccount);
-            Boolean holdUntilComplete = vendor.getHoldUntilComplete();
-            Boolean allowBackorders = vendor.getAllowBackorders();
-            Boolean allowSubstitutions = vendor.getAllowSubstitutions();
-            Boolean allowCombiningShipments = vendor.getAllowCombiningShipments();
-            Boolean requireReference = vendor.getRequireReference();
-            Boolean allowReferenceDuplicates = vendor.getAllowReferenceDuplicates();
-            String referenceValidationPattern = vendor.getReferenceValidationPattern();
-            Person person = partyControl.getPerson(party);
-            PersonTransfer personTransfer = person == null ? null : partyControl.getPersonTransfer(userVisit, person);
-            PartyGroup partyGroup = partyControl.getPartyGroup(party);
-            PartyGroupTransfer partyGroupTransfer = partyGroup == null ? null : partyControl.getPartyGroupTransfer(userVisit, partyGroup);
+            var partyDetail = party.getLastDetail();
+            var partyName = partyDetail.getPartyName();
+            var partyTypeTransfer = partyControl.getPartyTypeTransfer(userVisit, partyDetail.getPartyType());
+            var preferredLanguage = partyDetail.getPreferredLanguage();
+            var preferredLanguageTransfer = preferredLanguage == null ? null : partyControl.getLanguageTransfer(userVisit, preferredLanguage);
+            var preferredCurrency = partyDetail.getPreferredCurrency();
+            var preferredCurrencyTransfer = preferredCurrency == null ? null : accountingControl.getCurrencyTransfer(userVisit, preferredCurrency);
+            var preferredTimeZone = partyDetail.getPreferredTimeZone();
+            var preferredTimeZoneTransfer = preferredTimeZone == null ? null : partyControl.getTimeZoneTransfer(userVisit, preferredTimeZone);
+            var preferredDateTimeFormat = partyDetail.getPreferredDateTimeFormat();
+            var preferredDateTimeFormatTransfer = preferredDateTimeFormat == null ? null : partyControl.getDateTimeFormatTransfer(userVisit, preferredDateTimeFormat);
+            var vendor = vendorControl.getVendor(party);
+            var vendorName = vendor.getVendorName();
+            var vendorType = vendorControl.getVendorTypeTransfer(userVisit, vendor.getVendorType());
+            var minimumPurchaseOrderLines = vendor.getMinimumPurchaseOrderLines();
+            var maximumPurchaseOrderLines = vendor.getMaximumPurchaseOrderLines();
+            var currency = partyControl.getPreferredCurrency(party);
+            var unformattedMinimumPurchaseOrderAmount = vendor.getMinimumPurchaseOrderAmount();
+            var minimumPurchaseOrderAmount = AmountUtils.getInstance().formatCostLine(currency, unformattedMinimumPurchaseOrderAmount);
+            var unformattedMaximumPurchaseOrderAmount = vendor.getMaximumPurchaseOrderAmount();
+            var maximumPurchaseOrderAmount = AmountUtils.getInstance().formatCostLine(currency, unformattedMaximumPurchaseOrderAmount);
+            var useItemPurchasingCategories = vendor.getUseItemPurchasingCategories();
+            var defaultItemAliasType = vendor.getDefaultItemAliasType();
+            var defaultItemAliasTypeTransfer = defaultItemAliasType == null ? null : itemControl.getItemAliasTypeTransfer(userVisit, defaultItemAliasType);
+            var cancellationPolicy = vendor.getCancellationPolicy();
+            var cancellationPolicyTransfer = cancellationPolicy == null ? null : cancellationPolicyControl.getCancellationPolicyTransfer(userVisit, cancellationPolicy);
+            var returnPolicy = vendor.getReturnPolicy();
+            var returnPolicyTransfer = returnPolicy == null ? null : returnPolicyControl.getReturnPolicyTransfer(userVisit, returnPolicy);
+            var apGlAccount = vendor.getApGlAccount();
+            var apGlAccountTransfer = apGlAccount == null ? null : accountingControl.getGlAccountTransfer(userVisit, apGlAccount);
+            var holdUntilComplete = vendor.getHoldUntilComplete();
+            var allowBackorders = vendor.getAllowBackorders();
+            var allowSubstitutions = vendor.getAllowSubstitutions();
+            var allowCombiningShipments = vendor.getAllowCombiningShipments();
+            var requireReference = vendor.getRequireReference();
+            var allowReferenceDuplicates = vendor.getAllowReferenceDuplicates();
+            var referenceValidationPattern = vendor.getReferenceValidationPattern();
+            var person = partyControl.getPerson(party);
+            var personTransfer = person == null ? null : partyControl.getPersonTransfer(userVisit, person);
+            var partyGroup = partyControl.getPartyGroup(party);
+            var partyGroupTransfer = partyGroup == null ? null : partyControl.getPartyGroupTransfer(userVisit, partyGroup);
 
-            EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(party.getPrimaryKey());
-            WorkflowEntityStatusTransfer vendorStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
+            var entityInstance = coreControl.getEntityInstanceByBasePK(party.getPrimaryKey());
+            var vendorStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
                     VendorStatusConstants.Workflow_VENDOR_STATUS, entityInstance);
 
             vendorTransfer = new VendorTransfer(partyName, partyTypeTransfer, preferredLanguageTransfer, preferredCurrencyTransfer, preferredTimeZoneTransfer,

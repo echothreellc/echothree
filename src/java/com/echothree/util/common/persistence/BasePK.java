@@ -49,7 +49,7 @@ public class BasePK
     @Override
     public boolean equals(Object obj) {
         if(obj instanceof BasePK) {
-            BasePK that = (BasePK)obj;
+            var that = (BasePK)obj;
             
             return componentVendorName.equals(that.componentVendorName)
                     && entityTypeName.equals(that.entityTypeName)

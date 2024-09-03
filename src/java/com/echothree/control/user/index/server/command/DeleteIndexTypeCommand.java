@@ -63,8 +63,8 @@ public class DeleteIndexTypeCommand
     @Override
     protected BaseResult execute() {
         var indexControl = Session.getModelController(IndexControl.class);
-        String indexTypeName = form.getIndexTypeName();
-        IndexType indexType = indexControl.getIndexTypeByNameForUpdate(indexTypeName);
+        var indexTypeName = form.getIndexTypeName();
+        var indexType = indexControl.getIndexTypeByNameForUpdate(indexTypeName);
         
         if(indexType != null) {
             indexControl.deleteIndexType(indexType, getPartyPK());

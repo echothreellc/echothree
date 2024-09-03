@@ -39,13 +39,13 @@ public class ContentForumTransferCache
     }
 
     public ContentForumTransfer getContentForumTransfer(ContentForum contentForum) {
-        ContentForumTransfer contentForumTransfer = get(contentForum);
+        var contentForumTransfer = get(contentForum);
         
         if(contentForumTransfer == null) {
-            ContentForumDetail contentForumDetail = contentForum.getLastDetail();
-            ContentCollectionTransfer contentCollection = contentControl.getContentCollectionTransfer(userVisit, contentForumDetail.getContentCollection());
-            ForumTransfer forum = forumControl.getForumTransfer(userVisit, contentForumDetail.getForum());
-            Boolean isDefault = contentForumDetail.getIsDefault();
+            var contentForumDetail = contentForum.getLastDetail();
+            var contentCollection = contentControl.getContentCollectionTransfer(userVisit, contentForumDetail.getContentCollection());
+            var forum = forumControl.getForumTransfer(userVisit, contentForumDetail.getForum());
+            var isDefault = contentForumDetail.getIsDefault();
             
             contentForumTransfer = new ContentForumTransfer(contentCollection, forum, isDefault);
             put(contentForum, contentForumTransfer);

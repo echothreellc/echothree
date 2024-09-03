@@ -57,12 +57,12 @@ public class GetForumsCommand
     @Override
     protected BaseResult execute() {
         var forumControl = Session.getModelController(ForumControl.class);
-        GetForumsResult result = ForumResultFactory.getGetForumsResult();
-        String forumGroupName = form.getForumGroupName();
-        ForumGroup forumGroup = forumControl.getForumGroupByName(forumGroupName);
+        var result = ForumResultFactory.getGetForumsResult();
+        var forumGroupName = form.getForumGroupName();
+        var forumGroup = forumControl.getForumGroupByName(forumGroupName);
         
         if(forumGroupName == null || forumGroup != null) {
-            UserVisit userVisit = getUserVisit();
+            var userVisit = getUserVisit();
             
             if(forumGroup == null) {
                 if(session.hasLimit(ForumFactory.class)) {
@@ -71,7 +71,7 @@ public class GetForumsCommand
 
                 result.setForums(forumControl.getForumTransfers(userVisit));
             } else {
-                List<ForumGroupForum> forumGroupForums = forumControl.getForumGroupForumsByForumGroup(forumGroup);
+                var forumGroupForums = forumControl.getForumGroupForumsByForumGroup(forumGroup);
                 List<Forum> forums = new ArrayList<>(forumGroupForums.size());
                 
                 forumGroupForums.forEach((forumGroupForum) -> {

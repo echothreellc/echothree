@@ -47,7 +47,7 @@ public class ApplicationLogic
     
     public Application getApplicationByName(final ExecutionErrorAccumulator eea, final String applicationName) {
         var coreControl = Session.getModelController(CoreControl.class);
-        Application application = coreControl.getApplicationByName(applicationName);
+        var application = coreControl.getApplicationByName(applicationName);
 
         if(application == null) {
             handleExecutionError(UnknownApplicationNameException.class, eea, ExecutionErrors.UnknownApplicationName.name(), applicationName);
@@ -58,7 +58,7 @@ public class ApplicationLogic
     
     public Editor getEditorByName(final ExecutionErrorAccumulator eea, final String editorName) {
         var coreControl = Session.getModelController(CoreControl.class);
-        Editor editor = coreControl.getEditorByName(editorName);
+        var editor = coreControl.getEditorByName(editorName);
 
         if(editor == null) {
             handleExecutionError(UnknownEditorNameException.class, eea, ExecutionErrors.UnknownEditorName.name(), editorName);
@@ -69,7 +69,7 @@ public class ApplicationLogic
     
     public ApplicationEditor getApplicationEditor(final ExecutionErrorAccumulator eea, final Application application, final Editor editor) {
         var coreControl = Session.getModelController(CoreControl.class);
-        ApplicationEditor applicationEditor = coreControl.getApplicationEditor(application, editor);
+        var applicationEditor = coreControl.getApplicationEditor(application, editor);
         
         if(applicationEditor == null) {
             handleExecutionError(UnknownApplicationEditorException.class, eea, ExecutionErrors.UnknownApplicationEditor.name(),
@@ -82,7 +82,7 @@ public class ApplicationLogic
     public ApplicationEditorUse getApplicationEditorUseByName(final ExecutionErrorAccumulator eea, final Application application,
             final String applicationEditorUseName) {
         var coreControl = Session.getModelController(CoreControl.class);
-        ApplicationEditorUse applicationEditorUse = coreControl.getApplicationEditorUseByName(application, applicationEditorUseName);
+        var applicationEditorUse = coreControl.getApplicationEditorUseByName(application, applicationEditorUseName);
 
         if(applicationEditorUse == null) {
             handleExecutionError(UnknownApplicationEditorUseNameException.class, eea, ExecutionErrors.UnknownApplicationEditorUseName.name(),

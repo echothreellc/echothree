@@ -46,9 +46,9 @@ public class CreateUserLoginPasswordEncoderTypeCommand
     
     @Override
     protected BaseResult execute() {
-        UserControl userControl = getUserControl();
-        String userLoginPasswordEncoderTypeName = form.getUserLoginPasswordEncoderTypeName();
-        UserLoginPasswordEncoderType userLoginPasswordEncoderType = userControl.getUserLoginPasswordEncoderTypeByName(userLoginPasswordEncoderTypeName);
+        var userControl = getUserControl();
+        var userLoginPasswordEncoderTypeName = form.getUserLoginPasswordEncoderTypeName();
+        var userLoginPasswordEncoderType = userControl.getUserLoginPasswordEncoderTypeByName(userLoginPasswordEncoderTypeName);
         
         if(userLoginPasswordEncoderType == null) {
             userControl.createUserLoginPasswordEncoderType(userLoginPasswordEncoderTypeName);

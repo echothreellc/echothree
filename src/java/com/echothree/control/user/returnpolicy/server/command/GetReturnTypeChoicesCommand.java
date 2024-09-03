@@ -66,13 +66,13 @@ public class GetReturnTypeChoicesCommand
     @Override
     protected BaseResult execute() {
         var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
-        GetReturnTypeChoicesResult result = ReturnPolicyResultFactory.getGetReturnTypeChoicesResult();
-        String returnKindName = form.getReturnKindName();
-        ReturnKind returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
+        var result = ReturnPolicyResultFactory.getGetReturnTypeChoicesResult();
+        var returnKindName = form.getReturnKindName();
+        var returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
         
         if(returnKind != null) {
-            String defaultReturnTypeChoice = form.getDefaultReturnTypeChoice();
-            boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+            var defaultReturnTypeChoice = form.getDefaultReturnTypeChoice();
+            var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
             
             result.setReturnTypeChoices(returnPolicyControl.getReturnTypeChoices(defaultReturnTypeChoice, getPreferredLanguage(),
                     allowNullChoice, returnKind));

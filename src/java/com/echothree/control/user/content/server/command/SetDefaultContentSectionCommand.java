@@ -64,12 +64,12 @@ public class SetDefaultContentSectionCommand
     @Override
     protected BaseResult execute() {
         var contentControl = Session.getModelController(ContentControl.class);
-        String contentCollectionName = form.getContentCollectionName();
-        ContentCollection contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
+        var contentCollectionName = form.getContentCollectionName();
+        var contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
         
         if(contentCollection != null) {
-            String contentSectionName = form.getContentSectionName();
-            ContentSectionDetailValue contentSectionDetailValue = contentControl.getContentSectionDetailValueByNameForUpdate(contentCollection, contentSectionName);
+            var contentSectionName = form.getContentSectionName();
+            var contentSectionDetailValue = contentControl.getContentSectionDetailValueByNameForUpdate(contentCollection, contentSectionName);
             
             if(contentSectionDetailValue != null) {
                 if(!contentSectionDetailValue.getIsDefault()) {

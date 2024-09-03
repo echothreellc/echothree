@@ -79,20 +79,20 @@ public class TagControl
     // --------------------------------------------------------------------------------
     
     public TagScope createTagScope(String tagScopeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        TagScope defaultTagScope = getDefaultTagScope();
-        boolean defaultFound = defaultTagScope != null;
+        var defaultTagScope = getDefaultTagScope();
+        var defaultFound = defaultTagScope != null;
         
         if(defaultFound && isDefault) {
-            TagScopeDetailValue defaultTagScopeDetailValue = getDefaultTagScopeDetailValueForUpdate();
+            var defaultTagScopeDetailValue = getDefaultTagScopeDetailValueForUpdate();
             
             defaultTagScopeDetailValue.setIsDefault(Boolean.FALSE);
             updateTagScopeFromValue(defaultTagScopeDetailValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        TagScope tagScope = TagScopeFactory.getInstance().create();
-        TagScopeDetail tagScopeDetail = TagScopeDetailFactory.getInstance().create(tagScope,
+
+        var tagScope = TagScopeFactory.getInstance().create();
+        var tagScopeDetail = TagScopeDetailFactory.getInstance().create(tagScope,
                 tagScopeName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -155,8 +155,8 @@ public class TagControl
                     "WHERE ts_activedetailid = tsdt_tagscopedetailid " +
                     "FOR UPDATE";
         }
-        
-        PreparedStatement ps = TagScopeFactory.getInstance().prepareStatement(query);
+
+        var ps = TagScopeFactory.getInstance().prepareStatement(query);
         
         return TagScopeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
     }
@@ -189,8 +189,8 @@ public class TagControl
                         "AND ts_tagscopeid = tent_ts_tagscopeid AND tent_ent_entitytypeid = ? AND tent_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = TagScopeFactory.getInstance().prepareStatement(query);
+
+            var ps = TagScopeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, entityType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -224,8 +224,8 @@ public class TagControl
                     "WHERE ts_activedetailid = tsdt_tagscopedetailid AND tsdt_isdefault = 1 " +
                     "FOR UPDATE";
         }
-        
-        PreparedStatement ps = TagScopeFactory.getInstance().prepareStatement(query);
+
+        var ps = TagScopeFactory.getInstance().prepareStatement(query);
         
         return TagScopeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
     }
@@ -258,8 +258,8 @@ public class TagControl
                         "WHERE ts_activedetailid = tsdt_tagscopedetailid AND tsdt_tagscopename = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = TagScopeFactory.getInstance().prepareStatement(query);
+
+            var ps = TagScopeFactory.getInstance().prepareStatement(query);
             
             ps.setString(1, tagScopeName);
             
@@ -288,7 +288,7 @@ public class TagControl
     }
     
     public TagScopeChoicesBean getTagScopeChoices(String defaultTagScopeChoice, Language language, boolean allowNullChoice) {
-        List<TagScope> tagScopes = getTagScopes();
+        var tagScopes = getTagScopes();
         var size = tagScopes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -304,7 +304,7 @@ public class TagControl
         }
         
         for(var tagScope : tagScopes) {
-            TagScopeDetail tagScopeDetail = tagScope.getLastDetail();
+            var tagScopeDetail = tagScope.getLastDetail();
             var label = getBestTagScopeDescription(tagScope, language);
             var value = tagScopeDetail.getTagScopeName();
             
@@ -326,7 +326,7 @@ public class TagControl
     
     public List<TagScopeTransfer> getTagScopeTransfers(UserVisit userVisit, Collection<TagScope> tagScopes) {
         List<TagScopeTransfer> tagScopeTransfers = new ArrayList<>(tagScopes.size());
-        TagScopeTransferCache tagScopeTransferCache = getTagTransferCaches(userVisit).getTagScopeTransferCache();
+        var tagScopeTransferCache = getTagTransferCaches(userVisit).getTagScopeTransferCache();
         
         tagScopes.forEach((tagScope) ->
                 tagScopeTransfers.add(tagScopeTransferCache.getTagScopeTransfer(tagScope))
@@ -345,25 +345,25 @@ public class TagControl
     
     private void updateTagScopeFromValue(TagScopeDetailValue tagScopeDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(tagScopeDetailValue.hasBeenModified()) {
-            TagScope tagScope = TagScopeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var tagScope = TagScopeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      tagScopeDetailValue.getTagScopePK());
-            TagScopeDetail tagScopeDetail = tagScope.getActiveDetailForUpdate();
+            var tagScopeDetail = tagScope.getActiveDetailForUpdate();
             
             tagScopeDetail.setThruTime(session.START_TIME_LONG);
             tagScopeDetail.store();
-            
-            TagScopePK tagScopePK = tagScopeDetail.getTagScopePK();
-            String tagScopeName = tagScopeDetailValue.getTagScopeName();
-            Boolean isDefault = tagScopeDetailValue.getIsDefault();
-            Integer sortOrder = tagScopeDetailValue.getSortOrder();
+
+            var tagScopePK = tagScopeDetail.getTagScopePK();
+            var tagScopeName = tagScopeDetailValue.getTagScopeName();
+            var isDefault = tagScopeDetailValue.getIsDefault();
+            var sortOrder = tagScopeDetailValue.getSortOrder();
             
             if(checkDefault) {
-                TagScope defaultTagScope = getDefaultTagScope();
-                boolean defaultFound = defaultTagScope != null && !defaultTagScope.equals(tagScope);
+                var defaultTagScope = getDefaultTagScope();
+                var defaultFound = defaultTagScope != null && !defaultTagScope.equals(tagScope);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    TagScopeDetailValue defaultTagScopeDetailValue = getDefaultTagScopeDetailValueForUpdate();
+                    var defaultTagScopeDetailValue = getDefaultTagScopeDetailValueForUpdate();
                     
                     defaultTagScopeDetailValue.setIsDefault(Boolean.FALSE);
                     updateTagScopeFromValue(defaultTagScopeDetailValue, false, updatedBy);
@@ -391,23 +391,23 @@ public class TagControl
         deleteTagScopeDescriptionsByTagScope(tagScope, deletedBy);
         deleteTagScopeEntityTypesByTagScope(tagScope, deletedBy);
         deleteTagsByTagScope(tagScope, deletedBy);
-        
-        TagScopeDetail tagScopeDetail = tagScope.getLastDetailForUpdate();
+
+        var tagScopeDetail = tagScope.getLastDetailForUpdate();
         tagScopeDetail.setThruTime(session.START_TIME_LONG);
         tagScope.setActiveDetail(null);
         tagScope.store();
         
         // Check for default, and pick one if necessary
-        TagScope defaultTagScope = getDefaultTagScope();
+        var defaultTagScope = getDefaultTagScope();
         if(defaultTagScope == null) {
-            List<TagScope> tagScopes = getTagScopesForUpdate();
+            var tagScopes = getTagScopesForUpdate();
             
             if(!tagScopes.isEmpty()) {
-                Iterator<TagScope> iter = tagScopes.iterator();
+                var iter = tagScopes.iterator();
                 if(iter.hasNext()) {
                     defaultTagScope = iter.next();
                 }
-                TagScopeDetailValue tagScopeDetailValue = Objects.requireNonNull(defaultTagScope).getLastDetailForUpdate().getTagScopeDetailValue().clone();
+                var tagScopeDetailValue = Objects.requireNonNull(defaultTagScope).getLastDetailForUpdate().getTagScopeDetailValue().clone();
                 
                 tagScopeDetailValue.setIsDefault(Boolean.TRUE);
                 updateTagScopeFromValue(tagScopeDetailValue, false, deletedBy);
@@ -423,7 +423,7 @@ public class TagControl
     
     public TagScopeDescription createTagScopeDescription(TagScope tagScope, Language language, String description,
             BasePK createdBy) {
-        TagScopeDescription tagScopeDescription = TagScopeDescriptionFactory.getInstance().create(tagScope,
+        var tagScopeDescription = TagScopeDescriptionFactory.getInstance().create(tagScope,
                 language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
@@ -448,8 +448,8 @@ public class TagControl
                         "WHERE tsd_ts_tagscopeid = ? AND tsd_lang_languageid = ? AND tsd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = TagScopeDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = TagScopeDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, tagScope.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -498,8 +498,8 @@ public class TagControl
                         "WHERE tsd_ts_tagscopeid = ? AND tsd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = TagScopeDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = TagScopeDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, tagScope.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -522,7 +522,7 @@ public class TagControl
     
     public String getBestTagScopeDescription(TagScope tagScope, Language language) {
         String description;
-        TagScopeDescription tagScopeDescription = getTagScopeDescription(tagScope, language);
+        var tagScopeDescription = getTagScopeDescription(tagScope, language);
         
         if(tagScopeDescription == null && !language.getIsDefault()) {
             tagScopeDescription = getTagScopeDescription(tagScope, getPartyControl().getDefaultLanguage());
@@ -542,9 +542,9 @@ public class TagControl
     }
     
     public List<TagScopeDescriptionTransfer> getTagScopeDescriptionTransfers(UserVisit userVisit, TagScope tagScope) {
-        List<TagScopeDescription> tagScopeDescriptions = getTagScopeDescriptionsByTagScope(tagScope);
+        var tagScopeDescriptions = getTagScopeDescriptionsByTagScope(tagScope);
         List<TagScopeDescriptionTransfer> tagScopeDescriptionTransfers = new ArrayList<>(tagScopeDescriptions.size());
-        TagScopeDescriptionTransferCache tagScopeDescriptionTransferCache = getTagTransferCaches(userVisit).getTagScopeDescriptionTransferCache();
+        var tagScopeDescriptionTransferCache = getTagTransferCaches(userVisit).getTagScopeDescriptionTransferCache();
         
         tagScopeDescriptions.forEach((tagScopeDescription) ->
                 tagScopeDescriptionTransfers.add(tagScopeDescriptionTransferCache.getTagScopeDescriptionTransfer(tagScopeDescription))
@@ -555,15 +555,15 @@ public class TagControl
     
     public void updateTagScopeDescriptionFromValue(TagScopeDescriptionValue tagScopeDescriptionValue, BasePK updatedBy) {
         if(tagScopeDescriptionValue.hasBeenModified()) {
-            TagScopeDescription tagScopeDescription = TagScopeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var tagScopeDescription = TagScopeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      tagScopeDescriptionValue.getPrimaryKey());
             
             tagScopeDescription.setThruTime(session.START_TIME_LONG);
             tagScopeDescription.store();
-            
-            TagScope tagScope = tagScopeDescription.getTagScope();
-            Language language = tagScopeDescription.getLanguage();
-            String description = tagScopeDescriptionValue.getDescription();
+
+            var tagScope = tagScopeDescription.getTagScope();
+            var language = tagScopeDescription.getLanguage();
+            var description = tagScopeDescriptionValue.getDescription();
             
             tagScopeDescription = TagScopeDescriptionFactory.getInstance().create(tagScope, language,
                     description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -579,7 +579,7 @@ public class TagControl
     }
     
     public void deleteTagScopeDescriptionsByTagScope(TagScope tagScope, BasePK deletedBy) {
-        List<TagScopeDescription> tagScopeDescriptions = getTagScopeDescriptionsByTagScopeForUpdate(tagScope);
+        var tagScopeDescriptions = getTagScopeDescriptionsByTagScopeForUpdate(tagScope);
         
         tagScopeDescriptions.forEach((tagScopeDescription) -> 
                 deleteTagScopeDescription(tagScopeDescription, deletedBy)
@@ -591,7 +591,7 @@ public class TagControl
     // --------------------------------------------------------------------------------
     
     public TagScopeEntityType createTagScopeEntityType(TagScope tagScope, EntityType entityType, BasePK createdBy) {
-        TagScopeEntityType tagScopeEntityType = TagScopeEntityTypeFactory.getInstance().create(tagScope, entityType,
+        var tagScopeEntityType = TagScopeEntityTypeFactory.getInstance().create(tagScope, entityType,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(tagScope.getPrimaryKey(), EventTypes.MODIFY, tagScopeEntityType.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -647,8 +647,8 @@ public class TagControl
                         "WHERE tent_ts_tagscopeid = ? AND tent_ent_entitytypeid = ? AND tent_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = TagScopeEntityTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = TagScopeEntityTypeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, tagScope.getPrimaryKey().getEntityId());
             ps.setLong(2, entityType.getPrimaryKey().getEntityId());
@@ -689,8 +689,8 @@ public class TagControl
                         "WHERE tent_ts_tagscopeid = ? AND tent_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = TagScopeEntityTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = TagScopeEntityTypeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, tagScope.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -730,8 +730,8 @@ public class TagControl
                         "WHERE tent_ent_entitytypeid = ? AND tent_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = TagScopeEntityTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = TagScopeEntityTypeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, entityType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -758,7 +758,7 @@ public class TagControl
     
     public List<TagScopeEntityTypeTransfer> getTagScopeEntityTypeTransfers(UserVisit userVisit, Collection<TagScopeEntityType> tagScopeEntityTypes) {
         List<TagScopeEntityTypeTransfer> tagScopeEntityTypeTransfers = new ArrayList<>(tagScopeEntityTypes.size());
-        TagScopeEntityTypeTransferCache tagScopeEntityTypeTransferCache = getTagTransferCaches(userVisit).getTagScopeEntityTypeTransferCache();
+        var tagScopeEntityTypeTransferCache = getTagTransferCaches(userVisit).getTagScopeEntityTypeTransferCache();
         
         tagScopeEntityTypes.forEach((tagScopeEntityType) ->
                 tagScopeEntityTypeTransfers.add(tagScopeEntityTypeTransferCache.getTagScopeEntityTypeTransfer(tagScopeEntityType))
@@ -800,8 +800,8 @@ public class TagControl
     // --------------------------------------------------------------------------------
     
     public Tag createTag(TagScope tagScope, String tagName, BasePK createdBy) {
-        Tag tag = TagFactory.getInstance().create();
-        TagDetail tagDetail = TagDetailFactory.getInstance().create(tag, tagScope, tagName, session.START_TIME_LONG,
+        var tag = TagFactory.getInstance().create();
+        var tagDetail = TagDetailFactory.getInstance().create(tag, tagScope, tagName, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -868,8 +868,8 @@ public class TagControl
                         "WHERE t_activedetailid = tdt_tagdetailid AND tdt_ts_tagscopeid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = TagFactory.getInstance().prepareStatement(query);
+
+            var ps = TagFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, tagScope.getPrimaryKey().getEntityId());
             
@@ -910,8 +910,8 @@ public class TagControl
                         "AND t_tagid = et_t_tagid AND et_taggedentityinstanceid = ? AND et_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = TagFactory.getInstance().prepareStatement(query);
+
+            var ps = TagFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, tagScope.getPrimaryKey().getEntityId());
             ps.setLong(2, entityInstance.getPrimaryKey().getEntityId());
@@ -949,8 +949,8 @@ public class TagControl
                         "WHERE t_activedetailid = tdt_tagdetailid AND tdt_ts_tagscopeid = ? AND tdt_tagname = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = TagFactory.getInstance().prepareStatement(query);
+
+            var ps = TagFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, tagScope.getPrimaryKey().getEntityId());
             ps.setString(2, tagName);
@@ -980,7 +980,7 @@ public class TagControl
     }
     
     public TagChoicesBean getTagChoices(String defaultTagChoice, Language language, boolean allowNullChoice, TagScope tagScope) {
-        List<Tag> tags = getTags(tagScope);
+        var tags = getTags(tagScope);
         var size = tags.size();
         var values = new ArrayList<String>(size);
         String defaultValue = null;
@@ -994,7 +994,7 @@ public class TagControl
         }
         
         for(var tag : tags) {
-            TagDetail tagDetail = tag.getLastDetail();
+            var tagDetail = tag.getLastDetail();
             var value = tagDetail.getTagName();
             
             values.add(value);
@@ -1014,7 +1014,7 @@ public class TagControl
     
     public List<TagTransfer> getTagTransfers(UserVisit userVisit, Collection<Tag> tags) {
         List<TagTransfer> tagTransfers = new ArrayList<>(tags.size());
-        TagTransferCache tagTransferCache = getTagTransferCaches(userVisit).getTagTransferCache();
+        var tagTransferCache = getTagTransferCaches(userVisit).getTagTransferCache();
         
         tags.forEach((tag) ->
                 tagTransfers.add(tagTransferCache.getTagTransfer(tag))
@@ -1034,16 +1034,16 @@ public class TagControl
     
     public void updateTagFromValue(TagDetailValue tagDetailValue, BasePK updatedBy) {
         if(tagDetailValue.hasBeenModified()) {
-            Tag tag = TagFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var tag = TagFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      tagDetailValue.getTagPK());
-            TagDetail tagDetail = tag.getActiveDetailForUpdate();
+            var tagDetail = tag.getActiveDetailForUpdate();
             
             tagDetail.setThruTime(session.START_TIME_LONG);
             tagDetail.store();
-            
-            TagPK tagPK = tagDetail.getTagPK(); // Not updated
-            TagScopePK tagScopePK = tagDetail.getTagScopePK(); // Not updated
-            String tagName = tagDetailValue.getTagName();
+
+            var tagPK = tagDetail.getTagPK(); // Not updated
+            var tagScopePK = tagDetail.getTagScopePK(); // Not updated
+            var tagName = tagDetailValue.getTagName();
             
             tagDetail = TagDetailFactory.getInstance().create(tagPK, tagScopePK, tagName, session.START_TIME_LONG,
                     Session.MAX_TIME_LONG);
@@ -1057,8 +1057,8 @@ public class TagControl
     
     public void deleteTag(Tag tag, BasePK deletedBy) {
         deleteEntityTagsByTag(tag, deletedBy);
-        
-        TagDetail tagDetail = tag.getLastDetailForUpdate();
+
+        var tagDetail = tag.getLastDetailForUpdate();
         tagDetail.setThruTime(session.START_TIME_LONG);
         tag.setActiveDetail(null);
         tag.store();
@@ -1081,7 +1081,7 @@ public class TagControl
     // --------------------------------------------------------------------------------
     
     public EntityTag createEntityTag(EntityInstance taggedEntityInstance, Tag tag, BasePK createdBy) {
-        EntityTag entityTag = EntityTagFactory.getInstance().create(taggedEntityInstance, tag, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        var entityTag = EntityTagFactory.getInstance().create(taggedEntityInstance, tag, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(taggedEntityInstance, EventTypes.MODIFY, entityTag.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -1121,8 +1121,8 @@ public class TagControl
                         "WHERE et_taggedentityinstanceid = ? AND et_t_tagid = ? AND et_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = EntityTagFactory.getInstance().prepareStatement(query);
+
+            var ps = EntityTagFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, taggedEntityInstance.getPrimaryKey().getEntityId());
             ps.setLong(2, tag.getPrimaryKey().getEntityId());
@@ -1171,8 +1171,8 @@ public class TagControl
                         "WHERE et_taggedentityinstanceid = ? AND et_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = EntityTagFactory.getInstance().prepareStatement(query);
+
+            var ps = EntityTagFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, taggedEntityInstance.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1214,8 +1214,8 @@ public class TagControl
                         "WHERE et_t_tagid = ? AND et_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = EntityTagFactory.getInstance().prepareStatement(query);
+
+            var ps = EntityTagFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, tag.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1242,7 +1242,7 @@ public class TagControl
     
     public List<EntityTagTransfer> getEntityTagTransfers(UserVisit userVisit, Collection<EntityTag> entityTags) {
         List<EntityTagTransfer> entityTagTransfers = new ArrayList<>(entityTags.size());
-        EntityTagTransferCache entityTagTransferCache = getTagTransferCaches(userVisit).getEntityTagTransferCache();
+        var entityTagTransferCache = getTagTransferCaches(userVisit).getEntityTagTransferCache();
         
         entityTags.forEach((entityTag) ->
                 entityTagTransfers.add(entityTagTransferCache.getEntityTagTransfer(entityTag))
@@ -1260,7 +1260,7 @@ public class TagControl
     }
     
     public void deleteEntityTag(EntityTag entityTag, BasePK deletedBy) {
-        EntityInstance taggedEntityInstance = entityTag.getTaggedEntityInstance();
+        var taggedEntityInstance = entityTag.getTaggedEntityInstance();
 
         entityTag.setThruTime(session.START_TIME_LONG);
         entityTag.store();

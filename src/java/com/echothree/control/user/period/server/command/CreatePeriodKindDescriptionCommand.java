@@ -68,16 +68,16 @@ public class CreatePeriodKindDescriptionCommand
     @Override
     protected BaseResult execute() {
         var periodControl = Session.getModelController(PeriodControl.class);
-        String periodKindName = form.getPeriodKindName();
-        PeriodKind periodKind = periodControl.getPeriodKindByName(periodKindName);
+        var periodKindName = form.getPeriodKindName();
+        var periodKind = periodControl.getPeriodKindByName(periodKindName);
         
         if(periodKind != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                PeriodKindDescription periodKindDescription = periodControl.getPeriodKindDescription(periodKind, language);
+                var periodKindDescription = periodControl.getPeriodKindDescription(periodKind, language);
                 
                 if(periodKindDescription == null) {
                     var description = form.getDescription();

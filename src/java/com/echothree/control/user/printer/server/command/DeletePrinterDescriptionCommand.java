@@ -53,16 +53,16 @@ public class DeletePrinterDescriptionCommand
    @Override
     protected BaseResult execute() {
         var printerControl = Session.getModelController(PrinterControl.class);
-        String printerName = form.getPrinterName();
-        Printer printer = printerControl.getPrinterByName(printerName);
+       var printerName = form.getPrinterName();
+       var printer = printerControl.getPrinterByName(printerName);
         
         if(printer != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                PrinterDescription printerDescription = printerControl.getPrinterDescriptionForUpdate(printer, language);
+                var printerDescription = printerControl.getPrinterDescriptionForUpdate(printer, language);
                 
                 if(printerDescription != null) {
                     printerControl.deletePrinterDescription(printerDescription, getPartyPK());

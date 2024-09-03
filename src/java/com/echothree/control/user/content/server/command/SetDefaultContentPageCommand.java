@@ -66,16 +66,16 @@ public class SetDefaultContentPageCommand
     @Override
     protected BaseResult execute() {
         var contentControl = Session.getModelController(ContentControl.class);
-        String contentCollectionName = form.getContentCollectionName();
-        ContentCollection contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
+        var contentCollectionName = form.getContentCollectionName();
+        var contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
         
         if(contentCollection != null) {
-            String contentSectionName = form.getContentSectionName();
-            ContentSection contentSection = contentControl.getContentSectionByName(contentCollection, contentSectionName);
+            var contentSectionName = form.getContentSectionName();
+            var contentSection = contentControl.getContentSectionByName(contentCollection, contentSectionName);
             
             if(contentSection != null) {
-                String contentPageName = form.getContentPageName();
-                ContentPageDetailValue contentPageDetailValue = contentControl.getContentPageDetailValueByNameForUpdate(contentSection, contentPageName);
+                var contentPageName = form.getContentPageName();
+                var contentPageDetailValue = contentControl.getContentPageDetailValueByNameForUpdate(contentSection, contentPageName);
                 
                 if(contentPageDetailValue != null) {
                     if(!contentPageDetailValue.getIsDefault()) {

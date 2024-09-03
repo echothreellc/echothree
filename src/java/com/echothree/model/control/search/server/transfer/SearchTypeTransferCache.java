@@ -34,15 +34,15 @@ public class SearchTypeTransferCache
     }
     
     public SearchTypeTransfer getSearchTypeTransfer(SearchType searchType) {
-        SearchTypeTransfer searchTypeTransfer = get(searchType);
+        var searchTypeTransfer = get(searchType);
         
         if(searchTypeTransfer == null) {
-            SearchTypeDetail searchTypeDetail = searchType.getLastDetail();
-            SearchKindTransfer searchKindTransfer = searchControl.getSearchKindTransfer(userVisit, searchTypeDetail.getSearchKind());
-            String searchTypeName = searchTypeDetail.getSearchTypeName();
-            Boolean isDefault = searchTypeDetail.getIsDefault();
-            Integer sortOrder = searchTypeDetail.getSortOrder();
-            String description = searchControl.getBestSearchTypeDescription(searchType, getLanguage());
+            var searchTypeDetail = searchType.getLastDetail();
+            var searchKindTransfer = searchControl.getSearchKindTransfer(userVisit, searchTypeDetail.getSearchKind());
+            var searchTypeName = searchTypeDetail.getSearchTypeName();
+            var isDefault = searchTypeDetail.getIsDefault();
+            var sortOrder = searchTypeDetail.getSortOrder();
+            var description = searchControl.getBestSearchTypeDescription(searchType, getLanguage());
             
             searchTypeTransfer = new SearchTypeTransfer(searchKindTransfer, searchTypeName, isDefault, sortOrder, description);
             put(searchType, searchTypeTransfer);

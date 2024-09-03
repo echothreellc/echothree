@@ -65,9 +65,9 @@ public class GetFreeOnBoardDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var freeOnBoardControl = Session.getModelController(FreeOnBoardControl.class);
-        GetFreeOnBoardDescriptionsResult result = ShipmentResultFactory.getGetFreeOnBoardDescriptionsResult();
-        String freeOnBoardName = form.getFreeOnBoardName();
-        FreeOnBoard freeOnBoard = freeOnBoardControl.getFreeOnBoardByName(freeOnBoardName);
+        var result = ShipmentResultFactory.getGetFreeOnBoardDescriptionsResult();
+        var freeOnBoardName = form.getFreeOnBoardName();
+        var freeOnBoard = freeOnBoardControl.getFreeOnBoardByName(freeOnBoardName);
         
         if(freeOnBoard != null) {
             result.setFreeOnBoard(freeOnBoardControl.getFreeOnBoardTransfer(getUserVisit(), freeOnBoard));

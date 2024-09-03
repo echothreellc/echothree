@@ -64,12 +64,12 @@ public class SetDefaultContentCatalogCommand
     @Override
     protected BaseResult execute() {
         var contentControl = Session.getModelController(ContentControl.class);
-        String contentCollectionName = form.getContentCollectionName();
-        ContentCollection contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
+        var contentCollectionName = form.getContentCollectionName();
+        var contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
         
         if(contentCollection != null) {
-            String contentCatalogName = form.getContentCatalogName();
-            ContentCatalogDetailValue contentCatalogDetailValue = contentControl.getContentCatalogDetailValueByNameForUpdate(contentCollection, contentCatalogName);
+            var contentCatalogName = form.getContentCatalogName();
+            var contentCatalogDetailValue = contentControl.getContentCatalogDetailValueByNameForUpdate(contentCollection, contentCatalogName);
             
             if(contentCatalogDetailValue != null) {
                 if(!contentCatalogDetailValue.getIsDefault()) {

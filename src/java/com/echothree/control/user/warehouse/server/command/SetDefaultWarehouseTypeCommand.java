@@ -62,8 +62,8 @@ public class SetDefaultWarehouseTypeCommand
     @Override
     protected BaseResult execute() {
         var warehouseControl = Session.getModelController(WarehouseControl.class);
-        String warehouseTypeName = form.getWarehouseTypeName();
-        WarehouseTypeDetailValue warehouseTypeDetailValue = warehouseControl.getWarehouseTypeDetailValueByNameForUpdate(warehouseTypeName);
+        var warehouseTypeName = form.getWarehouseTypeName();
+        var warehouseTypeDetailValue = warehouseControl.getWarehouseTypeDetailValueByNameForUpdate(warehouseTypeName);
         
         if(warehouseTypeDetailValue != null) {
             warehouseTypeDetailValue.setIsDefault(Boolean.TRUE);

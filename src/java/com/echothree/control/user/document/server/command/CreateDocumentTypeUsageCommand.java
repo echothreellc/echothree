@@ -69,21 +69,21 @@ public class CreateDocumentTypeUsageCommand
     @Override
     protected BaseResult execute() {
         var documentControl = Session.getModelController(DocumentControl.class);
-        String documentTypeUsageTypeName = form.getDocumentTypeUsageTypeName();
-        DocumentTypeUsageType documentTypeUsageType = documentControl.getDocumentTypeUsageTypeByName(documentTypeUsageTypeName);
+        var documentTypeUsageTypeName = form.getDocumentTypeUsageTypeName();
+        var documentTypeUsageType = documentControl.getDocumentTypeUsageTypeByName(documentTypeUsageTypeName);
         
         if(documentTypeUsageType != null) {
-            String documentTypeName = form.getDocumentTypeName();
-            DocumentType documentType = documentControl.getDocumentTypeByName(documentTypeName);
+            var documentTypeName = form.getDocumentTypeName();
+            var documentType = documentControl.getDocumentTypeByName(documentTypeName);
             
             if(documentType != null) {
-                DocumentTypeUsage documentTypeUsage = documentControl.getDocumentTypeUsage(documentTypeUsageType, documentType);
+                var documentTypeUsage = documentControl.getDocumentTypeUsage(documentTypeUsageType, documentType);
                 
                 if(documentTypeUsage == null) {
                     var isDefault = Boolean.valueOf(form.getIsDefault());
                     var sortOrder = Integer.valueOf(form.getSortOrder());
-                    String strMaximumInstances = form.getMaximumInstances();
-                    Integer maximumInstances = strMaximumInstances == null ? null : Integer.valueOf(strMaximumInstances);
+                    var strMaximumInstances = form.getMaximumInstances();
+                    var maximumInstances = strMaximumInstances == null ? null : Integer.valueOf(strMaximumInstances);
                     
                     documentControl.createDocumentTypeUsage(documentTypeUsageType, documentType, isDefault, sortOrder, maximumInstances, getPartyPK());
                 } else {

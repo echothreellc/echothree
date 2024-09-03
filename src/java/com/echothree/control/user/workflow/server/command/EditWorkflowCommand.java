@@ -167,9 +167,9 @@ public class EditWorkflowCommand
     public void doUpdate(Workflow workflow) {
         var workflowControl = Session.getModelController(WorkflowControl.class);
         var partyPK = getPartyPK();
-        WorkflowDetailValue workflowDetailValue = workflowControl.getWorkflowDetailValueForUpdate(workflow);
-        WorkflowDescription workflowDescription = workflowControl.getWorkflowDescriptionForUpdate(workflow, getPreferredLanguage());
-        String description = edit.getDescription();
+        var workflowDetailValue = workflowControl.getWorkflowDetailValueForUpdate(workflow);
+        var workflowDescription = workflowControl.getWorkflowDescriptionForUpdate(workflow, getPreferredLanguage());
+        var description = edit.getDescription();
 
         workflowDetailValue.setWorkflowName(edit.getWorkflowName());
         workflowDetailValue.setSelectorTypePK(selectorType == null ? null : selectorType.getPrimaryKey());
@@ -183,7 +183,7 @@ public class EditWorkflowCommand
         } else if(workflowDescription != null && description == null) {
             workflowControl.deleteWorkflowDescription(workflowDescription, partyPK);
         } else if(workflowDescription != null && description != null) {
-            WorkflowDescriptionValue workflowDescriptionValue = workflowControl.getWorkflowDescriptionValue(workflowDescription);
+            var workflowDescriptionValue = workflowControl.getWorkflowDescriptionValue(workflowDescription);
 
             workflowDescriptionValue.setDescription(description);
             workflowControl.updateWorkflowDescriptionFromValue(workflowDescriptionValue, partyPK);

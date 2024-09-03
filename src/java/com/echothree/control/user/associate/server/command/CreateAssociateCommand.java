@@ -58,26 +58,26 @@ public class CreateAssociateCommand
     @Override
     protected BaseResult execute() {
         var associateControl = Session.getModelController(AssociateControl.class);
-        String associateProgramName = form.getAssociateProgramName();
-        AssociateProgram associateProgram = associateControl.getAssociateProgramByName(associateProgramName);
+        var associateProgramName = form.getAssociateProgramName();
+        var associateProgram = associateControl.getAssociateProgramByName(associateProgramName);
         
         if(associateProgram != null) {
-            String associateName = form.getAssociateName();
-            Associate associate = associateControl.getAssociateByName(associateProgram, associateName);
+            var associateName = form.getAssociateName();
+            var associate = associateControl.getAssociateByName(associateProgram, associateName);
             
             if(associate == null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String partyName = form.getPartyName();
-                Party party = partyControl.getPartyByName(partyName);
+                var partyName = form.getPartyName();
+                var party = partyControl.getPartyByName(partyName);
                 
                 if(party != null) {
                     var coreControl = getCoreControl();
-                    String summaryMimeTypeName = form.getSummaryMimeTypeName();
-                    MimeType summaryMimeType = coreControl.getMimeTypeByName(summaryMimeTypeName);
+                    var summaryMimeTypeName = form.getSummaryMimeTypeName();
+                    var summaryMimeType = coreControl.getMimeTypeByName(summaryMimeTypeName);
                     
                     if(summaryMimeType != null) {
                         var description = form.getDescription();
-                        String summary = form.getSummary();
+                        var summary = form.getSummary();
                         
                         associateControl.createAssociate(associateProgram, associateName, party, description, summaryMimeType,
                                 summary, getPartyPK());

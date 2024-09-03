@@ -32,11 +32,11 @@ public class ContentSectionDescriptionTransferCache
     }
     
     public ContentSectionDescriptionTransfer getContentSectionDescriptionTransfer(ContentSectionDescription contentSectionDescription) {
-        ContentSectionDescriptionTransfer contentSectionDescriptionTransfer = get(contentSectionDescription);
+        var contentSectionDescriptionTransfer = get(contentSectionDescription);
         
         if(contentSectionDescriptionTransfer == null) {
-            ContentSectionTransfer contentSectionTransfer = contentControl.getContentSectionTransfer(userVisit, contentSectionDescription.getContentSection());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, contentSectionDescription.getLanguage());
+            var contentSectionTransfer = contentControl.getContentSectionTransfer(userVisit, contentSectionDescription.getContentSection());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, contentSectionDescription.getLanguage());
             
             contentSectionDescriptionTransfer = new ContentSectionDescriptionTransfer(languageTransfer, contentSectionTransfer, contentSectionDescription.getDescription());
             put(contentSectionDescription, contentSectionDescriptionTransfer);

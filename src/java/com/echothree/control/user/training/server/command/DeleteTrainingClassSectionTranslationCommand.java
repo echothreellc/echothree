@@ -69,20 +69,20 @@ public class DeleteTrainingClassSectionTranslationCommand
     @Override
     protected BaseResult execute() {
         var trainingControl = Session.getModelController(TrainingControl.class);
-        String trainingClassName = form.getTrainingClassName();
-        TrainingClass trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
+        var trainingClassName = form.getTrainingClassName();
+        var trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
 
         if(trainingClass != null) {
-            String trainingClassSectionName = form.getTrainingClassSectionName();
-            TrainingClassSection trainingClassSection = trainingControl.getTrainingClassSectionByName(trainingClass, trainingClassSectionName);
+            var trainingClassSectionName = form.getTrainingClassSectionName();
+            var trainingClassSection = trainingControl.getTrainingClassSectionByName(trainingClass, trainingClassSectionName);
 
             if(trainingClassSection != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = form.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = form.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                 if(language != null) {
-                    TrainingClassSectionTranslation trainingClassSectionTranslation = trainingControl.getTrainingClassSectionTranslationForUpdate(trainingClassSection, language);
+                    var trainingClassSectionTranslation = trainingControl.getTrainingClassSectionTranslationForUpdate(trainingClassSection, language);
 
                     if(trainingClassSectionTranslation != null) {
                         trainingControl.deleteTrainingClassSectionTranslation(trainingClassSectionTranslation, getPartyPK());

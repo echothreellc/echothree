@@ -36,13 +36,13 @@ public class PartyDocumentTransferCache
     }
     
     public PartyDocumentTransfer getPartyDocumentTransfer(PartyDocument partyDocument) {
-        PartyDocumentTransfer partyDocumentTransfer = get(partyDocument);
+        var partyDocumentTransfer = get(partyDocument);
         
         if(partyDocumentTransfer == null) {
-            PartyTransfer partyTransfer = partyControl.getPartyTransfer(userVisit, partyDocument.getParty());
-            DocumentTransfer documentTransfer = documentControl.getDocumentTransfer(userVisit, partyDocument.getDocument());
-            Boolean isDefault = partyDocument.getIsDefault();
-            Integer sortOrder = partyDocument.getSortOrder();
+            var partyTransfer = partyControl.getPartyTransfer(userVisit, partyDocument.getParty());
+            var documentTransfer = documentControl.getDocumentTransfer(userVisit, partyDocument.getDocument());
+            var isDefault = partyDocument.getIsDefault();
+            var sortOrder = partyDocument.getSortOrder();
             
             partyDocumentTransfer = new PartyDocumentTransfer(partyTransfer, documentTransfer, isDefault, sortOrder);
             put(partyDocument, partyDocumentTransfer);

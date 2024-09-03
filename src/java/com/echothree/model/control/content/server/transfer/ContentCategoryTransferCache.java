@@ -88,21 +88,21 @@ public class ContentCategoryTransferCache
     }
     
     public ContentCategoryTransfer getContentCategoryTransfer(ContentCategory contentCategory) {
-        ContentCategoryTransfer contentCategoryTransfer = get(contentCategory);
+        var contentCategoryTransfer = get(contentCategory);
         
         if(contentCategoryTransfer == null) {
-            ContentCategoryDetail contentCategoryDetail = contentCategory.getLastDetail();
-            ContentCatalogTransfer contentCatalogTransfer = filterContentCatalog ? null : contentControl.getContentCatalogTransfer(userVisit, contentCategoryDetail.getContentCatalog());
-            String contentCategoryName = filterContentCategoryName ? null : contentCategoryDetail.getContentCategoryName();
-            ContentCategory parentContentCategory = filterParentContentCategory ? null : contentCategoryDetail.getParentContentCategory();
-            ContentCategoryTransfer parentContentCategoryTransfer = parentContentCategory == null ? null : contentControl.getContentCategoryTransfer(userVisit, parentContentCategory);
-            OfferUse defaultOfferUse = filterDefaultOfferUse ? null : contentCategoryDetail.getDefaultOfferUse();
-            OfferUseTransfer defaultOfferUseTransfer = defaultOfferUse == null ? null : offerUseControl.getOfferUseTransfer(userVisit, defaultOfferUse);
-            Selector contentCategoryItemSelector = filterContentCategoryItemSelector ? null : contentCategoryDetail.getContentCategoryItemSelector();
-            SelectorTransfer contentCategoryItemSelectorTransfer = contentCategoryItemSelector == null ? null : selectorControl.getSelectorTransfer(userVisit, contentCategoryItemSelector);
-            Boolean isDefault = filterIsDefault ? null : contentCategoryDetail.getIsDefault();
-            Integer sortOrder = filterSortOrder ? null : contentCategoryDetail.getSortOrder();
-            String description = filterDescription ? null : contentControl.getBestContentCategoryDescription(contentCategory, getLanguage());
+            var contentCategoryDetail = contentCategory.getLastDetail();
+            var contentCatalogTransfer = filterContentCatalog ? null : contentControl.getContentCatalogTransfer(userVisit, contentCategoryDetail.getContentCatalog());
+            var contentCategoryName = filterContentCategoryName ? null : contentCategoryDetail.getContentCategoryName();
+            var parentContentCategory = filterParentContentCategory ? null : contentCategoryDetail.getParentContentCategory();
+            var parentContentCategoryTransfer = parentContentCategory == null ? null : contentControl.getContentCategoryTransfer(userVisit, parentContentCategory);
+            var defaultOfferUse = filterDefaultOfferUse ? null : contentCategoryDetail.getDefaultOfferUse();
+            var defaultOfferUseTransfer = defaultOfferUse == null ? null : offerUseControl.getOfferUseTransfer(userVisit, defaultOfferUse);
+            var contentCategoryItemSelector = filterContentCategoryItemSelector ? null : contentCategoryDetail.getContentCategoryItemSelector();
+            var contentCategoryItemSelectorTransfer = contentCategoryItemSelector == null ? null : selectorControl.getSelectorTransfer(userVisit, contentCategoryItemSelector);
+            var isDefault = filterIsDefault ? null : contentCategoryDetail.getIsDefault();
+            var sortOrder = filterSortOrder ? null : contentCategoryDetail.getSortOrder();
+            var description = filterDescription ? null : contentControl.getBestContentCategoryDescription(contentCategory, getLanguage());
             
             contentCategoryTransfer = new ContentCategoryTransfer(contentCatalogTransfer, contentCategoryName, parentContentCategoryTransfer,
                     defaultOfferUseTransfer, contentCategoryItemSelectorTransfer, isDefault, sortOrder, description);

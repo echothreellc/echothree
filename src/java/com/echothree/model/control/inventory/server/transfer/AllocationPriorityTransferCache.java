@@ -34,15 +34,15 @@ public class AllocationPriorityTransferCache
     
     @Override
     public AllocationPriorityTransfer getTransfer(AllocationPriority allocationPriority) {
-        AllocationPriorityTransfer allocationPriorityTransfer = get(allocationPriority);
+        var allocationPriorityTransfer = get(allocationPriority);
         
         if(allocationPriorityTransfer == null) {
-            AllocationPriorityDetail allocationPriorityDetail = allocationPriority.getLastDetail();
-            String allocationPriorityName = allocationPriorityDetail.getAllocationPriorityName();
-            Integer priority = allocationPriorityDetail.getPriority();
-            Boolean isDefault = allocationPriorityDetail.getIsDefault();
-            Integer sortOrder = allocationPriorityDetail.getSortOrder();
-            String description = inventoryControl.getBestAllocationPriorityDescription(allocationPriority, getLanguage());
+            var allocationPriorityDetail = allocationPriority.getLastDetail();
+            var allocationPriorityName = allocationPriorityDetail.getAllocationPriorityName();
+            var priority = allocationPriorityDetail.getPriority();
+            var isDefault = allocationPriorityDetail.getIsDefault();
+            var sortOrder = allocationPriorityDetail.getSortOrder();
+            var description = inventoryControl.getBestAllocationPriorityDescription(allocationPriority, getLanguage());
             
             allocationPriorityTransfer = new AllocationPriorityTransfer(allocationPriorityName, priority, isDefault, sortOrder, description);
             put(allocationPriority, allocationPriorityTransfer);

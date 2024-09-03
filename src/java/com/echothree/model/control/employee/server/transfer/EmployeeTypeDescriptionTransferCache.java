@@ -32,11 +32,11 @@ public class EmployeeTypeDescriptionTransferCache
     }
     
     public EmployeeTypeDescriptionTransfer getEmployeeTypeDescriptionTransfer(EmployeeTypeDescription employeeTypeDescription) {
-        EmployeeTypeDescriptionTransfer employeeTypeDescriptionTransfer = get(employeeTypeDescription);
+        var employeeTypeDescriptionTransfer = get(employeeTypeDescription);
         
         if(employeeTypeDescriptionTransfer == null) {
-            EmployeeTypeTransfer employeeTypeTransfer = employeeControl.getEmployeeTypeTransfer(userVisit, employeeTypeDescription.getEmployeeType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, employeeTypeDescription.getLanguage());
+            var employeeTypeTransfer = employeeControl.getEmployeeTypeTransfer(userVisit, employeeTypeDescription.getEmployeeType());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, employeeTypeDescription.getLanguage());
             
             employeeTypeDescriptionTransfer = new EmployeeTypeDescriptionTransfer(languageTransfer, employeeTypeTransfer, employeeTypeDescription.getDescription());
             put(employeeTypeDescription, employeeTypeDescriptionTransfer);

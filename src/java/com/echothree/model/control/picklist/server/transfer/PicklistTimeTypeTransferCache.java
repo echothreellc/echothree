@@ -33,14 +33,14 @@ public class PicklistTimeTypeTransferCache
     }
     
     public PicklistTimeTypeTransfer getPicklistTimeTypeTransfer(PicklistTimeType picklistTimeType) {
-        PicklistTimeTypeTransfer picklistTimeTypeTransfer = get(picklistTimeType);
+        var picklistTimeTypeTransfer = get(picklistTimeType);
         
         if(picklistTimeTypeTransfer == null) {
-            PicklistTimeTypeDetail picklistTimeTypeDetail = picklistTimeType.getLastDetail();
-            String picklistTimeTypeName = picklistTimeTypeDetail.getPicklistTimeTypeName();
-            Boolean isDefault = picklistTimeTypeDetail.getIsDefault();
-            Integer sortOrder = picklistTimeTypeDetail.getSortOrder();
-            String description = picklistControl.getBestPicklistTimeTypeDescription(picklistTimeType, getLanguage());
+            var picklistTimeTypeDetail = picklistTimeType.getLastDetail();
+            var picklistTimeTypeName = picklistTimeTypeDetail.getPicklistTimeTypeName();
+            var isDefault = picklistTimeTypeDetail.getIsDefault();
+            var sortOrder = picklistTimeTypeDetail.getSortOrder();
+            var description = picklistControl.getBestPicklistTimeTypeDescription(picklistTimeType, getLanguage());
             
             picklistTimeTypeTransfer = new PicklistTimeTypeTransfer(picklistTimeTypeName, isDefault, sortOrder, description);
             put(picklistTimeType, picklistTimeTypeTransfer);

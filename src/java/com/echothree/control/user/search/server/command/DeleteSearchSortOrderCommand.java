@@ -65,12 +65,12 @@ public class DeleteSearchSortOrderCommand
     @Override
     protected BaseResult execute() {
         var searchControl = Session.getModelController(SearchControl.class);
-        String searchKindName = form.getSearchKindName();
-        SearchKind searchKind = searchControl.getSearchKindByName(searchKindName);
+        var searchKindName = form.getSearchKindName();
+        var searchKind = searchControl.getSearchKindByName(searchKindName);
         
         if(searchKind != null) {
-            String searchSortOrderName = form.getSearchSortOrderName();
-            SearchSortOrder searchSortOrder = searchControl.getSearchSortOrderByNameForUpdate(searchKind, searchSortOrderName);
+            var searchSortOrderName = form.getSearchSortOrderName();
+            var searchSortOrder = searchControl.getSearchSortOrderByNameForUpdate(searchKind, searchSortOrderName);
             
             if(searchSortOrder != null) {
                 searchControl.deleteSearchSortOrder(searchSortOrder, getPartyPK());

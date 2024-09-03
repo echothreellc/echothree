@@ -85,9 +85,9 @@ public class PartyPaymentMethodControl
     public PartyPaymentMethod createPartyPaymentMethod(Party party, String description, PaymentMethod paymentMethod,
             Boolean deleteWhenUnused, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var sequenceControl = Session.getModelController(SequenceControl.class);
-        SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.PARTY_PAYMENT_METHOD.name());
-        Sequence sequence = sequenceControl.getDefaultSequence(sequenceType);
-        String partyPaymentMethodName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
+        var sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.PARTY_PAYMENT_METHOD.name());
+        var sequence = sequenceControl.getDefaultSequence(sequenceType);
+        var partyPaymentMethodName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
 
         return createPartyPaymentMethod(partyPaymentMethodName, party, description, paymentMethod, deleteWhenUnused, isDefault,
                 sortOrder, createdBy);
@@ -95,11 +95,11 @@ public class PartyPaymentMethodControl
 
     public PartyPaymentMethod createPartyPaymentMethod(String partyPaymentMethodName, Party party, String description, PaymentMethod paymentMethod,
             Boolean deleteWhenUnused, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        PartyPaymentMethod defaultPartyPaymentMethod = getDefaultPartyPaymentMethod(party);
-        boolean defaultFound = defaultPartyPaymentMethod != null;
+        var defaultPartyPaymentMethod = getDefaultPartyPaymentMethod(party);
+        var defaultFound = defaultPartyPaymentMethod != null;
 
         if(defaultFound && isDefault) {
-            PartyPaymentMethodDetailValue defaultPartyPaymentMethodDetailValue = getDefaultPartyPaymentMethodDetailValueForUpdate(party);
+            var defaultPartyPaymentMethodDetailValue = getDefaultPartyPaymentMethodDetailValueForUpdate(party);
 
             defaultPartyPaymentMethodDetailValue.setIsDefault(Boolean.FALSE);
             updatePartyPaymentMethodFromValue(defaultPartyPaymentMethodDetailValue, false, createdBy);
@@ -107,8 +107,8 @@ public class PartyPaymentMethodControl
             isDefault = Boolean.TRUE;
         }
 
-        PartyPaymentMethod partyPaymentMethod = PartyPaymentMethodFactory.getInstance().create();
-        PartyPaymentMethodDetail partyPaymentMethodDetail = PartyPaymentMethodDetailFactory.getInstance().create(partyPaymentMethod, partyPaymentMethodName,
+        var partyPaymentMethod = PartyPaymentMethodFactory.getInstance().create();
+        var partyPaymentMethodDetail = PartyPaymentMethodDetailFactory.getInstance().create(partyPaymentMethod, partyPaymentMethodName,
                 party, description, paymentMethod, deleteWhenUnused, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -264,7 +264,7 @@ public class PartyPaymentMethodControl
 
     public List<PartyPaymentMethodTransfer> getPartyPaymentMethodTransfers(UserVisit userVisit, Collection<PartyPaymentMethod> partyPaymentMethods) {
         List<PartyPaymentMethodTransfer> partyPaymentMethodTransfers = new ArrayList<>(partyPaymentMethods.size());
-        PartyPaymentMethodTransferCache partyPaymentMethodTransferCache = getPaymentTransferCaches(userVisit).getPartyPaymentMethodTransferCache();
+        var partyPaymentMethodTransferCache = getPaymentTransferCaches(userVisit).getPartyPaymentMethodTransferCache();
 
         partyPaymentMethods.forEach((partyPaymentMethod) ->
                 partyPaymentMethodTransfers.add(partyPaymentMethodTransferCache.getTransfer(partyPaymentMethod))
@@ -279,7 +279,7 @@ public class PartyPaymentMethodControl
 
     public PartyPaymentMethodChoicesBean getPartyPaymentMethodChoices(String defaultPartyPaymentMethodChoice, Language language, boolean allowNullChoice,
             Party party) {
-        List<PartyPaymentMethod> partyPaymentMethods = getPartyPaymentMethodsByParty(party);
+        var partyPaymentMethods = getPartyPaymentMethodsByParty(party);
         var size = partyPaymentMethods.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -295,7 +295,7 @@ public class PartyPaymentMethodControl
         }
 
         for(var partyPaymentMethod : partyPaymentMethods) {
-            PartyPaymentMethodDetail partyPaymentMethodDetail = partyPaymentMethod.getLastDetail();
+            var partyPaymentMethodDetail = partyPaymentMethod.getLastDetail();
 
             var label = partyPaymentMethodDetail.getDescription();
             var value = partyPaymentMethodDetail.getPartyPaymentMethodName();
@@ -315,29 +315,29 @@ public class PartyPaymentMethodControl
     private void updatePartyPaymentMethodFromValue(PartyPaymentMethodDetailValue partyPaymentMethodDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(partyPaymentMethodDetailValue.hasBeenModified()) {
-            PartyPaymentMethod partyPaymentMethod = PartyPaymentMethodFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var partyPaymentMethod = PartyPaymentMethodFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      partyPaymentMethodDetailValue.getPartyPaymentMethodPK());
-            PartyPaymentMethodDetail partyPaymentMethodDetail = partyPaymentMethod.getActiveDetailForUpdate();
+            var partyPaymentMethodDetail = partyPaymentMethod.getActiveDetailForUpdate();
 
             partyPaymentMethodDetail.setThruTime(session.START_TIME_LONG);
             partyPaymentMethodDetail.store();
 
-            PartyPaymentMethodPK partyPaymentMethodPK = partyPaymentMethodDetail.getPartyPaymentMethodPK(); // Not updated
-            String partyPaymentMethodName = partyPaymentMethodDetailValue.getPartyPaymentMethodName();
-            Party party = partyPaymentMethodDetail.getParty(); // Not updated
-            String description = partyPaymentMethodDetailValue.getDescription();
-            PaymentMethodPK paymentMethodPK = partyPaymentMethodDetail.getPaymentMethodPK(); // Not updated
-            Boolean deleteWhenUnused = partyPaymentMethodDetailValue.getDeleteWhenUnused();
-            Boolean isDefault = partyPaymentMethodDetailValue.getIsDefault();
-            Integer sortOrder = partyPaymentMethodDetailValue.getSortOrder();
+            var partyPaymentMethodPK = partyPaymentMethodDetail.getPartyPaymentMethodPK(); // Not updated
+            var partyPaymentMethodName = partyPaymentMethodDetailValue.getPartyPaymentMethodName();
+            var party = partyPaymentMethodDetail.getParty(); // Not updated
+            var description = partyPaymentMethodDetailValue.getDescription();
+            var paymentMethodPK = partyPaymentMethodDetail.getPaymentMethodPK(); // Not updated
+            var deleteWhenUnused = partyPaymentMethodDetailValue.getDeleteWhenUnused();
+            var isDefault = partyPaymentMethodDetailValue.getIsDefault();
+            var sortOrder = partyPaymentMethodDetailValue.getSortOrder();
 
             if(checkDefault) {
-                PartyPaymentMethod defaultPartyPaymentMethod = getDefaultPartyPaymentMethod(party);
-                boolean defaultFound = defaultPartyPaymentMethod != null && !defaultPartyPaymentMethod.equals(partyPaymentMethod);
+                var defaultPartyPaymentMethod = getDefaultPartyPaymentMethod(party);
+                var defaultFound = defaultPartyPaymentMethod != null && !defaultPartyPaymentMethod.equals(partyPaymentMethod);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    PartyPaymentMethodDetailValue defaultPartyPaymentMethodDetailValue = getDefaultPartyPaymentMethodDetailValueForUpdate(party);
+                    var defaultPartyPaymentMethodDetailValue = getDefaultPartyPaymentMethodDetailValueForUpdate(party);
 
                     defaultPartyPaymentMethodDetailValue.setIsDefault(Boolean.FALSE);
                     updatePartyPaymentMethodFromValue(defaultPartyPaymentMethodDetailValue, false, updatedBy);
@@ -426,7 +426,7 @@ public class PartyPaymentMethodControl
             String middleName, String middleNameSdx, String lastName, String lastNameSdx, NameSuffix nameSuffix, String name,
             PartyContactMechanism billingPartyContactMechanism, String issuerName, PartyContactMechanism issuerPartyContactMechanism,
             BasePK createdBy) {
-        PartyPaymentMethodCreditCard partyPaymentMethodCreditCard = PartyPaymentMethodCreditCardFactory.getInstance().create(session,
+        var partyPaymentMethodCreditCard = PartyPaymentMethodCreditCardFactory.getInstance().create(session,
                 partyPaymentMethod, encodePartyPaymentMethodCreditCardNumber(number), expirationMonth, expirationYear, personalTitle,
                 firstName, firstNameSdx, middleName, middleNameSdx, lastName, lastNameSdx, nameSuffix, name, billingPartyContactMechanism,
                 issuerName, issuerPartyContactMechanism, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -486,8 +486,8 @@ public class PartyPaymentMethodControl
                         "WHERE parpmcc_parpm_partypaymentmethodid = ? AND parpmcc_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PartyPaymentMethodCreditCardFactory.getInstance().prepareStatement(query);
+
+            var ps = PartyPaymentMethodCreditCardFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, partyPaymentMethod.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -530,8 +530,8 @@ public class PartyPaymentMethodControl
                         "WHERE parpmcc_billingpartycontactmechanismid = ? AND parpmcc_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PartyPaymentMethodCreditCardFactory.getInstance().prepareStatement(query);
+
+            var ps = PartyPaymentMethodCreditCardFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, billingPartyContactMechanism.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -574,8 +574,8 @@ public class PartyPaymentMethodControl
                         "WHERE parpmcc_issuerpartycontactmechanismid = ? AND parpmcc_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PartyPaymentMethodCreditCardFactory.getInstance().prepareStatement(query);
+
+            var ps = PartyPaymentMethodCreditCardFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, issuerPartyContactMechanism.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -598,7 +598,7 @@ public class PartyPaymentMethodControl
     }
     
     public PartyPaymentMethodCreditCardValue getPartyPaymentMethodCreditCardValueForUpdate(PartyPaymentMethod partyPaymentMethod) {
-        PartyPaymentMethodCreditCard partyPaymentMethodCreditCard = getPartyPaymentMethodCreditCardForUpdate(partyPaymentMethod);
+        var partyPaymentMethodCreditCard = getPartyPaymentMethodCreditCardForUpdate(partyPaymentMethod);
         
         return partyPaymentMethodCreditCard == null? null: partyPaymentMethodCreditCard.getPartyPaymentMethodCreditCardValue().clone();
     }
@@ -625,28 +625,28 @@ public class PartyPaymentMethodControl
     public void updatePartyPaymentMethodCreditCardFromValue(PartyPaymentMethodCreditCardValue partyPaymentMethodCreditCardValue,
             BasePK updatedBy) {
         if(partyPaymentMethodCreditCardValue.hasBeenModified()) {
-            PartyPaymentMethodCreditCard partyPaymentMethodCreditCard = PartyPaymentMethodCreditCardFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var partyPaymentMethodCreditCard = PartyPaymentMethodCreditCardFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      partyPaymentMethodCreditCardValue.getPrimaryKey());
             
             partyPaymentMethodCreditCard.setThruTime(session.START_TIME_LONG);
             partyPaymentMethodCreditCard.store();
-            
-            PartyPaymentMethodPK partyPaymentMethodPK = partyPaymentMethodCreditCard.getPartyPaymentMethodPK(); // Not updated
-            String number = partyPaymentMethodCreditCardValue.getNumber();
-            Integer expirationMonth = partyPaymentMethodCreditCardValue.getExpirationMonth();
-            Integer expirationYear = partyPaymentMethodCreditCardValue.getExpirationYear();
-            PersonalTitlePK personalTitlePK = partyPaymentMethodCreditCardValue.getPersonalTitlePK();
-            String firstName = partyPaymentMethodCreditCardValue.getFirstName();
-            String firstNameSdx = partyPaymentMethodCreditCardValue.getFirstNameSdx();
-            String middleName = partyPaymentMethodCreditCardValue.getMiddleName();
-            String middleNameSdx = partyPaymentMethodCreditCardValue.getMiddleNameSdx();
-            String lastName = partyPaymentMethodCreditCardValue.getLastName();
-            String lastNameSdx = partyPaymentMethodCreditCardValue.getLastNameSdx();
-            NameSuffixPK nameSuffixPK = partyPaymentMethodCreditCardValue.getNameSuffixPK();
-            String name = partyPaymentMethodCreditCardValue.getName();
-            PartyContactMechanismPK billingPartyContactMechanismPK = partyPaymentMethodCreditCardValue.getBillingPartyContactMechanismPK();
-            String issuerName = partyPaymentMethodCreditCardValue.getIssuerName();
-            PartyContactMechanismPK issuerPartyContactMechanismPK = partyPaymentMethodCreditCardValue.getIssuerPartyContactMechanismPK();
+
+            var partyPaymentMethodPK = partyPaymentMethodCreditCard.getPartyPaymentMethodPK(); // Not updated
+            var number = partyPaymentMethodCreditCardValue.getNumber();
+            var expirationMonth = partyPaymentMethodCreditCardValue.getExpirationMonth();
+            var expirationYear = partyPaymentMethodCreditCardValue.getExpirationYear();
+            var personalTitlePK = partyPaymentMethodCreditCardValue.getPersonalTitlePK();
+            var firstName = partyPaymentMethodCreditCardValue.getFirstName();
+            var firstNameSdx = partyPaymentMethodCreditCardValue.getFirstNameSdx();
+            var middleName = partyPaymentMethodCreditCardValue.getMiddleName();
+            var middleNameSdx = partyPaymentMethodCreditCardValue.getMiddleNameSdx();
+            var lastName = partyPaymentMethodCreditCardValue.getLastName();
+            var lastNameSdx = partyPaymentMethodCreditCardValue.getLastNameSdx();
+            var nameSuffixPK = partyPaymentMethodCreditCardValue.getNameSuffixPK();
+            var name = partyPaymentMethodCreditCardValue.getName();
+            var billingPartyContactMechanismPK = partyPaymentMethodCreditCardValue.getBillingPartyContactMechanismPK();
+            var issuerName = partyPaymentMethodCreditCardValue.getIssuerName();
+            var issuerPartyContactMechanismPK = partyPaymentMethodCreditCardValue.getIssuerPartyContactMechanismPK();
             
             partyPaymentMethodCreditCard = PartyPaymentMethodCreditCardFactory.getInstance().create(partyPaymentMethodPK, number, expirationMonth,
                     expirationYear, personalTitlePK, firstName, firstNameSdx, middleName, middleNameSdx, lastName, lastNameSdx, nameSuffixPK, name,
@@ -688,7 +688,7 @@ public class PartyPaymentMethodControl
     
     public PartyPaymentMethodCreditCardSecurityCode createPartyPaymentMethodCreditCardSecurityCode(PartyPaymentMethod partyPaymentMethod,
             String securityCode, BasePK createdBy) {
-        PartyPaymentMethodCreditCardSecurityCode partyPaymentMethodCreditCardSecurityCode = PartyPaymentMethodCreditCardSecurityCodeFactory.getInstance().create(session,
+        var partyPaymentMethodCreditCardSecurityCode = PartyPaymentMethodCreditCardSecurityCodeFactory.getInstance().create(session,
                 partyPaymentMethod, encodePartyPaymentMethodCreditCardSecurityCodeSecurityCode(securityCode), session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
@@ -715,8 +715,8 @@ public class PartyPaymentMethodControl
                         "WHERE parpmccsc_parpm_partypaymentmethodid = ? AND parpmccsc_thrutime= ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PartyPaymentMethodCreditCardSecurityCodeFactory.getInstance().prepareStatement(query);
+
+            var ps = PartyPaymentMethodCreditCardSecurityCodeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, partyPaymentMethod.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -739,7 +739,7 @@ public class PartyPaymentMethodControl
     }
     
     public PartyPaymentMethodCreditCardSecurityCodeValue getPartyPaymentMethodCreditCardSecurityCodeValueForUpdate(PartyPaymentMethod partyPaymentMethod) {
-        PartyPaymentMethodCreditCardSecurityCode partyPaymentMethodCreditCardSecurityCode = getPartyPaymentMethodCreditCardSecurityCodeForUpdate(partyPaymentMethod);
+        var partyPaymentMethodCreditCardSecurityCode = getPartyPaymentMethodCreditCardSecurityCodeForUpdate(partyPaymentMethod);
         
         return partyPaymentMethodCreditCardSecurityCode == null? null: partyPaymentMethodCreditCardSecurityCode.getPartyPaymentMethodCreditCardSecurityCodeValue().clone();
     }
@@ -769,14 +769,14 @@ public class PartyPaymentMethodControl
     public void updatePartyPaymentMethodCreditCardSecurityCodeFromValue(PartyPaymentMethodCreditCardSecurityCodeValue partyPaymentMethodCreditCardSecurityCodeValue,
             BasePK updatedBy) {
         if(partyPaymentMethodCreditCardSecurityCodeValue.hasBeenModified()) {
-            PartyPaymentMethodCreditCardSecurityCode partyPaymentMethodCreditCardSecurityCode = PartyPaymentMethodCreditCardSecurityCodeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var partyPaymentMethodCreditCardSecurityCode = PartyPaymentMethodCreditCardSecurityCodeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      partyPaymentMethodCreditCardSecurityCodeValue.getPrimaryKey());
             
             partyPaymentMethodCreditCardSecurityCode.setThruTime(session.START_TIME_LONG);
             partyPaymentMethodCreditCardSecurityCode.store();
-            
-            PartyPaymentMethodPK partyPaymentMethodPK = partyPaymentMethodCreditCardSecurityCode.getPartyPaymentMethodPK(); // Not updated
-            String securityCode = partyPaymentMethodCreditCardSecurityCodeValue.getSecurityCode();
+
+            var partyPaymentMethodPK = partyPaymentMethodCreditCardSecurityCode.getPartyPaymentMethodPK(); // Not updated
+            var securityCode = partyPaymentMethodCreditCardSecurityCodeValue.getSecurityCode();
             
             partyPaymentMethodCreditCardSecurityCode = PartyPaymentMethodCreditCardSecurityCodeFactory.getInstance().create(session,
                     partyPaymentMethodPK, securityCode, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -800,7 +800,7 @@ public class PartyPaymentMethodControl
     
     public PartyPaymentMethodContactMechanism createPartyPaymentMethodContactMechanism(PartyPaymentMethod partyPaymentMethod,
             PartyContactMechanismPurpose partyContactMechanismPurpose, BasePK createdBy) {
-        PartyPaymentMethodContactMechanism partyPaymentMethodContactMechanism = PartyPaymentMethodContactMechanismFactory.getInstance().create(session,
+        var partyPaymentMethodContactMechanism = PartyPaymentMethodContactMechanismFactory.getInstance().create(session,
                 partyPaymentMethod, partyContactMechanismPurpose, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(partyPaymentMethod.getPrimaryKey(), EventTypes.MODIFY, partyPaymentMethodContactMechanism.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -827,8 +827,8 @@ public class PartyPaymentMethodControl
                         "AND parpmcmch_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PartyPaymentMethodContactMechanismFactory.getInstance().prepareStatement(query);
+
+            var ps = PartyPaymentMethodContactMechanismFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, partyPaymentMethod.getPrimaryKey().getEntityId());
             ps.setLong(2, partyContactMechanismPurpose.getPrimaryKey().getEntityId());
@@ -870,8 +870,8 @@ public class PartyPaymentMethodControl
                         "WHERE parpmcmch_parpm_partypaymentmethodid = ? AND parpmcmch_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PartyPaymentMethodContactMechanismFactory.getInstance().prepareStatement(query);
+
+            var ps = PartyPaymentMethodContactMechanismFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, partyPaymentMethod.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -910,8 +910,8 @@ public class PartyPaymentMethodControl
                         "WHERE parpmcmch_pcmp_partycontactmechanismpurposeid = ? AND parpmcmch_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PartyPaymentMethodContactMechanismFactory.getInstance().prepareStatement(query);
+
+            var ps = PartyPaymentMethodContactMechanismFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, partyContactMechanismPurpose.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -941,7 +941,7 @@ public class PartyPaymentMethodControl
     public List<PartyPaymentMethodContactMechanismTransfer> getPartyPaymentMethodContactMechanismTransfers(UserVisit userVisit,
             List<PartyPaymentMethodContactMechanism> partyPaymentMethodContactMechanisms) {
         List<PartyPaymentMethodContactMechanismTransfer> partyPaymentMethodContactMechanismTransfers = new ArrayList<>(partyPaymentMethodContactMechanisms.size());
-        PartyPaymentMethodContactMechanismTransferCache partyPaymentMethodContactMechanismTransferCache = getPaymentTransferCaches(userVisit).getPartyPaymentMethodContactMechanismTransferCache();
+        var partyPaymentMethodContactMechanismTransferCache = getPaymentTransferCaches(userVisit).getPartyPaymentMethodContactMechanismTransferCache();
         
         partyPaymentMethodContactMechanisms.forEach((partyPaymentMethodContactMechanism) ->
                 partyPaymentMethodContactMechanismTransfers.add(partyPaymentMethodContactMechanismTransferCache.getTransfer(partyPaymentMethodContactMechanism))

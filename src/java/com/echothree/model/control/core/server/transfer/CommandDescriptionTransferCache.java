@@ -35,11 +35,11 @@ public class CommandDescriptionTransferCache
     }
     
     public CommandDescriptionTransfer getCommandDescriptionTransfer(CommandDescription commandDescription) {
-        CommandDescriptionTransfer commandDescriptionTransfer = get(commandDescription);
+        var commandDescriptionTransfer = get(commandDescription);
         
         if(commandDescriptionTransfer == null) {
-            CommandTransfer commandTransfer = coreControl.getCommandTransfer(userVisit, commandDescription.getCommand());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, commandDescription.getLanguage());
+            var commandTransfer = coreControl.getCommandTransfer(userVisit, commandDescription.getCommand());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, commandDescription.getLanguage());
             
             commandDescriptionTransfer = new CommandDescriptionTransfer(languageTransfer, commandTransfer,
                     commandDescription.getDescription());

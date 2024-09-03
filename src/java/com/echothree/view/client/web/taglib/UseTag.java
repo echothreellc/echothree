@@ -92,15 +92,15 @@ public class UseTag
     public int doStartTag()
             throws JspException {
         try {
-            GetUseForm commandForm = OfferUtil.getHome().getGetUseForm();
+            var commandForm = OfferUtil.getHome().getGetUseForm();
             
             commandForm.setUseName(useName);
             
             setOptions(options, null, commandForm);
 
             commandForm.setTransferProperties(transferProperties);
-            
-            CommandResult commandResult = OfferUtil.getHome().getUse(getUserVisitPK(), commandForm);
+
+            var commandResult = OfferUtil.getHome().getUse(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -108,8 +108,8 @@ public class UseTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetUseResult result = (GetUseResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetUseResult)executionResult.getResult();
 
                 pageContext.setAttribute(var, result.getUse(), scope);
             }

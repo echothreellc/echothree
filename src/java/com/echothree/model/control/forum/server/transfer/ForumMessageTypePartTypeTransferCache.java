@@ -32,13 +32,13 @@ public class ForumMessageTypePartTypeTransferCache
     }
     
     public ForumMessageTypePartTypeTransfer getForumMessageTypePartTypeTransfer(ForumMessageTypePartType forumMessageTypePartType) {
-        ForumMessageTypePartTypeTransfer forumMessageTypePartTypeTransfer = get(forumMessageTypePartType);
+        var forumMessageTypePartTypeTransfer = get(forumMessageTypePartType);
         
         if(forumMessageTypePartTypeTransfer == null) {
-            ForumMessageTypeTransfer forumMessageType = forumControl.getForumMessageTypeTransfer(userVisit, forumMessageTypePartType.getForumMessageType());
-            Boolean indexDefault = forumMessageTypePartType.getIndexDefault();
-            Integer sortOrder = forumMessageTypePartType.getSortOrder();
-            ForumMessagePartTypeTransfer forumMessagePartType = forumControl.getForumMessagePartTypeTransfer(userVisit, forumMessageTypePartType.getForumMessagePartType());
+            var forumMessageType = forumControl.getForumMessageTypeTransfer(userVisit, forumMessageTypePartType.getForumMessageType());
+            var indexDefault = forumMessageTypePartType.getIndexDefault();
+            var sortOrder = forumMessageTypePartType.getSortOrder();
+            var forumMessagePartType = forumControl.getForumMessagePartTypeTransfer(userVisit, forumMessageTypePartType.getForumMessagePartType());
             
             forumMessageTypePartTypeTransfer = new ForumMessageTypePartTypeTransfer(forumMessageType, indexDefault, sortOrder, forumMessagePartType);
             put(forumMessageTypePartType, forumMessageTypePartTypeTransfer);

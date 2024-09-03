@@ -89,13 +89,13 @@ public class EditLotAliasTypeDescriptionCommand
     public LotAliasTypeDescription getEntity(EditLotAliasTypeDescriptionResult result) {
         var lotAliasControl = Session.getModelController(LotAliasControl.class);
         LotAliasTypeDescription lotAliasTypeDescription = null;
-        String lotAliasTypeName = spec.getLotAliasTypeName();
-        LotAliasType lotAliasType = lotAliasControl.getLotAliasTypeByName(lotAliasTypeName);
+        var lotAliasTypeName = spec.getLotAliasTypeName();
+        var lotAliasType = lotAliasControl.getLotAliasTypeByName(lotAliasTypeName);
 
         if(lotAliasType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -137,7 +137,7 @@ public class EditLotAliasTypeDescriptionCommand
     @Override
     public void doUpdate(LotAliasTypeDescription lotAliasTypeDescription) {
         var lotAliasControl = Session.getModelController(LotAliasControl.class);
-        LotAliasTypeDescriptionValue lotAliasTypeDescriptionValue = lotAliasControl.getLotAliasTypeDescriptionValue(lotAliasTypeDescription);
+        var lotAliasTypeDescriptionValue = lotAliasControl.getLotAliasTypeDescriptionValue(lotAliasTypeDescription);
 
         lotAliasTypeDescriptionValue.setDescription(edit.getDescription());
 

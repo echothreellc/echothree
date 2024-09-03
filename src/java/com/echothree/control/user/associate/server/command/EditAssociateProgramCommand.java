@@ -77,22 +77,22 @@ public class EditAssociateProgramCommand
     @Override
     protected BaseResult execute() {
         var associateControl = Session.getModelController(AssociateControl.class);
-        EditAssociateProgramResult result = AssociateResultFactory.getEditAssociateProgramResult();
+        var result = AssociateResultFactory.getEditAssociateProgramResult();
         
         if(editMode.equals(EditMode.LOCK)) {
-            String associateProgramName = spec.getAssociateProgramName();
-            AssociateProgram associateProgram = associateControl.getAssociateProgramByName(associateProgramName);
+            var associateProgramName = spec.getAssociateProgramName();
+            var associateProgram = associateControl.getAssociateProgramByName(associateProgramName);
             
             if(associateProgram != null) {
                 result.setAssociateProgram(associateControl.getAssociateProgramTransfer(getUserVisit(), associateProgram));
                 
                 if(lockEntity(associateProgram)) {
-                    AssociateProgramDescription associateProgramDescription = associateControl.getAssociateProgramDescription(associateProgram, getPreferredLanguage());
-                    AssociateProgramEdit edit = AssociateEditFactory.getAssociateProgramEdit();
-                    AssociateProgramDetail associateProgramDetail = associateProgram.getLastDetail();
-                    Sequence associateSequence = associateProgramDetail.getAssociateSequence();
-                    Sequence associatePartyContactMechanismSequence = associateProgramDetail.getAssociatePartyContactMechanismSequence();
-                    Sequence associateReferralSequence = associateProgramDetail.getAssociateReferralSequence();
+                    var associateProgramDescription = associateControl.getAssociateProgramDescription(associateProgram, getPreferredLanguage());
+                    var edit = AssociateEditFactory.getAssociateProgramEdit();
+                    var associateProgramDetail = associateProgram.getLastDetail();
+                    var associateSequence = associateProgramDetail.getAssociateSequence();
+                    var associatePartyContactMechanismSequence = associateProgramDetail.getAssociatePartyContactMechanismSequence();
+                    var associateReferralSequence = associateProgramDetail.getAssociateReferralSequence();
                     
                     result.setEdit(edit);
                     edit.setAssociateProgramName(associateProgramDetail.getAssociateProgramName());
@@ -115,20 +115,20 @@ public class EditAssociateProgramCommand
                 addExecutionError(ExecutionErrors.UnknownAssociateProgramName.name(), associateProgramName);
             }
         } else if(editMode.equals(EditMode.UPDATE)) {
-            String associateProgramName = spec.getAssociateProgramName();
-            AssociateProgram associateProgram = associateControl.getAssociateProgramByNameForUpdate(associateProgramName);
+            var associateProgramName = spec.getAssociateProgramName();
+            var associateProgram = associateControl.getAssociateProgramByNameForUpdate(associateProgramName);
             
             if(associateProgram != null) {
                 associateProgramName = edit.getAssociateProgramName();
-                AssociateProgram duplicateAssociateProgram = associateControl.getAssociateProgramByName(associateProgramName);
+                var duplicateAssociateProgram = associateControl.getAssociateProgramByName(associateProgramName);
                 
                 if(duplicateAssociateProgram == null || associateProgram.equals(duplicateAssociateProgram)) {
                     var sequenceControl = Session.getModelController(SequenceControl.class);
-                    String associateSequenceName = edit.getAssociateSequenceName();
+                    var associateSequenceName = edit.getAssociateSequenceName();
                     Sequence associateSequence = null;
                     
                     if(associateSequenceName != null) {
-                        SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.ASSOCIATE.name());
+                        var sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.ASSOCIATE.name());
                         
                         if(sequenceType != null) {
                             associateSequence = sequenceControl.getSequenceByName(sequenceType, associateSequenceName);
@@ -138,11 +138,11 @@ public class EditAssociateProgramCommand
                     }
                     
                     if(associateSequenceName == null || associateSequence != null) {
-                        String associatePartyContactMechanismSequenceName = edit.getAssociatePartyContactMechanismSequenceName();
+                        var associatePartyContactMechanismSequenceName = edit.getAssociatePartyContactMechanismSequenceName();
                         Sequence associatePartyContactMechanismSequence = null;
                         
                         if(associatePartyContactMechanismSequenceName != null) {
-                            SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.ASSOCIATE_PARTY_CONTACT_MECHANISM.name());
+                            var sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.ASSOCIATE_PARTY_CONTACT_MECHANISM.name());
                             
                             if(sequenceType != null) {
                                 associatePartyContactMechanismSequence = sequenceControl.getSequenceByName(sequenceType, associatePartyContactMechanismSequenceName);
@@ -152,11 +152,11 @@ public class EditAssociateProgramCommand
                         }
                         
                         if(associatePartyContactMechanismSequenceName == null || associatePartyContactMechanismSequence != null) {
-                            String associateReferralSequenceName = edit.getAssociateReferralSequenceName();
+                            var associateReferralSequenceName = edit.getAssociateReferralSequenceName();
                             Sequence associateReferralSequence = null;
                             
                             if(associateReferralSequenceName != null) {
-                                SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.ASSOCIATE_REFERRAL.name());
+                                var sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.ASSOCIATE_REFERRAL.name());
                                 
                                 if(sequenceType != null) {
                                     associateReferralSequence = sequenceControl.getSequenceByName(sequenceType, associateReferralSequenceName);
@@ -169,11 +169,11 @@ public class EditAssociateProgramCommand
                                 if(lockEntityForUpdate(associateProgram)) {
                                     try {
                                         var partyPK = getPartyPK();
-                                        String strItemIndirectSalePercent = edit.getItemIndirectSalePercent();
-                                        String strItemDirectSalePercent = edit.getItemDirectSalePercent();
-                                        AssociateProgramDetailValue associateProgramDetailValue = associateControl.getAssociateProgramDetailValueForUpdate(associateProgram);
-                                        AssociateProgramDescription associateProgramDescription = associateControl.getAssociateProgramDescriptionForUpdate(associateProgram, getPreferredLanguage());
-                                        String description = edit.getDescription();
+                                        var strItemIndirectSalePercent = edit.getItemIndirectSalePercent();
+                                        var strItemDirectSalePercent = edit.getItemDirectSalePercent();
+                                        var associateProgramDetailValue = associateControl.getAssociateProgramDetailValueForUpdate(associateProgram);
+                                        var associateProgramDescription = associateControl.getAssociateProgramDescriptionForUpdate(associateProgram, getPreferredLanguage());
+                                        var description = edit.getDescription();
                                         
                                         associateProgramDetailValue.setAssociateProgramName(edit.getAssociateProgramName());
                                         associateProgramDetailValue.setAssociateSequencePK(associateSequence == null? null: associateSequence.getPrimaryKey());
@@ -191,7 +191,7 @@ public class EditAssociateProgramCommand
                                         } else if(associateProgramDescription != null && description == null) {
                                             associateControl.deleteAssociateProgramDescription(associateProgramDescription, partyPK);
                                         } else if(associateProgramDescription != null && description != null) {
-                                            AssociateProgramDescriptionValue associateProgramDescriptionValue = associateControl.getAssociateProgramDescriptionValue(associateProgramDescription);
+                                            var associateProgramDescriptionValue = associateControl.getAssociateProgramDescriptionValue(associateProgramDescription);
                                             
                                             associateProgramDescriptionValue.setDescription(description);
                                             associateControl.updateAssociateProgramDescriptionFromValue(associateProgramDescriptionValue, partyPK);

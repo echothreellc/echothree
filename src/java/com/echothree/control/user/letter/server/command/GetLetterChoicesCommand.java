@@ -69,18 +69,18 @@ public class GetLetterChoicesCommand
     @Override
     protected BaseResult execute() {
         var chainControl = Session.getModelController(ChainControl.class);
-        GetLetterChoicesResult result = LetterResultFactory.getGetLetterChoicesResult();
-        String chainKindName = form.getChainKindName();
-        ChainKind chainKind = chainControl.getChainKindByName(chainKindName);
+        var result = LetterResultFactory.getGetLetterChoicesResult();
+        var chainKindName = form.getChainKindName();
+        var chainKind = chainControl.getChainKindByName(chainKindName);
         
         if(chainKind != null) {
-            String chainTypeName = form.getChainTypeName();
-            ChainType chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
+            var chainTypeName = form.getChainTypeName();
+            var chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
             
             if(chainType != null) {
                 var letterControl = Session.getModelController(LetterControl.class);
-                String defaultLetterChoice = form.getDefaultLetterChoice();
-                boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+                var defaultLetterChoice = form.getDefaultLetterChoice();
+                var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
                 
                 result.setLetterChoices(letterControl.getLetterChoices(chainType, defaultLetterChoice,
                         getPreferredLanguage(), allowNullChoice));

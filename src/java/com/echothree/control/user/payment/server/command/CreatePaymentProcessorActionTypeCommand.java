@@ -65,13 +65,13 @@ public class CreatePaymentProcessorActionTypeCommand
     
     @Override
     protected BaseResult execute() {
-        CreatePaymentProcessorActionTypeResult result = PaymentResultFactory.getCreatePaymentProcessorActionTypeResult();
-        String paymentProcessorActionTypeName = form.getPaymentProcessorActionTypeName();
+        var result = PaymentResultFactory.getCreatePaymentProcessorActionTypeResult();
+        var paymentProcessorActionTypeName = form.getPaymentProcessorActionTypeName();
         var isDefault = Boolean.valueOf(form.getIsDefault());
         var sortOrder = Integer.valueOf(form.getSortOrder());
         var description = form.getDescription();
 
-        PaymentProcessorActionType paymentProcessorActionType = PaymentProcessorActionTypeLogic.getInstance().createPaymentProcessorActionType(this,
+        var paymentProcessorActionType = PaymentProcessorActionTypeLogic.getInstance().createPaymentProcessorActionType(this,
                 paymentProcessorActionTypeName, isDefault, sortOrder, getPreferredLanguage(), description, getPartyPK());
 
         if(paymentProcessorActionType != null && !hasExecutionErrors()) {

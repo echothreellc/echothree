@@ -36,12 +36,12 @@ public class EntityBooleanAttributeTransferCache
     }
     
     public EntityBooleanAttributeTransfer getEntityBooleanAttributeTransfer(EntityBooleanAttribute entityBooleanAttribute, EntityInstance entityInstance) {
-        EntityBooleanAttributeTransfer entityBooleanAttributeTransfer = get(entityBooleanAttribute);
+        var entityBooleanAttributeTransfer = get(entityBooleanAttribute);
         
         if(entityBooleanAttributeTransfer == null) {
-            EntityAttributeTransfer entityAttribute = entityInstance == null ? coreControl.getEntityAttributeTransfer(userVisit, entityBooleanAttribute.getEntityAttribute(), entityInstance) : null;
-            EntityInstanceTransfer entityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, entityBooleanAttribute.getEntityInstance(), false, false, false, false, false, false);
-            Boolean booleanAttribute = entityBooleanAttribute.getBooleanAttribute();
+            var entityAttribute = entityInstance == null ? coreControl.getEntityAttributeTransfer(userVisit, entityBooleanAttribute.getEntityAttribute(), entityInstance) : null;
+            var entityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, entityBooleanAttribute.getEntityInstance(), false, false, false, false, false, false);
+            var booleanAttribute = entityBooleanAttribute.getBooleanAttribute();
             
             entityBooleanAttributeTransfer = new EntityBooleanAttributeTransfer(entityAttribute, entityInstanceTransfer, booleanAttribute);
             put(entityBooleanAttribute, entityBooleanAttributeTransfer);

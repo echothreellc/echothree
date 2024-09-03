@@ -68,15 +68,15 @@ public class GetQueuedLetterCommand
     @Override
     protected BaseResult execute() {
         var chainControl = Session.getModelController(ChainControl.class);
-        GetQueuedLetterResult result = LetterResultFactory.getGetQueuedLetterResult();
-        String chainInstanceName = form.getChainInstanceName();
-        ChainInstance chainInstance = chainControl.getChainInstanceByName(chainInstanceName);
+        var result = LetterResultFactory.getGetQueuedLetterResult();
+        var chainInstanceName = form.getChainInstanceName();
+        var chainInstance = chainControl.getChainInstanceByName(chainInstanceName);
         
         if(chainInstance != null) {
             var letterControl = Session.getModelController(LetterControl.class);
-            String strQueuedLetterSequence = form.getQueuedLetterSequence();
-            Integer queuedLetterSequence = Integer.valueOf(strQueuedLetterSequence);
-            QueuedLetter queuedLetter = letterControl.getQueuedLetter(chainInstance, queuedLetterSequence);
+            var strQueuedLetterSequence = form.getQueuedLetterSequence();
+            var queuedLetterSequence = Integer.valueOf(strQueuedLetterSequence);
+            var queuedLetter = letterControl.getQueuedLetter(chainInstance, queuedLetterSequence);
 
             if(queuedLetter != null) {
                 result.setQueuedLetter(letterControl.getQueuedLetterTransfer(getUserVisit(), queuedLetter));

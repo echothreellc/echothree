@@ -32,14 +32,14 @@ public class DocumentTypeUsageTransferCache
     }
     
     public DocumentTypeUsageTransfer getDocumentTypeUsageTransfer(DocumentTypeUsage documentTypeUsage) {
-        DocumentTypeUsageTransfer documentTypeUsageTransfer = get(documentTypeUsage);
+        var documentTypeUsageTransfer = get(documentTypeUsage);
         
         if(documentTypeUsageTransfer == null) {
-            DocumentTypeUsageTypeTransfer documentTypeUsageTypeTransfer = documentControl.getDocumentTypeUsageTypeTransfer(userVisit, documentTypeUsage.getDocumentTypeUsageType());
-            DocumentTypeTransfer documentTypeTransfer = documentControl.getDocumentTypeTransfer(userVisit, documentTypeUsage.getDocumentType());
-            Boolean isDefault = documentTypeUsage.getIsDefault();
-            Integer sortOrder = documentTypeUsage.getSortOrder();
-            Integer maximumInstances = documentTypeUsage.getMaximumInstances();
+            var documentTypeUsageTypeTransfer = documentControl.getDocumentTypeUsageTypeTransfer(userVisit, documentTypeUsage.getDocumentTypeUsageType());
+            var documentTypeTransfer = documentControl.getDocumentTypeTransfer(userVisit, documentTypeUsage.getDocumentType());
+            var isDefault = documentTypeUsage.getIsDefault();
+            var sortOrder = documentTypeUsage.getSortOrder();
+            var maximumInstances = documentTypeUsage.getMaximumInstances();
             
             documentTypeUsageTransfer = new DocumentTypeUsageTransfer(documentTypeUsageTypeTransfer, documentTypeTransfer, isDefault, sortOrder,
                     maximumInstances);

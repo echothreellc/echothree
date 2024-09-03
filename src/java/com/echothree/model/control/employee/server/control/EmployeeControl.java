@@ -215,20 +215,20 @@ public class EmployeeControl
     // --------------------------------------------------------------------------------
     
     public ResponsibilityType createResponsibilityType(String responsibilityTypeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        ResponsibilityType defaultResponsibilityType = getDefaultResponsibilityType();
-        boolean defaultFound = defaultResponsibilityType != null;
+        var defaultResponsibilityType = getDefaultResponsibilityType();
+        var defaultFound = defaultResponsibilityType != null;
         
         if(defaultFound && isDefault) {
-            ResponsibilityTypeDetailValue defaultResponsibilityTypeDetailValue = getDefaultResponsibilityTypeDetailValueForUpdate();
+            var defaultResponsibilityTypeDetailValue = getDefaultResponsibilityTypeDetailValueForUpdate();
             
             defaultResponsibilityTypeDetailValue.setIsDefault(Boolean.FALSE);
             updateResponsibilityTypeFromValue(defaultResponsibilityTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        ResponsibilityType responsibilityType = ResponsibilityTypeFactory.getInstance().create();
-        ResponsibilityTypeDetail responsibilityTypeDetail = ResponsibilityTypeDetailFactory.getInstance().create(session,
+
+        var responsibilityType = ResponsibilityTypeFactory.getInstance().create();
+        var responsibilityTypeDetail = ResponsibilityTypeDetailFactory.getInstance().create(session,
                 responsibilityType, responsibilityTypeName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -258,8 +258,8 @@ public class EmployeeControl
                         "WHERE rsptyp_activedetailid = rsptypdt_responsibilitytypedetailid AND rsptypdt_responsibilitytypename = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ResponsibilityTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = ResponsibilityTypeFactory.getInstance().prepareStatement(query);
             
             ps.setString(1, responsibilityTypeName);
             
@@ -300,8 +300,8 @@ public class EmployeeControl
                     "WHERE rsptyp_activedetailid = rsptypdt_responsibilitytypedetailid AND rsptypdt_sortorder = 1 " +
                     "FOR UPDATE";
         }
-        
-        PreparedStatement ps = ResponsibilityTypeFactory.getInstance().prepareStatement(query);
+
+        var ps = ResponsibilityTypeFactory.getInstance().prepareStatement(query);
         
         return ResponsibilityTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
     }
@@ -332,8 +332,8 @@ public class EmployeeControl
                     "WHERE rsptyp_activedetailid = rsptypdt_responsibilitytypedetailid " +
                     "FOR UPDATE";
         }
-        
-        PreparedStatement ps = ResponsibilityTypeFactory.getInstance().prepareStatement(query);
+
+        var ps = ResponsibilityTypeFactory.getInstance().prepareStatement(query);
         
         return ResponsibilityTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
     }
@@ -351,9 +351,9 @@ public class EmployeeControl
     }
     
     public List<ResponsibilityTypeTransfer> getResponsibilityTypeTransfers(UserVisit userVisit) {
-        List<ResponsibilityType> responsibilityTypes = getResponsibilityTypes();
+        var responsibilityTypes = getResponsibilityTypes();
         List<ResponsibilityTypeTransfer> responsibilityTypeTransfers = new ArrayList<>(responsibilityTypes.size());
-        ResponsibilityTypeTransferCache responsibilityTypeTransferCache = getEmployeeTransferCaches(userVisit).getResponsibilityTypeTransferCache();
+        var responsibilityTypeTransferCache = getEmployeeTransferCaches(userVisit).getResponsibilityTypeTransferCache();
         
         responsibilityTypes.forEach((responsibilityType) ->
                 responsibilityTypeTransfers.add(responsibilityTypeTransferCache.getResponsibilityTypeTransfer(responsibilityType))
@@ -364,7 +364,7 @@ public class EmployeeControl
     
     public ResponsibilityTypeChoicesBean getResponsibilityTypeChoices(String defaultResponsibilityTypeChoice, Language language,
             boolean allowNullChoice) {
-        List<ResponsibilityType> responsibilityTypes = getResponsibilityTypes();
+        var responsibilityTypes = getResponsibilityTypes();
         var size = responsibilityTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -380,7 +380,7 @@ public class EmployeeControl
         }
         
         for(var responsibilityType : responsibilityTypes) {
-            ResponsibilityTypeDetail responsibilityTypeDetail = responsibilityType.getLastDetail();
+            var responsibilityTypeDetail = responsibilityType.getLastDetail();
             
             var label = getBestResponsibilityTypeDescription(responsibilityType, language);
             var value = responsibilityTypeDetail.getResponsibilityTypeName();
@@ -400,25 +400,25 @@ public class EmployeeControl
     private void updateResponsibilityTypeFromValue(ResponsibilityTypeDetailValue responsibilityTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(responsibilityTypeDetailValue.hasBeenModified()) {
-            ResponsibilityType responsibilityType = ResponsibilityTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var responsibilityType = ResponsibilityTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      responsibilityTypeDetailValue.getResponsibilityTypePK());
-            ResponsibilityTypeDetail responsibilityTypeDetail = responsibilityType.getActiveDetailForUpdate();
+            var responsibilityTypeDetail = responsibilityType.getActiveDetailForUpdate();
             
             responsibilityTypeDetail.setThruTime(session.START_TIME_LONG);
             responsibilityTypeDetail.store();
-            
-            ResponsibilityTypePK responsibilityTypePK = responsibilityTypeDetail.getResponsibilityTypePK();
-            String responsibilityTypeName = responsibilityTypeDetailValue.getResponsibilityTypeName();
-            Boolean isDefault = responsibilityTypeDetailValue.getIsDefault();
-            Integer sortOrder = responsibilityTypeDetailValue.getSortOrder();
+
+            var responsibilityTypePK = responsibilityTypeDetail.getResponsibilityTypePK();
+            var responsibilityTypeName = responsibilityTypeDetailValue.getResponsibilityTypeName();
+            var isDefault = responsibilityTypeDetailValue.getIsDefault();
+            var sortOrder = responsibilityTypeDetailValue.getSortOrder();
             
             if(checkDefault) {
-                ResponsibilityType defaultResponsibilityType = getDefaultResponsibilityType();
-                boolean defaultFound = defaultResponsibilityType != null && !defaultResponsibilityType.equals(responsibilityType);
+                var defaultResponsibilityType = getDefaultResponsibilityType();
+                var defaultFound = defaultResponsibilityType != null && !defaultResponsibilityType.equals(responsibilityType);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    ResponsibilityTypeDetailValue defaultResponsibilityTypeDetailValue = getDefaultResponsibilityTypeDetailValueForUpdate();
+                    var defaultResponsibilityTypeDetailValue = getDefaultResponsibilityTypeDetailValueForUpdate();
                     
                     defaultResponsibilityTypeDetailValue.setIsDefault(Boolean.FALSE);
                     updateResponsibilityTypeFromValue(defaultResponsibilityTypeDetailValue, false, updatedBy);
@@ -445,23 +445,23 @@ public class EmployeeControl
     public void deleteResponsibilityType(ResponsibilityType responsibilityType, BasePK deletedBy) {
         deleteResponsibilityTypeDescriptionsByResponsibilityType(responsibilityType, deletedBy);
         deletePartyResponsibilitiesByResponsibilityType(responsibilityType, deletedBy);
-        
-        ResponsibilityTypeDetail responsibilityTypeDetail = responsibilityType.getLastDetailForUpdate();
+
+        var responsibilityTypeDetail = responsibilityType.getLastDetailForUpdate();
         responsibilityTypeDetail.setThruTime(session.START_TIME_LONG);
         responsibilityType.setActiveDetail(null);
         responsibilityType.store();
         
         // Check for default, and pick one if necessary
-        ResponsibilityType defaultResponsibilityType = getDefaultResponsibilityType();
+        var defaultResponsibilityType = getDefaultResponsibilityType();
         if(defaultResponsibilityType == null) {
-            List<ResponsibilityType> responsibilityTypes = getResponsibilityTypesForUpdate();
+            var responsibilityTypes = getResponsibilityTypesForUpdate();
             
             if(!responsibilityTypes.isEmpty()) {
                 Iterator iter = responsibilityTypes.iterator();
                 if(iter.hasNext()) {
                     defaultResponsibilityType = (ResponsibilityType)iter.next();
                 }
-                ResponsibilityTypeDetailValue responsibilityTypeDetailValue = Objects.requireNonNull(defaultResponsibilityType).getLastDetailForUpdate().getResponsibilityTypeDetailValue().clone();
+                var responsibilityTypeDetailValue = Objects.requireNonNull(defaultResponsibilityType).getLastDetailForUpdate().getResponsibilityTypeDetailValue().clone();
                 
                 responsibilityTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateResponsibilityTypeFromValue(responsibilityTypeDetailValue, false, deletedBy);
@@ -477,7 +477,7 @@ public class EmployeeControl
     
     public ResponsibilityTypeDescription createResponsibilityTypeDescription(ResponsibilityType responsibilityType,
             Language language, String description, BasePK createdBy) {
-        ResponsibilityTypeDescription responsibilityTypeDescription = ResponsibilityTypeDescriptionFactory.getInstance().create(session,
+        var responsibilityTypeDescription = ResponsibilityTypeDescriptionFactory.getInstance().create(session,
                 responsibilityType, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(responsibilityType.getPrimaryKey(), EventTypes.MODIFY, responsibilityTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -502,8 +502,8 @@ public class EmployeeControl
                         "WHERE rsptypd_rsptyp_responsibilitytypeid = ? AND rsptypd_lang_languageid = ? AND rsptypd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ResponsibilityTypeDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = ResponsibilityTypeDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, responsibilityType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -550,8 +550,8 @@ public class EmployeeControl
                         "WHERE rsptypd_rsptyp_responsibilitytypeid = ? AND rsptypd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ResponsibilityTypeDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = ResponsibilityTypeDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, responsibilityType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -574,7 +574,7 @@ public class EmployeeControl
     
     public String getBestResponsibilityTypeDescription(ResponsibilityType responsibilityType, Language language) {
         String description;
-        ResponsibilityTypeDescription responsibilityTypeDescription = getResponsibilityTypeDescription(responsibilityType, language);
+        var responsibilityTypeDescription = getResponsibilityTypeDescription(responsibilityType, language);
         
         if(responsibilityTypeDescription == null && !language.getIsDefault()) {
             responsibilityTypeDescription = getResponsibilityTypeDescription(responsibilityType, getPartyControl().getDefaultLanguage());
@@ -594,9 +594,9 @@ public class EmployeeControl
     }
     
     public List<ResponsibilityTypeDescriptionTransfer> getResponsibilityTypeDescriptionTransfers(UserVisit userVisit, ResponsibilityType responsibilityType) {
-        List<ResponsibilityTypeDescription> responsibilityTypeDescriptions = getResponsibilityTypeDescriptionsByResponsibilityType(responsibilityType);
+        var responsibilityTypeDescriptions = getResponsibilityTypeDescriptionsByResponsibilityType(responsibilityType);
         List<ResponsibilityTypeDescriptionTransfer> responsibilityTypeDescriptionTransfers = new ArrayList<>(responsibilityTypeDescriptions.size());
-        ResponsibilityTypeDescriptionTransferCache responsibilityTypeDescriptionTransferCache = getEmployeeTransferCaches(userVisit).getResponsibilityTypeDescriptionTransferCache();
+        var responsibilityTypeDescriptionTransferCache = getEmployeeTransferCaches(userVisit).getResponsibilityTypeDescriptionTransferCache();
         
         responsibilityTypeDescriptions.forEach((responsibilityTypeDescription) ->
                 responsibilityTypeDescriptionTransfers.add(responsibilityTypeDescriptionTransferCache.getResponsibilityTypeDescriptionTransfer(responsibilityTypeDescription))
@@ -607,14 +607,14 @@ public class EmployeeControl
     
     public void updateResponsibilityTypeDescriptionFromValue(ResponsibilityTypeDescriptionValue responsibilityTypeDescriptionValue, BasePK updatedBy) {
         if(responsibilityTypeDescriptionValue.hasBeenModified()) {
-            ResponsibilityTypeDescription responsibilityTypeDescription = ResponsibilityTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, responsibilityTypeDescriptionValue.getPrimaryKey());
+            var responsibilityTypeDescription = ResponsibilityTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, responsibilityTypeDescriptionValue.getPrimaryKey());
             
             responsibilityTypeDescription.setThruTime(session.START_TIME_LONG);
             responsibilityTypeDescription.store();
-            
-            ResponsibilityType responsibilityType = responsibilityTypeDescription.getResponsibilityType();
-            Language language = responsibilityTypeDescription.getLanguage();
-            String description = responsibilityTypeDescriptionValue.getDescription();
+
+            var responsibilityType = responsibilityTypeDescription.getResponsibilityType();
+            var language = responsibilityTypeDescription.getLanguage();
+            var description = responsibilityTypeDescriptionValue.getDescription();
             
             responsibilityTypeDescription = ResponsibilityTypeDescriptionFactory.getInstance().create(responsibilityType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -631,7 +631,7 @@ public class EmployeeControl
     }
     
     public void deleteResponsibilityTypeDescriptionsByResponsibilityType(ResponsibilityType responsibilityType, BasePK deletedBy) {
-        List<ResponsibilityTypeDescription> responsibilityTypeDescriptions = getResponsibilityTypeDescriptionsByResponsibilityTypeForUpdate(responsibilityType);
+        var responsibilityTypeDescriptions = getResponsibilityTypeDescriptionsByResponsibilityTypeForUpdate(responsibilityType);
         
         responsibilityTypeDescriptions.forEach((responsibilityTypeDescription) -> 
                 deleteResponsibilityTypeDescription(responsibilityTypeDescription, deletedBy)
@@ -643,20 +643,20 @@ public class EmployeeControl
     // --------------------------------------------------------------------------------
     
     public SkillType createSkillType(String skillTypeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        SkillType defaultSkillType = getDefaultSkillType();
-        boolean defaultFound = defaultSkillType != null;
+        var defaultSkillType = getDefaultSkillType();
+        var defaultFound = defaultSkillType != null;
         
         if(defaultFound && isDefault) {
-            SkillTypeDetailValue defaultSkillTypeDetailValue = getDefaultSkillTypeDetailValueForUpdate();
+            var defaultSkillTypeDetailValue = getDefaultSkillTypeDetailValueForUpdate();
             
             defaultSkillTypeDetailValue.setIsDefault(Boolean.FALSE);
             updateSkillTypeFromValue(defaultSkillTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        SkillType skillType = SkillTypeFactory.getInstance().create();
-        SkillTypeDetail skillTypeDetail = SkillTypeDetailFactory.getInstance().create(session,
+
+        var skillType = SkillTypeFactory.getInstance().create();
+        var skillTypeDetail = SkillTypeDetailFactory.getInstance().create(session,
                 skillType, skillTypeName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -686,8 +686,8 @@ public class EmployeeControl
                         "WHERE skltyp_activedetailid = skltypdt_skilltypedetailid AND skltypdt_skilltypename = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = SkillTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = SkillTypeFactory.getInstance().prepareStatement(query);
             
             ps.setString(1, skillTypeName);
             
@@ -728,8 +728,8 @@ public class EmployeeControl
                     "WHERE skltyp_activedetailid = skltypdt_skilltypedetailid AND skltypdt_isdefault = 1 " +
                     "FOR UPDATE";
         }
-        
-        PreparedStatement ps = SkillTypeFactory.getInstance().prepareStatement(query);
+
+        var ps = SkillTypeFactory.getInstance().prepareStatement(query);
         
         return SkillTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
     }
@@ -760,8 +760,8 @@ public class EmployeeControl
                     "WHERE skltyp_activedetailid = skltypdt_skilltypedetailid " +
                     "FOR UPDATE";
         }
-        
-        PreparedStatement ps = SkillTypeFactory.getInstance().prepareStatement(query);
+
+        var ps = SkillTypeFactory.getInstance().prepareStatement(query);
         
         return SkillTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
     }
@@ -779,9 +779,9 @@ public class EmployeeControl
     }
     
     public List<SkillTypeTransfer> getSkillTypeTransfers(UserVisit userVisit) {
-        List<SkillType> skillTypes = getSkillTypes();
+        var skillTypes = getSkillTypes();
         List<SkillTypeTransfer> skillTypeTransfers = new ArrayList<>(skillTypes.size());
-        SkillTypeTransferCache skillTypeTransferCache = getEmployeeTransferCaches(userVisit).getSkillTypeTransferCache();
+        var skillTypeTransferCache = getEmployeeTransferCaches(userVisit).getSkillTypeTransferCache();
         
         skillTypes.forEach((skillType) ->
                 skillTypeTransfers.add(skillTypeTransferCache.getSkillTypeTransfer(skillType))
@@ -791,7 +791,7 @@ public class EmployeeControl
     }
     
     public SkillTypeChoicesBean getSkillTypeChoices(String defaultSkillTypeChoice, Language language, boolean allowNullChoice) {
-        List<SkillType> skillTypes = getSkillTypes();
+        var skillTypes = getSkillTypes();
         var size = skillTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -807,7 +807,7 @@ public class EmployeeControl
         }
         
         for(var skillType : skillTypes) {
-            SkillTypeDetail skillTypeDetail = skillType.getLastDetail();
+            var skillTypeDetail = skillType.getLastDetail();
             
             var label = getBestSkillTypeDescription(skillType, language);
             var value = skillTypeDetail.getSkillTypeName();
@@ -827,25 +827,25 @@ public class EmployeeControl
     private void updateSkillTypeFromValue(SkillTypeDetailValue skillTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(skillTypeDetailValue.hasBeenModified()) {
-            SkillType skillType = SkillTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var skillType = SkillTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      skillTypeDetailValue.getSkillTypePK());
-            SkillTypeDetail skillTypeDetail = skillType.getActiveDetailForUpdate();
+            var skillTypeDetail = skillType.getActiveDetailForUpdate();
             
             skillTypeDetail.setThruTime(session.START_TIME_LONG);
             skillTypeDetail.store();
-            
-            SkillTypePK skillTypePK = skillTypeDetail.getSkillTypePK();
-            String skillTypeName = skillTypeDetailValue.getSkillTypeName();
-            Boolean isDefault = skillTypeDetailValue.getIsDefault();
-            Integer sortOrder = skillTypeDetailValue.getSortOrder();
+
+            var skillTypePK = skillTypeDetail.getSkillTypePK();
+            var skillTypeName = skillTypeDetailValue.getSkillTypeName();
+            var isDefault = skillTypeDetailValue.getIsDefault();
+            var sortOrder = skillTypeDetailValue.getSortOrder();
             
             if(checkDefault) {
-                SkillType defaultSkillType = getDefaultSkillType();
-                boolean defaultFound = defaultSkillType != null && !defaultSkillType.equals(skillType);
+                var defaultSkillType = getDefaultSkillType();
+                var defaultFound = defaultSkillType != null && !defaultSkillType.equals(skillType);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    SkillTypeDetailValue defaultSkillTypeDetailValue = getDefaultSkillTypeDetailValueForUpdate();
+                    var defaultSkillTypeDetailValue = getDefaultSkillTypeDetailValueForUpdate();
                     
                     defaultSkillTypeDetailValue.setIsDefault(Boolean.FALSE);
                     updateSkillTypeFromValue(defaultSkillTypeDetailValue, false, updatedBy);
@@ -872,23 +872,23 @@ public class EmployeeControl
     public void deleteSkillType(SkillType skillType, BasePK deletedBy) {
         deleteSkillTypeDescriptionsBySkillType(skillType, deletedBy);
         deletePartySkillsBySkillType(skillType, deletedBy);
-        
-        SkillTypeDetail skillTypeDetail = skillType.getLastDetailForUpdate();
+
+        var skillTypeDetail = skillType.getLastDetailForUpdate();
         skillTypeDetail.setThruTime(session.START_TIME_LONG);
         skillType.setActiveDetail(null);
         skillType.store();
         
         // Check for default, and pick one if necessary
-        SkillType defaultSkillType = getDefaultSkillType();
+        var defaultSkillType = getDefaultSkillType();
         if(defaultSkillType == null) {
-            List<SkillType> skillTypes = getSkillTypesForUpdate();
+            var skillTypes = getSkillTypesForUpdate();
             
             if(!skillTypes.isEmpty()) {
                 Iterator iter = skillTypes.iterator();
                 if(iter.hasNext()) {
                     defaultSkillType = (SkillType)iter.next();
                 }
-                SkillTypeDetailValue skillTypeDetailValue = Objects.requireNonNull(defaultSkillType).getLastDetailForUpdate().getSkillTypeDetailValue().clone();
+                var skillTypeDetailValue = Objects.requireNonNull(defaultSkillType).getLastDetailForUpdate().getSkillTypeDetailValue().clone();
                 
                 skillTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateSkillTypeFromValue(skillTypeDetailValue, false, deletedBy);
@@ -904,7 +904,7 @@ public class EmployeeControl
     
     public SkillTypeDescription createSkillTypeDescription(SkillType skillType,
             Language language, String description, BasePK createdBy) {
-        SkillTypeDescription skillTypeDescription = SkillTypeDescriptionFactory.getInstance().create(session,
+        var skillTypeDescription = SkillTypeDescriptionFactory.getInstance().create(session,
                 skillType, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(skillType.getPrimaryKey(), EventTypes.MODIFY, skillTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -929,8 +929,8 @@ public class EmployeeControl
                         "WHERE skltypd_skltyp_skilltypeid = ? AND skltypd_lang_languageid = ? AND skltypd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = SkillTypeDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = SkillTypeDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, skillType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -977,8 +977,8 @@ public class EmployeeControl
                         "WHERE skltypd_skltyp_skilltypeid = ? AND skltypd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = SkillTypeDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = SkillTypeDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, skillType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1001,7 +1001,7 @@ public class EmployeeControl
     
     public String getBestSkillTypeDescription(SkillType skillType, Language language) {
         String description;
-        SkillTypeDescription skillTypeDescription = getSkillTypeDescription(skillType, language);
+        var skillTypeDescription = getSkillTypeDescription(skillType, language);
         
         if(skillTypeDescription == null && !language.getIsDefault()) {
             skillTypeDescription = getSkillTypeDescription(skillType, getPartyControl().getDefaultLanguage());
@@ -1021,9 +1021,9 @@ public class EmployeeControl
     }
     
     public List<SkillTypeDescriptionTransfer> getSkillTypeDescriptionTransfers(UserVisit userVisit, SkillType skillType) {
-        List<SkillTypeDescription> skillTypeDescriptions = getSkillTypeDescriptionsBySkillType(skillType);
+        var skillTypeDescriptions = getSkillTypeDescriptionsBySkillType(skillType);
         List<SkillTypeDescriptionTransfer> skillTypeDescriptionTransfers = new ArrayList<>(skillTypeDescriptions.size());
-        SkillTypeDescriptionTransferCache skillTypeDescriptionTransferCache = getEmployeeTransferCaches(userVisit).getSkillTypeDescriptionTransferCache();
+        var skillTypeDescriptionTransferCache = getEmployeeTransferCaches(userVisit).getSkillTypeDescriptionTransferCache();
         
         skillTypeDescriptions.forEach((skillTypeDescription) ->
                 skillTypeDescriptionTransfers.add(skillTypeDescriptionTransferCache.getSkillTypeDescriptionTransfer(skillTypeDescription))
@@ -1034,14 +1034,14 @@ public class EmployeeControl
     
     public void updateSkillTypeDescriptionFromValue(SkillTypeDescriptionValue skillTypeDescriptionValue, BasePK updatedBy) {
         if(skillTypeDescriptionValue.hasBeenModified()) {
-            SkillTypeDescription skillTypeDescription = SkillTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, skillTypeDescriptionValue.getPrimaryKey());
+            var skillTypeDescription = SkillTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, skillTypeDescriptionValue.getPrimaryKey());
             
             skillTypeDescription.setThruTime(session.START_TIME_LONG);
             skillTypeDescription.store();
-            
-            SkillType skillType = skillTypeDescription.getSkillType();
-            Language language = skillTypeDescription.getLanguage();
-            String description = skillTypeDescriptionValue.getDescription();
+
+            var skillType = skillTypeDescription.getSkillType();
+            var language = skillTypeDescription.getLanguage();
+            var description = skillTypeDescriptionValue.getDescription();
             
             skillTypeDescription = SkillTypeDescriptionFactory.getInstance().create(skillType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1058,7 +1058,7 @@ public class EmployeeControl
     }
     
     public void deleteSkillTypeDescriptionsBySkillType(SkillType skillType, BasePK deletedBy) {
-        List<SkillTypeDescription> skillTypeDescriptions = getSkillTypeDescriptionsBySkillTypeForUpdate(skillType);
+        var skillTypeDescriptions = getSkillTypeDescriptionsBySkillTypeForUpdate(skillType);
         
         skillTypeDescriptions.forEach((skillTypeDescription) -> 
                 deleteSkillTypeDescription(skillTypeDescription, deletedBy)
@@ -1070,11 +1070,11 @@ public class EmployeeControl
     // --------------------------------------------------------------------------------
 
     public LeaveType createLeaveType(String leaveTypeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        LeaveType defaultLeaveType = getDefaultLeaveType();
-        boolean defaultFound = defaultLeaveType != null;
+        var defaultLeaveType = getDefaultLeaveType();
+        var defaultFound = defaultLeaveType != null;
 
         if(defaultFound && isDefault) {
-            LeaveTypeDetailValue defaultLeaveTypeDetailValue = getDefaultLeaveTypeDetailValueForUpdate();
+            var defaultLeaveTypeDetailValue = getDefaultLeaveTypeDetailValueForUpdate();
 
             defaultLeaveTypeDetailValue.setIsDefault(Boolean.FALSE);
             updateLeaveTypeFromValue(defaultLeaveTypeDetailValue, false, createdBy);
@@ -1082,8 +1082,8 @@ public class EmployeeControl
             isDefault = Boolean.TRUE;
         }
 
-        LeaveType leaveType = LeaveTypeFactory.getInstance().create();
-        LeaveTypeDetail leaveTypeDetail = LeaveTypeDetailFactory.getInstance().create(leaveType,
+        var leaveType = LeaveTypeFactory.getInstance().create();
+        var leaveTypeDetail = LeaveTypeDetailFactory.getInstance().create(leaveType,
                 leaveTypeName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -1209,7 +1209,7 @@ public class EmployeeControl
 
     public List<LeaveTypeTransfer> getLeaveTypeTransfers(UserVisit userVisit, Collection<LeaveType> leaveTypes) {
         List<LeaveTypeTransfer> leaveTypeTransfers = new ArrayList<>(leaveTypes.size());
-        LeaveTypeTransferCache leaveTypeTransferCache = getEmployeeTransferCaches(userVisit).getLeaveTypeTransferCache();
+        var leaveTypeTransferCache = getEmployeeTransferCaches(userVisit).getLeaveTypeTransferCache();
 
         leaveTypes.forEach((leaveType) ->
                 leaveTypeTransfers.add(leaveTypeTransferCache.getLeaveTypeTransfer(leaveType))
@@ -1223,7 +1223,7 @@ public class EmployeeControl
     }
 
     public LeaveTypeChoicesBean getLeaveTypeChoices(String defaultLeaveTypeChoice, Language language, boolean allowNullChoice) {
-        List<LeaveType> leaveTypes = getLeaveTypes();
+        var leaveTypes = getLeaveTypes();
         var size = leaveTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -1239,7 +1239,7 @@ public class EmployeeControl
         }
 
         for(var leaveType : leaveTypes) {
-            LeaveTypeDetail leaveTypeDetail = leaveType.getLastDetail();
+            var leaveTypeDetail = leaveType.getLastDetail();
 
             var label = getBestLeaveTypeDescription(leaveType, language);
             var value = leaveTypeDetail.getLeaveTypeName();
@@ -1259,25 +1259,25 @@ public class EmployeeControl
     private void updateLeaveTypeFromValue(LeaveTypeDetailValue leaveTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(leaveTypeDetailValue.hasBeenModified()) {
-            LeaveType leaveType = LeaveTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var leaveType = LeaveTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      leaveTypeDetailValue.getLeaveTypePK());
-            LeaveTypeDetail leaveTypeDetail = leaveType.getActiveDetailForUpdate();
+            var leaveTypeDetail = leaveType.getActiveDetailForUpdate();
 
             leaveTypeDetail.setThruTime(session.START_TIME_LONG);
             leaveTypeDetail.store();
 
-            LeaveTypePK leaveTypePK = leaveTypeDetail.getLeaveTypePK(); // Not updated
-            String leaveTypeName = leaveTypeDetailValue.getLeaveTypeName();
-            Boolean isDefault = leaveTypeDetailValue.getIsDefault();
-            Integer sortOrder = leaveTypeDetailValue.getSortOrder();
+            var leaveTypePK = leaveTypeDetail.getLeaveTypePK(); // Not updated
+            var leaveTypeName = leaveTypeDetailValue.getLeaveTypeName();
+            var isDefault = leaveTypeDetailValue.getIsDefault();
+            var sortOrder = leaveTypeDetailValue.getSortOrder();
 
             if(checkDefault) {
-                LeaveType defaultLeaveType = getDefaultLeaveType();
-                boolean defaultFound = defaultLeaveType != null && !defaultLeaveType.equals(leaveType);
+                var defaultLeaveType = getDefaultLeaveType();
+                var defaultFound = defaultLeaveType != null && !defaultLeaveType.equals(leaveType);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    LeaveTypeDetailValue defaultLeaveTypeDetailValue = getDefaultLeaveTypeDetailValueForUpdate();
+                    var defaultLeaveTypeDetailValue = getDefaultLeaveTypeDetailValueForUpdate();
 
                     defaultLeaveTypeDetailValue.setIsDefault(Boolean.FALSE);
                     updateLeaveTypeFromValue(defaultLeaveTypeDetailValue, false, updatedBy);
@@ -1304,22 +1304,22 @@ public class EmployeeControl
     public void deleteLeaveType(LeaveType leaveType, BasePK deletedBy) {
         deleteLeaveTypeDescriptionsByLeaveType(leaveType, deletedBy);
 
-        LeaveTypeDetail leaveTypeDetail = leaveType.getLastDetailForUpdate();
+        var leaveTypeDetail = leaveType.getLastDetailForUpdate();
         leaveTypeDetail.setThruTime(session.START_TIME_LONG);
         leaveType.setActiveDetail(null);
         leaveType.store();
 
         // Check for default, and pick one if necessary
-        LeaveType defaultLeaveType = getDefaultLeaveType();
+        var defaultLeaveType = getDefaultLeaveType();
         if(defaultLeaveType == null) {
-            List<LeaveType> leaveTypes = getLeaveTypesForUpdate();
+            var leaveTypes = getLeaveTypesForUpdate();
 
             if(!leaveTypes.isEmpty()) {
-                Iterator<LeaveType> iter = leaveTypes.iterator();
+                var iter = leaveTypes.iterator();
                 if(iter.hasNext()) {
                     defaultLeaveType = iter.next();
                 }
-                LeaveTypeDetailValue leaveTypeDetailValue = Objects.requireNonNull(defaultLeaveType).getLastDetailForUpdate().getLeaveTypeDetailValue().clone();
+                var leaveTypeDetailValue = Objects.requireNonNull(defaultLeaveType).getLastDetailForUpdate().getLeaveTypeDetailValue().clone();
 
                 leaveTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateLeaveTypeFromValue(leaveTypeDetailValue, false, deletedBy);
@@ -1335,7 +1335,7 @@ public class EmployeeControl
 
     public LeaveTypeDescription createLeaveTypeDescription(LeaveType leaveType,
             Language language, String description, BasePK createdBy) {
-        LeaveTypeDescription leaveTypeDescription = LeaveTypeDescriptionFactory.getInstance().create(leaveType,
+        var leaveTypeDescription = LeaveTypeDescriptionFactory.getInstance().create(leaveType,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(leaveType.getPrimaryKey(), EventTypes.MODIFY, leaveTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1417,7 +1417,7 @@ public class EmployeeControl
 
     public String getBestLeaveTypeDescription(LeaveType leaveType, Language language) {
         String description;
-        LeaveTypeDescription leaveTypeDescription = getLeaveTypeDescription(leaveType, language);
+        var leaveTypeDescription = getLeaveTypeDescription(leaveType, language);
 
         if(leaveTypeDescription == null && !language.getIsDefault()) {
             leaveTypeDescription = getLeaveTypeDescription(leaveType, getPartyControl().getDefaultLanguage());
@@ -1437,9 +1437,9 @@ public class EmployeeControl
     }
 
     public List<LeaveTypeDescriptionTransfer> getLeaveTypeDescriptionTransfersByLeaveType(UserVisit userVisit, LeaveType leaveType) {
-        List<LeaveTypeDescription> leaveTypeDescriptions = getLeaveTypeDescriptionsByLeaveType(leaveType);
+        var leaveTypeDescriptions = getLeaveTypeDescriptionsByLeaveType(leaveType);
         List<LeaveTypeDescriptionTransfer> leaveTypeDescriptionTransfers = new ArrayList<>(leaveTypeDescriptions.size());
-        LeaveTypeDescriptionTransferCache leaveTypeDescriptionTransferCache = getEmployeeTransferCaches(userVisit).getLeaveTypeDescriptionTransferCache();
+        var leaveTypeDescriptionTransferCache = getEmployeeTransferCaches(userVisit).getLeaveTypeDescriptionTransferCache();
 
         leaveTypeDescriptions.forEach((leaveTypeDescription) ->
                 leaveTypeDescriptionTransfers.add(leaveTypeDescriptionTransferCache.getLeaveTypeDescriptionTransfer(leaveTypeDescription))
@@ -1450,15 +1450,15 @@ public class EmployeeControl
 
     public void updateLeaveTypeDescriptionFromValue(LeaveTypeDescriptionValue leaveTypeDescriptionValue, BasePK updatedBy) {
         if(leaveTypeDescriptionValue.hasBeenModified()) {
-            LeaveTypeDescription leaveTypeDescription = LeaveTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var leaveTypeDescription = LeaveTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     leaveTypeDescriptionValue.getPrimaryKey());
 
             leaveTypeDescription.setThruTime(session.START_TIME_LONG);
             leaveTypeDescription.store();
 
-            LeaveType leaveType = leaveTypeDescription.getLeaveType();
-            Language language = leaveTypeDescription.getLanguage();
-            String description = leaveTypeDescriptionValue.getDescription();
+            var leaveType = leaveTypeDescription.getLeaveType();
+            var language = leaveTypeDescription.getLanguage();
+            var description = leaveTypeDescriptionValue.getDescription();
 
             leaveTypeDescription = LeaveTypeDescriptionFactory.getInstance().create(leaveType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1475,7 +1475,7 @@ public class EmployeeControl
     }
 
     public void deleteLeaveTypeDescriptionsByLeaveType(LeaveType leaveType, BasePK deletedBy) {
-        List<LeaveTypeDescription> leaveTypeDescriptions = getLeaveTypeDescriptionsByLeaveTypeForUpdate(leaveType);
+        var leaveTypeDescriptions = getLeaveTypeDescriptionsByLeaveTypeForUpdate(leaveType);
 
         leaveTypeDescriptions.forEach((leaveTypeDescription) -> 
                 deleteLeaveTypeDescription(leaveTypeDescription, deletedBy)
@@ -1487,11 +1487,11 @@ public class EmployeeControl
     // --------------------------------------------------------------------------------
 
     public LeaveReason createLeaveReason(String leaveReasonName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        LeaveReason defaultLeaveReason = getDefaultLeaveReason();
-        boolean defaultFound = defaultLeaveReason != null;
+        var defaultLeaveReason = getDefaultLeaveReason();
+        var defaultFound = defaultLeaveReason != null;
 
         if(defaultFound && isDefault) {
-            LeaveReasonDetailValue defaultLeaveReasonDetailValue = getDefaultLeaveReasonDetailValueForUpdate();
+            var defaultLeaveReasonDetailValue = getDefaultLeaveReasonDetailValueForUpdate();
 
             defaultLeaveReasonDetailValue.setIsDefault(Boolean.FALSE);
             updateLeaveReasonFromValue(defaultLeaveReasonDetailValue, false, createdBy);
@@ -1499,8 +1499,8 @@ public class EmployeeControl
             isDefault = Boolean.TRUE;
         }
 
-        LeaveReason leaveReason = LeaveReasonFactory.getInstance().create();
-        LeaveReasonDetail leaveReasonDetail = LeaveReasonDetailFactory.getInstance().create(leaveReason,
+        var leaveReason = LeaveReasonFactory.getInstance().create();
+        var leaveReasonDetail = LeaveReasonDetailFactory.getInstance().create(leaveReason,
                 leaveReasonName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -1626,7 +1626,7 @@ public class EmployeeControl
 
     public List<LeaveReasonTransfer> getLeaveReasonTransfers(UserVisit userVisit, Collection<LeaveReason> leaveReasons) {
         List<LeaveReasonTransfer> leaveReasonTransfers = new ArrayList<>(leaveReasons.size());
-        LeaveReasonTransferCache leaveReasonTransferCache = getEmployeeTransferCaches(userVisit).getLeaveReasonTransferCache();
+        var leaveReasonTransferCache = getEmployeeTransferCaches(userVisit).getLeaveReasonTransferCache();
 
         leaveReasons.forEach((leaveReason) ->
                 leaveReasonTransfers.add(leaveReasonTransferCache.getLeaveReasonTransfer(leaveReason))
@@ -1640,7 +1640,7 @@ public class EmployeeControl
     }
 
     public LeaveReasonChoicesBean getLeaveReasonChoices(String defaultLeaveReasonChoice, Language language, boolean allowNullChoice) {
-        List<LeaveReason> leaveReasons = getLeaveReasons();
+        var leaveReasons = getLeaveReasons();
         var size = leaveReasons.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -1656,7 +1656,7 @@ public class EmployeeControl
         }
 
         for(var leaveReason : leaveReasons) {
-            LeaveReasonDetail leaveReasonDetail = leaveReason.getLastDetail();
+            var leaveReasonDetail = leaveReason.getLastDetail();
 
             var label = getBestLeaveReasonDescription(leaveReason, language);
             var value = leaveReasonDetail.getLeaveReasonName();
@@ -1676,25 +1676,25 @@ public class EmployeeControl
     private void updateLeaveReasonFromValue(LeaveReasonDetailValue leaveReasonDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(leaveReasonDetailValue.hasBeenModified()) {
-            LeaveReason leaveReason = LeaveReasonFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var leaveReason = LeaveReasonFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      leaveReasonDetailValue.getLeaveReasonPK());
-            LeaveReasonDetail leaveReasonDetail = leaveReason.getActiveDetailForUpdate();
+            var leaveReasonDetail = leaveReason.getActiveDetailForUpdate();
 
             leaveReasonDetail.setThruTime(session.START_TIME_LONG);
             leaveReasonDetail.store();
 
-            LeaveReasonPK leaveReasonPK = leaveReasonDetail.getLeaveReasonPK(); // Not updated
-            String leaveReasonName = leaveReasonDetailValue.getLeaveReasonName();
-            Boolean isDefault = leaveReasonDetailValue.getIsDefault();
-            Integer sortOrder = leaveReasonDetailValue.getSortOrder();
+            var leaveReasonPK = leaveReasonDetail.getLeaveReasonPK(); // Not updated
+            var leaveReasonName = leaveReasonDetailValue.getLeaveReasonName();
+            var isDefault = leaveReasonDetailValue.getIsDefault();
+            var sortOrder = leaveReasonDetailValue.getSortOrder();
 
             if(checkDefault) {
-                LeaveReason defaultLeaveReason = getDefaultLeaveReason();
-                boolean defaultFound = defaultLeaveReason != null && !defaultLeaveReason.equals(leaveReason);
+                var defaultLeaveReason = getDefaultLeaveReason();
+                var defaultFound = defaultLeaveReason != null && !defaultLeaveReason.equals(leaveReason);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    LeaveReasonDetailValue defaultLeaveReasonDetailValue = getDefaultLeaveReasonDetailValueForUpdate();
+                    var defaultLeaveReasonDetailValue = getDefaultLeaveReasonDetailValueForUpdate();
 
                     defaultLeaveReasonDetailValue.setIsDefault(Boolean.FALSE);
                     updateLeaveReasonFromValue(defaultLeaveReasonDetailValue, false, updatedBy);
@@ -1721,22 +1721,22 @@ public class EmployeeControl
     public void deleteLeaveReason(LeaveReason leaveReason, BasePK deletedBy) {
         deleteLeaveReasonDescriptionsByLeaveReason(leaveReason, deletedBy);
 
-        LeaveReasonDetail leaveReasonDetail = leaveReason.getLastDetailForUpdate();
+        var leaveReasonDetail = leaveReason.getLastDetailForUpdate();
         leaveReasonDetail.setThruTime(session.START_TIME_LONG);
         leaveReason.setActiveDetail(null);
         leaveReason.store();
 
         // Check for default, and pick one if necessary
-        LeaveReason defaultLeaveReason = getDefaultLeaveReason();
+        var defaultLeaveReason = getDefaultLeaveReason();
         if(defaultLeaveReason == null) {
-            List<LeaveReason> leaveReasons = getLeaveReasonsForUpdate();
+            var leaveReasons = getLeaveReasonsForUpdate();
 
             if(!leaveReasons.isEmpty()) {
-                Iterator<LeaveReason> iter = leaveReasons.iterator();
+                var iter = leaveReasons.iterator();
                 if(iter.hasNext()) {
                     defaultLeaveReason = iter.next();
                 }
-                LeaveReasonDetailValue leaveReasonDetailValue = Objects.requireNonNull(defaultLeaveReason).getLastDetailForUpdate().getLeaveReasonDetailValue().clone();
+                var leaveReasonDetailValue = Objects.requireNonNull(defaultLeaveReason).getLastDetailForUpdate().getLeaveReasonDetailValue().clone();
 
                 leaveReasonDetailValue.setIsDefault(Boolean.TRUE);
                 updateLeaveReasonFromValue(leaveReasonDetailValue, false, deletedBy);
@@ -1752,7 +1752,7 @@ public class EmployeeControl
 
     public LeaveReasonDescription createLeaveReasonDescription(LeaveReason leaveReason,
             Language language, String description, BasePK createdBy) {
-        LeaveReasonDescription leaveReasonDescription = LeaveReasonDescriptionFactory.getInstance().create(leaveReason,
+        var leaveReasonDescription = LeaveReasonDescriptionFactory.getInstance().create(leaveReason,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(leaveReason.getPrimaryKey(), EventTypes.MODIFY, leaveReasonDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1834,7 +1834,7 @@ public class EmployeeControl
 
     public String getBestLeaveReasonDescription(LeaveReason leaveReason, Language language) {
         String description;
-        LeaveReasonDescription leaveReasonDescription = getLeaveReasonDescription(leaveReason, language);
+        var leaveReasonDescription = getLeaveReasonDescription(leaveReason, language);
 
         if(leaveReasonDescription == null && !language.getIsDefault()) {
             leaveReasonDescription = getLeaveReasonDescription(leaveReason, getPartyControl().getDefaultLanguage());
@@ -1854,9 +1854,9 @@ public class EmployeeControl
     }
 
     public List<LeaveReasonDescriptionTransfer> getLeaveReasonDescriptionTransfersByLeaveReason(UserVisit userVisit, LeaveReason leaveReason) {
-        List<LeaveReasonDescription> leaveReasonDescriptions = getLeaveReasonDescriptionsByLeaveReason(leaveReason);
+        var leaveReasonDescriptions = getLeaveReasonDescriptionsByLeaveReason(leaveReason);
         List<LeaveReasonDescriptionTransfer> leaveReasonDescriptionTransfers = new ArrayList<>(leaveReasonDescriptions.size());
-        LeaveReasonDescriptionTransferCache leaveReasonDescriptionTransferCache = getEmployeeTransferCaches(userVisit).getLeaveReasonDescriptionTransferCache();
+        var leaveReasonDescriptionTransferCache = getEmployeeTransferCaches(userVisit).getLeaveReasonDescriptionTransferCache();
 
         leaveReasonDescriptions.forEach((leaveReasonDescription) ->
                 leaveReasonDescriptionTransfers.add(leaveReasonDescriptionTransferCache.getLeaveReasonDescriptionTransfer(leaveReasonDescription))
@@ -1867,15 +1867,15 @@ public class EmployeeControl
 
     public void updateLeaveReasonDescriptionFromValue(LeaveReasonDescriptionValue leaveReasonDescriptionValue, BasePK updatedBy) {
         if(leaveReasonDescriptionValue.hasBeenModified()) {
-            LeaveReasonDescription leaveReasonDescription = LeaveReasonDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var leaveReasonDescription = LeaveReasonDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     leaveReasonDescriptionValue.getPrimaryKey());
 
             leaveReasonDescription.setThruTime(session.START_TIME_LONG);
             leaveReasonDescription.store();
 
-            LeaveReason leaveReason = leaveReasonDescription.getLeaveReason();
-            Language language = leaveReasonDescription.getLanguage();
-            String description = leaveReasonDescriptionValue.getDescription();
+            var leaveReason = leaveReasonDescription.getLeaveReason();
+            var language = leaveReasonDescription.getLanguage();
+            var description = leaveReasonDescriptionValue.getDescription();
 
             leaveReasonDescription = LeaveReasonDescriptionFactory.getInstance().create(leaveReason, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1892,7 +1892,7 @@ public class EmployeeControl
     }
 
     public void deleteLeaveReasonDescriptionsByLeaveReason(LeaveReason leaveReason, BasePK deletedBy) {
-        List<LeaveReasonDescription> leaveReasonDescriptions = getLeaveReasonDescriptionsByLeaveReasonForUpdate(leaveReason);
+        var leaveReasonDescriptions = getLeaveReasonDescriptionsByLeaveReasonForUpdate(leaveReason);
 
         leaveReasonDescriptions.forEach((leaveReasonDescription) -> 
                 deleteLeaveReasonDescription(leaveReasonDescription, deletedBy)
@@ -1906,16 +1906,16 @@ public class EmployeeControl
     public Leave createLeave(Party party, Party companyParty, LeaveType leaveType, LeaveReason leaveReason, Long startTime, Long endTime, Long totalTime,
             BasePK createdBy) {
         var sequenceControl = Session.getModelController(SequenceControl.class);
-        Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.LEAVE.name());
-        String leaveName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
+        var sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.LEAVE.name());
+        var leaveName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
 
         return createLeave(leaveName, party, companyParty, leaveType, leaveReason, startTime, endTime, totalTime, createdBy);
     }
 
     public Leave createLeave(String leaveName, Party party, Party companyParty, LeaveType leaveType, LeaveReason leaveReason, Long startTime, Long endTime,
             Long totalTime, BasePK createdBy) {
-        Leave leave = LeaveFactory.getInstance().create();
-        LeaveDetail leaveDetail = LeaveDetailFactory.getInstance().create(leave, leaveName, party, companyParty, leaveType, leaveReason, startTime, endTime,
+        var leave = LeaveFactory.getInstance().create();
+        var leaveDetail = LeaveDetailFactory.getInstance().create(leave, leaveName, party, companyParty, leaveType, leaveReason, startTime, endTime,
                 totalTime, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -1924,7 +1924,7 @@ public class EmployeeControl
         leave.setLastDetail(leaveDetail);
         leave.store();
 
-        LeavePK leavePK = leave.getPrimaryKey();
+        var leavePK = leave.getPrimaryKey();
         sendEvent(leavePK, EventTypes.CREATE, null, null, createdBy);
         sendEvent(party.getPrimaryKey(), EventTypes.TOUCH, leavePK, EventTypes.CREATE, createdBy);
 
@@ -2141,8 +2141,8 @@ public class EmployeeControl
             workflowControl.getWorkflowEntranceChoices(leaveStatusChoicesBean, defaultLeaveStatusChoice, language, allowNullChoice,
                     workflowControl.getWorkflowByName(LeaveStatusConstants.Workflow_LEAVE_STATUS), partyPK);
         } else {
-            EntityInstance entityInstance = getCoreControl().getEntityInstanceByBasePK(leave.getPrimaryKey());
-            WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(LeaveStatusConstants.Workflow_LEAVE_STATUS,
+            var entityInstance = getCoreControl().getEntityInstanceByBasePK(leave.getPrimaryKey());
+            var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(LeaveStatusConstants.Workflow_LEAVE_STATUS,
                     entityInstance);
 
             workflowControl.getWorkflowDestinationChoices(leaveStatusChoicesBean, defaultLeaveStatusChoice, language, allowNullChoice,
@@ -2154,10 +2154,10 @@ public class EmployeeControl
 
     public void setLeaveStatus(ExecutionErrorAccumulator eea, Leave leave, String leaveStatusChoice, PartyPK modifiedBy) {
         var workflowControl = getWorkflowControl();
-        EntityInstance entityInstance = getEntityInstanceByBaseEntity(leave);
-        WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(LeaveStatusConstants.Workflow_LEAVE_STATUS,
+        var entityInstance = getEntityInstanceByBaseEntity(leave);
+        var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(LeaveStatusConstants.Workflow_LEAVE_STATUS,
                 entityInstance);
-        WorkflowDestination workflowDestination = leaveStatusChoice == null ? null
+        var workflowDestination = leaveStatusChoice == null ? null
                 : workflowControl.getWorkflowDestinationByName(workflowEntityStatus.getWorkflowStep(), leaveStatusChoice);
 
         if(workflowDestination != null || leaveStatusChoice == null) {
@@ -2173,7 +2173,7 @@ public class EmployeeControl
 
     public List<LeaveTransfer> getLeaveTransfers(UserVisit userVisit, Collection<Leave> leaves) {
         List<LeaveTransfer> leaveTransfers = new ArrayList<>(leaves.size());
-        LeaveTransferCache leaveTransferCache = getEmployeeTransferCaches(userVisit).getLeaveTransferCache();
+        var leaveTransferCache = getEmployeeTransferCaches(userVisit).getLeaveTransferCache();
 
         leaves.forEach((leave) ->
                 leaveTransfers.add(leaveTransferCache.getLeaveTransfer(leave))
@@ -2188,22 +2188,22 @@ public class EmployeeControl
 
     public void updateLeaveFromValue(LeaveDetailValue leaveDetailValue, BasePK updatedBy) {
         if(leaveDetailValue.hasBeenModified()) {
-            Leave leave = LeaveFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var leave = LeaveFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      leaveDetailValue.getLeavePK());
-            LeaveDetail leaveDetail = leave.getActiveDetailForUpdate();
+            var leaveDetail = leave.getActiveDetailForUpdate();
 
             leaveDetail.setThruTime(session.START_TIME_LONG);
             leaveDetail.store();
 
-            LeavePK leavePK = leaveDetail.getLeavePK(); // Not updated
-            String leaveName = leaveDetail.getLeaveName(); // Not updated
-            PartyPK partyPK = leaveDetail.getPartyPK(); // Not updated
-            PartyPK companyPartyPK = leaveDetailValue.getCompanyPartyPK();
-            Long startTime = leaveDetailValue.getStartTime();
-            Long endTime = leaveDetailValue.getEndTime();
-            Long totalTime = leaveDetailValue.getTotalTime();
-            LeaveTypePK leaveTypePK = leaveDetailValue.getLeaveTypePK();
-            LeaveReasonPK leaveReasonPK = leaveDetailValue.getLeaveReasonPK();
+            var leavePK = leaveDetail.getLeavePK(); // Not updated
+            var leaveName = leaveDetail.getLeaveName(); // Not updated
+            var partyPK = leaveDetail.getPartyPK(); // Not updated
+            var companyPartyPK = leaveDetailValue.getCompanyPartyPK();
+            var startTime = leaveDetailValue.getStartTime();
+            var endTime = leaveDetailValue.getEndTime();
+            var totalTime = leaveDetailValue.getTotalTime();
+            var leaveTypePK = leaveDetailValue.getLeaveTypePK();
+            var leaveReasonPK = leaveDetailValue.getLeaveReasonPK();
 
             leaveDetail = LeaveDetailFactory.getInstance().create(leavePK, leaveName, partyPK, companyPartyPK, leaveTypePK, leaveReasonPK, startTime,
                     endTime, totalTime, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -2217,12 +2217,12 @@ public class EmployeeControl
     }
 
     public void deleteLeave(Leave leave, BasePK deletedBy) {
-        LeaveDetail leaveDetail = leave.getLastDetailForUpdate();
+        var leaveDetail = leave.getLastDetailForUpdate();
         leaveDetail.setThruTime(session.START_TIME_LONG);
         leaveDetail.store();
         leave.setActiveDetail(null);
 
-        LeavePK leavePK = leave.getPrimaryKey();
+        var leavePK = leave.getPrimaryKey();
         sendEvent(leavePK, EventTypes.DELETE, null, null, deletedBy);
         sendEvent(leaveDetail.getParty().getPrimaryKey(), EventTypes.TOUCH, leavePK, EventTypes.DELETE, deletedBy);
     }
@@ -2250,20 +2250,20 @@ public class EmployeeControl
     // --------------------------------------------------------------------------------
     
     public TerminationReason createTerminationReason(String terminationReasonName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        TerminationReason defaultTerminationReason = getDefaultTerminationReason();
-        boolean defaultFound = defaultTerminationReason != null;
+        var defaultTerminationReason = getDefaultTerminationReason();
+        var defaultFound = defaultTerminationReason != null;
         
         if(defaultFound && isDefault) {
-            TerminationReasonDetailValue defaultTerminationReasonDetailValue = getDefaultTerminationReasonDetailValueForUpdate();
+            var defaultTerminationReasonDetailValue = getDefaultTerminationReasonDetailValueForUpdate();
             
             defaultTerminationReasonDetailValue.setIsDefault(Boolean.FALSE);
             updateTerminationReasonFromValue(defaultTerminationReasonDetailValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        TerminationReason terminationReason = TerminationReasonFactory.getInstance().create();
-        TerminationReasonDetail terminationReasonDetail = TerminationReasonDetailFactory.getInstance().create(session,
+
+        var terminationReason = TerminationReasonFactory.getInstance().create();
+        var terminationReasonDetail = TerminationReasonDetailFactory.getInstance().create(session,
                 terminationReason, terminationReasonName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -2293,8 +2293,8 @@ public class EmployeeControl
                         "WHERE trmnrsn_activedetailid = trmnrsndt_terminationreasondetailid AND trmnrsndt_terminationreasonname = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = TerminationReasonFactory.getInstance().prepareStatement(query);
+
+            var ps = TerminationReasonFactory.getInstance().prepareStatement(query);
             
             ps.setString(1, terminationReasonName);
             
@@ -2335,8 +2335,8 @@ public class EmployeeControl
                     "WHERE trmnrsn_activedetailid = trmnrsndt_terminationreasondetailid AND trmnrsndt_isdefault = 1 " +
                     "FOR UPDATE";
         }
-        
-        PreparedStatement ps = TerminationReasonFactory.getInstance().prepareStatement(query);
+
+        var ps = TerminationReasonFactory.getInstance().prepareStatement(query);
         
         return TerminationReasonFactory.getInstance().getEntityFromQuery(entityPermission, ps);
     }
@@ -2367,8 +2367,8 @@ public class EmployeeControl
                     "WHERE trmnrsn_activedetailid = trmnrsndt_terminationreasondetailid " +
                     "FOR UPDATE";
         }
-        
-        PreparedStatement ps = TerminationReasonFactory.getInstance().prepareStatement(query);
+
+        var ps = TerminationReasonFactory.getInstance().prepareStatement(query);
         
         return TerminationReasonFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
     }
@@ -2386,9 +2386,9 @@ public class EmployeeControl
     }
     
     public List<TerminationReasonTransfer> getTerminationReasonTransfers(UserVisit userVisit) {
-        List<TerminationReason> terminationReasons = getTerminationReasons();
+        var terminationReasons = getTerminationReasons();
         List<TerminationReasonTransfer> terminationReasonTransfers = new ArrayList<>(terminationReasons.size());
-        TerminationReasonTransferCache terminationReasonTransferCache = getEmployeeTransferCaches(userVisit).getTerminationReasonTransferCache();
+        var terminationReasonTransferCache = getEmployeeTransferCaches(userVisit).getTerminationReasonTransferCache();
         
         terminationReasons.forEach((terminationReason) ->
                 terminationReasonTransfers.add(terminationReasonTransferCache.getTerminationReasonTransfer(terminationReason))
@@ -2399,7 +2399,7 @@ public class EmployeeControl
     
     public TerminationReasonChoicesBean getTerminationReasonChoices(String defaultTerminationReasonChoice, Language language,
             boolean allowNullChoice) {
-        List<TerminationReason> terminationReasons = getTerminationReasons();
+        var terminationReasons = getTerminationReasons();
         var size = terminationReasons.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -2415,7 +2415,7 @@ public class EmployeeControl
         }
         
         for(var terminationReason : terminationReasons) {
-            TerminationReasonDetail terminationReasonDetail = terminationReason.getLastDetail();
+            var terminationReasonDetail = terminationReason.getLastDetail();
             
             var label = getBestTerminationReasonDescription(terminationReason, language);
             var value = terminationReasonDetail.getTerminationReasonName();
@@ -2435,25 +2435,25 @@ public class EmployeeControl
     private void updateTerminationReasonFromValue(TerminationReasonDetailValue terminationReasonDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(terminationReasonDetailValue.hasBeenModified()) {
-            TerminationReason terminationReason = TerminationReasonFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var terminationReason = TerminationReasonFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      terminationReasonDetailValue.getTerminationReasonPK());
-            TerminationReasonDetail terminationReasonDetail = terminationReason.getActiveDetailForUpdate();
+            var terminationReasonDetail = terminationReason.getActiveDetailForUpdate();
             
             terminationReasonDetail.setThruTime(session.START_TIME_LONG);
             terminationReasonDetail.store();
-            
-            TerminationReasonPK terminationReasonPK = terminationReasonDetail.getTerminationReasonPK();
-            String terminationReasonName = terminationReasonDetailValue.getTerminationReasonName();
-            Boolean isDefault = terminationReasonDetailValue.getIsDefault();
-            Integer sortOrder = terminationReasonDetailValue.getSortOrder();
+
+            var terminationReasonPK = terminationReasonDetail.getTerminationReasonPK();
+            var terminationReasonName = terminationReasonDetailValue.getTerminationReasonName();
+            var isDefault = terminationReasonDetailValue.getIsDefault();
+            var sortOrder = terminationReasonDetailValue.getSortOrder();
             
             if(checkDefault) {
-                TerminationReason defaultTerminationReason = getDefaultTerminationReason();
-                boolean defaultFound = defaultTerminationReason != null && !defaultTerminationReason.equals(terminationReason);
+                var defaultTerminationReason = getDefaultTerminationReason();
+                var defaultFound = defaultTerminationReason != null && !defaultTerminationReason.equals(terminationReason);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    TerminationReasonDetailValue defaultTerminationReasonDetailValue = getDefaultTerminationReasonDetailValueForUpdate();
+                    var defaultTerminationReasonDetailValue = getDefaultTerminationReasonDetailValueForUpdate();
                     
                     defaultTerminationReasonDetailValue.setIsDefault(Boolean.FALSE);
                     updateTerminationReasonFromValue(defaultTerminationReasonDetailValue, false, updatedBy);
@@ -2480,23 +2480,23 @@ public class EmployeeControl
     public void deleteTerminationReason(TerminationReason terminationReason, BasePK deletedBy) {
         deleteTerminationReasonDescriptionsByTerminationReason(terminationReason, deletedBy);
         deleteEmploymentsByTerminationReason(terminationReason, deletedBy);
-        
-        TerminationReasonDetail terminationReasonDetail = terminationReason.getLastDetailForUpdate();
+
+        var terminationReasonDetail = terminationReason.getLastDetailForUpdate();
         terminationReasonDetail.setThruTime(session.START_TIME_LONG);
         terminationReason.setActiveDetail(null);
         terminationReason.store();
         
         // Check for default, and pick one if necessary
-        TerminationReason defaultTerminationReason = getDefaultTerminationReason();
+        var defaultTerminationReason = getDefaultTerminationReason();
         if(defaultTerminationReason == null) {
-            List<TerminationReason> terminationReasons = getTerminationReasonsForUpdate();
+            var terminationReasons = getTerminationReasonsForUpdate();
             
             if(!terminationReasons.isEmpty()) {
                 Iterator iter = terminationReasons.iterator();
                 if(iter.hasNext()) {
                     defaultTerminationReason = (TerminationReason)iter.next();
                 }
-                TerminationReasonDetailValue terminationReasonDetailValue = Objects.requireNonNull(defaultTerminationReason).getLastDetailForUpdate().getTerminationReasonDetailValue().clone();
+                var terminationReasonDetailValue = Objects.requireNonNull(defaultTerminationReason).getLastDetailForUpdate().getTerminationReasonDetailValue().clone();
                 
                 terminationReasonDetailValue.setIsDefault(Boolean.TRUE);
                 updateTerminationReasonFromValue(terminationReasonDetailValue, false, deletedBy);
@@ -2512,7 +2512,7 @@ public class EmployeeControl
     
     public TerminationReasonDescription createTerminationReasonDescription(TerminationReason terminationReason,
             Language language, String description, BasePK createdBy) {
-        TerminationReasonDescription terminationReasonDescription = TerminationReasonDescriptionFactory.getInstance().create(session,
+        var terminationReasonDescription = TerminationReasonDescriptionFactory.getInstance().create(session,
                 terminationReason, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(terminationReason.getPrimaryKey(), EventTypes.MODIFY, terminationReasonDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2537,8 +2537,8 @@ public class EmployeeControl
                         "WHERE trmnrsnd_trmnrsn_terminationreasonid = ? AND trmnrsnd_lang_languageid = ? AND trmnrsnd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = TerminationReasonDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = TerminationReasonDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, terminationReason.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -2585,8 +2585,8 @@ public class EmployeeControl
                         "WHERE trmnrsnd_trmnrsn_terminationreasonid = ? AND trmnrsnd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = TerminationReasonDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = TerminationReasonDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, terminationReason.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -2609,7 +2609,7 @@ public class EmployeeControl
     
     public String getBestTerminationReasonDescription(TerminationReason terminationReason, Language language) {
         String description;
-        TerminationReasonDescription terminationReasonDescription = getTerminationReasonDescription(terminationReason, language);
+        var terminationReasonDescription = getTerminationReasonDescription(terminationReason, language);
         
         if(terminationReasonDescription == null && !language.getIsDefault()) {
             terminationReasonDescription = getTerminationReasonDescription(terminationReason, getPartyControl().getDefaultLanguage());
@@ -2629,9 +2629,9 @@ public class EmployeeControl
     }
     
     public List<TerminationReasonDescriptionTransfer> getTerminationReasonDescriptionTransfers(UserVisit userVisit, TerminationReason terminationReason) {
-        List<TerminationReasonDescription> terminationReasonDescriptions = getTerminationReasonDescriptionsByTerminationReason(terminationReason);
+        var terminationReasonDescriptions = getTerminationReasonDescriptionsByTerminationReason(terminationReason);
         List<TerminationReasonDescriptionTransfer> terminationReasonDescriptionTransfers = new ArrayList<>(terminationReasonDescriptions.size());
-        TerminationReasonDescriptionTransferCache terminationReasonDescriptionTransferCache = getEmployeeTransferCaches(userVisit).getTerminationReasonDescriptionTransferCache();
+        var terminationReasonDescriptionTransferCache = getEmployeeTransferCaches(userVisit).getTerminationReasonDescriptionTransferCache();
         
         terminationReasonDescriptions.forEach((terminationReasonDescription) ->
                 terminationReasonDescriptionTransfers.add(terminationReasonDescriptionTransferCache.getTerminationReasonDescriptionTransfer(terminationReasonDescription))
@@ -2642,14 +2642,14 @@ public class EmployeeControl
     
     public void updateTerminationReasonDescriptionFromValue(TerminationReasonDescriptionValue terminationReasonDescriptionValue, BasePK updatedBy) {
         if(terminationReasonDescriptionValue.hasBeenModified()) {
-            TerminationReasonDescription terminationReasonDescription = TerminationReasonDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, terminationReasonDescriptionValue.getPrimaryKey());
+            var terminationReasonDescription = TerminationReasonDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, terminationReasonDescriptionValue.getPrimaryKey());
             
             terminationReasonDescription.setThruTime(session.START_TIME_LONG);
             terminationReasonDescription.store();
-            
-            TerminationReason terminationReason = terminationReasonDescription.getTerminationReason();
-            Language language = terminationReasonDescription.getLanguage();
-            String description = terminationReasonDescriptionValue.getDescription();
+
+            var terminationReason = terminationReasonDescription.getTerminationReason();
+            var language = terminationReasonDescription.getLanguage();
+            var description = terminationReasonDescriptionValue.getDescription();
             
             terminationReasonDescription = TerminationReasonDescriptionFactory.getInstance().create(terminationReason, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -2666,7 +2666,7 @@ public class EmployeeControl
     }
     
     public void deleteTerminationReasonDescriptionsByTerminationReason(TerminationReason terminationReason, BasePK deletedBy) {
-        List<TerminationReasonDescription> terminationReasonDescriptions = getTerminationReasonDescriptionsByTerminationReasonForUpdate(terminationReason);
+        var terminationReasonDescriptions = getTerminationReasonDescriptionsByTerminationReasonForUpdate(terminationReason);
         
         terminationReasonDescriptions.forEach((terminationReasonDescription) -> 
                 deleteTerminationReasonDescription(terminationReasonDescription, deletedBy)
@@ -2678,20 +2678,20 @@ public class EmployeeControl
     // --------------------------------------------------------------------------------
     
     public TerminationType createTerminationType(String terminationTypeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        TerminationType defaultTerminationType = getDefaultTerminationType();
-        boolean defaultFound = defaultTerminationType != null;
+        var defaultTerminationType = getDefaultTerminationType();
+        var defaultFound = defaultTerminationType != null;
         
         if(defaultFound && isDefault) {
-            TerminationTypeDetailValue defaultTerminationTypeDetailValue = getDefaultTerminationTypeDetailValueForUpdate();
+            var defaultTerminationTypeDetailValue = getDefaultTerminationTypeDetailValueForUpdate();
             
             defaultTerminationTypeDetailValue.setIsDefault(Boolean.FALSE);
             updateTerminationTypeFromValue(defaultTerminationTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        TerminationType terminationType = TerminationTypeFactory.getInstance().create();
-        TerminationTypeDetail terminationTypeDetail = TerminationTypeDetailFactory.getInstance().create(session,
+
+        var terminationType = TerminationTypeFactory.getInstance().create();
+        var terminationTypeDetail = TerminationTypeDetailFactory.getInstance().create(session,
                 terminationType, terminationTypeName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -2721,8 +2721,8 @@ public class EmployeeControl
                         "WHERE trmntyp_activedetailid = trmntypdt_terminationtypedetailid AND trmntypdt_terminationtypename = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = TerminationTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = TerminationTypeFactory.getInstance().prepareStatement(query);
             
             ps.setString(1, terminationTypeName);
             
@@ -2763,8 +2763,8 @@ public class EmployeeControl
                     "WHERE trmntyp_activedetailid = trmntypdt_terminationtypedetailid AND trmntypdt_isdefault = 1 " +
                     "FOR UPDATE";
         }
-        
-        PreparedStatement ps = TerminationTypeFactory.getInstance().prepareStatement(query);
+
+        var ps = TerminationTypeFactory.getInstance().prepareStatement(query);
         
         return TerminationTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
     }
@@ -2795,8 +2795,8 @@ public class EmployeeControl
                     "WHERE trmntyp_activedetailid = trmntypdt_terminationtypedetailid " +
                     "FOR UPDATE";
         }
-        
-        PreparedStatement ps = TerminationTypeFactory.getInstance().prepareStatement(query);
+
+        var ps = TerminationTypeFactory.getInstance().prepareStatement(query);
         
         return TerminationTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
     }
@@ -2814,9 +2814,9 @@ public class EmployeeControl
     }
     
     public List<TerminationTypeTransfer> getTerminationTypeTransfers(UserVisit userVisit) {
-        List<TerminationType> terminationTypes = getTerminationTypes();
+        var terminationTypes = getTerminationTypes();
         List<TerminationTypeTransfer> terminationTypeTransfers = new ArrayList<>(terminationTypes.size());
-        TerminationTypeTransferCache terminationTypeTransferCache = getEmployeeTransferCaches(userVisit).getTerminationTypeTransferCache();
+        var terminationTypeTransferCache = getEmployeeTransferCaches(userVisit).getTerminationTypeTransferCache();
         
         terminationTypes.forEach((terminationType) ->
                 terminationTypeTransfers.add(terminationTypeTransferCache.getTerminationTypeTransfer(terminationType))
@@ -2827,7 +2827,7 @@ public class EmployeeControl
     
     public TerminationTypeChoicesBean getTerminationTypeChoices(String defaultTerminationTypeChoice, Language language,
             boolean allowNullChoice) {
-        List<TerminationType> terminationTypes = getTerminationTypes();
+        var terminationTypes = getTerminationTypes();
         var size = terminationTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -2843,7 +2843,7 @@ public class EmployeeControl
         }
         
         for(var terminationType : terminationTypes) {
-            TerminationTypeDetail terminationTypeDetail = terminationType.getLastDetail();
+            var terminationTypeDetail = terminationType.getLastDetail();
             
             var label = getBestTerminationTypeDescription(terminationType, language);
             var value = terminationTypeDetail.getTerminationTypeName();
@@ -2863,25 +2863,25 @@ public class EmployeeControl
     private void updateTerminationTypeFromValue(TerminationTypeDetailValue terminationTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(terminationTypeDetailValue.hasBeenModified()) {
-            TerminationType terminationType = TerminationTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var terminationType = TerminationTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      terminationTypeDetailValue.getTerminationTypePK());
-            TerminationTypeDetail terminationTypeDetail = terminationType.getActiveDetailForUpdate();
+            var terminationTypeDetail = terminationType.getActiveDetailForUpdate();
             
             terminationTypeDetail.setThruTime(session.START_TIME_LONG);
             terminationTypeDetail.store();
-            
-            TerminationTypePK terminationTypePK = terminationTypeDetail.getTerminationTypePK();
-            String terminationTypeName = terminationTypeDetailValue.getTerminationTypeName();
-            Boolean isDefault = terminationTypeDetailValue.getIsDefault();
-            Integer sortOrder = terminationTypeDetailValue.getSortOrder();
+
+            var terminationTypePK = terminationTypeDetail.getTerminationTypePK();
+            var terminationTypeName = terminationTypeDetailValue.getTerminationTypeName();
+            var isDefault = terminationTypeDetailValue.getIsDefault();
+            var sortOrder = terminationTypeDetailValue.getSortOrder();
             
             if(checkDefault) {
-                TerminationType defaultTerminationType = getDefaultTerminationType();
-                boolean defaultFound = defaultTerminationType != null && !defaultTerminationType.equals(terminationType);
+                var defaultTerminationType = getDefaultTerminationType();
+                var defaultFound = defaultTerminationType != null && !defaultTerminationType.equals(terminationType);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    TerminationTypeDetailValue defaultTerminationTypeDetailValue = getDefaultTerminationTypeDetailValueForUpdate();
+                    var defaultTerminationTypeDetailValue = getDefaultTerminationTypeDetailValueForUpdate();
                     
                     defaultTerminationTypeDetailValue.setIsDefault(Boolean.FALSE);
                     updateTerminationTypeFromValue(defaultTerminationTypeDetailValue, false, updatedBy);
@@ -2908,23 +2908,23 @@ public class EmployeeControl
     public void deleteTerminationType(TerminationType terminationType, BasePK deletedBy) {
         deleteTerminationTypeDescriptionsByTerminationType(terminationType, deletedBy);
         deleteEmploymentsByTerminationType(terminationType, deletedBy);
-        
-        TerminationTypeDetail terminationTypeDetail = terminationType.getLastDetailForUpdate();
+
+        var terminationTypeDetail = terminationType.getLastDetailForUpdate();
         terminationTypeDetail.setThruTime(session.START_TIME_LONG);
         terminationType.setActiveDetail(null);
         terminationType.store();
         
         // Check for default, and pick one if necessary
-        TerminationType defaultTerminationType = getDefaultTerminationType();
+        var defaultTerminationType = getDefaultTerminationType();
         if(defaultTerminationType == null) {
-            List<TerminationType> terminationTypes = getTerminationTypesForUpdate();
+            var terminationTypes = getTerminationTypesForUpdate();
             
             if(!terminationTypes.isEmpty()) {
                 Iterator iter = terminationTypes.iterator();
                 if(iter.hasNext()) {
                     defaultTerminationType = (TerminationType)iter.next();
                 }
-                TerminationTypeDetailValue terminationTypeDetailValue = Objects.requireNonNull(defaultTerminationType).getLastDetailForUpdate().getTerminationTypeDetailValue().clone();
+                var terminationTypeDetailValue = Objects.requireNonNull(defaultTerminationType).getLastDetailForUpdate().getTerminationTypeDetailValue().clone();
                 
                 terminationTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateTerminationTypeFromValue(terminationTypeDetailValue, false, deletedBy);
@@ -2940,7 +2940,7 @@ public class EmployeeControl
     
     public TerminationTypeDescription createTerminationTypeDescription(TerminationType terminationType,
             Language language, String description, BasePK createdBy) {
-        TerminationTypeDescription terminationTypeDescription = TerminationTypeDescriptionFactory.getInstance().create(session,
+        var terminationTypeDescription = TerminationTypeDescriptionFactory.getInstance().create(session,
                 terminationType, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(terminationType.getPrimaryKey(), EventTypes.MODIFY, terminationTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2965,8 +2965,8 @@ public class EmployeeControl
                         "WHERE trmntypd_trmntyp_terminationtypeid = ? AND trmntypd_lang_languageid = ? AND trmntypd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = TerminationTypeDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = TerminationTypeDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, terminationType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -3013,8 +3013,8 @@ public class EmployeeControl
                         "WHERE trmntypd_trmntyp_terminationtypeid = ? AND trmntypd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = TerminationTypeDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = TerminationTypeDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, terminationType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -3037,7 +3037,7 @@ public class EmployeeControl
     
     public String getBestTerminationTypeDescription(TerminationType terminationType, Language language) {
         String description;
-        TerminationTypeDescription terminationTypeDescription = getTerminationTypeDescription(terminationType, language);
+        var terminationTypeDescription = getTerminationTypeDescription(terminationType, language);
         
         if(terminationTypeDescription == null && !language.getIsDefault()) {
             terminationTypeDescription = getTerminationTypeDescription(terminationType, getPartyControl().getDefaultLanguage());
@@ -3057,9 +3057,9 @@ public class EmployeeControl
     }
     
     public List<TerminationTypeDescriptionTransfer> getTerminationTypeDescriptionTransfers(UserVisit userVisit, TerminationType terminationType) {
-        List<TerminationTypeDescription> terminationTypeDescriptions = getTerminationTypeDescriptionsByTerminationType(terminationType);
+        var terminationTypeDescriptions = getTerminationTypeDescriptionsByTerminationType(terminationType);
         List<TerminationTypeDescriptionTransfer> terminationTypeDescriptionTransfers = new ArrayList<>(terminationTypeDescriptions.size());
-        TerminationTypeDescriptionTransferCache terminationTypeDescriptionTransferCache = getEmployeeTransferCaches(userVisit).getTerminationTypeDescriptionTransferCache();
+        var terminationTypeDescriptionTransferCache = getEmployeeTransferCaches(userVisit).getTerminationTypeDescriptionTransferCache();
         
         terminationTypeDescriptions.forEach((terminationTypeDescription) ->
                 terminationTypeDescriptionTransfers.add(terminationTypeDescriptionTransferCache.getTerminationTypeDescriptionTransfer(terminationTypeDescription))
@@ -3070,14 +3070,14 @@ public class EmployeeControl
     
     public void updateTerminationTypeDescriptionFromValue(TerminationTypeDescriptionValue terminationTypeDescriptionValue, BasePK updatedBy) {
         if(terminationTypeDescriptionValue.hasBeenModified()) {
-            TerminationTypeDescription terminationTypeDescription = TerminationTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, terminationTypeDescriptionValue.getPrimaryKey());
+            var terminationTypeDescription = TerminationTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, terminationTypeDescriptionValue.getPrimaryKey());
             
             terminationTypeDescription.setThruTime(session.START_TIME_LONG);
             terminationTypeDescription.store();
-            
-            TerminationType terminationType = terminationTypeDescription.getTerminationType();
-            Language language = terminationTypeDescription.getLanguage();
-            String description = terminationTypeDescriptionValue.getDescription();
+
+            var terminationType = terminationTypeDescription.getTerminationType();
+            var language = terminationTypeDescription.getLanguage();
+            var description = terminationTypeDescriptionValue.getDescription();
             
             terminationTypeDescription = TerminationTypeDescriptionFactory.getInstance().create(terminationType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -3094,7 +3094,7 @@ public class EmployeeControl
     }
     
     public void deleteTerminationTypeDescriptionsByTerminationType(TerminationType terminationType, BasePK deletedBy) {
-        List<TerminationTypeDescription> terminationTypeDescriptions = getTerminationTypeDescriptionsByTerminationTypeForUpdate(terminationType);
+        var terminationTypeDescriptions = getTerminationTypeDescriptionsByTerminationTypeForUpdate(terminationType);
         
         terminationTypeDescriptions.forEach((terminationTypeDescription) -> 
                 deleteTerminationTypeDescription(terminationTypeDescription, deletedBy)
@@ -3108,16 +3108,16 @@ public class EmployeeControl
     public Employment createEmployment(Party party, Party companyParty, Long startTime, Long endTime, TerminationType terminationType,
             TerminationReason terminationReason, BasePK createdBy) {
         var sequenceControl = Session.getModelController(SequenceControl.class);
-        Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.EMPLOYMENT.name());
-        String employmentName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
+        var sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.EMPLOYMENT.name());
+        var employmentName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
 
         return createEmployment(employmentName, party, companyParty, startTime, endTime, terminationType, terminationReason, createdBy);
     }
 
     public Employment createEmployment(String employmentName, Party party, Party companyParty, Long startTime, Long endTime,
             TerminationType terminationType, TerminationReason terminationReason, BasePK createdBy) {
-        Employment employment = EmploymentFactory.getInstance().create();
-        EmploymentDetail employmentDetail = EmploymentDetailFactory.getInstance().create(employment, employmentName, party, companyParty, startTime,
+        var employment = EmploymentFactory.getInstance().create();
+        var employmentDetail = EmploymentDetailFactory.getInstance().create(employment, employmentName, party, companyParty, startTime,
                 endTime, terminationType, terminationReason, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -3126,7 +3126,7 @@ public class EmployeeControl
         employment.setLastDetail(employmentDetail);
         employment.store();
 
-        EmploymentPK employmentPK = employment.getPrimaryKey();
+        var employmentPK = employment.getPrimaryKey();
         sendEvent(employmentPK, EventTypes.CREATE, null, null, createdBy);
         sendEvent(party.getPrimaryKey(), EventTypes.TOUCH, employmentPK, EventTypes.CREATE, createdBy);
 
@@ -3340,7 +3340,7 @@ public class EmployeeControl
 
     public List<EmploymentTransfer> getEmploymentTransfers(UserVisit userVisit, Collection<Employment> employments) {
         List<EmploymentTransfer> employmentTransfers = new ArrayList<>(employments.size());
-        EmploymentTransferCache employmentTransferCache = getEmployeeTransferCaches(userVisit).getEmploymentTransferCache();
+        var employmentTransferCache = getEmployeeTransferCaches(userVisit).getEmploymentTransferCache();
 
         employments.forEach((employment) ->
                 employmentTransfers.add(employmentTransferCache.getEmploymentTransfer(employment))
@@ -3355,21 +3355,21 @@ public class EmployeeControl
 
     public void updateEmploymentFromValue(EmploymentDetailValue employmentDetailValue, BasePK updatedBy) {
         if(employmentDetailValue.hasBeenModified()) {
-            Employment employment = EmploymentFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var employment = EmploymentFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      employmentDetailValue.getEmploymentPK());
-            EmploymentDetail employmentDetail = employment.getActiveDetailForUpdate();
+            var employmentDetail = employment.getActiveDetailForUpdate();
 
             employmentDetail.setThruTime(session.START_TIME_LONG);
             employmentDetail.store();
 
-            EmploymentPK employmentPK = employmentDetail.getEmploymentPK(); // Not updated
-            String employmentName = employmentDetail.getEmploymentName(); // Not updated
-            PartyPK partyPK = employmentDetail.getPartyPK(); // Not updated
-            PartyPK companyPartyPK = employmentDetailValue.getCompanyPartyPK();
-            Long startTime = employmentDetailValue.getStartTime();
-            Long endTime = employmentDetailValue.getEndTime();
-            TerminationTypePK terminationTypePK = employmentDetailValue.getTerminationTypePK();
-            TerminationReasonPK terminationReasonPK = employmentDetailValue.getTerminationReasonPK();
+            var employmentPK = employmentDetail.getEmploymentPK(); // Not updated
+            var employmentName = employmentDetail.getEmploymentName(); // Not updated
+            var partyPK = employmentDetail.getPartyPK(); // Not updated
+            var companyPartyPK = employmentDetailValue.getCompanyPartyPK();
+            var startTime = employmentDetailValue.getStartTime();
+            var endTime = employmentDetailValue.getEndTime();
+            var terminationTypePK = employmentDetailValue.getTerminationTypePK();
+            var terminationReasonPK = employmentDetailValue.getTerminationReasonPK();
 
             employmentDetail = EmploymentDetailFactory.getInstance().create(employmentPK, employmentName, partyPK, companyPartyPK, startTime, endTime,
                     terminationTypePK, terminationReasonPK, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -3383,12 +3383,12 @@ public class EmployeeControl
     }
 
     public void deleteEmployment(Employment employment, BasePK deletedBy) {
-        EmploymentDetail employmentDetail = employment.getLastDetailForUpdate();
+        var employmentDetail = employment.getLastDetailForUpdate();
         employmentDetail.setThruTime(session.START_TIME_LONG);
         employmentDetail.store();
         employment.setActiveDetail(null);
 
-        EmploymentPK employmentPK = employment.getPrimaryKey();
+        var employmentPK = employment.getPrimaryKey();
         sendEvent(employmentPK, EventTypes.DELETE, null, null, deletedBy);
         sendEvent(employmentDetail.getParty().getPrimaryKey(), EventTypes.TOUCH, employmentPK, EventTypes.DELETE, deletedBy);
     }
@@ -3416,20 +3416,20 @@ public class EmployeeControl
     // --------------------------------------------------------------------------------
     
     public EmployeeType createEmployeeType(String employeeTypeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        EmployeeType defaultEmployeeType = getDefaultEmployeeType();
-        boolean defaultFound = defaultEmployeeType != null;
+        var defaultEmployeeType = getDefaultEmployeeType();
+        var defaultFound = defaultEmployeeType != null;
         
         if(defaultFound && isDefault) {
-            EmployeeTypeDetailValue defaultEmployeeTypeDetailValue = getDefaultEmployeeTypeDetailValueForUpdate();
+            var defaultEmployeeTypeDetailValue = getDefaultEmployeeTypeDetailValueForUpdate();
             
             defaultEmployeeTypeDetailValue.setIsDefault(Boolean.FALSE);
             updateEmployeeTypeFromValue(defaultEmployeeTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        EmployeeType employeeType = EmployeeTypeFactory.getInstance().create();
-        EmployeeTypeDetail employeeTypeDetail = EmployeeTypeDetailFactory.getInstance().create(employeeType,
+
+        var employeeType = EmployeeTypeFactory.getInstance().create();
+        var employeeTypeDetail = EmployeeTypeDetailFactory.getInstance().create(employeeType,
                 employeeTypeName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -3458,8 +3458,8 @@ public class EmployeeControl
                     "WHERE empty_activedetailid = emptydt_employeetypedetailid " +
                     "FOR UPDATE";
         }
-        
-        PreparedStatement ps = EmployeeTypeFactory.getInstance().prepareStatement(query);
+
+        var ps = EmployeeTypeFactory.getInstance().prepareStatement(query);
         
         return EmployeeTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
     }
@@ -3485,8 +3485,8 @@ public class EmployeeControl
                     "WHERE empty_activedetailid = emptydt_employeetypedetailid AND emptydt_isdefault = 1 " +
                     "FOR UPDATE";
         }
-        
-        PreparedStatement ps = EmployeeTypeFactory.getInstance().prepareStatement(query);
+
+        var ps = EmployeeTypeFactory.getInstance().prepareStatement(query);
         
         return EmployeeTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
     }
@@ -3519,8 +3519,8 @@ public class EmployeeControl
                         "WHERE empty_activedetailid = emptydt_employeetypedetailid AND emptydt_employeetypename = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = EmployeeTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = EmployeeTypeFactory.getInstance().prepareStatement(query);
             
             ps.setString(1, employeeTypeName);
             
@@ -3550,7 +3550,7 @@ public class EmployeeControl
     
     public EmployeeTypeChoicesBean getEmployeeTypeChoices(String defaultEmployeeTypeChoice, Language language,
             boolean allowNullChoice) {
-        List<EmployeeType> employeeTypes = getEmployeeTypes();
+        var employeeTypes = getEmployeeTypes();
         var size = employeeTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -3566,7 +3566,7 @@ public class EmployeeControl
         }
         
         for(var employeeType : employeeTypes) {
-            EmployeeTypeDetail employeeTypeDetail = employeeType.getLastDetail();
+            var employeeTypeDetail = employeeType.getLastDetail();
             var label = getBestEmployeeTypeDescription(employeeType, language);
             var value = employeeTypeDetail.getEmployeeTypeName();
             
@@ -3587,11 +3587,11 @@ public class EmployeeControl
     }
     
     public List<EmployeeTypeTransfer> getEmployeeTypeTransfers(UserVisit userVisit) {
-        List<EmployeeType> employeeTypes = getEmployeeTypes();
+        var employeeTypes = getEmployeeTypes();
         List<EmployeeTypeTransfer> employeeTypeTransfers = null;
         
         if(employeeTypes != null) {
-            EmployeeTypeTransferCache employeeTypeTransferCache = getEmployeeTransferCaches(userVisit).getEmployeeTypeTransferCache();
+            var employeeTypeTransferCache = getEmployeeTransferCaches(userVisit).getEmployeeTypeTransferCache();
             
             employeeTypeTransfers = new ArrayList<>(employeeTypes.size());
             
@@ -3606,25 +3606,25 @@ public class EmployeeControl
     private void updateEmployeeTypeFromValue(EmployeeTypeDetailValue employeeTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(employeeTypeDetailValue.hasBeenModified()) {
-            EmployeeType employeeType = EmployeeTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var employeeType = EmployeeTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      employeeTypeDetailValue.getEmployeeTypePK());
-            EmployeeTypeDetail employeeTypeDetail = employeeType.getActiveDetailForUpdate();
+            var employeeTypeDetail = employeeType.getActiveDetailForUpdate();
             
             employeeTypeDetail.setThruTime(session.START_TIME_LONG);
             employeeTypeDetail.store();
-            
-            EmployeeTypePK employeeTypePK = employeeTypeDetail.getEmployeeTypePK();
-            String employeeTypeName = employeeTypeDetailValue.getEmployeeTypeName();
-            Boolean isDefault = employeeTypeDetailValue.getIsDefault();
-            Integer sortOrder = employeeTypeDetailValue.getSortOrder();
+
+            var employeeTypePK = employeeTypeDetail.getEmployeeTypePK();
+            var employeeTypeName = employeeTypeDetailValue.getEmployeeTypeName();
+            var isDefault = employeeTypeDetailValue.getIsDefault();
+            var sortOrder = employeeTypeDetailValue.getSortOrder();
             
             if(checkDefault) {
-                EmployeeType defaultEmployeeType = getDefaultEmployeeType();
-                boolean defaultFound = defaultEmployeeType != null && !defaultEmployeeType.equals(employeeType);
+                var defaultEmployeeType = getDefaultEmployeeType();
+                var defaultFound = defaultEmployeeType != null && !defaultEmployeeType.equals(employeeType);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    EmployeeTypeDetailValue defaultEmployeeTypeDetailValue = getDefaultEmployeeTypeDetailValueForUpdate();
+                    var defaultEmployeeTypeDetailValue = getDefaultEmployeeTypeDetailValueForUpdate();
                     
                     defaultEmployeeTypeDetailValue.setIsDefault(Boolean.FALSE);
                     updateEmployeeTypeFromValue(defaultEmployeeTypeDetailValue, false, updatedBy);
@@ -3650,23 +3650,23 @@ public class EmployeeControl
     
     public void deleteEmployeeType(EmployeeType employeeType, BasePK deletedBy) {
         deleteEmployeeTypeDescriptionsByEmployeeType(employeeType, deletedBy);
-        
-        EmployeeTypeDetail employeeTypeDetail = employeeType.getLastDetailForUpdate();
+
+        var employeeTypeDetail = employeeType.getLastDetailForUpdate();
         employeeTypeDetail.setThruTime(session.START_TIME_LONG);
         employeeType.setActiveDetail(null);
         employeeType.store();
         
         // Check for default, and pick one if necessary
-        EmployeeType defaultEmployeeType = getDefaultEmployeeType();
+        var defaultEmployeeType = getDefaultEmployeeType();
         if(defaultEmployeeType == null) {
-            List<EmployeeType> employeeTypes = getEmployeeTypesForUpdate();
+            var employeeTypes = getEmployeeTypesForUpdate();
             
             if(!employeeTypes.isEmpty()) {
-                Iterator<EmployeeType> iter = employeeTypes.iterator();
+                var iter = employeeTypes.iterator();
                 if(iter.hasNext()) {
                     defaultEmployeeType = iter.next();
                 }
-                EmployeeTypeDetailValue employeeTypeDetailValue = Objects.requireNonNull(defaultEmployeeType).getLastDetailForUpdate().getEmployeeTypeDetailValue().clone();
+                var employeeTypeDetailValue = Objects.requireNonNull(defaultEmployeeType).getLastDetailForUpdate().getEmployeeTypeDetailValue().clone();
                 
                 employeeTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateEmployeeTypeFromValue(employeeTypeDetailValue, false, deletedBy);
@@ -3682,7 +3682,7 @@ public class EmployeeControl
     
     public EmployeeTypeDescription createEmployeeTypeDescription(EmployeeType employeeType, Language language, String description,
             BasePK createdBy) {
-        EmployeeTypeDescription employeeTypeDescription = EmployeeTypeDescriptionFactory.getInstance().create(employeeType,
+        var employeeTypeDescription = EmployeeTypeDescriptionFactory.getInstance().create(employeeType,
                 language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
@@ -3708,8 +3708,8 @@ public class EmployeeControl
                         "WHERE emptyd_empty_employeetypeid = ? AND emptyd_lang_languageid = ? AND emptyd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = EmployeeTypeDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = EmployeeTypeDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, employeeType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -3756,8 +3756,8 @@ public class EmployeeControl
                         "WHERE emptyd_empty_employeetypeid = ? AND emptyd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = EmployeeTypeDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = EmployeeTypeDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, employeeType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -3780,7 +3780,7 @@ public class EmployeeControl
     
     public String getBestEmployeeTypeDescription(EmployeeType employeeType, Language language) {
         String description;
-        EmployeeTypeDescription employeeTypeDescription = getEmployeeTypeDescription(employeeType, language);
+        var employeeTypeDescription = getEmployeeTypeDescription(employeeType, language);
         
         if(employeeTypeDescription == null && !language.getIsDefault()) {
             employeeTypeDescription = getEmployeeTypeDescription(employeeType, getPartyControl().getDefaultLanguage());
@@ -3800,11 +3800,11 @@ public class EmployeeControl
     }
     
     public List<EmployeeTypeDescriptionTransfer> getEmployeeTypeDescriptionTransfers(UserVisit userVisit, EmployeeType employeeType) {
-        List<EmployeeTypeDescription> employeeTypeDescriptions = getEmployeeTypeDescriptionsByEmployeeType(employeeType);
+        var employeeTypeDescriptions = getEmployeeTypeDescriptionsByEmployeeType(employeeType);
         List<EmployeeTypeDescriptionTransfer> employeeTypeDescriptionTransfers = null;
         
         if(employeeTypeDescriptions != null) {
-            EmployeeTypeDescriptionTransferCache employeeTypeDescriptionTransferCache = getEmployeeTransferCaches(userVisit).getEmployeeTypeDescriptionTransferCache();
+            var employeeTypeDescriptionTransferCache = getEmployeeTransferCaches(userVisit).getEmployeeTypeDescriptionTransferCache();
             
             employeeTypeDescriptionTransfers = new ArrayList<>(employeeTypeDescriptions.size());
             
@@ -3818,15 +3818,15 @@ public class EmployeeControl
     
     public void updateEmployeeTypeDescriptionFromValue(EmployeeTypeDescriptionValue employeeTypeDescriptionValue, BasePK updatedBy) {
         if(employeeTypeDescriptionValue.hasBeenModified()) {
-            EmployeeTypeDescription employeeTypeDescription = EmployeeTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var employeeTypeDescription = EmployeeTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      employeeTypeDescriptionValue.getPrimaryKey());
             
             employeeTypeDescription.setThruTime(session.START_TIME_LONG);
             employeeTypeDescription.store();
-            
-            EmployeeType employeeType = employeeTypeDescription.getEmployeeType();
-            Language language = employeeTypeDescription.getLanguage();
-            String description = employeeTypeDescriptionValue.getDescription();
+
+            var employeeType = employeeTypeDescription.getEmployeeType();
+            var language = employeeTypeDescription.getLanguage();
+            var description = employeeTypeDescriptionValue.getDescription();
             
             employeeTypeDescription = EmployeeTypeDescriptionFactory.getInstance().create(employeeType, language,
                     description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -3844,7 +3844,7 @@ public class EmployeeControl
     }
     
     public void deleteEmployeeTypeDescriptionsByEmployeeType(EmployeeType employeeType, BasePK deletedBy) {
-        List<EmployeeTypeDescription> employeeTypeDescriptions = getEmployeeTypeDescriptionsByEmployeeTypeForUpdate(employeeType);
+        var employeeTypeDescriptions = getEmployeeTypeDescriptionsByEmployeeTypeForUpdate(employeeType);
         
         employeeTypeDescriptions.forEach((employeeTypeDescription) -> 
                 deleteEmployeeTypeDescription(employeeTypeDescription, deletedBy)
@@ -3856,7 +3856,7 @@ public class EmployeeControl
     // --------------------------------------------------------------------------------
     
     public PartyEmployee createPartyEmployee(Party party, String partyEmployeeName, EmployeeType employeeType, BasePK createdBy) {
-        PartyEmployee partyEmployee = PartyEmployeeFactory.getInstance().create(party, partyEmployeeName, employeeType,
+        var partyEmployee = PartyEmployeeFactory.getInstance().create(party, partyEmployeeName, employeeType,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partyEmployee.getPrimaryKey(), null, createdBy);
@@ -3876,7 +3876,7 @@ public class EmployeeControl
         List<PartyEmployee> partyEmployees;
         
         try {
-            PreparedStatement ps = PartyEmployeeFactory.getInstance().prepareStatement(
+            var ps = PartyEmployeeFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM partyemployees " +
                     "WHERE pemp_thrutime = ? " +
@@ -3909,8 +3909,8 @@ public class EmployeeControl
                         "WHERE pemp_par_partyid = ? AND pemp_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PartyEmployeeFactory.getInstance().prepareStatement(query);
+
+            var ps = PartyEmployeeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, party.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -3935,7 +3935,7 @@ public class EmployeeControl
         PartyEmployee partyEmployee;
         
         try {
-            PreparedStatement ps = PartyEmployeeFactory.getInstance().prepareStatement(
+            var ps = PartyEmployeeFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM partyemployees " +
                     "WHERE pemp_partyemployeename = ? AND pemp_thrutime = ?");
@@ -3976,8 +3976,8 @@ public class EmployeeControl
             workflowControl.getWorkflowEntranceChoices(employeeStatusChoicesBean, defaultEmployeeStatusChoice, language, allowNullChoice,
                     workflowControl.getWorkflowByName(EmployeeStatusConstants.Workflow_EMPLOYEE_STATUS), partyPK);
         } else {
-            EntityInstance entityInstance = getCoreControl().getEntityInstanceByBasePK(employeeParty.getPrimaryKey());
-            WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(EmployeeStatusConstants.Workflow_EMPLOYEE_STATUS,
+            var entityInstance = getCoreControl().getEntityInstanceByBasePK(employeeParty.getPrimaryKey());
+            var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(EmployeeStatusConstants.Workflow_EMPLOYEE_STATUS,
                     entityInstance);
             
             workflowControl.getWorkflowDestinationChoices(employeeStatusChoicesBean, defaultEmployeeStatusChoice, language, allowNullChoice,
@@ -3989,10 +3989,10 @@ public class EmployeeControl
     
     public void setEmployeeStatus(ExecutionErrorAccumulator eea, Party party, String employeeStatusChoice, PartyPK modifiedBy) {
         var workflowControl = getWorkflowControl();
-        EntityInstance entityInstance = getEntityInstanceByBaseEntity(party);
-        WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(EmployeeStatusConstants.Workflow_EMPLOYEE_STATUS,
+        var entityInstance = getEntityInstanceByBaseEntity(party);
+        var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(EmployeeStatusConstants.Workflow_EMPLOYEE_STATUS,
                 entityInstance);
-        WorkflowDestination workflowDestination = employeeStatusChoice == null? null:
+        var workflowDestination = employeeStatusChoice == null? null:
             workflowControl.getWorkflowDestinationByName(workflowEntityStatus.getWorkflowStep(), employeeStatusChoice);
         
         if(workflowDestination != null || employeeStatusChoice == null) {
@@ -4011,8 +4011,8 @@ public class EmployeeControl
             workflowControl.getWorkflowEntranceChoices(employeeAvailabilityChoicesBean, defaultEmployeeAvailabilityChoice, language, allowNullChoice,
                     workflowControl.getWorkflowByName(EmployeeAvailabilityConstants.Workflow_EMPLOYEE_AVAILABILITY), partyPK);
         } else {
-            EntityInstance entityInstance = getCoreControl().getEntityInstanceByBasePK(employeeParty.getPrimaryKey());
-            WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(EmployeeAvailabilityConstants.Workflow_EMPLOYEE_AVAILABILITY,
+            var entityInstance = getCoreControl().getEntityInstanceByBasePK(employeeParty.getPrimaryKey());
+            var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(EmployeeAvailabilityConstants.Workflow_EMPLOYEE_AVAILABILITY,
                     entityInstance);
             
             workflowControl.getWorkflowDestinationChoices(employeeAvailabilityChoicesBean, defaultEmployeeAvailabilityChoice, language, allowNullChoice,
@@ -4024,10 +4024,10 @@ public class EmployeeControl
     
     public void setEmployeeAvailability(ExecutionErrorAccumulator eea, Party party, String employeeAvailabilityChoice, PartyPK modifiedBy) {
         var workflowControl = getWorkflowControl();
-        EntityInstance entityInstance = getEntityInstanceByBaseEntity(party);
-        WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(EmployeeAvailabilityConstants.Workflow_EMPLOYEE_AVAILABILITY,
+        var entityInstance = getEntityInstanceByBaseEntity(party);
+        var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(EmployeeAvailabilityConstants.Workflow_EMPLOYEE_AVAILABILITY,
                 entityInstance);
-        WorkflowDestination workflowDestination = employeeAvailabilityChoice == null? null:
+        var workflowDestination = employeeAvailabilityChoice == null? null:
             workflowControl.getWorkflowDestinationByName(workflowEntityStatus.getWorkflowStep(), employeeAvailabilityChoice);
         
         if(workflowDestination != null || employeeAvailabilityChoice == null) {
@@ -4039,7 +4039,7 @@ public class EmployeeControl
 
     public List<EmployeeTransfer> getEmployeeTransfers(UserVisit userVisit, Collection<PartyEmployee> partyEmployees) {
         List<EmployeeTransfer> employeeTransfers = new ArrayList<>(partyEmployees.size());
-        EmployeeTransferCache employeeTransferCache = getEmployeeTransferCaches(userVisit).getEmployeeTransferCache();
+        var employeeTransferCache = getEmployeeTransferCaches(userVisit).getEmployeeTransferCache();
 
         partyEmployees.stream().map((partyEmployee) -> partyEmployee.getParty()).forEach((party) -> employeeTransfers.add(employeeTransferCache.getTransfer(party)));
 
@@ -4060,14 +4060,14 @@ public class EmployeeControl
     
     public void updatePartyEmployeeFromValue(PartyEmployeeValue partyEmployeeValue, BasePK updatedBy) {
         if(partyEmployeeValue.hasBeenModified()) {
-            PartyEmployee partyEmployee = PartyEmployeeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, partyEmployeeValue.getPrimaryKey());
+            var partyEmployee = PartyEmployeeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, partyEmployeeValue.getPrimaryKey());
 
             partyEmployee.setThruTime(session.START_TIME_LONG);
             partyEmployee.store();
 
-            PartyPK partyPK = partyEmployee.getPartyPK(); // Not updated
-            String partyEmployeeName = partyEmployeeValue.getPartyEmployeeName();
-            EmployeeTypePK employeeTypePK = partyEmployeeValue.getEmployeeTypePK();
+            var partyPK = partyEmployee.getPartyPK(); // Not updated
+            var partyEmployeeName = partyEmployeeValue.getPartyEmployeeName();
+            var employeeTypePK = partyEmployeeValue.getEmployeeTypePK();
 
             partyEmployee = PartyEmployeeFactory.getInstance().create(partyPK, partyEmployeeName, employeeTypePK, session.START_TIME_LONG,
                     Session.MAX_TIME_LONG);
@@ -4083,7 +4083,7 @@ public class EmployeeControl
     }
     
     public void deletePartyEmployeeByParty(Party party, BasePK deletedBy) {
-        PartyEmployee partyEmployee = getPartyEmployeeForUpdate(party);
+        var partyEmployee = getPartyEmployeeForUpdate(party);
         
         if(partyEmployee != null) {
             deletePartyEmployee(partyEmployee, deletedBy);
@@ -4095,7 +4095,7 @@ public class EmployeeControl
     // --------------------------------------------------------------------------------
     
     public PartyResponsibility createPartyResponsibility(Party party, ResponsibilityType responsibilityType, BasePK createdBy) {
-        PartyResponsibility partyResponsibility = PartyResponsibilityFactory.getInstance().create(party, responsibilityType,
+        var partyResponsibility = PartyResponsibilityFactory.getInstance().create(party, responsibilityType,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partyResponsibility.getPrimaryKey(), null, createdBy);
@@ -4119,8 +4119,8 @@ public class EmployeeControl
                         "WHERE parrsp_par_partyid = ? AND parrsp_rsptyp_responsibilitytypeid = ? AND parrsp_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PartyResponsibilityFactory.getInstance().prepareStatement(query);
+
+            var ps = PartyResponsibilityFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, party.getPrimaryKey().getEntityId());
             ps.setLong(2, responsibilityType.getPrimaryKey().getEntityId());
@@ -4168,8 +4168,8 @@ public class EmployeeControl
                         "WHERE parrsp_par_partyid = ? AND parrsp_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PartyResponsibilityFactory.getInstance().prepareStatement(query);
+
+            var ps = PartyResponsibilityFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, party.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -4208,8 +4208,8 @@ public class EmployeeControl
                         "WHERE parrsp_rsptyp_responsibilitytypeid = ? AND parrsp_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PartyResponsibilityFactory.getInstance().prepareStatement(query);
+
+            var ps = PartyResponsibilityFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, responsibilityType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -4231,7 +4231,7 @@ public class EmployeeControl
     }
     
     public PartyResponsibilityTransfer getPartyResponsibilityTransfer(UserVisit userVisit, Party party, ResponsibilityType responsibilityType) {
-        PartyResponsibility partyResponsibility = getPartyResponsibility(party, responsibilityType);
+        var partyResponsibility = getPartyResponsibility(party, responsibilityType);
         
         return partyResponsibility == null? null: getEmployeeTransferCaches(userVisit).getPartyResponsibilityTransferCache().getPartyResponsibilityTransfer(partyResponsibility);
     }
@@ -4242,7 +4242,7 @@ public class EmployeeControl
     
     public List<PartyResponsibilityTransfer> getPartyResponsibilityTransfers(UserVisit userVisit, Collection<PartyResponsibility> partyResponsibilities) {
         List<PartyResponsibilityTransfer> partyResponsibilityTransfers = new ArrayList<>(partyResponsibilities.size());
-        PartyResponsibilityTransferCache partyResponsibilityTransferCache = getEmployeeTransferCaches(userVisit).getPartyResponsibilityTransferCache();
+        var partyResponsibilityTransferCache = getEmployeeTransferCaches(userVisit).getPartyResponsibilityTransferCache();
         
         partyResponsibilities.forEach((partyResponsibility) ->
                 partyResponsibilityTransfers.add(partyResponsibilityTransferCache.getPartyResponsibilityTransfer(partyResponsibility))
@@ -4266,7 +4266,7 @@ public class EmployeeControl
     }
     
     public void deletePartyResponsibilityByParty(Party party, BasePK deletedBy) {
-        List<PartyResponsibility> partyResponsibilities = getPartyResponsibilitiesByPartyForUpdate(party);
+        var partyResponsibilities = getPartyResponsibilitiesByPartyForUpdate(party);
         
         partyResponsibilities.forEach((partyResponsibility) -> 
                 deletePartyResponsibility(partyResponsibility, deletedBy)
@@ -4274,7 +4274,7 @@ public class EmployeeControl
     }
     
     public void deletePartyResponsibilitiesByResponsibilityType(ResponsibilityType responsibilityType, BasePK deletedBy) {
-        List<PartyResponsibility> partyResponsibilities = getPartyResponsibilitiesByResponsibilityTypeForUpdate(responsibilityType);
+        var partyResponsibilities = getPartyResponsibilitiesByResponsibilityTypeForUpdate(responsibilityType);
         
         partyResponsibilities.forEach((partyResponsibility) -> 
                 deletePartyResponsibility(partyResponsibility, deletedBy)
@@ -4286,7 +4286,7 @@ public class EmployeeControl
     // --------------------------------------------------------------------------------
     
     public PartySkill createPartySkill(Party party, SkillType skillType, BasePK createdBy) {
-        PartySkill partySkill = PartySkillFactory.getInstance().create(party, skillType,
+        var partySkill = PartySkillFactory.getInstance().create(party, skillType,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partySkill.getPrimaryKey(), null, createdBy);
@@ -4310,8 +4310,8 @@ public class EmployeeControl
                         "WHERE parskl_par_partyid = ? AND parskl_skltyp_skilltypeid = ? AND parskl_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PartySkillFactory.getInstance().prepareStatement(query);
+
+            var ps = PartySkillFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, party.getPrimaryKey().getEntityId());
             ps.setLong(2, skillType.getPrimaryKey().getEntityId());
@@ -4359,8 +4359,8 @@ public class EmployeeControl
                         "WHERE parskl_par_partyid = ? AND parskl_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PartySkillFactory.getInstance().prepareStatement(query);
+
+            var ps = PartySkillFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, party.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -4399,8 +4399,8 @@ public class EmployeeControl
                         "WHERE parskl_skltyp_skilltypeid = ? AND parskl_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PartySkillFactory.getInstance().prepareStatement(query);
+
+            var ps = PartySkillFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, skillType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -4422,7 +4422,7 @@ public class EmployeeControl
     }
     
     public PartySkillTransfer getPartySkillTransfer(UserVisit userVisit, Party party, SkillType skillType) {
-        PartySkill partySkill = getPartySkill(party, skillType);
+        var partySkill = getPartySkill(party, skillType);
         
         return partySkill == null? null: getEmployeeTransferCaches(userVisit).getPartySkillTransferCache().getPartySkillTransfer(partySkill);
     }
@@ -4433,7 +4433,7 @@ public class EmployeeControl
     
     public List<PartySkillTransfer> getPartySkillTransfers(UserVisit userVisit, Collection<PartySkill> partySkills) {
         List<PartySkillTransfer> partySkillTransfers = new ArrayList<>(partySkills.size());
-        PartySkillTransferCache partySkillTransferCache = getEmployeeTransferCaches(userVisit).getPartySkillTransferCache();
+        var partySkillTransferCache = getEmployeeTransferCaches(userVisit).getPartySkillTransferCache();
         
         partySkills.forEach((partySkill) ->
                 partySkillTransfers.add(partySkillTransferCache.getPartySkillTransfer(partySkill))
@@ -4457,7 +4457,7 @@ public class EmployeeControl
     }
     
     public void deletePartySkillByParty(Party party, BasePK deletedBy) {
-        List<PartySkill> partySkills = getPartySkillsByPartyForUpdate(party);
+        var partySkills = getPartySkillsByPartyForUpdate(party);
         
         partySkills.forEach((partySkill) -> 
                 deletePartySkill(partySkill, deletedBy)
@@ -4465,7 +4465,7 @@ public class EmployeeControl
     }
     
     public void deletePartySkillsBySkillType(SkillType skillType, BasePK deletedBy) {
-        List<PartySkill> partySkills = getPartySkillsBySkillTypeForUpdate(skillType);
+        var partySkills = getPartySkillsBySkillTypeForUpdate(skillType);
         
         partySkills.forEach((partySkill) -> 
                 deletePartySkill(partySkill, deletedBy)

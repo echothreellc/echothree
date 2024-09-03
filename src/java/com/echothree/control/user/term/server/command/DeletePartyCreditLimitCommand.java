@@ -54,17 +54,17 @@ public class DeletePartyCreditLimitCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        String partyName = form.getPartyName();
-        Party party = partyControl.getPartyByName(partyName);
+        var partyName = form.getPartyName();
+        var party = partyControl.getPartyByName(partyName);
         
         if(party != null) {
             var accountingControl = Session.getModelController(AccountingControl.class);
-            String currencyIsoName = form.getCurrencyIsoName();
-            Currency currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
+            var currencyIsoName = form.getCurrencyIsoName();
+            var currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
             
             if(currency != null) {
                 var termControl = Session.getModelController(TermControl.class);
-                PartyCreditLimit partyCreditLimit = termControl.getPartyCreditLimitForUpdate(party, currency);
+                var partyCreditLimit = termControl.getPartyCreditLimitForUpdate(party, currency);
                 
                 if(partyCreditLimit != null) {
                     termControl.deletePartyCreditLimit(partyCreditLimit, getPartyPK());

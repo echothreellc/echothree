@@ -53,16 +53,16 @@ public class SetDefaultShipmentTypeShippingMethodCommand
     @Override
     protected BaseResult execute() {
         var shipmentControl = Session.getModelController(ShipmentControl.class);
-        String shipmentTypeName = form.getShipmentTypeName();
-        ShipmentType shipmentType = shipmentControl.getShipmentTypeByName(shipmentTypeName);
+        var shipmentTypeName = form.getShipmentTypeName();
+        var shipmentType = shipmentControl.getShipmentTypeByName(shipmentTypeName);
         
         if(shipmentType != null) {
             var shippingControl = Session.getModelController(ShippingControl.class);
-            String shippingMethodName = form.getShippingMethodName();
-            ShippingMethod shippingMethod = shippingControl.getShippingMethodByName(shippingMethodName);
+            var shippingMethodName = form.getShippingMethodName();
+            var shippingMethod = shippingControl.getShippingMethodByName(shippingMethodName);
             
             if(shippingMethod != null) {
-                ShipmentTypeShippingMethodValue shipmentTypeShippingMethodValue = shipmentControl.getShipmentTypeShippingMethodValueForUpdate(shipmentType,
+                var shipmentTypeShippingMethodValue = shipmentControl.getShipmentTypeShippingMethodValueForUpdate(shipmentType,
                         shippingMethod);
                 
                 if(shipmentTypeShippingMethodValue != null) {

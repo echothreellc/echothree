@@ -41,18 +41,18 @@ public class SubscriptionTypeTransferCache
     }
     
     public SubscriptionTypeTransfer getSubscriptionTypeTransfer(SubscriptionType subscriptionType) {
-        SubscriptionTypeTransfer subscriptionTypeTransfer = get(subscriptionType);
+        var subscriptionTypeTransfer = get(subscriptionType);
         
         if(subscriptionTypeTransfer == null) {
-            SubscriptionTypeDetail subscriptionTypeDetail = subscriptionType.getLastDetail();
-            SubscriptionKind subscriptionKind = subscriptionTypeDetail.getSubscriptionKind();
-            SubscriptionKindTransfer subscriptionKindTransfer = subscriptionKind == null? null: subscriptionControl.getSubscriptionKindTransfer(userVisit, subscriptionKind);
-            String subscriptionTypeName = subscriptionTypeDetail.getSubscriptionTypeName();
-            Sequence subscriptionSequence = subscriptionTypeDetail.getSubscriptionSequence();
-            SequenceTransfer subscriptionSequenceTransfer = subscriptionSequence == null? null: sequenceControl.getSequenceTransfer(userVisit, subscriptionSequence);
-            Boolean isDefault = subscriptionTypeDetail.getIsDefault();
-            Integer sortOrder = subscriptionTypeDetail.getSortOrder();
-            String description = subscriptionControl.getBestSubscriptionTypeDescription(subscriptionType, getLanguage());
+            var subscriptionTypeDetail = subscriptionType.getLastDetail();
+            var subscriptionKind = subscriptionTypeDetail.getSubscriptionKind();
+            var subscriptionKindTransfer = subscriptionKind == null? null: subscriptionControl.getSubscriptionKindTransfer(userVisit, subscriptionKind);
+            var subscriptionTypeName = subscriptionTypeDetail.getSubscriptionTypeName();
+            var subscriptionSequence = subscriptionTypeDetail.getSubscriptionSequence();
+            var subscriptionSequenceTransfer = subscriptionSequence == null? null: sequenceControl.getSequenceTransfer(userVisit, subscriptionSequence);
+            var isDefault = subscriptionTypeDetail.getIsDefault();
+            var sortOrder = subscriptionTypeDetail.getSortOrder();
+            var description = subscriptionControl.getBestSubscriptionTypeDescription(subscriptionType, getLanguage());
             
             subscriptionTypeTransfer = new SubscriptionTypeTransfer(subscriptionKindTransfer, subscriptionTypeName,
                     subscriptionSequenceTransfer, isDefault, sortOrder, description);

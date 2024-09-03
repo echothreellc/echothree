@@ -33,14 +33,14 @@ public class ContactListGroupTransferCache
     }
     
     public ContactListGroupTransfer getContactListGroupTransfer(ContactListGroup contactListGroup) {
-        ContactListGroupTransfer contactListGroupTransfer = get(contactListGroup);
+        var contactListGroupTransfer = get(contactListGroup);
         
         if(contactListGroupTransfer == null) {
-            ContactListGroupDetail contactListGroupDetail = contactListGroup.getLastDetail();
-            String contactListGroupName = contactListGroupDetail.getContactListGroupName();
-            Boolean isDefault = contactListGroupDetail.getIsDefault();
-            Integer sortOrder = contactListGroupDetail.getSortOrder();
-            String description = contactListControl.getBestContactListGroupDescription(contactListGroup, getLanguage());
+            var contactListGroupDetail = contactListGroup.getLastDetail();
+            var contactListGroupName = contactListGroupDetail.getContactListGroupName();
+            var isDefault = contactListGroupDetail.getIsDefault();
+            var sortOrder = contactListGroupDetail.getSortOrder();
+            var description = contactListControl.getBestContactListGroupDescription(contactListGroup, getLanguage());
             
             contactListGroupTransfer = new ContactListGroupTransfer(contactListGroupName, isDefault, sortOrder, description);
             put(contactListGroup, contactListGroupTransfer);

@@ -66,8 +66,8 @@ public class CreateQueueTypeCommand
     @Override
     protected BaseResult execute() {
         var queueControl = Session.getModelController(QueueControl.class);
-        String queueTypeName = form.getQueueTypeName();
-        QueueType queueType = queueControl.getQueueTypeByName(queueTypeName);
+        var queueTypeName = form.getQueueTypeName();
+        var queueType = queueControl.getQueueTypeByName(queueTypeName);
         
         if(queueType == null) {
             var partyPK = getPartyPK();

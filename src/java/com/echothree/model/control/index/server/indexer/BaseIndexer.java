@@ -106,7 +106,7 @@ public abstract class BaseIndexer<BE extends BaseEntity>
     
     public void open() {
         if(indexWriter == null) {
-            IndexDetail indexDetail = index.getLastDetail();
+            var indexDetail = index.getLastDetail();
 
             this.language = indexDetail.getLanguage();
             this.entityType = indexDetail.getIndexType().getLastDetail().getEntityType();
@@ -152,12 +152,12 @@ public abstract class BaseIndexer<BE extends BaseEntity>
     }
 
     private void indexEntityTimes(final Document document, final EntityInstance entityInstance) {
-        EntityTime entityTime = coreControl.getEntityTime(entityInstance);
+        var entityTime = coreControl.getEntityTime(entityInstance);
 
         if(entityTime != null) {
-            Long createdTime = entityTime.getCreatedTime();
-            Long modifiedTime = entityTime.getModifiedTime();
-            Long deletedTime = entityTime.getDeletedTime();
+            var createdTime = entityTime.getCreatedTime();
+            var modifiedTime = entityTime.getModifiedTime();
+            var deletedTime = entityTime.getDeletedTime();
 
             if(createdTime != null) {
                 document.add(new LongPoint(IndexFields.createdTime.name(), createdTime));
@@ -187,9 +187,9 @@ public abstract class BaseIndexer<BE extends BaseEntity>
 
     private void indexEntityAttributes(final Document document, final EntityInstance entityInstance) {
         entityAttributes.forEach((entityAttribute) -> {
-            EntityAttributeDetail entityAttributeDetail = entityAttribute.getLastDetail();
-            String fieldName = entityAttributeDetail.getEntityAttributeName();
-            String entityAttributeTypeName = entityAttributeDetail.getEntityAttributeType().getEntityAttributeTypeName();
+            var entityAttributeDetail = entityAttribute.getLastDetail();
+            var fieldName = entityAttributeDetail.getEntityAttributeName();
+            var entityAttributeTypeName = entityAttributeDetail.getEntityAttributeType().getEntityAttributeTypeName();
 
             if (entityAttributeTypeName.equals(EntityAttributeTypes.BOOLEAN.name())) {
                 var entityBooleanAttribute = coreControl.getEntityBooleanAttribute(entityAttribute, entityInstance);
@@ -202,53 +202,53 @@ public abstract class BaseIndexer<BE extends BaseEntity>
                     document.add(new Field(fieldName, booleanAttribute.toString(), FieldTypes.NOT_STORED_NOT_TOKENIZED));
                 }
             } else if (entityAttributeTypeName.equals(EntityAttributeTypes.NAME.name())) {
-                EntityNameAttribute entityNameAttribute = coreControl.getEntityNameAttribute(entityAttribute, entityInstance);
+                var entityNameAttribute = coreControl.getEntityNameAttribute(entityAttribute, entityInstance);
 
                 if(entityNameAttribute != null) {
-                    String nameAttribute = entityNameAttribute.getNameAttribute();
+                    var nameAttribute = entityNameAttribute.getNameAttribute();
                     if(IndexerDebugFlags.LogBaseIndexing) {
                         log.info("--- fieldName =\"" + fieldName + ", \"nameAttribute = \"" + nameAttribute + "\"");
                     }
                     document.add(new Field(fieldName, nameAttribute, FieldTypes.NOT_STORED_NOT_TOKENIZED));
                 }
             } else if (entityAttributeTypeName.equals(EntityAttributeTypes.INTEGER.name())) {
-                EntityIntegerAttribute entityIntegerAttribute = coreControl.getEntityIntegerAttribute(entityAttribute, entityInstance);
+                var entityIntegerAttribute = coreControl.getEntityIntegerAttribute(entityAttribute, entityInstance);
                 
                 if(entityIntegerAttribute != null) {
-                    Integer integerAttribute = entityIntegerAttribute.getIntegerAttribute();
+                    var integerAttribute = entityIntegerAttribute.getIntegerAttribute();
                     if(IndexerDebugFlags.LogBaseIndexing) {
                         log.info("--- fieldName =\"" + fieldName + ",\" integerAttribute = \"" + integerAttribute + "\"");
                     }
                     document.add(new IntPoint(fieldName, integerAttribute));
                 }
             } else if (entityAttributeTypeName.equals(EntityAttributeTypes.LONG.name())) {
-                EntityLongAttribute entityLongAttribute = coreControl.getEntityLongAttribute(entityAttribute, entityInstance);
+                var entityLongAttribute = coreControl.getEntityLongAttribute(entityAttribute, entityInstance);
                 
                 if(entityLongAttribute != null) {
-                    Long longAttribute = entityLongAttribute.getLongAttribute();
+                    var longAttribute = entityLongAttribute.getLongAttribute();
                     if(IndexerDebugFlags.LogBaseIndexing) {
                         log.info("--- fieldName =\"" + fieldName + ",\" longAttribute = \"" + longAttribute + "\"");
                     }
                     document.add(new LongPoint(fieldName, longAttribute));
                 }
             } else if (language != null && entityAttributeTypeName.equals(EntityAttributeTypes.STRING.name())) {
-                EntityStringAttribute entityStringAttribute = coreControl.getEntityStringAttribute(entityAttribute, entityInstance, language);
+                var entityStringAttribute = coreControl.getEntityStringAttribute(entityAttribute, entityInstance, language);
                 
                 if(entityStringAttribute != null) {
-                    String stringAttribute = entityStringAttribute.getStringAttribute();
+                    var stringAttribute = entityStringAttribute.getStringAttribute();
                     if(IndexerDebugFlags.LogBaseIndexing) {
                         log.info("--- fieldName = \"" + fieldName + ",\" stringAttribute = \"" + stringAttribute + "\"");
                     }
                     document.add(new Field(fieldName, stringAttribute, FieldTypes.NOT_STORED_TOKENIZED));
                 }
             } else if (entityAttributeTypeName.equals(EntityAttributeTypes.GEOPOINT.name())) {
-                EntityGeoPointAttribute entityGeoPointAttribute = coreControl.getEntityGeoPointAttribute(entityAttribute, entityInstance);
+                var entityGeoPointAttribute = coreControl.getEntityGeoPointAttribute(entityAttribute, entityInstance);
                 
                 if(entityGeoPointAttribute != null) {
-                    Integer latitude = entityGeoPointAttribute.getLatitude();
-                    Integer longitude = entityGeoPointAttribute.getLongitude();
-                    Long elevation = entityGeoPointAttribute.getElevation();
-                    Long altitude = entityGeoPointAttribute.getAltitude();
+                    var latitude = entityGeoPointAttribute.getLatitude();
+                    var longitude = entityGeoPointAttribute.getLongitude();
+                    var elevation = entityGeoPointAttribute.getElevation();
+                    var altitude = entityGeoPointAttribute.getAltitude();
                     
                     if(IndexerDebugFlags.LogBaseIndexing) {
                         log.info("--- fieldName = \"" + fieldName + ",\" latitude = \"" + latitude + ",\" longitude = \"" + longitude + ",\" elevation = \"" + elevation + ",\" altitude = \"" + altitude + "\"");
@@ -267,47 +267,47 @@ public abstract class BaseIndexer<BE extends BaseEntity>
                 }
             } else if (language != null && entityAttributeTypeName.equals(EntityAttributeTypes.CLOB.name())) {
                 // TODO: MIME type should be taken into account
-                EntityClobAttribute entityClobAttribute = coreControl.getEntityClobAttribute(entityAttribute, entityInstance, language);
+                var entityClobAttribute = coreControl.getEntityClobAttribute(entityAttribute, entityInstance, language);
                 
                 if(entityClobAttribute != null) {
-                    String clobAttribute = entityClobAttribute.getClobAttribute();
+                    var clobAttribute = entityClobAttribute.getClobAttribute();
                     if(IndexerDebugFlags.LogBaseIndexing) {
                         log.info("--- fieldName =\"" + fieldName + ",\" clobAttribute = \"" + clobAttribute + "\"");
                     }
                     document.add(new Field(fieldName, clobAttribute, FieldTypes.NOT_STORED_TOKENIZED));
                 }
             } else if (entityAttributeTypeName.equals(EntityAttributeTypes.DATE.name())) {
-                EntityDateAttribute entityDateAttribute = coreControl.getEntityDateAttribute(entityAttribute, entityInstance);
+                var entityDateAttribute = coreControl.getEntityDateAttribute(entityAttribute, entityInstance);
                 
                 if(entityDateAttribute != null) {
-                    Integer dateAttribute = entityDateAttribute.getDateAttribute();
+                    var dateAttribute = entityDateAttribute.getDateAttribute();
                     if(IndexerDebugFlags.LogBaseIndexing) {
                         log.info("--- fieldName =\"" + fieldName + ",\" dateAttribute = \"" + dateAttribute + "\"");
                     }
                     document.add(new IntPoint(fieldName, dateAttribute));
                 }
             } else if (entityAttributeTypeName.equals(EntityAttributeTypes.TIME.name())) {
-                EntityTimeAttribute entityTimeAttribute = coreControl.getEntityTimeAttribute(entityAttribute, entityInstance);
+                var entityTimeAttribute = coreControl.getEntityTimeAttribute(entityAttribute, entityInstance);
                 
                 if(entityTimeAttribute != null) {
-                    Long timeAttribute = entityTimeAttribute.getTimeAttribute();
+                    var timeAttribute = entityTimeAttribute.getTimeAttribute();
                     if(IndexerDebugFlags.LogBaseIndexing) {
                         log.info("--- fieldName =\"" + fieldName + ",\" dateAttribute = \"" + timeAttribute + "\"");
                     }
                     document.add(new LongPoint(fieldName, timeAttribute));
                 }
             } else if (entityAttributeTypeName.equals(EntityAttributeTypes.LISTITEM.name())) {
-                EntityListItemAttribute entityListItemAttribute = coreControl.getEntityListItemAttribute(entityAttribute, entityInstance);
+                var entityListItemAttribute = coreControl.getEntityListItemAttribute(entityAttribute, entityInstance);
                 
                 if(entityListItemAttribute != null) {
-                    String entityListItemName = entityListItemAttribute.getEntityListItem().getLastDetail().getEntityListItemName();
+                    var entityListItemName = entityListItemAttribute.getEntityListItem().getLastDetail().getEntityListItemName();
                     if(IndexerDebugFlags.LogBaseIndexing) {
                         log.info("--- fieldName =\"" + fieldName + ",\" entityListItemName = \"" + entityListItemName + "\"");
                     }
                     document.add(new Field(fieldName, entityListItemName, FieldTypes.NOT_STORED_TOKENIZED));
                 }
             } else if (entityAttributeTypeName.equals(EntityAttributeTypes.MULTIPLELISTITEM.name())) {
-                List<EntityMultipleListItemAttribute> entityMultipleListItemAttributes = coreControl.getEntityMultipleListItemAttributes(entityAttribute, entityInstance);
+                var entityMultipleListItemAttributes = coreControl.getEntityMultipleListItemAttributes(entityAttribute, entityInstance);
                 if (entityMultipleListItemAttributes != null && !entityMultipleListItemAttributes.isEmpty()) {
                     StringBuilder entityListItemNamesBuilder = new StringBuilder();
                     entityMultipleListItemAttributes.forEach((entityMultipleListItemAttribute) -> {
@@ -317,7 +317,7 @@ public abstract class BaseIndexer<BE extends BaseEntity>
                         
                         entityListItemNamesBuilder.append(entityMultipleListItemAttribute.getEntityListItem().getLastDetail().getEntityListItemName());
                     });
-                    String entityListItemNames = entityListItemNamesBuilder.toString();
+                    var entityListItemNames = entityListItemNamesBuilder.toString();
                     if(IndexerDebugFlags.LogBaseIndexing) {
                         log.info("--- fieldName =\"" + fieldName + ",\" entityListItemNames = \"" + entityListItemNames + "\"");
                     }
@@ -328,11 +328,11 @@ public abstract class BaseIndexer<BE extends BaseEntity>
     }
 
     private void indexEntityTags(final Document document, final EntityInstance entityInstance) {
-        List<EntityTag> entityTags = tagControl.getEntityTagsByTaggedEntityInstance(entityInstance);
+        var entityTags = tagControl.getEntityTagsByTaggedEntityInstance(entityInstance);
 
         entityTags.stream().map((entityTag) -> entityTag.getTag().getLastDetail()).forEach((tagDetail) -> {
-            String tagScopeName = tagDetail.getTagScope().getLastDetail().getTagScopeName();
-            String tagName = tagDetail.getTagName();
+            var tagScopeName = tagDetail.getTagScope().getLastDetail().getTagScopeName();
+            var tagName = tagDetail.getTagName();
 
             document.add(new Field(tagScopeName, tagName, FieldTypes.NOT_STORED_TOKENIZED));
         });
@@ -371,8 +371,8 @@ public abstract class BaseIndexer<BE extends BaseEntity>
         if(IndexerDebugFlags.LogBaseIndexing) {
             log.info(">>> getIndexWriter");
         }
-        
-        boolean createIndex = indexStatus.getCreatedTime() != null ? false : true;
+
+        var createIndex = indexStatus.getCreatedTime() != null ? false : true;
         
         if(createIndex) {
             checkIndexDirectory(eea, indexStatus);
@@ -441,7 +441,7 @@ public abstract class BaseIndexer<BE extends BaseEntity>
         if(IndexerDebugFlags.LogBaseIndexing) {
             log.info("--- checkIndexDirectory, index = " + index);
         }
-        Long indexCreatedTime = indexStatus.getCreatedTime();
+        var indexCreatedTime = indexStatus.getCreatedTime();
         
         if(indexCreatedTime == null) {
             indexCreatedTime = createIndexDirectory(eea);
@@ -457,20 +457,20 @@ public abstract class BaseIndexer<BE extends BaseEntity>
             log.info(">>> createIndexDirectory, index = " + index);
         }
         Long indexCreatedTime = null;
-        String strDirectory = index.getLastDetail().getDirectory();
+        var strDirectory = index.getLastDetail().getDirectory();
         File directory = new File(strDirectory);
         
         if(directory.exists()) {
             if(directory.isDirectory()) {
-                File[] files = directory.listFiles();
+                var files = directory.listFiles();
                 
                 if(files == null) {
                     handleExecutionError(IndexIOErrorException.class, eea, ExecutionErrors.IndexIOError.name(), "listFiles failed for " + strDirectory);
                 } else {
-                    int numFiles = files.length;
+                    var numFiles = files.length;
 
-                    for(int i = 0 ; i < numFiles ; i++) {
-                        File indivFile = files[i];
+                    for(var i = 0; i < numFiles ; i++) {
+                        var indivFile = files[i];
 
                         if(indivFile.isFile()) {
                             if(!indivFile.delete()) {
@@ -512,7 +512,7 @@ public abstract class BaseIndexer<BE extends BaseEntity>
     
     protected void addEntityToIndex(final EntityInstance entityInstance, final BE baseEntity)
         throws IOException {
-        Document document = convertToDocument(entityInstance, baseEntity);
+        var document = convertToDocument(entityInstance, baseEntity);
         
         if(document != null) {
             indexWriter.addDocument(document);
@@ -525,14 +525,14 @@ public abstract class BaseIndexer<BE extends BaseEntity>
     }
 
     public void updateIndex(final EntityInstance entityInstance) {
-        BE baseEntity = getEntity(entityInstance);
+        var baseEntity = getEntity(entityInstance);
         
         if(baseEntity != null) {
-            EntityTime entityTime = coreControl.getEntityTime(entityInstance);
+            var entityTime = coreControl.getEntityTime(entityInstance);
             
             if(entityTime != null) {
-                Long modifiedTime = entityTime.getModifiedTime();
-                Long deletedTime = entityTime.getDeletedTime();
+                var modifiedTime = entityTime.getModifiedTime();
+                var deletedTime = entityTime.getDeletedTime();
                 
                 try {
                     if(modifiedTime != null || deletedTime != null) {

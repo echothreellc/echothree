@@ -50,14 +50,14 @@ public class SetEmailAddressVerificationCommand
     @Override
     protected BaseResult execute() {
         var contactControl = Session.getModelController(ContactControl.class);
-        String contactMechanismName = form.getContactMechanismName();
-        ContactMechanism contactMechanism = contactControl.getContactMechanismByName(contactMechanismName);
+        var contactMechanismName = form.getContactMechanismName();
+        var contactMechanism = contactControl.getContactMechanismByName(contactMechanismName);
 
         if(contactMechanism != null) {
-            String contactMechanismTypeName = contactMechanism.getLastDetail().getContactMechanismType().getContactMechanismTypeName();
+            var contactMechanismTypeName = contactMechanism.getLastDetail().getContactMechanismType().getContactMechanismTypeName();
 
             if(contactMechanismTypeName.equals(ContactMechanismTypes.EMAIL_ADDRESS.name())) {
-                String contactMechanismVerificationChoice = form.getEmailAddressVerificationChoice();
+                var contactMechanismVerificationChoice = form.getEmailAddressVerificationChoice();
 
                 contactControl.setEmailAddressVerification(this, contactMechanism, contactMechanismVerificationChoice, getPartyPK());
             } else {

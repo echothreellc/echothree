@@ -72,16 +72,16 @@ public class CreateWorkflowDestinationCommand
     protected BaseResult execute() {
         var result = WorkflowResultFactory.getCreateWorkflowDestinationResult();
         var workflowControl = Session.getModelController(WorkflowControl.class);
-        String workflowName = form.getWorkflowName();
+        var workflowName = form.getWorkflowName();
         var workflow = workflowControl.getWorkflowByName(workflowName);
         WorkflowDestination workflowDestination = null;
         
         if(workflow != null) {
-            String workflowStepName = form.getWorkflowStepName();
+            var workflowStepName = form.getWorkflowStepName();
             var workflowStep = workflowControl.getWorkflowStepByName(workflow, workflowStepName);
             
             if(workflowStep != null) {
-                String workflowDestinationName = form.getWorkflowDestinationName();
+                var workflowDestinationName = form.getWorkflowDestinationName();
                 
                 workflowDestination = workflowControl.getWorkflowDestinationByName(workflowStep, workflowDestinationName);
                 

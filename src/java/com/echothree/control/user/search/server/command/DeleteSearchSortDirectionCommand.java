@@ -63,8 +63,8 @@ public class DeleteSearchSortDirectionCommand
     @Override
     protected BaseResult execute() {
         var searchControl = Session.getModelController(SearchControl.class);
-        String searchSortDirectionName = form.getSearchSortDirectionName();
-        SearchSortDirection searchSortDirection = searchControl.getSearchSortDirectionByNameForUpdate(searchSortDirectionName);
+        var searchSortDirectionName = form.getSearchSortDirectionName();
+        var searchSortDirection = searchControl.getSearchSortDirectionByNameForUpdate(searchSortDirectionName);
         
         if(searchSortDirection != null) {
             searchControl.deleteSearchSortDirection(searchSortDirection, getPartyPK());

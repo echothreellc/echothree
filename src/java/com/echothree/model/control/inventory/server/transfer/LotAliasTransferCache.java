@@ -39,12 +39,12 @@ public class LotAliasTransferCache
     
     @Override
     public LotAliasTransfer getTransfer(LotAlias lotAlias) {
-        LotAliasTransfer lotAliasTransfer = get(lotAlias);
+        var lotAliasTransfer = get(lotAlias);
         
         if(lotAliasTransfer == null) {
             //LotTransfer lot = lotControl.getLotTransfer(userVisit, lotAlias.getLot());
-            LotAliasTypeTransfer lotAliasType = lotAliasControl.getLotAliasTypeTransfer(userVisit, lotAlias.getLotAliasType());
-            String alias = lotAlias.getAlias();
+            var lotAliasType = lotAliasControl.getLotAliasTypeTransfer(userVisit, lotAlias.getLotAliasType());
+            var alias = lotAlias.getAlias();
             
             lotAliasTransfer = new LotAliasTransfer(/*lot,*/ lotAliasType, alias);
             put(lotAlias, lotAliasTransfer);

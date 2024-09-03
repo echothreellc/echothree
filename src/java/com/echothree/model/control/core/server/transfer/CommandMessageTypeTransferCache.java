@@ -36,14 +36,14 @@ public class CommandMessageTypeTransferCache
     }
     
     public CommandMessageTypeTransfer getCommandMessageTypeTransfer(CommandMessageType commandMessageType) {
-        CommandMessageTypeTransfer commandMessageTypeTransfer = get(commandMessageType);
+        var commandMessageTypeTransfer = get(commandMessageType);
         
         if(commandMessageTypeTransfer == null) {
-            CommandMessageTypeDetail commandMessageTypeDetail = commandMessageType.getLastDetail();
-            String commandMessageTypeName = commandMessageTypeDetail.getCommandMessageTypeName();
-            Boolean isDefault = commandMessageTypeDetail.getIsDefault();
-            Integer sortOrder = commandMessageTypeDetail.getSortOrder();
-            String description = coreControl.getBestCommandMessageTypeDescription(commandMessageType, getLanguage());
+            var commandMessageTypeDetail = commandMessageType.getLastDetail();
+            var commandMessageTypeName = commandMessageTypeDetail.getCommandMessageTypeName();
+            var isDefault = commandMessageTypeDetail.getIsDefault();
+            var sortOrder = commandMessageTypeDetail.getSortOrder();
+            var description = coreControl.getBestCommandMessageTypeDescription(commandMessageType, getLanguage());
             
             commandMessageTypeTransfer = new CommandMessageTypeTransfer(commandMessageTypeName, isDefault, sortOrder, description);
             put(commandMessageType, commandMessageTypeTransfer);

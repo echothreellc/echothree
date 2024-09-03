@@ -81,19 +81,19 @@ public class EditTerminationTypeCommand
     @Override
     protected BaseResult execute() {
         var employeeControl = Session.getModelController(EmployeeControl.class);
-        EditTerminationTypeResult result = EmployeeResultFactory.getEditTerminationTypeResult();
+        var result = EmployeeResultFactory.getEditTerminationTypeResult();
         
         if(editMode.equals(EditMode.LOCK)) {
-            String terminationTypeName = spec.getTerminationTypeName();
-            TerminationType terminationType = employeeControl.getTerminationTypeByName(terminationTypeName);
+            var terminationTypeName = spec.getTerminationTypeName();
+            var terminationType = employeeControl.getTerminationTypeByName(terminationTypeName);
             
             if(terminationType != null) {
                 result.setTerminationType(employeeControl.getTerminationTypeTransfer(getUserVisit(), terminationType));
                 
                 if(lockEntity(terminationType)) {
-                    TerminationTypeDescription terminationTypeDescription = employeeControl.getTerminationTypeDescription(terminationType, getPreferredLanguage());
-                    TerminationTypeEdit edit = EmployeeEditFactory.getTerminationTypeEdit();
-                    TerminationTypeDetail terminationTypeDetail = terminationType.getLastDetail();
+                    var terminationTypeDescription = employeeControl.getTerminationTypeDescription(terminationType, getPreferredLanguage());
+                    var edit = EmployeeEditFactory.getTerminationTypeEdit();
+                    var terminationTypeDetail = terminationType.getLastDetail();
                     
                     result.setEdit(edit);
                     edit.setTerminationTypeName(terminationTypeDetail.getTerminationTypeName());
@@ -111,16 +111,16 @@ public class EditTerminationTypeCommand
                 addExecutionError(ExecutionErrors.UnknownTerminationTypeName.name(), terminationTypeName);
             }
         } else if(editMode.equals(EditMode.UPDATE)) {
-            String terminationTypeName = spec.getTerminationTypeName();
-            TerminationType terminationType = employeeControl.getTerminationTypeByNameForUpdate(terminationTypeName);
+            var terminationTypeName = spec.getTerminationTypeName();
+            var terminationType = employeeControl.getTerminationTypeByNameForUpdate(terminationTypeName);
             
             if(terminationType != null) {
                 if(lockEntityForUpdate(terminationType)) {
                     try {
                         var partyPK = getPartyPK();
-                        TerminationTypeDetailValue terminationTypeDetailValue = employeeControl.getTerminationTypeDetailValueForUpdate(terminationType);
-                        TerminationTypeDescription terminationTypeDescription = employeeControl.getTerminationTypeDescriptionForUpdate(terminationType, getPreferredLanguage());
-                        String description = edit.getDescription();
+                        var terminationTypeDetailValue = employeeControl.getTerminationTypeDetailValueForUpdate(terminationType);
+                        var terminationTypeDescription = employeeControl.getTerminationTypeDescriptionForUpdate(terminationType, getPreferredLanguage());
+                        var description = edit.getDescription();
                         
                         terminationTypeDetailValue.setTerminationTypeName(edit.getTerminationTypeName());
                         terminationTypeDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
@@ -133,7 +133,7 @@ public class EditTerminationTypeCommand
                         } else if(terminationTypeDescription != null && description == null) {
                             employeeControl.deleteTerminationTypeDescription(terminationTypeDescription, partyPK);
                         } else if(terminationTypeDescription != null && description != null) {
-                            TerminationTypeDescriptionValue terminationTypeDescriptionValue = employeeControl.getTerminationTypeDescriptionValue(terminationTypeDescription);
+                            var terminationTypeDescriptionValue = employeeControl.getTerminationTypeDescriptionValue(terminationTypeDescription);
                             
                             terminationTypeDescriptionValue.setDescription(description);
                             employeeControl.updateTerminationTypeDescriptionFromValue(terminationTypeDescriptionValue, partyPK);

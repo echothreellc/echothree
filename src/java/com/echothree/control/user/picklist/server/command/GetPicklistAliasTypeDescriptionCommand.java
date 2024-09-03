@@ -71,21 +71,21 @@ public class GetPicklistAliasTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var picklistControl = Session.getModelController(PicklistControl.class);
-        GetPicklistAliasTypeDescriptionResult result = PicklistResultFactory.getGetPicklistAliasTypeDescriptionResult();
-        String picklistTypeName = form.getPicklistTypeName();
-        PicklistType picklistType = picklistControl.getPicklistTypeByName(picklistTypeName);
+        var result = PicklistResultFactory.getGetPicklistAliasTypeDescriptionResult();
+        var picklistTypeName = form.getPicklistTypeName();
+        var picklistType = picklistControl.getPicklistTypeByName(picklistTypeName);
 
         if(picklistType != null) {
-            String picklistAliasTypeName = form.getPicklistAliasTypeName();
-            PicklistAliasType picklistAliasType = picklistControl.getPicklistAliasTypeByName(picklistType, picklistAliasTypeName);
+            var picklistAliasTypeName = form.getPicklistAliasTypeName();
+            var picklistAliasType = picklistControl.getPicklistAliasTypeByName(picklistType, picklistAliasTypeName);
 
             if(picklistAliasType != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = form.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = form.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                 if(language != null) {
-                    PicklistAliasTypeDescription picklistAliasTypeDescription = picklistControl.getPicklistAliasTypeDescription(picklistAliasType, language);
+                    var picklistAliasTypeDescription = picklistControl.getPicklistAliasTypeDescription(picklistAliasType, language);
 
                     if(picklistAliasTypeDescription != null) {
                         result.setPicklistAliasTypeDescription(picklistControl.getPicklistAliasTypeDescriptionTransfer(getUserVisit(), picklistAliasTypeDescription));

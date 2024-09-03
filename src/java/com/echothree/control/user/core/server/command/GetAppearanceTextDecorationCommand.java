@@ -65,17 +65,17 @@ public class GetAppearanceTextDecorationCommand
     
     @Override
     protected BaseResult execute() {
-        GetAppearanceTextDecorationResult result = CoreResultFactory.getGetAppearanceTextDecorationResult();
-        String appearanceName = form.getAppearanceName();
-        Appearance appearance = AppearanceLogic.getInstance().getAppearanceByName(this, appearanceName);
+        var result = CoreResultFactory.getGetAppearanceTextDecorationResult();
+        var appearanceName = form.getAppearanceName();
+        var appearance = AppearanceLogic.getInstance().getAppearanceByName(this, appearanceName);
         
         if(!hasExecutionErrors()) {
-            String textDecorationName = form.getTextDecorationName();
-            TextDecoration textDecoration = AppearanceLogic.getInstance().getTextDecorationByName(this, textDecorationName);
+            var textDecorationName = form.getTextDecorationName();
+            var textDecoration = AppearanceLogic.getInstance().getTextDecorationByName(this, textDecorationName);
             
             if(!hasExecutionErrors()) {
                 var coreControl = getCoreControl();
-                AppearanceTextDecoration appearanceTextDecoration = coreControl.getAppearanceTextDecoration(appearance, textDecoration);
+                var appearanceTextDecoration = coreControl.getAppearanceTextDecoration(appearance, textDecoration);
 
                 if(appearanceTextDecoration != null) {
                     result.setAppearanceTextDecoration(coreControl.getAppearanceTextDecorationTransfer(getUserVisit(), appearanceTextDecoration));

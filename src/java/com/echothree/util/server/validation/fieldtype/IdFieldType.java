@@ -34,9 +34,9 @@ public class IdFieldType
     
     @Override
     public String validate() {
-        boolean hadErrors = false;
-        
-        Matcher m = Patterns.Id.matcher(fieldValue);
+        var hadErrors = false;
+
+        var m = Patterns.Id.matcher(fieldValue);
         if(!m.matches()) {
             validationMessages.add(fieldName, new Message(Validator.ERROR_INVALID_FORMAT));
             hadErrors = true;
@@ -44,7 +44,7 @@ public class IdFieldType
         
         if(!hadErrors) {
             try {
-                Long testLong = Long.valueOf(fieldValue);
+                var testLong = Long.valueOf(fieldValue);
                 fieldValue = testLong.toString();
             } catch (NumberFormatException nfe) {
                 validationMessages.add(fieldName, new Message(Validator.ERROR_INVALID_FORMAT));

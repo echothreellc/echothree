@@ -63,8 +63,8 @@ public class DeletePeriodKindCommand
     @Override
     protected BaseResult execute() {
         var periodControl = Session.getModelController(PeriodControl.class);
-        String periodKindName = form.getPeriodKindName();
-        PeriodKind periodKind = periodControl.getPeriodKindByNameForUpdate(periodKindName);
+        var periodKindName = form.getPeriodKindName();
+        var periodKind = periodControl.getPeriodKindByNameForUpdate(periodKindName);
         
         if(periodKind != null) {
             periodControl.deletePeriodKind(periodKind, getPartyPK());

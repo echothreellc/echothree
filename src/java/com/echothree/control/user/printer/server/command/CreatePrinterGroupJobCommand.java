@@ -75,11 +75,11 @@ public class CreatePrinterGroupJobCommand
 
     private void createPrinterGroupJob(final PrinterGroup printerGroup, final MimeType mimeType, final ByteArray blob, final String clob,
             final CreatePrinterGroupJobResult result) {
-        Integer copies = Integer.valueOf(form.getCopies());
-        Integer priority = Integer.valueOf(form.getPriority());
+        var copies = Integer.valueOf(form.getCopies());
+        var priority = Integer.valueOf(form.getPriority());
         var description = form.getDescription();
 
-        PrinterGroupJob printerGroupJob = PrinterGroupJobLogic.getInstance().createPrinterGroupJob(this, printerGroup, copies, priority, mimeType,
+        var printerGroupJob = PrinterGroupJobLogic.getInstance().createPrinterGroupJob(this, printerGroup, copies, priority, mimeType,
                 getPreferredLanguage(), description, blob, clob, getPartyPK());
 
         if(!hasExecutionErrors()) {
@@ -91,21 +91,21 @@ public class CreatePrinterGroupJobCommand
     @Override
     protected BaseResult execute() {
         var printerControl = Session.getModelController(PrinterControl.class);
-        CreatePrinterGroupJobResult result = PrinterResultFactory.getCreatePrinterGroupJobResult();
-        String printerGroupName = form.getPrinterGroupName();
-        PrinterGroup printerGroup = printerControl.getPrinterGroupByName(printerGroupName);
+        var result = PrinterResultFactory.getCreatePrinterGroupJobResult();
+        var printerGroupName = form.getPrinterGroupName();
+        var printerGroup = printerControl.getPrinterGroupByName(printerGroupName);
 
         if(printerGroup != null) {
             var coreControl = getCoreControl();
-            String mimeTypeName = form.getMimeTypeName();
-            MimeType mimeType = coreControl.getMimeTypeByName(mimeTypeName);
+            var mimeTypeName = form.getMimeTypeName();
+            var mimeType = coreControl.getMimeTypeByName(mimeTypeName);
 
             if(mimeType != null) {
-                EntityAttributeType entityAttributeType = mimeType.getLastDetail().getEntityAttributeType();
-                String entityAttributeTypeName = entityAttributeType.getEntityAttributeTypeName();
+                var entityAttributeType = mimeType.getLastDetail().getEntityAttributeType();
+                var entityAttributeTypeName = entityAttributeType.getEntityAttributeTypeName();
 
                 if(entityAttributeTypeName.equals(EntityAttributeTypes.BLOB.name())) {
-                    ByteArray blob = form.getBlob();
+                    var blob = form.getBlob();
 
                     if(blob != null) {
                         createPrinterGroupJob(printerGroup, mimeType, blob, null, result);
@@ -113,7 +113,7 @@ public class CreatePrinterGroupJobCommand
                         addExecutionError(ExecutionErrors.MissingBlob.name());
                     }
                 } else if(entityAttributeTypeName.equals(EntityAttributeTypes.CLOB.name())) {
-                    String clob = form.getClob();
+                    var clob = form.getClob();
 
                     if(clob != null) {
                         createPrinterGroupJob(printerGroup, mimeType, null, clob, result);

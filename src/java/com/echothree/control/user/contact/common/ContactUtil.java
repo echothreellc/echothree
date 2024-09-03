@@ -30,7 +30,7 @@ public class ContactUtil {
     public static ContactLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
 
             cachedLocal = (ContactLocal)ctx.lookup("ejb:echothree/echothree-server/ContactBean!com.echothree.control.user.contact.server.ContactLocal");
         }
@@ -42,7 +42,7 @@ public class ContactUtil {
     public static ContactRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
             
             cachedRemote = (ContactRemote)ctx.lookup("ejb:echothree/echothree-server/ContactBean!com.echothree.control.user.contact.common.ContactRemote");
         }

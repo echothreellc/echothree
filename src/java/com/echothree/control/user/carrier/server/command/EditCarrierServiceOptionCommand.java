@@ -106,17 +106,17 @@ public class EditCarrierServiceOptionCommand
     public CarrierServiceOption getEntity(EditCarrierServiceOptionResult result) {
         var carrierControl = Session.getModelController(CarrierControl.class);
         CarrierServiceOption carrierServiceOption = null;
-        String carrierName = spec.getCarrierName();
-        Carrier carrier = carrierControl.getCarrierByName(carrierName);
+        var carrierName = spec.getCarrierName();
+        var carrier = carrierControl.getCarrierByName(carrierName);
 
         if(carrier != null) {
-            Party carrierParty = carrier.getParty();
-            String carrierServiceName = spec.getCarrierServiceName();
-            CarrierService carrierService = carrierControl.getCarrierServiceByName(carrierParty, carrierServiceName);
+            var carrierParty = carrier.getParty();
+            var carrierServiceName = spec.getCarrierServiceName();
+            var carrierService = carrierControl.getCarrierServiceByName(carrierParty, carrierServiceName);
 
             if(carrierService != null) {
-                String carrierOptionName = spec.getCarrierOptionName();
-                CarrierOption carrierOption = carrierControl.getCarrierOptionByName(carrierParty, carrierOptionName);
+                var carrierOptionName = spec.getCarrierOptionName();
+                var carrierOption = carrierControl.getCarrierOptionByName(carrierParty, carrierOptionName);
 
                 if(carrierOption != null) {
                     if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -190,20 +190,20 @@ public class EditCarrierServiceOptionCommand
     @Override
     public void canUpdate(CarrierServiceOption carrierServiceOption) {
         var selectorControl = Session.getModelController(SelectorControl.class);
-        SelectorKind selectorKind = selectorControl.getSelectorKindByName(SelectorKinds.POSTAL_ADDRESS.name());
+        var selectorKind = selectorControl.getSelectorKindByName(SelectorKinds.POSTAL_ADDRESS.name());
 
         if(selectorKind != null) {
-            SelectorType selectorType = selectorControl.getSelectorTypeByName(selectorKind, SelectorTypes.CARRIER_OPTION.name());
+            var selectorType = selectorControl.getSelectorTypeByName(selectorKind, SelectorTypes.CARRIER_OPTION.name());
 
             if(selectorType != null) {
-                String recommendedGeoCodeSelectorName = edit.getRecommendedGeoCodeSelectorName();
+                var recommendedGeoCodeSelectorName = edit.getRecommendedGeoCodeSelectorName();
 
                 if(recommendedGeoCodeSelectorName != null) {
                     recommendedGeoCodeSelector = selectorControl.getSelectorByName(selectorType, recommendedGeoCodeSelectorName);
                 }
 
                 if(recommendedGeoCodeSelectorName == null || recommendedGeoCodeSelector != null) {
-                    String requiredGeoCodeSelectorName = edit.getRequiredGeoCodeSelectorName();
+                    var requiredGeoCodeSelectorName = edit.getRequiredGeoCodeSelectorName();
 
                     if(requiredGeoCodeSelectorName != null) {
                         requiredGeoCodeSelector = selectorControl.getSelectorByName(selectorType, requiredGeoCodeSelectorName);
@@ -216,14 +216,14 @@ public class EditCarrierServiceOptionCommand
                             selectorType = selectorControl.getSelectorTypeByName(selectorKind, SelectorTypes.CARRIER_OPTION.name());
 
                             if(selectorType != null) {
-                                String recommendedItemSelectorName = edit.getRecommendedItemSelectorName();
+                                var recommendedItemSelectorName = edit.getRecommendedItemSelectorName();
 
                                 if(recommendedItemSelectorName != null) {
                                     recommendedItemSelector = selectorControl.getSelectorByName(selectorType, recommendedItemSelectorName);
                                 }
 
                                 if(recommendedItemSelectorName == null || recommendedItemSelector != null) {
-                                    String requiredItemSelectorName = edit.getRequiredItemSelectorName();
+                                    var requiredItemSelectorName = edit.getRequiredItemSelectorName();
 
                                     if(requiredItemSelectorName != null) {
                                         requiredItemSelector = selectorControl.getSelectorByName(selectorType, requiredItemSelectorName);
@@ -236,14 +236,14 @@ public class EditCarrierServiceOptionCommand
                                             selectorType = selectorControl.getSelectorTypeByName(selectorKind, SelectorTypes.CARRIER_OPTION.name());
 
                                             if(selectorType != null) {
-                                                String recommendedOrderSelectorName = edit.getRecommendedOrderSelectorName();
+                                                var recommendedOrderSelectorName = edit.getRecommendedOrderSelectorName();
 
                                                 if(recommendedOrderSelectorName != null) {
                                                     recommendedOrderSelector = selectorControl.getSelectorByName(selectorType, recommendedOrderSelectorName);
                                                 }
 
                                                 if(recommendedOrderSelectorName == null || recommendedOrderSelector != null) {
-                                                    String requiredOrderSelectorName = edit.getRequiredOrderSelectorName();
+                                                    var requiredOrderSelectorName = edit.getRequiredOrderSelectorName();
 
                                                     if(requiredOrderSelectorName != null) {
                                                         requiredOrderSelector = selectorControl.getSelectorByName(selectorType, requiredOrderSelectorName);
@@ -256,14 +256,14 @@ public class EditCarrierServiceOptionCommand
                                                             selectorType = selectorControl.getSelectorTypeByName(selectorKind, SelectorTypes.CARRIER_OPTION.name());
 
                                                             if(selectorType != null) {
-                                                                String recommendedShipmentSelectorName = edit.getRecommendedShipmentSelectorName();
+                                                                var recommendedShipmentSelectorName = edit.getRecommendedShipmentSelectorName();
 
                                                                 if(recommendedShipmentSelectorName != null) {
                                                                     recommendedShipmentSelector = selectorControl.getSelectorByName(selectorType, recommendedShipmentSelectorName);
                                                                 }
 
                                                                 if(recommendedShipmentSelectorName == null || recommendedShipmentSelector != null) {
-                                                                    String requiredShipmentSelectorName = edit.getRequiredShipmentSelectorName();
+                                                                    var requiredShipmentSelectorName = edit.getRequiredShipmentSelectorName();
 
                                                                     if(requiredShipmentSelectorName != null) {
                                                                         requiredShipmentSelector = selectorControl.getSelectorByName(selectorType, requiredShipmentSelectorName);
@@ -328,7 +328,7 @@ public class EditCarrierServiceOptionCommand
     public void doUpdate(CarrierServiceOption carrierServiceOption) {
         var carrierControl = Session.getModelController(CarrierControl.class);
         var partyPK = getPartyPK();
-        CarrierServiceOptionValue carrierServiceOptionValue = carrierControl.getCarrierServiceOptionValue(carrierServiceOption);
+        var carrierServiceOptionValue = carrierControl.getCarrierServiceOptionValue(carrierServiceOption);
     
         carrierServiceOptionValue.setIsRecommended(Boolean.valueOf(edit.getIsRecommended()));
         carrierServiceOptionValue.setIsRequired(Boolean.valueOf(edit.getIsRequired()));

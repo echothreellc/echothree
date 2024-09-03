@@ -86,7 +86,7 @@ public class EncryptionUtils {
     }
 
     private byte[] generateInitializationVector() {
-        byte[] bytes = new byte[16];
+        var bytes = new byte[16];
 
         getRandom().nextBytes(bytes);
 
@@ -97,7 +97,7 @@ public class EncryptionUtils {
         SecretKey secretKey;
 
         try {
-            KeyGenerator keyGenerator = KeyGenerator.getInstance(EncryptionConstants.algorithm);
+            var keyGenerator = KeyGenerator.getInstance(EncryptionConstants.algorithm);
 
             keyGenerator.init(EncryptionConstants.keysize);
 
@@ -106,8 +106,8 @@ public class EncryptionUtils {
             throw new PersistenceEncryptionException(nsae);
         }
 
-        Cache<String, Object> cache = ThreadCaches.currentCaches().getSecurityCache();
-        byte[] iv = generateInitializationVector();
+        var cache = ThreadCaches.currentCaches().getSecurityCache();
+        var iv = generateInitializationVector();
 
         BaseKey baseKey = new BaseKey(secretKey, iv);
         cache.put(fqnBaseKeys + "/" + cacheBaseKeyName, baseKey);
@@ -121,8 +121,8 @@ public class EncryptionUtils {
             throw new IllegalArgumentException("length of byte[] b must be == length of byte[] a");
         }
 
-        byte[] c = new byte[a.length];
-        for(int i = 0; i < a.length; i++) {
+        var c = new byte[a.length];
+        for(var i = 0; i < a.length; i++) {
             c[i] = (byte)(a[i] ^ b[i]);
         }
 
@@ -131,17 +131,17 @@ public class EncryptionUtils {
 
     private BaseKey xorBaseKeys(BaseKey baseKey1, BaseKey baseKey2) {
         SecretKey key3 = new SecretKeySpec(xorArrays(baseKey1.getKey().getEncoded(), baseKey2.getKey().getEncoded()), "AES");
-        byte[] iv3 = xorArrays(baseKey1.getIv(), baseKey2.getIv());
+        var iv3 = xorArrays(baseKey1.getIv(), baseKey2.getIv());
 
         return new BaseKey(key3, iv3);
     }
 
     private BaseKeys createBaseKeys(final ExecutionErrorAccumulator eea, final PartyPK createdBy) {
         var coreControl = Session.getModelController(CoreControl.class);
-        BaseKey baseKey1 = generateBaseKey(cacheBaseKey1);
-        BaseKey baseKey2 = generateBaseKey(cacheBaseKey2);
-        BaseKey baseKey3 = xorBaseKeys(baseKey1, baseKey2);
-        BaseEncryptionKey baseEncryptionKey = coreControl.createBaseEncryptionKey(eea, baseKey1, baseKey2, createdBy);
+        var baseKey1 = generateBaseKey(cacheBaseKey1);
+        var baseKey2 = generateBaseKey(cacheBaseKey2);
+        var baseKey3 = xorBaseKeys(baseKey1, baseKey2);
+        var baseEncryptionKey = coreControl.createBaseEncryptionKey(eea, baseKey1, baseKey2, createdBy);
 
         return baseEncryptionKey == null? null: new BaseKeys(baseKey1, baseKey2, baseKey3, baseEncryptionKey.getBaseEncryptionKeyName());
     }
@@ -161,14 +161,14 @@ public class EncryptionUtils {
     }
 
     private void validateBaseKeys(final BaseKeys baseKeys, final int minimumKeysRequired) {
-        int baseKeyCount = baseKeys.getBaseKeyCount();
+        var baseKeyCount = baseKeys.getBaseKeyCount();
 
         if(baseKeyCount < minimumKeysRequired) {
             throw new PersistenceEncryptionException(baseKeyCount == 0 ? "Base Encryption Keys Missing" : "Base Encryption Keys Incomplete");
         } else {
-            BaseKey baseKey1 = baseKeys.getBaseKey1();
-            BaseKey baseKey2 = baseKeys.getBaseKey2();
-            BaseKey baseKey3 = baseKeys.getBaseKey3();
+            var baseKey1 = baseKeys.getBaseKey1();
+            var baseKey2 = baseKeys.getBaseKey2();
+            var baseKey3 = baseKeys.getBaseKey3();
 
             if(baseKeyCount == 2 && (baseKey1 == null || baseKey2 == null)) {
                 // Recovery using third key is needed.
@@ -189,13 +189,13 @@ public class EncryptionUtils {
             }
 
             var coreControl = Session.getModelController(CoreControl.class);
-            String sha1Hash = Sha1Utils.getInstance().encode(baseKey1, baseKey2);
-            BaseEncryptionKey baseEncryptionKey = coreControl.getBaseEncryptionKeyBySha1Hash(sha1Hash);
+            var sha1Hash = Sha1Utils.getInstance().encode(baseKey1, baseKey2);
+            var baseEncryptionKey = coreControl.getBaseEncryptionKeyBySha1Hash(sha1Hash);
 
             if(baseEncryptionKey != null) {
                 var workflowControl = Session.getModelController(WorkflowControl.class);
-                EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(baseEncryptionKey.getPrimaryKey());
-                WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(Workflow_BASE_ENCRYPTION_KEY_STATUS, entityInstance);
+                var entityInstance = coreControl.getEntityInstanceByBasePK(baseEncryptionKey.getPrimaryKey());
+                var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(Workflow_BASE_ENCRYPTION_KEY_STATUS, entityInstance);
 
                 if(!workflowEntityStatus.getWorkflowStep().getLastDetail().getWorkflowStepName().equals(WorkflowStep_BASE_ENCRYPTION_KEY_STATUS_ACTIVE)) {
                     throw new PersistenceEncryptionException("Supplied Base Encryption Keys Not Active");
@@ -207,7 +207,7 @@ public class EncryptionUtils {
     }
 
     public void loadBaseKeys(final BaseKeys baseKeys) {
-        Cache<String, Object> cache = ThreadCaches.currentCaches().getSecurityCache();
+        var cache = ThreadCaches.currentCaches().getSecurityCache();
 
         validateBaseKeys(baseKeys, 2);
 
@@ -221,23 +221,23 @@ public class EncryptionUtils {
         var coreControl = Session.getModelController(CoreControl.class);
 
         validateBaseKeys(oldBaseKeys, 3);
-        BaseKeys newBaseKeys = createBaseKeys(eea, changedBy);
+        var newBaseKeys = createBaseKeys(eea, changedBy);
 
-        Cipher oldCipher1 = getInitializedCipher(oldBaseKeys.getKey1(), oldBaseKeys.getIv1(), Cipher.DECRYPT_MODE);
-        Cipher oldCipher2 = getInitializedCipher(oldBaseKeys.getKey2(), oldBaseKeys.getIv2(), Cipher.DECRYPT_MODE);
-        Cipher newCipher1 = getInitializedCipher(newBaseKeys.getKey1(), newBaseKeys.getIv1(), Cipher.ENCRYPT_MODE);
-        Cipher newCipher2 = getInitializedCipher(newBaseKeys.getKey2(), newBaseKeys.getIv2(), Cipher.ENCRYPT_MODE);
+        var oldCipher1 = getInitializedCipher(oldBaseKeys.getKey1(), oldBaseKeys.getIv1(), Cipher.DECRYPT_MODE);
+        var oldCipher2 = getInitializedCipher(oldBaseKeys.getKey2(), oldBaseKeys.getIv2(), Cipher.DECRYPT_MODE);
+        var newCipher1 = getInitializedCipher(newBaseKeys.getKey1(), newBaseKeys.getIv1(), Cipher.ENCRYPT_MODE);
+        var newCipher2 = getInitializedCipher(newBaseKeys.getKey2(), newBaseKeys.getIv2(), Cipher.ENCRYPT_MODE);
 
-        List<EntityEncryptionKey> entityEncryptionKeys = coreControl.getEntityEncryptionKeysForUpdate();
+        var entityEncryptionKeys = coreControl.getEntityEncryptionKeysForUpdate();
 
         for(var entityEncryptionKey : entityEncryptionKeys) {
-            BaseEncoding baseEncoding = BaseEncoding.base64();
-            byte[] encryptedKey = baseEncoding.decode(entityEncryptionKey.getSecretKey());
-            byte[] encryptedIv = baseEncoding.decode(entityEncryptionKey.getInitializationVector());
+            var baseEncoding = BaseEncoding.base64();
+            var encryptedKey = baseEncoding.decode(entityEncryptionKey.getSecretKey());
+            var encryptedIv = baseEncoding.decode(entityEncryptionKey.getInitializationVector());
 
             try {
-                byte[] decryptedKey = oldCipher1.doFinal(oldCipher2.doFinal(encryptedKey));
-                byte[] decryptedIv = oldCipher1.doFinal(oldCipher2.doFinal(encryptedIv));
+                var decryptedKey = oldCipher1.doFinal(oldCipher2.doFinal(encryptedKey));
+                var decryptedIv = oldCipher1.doFinal(oldCipher2.doFinal(encryptedIv));
 
                 encryptedKey = newCipher2.doFinal(newCipher1.doFinal(decryptedKey));
                 encryptedIv = newCipher2.doFinal(newCipher1.doFinal(decryptedIv));
@@ -259,11 +259,11 @@ public class EncryptionUtils {
     }
 
     private BaseKeys getBaseKeys() {
-        Cache<String, Object> cache = ThreadCaches.currentCaches().getSecurityCache();
-        BaseKey baseKey1 = (BaseKey)cache.get(fqnBaseKeys + "/" + cacheBaseKey1);
-        BaseKey baseKey2 = (BaseKey)cache.get(fqnBaseKeys + "/" + cacheBaseKey2);
+        var cache = ThreadCaches.currentCaches().getSecurityCache();
+        var baseKey1 = (BaseKey)cache.get(fqnBaseKeys + "/" + cacheBaseKey1);
+        var baseKey2 = (BaseKey)cache.get(fqnBaseKeys + "/" + cacheBaseKey2);
 
-        int cacheCount = (baseKey1 == null ? 0 : 1) + (baseKey2 == null ? 0 : 1);
+        var cacheCount = (baseKey1 == null ? 0 : 1) + (baseKey2 == null ? 0 : 1);
 
         if(cacheCount != 2) {
             throw new PersistenceEncryptionException(cacheCount == 0 ? "Base Encryption Keys Missing" : "Base Encryption Keys Incomplete");
@@ -344,8 +344,8 @@ public class EncryptionUtils {
     }
 
     private byte[] encryptDataUsingBaseKeys(final BaseKeys baseKeys, final byte[] decryptedData) {
-        Cipher cipher1 = getInitializedCipher(baseKeys.getKey1(), baseKeys.getIv1(), Cipher.ENCRYPT_MODE);
-        Cipher cipher2 = getInitializedCipher(baseKeys.getKey2(), baseKeys.getIv2(), Cipher.ENCRYPT_MODE);
+        var cipher1 = getInitializedCipher(baseKeys.getKey1(), baseKeys.getIv1(), Cipher.ENCRYPT_MODE);
+        var cipher2 = getInitializedCipher(baseKeys.getKey2(), baseKeys.getIv2(), Cipher.ENCRYPT_MODE);
         byte[] encryptedData = null;
 
         try {
@@ -362,8 +362,8 @@ public class EncryptionUtils {
     }
 
     private byte[] decryptDataUsingBaseKeys(final BaseKeys baseKeys, final byte[] encryptedData) {
-        Cipher cipher1 = getInitializedCipher(baseKeys.getKey1(), baseKeys.getIv1(), Cipher.DECRYPT_MODE);
-        Cipher cipher2 = getInitializedCipher(baseKeys.getKey2(), baseKeys.getIv2(), Cipher.DECRYPT_MODE);
+        var cipher1 = getInitializedCipher(baseKeys.getKey1(), baseKeys.getIv1(), Cipher.DECRYPT_MODE);
+        var cipher2 = getInitializedCipher(baseKeys.getKey2(), baseKeys.getIv2(), Cipher.DECRYPT_MODE);
         byte[] decryptedData = null;
 
         try {
@@ -381,18 +381,18 @@ public class EncryptionUtils {
 
     private Cipher getCipher(final String entityTypeName, final String entityColumnName, final Boolean isExternal, final int cipherMode) {
         var coreControl = Session.getModelController(CoreControl.class);
-        String entityEncryptionKeyName = MD5Utils.getInstance().encode(entityTypeName + '.' + (isExternal ? externalPrefix : entityColumnName));
+        var entityEncryptionKeyName = MD5Utils.getInstance().encode(entityTypeName + '.' + (isExternal ? externalPrefix : entityColumnName));
         SecretKey secretKey;
         byte[] iv;
 
-        BaseEncoding baseEncoding = BaseEncoding.base64();
-        EntityEncryptionKey entityEncryptionKey = coreControl.getEntityEncryptionKeyByName(entityEncryptionKeyName);
-        BaseKeys baseKeys = getBaseKeys();
+        var baseEncoding = BaseEncoding.base64();
+        var entityEncryptionKey = coreControl.getEntityEncryptionKeyByName(entityEncryptionKeyName);
+        var baseKeys = getBaseKeys();
 
         if(entityEncryptionKey == null) {
             // Key has not yet been generated for this EntityType
             try {
-                KeyGenerator keyGenerator = KeyGenerator.getInstance(EncryptionConstants.algorithm);
+                var keyGenerator = KeyGenerator.getInstance(EncryptionConstants.algorithm);
 
                 keyGenerator.init(EncryptionConstants.keysize);
 
@@ -401,20 +401,20 @@ public class EncryptionUtils {
                 throw new PersistenceEncryptionException(nsae);
             }
 
-            byte[] key = secretKey.getEncoded();
+            var key = secretKey.getEncoded();
             iv = generateInitializationVector();
 
-            byte[] encryptedKey = encryptDataUsingBaseKeys(baseKeys, key);
-            byte[] encryptedIv = encryptDataUsingBaseKeys(baseKeys, iv);
+            var encryptedKey = encryptDataUsingBaseKeys(baseKeys, key);
+            var encryptedIv = encryptDataUsingBaseKeys(baseKeys, iv);
 
             coreControl.createEntityEncryptionKey(entityEncryptionKeyName, isExternal,
                     baseEncoding.encode(encryptedKey), baseEncoding.encode(encryptedIv));
         } else {
             // Key has been generated for this EntityType
-            byte[] encryptedKey = baseEncoding.decode(entityEncryptionKey.getSecretKey());
-            byte[] encryptedIv = baseEncoding.decode(entityEncryptionKey.getInitializationVector());
+            var encryptedKey = baseEncoding.decode(entityEncryptionKey.getSecretKey());
+            var encryptedIv = baseEncoding.decode(entityEncryptionKey.getInitializationVector());
 
-            byte[] key = decryptDataUsingBaseKeys(baseKeys, encryptedKey);
+            var key = decryptDataUsingBaseKeys(baseKeys, encryptedKey);
             iv = decryptDataUsingBaseKeys(baseKeys, encryptedIv);
 
             secretKey = new SecretKeySpec(key, EncryptionConstants.algorithm);

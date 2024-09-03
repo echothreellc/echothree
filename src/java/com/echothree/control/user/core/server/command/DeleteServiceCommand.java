@@ -61,8 +61,8 @@ public class DeleteServiceCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String serviceName = form.getServiceName();
-        Service service = coreControl.getServiceByNameForUpdate(serviceName);
+        var serviceName = form.getServiceName();
+        var service = coreControl.getServiceByNameForUpdate(serviceName);
         
         if(service != null) {
             coreControl.deleteService(service, getPartyPK());

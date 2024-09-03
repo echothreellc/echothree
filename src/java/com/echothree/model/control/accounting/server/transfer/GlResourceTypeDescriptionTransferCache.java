@@ -33,12 +33,12 @@ public class GlResourceTypeDescriptionTransferCache
     
     @Override
     public GlResourceTypeDescriptionTransfer getTransfer(GlResourceTypeDescription glResourceTypeDescription) {
-        GlResourceTypeDescriptionTransfer glResourceTypeDescriptionTransfer = get(glResourceTypeDescription);
+        var glResourceTypeDescriptionTransfer = get(glResourceTypeDescription);
         
         if(glResourceTypeDescriptionTransfer == null) {
-            GlResourceTypeTransferCache glResourceTypeTransferCache = accountingControl.getAccountingTransferCaches(userVisit).getGlResourceTypeTransferCache();
-            GlResourceTypeTransfer glResourceTypeTransfer = glResourceTypeTransferCache.getTransfer(glResourceTypeDescription.getGlResourceType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, glResourceTypeDescription.getLanguage());
+            var glResourceTypeTransferCache = accountingControl.getAccountingTransferCaches(userVisit).getGlResourceTypeTransferCache();
+            var glResourceTypeTransfer = glResourceTypeTransferCache.getTransfer(glResourceTypeDescription.getGlResourceType());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, glResourceTypeDescription.getLanguage());
             
             glResourceTypeDescriptionTransfer = new GlResourceTypeDescriptionTransfer(languageTransfer, glResourceTypeTransfer, glResourceTypeDescription.getDescription());
             put(glResourceTypeDescription, glResourceTypeDescriptionTransfer);

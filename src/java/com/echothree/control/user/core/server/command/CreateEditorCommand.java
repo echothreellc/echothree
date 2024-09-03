@@ -71,24 +71,24 @@ public class CreateEditorCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String editorName = form.getEditorName();
-        Editor editor = coreControl.getEditorByName(editorName);
+        var editorName = form.getEditorName();
+        var editor = coreControl.getEditorByName(editorName);
         
         if(editor == null) {
             var partyPK = getPartyPK();
-            Boolean hasDimensions = Boolean.valueOf(form.getHasDimensions());
-            String strMinimumHeight = form.getMinimumHeight();
-            Integer minimumHeight = strMinimumHeight == null ? null : Integer.valueOf(strMinimumHeight);
-            String strMinimumWidth = form.getMinimumWidth();
-            Integer minimumWidth = strMinimumWidth == null ? null : Integer.valueOf(strMinimumWidth);
-            String strMaximumHeight = form.getMaximumHeight();
-            Integer maximumHeight = strMaximumHeight == null ? null : Integer.valueOf(strMaximumHeight);
-            String strMaximumWidth = form.getMaximumWidth();
-            Integer maximumWidth = strMaximumWidth == null ? null : Integer.valueOf(strMaximumWidth);
-            String strDefaultHeight = form.getDefaultHeight();
-            Integer defaultHeight = strDefaultHeight == null ? null : Integer.valueOf(strDefaultHeight);
-            String strDefaultWidth = form.getDefaultWidth();
-            Integer defaultWidth = strDefaultWidth == null ? null : Integer.valueOf(strDefaultWidth);
+            var hasDimensions = Boolean.valueOf(form.getHasDimensions());
+            var strMinimumHeight = form.getMinimumHeight();
+            var minimumHeight = strMinimumHeight == null ? null : Integer.valueOf(strMinimumHeight);
+            var strMinimumWidth = form.getMinimumWidth();
+            var minimumWidth = strMinimumWidth == null ? null : Integer.valueOf(strMinimumWidth);
+            var strMaximumHeight = form.getMaximumHeight();
+            var maximumHeight = strMaximumHeight == null ? null : Integer.valueOf(strMaximumHeight);
+            var strMaximumWidth = form.getMaximumWidth();
+            var maximumWidth = strMaximumWidth == null ? null : Integer.valueOf(strMaximumWidth);
+            var strDefaultHeight = form.getDefaultHeight();
+            var defaultHeight = strDefaultHeight == null ? null : Integer.valueOf(strDefaultHeight);
+            var strDefaultWidth = form.getDefaultWidth();
+            var defaultWidth = strDefaultWidth == null ? null : Integer.valueOf(strDefaultWidth);
             var isDefault = Boolean.valueOf(form.getIsDefault());
             var sortOrder = Integer.valueOf(form.getSortOrder());
             var description = form.getDescription();

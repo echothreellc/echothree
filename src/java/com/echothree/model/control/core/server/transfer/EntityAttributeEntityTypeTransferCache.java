@@ -36,11 +36,11 @@ public class EntityAttributeEntityTypeTransferCache
     }
     
     public EntityAttributeEntityTypeTransfer getEntityAttributeEntityTypeTransfer(EntityAttributeEntityType entityAttributeEntityType, EntityInstance entityInstance) {
-        EntityAttributeEntityTypeTransfer entityAttributeEntityTypeTransfer = get(entityAttributeEntityType);
+        var entityAttributeEntityTypeTransfer = get(entityAttributeEntityType);
         
         if(entityAttributeEntityTypeTransfer == null) {
-            EntityAttributeTransfer entityAttribute = entityInstance == null ? coreControl.getEntityAttributeTransfer(userVisit, entityAttributeEntityType.getEntityAttribute(), entityInstance) : null;
-            EntityTypeTransfer allowedEntityType = coreControl.getEntityTypeTransfer(userVisit, entityAttributeEntityType.getAllowedEntityType());
+            var entityAttribute = entityInstance == null ? coreControl.getEntityAttributeTransfer(userVisit, entityAttributeEntityType.getEntityAttribute(), entityInstance) : null;
+            var allowedEntityType = coreControl.getEntityTypeTransfer(userVisit, entityAttributeEntityType.getAllowedEntityType());
             
             entityAttributeEntityTypeTransfer = new EntityAttributeEntityTypeTransfer(entityAttribute, allowedEntityType);
             put(entityAttributeEntityType, entityAttributeEntityTypeTransfer);

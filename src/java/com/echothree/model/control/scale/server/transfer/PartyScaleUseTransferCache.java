@@ -38,12 +38,12 @@ public class PartyScaleUseTransferCache
     }
     
     public PartyScaleUseTransfer getPartyScaleUseTransfer(PartyScaleUse partyScaleUse) {
-        PartyScaleUseTransfer partyScaleUseTransfer = get(partyScaleUse);
+        var partyScaleUseTransfer = get(partyScaleUse);
         
         if(partyScaleUseTransfer == null) {
-            PartyTransfer party = partyControl.getPartyTransfer(userVisit, partyScaleUse.getParty());
-            ScaleUseTypeTransfer scaleUseType = scaleControl.getScaleUseTypeTransfer(userVisit, partyScaleUse.getScaleUseType());
-            ScaleTransfer scale = scaleControl.getScaleTransfer(userVisit, partyScaleUse.getScale());
+            var party = partyControl.getPartyTransfer(userVisit, partyScaleUse.getParty());
+            var scaleUseType = scaleControl.getScaleUseTypeTransfer(userVisit, partyScaleUse.getScaleUseType());
+            var scale = scaleControl.getScaleTransfer(userVisit, partyScaleUse.getScale());
             
             partyScaleUseTransfer = new PartyScaleUseTransfer(party, scaleUseType, scale);
             put(partyScaleUse, partyScaleUseTransfer);

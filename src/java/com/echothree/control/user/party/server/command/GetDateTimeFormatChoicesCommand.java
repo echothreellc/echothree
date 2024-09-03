@@ -51,9 +51,9 @@ public class GetDateTimeFormatChoicesCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        GetDateTimeFormatChoicesResult result = PartyResultFactory.getGetDateTimeFormatChoicesResult();
-        String defaultDateTimeFormatChoice = form.getDefaultDateTimeFormatChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = PartyResultFactory.getGetDateTimeFormatChoicesResult();
+        var defaultDateTimeFormatChoice = form.getDefaultDateTimeFormatChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setDateTimeFormatChoices(partyControl.getDateTimeFormatChoices(defaultDateTimeFormatChoice, getPreferredLanguage(),
                 allowNullChoice));

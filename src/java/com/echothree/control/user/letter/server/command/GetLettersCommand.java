@@ -69,17 +69,17 @@ public class GetLettersCommand
     @Override
     protected BaseResult execute() {
         var chainControl = Session.getModelController(ChainControl.class);
-        GetLettersResult result = LetterResultFactory.getGetLettersResult();
-        String chainKindName = form.getChainKindName();
-        ChainKind chainKind = chainControl.getChainKindByName(chainKindName);
+        var result = LetterResultFactory.getGetLettersResult();
+        var chainKindName = form.getChainKindName();
+        var chainKind = chainControl.getChainKindByName(chainKindName);
         
         if(chainKind != null) {
-            String chainTypeName = form.getChainTypeName();
-            ChainType chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
+            var chainTypeName = form.getChainTypeName();
+            var chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
             
             if(chainType != null) {
                 var letterControl = Session.getModelController(LetterControl.class);
-                UserVisit userVisit = getUserVisit();
+                var userVisit = getUserVisit();
                 
                 result.setChainType(chainControl.getChainTypeTransfer(userVisit, chainType));
                 result.setLetters(letterControl.getLetterTransfersByChainType(userVisit, chainType));

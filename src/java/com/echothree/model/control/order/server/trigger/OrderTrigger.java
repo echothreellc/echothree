@@ -35,7 +35,7 @@ public class OrderTrigger
     // TODO: configure using a property file.
     private OrderTypeTrigger locateTrigger(final ExecutionErrorAccumulator eea, final Order order) {
         OrderTypeTrigger result = null;
-        String orderTypeName = order.getLastDetail().getOrderType().getLastDetail().getOrderTypeName();
+        var orderTypeName = order.getLastDetail().getOrderType().getLastDetail().getOrderTypeName();
         
         if(orderTypeName.equals(OrderTypes.SALES_ORDER.name())) {
             result = new SalesOrderTrigger();
@@ -51,8 +51,8 @@ public class OrderTrigger
     @Override
     public void handleTrigger(final Session session, final ExecutionErrorAccumulator eea, final WorkflowEntityStatus workflowEntityStatus, final PartyPK triggeredBy) {
         var orderControl = Session.getModelController(OrderControl.class);
-        Order order = orderControl.convertEntityInstanceToOrderForUpdate(getEntityInstance(workflowEntityStatus));
-        OrderTypeTrigger orderTypeTrigger = locateTrigger(eea, order);
+        var order = orderControl.convertEntityInstanceToOrderForUpdate(getEntityInstance(workflowEntityStatus));
+        var orderTypeTrigger = locateTrigger(eea, order);
         
         if(!eea.hasExecutionErrors()) {
             orderTypeTrigger.handleTrigger(session, eea, workflowEntityStatus, order, triggeredBy);

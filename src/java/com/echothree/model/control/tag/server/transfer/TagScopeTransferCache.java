@@ -45,14 +45,14 @@ public class TagScopeTransferCache
     }
     
     public TagScopeTransfer getTagScopeTransfer(TagScope tagScope) {
-        TagScopeTransfer tagScopeTransfer = get(tagScope);
+        var tagScopeTransfer = get(tagScope);
         
         if(tagScopeTransfer == null) {
-            TagScopeDetail tagScopeDetail = tagScope.getLastDetail();
-            String tagScopeName = tagScopeDetail.getTagScopeName();
-            Boolean isDefault = tagScopeDetail.getIsDefault();
-            Integer sortOrder = tagScopeDetail.getSortOrder();
-            String description = tagControl.getBestTagScopeDescription(tagScope, getLanguage());
+            var tagScopeDetail = tagScope.getLastDetail();
+            var tagScopeName = tagScopeDetail.getTagScopeName();
+            var isDefault = tagScopeDetail.getIsDefault();
+            var sortOrder = tagScopeDetail.getSortOrder();
+            var description = tagControl.getBestTagScopeDescription(tagScope, getLanguage());
             
             tagScopeTransfer = new TagScopeTransfer(tagScopeName, isDefault, sortOrder, description);
             put(tagScope, tagScopeTransfer);

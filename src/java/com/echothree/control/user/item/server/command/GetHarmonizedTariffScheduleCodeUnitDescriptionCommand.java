@@ -69,17 +69,17 @@ public class GetHarmonizedTariffScheduleCodeUnitDescriptionCommand
     @Override
     protected BaseResult execute() {
         var itemControl = Session.getModelController(ItemControl.class);
-        GetHarmonizedTariffScheduleCodeUnitDescriptionResult result = ItemResultFactory.getGetHarmonizedTariffScheduleCodeUnitDescriptionResult();
-        String harmonizedTariffScheduleCodeUnitName = form.getHarmonizedTariffScheduleCodeUnitName();
-        HarmonizedTariffScheduleCodeUnit harmonizedTariffScheduleCodeUnit = itemControl.getHarmonizedTariffScheduleCodeUnitByName(harmonizedTariffScheduleCodeUnitName);
+        var result = ItemResultFactory.getGetHarmonizedTariffScheduleCodeUnitDescriptionResult();
+        var harmonizedTariffScheduleCodeUnitName = form.getHarmonizedTariffScheduleCodeUnitName();
+        var harmonizedTariffScheduleCodeUnit = itemControl.getHarmonizedTariffScheduleCodeUnitByName(harmonizedTariffScheduleCodeUnitName);
         
         if(harmonizedTariffScheduleCodeUnit != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                HarmonizedTariffScheduleCodeUnitDescription harmonizedTariffScheduleCodeUnitDescription = itemControl.getHarmonizedTariffScheduleCodeUnitDescription(harmonizedTariffScheduleCodeUnit, language);
+                var harmonizedTariffScheduleCodeUnitDescription = itemControl.getHarmonizedTariffScheduleCodeUnitDescription(harmonizedTariffScheduleCodeUnit, language);
                 
                 if(harmonizedTariffScheduleCodeUnitDescription != null) {
                     result.setHarmonizedTariffScheduleCodeUnitDescription(itemControl.getHarmonizedTariffScheduleCodeUnitDescriptionTransfer(getUserVisit(), harmonizedTariffScheduleCodeUnitDescription));

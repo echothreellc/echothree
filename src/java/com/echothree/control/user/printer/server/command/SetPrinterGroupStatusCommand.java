@@ -50,11 +50,11 @@ public class SetPrinterGroupStatusCommand
    @Override
     protected BaseResult execute() {
         var printerControl = Session.getModelController(PrinterControl.class);
-        String printerGroupName = form.getPrinterGroupName();
-        PrinterGroup printerGroup = printerControl.getPrinterGroupByName(printerGroupName);
+       var printerGroupName = form.getPrinterGroupName();
+       var printerGroup = printerControl.getPrinterGroupByName(printerGroupName);
         
         if(printerGroup != null) {
-            String printerGroupStatusChoice = form.getPrinterGroupStatusChoice();
+            var printerGroupStatusChoice = form.getPrinterGroupStatusChoice();
             
             printerControl.setPrinterGroupStatus(this, printerGroup, printerGroupStatusChoice, getPartyPK());
         } else {

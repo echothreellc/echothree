@@ -67,13 +67,13 @@ public class GetTransactionEntityRoleTypeDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        GetTransactionEntityRoleTypeDescriptionsResult result = AccountingResultFactory.getGetTransactionEntityRoleTypeDescriptionsResult();
-        String transactionTypeName = form.getTransactionTypeName();
-        TransactionType transactionType = accountingControl.getTransactionTypeByName(transactionTypeName);
+        var result = AccountingResultFactory.getGetTransactionEntityRoleTypeDescriptionsResult();
+        var transactionTypeName = form.getTransactionTypeName();
+        var transactionType = accountingControl.getTransactionTypeByName(transactionTypeName);
         
         if(transactionType != null) {
-            String transactionEntityRoleTypeName = form.getTransactionEntityRoleTypeName();
-            TransactionEntityRoleType transactionEntityRoleType = accountingControl.getTransactionEntityRoleTypeByName(transactionType, transactionEntityRoleTypeName);
+            var transactionEntityRoleTypeName = form.getTransactionEntityRoleTypeName();
+            var transactionEntityRoleType = accountingControl.getTransactionEntityRoleTypeByName(transactionType, transactionEntityRoleTypeName);
 
             if(transactionEntityRoleType != null) {
                 result.setTransactionEntityRoleType(accountingControl.getTransactionEntityRoleTypeTransfer(getUserVisit(), transactionEntityRoleType));

@@ -70,26 +70,26 @@ public class GetSearchSortOrderChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        SearchLogic searchLogic = SearchLogic.getInstance();
-        GetSearchSortOrderChoicesResult result = SearchResultFactory.getGetSearchSortOrderChoicesResult();
-        String searchKindName = form.getSearchKindName();
-        SearchKind searchKind = searchLogic.getSearchKindByName(this, searchKindName);
+        var searchLogic = SearchLogic.getInstance();
+        var result = SearchResultFactory.getGetSearchSortOrderChoicesResult();
+        var searchKindName = form.getSearchKindName();
+        var searchKind = searchLogic.getSearchKindByName(this, searchKindName);
         
         if(!hasExecutionErrors()) {
-            String defaultSearchSortOrderChoice = form.getDefaultSearchSortOrderChoice();
-            Party party = getParty();
-            String searchTypeName = form.getSearchTypeName();
-            SearchType searchType = searchTypeName != null && defaultSearchSortOrderChoice == null && party != null ? SearchLogic.getInstance().getSearchTypeByName(this, searchKind, searchTypeName) : null;
+            var defaultSearchSortOrderChoice = form.getDefaultSearchSortOrderChoice();
+            var party = getParty();
+            var searchTypeName = form.getSearchTypeName();
+            var searchType = searchTypeName != null && defaultSearchSortOrderChoice == null && party != null ? SearchLogic.getInstance().getSearchTypeByName(this, searchKind, searchTypeName) : null;
             
             if(!hasExecutionErrors()) {
                 var searchControl = Session.getModelController(SearchControl.class);
-                boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+                var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 
                 if(searchType != null) {
-                    PartySearchTypePreference partySearchTypePreference = searchControl.getPartySearchTypePreference(party, searchType);
+                    var partySearchTypePreference = searchControl.getPartySearchTypePreference(party, searchType);
                     
                     if(partySearchTypePreference != null) {
-                        SearchSortOrder searchSortOrder = partySearchTypePreference.getLastDetail().getSearchSortOrder();
+                        var searchSortOrder = partySearchTypePreference.getLastDetail().getSearchSortOrder();
                         
                         if(searchSortOrder != null) {
                             defaultSearchSortOrderChoice = searchSortOrder.getLastDetail().getSearchSortOrderName();

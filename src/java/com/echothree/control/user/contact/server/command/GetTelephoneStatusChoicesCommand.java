@@ -53,16 +53,16 @@ public class GetTelephoneStatusChoicesCommand
     @Override
     protected BaseResult execute() {
         var contactControl = Session.getModelController(ContactControl.class);
-        GetTelephoneStatusChoicesResult result = ContactResultFactory.getGetTelephoneStatusChoicesResult();
-        String contactMechanismName = form.getContactMechanismName();
-        ContactMechanism contactMechanism = contactControl.getContactMechanismByName(contactMechanismName);
+        var result = ContactResultFactory.getGetTelephoneStatusChoicesResult();
+        var contactMechanismName = form.getContactMechanismName();
+        var contactMechanism = contactControl.getContactMechanismByName(contactMechanismName);
 
         if(contactMechanism != null) {
-            String contactMechanismTypeName = contactMechanism.getLastDetail().getContactMechanismType().getContactMechanismTypeName();
+            var contactMechanismTypeName = contactMechanism.getLastDetail().getContactMechanismType().getContactMechanismTypeName();
 
             if(contactMechanismTypeName.equals(ContactMechanismTypes.TELECOM_ADDRESS.name())) {
-                String defaultTelephoneStatusChoice = form.getDefaultTelephoneStatusChoice();
-                boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+                var defaultTelephoneStatusChoice = form.getDefaultTelephoneStatusChoice();
+                var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 
                 result.setTelephoneStatusChoices(contactControl.getTelephoneStatusChoices(defaultTelephoneStatusChoice, getPreferredLanguage(), allowNullChoice, contactMechanism,
                         getPartyPK()));

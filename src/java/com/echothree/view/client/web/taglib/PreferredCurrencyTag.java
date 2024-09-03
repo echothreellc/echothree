@@ -86,13 +86,13 @@ public class PreferredCurrencyTag
     public int doStartTag()
             throws JspException {
         try {
-            GetPreferredCurrencyForm commandForm = AccountingUtil.getHome().getGetPreferredCurrencyForm();
+            var commandForm = AccountingUtil.getHome().getGetPreferredCurrencyForm();
             
             setOptions(options, null, commandForm);
 
             commandForm.setTransferProperties(transferProperties);
-            
-            CommandResult commandResult = AccountingUtil.getHome().getPreferredCurrency(getUserVisitPK(), commandForm);
+
+            var commandResult = AccountingUtil.getHome().getPreferredCurrency(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -100,8 +100,8 @@ public class PreferredCurrencyTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetPreferredCurrencyResult result = (GetPreferredCurrencyResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetPreferredCurrencyResult)executionResult.getResult();
 
                 pageContext.setAttribute(var, result.getPreferredCurrency(), scope);
             }

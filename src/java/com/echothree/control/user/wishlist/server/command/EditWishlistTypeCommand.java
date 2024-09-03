@@ -86,19 +86,19 @@ public class EditWishlistTypeCommand
     @Override
     protected BaseResult execute() {
         var wishlistControl = Session.getModelController(WishlistControl.class);
-        EditWishlistTypeResult result = WishlistResultFactory.getEditWishlistTypeResult();
+        var result = WishlistResultFactory.getEditWishlistTypeResult();
         
         if(editMode.equals(EditMode.LOCK)) {
-            String wishlistTypeName = spec.getWishlistTypeName();
+            var wishlistTypeName = spec.getWishlistTypeName();
             var wishlistType = WishlistTypeLogic.getInstance().getWishlistTypeByUniversalSpec(this, spec, false);
             
             if(!hasExecutionErrors()) {
                 result.setWishlistType(wishlistControl.getWishlistTypeTransfer(getUserVisit(), wishlistType));
                 
                 if(lockEntity(wishlistType)) {
-                    WishlistTypeDescription wishlistTypeDescription = wishlistControl.getWishlistTypeDescription(wishlistType, getPreferredLanguage());
-                    WishlistTypeEdit edit = WishlistEditFactory.getWishlistTypeEdit();
-                    WishlistTypeDetail wishlistTypeDetail = wishlistType.getLastDetail();
+                    var wishlistTypeDescription = wishlistControl.getWishlistTypeDescription(wishlistType, getPreferredLanguage());
+                    var edit = WishlistEditFactory.getWishlistTypeEdit();
+                    var wishlistTypeDetail = wishlistType.getLastDetail();
                     
                     result.setEdit(edit);
                     edit.setWishlistTypeName(wishlistTypeDetail.getWishlistTypeName());
@@ -116,20 +116,20 @@ public class EditWishlistTypeCommand
                 addExecutionError(ExecutionErrors.UnknownWishlistTypeName.name(), wishlistTypeName);
             }
         } else if(editMode.equals(EditMode.UPDATE)) {
-            String wishlistTypeName = spec.getWishlistTypeName();
+            var wishlistTypeName = spec.getWishlistTypeName();
             var wishlistType = WishlistTypeLogic.getInstance().getWishlistTypeByUniversalSpecForUpdate(this, spec, false);
             
             if(!hasExecutionErrors()) {
                 wishlistTypeName = edit.getWishlistTypeName();
-                WishlistType duplicateWishlistType = wishlistControl.getWishlistTypeByName(wishlistTypeName);
+                var duplicateWishlistType = wishlistControl.getWishlistTypeByName(wishlistTypeName);
                 
                 if(duplicateWishlistType == null || wishlistType.equals(duplicateWishlistType)) {
                     if(lockEntityForUpdate(wishlistType)) {
                         try {
                             var partyPK = getPartyPK();
-                            WishlistTypeDetailValue wishlistTypeDetailValue = wishlistControl.getWishlistTypeDetailValueForUpdate(wishlistType);
-                            WishlistTypeDescription wishlistTypeDescription = wishlistControl.getWishlistTypeDescriptionForUpdate(wishlistType, getPreferredLanguage());
-                            String description = edit.getDescription();
+                            var wishlistTypeDetailValue = wishlistControl.getWishlistTypeDetailValueForUpdate(wishlistType);
+                            var wishlistTypeDescription = wishlistControl.getWishlistTypeDescriptionForUpdate(wishlistType, getPreferredLanguage());
+                            var description = edit.getDescription();
                             
                             wishlistTypeDetailValue.setWishlistTypeName(edit.getWishlistTypeName());
                             wishlistTypeDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
@@ -142,7 +142,7 @@ public class EditWishlistTypeCommand
                             } else if(wishlistTypeDescription != null && description == null) {
                                 wishlistControl.deleteWishlistTypeDescription(wishlistTypeDescription, partyPK);
                             } else if(wishlistTypeDescription != null && description != null) {
-                                WishlistTypeDescriptionValue wishlistTypeDescriptionValue = wishlistControl.getWishlistTypeDescriptionValue(wishlistTypeDescription);
+                                var wishlistTypeDescriptionValue = wishlistControl.getWishlistTypeDescriptionValue(wishlistTypeDescription);
                                 
                                 wishlistTypeDescriptionValue.setDescription(description);
                                 wishlistControl.updateWishlistTypeDescriptionFromValue(wishlistTypeDescriptionValue, partyPK);

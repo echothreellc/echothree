@@ -67,16 +67,16 @@ public class DeleteSelectorKindDescriptionCommand
     @Override
     protected BaseResult execute() {
         var selectorControl = Session.getModelController(SelectorControl.class);
-        String selectorKindName = form.getSelectorKindName();
-        SelectorKind selectorKind = selectorControl.getSelectorKindByName(selectorKindName);
+        var selectorKindName = form.getSelectorKindName();
+        var selectorKind = selectorControl.getSelectorKindByName(selectorKindName);
         
         if(selectorKind != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                SelectorKindDescription selectorKindDescription = selectorControl.getSelectorKindDescriptionForUpdate(selectorKind, language);
+                var selectorKindDescription = selectorControl.getSelectorKindDescriptionForUpdate(selectorKind, language);
                 
                 if(selectorKindDescription != null) {
                     selectorControl.deleteSelectorKindDescription(selectorKindDescription, getPartyPK());

@@ -51,9 +51,9 @@ public class GetEmploymentCommand
     @Override
     protected BaseResult execute() {
         var employeeControl = Session.getModelController(EmployeeControl.class);
-        GetEmploymentResult result = EmployeeResultFactory.getGetEmploymentResult();
-        String employmentName = form.getEmploymentName();
-        Employment employment = employeeControl.getEmploymentByName(employmentName);
+        var result = EmployeeResultFactory.getGetEmploymentResult();
+        var employmentName = form.getEmploymentName();
+        var employment = employeeControl.getEmploymentByName(employmentName);
 
         if(employment != null) {
             result.setEmployment(employeeControl.getEmploymentTransfer(getUserVisit(), employment));

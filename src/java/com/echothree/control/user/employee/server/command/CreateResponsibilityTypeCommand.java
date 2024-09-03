@@ -53,11 +53,11 @@ public class CreateResponsibilityTypeCommand
     @Override
     protected BaseResult execute() {
         var employeeControl = Session.getModelController(EmployeeControl.class);
-        String responsibilityTypeName = form.getResponsibilityTypeName();
-        ResponsibilityType responsibilityType = employeeControl.getResponsibilityTypeByName(responsibilityTypeName);
+        var responsibilityTypeName = form.getResponsibilityTypeName();
+        var responsibilityType = employeeControl.getResponsibilityTypeByName(responsibilityTypeName);
         
         if(responsibilityType == null) {
-            PartyPK createdBy = getPartyPK();
+            var createdBy = getPartyPK();
             var isDefault = Boolean.valueOf(form.getIsDefault());
             var sortOrder = Integer.valueOf(form.getSortOrder());
             var description = form.getDescription();

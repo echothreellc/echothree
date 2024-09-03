@@ -70,7 +70,7 @@ public class GetLotCommand
     
     @Override
     protected Lot getEntity() {
-        Lot lot = LotLogic.getInstance().getLotByUniversalSpec(this, form);
+        var lot = LotLogic.getInstance().getLotByUniversalSpec(this, form);
 
         if(lot != null) {
             sendEvent(lot.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());

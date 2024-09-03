@@ -55,7 +55,7 @@ public class DslContextFactory {
     }
     
     public DSLContext getDslContext() {
-        DSLContext dslContent = DSL.using(ds, SQLDialect.MYSQL);
+        var dslContent = DSL.using(ds, SQLDialect.MYSQL);
         
         if(PersistenceDebugFlags.LogConnections)
             log.info("getDslContext() returning " + dslContent);
@@ -64,7 +64,7 @@ public class DslContextFactory {
     }
     
     public DSLContext getNTDslContext() {
-        DSLContext dslContent = DSL.using(ntds, SQLDialect.MYSQL);
+        var dslContent = DSL.using(ntds, SQLDialect.MYSQL);
         
         if(PersistenceDebugFlags.LogConnections)
             log.info("getNTDslContext() returning " + dslContent);

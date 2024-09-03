@@ -48,12 +48,12 @@ public class SetUserVisitGroupStatusCommand
     
     @Override
     protected BaseResult execute() {
-        UserControl userControl = getUserControl();
-        String userVisitGroupName = form.getUserVisitGroupName();
-        UserVisitGroup userVisitGroup = userControl.getUserVisitGroupByName(userVisitGroupName);
+        var userControl = getUserControl();
+        var userVisitGroupName = form.getUserVisitGroupName();
+        var userVisitGroup = userControl.getUserVisitGroupByName(userVisitGroupName);
         
         if(userVisitGroup != null) {
-            String userVisitGroupStatusChoice = form.getUserVisitGroupStatusChoice();
+            var userVisitGroupStatusChoice = form.getUserVisitGroupStatusChoice();
             
             userControl.setUserVisitGroupStatus(this, userVisitGroup, userVisitGroupStatusChoice, getPartyPK());
         } else {

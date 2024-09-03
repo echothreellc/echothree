@@ -94,25 +94,25 @@ public class EditEntityIntegerRangeDescriptionCommand
     public EntityIntegerRangeDescription getEntity(EditEntityIntegerRangeDescriptionResult result) {
         var coreControl = getCoreControl();
         EntityIntegerRangeDescription entityIntegerRangeDescription = null;
-        String componentVendorName = spec.getComponentVendorName();
-        ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+        var componentVendorName = spec.getComponentVendorName();
+        var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
 
         if(componentVendor != null) {
-            String entityTypeName = spec.getEntityTypeName();
-            EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+            var entityTypeName = spec.getEntityTypeName();
+            var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
 
             if(entityType != null) {
-                String entityAttributeName = spec.getEntityAttributeName();
-                EntityAttribute entityAttribute = coreControl.getEntityAttributeByName(entityType, entityAttributeName);
+                var entityAttributeName = spec.getEntityAttributeName();
+                var entityAttribute = coreControl.getEntityAttributeByName(entityType, entityAttributeName);
 
                 if(entityAttribute != null) {
-                    String entityIntegerRangeName = spec.getEntityIntegerRangeName();
-                    EntityIntegerRange entityIntegerRange = coreControl.getEntityIntegerRangeByName(entityAttribute, entityIntegerRangeName);
+                    var entityIntegerRangeName = spec.getEntityIntegerRangeName();
+                    var entityIntegerRange = coreControl.getEntityIntegerRangeByName(entityAttribute, entityIntegerRangeName);
 
                     if(entityIntegerRange != null) {
                         var partyControl = Session.getModelController(PartyControl.class);
-                        String languageIsoName = spec.getLanguageIsoName();
-                        Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                        var languageIsoName = spec.getLanguageIsoName();
+                        var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                         if(language != null) {
                             if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -164,7 +164,7 @@ public class EditEntityIntegerRangeDescriptionCommand
     @Override
     public void doUpdate(EntityIntegerRangeDescription entityIntegerRangeDescription) {
         var coreControl = getCoreControl();
-        EntityIntegerRangeDescriptionValue entityIntegerRangeDescriptionValue = coreControl.getEntityIntegerRangeDescriptionValue(entityIntegerRangeDescription);
+        var entityIntegerRangeDescriptionValue = coreControl.getEntityIntegerRangeDescriptionValue(entityIntegerRangeDescription);
         
         entityIntegerRangeDescriptionValue.setDescription(edit.getDescription());
 

@@ -56,15 +56,15 @@ public class GetInventoryLocationGroupCommand
     @Override
     protected BaseResult execute() {
         var warehouseControl = Session.getModelController(WarehouseControl.class);
-        GetInventoryLocationGroupResult result = InventoryResultFactory.getGetInventoryLocationGroupResult();
-        String warehouseName = form.getWarehouseName();
-        Warehouse warehouse = warehouseControl.getWarehouseByName(warehouseName);
+        var result = InventoryResultFactory.getGetInventoryLocationGroupResult();
+        var warehouseName = form.getWarehouseName();
+        var warehouse = warehouseControl.getWarehouseByName(warehouseName);
         
         if(warehouse != null) {
             var inventoryControl = Session.getModelController(InventoryControl.class);
-            Party warehouseParty = warehouse.getParty();
-            String inventoryLocationGroupName = form.getInventoryLocationGroupName();
-            InventoryLocationGroup inventoryLocationGroup = inventoryControl.getInventoryLocationGroupByName(warehouseParty, inventoryLocationGroupName);
+            var warehouseParty = warehouse.getParty();
+            var inventoryLocationGroupName = form.getInventoryLocationGroupName();
+            var inventoryLocationGroup = inventoryControl.getInventoryLocationGroupByName(warehouseParty, inventoryLocationGroupName);
             
             if(inventoryLocationGroup != null) {
                 result.setInventoryLocationGroup(inventoryControl.getInventoryLocationGroupTransfer(getUserVisit(), inventoryLocationGroup));

@@ -60,8 +60,8 @@ public class DeleteInventoryConditionCommand
     
     @Override
     protected BaseResult execute() {
-        String inventoryConditionName = form.getInventoryConditionName();
-        InventoryCondition inventoryCondition = InventoryConditionLogic.getInstance().getInventoryConditionByNameForUpdate(this, inventoryConditionName);
+        var inventoryConditionName = form.getInventoryConditionName();
+        var inventoryCondition = InventoryConditionLogic.getInstance().getInventoryConditionByNameForUpdate(this, inventoryConditionName);
         
         if(!hasExecutionErrors()) {
             InventoryConditionLogic.getInstance().deleteInventoryCondition(this, inventoryCondition, getPartyPK());

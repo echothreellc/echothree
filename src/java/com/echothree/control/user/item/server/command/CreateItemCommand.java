@@ -279,7 +279,7 @@ public class CreateItemCommand
                                                                             returnPolicy, null, createdBy);
 
                                                                     if(!hasExecutionErrors()) {
-                                                                        EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(item.getPrimaryKey());
+                                                                        var entityInstance = coreControl.getEntityInstanceByBasePK(item.getPrimaryKey());
 
                                                                         workflowControl.addEntityToWorkflow(itemStatus, entityInstance, null, null, createdBy);
                                                                     }

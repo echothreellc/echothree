@@ -67,13 +67,13 @@ public class GetGlAccountChoicesCommand
     @Override
     protected BaseResult execute() {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        GetGlAccountChoicesResult result = AccountingResultFactory.getGetGlAccountChoicesResult();
-        String glAccountCategoryName = form.getGlAccountCategoryName();
-        GlAccountCategory glAccountCategory = glAccountCategoryName == null? null: accountingControl.getGlAccountCategoryByName(glAccountCategoryName);
+        var result = AccountingResultFactory.getGetGlAccountChoicesResult();
+        var glAccountCategoryName = form.getGlAccountCategoryName();
+        var glAccountCategory = glAccountCategoryName == null? null: accountingControl.getGlAccountCategoryByName(glAccountCategoryName);
         
         if(glAccountCategoryName == null || glAccountCategory != null) {
-            String defaultGlAccountChoice = form.getDefaultGlAccountChoice();
-            boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+            var defaultGlAccountChoice = form.getDefaultGlAccountChoice();
+            var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
             GlAccountChoicesBean glAccountChoicesBean;
             
             if(glAccountCategory != null) {

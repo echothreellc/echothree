@@ -30,7 +30,7 @@ public class EmployeeUtil {
     public static EmployeeLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
 
             cachedLocal = (EmployeeLocal)ctx.lookup("ejb:echothree/echothree-server/EmployeeBean!com.echothree.control.user.employee.server.EmployeeLocal");
         }
@@ -42,7 +42,7 @@ public class EmployeeUtil {
     public static EmployeeRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
             
             cachedRemote = (EmployeeRemote)ctx.lookup("ejb:echothree/echothree-server/EmployeeBean!com.echothree.control.user.employee.common.EmployeeRemote");
         }

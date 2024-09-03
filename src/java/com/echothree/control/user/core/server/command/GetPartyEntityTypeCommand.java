@@ -70,21 +70,21 @@ public class GetPartyEntityTypeCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        GetPartyEntityTypeResult result = CoreResultFactory.getGetPartyEntityTypeResult();
-        String partyName = form.getPartyName();
-        Party party = partyName == null? getParty(): partyControl.getPartyByName(partyName);
+        var result = CoreResultFactory.getGetPartyEntityTypeResult();
+        var partyName = form.getPartyName();
+        var party = partyName == null? getParty(): partyControl.getPartyByName(partyName);
 
         if(party != null) {
             var coreControl = getCoreControl();
-            String componentVendorName = form.getComponentVendorName();
-            ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+            var componentVendorName = form.getComponentVendorName();
+            var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
 
             if(componentVendor != null) {
-                String entityTypeName = form.getEntityTypeName();
-                EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+                var entityTypeName = form.getEntityTypeName();
+                var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
 
                 if(entityType != null) {
-                    PartyEntityType partyEntityType = coreControl.getPartyEntityType(party, entityType);
+                    var partyEntityType = coreControl.getPartyEntityType(party, entityType);
                     
                     if(partyEntityType == null) {
                         if(partyName == null) {

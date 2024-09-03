@@ -62,8 +62,8 @@ public class SetDefaultPaymentProcessorResultCodeCommand
     @Override
     protected BaseResult execute() {
         var paymentProcessorResultCodeControl = Session.getModelController(PaymentProcessorResultCodeControl.class);
-        String paymentProcessorResultCodeName = form.getPaymentProcessorResultCodeName();
-        PaymentProcessorResultCodeDetailValue paymentProcessorResultCodeDetailValue = paymentProcessorResultCodeControl.getPaymentProcessorResultCodeDetailValueByNameForUpdate(paymentProcessorResultCodeName);
+        var paymentProcessorResultCodeName = form.getPaymentProcessorResultCodeName();
+        var paymentProcessorResultCodeDetailValue = paymentProcessorResultCodeControl.getPaymentProcessorResultCodeDetailValueByNameForUpdate(paymentProcessorResultCodeName);
         
         if(paymentProcessorResultCodeDetailValue != null) {
             paymentProcessorResultCodeDetailValue.setIsDefault(Boolean.TRUE);

@@ -48,9 +48,9 @@ public class EncryptCommand
     
     @Override
     protected BaseResult execute() {
-        EncryptResult result = CoreResultFactory.getEncryptResult();
-        String externalEntityTypeName = form.getExternalEntityTypeName();
-        String value = form.getValue();
+        var result = CoreResultFactory.getEncryptResult();
+        var externalEntityTypeName = form.getExternalEntityTypeName();
+        var value = form.getValue();
 
         result.setValue(EncryptionUtils.getInstance().encrypt(externalEntityTypeName, null, Boolean.TRUE, value));
 

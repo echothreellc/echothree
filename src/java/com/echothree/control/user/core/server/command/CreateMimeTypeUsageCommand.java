@@ -54,21 +54,21 @@ public class CreateMimeTypeUsageCommand
     @Override
     protected BaseResult execute() {
         var coreControl = Session.getModelController(CoreControl.class);
-        String mimeTypeName = form.getMimeTypeName();
-        MimeType mimeType = coreControl.getMimeTypeByName(mimeTypeName);
+        var mimeTypeName = form.getMimeTypeName();
+        var mimeType = coreControl.getMimeTypeByName(mimeTypeName);
 
         if(mimeType != null) {
-            String mimeTypeUsageTypeName = form.getMimeTypeUsageTypeName();
-            MimeTypeUsageType mimeTypeUsageType = coreControl.getMimeTypeUsageTypeByName(mimeTypeUsageTypeName);
+            var mimeTypeUsageTypeName = form.getMimeTypeUsageTypeName();
+            var mimeTypeUsageType = coreControl.getMimeTypeUsageTypeByName(mimeTypeUsageTypeName);
 
             if(mimeTypeUsageType != null) {
                 if(mimeTypeUsageTypeName.equals(MimeTypeUsageTypes.IMAGE.name())) {
-                    boolean imageReaderFound = false;
-                    boolean imageWriterFound = false;
-                    String[] readerMimeTypes = ImageIO.getReaderMIMETypes();
-                    String[] writerMimeTypes = ImageIO.getWriterMIMETypes();
+                    var imageReaderFound = false;
+                    var imageWriterFound = false;
+                    var readerMimeTypes = ImageIO.getReaderMIMETypes();
+                    var writerMimeTypes = ImageIO.getWriterMIMETypes();
 
-                    for(int i = 0; i < readerMimeTypes.length; i++) {
+                    for(var i = 0; i < readerMimeTypes.length; i++) {
                         if(readerMimeTypes[i].equals(mimeTypeName)) {
                             imageReaderFound = true;
                             break;
@@ -79,7 +79,7 @@ public class CreateMimeTypeUsageCommand
                         addExecutionError(ExecutionErrors.UnknownImageReader.name(), mimeTypeName);
                     }
 
-                    for(int i = 0; i < writerMimeTypes.length; i++) {
+                    for(var i = 0; i < writerMimeTypes.length; i++) {
                         if(writerMimeTypes[i].equals(mimeTypeName)) {
                             imageWriterFound = true;
                             break;
@@ -92,7 +92,7 @@ public class CreateMimeTypeUsageCommand
                 }
 
                 if(!hasExecutionErrors()) {
-                    MimeTypeUsage mimeTypeUsage = coreControl.getMimeTypeUsage(mimeType, mimeTypeUsageType);
+                    var mimeTypeUsage = coreControl.getMimeTypeUsage(mimeType, mimeTypeUsageType);
 
                     if(mimeTypeUsage == null) {
                         coreControl.createMimeTypeUsage(mimeType, mimeTypeUsageType);

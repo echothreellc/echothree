@@ -71,36 +71,36 @@ public class EditSelectorNodeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var selectorControl = Session.getModelController(SelectorControl.class);
-        EditSelectorNodeDescriptionResult result = SelectorResultFactory.getEditSelectorNodeDescriptionResult();
-        String selectorKindName = spec.getSelectorKindName();
-        SelectorKind selectorKind = selectorControl.getSelectorKindByName(selectorKindName);
+        var result = SelectorResultFactory.getEditSelectorNodeDescriptionResult();
+        var selectorKindName = spec.getSelectorKindName();
+        var selectorKind = selectorControl.getSelectorKindByName(selectorKindName);
         
         if(selectorKind != null) {
-            String selectorTypeName = spec.getSelectorTypeName();
-            SelectorType selectorType = selectorControl.getSelectorTypeByName(selectorKind, selectorTypeName);
+            var selectorTypeName = spec.getSelectorTypeName();
+            var selectorType = selectorControl.getSelectorTypeByName(selectorKind, selectorTypeName);
             
             if(selectorType != null) {
-                String selectorName = spec.getSelectorName();
-                Selector selector = selectorControl.getSelectorByName(selectorType, selectorName);
+                var selectorName = spec.getSelectorName();
+                var selector = selectorControl.getSelectorByName(selectorType, selectorName);
                 
                 if(selector != null) {
-                    String selectorNodeName = spec.getSelectorNodeName();
-                    SelectorNode selectorNode = selectorControl.getSelectorNodeByName(selector, selectorNodeName);
+                    var selectorNodeName = spec.getSelectorNodeName();
+                    var selectorNode = selectorControl.getSelectorNodeByName(selector, selectorNodeName);
                     
                     if(selectorNode != null) {
                         var partyControl = Session.getModelController(PartyControl.class);
-                        String languageIsoName = spec.getLanguageIsoName();
-                        Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                        var languageIsoName = spec.getLanguageIsoName();
+                        var language = partyControl.getLanguageByIsoName(languageIsoName);
                         
                         if(language != null) {
                             if(editMode.equals(EditMode.LOCK)) {
-                                SelectorNodeDescription selectorNodeDescription = selectorControl.getSelectorNodeDescription(selectorNode, language);
+                                var selectorNodeDescription = selectorControl.getSelectorNodeDescription(selectorNode, language);
                                 
                                 if(selectorNodeDescription != null) {
                                     result.setSelectorNodeDescription(selectorControl.getSelectorNodeDescriptionTransfer(getUserVisit(), selectorNodeDescription));
                                     
                                     if(lockEntity(selectorNode)) {
-                                        SelectorNodeDescriptionEdit edit = SelectorEditFactory.getSelectorNodeDescriptionEdit();
+                                        var edit = SelectorEditFactory.getSelectorNodeDescriptionEdit();
                                         
                                         result.setEdit(edit);
                                         edit.setDescription(selectorNodeDescription.getDescription());
@@ -113,12 +113,12 @@ public class EditSelectorNodeDescriptionCommand
                                     addExecutionError(ExecutionErrors.UnknownSelectorNodeDescription.name());
                                 }
                             } else if(editMode.equals(EditMode.UPDATE)) {
-                                SelectorNodeDescriptionValue selectorNodeDescriptionValue = selectorControl.getSelectorNodeDescriptionValueForUpdate(selectorNode, language);
+                                var selectorNodeDescriptionValue = selectorControl.getSelectorNodeDescriptionValueForUpdate(selectorNode, language);
                                 
                                 if(selectorNodeDescriptionValue != null) {
                                     if(lockEntityForUpdate(selectorNode)) {
                                         try {
-                                            String description = edit.getDescription();
+                                            var description = edit.getDescription();
                                             
                                             selectorNodeDescriptionValue.setDescription(description);
                                             

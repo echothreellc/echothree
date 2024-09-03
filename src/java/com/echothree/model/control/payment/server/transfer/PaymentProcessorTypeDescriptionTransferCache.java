@@ -36,11 +36,11 @@ public class PaymentProcessorTypeDescriptionTransferCache
     
     @Override
     public PaymentProcessorTypeDescriptionTransfer getTransfer(PaymentProcessorTypeDescription paymentProcessorTypeDescription) {
-        PaymentProcessorTypeDescriptionTransfer paymentProcessorTypeDescriptionTransfer = get(paymentProcessorTypeDescription);
+        var paymentProcessorTypeDescriptionTransfer = get(paymentProcessorTypeDescription);
         
         if(paymentProcessorTypeDescriptionTransfer == null) {
-            PaymentProcessorTypeTransfer paymentProcessorTypeTransfer = paymentProcessorTypeControl.getPaymentProcessorTypeTransfer(userVisit, paymentProcessorTypeDescription.getPaymentProcessorType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, paymentProcessorTypeDescription.getLanguage());
+            var paymentProcessorTypeTransfer = paymentProcessorTypeControl.getPaymentProcessorTypeTransfer(userVisit, paymentProcessorTypeDescription.getPaymentProcessorType());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, paymentProcessorTypeDescription.getLanguage());
             
             paymentProcessorTypeDescriptionTransfer = new PaymentProcessorTypeDescriptionTransfer(languageTransfer, paymentProcessorTypeTransfer, paymentProcessorTypeDescription.getDescription());
             put(paymentProcessorTypeDescription, paymentProcessorTypeDescriptionTransfer);

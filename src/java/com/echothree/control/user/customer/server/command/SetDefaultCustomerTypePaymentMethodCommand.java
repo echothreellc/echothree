@@ -53,16 +53,16 @@ public class SetDefaultCustomerTypePaymentMethodCommand
     @Override
     protected BaseResult execute() {
         var customerControl = Session.getModelController(CustomerControl.class);
-        String customerTypeName = form.getCustomerTypeName();
-        CustomerType customerType = customerControl.getCustomerTypeByName(customerTypeName);
+        var customerTypeName = form.getCustomerTypeName();
+        var customerType = customerControl.getCustomerTypeByName(customerTypeName);
         
         if(customerType != null) {
             var paymentMethodControl = Session.getModelController(PaymentMethodControl.class);
-            String paymentMethodName = form.getPaymentMethodName();
-            PaymentMethod paymentMethod = paymentMethodControl.getPaymentMethodByName(paymentMethodName);
+            var paymentMethodName = form.getPaymentMethodName();
+            var paymentMethod = paymentMethodControl.getPaymentMethodByName(paymentMethodName);
             
             if(paymentMethod != null) {
-                CustomerTypePaymentMethodValue customerTypePaymentMethodValue = customerControl.getCustomerTypePaymentMethodValueForUpdate(customerType,
+                var customerTypePaymentMethodValue = customerControl.getCustomerTypePaymentMethodValueForUpdate(customerType,
                         paymentMethod);
                 
                 if(customerTypePaymentMethodValue != null) {

@@ -35,16 +35,16 @@ public class CancellationPolicyTransferCache
     }
     
     public CancellationPolicyTransfer getCancellationPolicyTransfer(CancellationPolicy cancellationPolicy) {
-        CancellationPolicyTransfer cancellationPolicyTransfer = get(cancellationPolicy);
+        var cancellationPolicyTransfer = get(cancellationPolicy);
         
         if(cancellationPolicyTransfer == null) {
-            CancellationPolicyDetail cancellationPolicyDetail = cancellationPolicy.getLastDetail();
-            CancellationKindTransfer cancellationKind = cancellationPolicyControl.getCancellationKindTransfer(userVisit, cancellationPolicyDetail.getCancellationKind());
-            String cancellationPolicyName = cancellationPolicyDetail.getCancellationPolicyName();
-            Boolean isDefault = cancellationPolicyDetail.getIsDefault();
-            Integer sortOrder = cancellationPolicyDetail.getSortOrder();
-            CancellationPolicyTranslation cancellationPolicyTranslation = cancellationPolicyControl.getBestCancellationPolicyTranslation(cancellationPolicy, getLanguage());
-            String description = cancellationPolicyTranslation == null ? cancellationPolicyName : cancellationPolicyTranslation.getDescription();
+            var cancellationPolicyDetail = cancellationPolicy.getLastDetail();
+            var cancellationKind = cancellationPolicyControl.getCancellationKindTransfer(userVisit, cancellationPolicyDetail.getCancellationKind());
+            var cancellationPolicyName = cancellationPolicyDetail.getCancellationPolicyName();
+            var isDefault = cancellationPolicyDetail.getIsDefault();
+            var sortOrder = cancellationPolicyDetail.getSortOrder();
+            var cancellationPolicyTranslation = cancellationPolicyControl.getBestCancellationPolicyTranslation(cancellationPolicy, getLanguage());
+            var description = cancellationPolicyTranslation == null ? cancellationPolicyName : cancellationPolicyTranslation.getDescription();
             
             cancellationPolicyTransfer = new CancellationPolicyTransfer(cancellationKind, cancellationPolicyName, isDefault, sortOrder, description);
             put(cancellationPolicy, cancellationPolicyTransfer);

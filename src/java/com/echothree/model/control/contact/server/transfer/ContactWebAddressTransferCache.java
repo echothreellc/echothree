@@ -39,13 +39,13 @@ public class ContactWebAddressTransferCache
     }
     
     public ContactWebAddressTransfer getContactWebAddressTransfer(ContactWebAddress contactWebAddress) {
-        ContactWebAddressTransfer contactWebAddressTransfer = get(contactWebAddress);
+        var contactWebAddressTransfer = get(contactWebAddress);
         
         if(contactWebAddressTransfer == null) {
-            String url = contactWebAddress.getUrl();
-            
-            EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(contactWebAddress.getContactMechanismPK());
-            WorkflowEntityStatusTransfer webAddressStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
+            var url = contactWebAddress.getUrl();
+
+            var entityInstance = coreControl.getEntityInstanceByBasePK(contactWebAddress.getContactMechanismPK());
+            var webAddressStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
                     WebAddressStatusConstants.Workflow_WEB_ADDRESS_STATUS, entityInstance);
             
             contactWebAddressTransfer = new ContactWebAddressTransfer(url, webAddressStatusTransfer);

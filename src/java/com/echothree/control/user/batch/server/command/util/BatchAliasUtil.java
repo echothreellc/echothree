@@ -59,7 +59,7 @@ public class BatchAliasUtil {
         String securityRoleGroupName = null;
 
         if(spec != null) {
-            String batchTypeName = spec.getBatchTypeName();
+            var batchTypeName = spec.getBatchTypeName();
             
             if(batchTypeName != null) {
                 securityRoleGroupName = getSecurityRoleGroupNameByBatchTypeName(batchTypeName);

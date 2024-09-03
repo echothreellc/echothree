@@ -55,20 +55,20 @@ public class CreateForumMessageTypePartTypeCommand
     @Override
     protected BaseResult execute() {
         var forumControl = Session.getModelController(ForumControl.class);
-        String forumMessageTypeName = form.getForumMessageTypeName();
-        ForumMessageType forumMessageType = forumControl.getForumMessageTypeByName(forumMessageTypeName);
+        var forumMessageTypeName = form.getForumMessageTypeName();
+        var forumMessageType = forumControl.getForumMessageTypeByName(forumMessageTypeName);
         
         if(forumMessageType != null) {
             var sortOrder = Integer.valueOf(form.getSortOrder());
-            ForumMessageTypePartType forumMessageTypePartType = forumControl.getForumMessageTypePartType(forumMessageType, sortOrder);
+            var forumMessageTypePartType = forumControl.getForumMessageTypePartType(forumMessageType, sortOrder);
             
             if(forumMessageTypePartType == null) {
-                String forumMessagePartTypeName = form.getForumMessagePartTypeName();
-                ForumMessagePartType forumMessagePartType = forumControl.getForumMessagePartTypeByName(forumMessagePartTypeName);
+                var forumMessagePartTypeName = form.getForumMessagePartTypeName();
+                var forumMessagePartType = forumControl.getForumMessagePartTypeByName(forumMessagePartTypeName);
                 
                 if(forumMessagePartType != null) {
-                    Boolean includeInIndex = Boolean.valueOf(form.getIncludeInIndex());
-                    Boolean indexDefault = Boolean.valueOf(form.getIndexDefault());
+                    var includeInIndex = Boolean.valueOf(form.getIncludeInIndex());
+                    var indexDefault = Boolean.valueOf(form.getIndexDefault());
                     
                     forumControl.createForumMessageTypePartType(forumMessageType, includeInIndex, indexDefault, sortOrder, forumMessagePartType);
                 } else {

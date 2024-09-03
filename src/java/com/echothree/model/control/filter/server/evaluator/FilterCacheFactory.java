@@ -41,11 +41,11 @@ public class FilterCacheFactory {
     
     public FilterCache getFilterCache(Session session, String filterKindName, String filterTypeName) {
         var filterControl = Session.getModelController(FilterControl.class);
-        FilterKind filterKind = filterControl.getFilterKindByName(filterKindName);
+        var filterKind = filterControl.getFilterKindByName(filterKindName);
         FilterCache filterCache = null;
         
         if(filterKind != null) {
-            FilterType filterType = filterControl.getFilterTypeByName(filterKind, filterTypeName);
+            var filterType = filterControl.getFilterTypeByName(filterKind, filterTypeName);
             
             if(filterType != null) {
                 filterCache = new FilterCache(session, filterControl, filterType);

@@ -33,13 +33,13 @@ public class GeoCodeAliasTransferCache
     }
     
     public GeoCodeAliasTransfer getGeoCodeAliasTransfer(GeoCodeAlias geoCodeAlias) {
-        GeoCodeAliasTransfer geoCodeAliasTransfer = get(geoCodeAlias);
+        var geoCodeAliasTransfer = get(geoCodeAlias);
         
         if(geoCodeAliasTransfer == null) {
-            GeoCodeTransfer geoCode = geoControl.getGeoCodeTransfer(userVisit, geoCodeAlias.getGeoCode());
-            GeoCodeScopeTransfer geoCodeScope = geoControl.getGeoCodeScopeTransfer(userVisit, geoCodeAlias.getGeoCodeScope());
-            GeoCodeAliasTypeTransfer geoCodeAliasType = geoControl.getGeoCodeAliasTypeTransfer(userVisit, geoCodeAlias.getGeoCodeAliasType());
-            String alias = geoCodeAlias.getAlias();
+            var geoCode = geoControl.getGeoCodeTransfer(userVisit, geoCodeAlias.getGeoCode());
+            var geoCodeScope = geoControl.getGeoCodeScopeTransfer(userVisit, geoCodeAlias.getGeoCodeScope());
+            var geoCodeAliasType = geoControl.getGeoCodeAliasTypeTransfer(userVisit, geoCodeAlias.getGeoCodeAliasType());
+            var alias = geoCodeAlias.getAlias();
             
             geoCodeAliasTransfer = new GeoCodeAliasTransfer(geoCode, geoCodeScope, geoCodeAliasType, alias);
             put(geoCodeAlias, geoCodeAliasTransfer);

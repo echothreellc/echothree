@@ -52,13 +52,13 @@ public class CreateForumMessagePartTypeCommand
     @Override
     protected BaseResult execute() {
         var forumControl = Session.getModelController(ForumControl.class);
-        String forumMessagePartTypeName = form.getForumMessagePartTypeName();
-        ForumMessagePartType forumMessagePartType = forumControl.getForumMessagePartTypeByName(forumMessagePartTypeName);
+        var forumMessagePartTypeName = form.getForumMessagePartTypeName();
+        var forumMessagePartType = forumControl.getForumMessagePartTypeByName(forumMessagePartTypeName);
         
         if(forumMessagePartType == null) {
             var coreControl = getCoreControl();
-            String mimeTypeUsageTypeName = form.getMimeTypeUsageTypeName();
-            MimeTypeUsageType mimeTypeUsageType = coreControl.getMimeTypeUsageTypeByName(mimeTypeUsageTypeName);
+            var mimeTypeUsageTypeName = form.getMimeTypeUsageTypeName();
+            var mimeTypeUsageType = coreControl.getMimeTypeUsageTypeByName(mimeTypeUsageTypeName);
             
             if(mimeTypeUsageTypeName == null || mimeTypeUsageType != null) {
                 var sortOrder = Integer.valueOf(form.getSortOrder());

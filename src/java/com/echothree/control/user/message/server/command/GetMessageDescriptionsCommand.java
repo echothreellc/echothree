@@ -57,22 +57,22 @@ public class GetMessageDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        GetMessageDescriptionsResult result = MessageResultFactory.getGetMessageDescriptionsResult();
-        String componentVendorName = form.getComponentVendorName();
-        ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+        var result = MessageResultFactory.getGetMessageDescriptionsResult();
+        var componentVendorName = form.getComponentVendorName();
+        var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
         
         if(componentVendor != null) {
-            String entityTypeName = form.getEntityTypeName();
-            EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+            var entityTypeName = form.getEntityTypeName();
+            var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
             
             if(entityType != null) {
                 var messageControl = Session.getModelController(MessageControl.class);
-                String messageTypeName = form.getMessageTypeName();
-                MessageType messageType = messageControl.getMessageTypeByName(entityType, messageTypeName);
+                var messageTypeName = form.getMessageTypeName();
+                var messageType = messageControl.getMessageTypeByName(entityType, messageTypeName);
                 
                 if(messageType != null) {
-                    String messageName = form.getMessageName();
-                    Message message = messageControl.getMessageByName(messageType, messageName);
+                    var messageName = form.getMessageName();
+                    var message = messageControl.getMessageByName(messageType, messageName);
                     
                     if(message != null) {
                         result.setMessage(messageControl.getMessageTransfer(getUserVisit(), message));

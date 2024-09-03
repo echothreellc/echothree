@@ -80,24 +80,24 @@ public class EditCancellationKindDescriptionCommand
     @Override
     protected BaseResult execute() {
         var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
-        EditCancellationKindDescriptionResult result = CancellationPolicyResultFactory.getEditCancellationKindDescriptionResult();
-        String cancellationKindName = spec.getCancellationKindName();
-        CancellationKind cancellationKind = cancellationPolicyControl.getCancellationKindByName(cancellationKindName);
+        var result = CancellationPolicyResultFactory.getEditCancellationKindDescriptionResult();
+        var cancellationKindName = spec.getCancellationKindName();
+        var cancellationKind = cancellationPolicyControl.getCancellationKindByName(cancellationKindName);
         
         if(cancellationKind != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK)) {
-                    CancellationKindDescription cancellationKindDescription = cancellationPolicyControl.getCancellationKindDescription(cancellationKind, language);
+                    var cancellationKindDescription = cancellationPolicyControl.getCancellationKindDescription(cancellationKind, language);
                     
                     if(cancellationKindDescription != null) {
                         result.setCancellationKindDescription(cancellationPolicyControl.getCancellationKindDescriptionTransfer(getUserVisit(), cancellationKindDescription));
                         
                         if(lockEntity(cancellationKind)) {
-                            CancellationKindDescriptionEdit edit = CancellationPolicyEditFactory.getCancellationKindDescriptionEdit();
+                            var edit = CancellationPolicyEditFactory.getCancellationKindDescriptionEdit();
                             
                             result.setEdit(edit);
                             edit.setDescription(cancellationKindDescription.getDescription());
@@ -110,12 +110,12 @@ public class EditCancellationKindDescriptionCommand
                         addExecutionError(ExecutionErrors.UnknownCancellationKindDescription.name());
                     }
                 } else if(editMode.equals(EditMode.UPDATE)) {
-                    CancellationKindDescriptionValue cancellationKindDescriptionValue = cancellationPolicyControl.getCancellationKindDescriptionValueForUpdate(cancellationKind, language);
+                    var cancellationKindDescriptionValue = cancellationPolicyControl.getCancellationKindDescriptionValueForUpdate(cancellationKind, language);
                     
                     if(cancellationKindDescriptionValue != null) {
                         if(lockEntityForUpdate(cancellationKind)) {
                             try {
-                                String description = edit.getDescription();
+                                var description = edit.getDescription();
                                 
                                 cancellationKindDescriptionValue.setDescription(description);
                                 

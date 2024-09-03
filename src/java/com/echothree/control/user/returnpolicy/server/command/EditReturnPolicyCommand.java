@@ -100,12 +100,12 @@ public class EditReturnPolicyCommand
     public ReturnPolicy getEntity(EditReturnPolicyResult result) {
         var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
         ReturnPolicy returnPolicy = null;
-        String returnKindName = spec.getReturnKindName();
+        var returnKindName = spec.getReturnKindName();
 
         returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
 
         if(returnKind != null) {
-            String returnPolicyName = spec.getReturnPolicyName();
+            var returnPolicyName = spec.getReturnPolicyName();
 
             if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
                 returnPolicy = returnPolicyControl.getReturnPolicyByName(returnKind, returnPolicyName);
@@ -142,8 +142,8 @@ public class EditReturnPolicyCommand
     @Override
     public void doLock(ReturnPolicyEdit edit, ReturnPolicy returnPolicy) {
         var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
-        ReturnPolicyTranslation returnPolicyTranslation = returnPolicyControl.getReturnPolicyTranslation(returnPolicy, getPreferredLanguage());
-        ReturnPolicyDetail returnPolicyDetail = returnPolicy.getLastDetail();
+        var returnPolicyTranslation = returnPolicyControl.getReturnPolicyTranslation(returnPolicy, getPreferredLanguage());
+        var returnPolicyDetail = returnPolicy.getLastDetail();
 
         edit.setReturnPolicyName(returnPolicyDetail.getReturnPolicyName());
         edit.setIsDefault(returnPolicyDetail.getIsDefault().toString());
@@ -161,15 +161,15 @@ public class EditReturnPolicyCommand
     @Override
     public void canUpdate(ReturnPolicy returnPolicy) {
         var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
-        String returnPolicyName = edit.getReturnPolicyName();
-        ReturnPolicy duplicateReturnPolicy = returnPolicyControl.getReturnPolicyByName(returnKind, returnPolicyName);
+        var returnPolicyName = edit.getReturnPolicyName();
+        var duplicateReturnPolicy = returnPolicyControl.getReturnPolicyByName(returnKind, returnPolicyName);
 
         if(duplicateReturnPolicy != null && !returnPolicy.equals(duplicateReturnPolicy)) {
             addExecutionError(ExecutionErrors.DuplicateReturnPolicyName.name(), returnPolicyName);
         } else {
-            MimeTypeLogic mimeTypeLogic = MimeTypeLogic.getInstance();
-            String policyMimeTypeName = edit.getPolicyMimeTypeName();
-            String policy = edit.getPolicy();
+            var mimeTypeLogic = MimeTypeLogic.getInstance();
+            var policyMimeTypeName = edit.getPolicyMimeTypeName();
+            var policy = edit.getPolicy();
 
             policyMimeType = mimeTypeLogic.checkMimeType(this, policyMimeTypeName, policy, MimeTypeUsageTypes.TEXT.name(),
                     ExecutionErrors.MissingRequiredPolicyMimeTypeName.name(), ExecutionErrors.MissingRequiredPolicy.name(),
@@ -181,10 +181,10 @@ public class EditReturnPolicyCommand
     public void doUpdate(ReturnPolicy returnPolicy) {
         var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
         var partyPK = getPartyPK();
-        ReturnPolicyDetailValue returnPolicyDetailValue = returnPolicyControl.getReturnPolicyDetailValueForUpdate(returnPolicy);
-        ReturnPolicyTranslation returnPolicyTranslation = returnPolicyControl.getReturnPolicyTranslationForUpdate(returnPolicy, getPreferredLanguage());
-        String description = edit.getDescription();
-        String policy = edit.getPolicy();
+        var returnPolicyDetailValue = returnPolicyControl.getReturnPolicyDetailValueForUpdate(returnPolicy);
+        var returnPolicyTranslation = returnPolicyControl.getReturnPolicyTranslationForUpdate(returnPolicy, getPreferredLanguage());
+        var description = edit.getDescription();
+        var policy = edit.getPolicy();
 
         returnPolicyDetailValue.setReturnPolicyName(edit.getReturnPolicyName());
         returnPolicyDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
@@ -198,7 +198,7 @@ public class EditReturnPolicyCommand
         } else if(returnPolicyTranslation != null && (description == null && policy == null)) {
             returnPolicyControl.deleteReturnPolicyTranslation(returnPolicyTranslation, partyPK);
         } else if(returnPolicyTranslation != null && (description != null || policy != null)) {
-            ReturnPolicyTranslationValue returnPolicyTranslationValue = returnPolicyControl.getReturnPolicyTranslationValue(returnPolicyTranslation);
+            var returnPolicyTranslationValue = returnPolicyControl.getReturnPolicyTranslationValue(returnPolicyTranslation);
 
             returnPolicyTranslationValue.setDescription(description);
             returnPolicyTranslationValue.setPolicyMimeTypePK(policyMimeType == null? null: policyMimeType.getPrimaryKey());

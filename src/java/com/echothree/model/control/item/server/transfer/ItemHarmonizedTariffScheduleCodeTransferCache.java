@@ -50,14 +50,14 @@ public class ItemHarmonizedTariffScheduleCodeTransferCache
     
     @Override
     public ItemHarmonizedTariffScheduleCodeTransfer getTransfer(ItemHarmonizedTariffScheduleCode itemHarmonizedTariffScheduleCode) {
-        ItemHarmonizedTariffScheduleCodeTransfer itemHarmonizedTariffScheduleCodeTransfer = get(itemHarmonizedTariffScheduleCode);
+        var itemHarmonizedTariffScheduleCodeTransfer = get(itemHarmonizedTariffScheduleCode);
         
         if(itemHarmonizedTariffScheduleCodeTransfer == null) {
-            ItemHarmonizedTariffScheduleCodeDetail itemHarmonizedTariffScheduleCodeDetail = itemHarmonizedTariffScheduleCode.getLastDetail();
-            ItemTransfer item = itemControl.getItemTransfer(userVisit, itemHarmonizedTariffScheduleCodeDetail.getItem());
-            CountryTransfer countryGeoCode = geoControl.getCountryTransfer(userVisit, itemHarmonizedTariffScheduleCodeDetail.getCountryGeoCode());
-            HarmonizedTariffScheduleCodeUseTypeTransfer harmonizedTariffScheduleCodeUseType = itemControl.getHarmonizedTariffScheduleCodeUseTypeTransfer(userVisit, itemHarmonizedTariffScheduleCodeDetail.getHarmonizedTariffScheduleCodeUseType());
-            HarmonizedTariffScheduleCodeTransfer harmonizedTariffScheduleCode = itemControl.getHarmonizedTariffScheduleCodeTransfer(userVisit, itemHarmonizedTariffScheduleCodeDetail.getHarmonizedTariffScheduleCode());
+            var itemHarmonizedTariffScheduleCodeDetail = itemHarmonizedTariffScheduleCode.getLastDetail();
+            var item = itemControl.getItemTransfer(userVisit, itemHarmonizedTariffScheduleCodeDetail.getItem());
+            var countryGeoCode = geoControl.getCountryTransfer(userVisit, itemHarmonizedTariffScheduleCodeDetail.getCountryGeoCode());
+            var harmonizedTariffScheduleCodeUseType = itemControl.getHarmonizedTariffScheduleCodeUseTypeTransfer(userVisit, itemHarmonizedTariffScheduleCodeDetail.getHarmonizedTariffScheduleCodeUseType());
+            var harmonizedTariffScheduleCode = itemControl.getHarmonizedTariffScheduleCodeTransfer(userVisit, itemHarmonizedTariffScheduleCodeDetail.getHarmonizedTariffScheduleCode());
             
             itemHarmonizedTariffScheduleCodeTransfer = new ItemHarmonizedTariffScheduleCodeTransfer(item, countryGeoCode, harmonizedTariffScheduleCodeUseType,
                     harmonizedTariffScheduleCode);

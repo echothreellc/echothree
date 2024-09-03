@@ -38,14 +38,14 @@ public class ApplicationEditorTransferCache
     }
 
     public ApplicationEditorTransfer getApplicationEditorTransfer(ApplicationEditor applicationEditor) {
-        ApplicationEditorTransfer applicationEditorTransfer = get(applicationEditor);
+        var applicationEditorTransfer = get(applicationEditor);
 
         if(applicationEditorTransfer == null) {
-            ApplicationEditorDetail applicationEditorDetail = applicationEditor.getLastDetail();
-            ApplicationTransfer application = coreControl.getApplicationTransfer(userVisit, applicationEditorDetail.getApplication());
-            EditorTransfer editor = coreControl.getEditorTransfer(userVisit, applicationEditorDetail.getEditor());
-            Boolean isDefault = applicationEditorDetail.getIsDefault();
-            Integer sortOrder = applicationEditorDetail.getSortOrder();
+            var applicationEditorDetail = applicationEditor.getLastDetail();
+            var application = coreControl.getApplicationTransfer(userVisit, applicationEditorDetail.getApplication());
+            var editor = coreControl.getEditorTransfer(userVisit, applicationEditorDetail.getEditor());
+            var isDefault = applicationEditorDetail.getIsDefault();
+            var sortOrder = applicationEditorDetail.getSortOrder();
 
             applicationEditorTransfer = new ApplicationEditorTransfer(application, editor, isDefault, sortOrder);
             put(applicationEditor, applicationEditorTransfer);

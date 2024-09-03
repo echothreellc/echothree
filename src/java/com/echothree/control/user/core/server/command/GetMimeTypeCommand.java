@@ -50,8 +50,8 @@ public class GetMimeTypeCommand
     @Override
     protected MimeType getEntity() {
         var coreControl = getCoreControl();
-        String mimeTypeName = form.getMimeTypeName();
-        MimeType mimeType = coreControl.getMimeTypeByName(mimeTypeName);
+        var mimeTypeName = form.getMimeTypeName();
+        var mimeType = coreControl.getMimeTypeByName(mimeTypeName);
 
         if(mimeType == null) {
             addExecutionError(ExecutionErrors.UnknownMimeTypeName.name(), mimeTypeName);
@@ -63,7 +63,7 @@ public class GetMimeTypeCommand
     @Override
     protected BaseResult getResult(MimeType mimeType) {
         var coreControl = getCoreControl();
-        GetMimeTypeResult result = CoreResultFactory.getGetMimeTypeResult();
+        var result = CoreResultFactory.getGetMimeTypeResult();
 
         if(mimeType != null) {
             result.setMimeType(coreControl.getMimeTypeTransfer(getUserVisit(), mimeType));

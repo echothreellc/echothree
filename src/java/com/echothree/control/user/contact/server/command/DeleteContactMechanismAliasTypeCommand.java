@@ -63,8 +63,8 @@ public class DeleteContactMechanismAliasTypeCommand
     @Override
     protected BaseResult execute() {
         var contactControl = Session.getModelController(ContactControl.class);
-        String contactMechanismAliasTypeName = form.getContactMechanismAliasTypeName();
-        ContactMechanismAliasType contactMechanismAliasType = contactControl.getContactMechanismAliasTypeByNameForUpdate(contactMechanismAliasTypeName);
+        var contactMechanismAliasTypeName = form.getContactMechanismAliasTypeName();
+        var contactMechanismAliasType = contactControl.getContactMechanismAliasTypeByNameForUpdate(contactMechanismAliasTypeName);
         
         if(contactMechanismAliasType != null) {
             contactControl.deleteContactMechanismAliasType(contactMechanismAliasType, getPartyPK());

@@ -86,13 +86,13 @@ public class PreferredTimeZoneTag
     public int doStartTag()
             throws JspException {
         try {
-            GetPreferredTimeZoneForm commandForm = PartyUtil.getHome().getGetPreferredTimeZoneForm();
+            var commandForm = PartyUtil.getHome().getGetPreferredTimeZoneForm();
             
             setOptions(options, null, commandForm);
 
             commandForm.setTransferProperties(transferProperties);
-            
-            CommandResult commandResult = PartyUtil.getHome().getPreferredTimeZone(getUserVisitPK(), commandForm);
+
+            var commandResult = PartyUtil.getHome().getPreferredTimeZone(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -100,8 +100,8 @@ public class PreferredTimeZoneTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetPreferredTimeZoneResult result = (GetPreferredTimeZoneResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetPreferredTimeZoneResult)executionResult.getResult();
 
                 pageContext.setAttribute(var, result.getPreferredTimeZone(), scope);
             }

@@ -103,8 +103,8 @@ public class WorkEffortControl
     
     public WorkEffortType createWorkEffortType(String workEffortTypeName, EntityType entityType, Sequence workEffortSequence, Long scheduledTime,
             Long estimatedTimeAllowed, Long maximumTimeAllowed, Integer sortOrder, BasePK createdBy) {
-        WorkEffortType workEffortType = WorkEffortTypeFactory.getInstance().create();
-        WorkEffortTypeDetail workEffortTypeDetail = WorkEffortTypeDetailFactory.getInstance().create(workEffortType, workEffortTypeName, entityType,
+        var workEffortType = WorkEffortTypeFactory.getInstance().create();
+        var workEffortTypeDetail = WorkEffortTypeDetailFactory.getInstance().create(workEffortType, workEffortTypeName, entityType,
                 workEffortSequence, scheduledTime, estimatedTimeAllowed, maximumTimeAllowed, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -132,8 +132,8 @@ public class WorkEffortControl
                     "WHERE wet_activedetailid = wetdt_workefforttypedetailid " +
                     "FOR UPDATE";
         }
-        
-        PreparedStatement ps = WorkEffortTypeFactory.getInstance().prepareStatement(query);
+
+        var ps = WorkEffortTypeFactory.getInstance().prepareStatement(query);
         
         return WorkEffortTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
     }
@@ -164,8 +164,8 @@ public class WorkEffortControl
                         "AND wetdt_workefforttypename = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = WorkEffortTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = WorkEffortTypeFactory.getInstance().prepareStatement(query);
             
             ps.setString(1, workEffortTypeName);
             
@@ -198,9 +198,9 @@ public class WorkEffortControl
     }
     
     public List<WorkEffortTypeTransfer> getWorkEffortTypeTransfers(UserVisit userVisit) {
-        List<WorkEffortType> workEffortTypes = getWorkEffortTypes();
+        var workEffortTypes = getWorkEffortTypes();
         List<WorkEffortTypeTransfer> workEffortTypeTransfers = new ArrayList<>(workEffortTypes.size());
-        WorkEffortTypeTransferCache workEffortTypeTransferCache = getWorkEffortTransferCaches(userVisit).getWorkEffortTypeTransferCache();
+        var workEffortTypeTransferCache = getWorkEffortTransferCaches(userVisit).getWorkEffortTypeTransferCache();
         
         workEffortTypes.forEach((workEffortType) ->
                 workEffortTypeTransfers.add(workEffortTypeTransferCache.getWorkEffortTypeTransfer(workEffortType))
@@ -211,21 +211,21 @@ public class WorkEffortControl
     
     public void updateWorkEffortTypeFromValue(WorkEffortTypeDetailValue workEffortTypeDetailValue, BasePK updatedBy) {
         if(workEffortTypeDetailValue.hasBeenModified()) {
-            WorkEffortType workEffortType = WorkEffortTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var workEffortType = WorkEffortTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      workEffortTypeDetailValue.getWorkEffortTypePK());
-            WorkEffortTypeDetail workEffortTypeDetail = workEffortType.getActiveDetailForUpdate();
+            var workEffortTypeDetail = workEffortType.getActiveDetailForUpdate();
             
             workEffortTypeDetail.setThruTime(session.START_TIME_LONG);
             workEffortTypeDetail.store();
-            
-            WorkEffortTypePK workEffortTypePK = workEffortTypeDetail.getWorkEffortTypePK();
-            String workEffortTypeName = workEffortTypeDetailValue.getWorkEffortTypeName();
-            EntityTypePK entityTypePK = workEffortTypeDetailValue.getEntityTypePK();
-            SequencePK workEffortSequencePK = workEffortTypeDetailValue.getWorkEffortSequencePK();
-            Long scheduledTime = workEffortTypeDetailValue.getScheduledTime();
-            Long estimatedTimeAllowed = workEffortTypeDetailValue.getEstimatedTimeAllowed();
-            Long maximumTimeAllowed = workEffortTypeDetailValue.getMaximumTimeAllowed();
-            Integer sortOrder = workEffortTypeDetailValue.getSortOrder();
+
+            var workEffortTypePK = workEffortTypeDetail.getWorkEffortTypePK();
+            var workEffortTypeName = workEffortTypeDetailValue.getWorkEffortTypeName();
+            var entityTypePK = workEffortTypeDetailValue.getEntityTypePK();
+            var workEffortSequencePK = workEffortTypeDetailValue.getWorkEffortSequencePK();
+            var scheduledTime = workEffortTypeDetailValue.getScheduledTime();
+            var estimatedTimeAllowed = workEffortTypeDetailValue.getEstimatedTimeAllowed();
+            var maximumTimeAllowed = workEffortTypeDetailValue.getMaximumTimeAllowed();
+            var sortOrder = workEffortTypeDetailValue.getSortOrder();
             
             workEffortTypeDetail = WorkEffortTypeDetailFactory.getInstance().create(workEffortTypePK, workEffortTypeName, entityTypePK, workEffortSequencePK,
                     scheduledTime, estimatedTimeAllowed, maximumTimeAllowed, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -243,8 +243,8 @@ public class WorkEffortControl
         deleteWorkEffortScopesByWorkEffortType(workEffortType, deletedBy);
         workRequirementControl.deleteWorkRequirementTypesByWorkEffortType(workEffortType, deletedBy);
         deleteWorkEffortTypeDescriptionsByWorkEffortType(workEffortType, deletedBy);
-        
-        WorkEffortTypeDetail workEffortTypeDetail = workEffortType.getLastDetailForUpdate();
+
+        var workEffortTypeDetail = workEffortType.getLastDetailForUpdate();
         workEffortTypeDetail.setThruTime(session.START_TIME_LONG);
         workEffortType.setActiveDetail(null);
         workEffortType.store();
@@ -258,7 +258,7 @@ public class WorkEffortControl
     
     public WorkEffortTypeDescription createWorkEffortTypeDescription(WorkEffortType workEffortType, Language language,
             String description, BasePK createdBy) {
-        WorkEffortTypeDescription workEffortTypeDescription = WorkEffortTypeDescriptionFactory.getInstance().create(workEffortType,
+        var workEffortTypeDescription = WorkEffortTypeDescriptionFactory.getInstance().create(workEffortType,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(workEffortType.getPrimaryKey(), EventTypes.MODIFY, workEffortTypeDescription.getPrimaryKey(),
@@ -284,8 +284,8 @@ public class WorkEffortControl
                         "WHERE wetd_wet_workefforttypeid = ? AND wetd_lang_languageid = ? AND wetd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = WorkEffortTypeDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = WorkEffortTypeDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, workEffortType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -332,8 +332,8 @@ public class WorkEffortControl
                         "WHERE wetd_wet_workefforttypeid = ? AND wetd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = WorkEffortTypeDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = WorkEffortTypeDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, workEffortType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -356,7 +356,7 @@ public class WorkEffortControl
     
     public String getBestWorkEffortTypeDescription(WorkEffortType workEffortType, Language language) {
         String description;
-        WorkEffortTypeDescription workEffortTypeDescription = getWorkEffortTypeDescription(workEffortType, language);
+        var workEffortTypeDescription = getWorkEffortTypeDescription(workEffortType, language);
         
         if(workEffortTypeDescription == null && !language.getIsDefault()) {
             workEffortTypeDescription = getWorkEffortTypeDescription(workEffortType, getPartyControl().getDefaultLanguage());
@@ -376,9 +376,9 @@ public class WorkEffortControl
     }
     
     public List<WorkEffortTypeDescriptionTransfer> getWorkEffortTypeDescriptionTransfers(UserVisit userVisit, WorkEffortType workEffortType) {
-        List<WorkEffortTypeDescription> workEffortTypeDescriptions = getWorkEffortTypeDescriptionsByWorkEffortType(workEffortType);
+        var workEffortTypeDescriptions = getWorkEffortTypeDescriptionsByWorkEffortType(workEffortType);
         List<WorkEffortTypeDescriptionTransfer> workEffortTypeDescriptionTransfers = new ArrayList<>(workEffortTypeDescriptions.size());
-        WorkEffortTypeDescriptionTransferCache workEffortTypeDescriptionTransferCache = getWorkEffortTransferCaches(userVisit).getWorkEffortTypeDescriptionTransferCache();
+        var workEffortTypeDescriptionTransferCache = getWorkEffortTransferCaches(userVisit).getWorkEffortTypeDescriptionTransferCache();
         
         workEffortTypeDescriptions.forEach((workEffortTypeDescription) ->
                 workEffortTypeDescriptionTransfers.add(workEffortTypeDescriptionTransferCache.getWorkEffortTypeDescriptionTransfer(workEffortTypeDescription))
@@ -389,15 +389,15 @@ public class WorkEffortControl
     
     public void updateWorkEffortTypeDescriptionFromValue(WorkEffortTypeDescriptionValue workEffortTypeDescriptionValue, BasePK updatedBy) {
         if(workEffortTypeDescriptionValue.hasBeenModified()) {
-            WorkEffortTypeDescription workEffortTypeDescription = WorkEffortTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var workEffortTypeDescription = WorkEffortTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      workEffortTypeDescriptionValue.getPrimaryKey());
             
             workEffortTypeDescription.setThruTime(session.START_TIME_LONG);
             workEffortTypeDescription.store();
-            
-            WorkEffortType workEffortType = workEffortTypeDescription.getWorkEffortType();
-            Language language = workEffortTypeDescription.getLanguage();
-            String description = workEffortTypeDescriptionValue.getDescription();
+
+            var workEffortType = workEffortTypeDescription.getWorkEffortType();
+            var language = workEffortTypeDescription.getLanguage();
+            var description = workEffortTypeDescriptionValue.getDescription();
             
             workEffortTypeDescription = WorkEffortTypeDescriptionFactory.getInstance().create(workEffortType, language,
                     description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -415,7 +415,7 @@ public class WorkEffortControl
     }
     
     public void deleteWorkEffortTypeDescriptionsByWorkEffortType(WorkEffortType workEffortType, BasePK deletedBy) {
-        List<WorkEffortTypeDescription> workEffortTypeDescriptions = getWorkEffortTypeDescriptionsByWorkEffortTypeForUpdate(workEffortType);
+        var workEffortTypeDescriptions = getWorkEffortTypeDescriptionsByWorkEffortTypeForUpdate(workEffortType);
         
         workEffortTypeDescriptions.forEach((workEffortTypeDescription) -> 
                 deleteWorkEffortTypeDescription(workEffortTypeDescription, deletedBy)
@@ -429,20 +429,20 @@ public class WorkEffortControl
     public WorkEffortScope createWorkEffortScope(WorkEffortType workEffortType, String workEffortScopeName,
             Sequence workEffortSequence, Long scheduledTime, Long estimatedTimeAllowed, Long maximumTimeAllowed, Boolean isDefault,
             Integer sortOrder, BasePK createdBy) {
-        WorkEffortScope defaultWorkEffortScope = getDefaultWorkEffortScope(workEffortType);
-        boolean defaultFound = defaultWorkEffortScope != null;
+        var defaultWorkEffortScope = getDefaultWorkEffortScope(workEffortType);
+        var defaultFound = defaultWorkEffortScope != null;
         
         if(defaultFound && isDefault) {
-            WorkEffortScopeDetailValue defaultWorkEffortScopeDetailValue = getDefaultWorkEffortScopeDetailValueForUpdate(workEffortType);
+            var defaultWorkEffortScopeDetailValue = getDefaultWorkEffortScopeDetailValueForUpdate(workEffortType);
             
             defaultWorkEffortScopeDetailValue.setIsDefault(Boolean.FALSE);
             updateWorkEffortScopeFromValue(defaultWorkEffortScopeDetailValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        WorkEffortScope workEffortScope = WorkEffortScopeFactory.getInstance().create();
-        WorkEffortScopeDetail workEffortScopeDetail = WorkEffortScopeDetailFactory.getInstance().create(workEffortScope,
+
+        var workEffortScope = WorkEffortScopeFactory.getInstance().create();
+        var workEffortScopeDetail = WorkEffortScopeDetailFactory.getInstance().create(workEffortScope,
                 workEffortType, workEffortScopeName, workEffortSequence, scheduledTime, estimatedTimeAllowed, maximumTimeAllowed,
                 isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
@@ -475,8 +475,8 @@ public class WorkEffortControl
                         "WHERE wes_activedetailid = wesdt_workeffortscopedetailid AND wesdt_wet_workefforttypeid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = WorkEffortScopeFactory.getInstance().prepareStatement(query);
+
+            var ps = WorkEffortScopeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, workEffortType.getPrimaryKey().getEntityId());
             
@@ -514,8 +514,8 @@ public class WorkEffortControl
                         "AND wesdt_wet_workefforttypeid = ? AND wesdt_isdefault = 1 " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = WorkEffortScopeFactory.getInstance().prepareStatement(query);
+
+            var ps = WorkEffortScopeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, workEffortType.getPrimaryKey().getEntityId());
             
@@ -557,8 +557,8 @@ public class WorkEffortControl
                         "AND wesdt_wet_workefforttypeid = ? AND wesdt_workeffortscopename = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = WorkEffortScopeFactory.getInstance().prepareStatement(query);
+
+            var ps = WorkEffortScopeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, workEffortType.getPrimaryKey().getEntityId());
             ps.setString(2, workEffortScopeName);
@@ -589,7 +589,7 @@ public class WorkEffortControl
     
     public WorkEffortScopeChoicesBean getWorkEffortScopeChoices(String defaultWorkEffortScopeChoice, Language language,
             boolean allowNullChoice, WorkEffortType workEffortType) {
-        List<WorkEffortScope> workEffortScopes = getWorkEffortScopes(workEffortType);
+        var workEffortScopes = getWorkEffortScopes(workEffortType);
         var size = workEffortScopes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -605,7 +605,7 @@ public class WorkEffortControl
         }
         
         for(var workEffortScope : workEffortScopes) {
-            WorkEffortScopeDetail workEffortScopeDetail = workEffortScope.getLastDetail();
+            var workEffortScopeDetail = workEffortScope.getLastDetail();
             var label = getBestWorkEffortScopeDescription(workEffortScope, language);
             var value = workEffortScopeDetail.getWorkEffortScopeName();
             
@@ -626,9 +626,9 @@ public class WorkEffortControl
     }
     
     public List<WorkEffortScopeTransfer> getWorkEffortScopeTransfers(UserVisit userVisit, WorkEffortType workEffortType) {
-        List<WorkEffortScope> workEffortScopes = getWorkEffortScopes(workEffortType);
+        var workEffortScopes = getWorkEffortScopes(workEffortType);
         List<WorkEffortScopeTransfer> workEffortScopeTransfers = new ArrayList<>(workEffortScopes.size());
-        WorkEffortScopeTransferCache workEffortScopeTransferCache = getWorkEffortTransferCaches(userVisit).getWorkEffortScopeTransferCache();
+        var workEffortScopeTransferCache = getWorkEffortTransferCaches(userVisit).getWorkEffortScopeTransferCache();
         
         workEffortScopes.forEach((workEffortScope) ->
                 workEffortScopeTransfers.add(workEffortScopeTransferCache.getWorkEffortScopeTransfer(workEffortScope))
@@ -640,30 +640,30 @@ public class WorkEffortControl
     private void updateWorkEffortScopeFromValue(WorkEffortScopeDetailValue workEffortScopeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(workEffortScopeDetailValue.hasBeenModified()) {
-            WorkEffortScope workEffortScope = WorkEffortScopeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var workEffortScope = WorkEffortScopeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      workEffortScopeDetailValue.getWorkEffortScopePK());
-            WorkEffortScopeDetail workEffortScopeDetail = workEffortScope.getActiveDetailForUpdate();
+            var workEffortScopeDetail = workEffortScope.getActiveDetailForUpdate();
             
             workEffortScopeDetail.setThruTime(session.START_TIME_LONG);
             workEffortScopeDetail.store();
-            
-            WorkEffortScopePK workEffortScopePK = workEffortScopeDetail.getWorkEffortScopePK();
-            WorkEffortType workEffortType = workEffortScopeDetail.getWorkEffortType(); // Not updated
-            String workEffortScopeName = workEffortScopeDetailValue.getWorkEffortScopeName();
-            SequencePK workEffortSequencePK = workEffortScopeDetailValue.getWorkEffortSequencePK();
-            Long scheduledTime = workEffortScopeDetailValue.getScheduledTime();
-            Long estimatedTimeAllowed = workEffortScopeDetailValue.getEstimatedTimeAllowed();
-            Long maximumTimeAllowed = workEffortScopeDetailValue.getMaximumTimeAllowed();
-            Boolean isDefault = workEffortScopeDetailValue.getIsDefault();
-            Integer sortOrder = workEffortScopeDetailValue.getSortOrder();
+
+            var workEffortScopePK = workEffortScopeDetail.getWorkEffortScopePK();
+            var workEffortType = workEffortScopeDetail.getWorkEffortType(); // Not updated
+            var workEffortScopeName = workEffortScopeDetailValue.getWorkEffortScopeName();
+            var workEffortSequencePK = workEffortScopeDetailValue.getWorkEffortSequencePK();
+            var scheduledTime = workEffortScopeDetailValue.getScheduledTime();
+            var estimatedTimeAllowed = workEffortScopeDetailValue.getEstimatedTimeAllowed();
+            var maximumTimeAllowed = workEffortScopeDetailValue.getMaximumTimeAllowed();
+            var isDefault = workEffortScopeDetailValue.getIsDefault();
+            var sortOrder = workEffortScopeDetailValue.getSortOrder();
             
             if(checkDefault) {
-                WorkEffortScope defaultWorkEffortScope = getDefaultWorkEffortScope(workEffortType);
-                boolean defaultFound = defaultWorkEffortScope != null && !defaultWorkEffortScope.equals(workEffortScope);
+                var defaultWorkEffortScope = getDefaultWorkEffortScope(workEffortType);
+                var defaultFound = defaultWorkEffortScope != null && !defaultWorkEffortScope.equals(workEffortScope);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    WorkEffortScopeDetailValue defaultWorkEffortScopeDetailValue = getDefaultWorkEffortScopeDetailValueForUpdate(workEffortType);
+                    var defaultWorkEffortScopeDetailValue = getDefaultWorkEffortScopeDetailValueForUpdate(workEffortType);
                     
                     defaultWorkEffortScopeDetailValue.setIsDefault(Boolean.FALSE);
                     updateWorkEffortScopeFromValue(defaultWorkEffortScopeDetailValue, false, updatedBy);
@@ -694,28 +694,28 @@ public class WorkEffortControl
         deleteWorkEffortsByWorkEffortScope(workEffortScope, deletedBy);
         workRequirementControl.deleteWorkRequirementScopesByWorkEffortScope(workEffortScope, deletedBy);
         deleteWorkEffortScopeDescriptionsByWorkEffortScope(workEffortScope, deletedBy);
-        
-        WorkEffortScopeDetail workEffortScopeDetail = workEffortScope.getLastDetailForUpdate();
+
+        var workEffortScopeDetail = workEffortScope.getLastDetailForUpdate();
         workEffortScopeDetail.setThruTime(session.START_TIME_LONG);
         workEffortScope.setActiveDetail(null);
         workEffortScope.store();
         
         if(checkDefault) {
             // Check for default, and pick one if necessary
-            WorkEffortType workEffortType = workEffortScopeDetail.getWorkEffortType();
-            WorkEffortScope defaultWorkEffortScope = getDefaultWorkEffortScope(workEffortType);
+            var workEffortType = workEffortScopeDetail.getWorkEffortType();
+            var defaultWorkEffortScope = getDefaultWorkEffortScope(workEffortType);
             
             if(defaultWorkEffortScope == null) {
-                List<WorkEffortScope> workEffortScopes = getWorkEffortScopesForUpdate(workEffortType);
+                var workEffortScopes = getWorkEffortScopesForUpdate(workEffortType);
                 
                 if(!workEffortScopes.isEmpty()) {
-                    Iterator<WorkEffortScope> iter = workEffortScopes.iterator();
+                    var iter = workEffortScopes.iterator();
                     
                     if(iter.hasNext()) {
                         defaultWorkEffortScope = iter.next();
                     }
-                    
-                    WorkEffortScopeDetailValue workEffortScopeDetailValue = Objects.requireNonNull(defaultWorkEffortScope).getLastDetailForUpdate().getWorkEffortScopeDetailValue().clone();
+
+                    var workEffortScopeDetailValue = Objects.requireNonNull(defaultWorkEffortScope).getLastDetailForUpdate().getWorkEffortScopeDetailValue().clone();
                     
                     workEffortScopeDetailValue.setIsDefault(Boolean.TRUE);
                     updateWorkEffortScopeFromValue(workEffortScopeDetailValue, false, deletedBy);
@@ -731,7 +731,7 @@ public class WorkEffortControl
     }
     
     public void deleteWorkEffortScopesByWorkEffortType(WorkEffortType workEffortType, BasePK deletedBy) {
-        List<WorkEffortScope> workEffortScopes = getWorkEffortScopesForUpdate(workEffortType);
+        var workEffortScopes = getWorkEffortScopesForUpdate(workEffortType);
         
         workEffortScopes.forEach((workEffortScope) -> {
             deleteWorkEffortScope(workEffortScope, false, deletedBy);
@@ -744,7 +744,7 @@ public class WorkEffortControl
     
     public WorkEffortScopeDescription createWorkEffortScopeDescription(WorkEffortScope workEffortScope, Language language,
             String description, BasePK createdBy) {
-        WorkEffortScopeDescription workEffortScopeDescription = WorkEffortScopeDescriptionFactory.getInstance().create(workEffortScope,
+        var workEffortScopeDescription = WorkEffortScopeDescriptionFactory.getInstance().create(workEffortScope,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(workEffortScope.getPrimaryKey(), EventTypes.MODIFY, workEffortScopeDescription.getPrimaryKey(),
@@ -770,8 +770,8 @@ public class WorkEffortControl
                         "WHERE wesd_wes_workeffortscopeid = ? AND wesd_lang_languageid = ? AND wesd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = WorkEffortScopeDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = WorkEffortScopeDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, workEffortScope.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -818,8 +818,8 @@ public class WorkEffortControl
                         "WHERE wesd_wes_workeffortscopeid = ? AND wesd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = WorkEffortScopeDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = WorkEffortScopeDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, workEffortScope.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -842,7 +842,7 @@ public class WorkEffortControl
     
     public String getBestWorkEffortScopeDescription(WorkEffortScope workEffortScope, Language language) {
         String description;
-        WorkEffortScopeDescription workEffortScopeDescription = getWorkEffortScopeDescription(workEffortScope, language);
+        var workEffortScopeDescription = getWorkEffortScopeDescription(workEffortScope, language);
         
         if(workEffortScopeDescription == null && !language.getIsDefault()) {
             workEffortScopeDescription = getWorkEffortScopeDescription(workEffortScope, getPartyControl().getDefaultLanguage());
@@ -862,9 +862,9 @@ public class WorkEffortControl
     }
     
     public List<WorkEffortScopeDescriptionTransfer> getWorkEffortScopeDescriptionTransfers(UserVisit userVisit, WorkEffortScope workEffortScope) {
-        List<WorkEffortScopeDescription> workEffortScopeDescriptions = getWorkEffortScopeDescriptionsByWorkEffortScope(workEffortScope);
+        var workEffortScopeDescriptions = getWorkEffortScopeDescriptionsByWorkEffortScope(workEffortScope);
         List<WorkEffortScopeDescriptionTransfer> workEffortScopeDescriptionTransfers = new ArrayList<>(workEffortScopeDescriptions.size());
-        WorkEffortScopeDescriptionTransferCache workEffortScopeDescriptionTransferCache = getWorkEffortTransferCaches(userVisit).getWorkEffortScopeDescriptionTransferCache();
+        var workEffortScopeDescriptionTransferCache = getWorkEffortTransferCaches(userVisit).getWorkEffortScopeDescriptionTransferCache();
         
         workEffortScopeDescriptions.forEach((workEffortScopeDescription) ->
                 workEffortScopeDescriptionTransfers.add(workEffortScopeDescriptionTransferCache.getWorkEffortScopeDescriptionTransfer(workEffortScopeDescription))
@@ -875,15 +875,15 @@ public class WorkEffortControl
     
     public void updateWorkEffortScopeDescriptionFromValue(WorkEffortScopeDescriptionValue workEffortScopeDescriptionValue, BasePK updatedBy) {
         if(workEffortScopeDescriptionValue.hasBeenModified()) {
-            WorkEffortScopeDescription workEffortScopeDescription = WorkEffortScopeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var workEffortScopeDescription = WorkEffortScopeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      workEffortScopeDescriptionValue.getPrimaryKey());
             
             workEffortScopeDescription.setThruTime(session.START_TIME_LONG);
             workEffortScopeDescription.store();
-            
-            WorkEffortScope workEffortScope = workEffortScopeDescription.getWorkEffortScope();
-            Language language = workEffortScopeDescription.getLanguage();
-            String description = workEffortScopeDescriptionValue.getDescription();
+
+            var workEffortScope = workEffortScopeDescription.getWorkEffortScope();
+            var language = workEffortScopeDescription.getLanguage();
+            var description = workEffortScopeDescriptionValue.getDescription();
             
             workEffortScopeDescription = WorkEffortScopeDescriptionFactory.getInstance().create(workEffortScope, language,
                     description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -901,7 +901,7 @@ public class WorkEffortControl
     }
     
     public void deleteWorkEffortScopeDescriptionsByWorkEffortScope(WorkEffortScope workEffortScope, BasePK deletedBy) {
-        List<WorkEffortScopeDescription> workEffortScopeDescriptions = getWorkEffortScopeDescriptionsByWorkEffortScopeForUpdate(workEffortScope);
+        var workEffortScopeDescriptions = getWorkEffortScopeDescriptionsByWorkEffortScopeForUpdate(workEffortScope);
         
         workEffortScopeDescriptions.forEach((workEffortScopeDescription) -> 
                 deleteWorkEffortScopeDescription(workEffortScopeDescription, deletedBy)
@@ -914,8 +914,8 @@ public class WorkEffortControl
     
     public WorkEffort createWorkEffort(String workEffortName, EntityInstance owningEntityInstanceId, WorkEffortScope workEffortScope, Long scheduledTime,
             Long scheduledStartTime, Long scheduledEndTime, Long estimatedTimeAllowed, Long maximumTimeAllowed, BasePK createdBy) {
-        WorkEffort workEffort = WorkEffortFactory.getInstance().create();
-        WorkEffortDetail workEffortDetail = WorkEffortDetailFactory.getInstance().create(workEffort, workEffortName, owningEntityInstanceId, workEffortScope,
+        var workEffort = WorkEffortFactory.getInstance().create();
+        var workEffortDetail = WorkEffortDetailFactory.getInstance().create(workEffort, workEffortName, owningEntityInstanceId, workEffortScope,
                 scheduledTime, scheduledStartTime, scheduledEndTime, estimatedTimeAllowed, maximumTimeAllowed, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -950,7 +950,7 @@ public class WorkEffortControl
                         "FOR UPDATE";
             }
 
-            PreparedStatement ps = WorkEffortFactory.getInstance().prepareStatement(query);
+            var ps = WorkEffortFactory.getInstance().prepareStatement(query);
 
             ps.setLong(1, workEffortScope.getPrimaryKey().getEntityId());
 
@@ -990,7 +990,7 @@ public class WorkEffortControl
                         "FOR UPDATE";
             }
 
-            PreparedStatement ps = WorkEffortFactory.getInstance().prepareStatement(query);
+            var ps = WorkEffortFactory.getInstance().prepareStatement(query);
 
             ps.setLong(1, owningEntityInstanceId.getPrimaryKey().getEntityId());
 
@@ -1029,7 +1029,7 @@ public class WorkEffortControl
                         "FOR UPDATE";
             }
 
-            PreparedStatement ps = WorkEffortFactory.getInstance().prepareStatement(query);
+            var ps = WorkEffortFactory.getInstance().prepareStatement(query);
 
             ps.setString(1, workEffortName);
 
@@ -1068,7 +1068,7 @@ public class WorkEffortControl
                         "FOR UPDATE";
             }
 
-            PreparedStatement ps = WorkEffortFactory.getInstance().prepareStatement(query);
+            var ps = WorkEffortFactory.getInstance().prepareStatement(query);
 
             ps.setLong(1, owningEntityInstanceId.getPrimaryKey().getEntityId());
             ps.setLong(2, workEffortScope.getPrimaryKey().getEntityId());
@@ -1103,7 +1103,7 @@ public class WorkEffortControl
     
     public List<WorkEffortTransfer> getWorkEffortTransfers(UserVisit userVisit, Collection<WorkEffort> workEfforts) {
         List<WorkEffortTransfer> workEffortTransfers = new ArrayList<>(workEfforts.size());
-        WorkEffortTransferCache workEffortTransferCache = getWorkEffortTransferCaches(userVisit).getWorkEffortTransferCache();
+        var workEffortTransferCache = getWorkEffortTransferCaches(userVisit).getWorkEffortTransferCache();
 
         workEfforts.forEach((workEffort) ->
                 workEffortTransfers.add(workEffortTransferCache.getWorkEffortTransfer(workEffort))
@@ -1122,22 +1122,22 @@ public class WorkEffortControl
 
     public void updateWorkEffortFromValue(WorkEffortDetailValue workEffortDetailValue, BasePK updatedBy) {
         if(workEffortDetailValue.hasBeenModified()) {
-            WorkEffort workEffort = WorkEffortFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var workEffort = WorkEffortFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      workEffortDetailValue.getWorkEffortPK());
-            WorkEffortDetail workEffortDetail = workEffort.getActiveDetailForUpdate();
+            var workEffortDetail = workEffort.getActiveDetailForUpdate();
             
             workEffortDetail.setThruTime(session.START_TIME_LONG);
             workEffortDetail.store();
-            
-            WorkEffortPK workEffortPK = workEffortDetail.getWorkEffortPK();
-            String workEffortName = workEffortDetailValue.getWorkEffortName();
-            EntityInstancePK owningEntityInstancePK = workEffortDetail.getOwningEntityInstancePK(); // Not updated
-            WorkEffortScopePK workEffortScopePK = workEffortDetail.getWorkEffortScopePK(); // Not updated
-            Long scheduledTime = workEffortDetail.getScheduledTime();
-            Long scheduledStartTime = workEffortDetail.getScheduledStartTime();
-            Long scheduledEndTime = workEffortDetail.getScheduledEndTime();
-            Long estimatedTimeAllowed = workEffortDetail.getEstimatedTimeAllowed();
-            Long maximumTimeAllowed = workEffortDetail.getMaximumTimeAllowed();
+
+            var workEffortPK = workEffortDetail.getWorkEffortPK();
+            var workEffortName = workEffortDetailValue.getWorkEffortName();
+            var owningEntityInstancePK = workEffortDetail.getOwningEntityInstancePK(); // Not updated
+            var workEffortScopePK = workEffortDetail.getWorkEffortScopePK(); // Not updated
+            var scheduledTime = workEffortDetail.getScheduledTime();
+            var scheduledStartTime = workEffortDetail.getScheduledStartTime();
+            var scheduledEndTime = workEffortDetail.getScheduledEndTime();
+            var estimatedTimeAllowed = workEffortDetail.getEstimatedTimeAllowed();
+            var maximumTimeAllowed = workEffortDetail.getMaximumTimeAllowed();
             
             workEffortDetail = WorkEffortDetailFactory.getInstance().create(workEffortPK, workEffortName, owningEntityInstancePK, workEffortScopePK,
                     scheduledTime, scheduledStartTime, scheduledEndTime, estimatedTimeAllowed, maximumTimeAllowed, session.START_TIME_LONG,
@@ -1154,8 +1154,8 @@ public class WorkEffortControl
         var workRequirementControl = Session.getModelController(WorkRequirementControl.class);
         
         workRequirementControl.deleteWorkRequirementsByWorkEffort(workEffort, deletedBy);
-        
-        WorkEffortDetail workEffortDetail = workEffort.getLastDetailForUpdate();
+
+        var workEffortDetail = workEffort.getLastDetailForUpdate();
         workEffortDetail.setThruTime(session.START_TIME_LONG);
         workEffort.setActiveDetail(null);
         workEffort.store();

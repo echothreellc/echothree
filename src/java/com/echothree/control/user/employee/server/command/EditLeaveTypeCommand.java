@@ -91,7 +91,7 @@ public class EditLeaveTypeCommand
     public LeaveType getEntity(EditLeaveTypeResult result) {
         var employeeControl = Session.getModelController(EmployeeControl.class);
         LeaveType leaveType = null;
-        String leaveTypeName = spec.getLeaveTypeName();
+        var leaveTypeName = spec.getLeaveTypeName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
             leaveType = employeeControl.getLeaveTypeByName(leaveTypeName);
@@ -123,8 +123,8 @@ public class EditLeaveTypeCommand
     @Override
     public void doLock(LeaveTypeEdit edit, LeaveType leaveType) {
         var employeeControl = Session.getModelController(EmployeeControl.class);
-        LeaveTypeDescription leaveTypeDescription = employeeControl.getLeaveTypeDescription(leaveType, getPreferredLanguage());
-        LeaveTypeDetail leaveTypeDetail = leaveType.getLastDetail();
+        var leaveTypeDescription = employeeControl.getLeaveTypeDescription(leaveType, getPreferredLanguage());
+        var leaveTypeDetail = leaveType.getLastDetail();
 
         edit.setLeaveTypeName(leaveTypeDetail.getLeaveTypeName());
         edit.setIsDefault(leaveTypeDetail.getIsDefault().toString());
@@ -138,8 +138,8 @@ public class EditLeaveTypeCommand
     @Override
     public void canUpdate(LeaveType leaveType) {
         var employeeControl = Session.getModelController(EmployeeControl.class);
-        String leaveTypeName = edit.getLeaveTypeName();
-        LeaveType duplicateLeaveType = employeeControl.getLeaveTypeByName(leaveTypeName);
+        var leaveTypeName = edit.getLeaveTypeName();
+        var duplicateLeaveType = employeeControl.getLeaveTypeByName(leaveTypeName);
 
         if(duplicateLeaveType != null && !leaveType.equals(duplicateLeaveType)) {
             addExecutionError(ExecutionErrors.DuplicateLeaveTypeName.name(), leaveTypeName);
@@ -150,9 +150,9 @@ public class EditLeaveTypeCommand
     public void doUpdate(LeaveType leaveType) {
         var employeeControl = Session.getModelController(EmployeeControl.class);
         var partyPK = getPartyPK();
-        LeaveTypeDetailValue leaveTypeDetailValue = employeeControl.getLeaveTypeDetailValueForUpdate(leaveType);
-        LeaveTypeDescription leaveTypeDescription = employeeControl.getLeaveTypeDescriptionForUpdate(leaveType, getPreferredLanguage());
-        String description = edit.getDescription();
+        var leaveTypeDetailValue = employeeControl.getLeaveTypeDetailValueForUpdate(leaveType);
+        var leaveTypeDescription = employeeControl.getLeaveTypeDescriptionForUpdate(leaveType, getPreferredLanguage());
+        var description = edit.getDescription();
 
         leaveTypeDetailValue.setLeaveTypeName(edit.getLeaveTypeName());
         leaveTypeDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
@@ -165,7 +165,7 @@ public class EditLeaveTypeCommand
         } else if(leaveTypeDescription != null && description == null) {
             employeeControl.deleteLeaveTypeDescription(leaveTypeDescription, partyPK);
         } else if(leaveTypeDescription != null && description != null) {
-            LeaveTypeDescriptionValue leaveTypeDescriptionValue = employeeControl.getLeaveTypeDescriptionValue(leaveTypeDescription);
+            var leaveTypeDescriptionValue = employeeControl.getLeaveTypeDescriptionValue(leaveTypeDescription);
 
             leaveTypeDescriptionValue.setDescription(description);
             employeeControl.updateLeaveTypeDescriptionFromValue(leaveTypeDescriptionValue, partyPK);

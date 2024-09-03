@@ -55,10 +55,10 @@ public class EntityListItemIndexer
     
     @Override
     protected Document convertToDocument(final EntityInstance entityInstance, final EntityListItem entityListItem) {
-        EntityListItemDetail entityListItemDetail = entityListItem.getLastDetail();
-        EntityAttributeDetail entityAttributeDetail = entityListItemDetail.getEntityAttribute().getLastDetail();
-        EntityTypeDetail entityTypeDetail = entityAttributeDetail.getEntityType().getLastDetail();
-        String description = coreControl.getBestEntityListItemDescription(entityListItem, language);
+        var entityListItemDetail = entityListItem.getLastDetail();
+        var entityAttributeDetail = entityListItemDetail.getEntityAttribute().getLastDetail();
+        var entityTypeDetail = entityAttributeDetail.getEntityType().getLastDetail();
+        var description = coreControl.getBestEntityListItemDescription(entityListItem, language);
 
         var document = newDocumentWithEntityInstanceFields(entityInstance, entityListItem.getPrimaryKey());
 

@@ -31,13 +31,13 @@ public class ItemAliasChecksumTypeTransferCache
     
     @Override
     public ItemAliasChecksumTypeTransfer getTransfer(ItemAliasChecksumType itemAliasChecksumType) {
-        ItemAliasChecksumTypeTransfer itemAliasChecksumTypeTransfer = get(itemAliasChecksumType);
+        var itemAliasChecksumTypeTransfer = get(itemAliasChecksumType);
         
         if(itemAliasChecksumTypeTransfer == null) {
-            String itemAliasChecksumTypeName = itemAliasChecksumType.getItemAliasChecksumTypeName();
-            Boolean isDefault = itemAliasChecksumType.getIsDefault();
-            Integer sortOrder = itemAliasChecksumType.getSortOrder();
-            String description = itemControl.getBestItemAliasChecksumTypeDescription(itemAliasChecksumType, getLanguage());
+            var itemAliasChecksumTypeName = itemAliasChecksumType.getItemAliasChecksumTypeName();
+            var isDefault = itemAliasChecksumType.getIsDefault();
+            var sortOrder = itemAliasChecksumType.getSortOrder();
+            var description = itemControl.getBestItemAliasChecksumTypeDescription(itemAliasChecksumType, getLanguage());
             
             itemAliasChecksumTypeTransfer = new ItemAliasChecksumTypeTransfer(itemAliasChecksumTypeName, isDefault, sortOrder, description);
             put(itemAliasChecksumType, itemAliasChecksumTypeTransfer);

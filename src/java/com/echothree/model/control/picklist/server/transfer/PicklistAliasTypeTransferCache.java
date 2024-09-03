@@ -34,16 +34,16 @@ public class PicklistAliasTypeTransferCache
     }
     
     public PicklistAliasTypeTransfer getPicklistAliasTypeTransfer(PicklistAliasType picklistAliasType) {
-        PicklistAliasTypeTransfer picklistAliasTypeTransfer = get(picklistAliasType);
+        var picklistAliasTypeTransfer = get(picklistAliasType);
         
         if(picklistAliasTypeTransfer == null) {
-            PicklistAliasTypeDetail picklistAliasTypeDetail = picklistAliasType.getLastDetail();
-            PicklistTypeTransfer picklistType = picklistControl.getPicklistTypeTransfer(userVisit, picklistAliasTypeDetail.getPicklistType());
-            String picklistAliasTypeName = picklistAliasTypeDetail.getPicklistAliasTypeName();
-            String validationPattern = picklistAliasTypeDetail.getValidationPattern();
-            Boolean isDefault = picklistAliasTypeDetail.getIsDefault();
-            Integer sortOrder = picklistAliasTypeDetail.getSortOrder();
-            String description = picklistControl.getBestPicklistAliasTypeDescription(picklistAliasType, getLanguage());
+            var picklistAliasTypeDetail = picklistAliasType.getLastDetail();
+            var picklistType = picklistControl.getPicklistTypeTransfer(userVisit, picklistAliasTypeDetail.getPicklistType());
+            var picklistAliasTypeName = picklistAliasTypeDetail.getPicklistAliasTypeName();
+            var validationPattern = picklistAliasTypeDetail.getValidationPattern();
+            var isDefault = picklistAliasTypeDetail.getIsDefault();
+            var sortOrder = picklistAliasTypeDetail.getSortOrder();
+            var description = picklistControl.getBestPicklistAliasTypeDescription(picklistAliasType, getLanguage());
             
             picklistAliasTypeTransfer = new PicklistAliasTypeTransfer(picklistType, picklistAliasTypeName, validationPattern, isDefault, sortOrder, description);
             put(picklistAliasType, picklistAliasTypeTransfer);

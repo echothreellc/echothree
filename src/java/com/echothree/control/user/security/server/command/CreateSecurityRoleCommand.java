@@ -70,12 +70,12 @@ public class CreateSecurityRoleCommand
     protected BaseResult execute() {
         var result = SecurityResultFactory.getCreateSecurityRoleResult();
         var securityControl = Session.getModelController(SecurityControl.class);
-        String securityRoleGroupName = form.getSecurityRoleGroupName();
-        SecurityRoleGroup securityRoleGroup = securityControl.getSecurityRoleGroupByName(securityRoleGroupName);
+        var securityRoleGroupName = form.getSecurityRoleGroupName();
+        var securityRoleGroup = securityControl.getSecurityRoleGroupByName(securityRoleGroupName);
         SecurityRole securityRole = null;
 
         if(securityRoleGroup != null) {
-            String securityRoleName = form.getSecurityRoleName();
+            var securityRoleName = form.getSecurityRoleName();
 
             securityRole = securityControl.getSecurityRoleByName(securityRoleGroup, securityRoleName);
             

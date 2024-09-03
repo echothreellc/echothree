@@ -56,14 +56,14 @@ public class GetContentForumCommand
     @Override
     protected ContentForum getEntity() {
         var contentControl = Session.getModelController(ContentControl.class);
-        String contentCollectionName = form.getContentCollectionName();
-        ContentCollection contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
+        var contentCollectionName = form.getContentCollectionName();
+        var contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
         ContentForum contentForum = null;
         
         if(contentCollection != null) {
             var forumControl = Session.getModelController(ForumControl.class);
-            String forumName = form.getForumName();
-            Forum forum = forumControl.getForumByName(forumName);
+            var forumName = form.getForumName();
+            var forum = forumControl.getForumByName(forumName);
             
             if(forum != null) {
                 contentForum = contentControl.getContentForum(contentCollection, forum);
@@ -85,7 +85,7 @@ public class GetContentForumCommand
     
     @Override
     protected BaseResult getResult(ContentForum contentForum) {
-        GetContentForumResult result = ContentResultFactory.getGetContentForumResult();
+        var result = ContentResultFactory.getGetContentForumResult();
                 
         if(contentForum != null) {
         var contentControl = Session.getModelController(ContentControl.class);

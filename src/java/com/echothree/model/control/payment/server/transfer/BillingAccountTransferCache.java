@@ -52,15 +52,15 @@ public class BillingAccountTransferCache
 
     @Override
     public BillingAccountTransfer getTransfer(BillingAccount billingAccount) {
-        BillingAccountTransfer billingAccountTransfer = get(billingAccount);
+        var billingAccountTransfer = get(billingAccount);
 
         if(billingAccountTransfer == null) {
-            BillingAccountDetail billingAccountDetail = billingAccount.getLastDetail();
-            String billingAccountName = billingAccountDetail.getBillingAccountName();
-            Currency currency = billingAccountDetail.getCurrency();
-            CurrencyTransfer currencyTransfer = accountingControl.getCurrencyTransfer(userVisit, currency);
-            String reference = billingAccountDetail.getReference();
-            String description = billingAccountDetail.getDescription();
+            var billingAccountDetail = billingAccount.getLastDetail();
+            var billingAccountName = billingAccountDetail.getBillingAccountName();
+            var currency = billingAccountDetail.getCurrency();
+            var currencyTransfer = accountingControl.getCurrencyTransfer(userVisit, currency);
+            var reference = billingAccountDetail.getReference();
+            var description = billingAccountDetail.getDescription();
             String creditLimit = null;
             String potentialCreditLimit = null;
 //            BillingAccountStatus billingAccountStatus = paymentControl.getBillingAccountStatus(billingAccount);
@@ -80,7 +80,7 @@ public class BillingAccountTransferCache
             put(billingAccount, billingAccountTransfer);
             
             if(includeRoles) {
-                List<BillingAccountRoleTransfer> billingAccountRoleTransfers = billingControl.getBillingAccountRoleTransfersByBillingAccount(userVisit, billingAccount);
+                var billingAccountRoleTransfers = billingControl.getBillingAccountRoleTransfersByBillingAccount(userVisit, billingAccount);
                 MapWrapper<BillingAccountRoleTransfer> billingAccountRoles = new MapWrapper<>(billingAccountRoleTransfers.size());
 
                 billingAccountRoleTransfers.forEach((billingAccountRoleTransfer) -> {

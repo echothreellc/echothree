@@ -55,12 +55,12 @@ public class BaseKey
             return true;
         
         if(other instanceof BaseKey) {
-            BaseKey that = (BaseKey)other;
-            
-            byte[] thatEncoded = that.getKey().getEncoded();
-            byte[] thatIv = that.getIv();
-            
-            boolean objectsEqual = Arrays.equals(key.getEncoded(), thatEncoded);
+            var that = (BaseKey)other;
+
+            var thatEncoded = that.getKey().getEncoded();
+            var thatIv = that.getIv();
+
+            var objectsEqual = Arrays.equals(key.getEncoded(), thatEncoded);
             if(objectsEqual) {
                 objectsEqual = Arrays.equals(iv, thatIv);
             }
@@ -73,7 +73,7 @@ public class BaseKey
 
     @Override
     public int hashCode() {
-        int hash = 7;
+        var hash = 7;
         
         hash = 53 * hash + Objects.hashCode(this.key);
         hash = 53 * hash + Arrays.hashCode(this.iv);

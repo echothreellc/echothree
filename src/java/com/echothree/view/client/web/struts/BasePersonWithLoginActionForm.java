@@ -44,14 +44,14 @@ public class BasePersonWithLoginActionForm
     private void setupRecoveryQuestionChoices() {
         if(recoveryQuestionChoices == null) {
             try {
-                GetRecoveryQuestionChoicesForm form = UserUtil.getHome().getGetRecoveryQuestionChoicesForm();
+                var form = UserUtil.getHome().getGetRecoveryQuestionChoicesForm();
                 
                 form.setDefaultRecoveryQuestionChoice(recoveryQuestionChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = UserUtil.getHome().getRecoveryQuestionChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetRecoveryQuestionChoicesResult getRecoveryQuestionChoicesResult = (GetRecoveryQuestionChoicesResult)executionResult.getResult();
+
+                var commandResult = UserUtil.getHome().getRecoveryQuestionChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var getRecoveryQuestionChoicesResult = (GetRecoveryQuestionChoicesResult)executionResult.getResult();
                 recoveryQuestionChoices = getRecoveryQuestionChoicesResult.getRecoveryQuestionChoices();
                 
                 if(recoveryQuestionChoice == null) {

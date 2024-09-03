@@ -80,24 +80,24 @@ public class EditGeoCodeLanguageCommand
     @Override
     protected BaseResult execute() {
         var geoControl = Session.getModelController(GeoControl.class);
-        EditGeoCodeLanguageResult result = GeoResultFactory.getEditGeoCodeLanguageResult();
-        String geoCodeName = spec.getGeoCodeName();
-        GeoCode geoCode = geoControl.getGeoCodeByName(geoCodeName);
+        var result = GeoResultFactory.getEditGeoCodeLanguageResult();
+        var geoCodeName = spec.getGeoCodeName();
+        var geoCode = geoControl.getGeoCodeByName(geoCodeName);
         
         if(geoCode != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK)) {
-                    GeoCodeLanguage geoCodeLanguage = geoControl.getGeoCodeLanguage(geoCode, language);
+                    var geoCodeLanguage = geoControl.getGeoCodeLanguage(geoCode, language);
                     
                     if(geoCodeLanguage != null) {
                         result.setGeoCodeLanguage(geoControl.getGeoCodeLanguageTransfer(getUserVisit(), geoCodeLanguage));
                         
                         if(lockEntity(geoCode)) {
-                            GeoCodeLanguageEdit edit = GeoEditFactory.getGeoCodeLanguageEdit();
+                            var edit = GeoEditFactory.getGeoCodeLanguageEdit();
                             
                             result.setEdit(edit);
                             edit.setIsDefault(geoCodeLanguage.getIsDefault().toString());
@@ -112,10 +112,10 @@ public class EditGeoCodeLanguageCommand
                         addExecutionError(ExecutionErrors.UnknownGeoCodeLanguage.name(), geoCodeName, languageIsoName);
                     }
                 } else if(editMode.equals(EditMode.UPDATE)) {
-                    GeoCodeLanguage geoCodeLanguage = geoControl.getGeoCodeLanguageForUpdate(geoCode, language);
+                    var geoCodeLanguage = geoControl.getGeoCodeLanguageForUpdate(geoCode, language);
                     
                     if(geoCodeLanguage != null) {
-                        GeoCodeLanguageValue geoCodeLanguageValue = geoControl.getGeoCodeLanguageValue(geoCodeLanguage);
+                        var geoCodeLanguageValue = geoControl.getGeoCodeLanguageValue(geoCodeLanguage);
                         
                         if(lockEntityForUpdate(geoCode)) {
                             try {

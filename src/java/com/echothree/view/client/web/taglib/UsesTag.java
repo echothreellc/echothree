@@ -109,7 +109,7 @@ public class UsesTag
     public int doStartTag()
             throws JspException {
         try {
-            GetUsesForm commandForm = OfferUtil.getHome().getGetUsesForm();
+            var commandForm = OfferUtil.getHome().getGetUsesForm();
             Map<String, Limit> limits = new HashMap<>();
             
             setOptions(options, null, commandForm);
@@ -121,7 +121,7 @@ public class UsesTag
             }
             commandForm.setLimits(limits);
 
-            CommandResult commandResult = OfferUtil.getHome().getUses(getUserVisitPK(), commandForm);
+            var commandResult = OfferUtil.getHome().getUses(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -129,8 +129,8 @@ public class UsesTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetUsesResult result = (GetUsesResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetUsesResult)executionResult.getResult();
 
                 pageContext.setAttribute(var, new ListWrapper<>(result.getUses()), scope);
 

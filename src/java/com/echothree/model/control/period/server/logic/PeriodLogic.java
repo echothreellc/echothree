@@ -45,9 +45,9 @@ public class PeriodLogic {
     public Period createPeriod(final PeriodKind periodKind, final String periodName, final Period parentPeriod,
             final PeriodType periodType, final Long startTime, final Long endTime, final PartyPK createdBy) {
         var periodControl = Session.getModelController(PeriodControl.class);
-        Period period = periodControl.createPeriod(periodKind, periodName, parentPeriod, periodType, startTime, endTime, createdBy);
-        PeriodTypeDetail periodTypeDetail = periodType.getLastDetail();
-        WorkflowEntrance workflowEntrance = periodTypeDetail.getWorkflowEntrance();
+        var period = periodControl.createPeriod(periodKind, periodName, parentPeriod, periodType, startTime, endTime, createdBy);
+        var periodTypeDetail = periodType.getLastDetail();
+        var workflowEntrance = periodTypeDetail.getWorkflowEntrance();
         
         if(workflowEntrance == null) {
             workflowEntrance = periodTypeDetail.getPeriodKind().getLastDetail().getWorkflowEntrance();
@@ -56,7 +56,7 @@ public class PeriodLogic {
         if(workflowEntrance != null) {
             var coreControl = Session.getModelController(CoreControl.class);
             var workflowControl = Session.getModelController(WorkflowControl.class);
-            EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(period.getPrimaryKey());
+            var entityInstance = coreControl.getEntityInstanceByBasePK(period.getPrimaryKey());
 
             workflowControl.addEntityToWorkflow(workflowEntrance, entityInstance, null, null, createdBy);
         }

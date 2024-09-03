@@ -41,11 +41,11 @@ public class SelectorCacheFactory {
     
     public SelectorCache getSelectorCache(Session session, String selectorKindName, String selectorTypeName) {
         var selectorControl = Session.getModelController(SelectorControl.class);
-        SelectorKind selectorKind = selectorControl.getSelectorKindByName(selectorKindName);
+        var selectorKind = selectorControl.getSelectorKindByName(selectorKindName);
         SelectorCache selectorCache = null;
         
         if(selectorKind != null) {
-            SelectorType selectorType = selectorControl.getSelectorTypeByName(selectorKind, selectorTypeName);
+            var selectorType = selectorControl.getSelectorTypeByName(selectorKind, selectorTypeName);
             
             if(selectorType != null) {
                 selectorCache = new SelectorCache(selectorType);

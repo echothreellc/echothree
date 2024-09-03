@@ -91,17 +91,17 @@ public class EditPartyEntityTypeCommand
     public PartyEntityType getEntity(EditPartyEntityTypeResult result) {
         var partyControl = Session.getModelController(PartyControl.class);
         PartyEntityType partyEntityType = null;
-        String partyName = spec.getPartyName();
-        Party party = partyName == null ? getParty() : partyControl.getPartyByName(partyName);
+        var partyName = spec.getPartyName();
+        var party = partyName == null ? getParty() : partyControl.getPartyByName(partyName);
 
         if(party != null) {
             var coreControl = getCoreControl();
-            String componentVendorName = spec.getComponentVendorName();
-            ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+            var componentVendorName = spec.getComponentVendorName();
+            var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
 
             if(componentVendor != null) {
-                String entityTypeName = spec.getEntityTypeName();
-                EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+                var entityTypeName = spec.getEntityTypeName();
+                var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
 
                 if(entityType != null) {
                     if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -146,7 +146,7 @@ public class EditPartyEntityTypeCommand
     @Override
     public void doUpdate(PartyEntityType partyEntityType) {
         var coreControl = getCoreControl();
-        PartyEntityTypeValue partyEntityTypeValue = coreControl.getPartyEntityTypeValue(partyEntityType);
+        var partyEntityTypeValue = coreControl.getPartyEntityTypeValue(partyEntityType);
         
         partyEntityTypeValue.setConfirmDelete(Boolean.valueOf(edit.getConfirmDelete()));
 

@@ -129,7 +129,7 @@ public class GetForumMessageResultsTag
     @Override
     public int doStartTag() throws JspException {
         try {
-            GetForumMessageResultsForm commandForm = SearchUtil.getHome().getGetForumMessageResultsForm();
+            var commandForm = SearchUtil.getHome().getGetForumMessageResultsForm();
             Map<String, Limit> limits = new HashMap<>();
             
             commandForm.setSearchTypeName(searchTypeName);
@@ -145,8 +145,8 @@ public class GetForumMessageResultsTag
                 limits.put(SearchResultConstants.ENTITY_TYPE_NAME, new Limit(forumMessageResultCount, forumMessageResultOffset));
             }
             commandForm.setLimits(limits);
-            
-            CommandResult commandResult = SearchUtil.getHome().getForumMessageResults(getUserVisitPK(), commandForm);
+
+            var commandResult = SearchUtil.getHome().getForumMessageResults(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -154,8 +154,8 @@ public class GetForumMessageResultsTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetForumMessageResultsResult result = (GetForumMessageResultsResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetForumMessageResultsResult)executionResult.getResult();
 
                 pageContext.setAttribute(var, new ListWrapper<>(result.getForumMessageResults()), scope);
 

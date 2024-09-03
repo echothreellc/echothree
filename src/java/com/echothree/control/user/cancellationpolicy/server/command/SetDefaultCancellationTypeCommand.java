@@ -65,12 +65,12 @@ public class SetDefaultCancellationTypeCommand
     @Override
     protected BaseResult execute() {
         var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
-        String cancellationKindName = form.getCancellationKindName();
-        CancellationKind cancellationKind = cancellationPolicyControl.getCancellationKindByName(cancellationKindName);
+        var cancellationKindName = form.getCancellationKindName();
+        var cancellationKind = cancellationPolicyControl.getCancellationKindByName(cancellationKindName);
         
         if(cancellationKind != null) {
-            String cancellationTypeName = form.getCancellationTypeName();
-            CancellationTypeDetailValue cancellationTypeDetailValue = cancellationPolicyControl.getCancellationTypeDetailValueByNameForUpdate(cancellationKind,
+            var cancellationTypeName = form.getCancellationTypeName();
+            var cancellationTypeDetailValue = cancellationPolicyControl.getCancellationTypeDetailValueByNameForUpdate(cancellationKind,
                     cancellationTypeName);
             
             if(cancellationTypeDetailValue != null) {

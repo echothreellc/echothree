@@ -57,9 +57,9 @@ public class SecurityRoleGroupIndexer
     
     @Override
     protected Document convertToDocument(final EntityInstance entityInstance, final SecurityRoleGroup securityRoleGroup) {
-        SecurityRoleGroupDetail securityRoleGroupDetail = securityRoleGroup.getLastDetail();
-        SecurityRoleGroup parentSecurityRoleGroup = securityRoleGroupDetail.getParentSecurityRoleGroup();
-        String description = securityControl.getBestSecurityRoleGroupDescription(securityRoleGroup, language);
+        var securityRoleGroupDetail = securityRoleGroup.getLastDetail();
+        var parentSecurityRoleGroup = securityRoleGroupDetail.getParentSecurityRoleGroup();
+        var description = securityControl.getBestSecurityRoleGroupDescription(securityRoleGroup, language);
 
         var document = newDocumentWithEntityInstanceFields(entityInstance, securityRoleGroup.getPrimaryKey());
 

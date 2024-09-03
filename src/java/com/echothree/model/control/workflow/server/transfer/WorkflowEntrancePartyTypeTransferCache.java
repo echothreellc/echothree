@@ -38,11 +38,11 @@ public class WorkflowEntrancePartyTypeTransferCache
     }
     
     public WorkflowEntrancePartyTypeTransfer getWorkflowEntrancePartyTypeTransfer(WorkflowEntrancePartyType workflowEntrancePartyType) {
-        WorkflowEntrancePartyTypeTransfer workflowEntrancePartyTypeTransfer = get(workflowEntrancePartyType);
+        var workflowEntrancePartyTypeTransfer = get(workflowEntrancePartyType);
         
         if(workflowEntrancePartyTypeTransfer == null) {
-            WorkflowEntranceTransfer workflowEntrance = workflowControl.getWorkflowEntranceTransfer(userVisit, workflowEntrancePartyType.getWorkflowEntrance());
-            PartyTypeTransfer partyType = partyControl.getPartyTypeTransfer(userVisit, workflowEntrancePartyType.getPartyType());
+            var workflowEntrance = workflowControl.getWorkflowEntranceTransfer(userVisit, workflowEntrancePartyType.getWorkflowEntrance());
+            var partyType = partyControl.getPartyTypeTransfer(userVisit, workflowEntrancePartyType.getPartyType());
             
             workflowEntrancePartyTypeTransfer = new WorkflowEntrancePartyTypeTransfer(workflowEntrance, partyType);
             put(workflowEntrancePartyType, workflowEntrancePartyTypeTransfer);

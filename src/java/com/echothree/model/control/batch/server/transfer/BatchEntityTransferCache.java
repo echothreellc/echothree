@@ -36,10 +36,10 @@ public class BatchEntityTransferCache
 
     @Override
     public BatchEntityTransfer getTransfer(BatchEntity batchEntity) {
-        BatchEntityTransfer batchEntityTransfer = get(batchEntity);
+        var batchEntityTransfer = get(batchEntity);
 
         if(batchEntityTransfer == null) {
-            EntityInstanceTransfer entityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, batchEntity.getEntityInstance(), false, false, false, false, false, false);
+            var entityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, batchEntity.getEntityInstance(), false, false, false, false, false, false);
 
             batchEntityTransfer = new BatchEntityTransfer(entityInstanceTransfer);
             put(batchEntity, batchEntityTransfer);

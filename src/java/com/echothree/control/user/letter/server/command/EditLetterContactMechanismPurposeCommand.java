@@ -86,24 +86,24 @@ public class EditLetterContactMechanismPurposeCommand
     @Override
     protected BaseResult execute() {
         var chainControl = Session.getModelController(ChainControl.class);
-        EditLetterContactMechanismPurposeResult result = LetterResultFactory.getEditLetterContactMechanismPurposeResult();
-        String chainKindName = spec.getChainKindName();
-        ChainKind chainKind = chainControl.getChainKindByName(chainKindName);
+        var result = LetterResultFactory.getEditLetterContactMechanismPurposeResult();
+        var chainKindName = spec.getChainKindName();
+        var chainKind = chainControl.getChainKindByName(chainKindName);
         
         if(chainKind != null) {
-            String chainTypeName = spec.getChainTypeName();
-            ChainType chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
+            var chainTypeName = spec.getChainTypeName();
+            var chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
             
             if(chainType != null) {
                 var letterControl = Session.getModelController(LetterControl.class);
-                String letterName = spec.getLetterName();
-                Letter letter = letterControl.getLetterByName(chainType, letterName);
+                var letterName = spec.getLetterName();
+                var letter = letterControl.getLetterByName(chainType, letterName);
                 
                 if(letter != null) {
-                    Integer priority = Integer.valueOf(spec.getPriority());
+                    var priority = Integer.valueOf(spec.getPriority());
                     
                     if(editMode.equals(EditMode.LOCK)) {
-                        LetterContactMechanismPurpose letterContactMechanismPurpose = letterControl.getLetterContactMechanismPurpose(letter,
+                        var letterContactMechanismPurpose = letterControl.getLetterContactMechanismPurpose(letter,
                                 priority);
                         
                         if(letterContactMechanismPurpose != null) {
@@ -111,8 +111,8 @@ public class EditLetterContactMechanismPurposeCommand
                                     letterContactMechanismPurpose));
                             
                             if(lockEntity(letter)) {
-                                LetterContactMechanismPurposeDetail letterContactMechanismPurposeDetail = letterContactMechanismPurpose.getLastDetail();
-                                LetterContactMechanismPurposeEdit edit = LetterEditFactory.getLetterContactMechanismPurposeEdit();
+                                var letterContactMechanismPurposeDetail = letterContactMechanismPurpose.getLastDetail();
+                                var edit = LetterEditFactory.getLetterContactMechanismPurposeEdit();
                                 
                                 result.setEdit(edit);
                                 edit.setContactMechanismPurposeName(letterContactMechanismPurposeDetail.getContactMechanismPurpose().getContactMechanismPurposeName());
@@ -125,17 +125,17 @@ public class EditLetterContactMechanismPurposeCommand
                             addExecutionError(ExecutionErrors.UnknownLetterContactMechanismPurpose.name());
                         }
                     } else if(editMode.equals(EditMode.UPDATE)) {
-                        LetterContactMechanismPurpose letterContactMechanismPurpose = letterControl.getLetterContactMechanismPurposeForUpdate(letter,
+                        var letterContactMechanismPurpose = letterControl.getLetterContactMechanismPurposeForUpdate(letter,
                                 priority);
-                        LetterContactMechanismPurposeDetailValue letterContactMechanismPurposeDetailValue = letterControl.getLetterContactMechanismPurposeDetailValueForUpdate(letterContactMechanismPurpose);
+                        var letterContactMechanismPurposeDetailValue = letterControl.getLetterContactMechanismPurposeDetailValueForUpdate(letterContactMechanismPurpose);
                         
                         if(letterContactMechanismPurposeDetailValue != null) {
                             var contactControl = Session.getModelController(ContactControl.class);
-                            String contactMechanismPurposeName = edit.getContactMechanismPurposeName();
-                            ContactMechanismPurpose contactMechanismPurpose = contactControl.getContactMechanismPurposeByName(contactMechanismPurposeName);
+                            var contactMechanismPurposeName = edit.getContactMechanismPurposeName();
+                            var contactMechanismPurpose = contactControl.getContactMechanismPurposeByName(contactMechanismPurposeName);
                             
                             if(contactMechanismPurpose != null) {
-                                String contactMechanismTypeName = contactMechanismPurpose.getContactMechanismType().getContactMechanismTypeName();
+                                var contactMechanismTypeName = contactMechanismPurpose.getContactMechanismType().getContactMechanismTypeName();
                                 
                                 if(contactMechanismTypeName.equals(ContactMechanismTypes.EMAIL_ADDRESS.name())
                                         || contactMechanismTypeName.equals(ContactMechanismTypes.POSTAL_ADDRESS.name())) {

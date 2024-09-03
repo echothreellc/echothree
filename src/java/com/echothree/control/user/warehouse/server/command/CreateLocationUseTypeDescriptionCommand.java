@@ -63,16 +63,16 @@ public class CreateLocationUseTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var locationUseTypeControl = Session.getModelController(LocationUseTypeControl.class);
-        String locationUseTypeName = form.getLocationUseTypeName();
-        LocationUseType locationUseType = locationUseTypeControl.getLocationUseTypeByName(locationUseTypeName);
+        var locationUseTypeName = form.getLocationUseTypeName();
+        var locationUseType = locationUseTypeControl.getLocationUseTypeByName(locationUseTypeName);
         
         if(locationUseType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                LocationUseTypeDescription locationUseTypeDescription = locationUseTypeControl.getLocationUseTypeDescription(locationUseType, language);
+                var locationUseTypeDescription = locationUseTypeControl.getLocationUseTypeDescription(locationUseType, language);
                 
                 if(locationUseTypeDescription == null) {
                     var description = form.getDescription();

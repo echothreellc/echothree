@@ -68,14 +68,14 @@ public class GetLocationTypeChoicesCommand
     @Override
     protected BaseResult execute() {
         var warehouseControl = Session.getModelController(WarehouseControl.class);
-        GetLocationTypeChoicesResult result = WarehouseResultFactory.getGetLocationTypeChoicesResult();
-        String warehouseName = form.getWarehouseName();
-        Warehouse warehouse = warehouseControl.getWarehouseByName(warehouseName);
+        var result = WarehouseResultFactory.getGetLocationTypeChoicesResult();
+        var warehouseName = form.getWarehouseName();
+        var warehouse = warehouseControl.getWarehouseByName(warehouseName);
         
         if(warehouse != null) {
-            String defaultLocationTypeChoice = form.getDefaultLocationTypeChoice();
-            boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
-            Party warehouseParty = warehouse.getParty();
+            var defaultLocationTypeChoice = form.getDefaultLocationTypeChoice();
+            var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+            var warehouseParty = warehouse.getParty();
             
             result.setLocationTypeChoices(warehouseControl.getLocationTypeChoicesByWarehouseParty(defaultLocationTypeChoice,
                     getPreferredLanguage(), allowNullChoice, warehouseParty));

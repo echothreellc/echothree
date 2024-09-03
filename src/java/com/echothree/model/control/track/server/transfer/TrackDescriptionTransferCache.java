@@ -32,11 +32,11 @@ public class TrackDescriptionTransferCache
     }
     
     public TrackDescriptionTransfer getTrackDescriptionTransfer(TrackDescription trackDescription) {
-        TrackDescriptionTransfer trackDescriptionTransfer = get(trackDescription);
+        var trackDescriptionTransfer = get(trackDescription);
         
         if(trackDescriptionTransfer == null) {
-            TrackTransfer trackTransfer = trackControl.getTrackTransfer(userVisit, trackDescription.getTrack());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, trackDescription.getLanguage());
+            var trackTransfer = trackControl.getTrackTransfer(userVisit, trackDescription.getTrack());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, trackDescription.getLanguage());
             
             trackDescriptionTransfer = new TrackDescriptionTransfer(languageTransfer, trackTransfer, trackDescription.getDescription());
             put(trackDescription, trackDescriptionTransfer);

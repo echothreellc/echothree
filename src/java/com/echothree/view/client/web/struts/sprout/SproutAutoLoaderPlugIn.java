@@ -70,16 +70,16 @@ public class SproutAutoLoaderPlugIn
     private final static Logger log = Logger.getLogger(SproutAutoLoaderPlugIn.class);
 
     private void loadForm(final Class bean) {
-        final Annotation[] annotations = bean.getAnnotations();
+        final var annotations = bean.getAnnotations();
 
-        for(int j = 0; j < annotations.length; j++) {
-            final Annotation a = annotations[j];
+        for(var j = 0; j < annotations.length; j++) {
+            final var a = annotations[j];
             final Class type = a.annotationType();
 
             if(type.equals(SproutForm.class)) {
-                final SproutForm form = (SproutForm) a;
-                final String actionFormName = form.name();
-                final String actionFormType = bean.getName();
+                final var form = (SproutForm) a;
+                final var actionFormName = form.name();
+                final var actionFormType = bean.getName();
 
                 if(log.isDebugEnabled()) {
                     log.debug("ActionForm " + actionFormName + " -> " + actionFormType);
@@ -91,27 +91,27 @@ public class SproutAutoLoaderPlugIn
     }
     
     private void loadAction(final Class bean) {
-        final Annotation[] annotations = bean.getAnnotations();
+        final var annotations = bean.getAnnotations();
 
-        for(int i = 0; i < annotations.length; i++) {
-            final Annotation a = annotations[i];
+        for(var i = 0; i < annotations.length; i++) {
+            final var a = annotations[i];
             final Class type = a.annotationType();
 
             if(type.equals(SproutAction.class)) {
-                final SproutAction form = (SproutAction) a;
-                final String path = form.path();
+                final var form = (SproutAction) a;
+                final var path = form.path();
                 final Class<ActionConfig> mappingClass = form.mappingClass();
-                final String scope = form.scope();
-                final String name = form.name();
-                final String parameter = form.parameter();
-                final boolean validate = form.validate();
-                final String input = form.input();
-                final SproutProperty[] properties = form.properties();
-                final SproutForward[] forwards = form.forwards();
+                final var scope = form.scope();
+                final var name = form.name();
+                final var parameter = form.parameter();
+                final var validate = form.validate();
+                final var input = form.input();
+                final var properties = form.properties();
+                final var forwards = form.forwards();
                 ActionConfig actionConfig = null;
                 
                 try {
-                    Constructor<ActionConfig> constructor = mappingClass.getDeclaredConstructor();
+                    var constructor = mappingClass.getDeclaredConstructor();
                     
                     actionConfig = constructor.newInstance();
                 } catch (NoSuchMethodException nsme) {
@@ -145,14 +145,14 @@ public class SproutAutoLoaderPlugIn
                     if(properties != null && properties.length > 0) {
                         var beanMap = new BeanMap(actionConfig);
 
-                        for(int j = 0; j < properties.length; j++) {
+                        for(var j = 0; j < properties.length; j++) {
                             beanMap.put(properties[j].property(), properties[j].value());
                         }
                     }
 
                     if(forwards != null && forwards.length > 0) {
-                        for(int j = 0; j < forwards.length; j++) {
-                            String fcModule = forwards[j].module();
+                        for(var j = 0; j < forwards.length; j++) {
+                            var fcModule = forwards[j].module();
 
                             actionConfig.addForwardConfig(makeForward(forwards[j].name(), forwards[j].path(), forwards[j].redirect(),
                                     fcModule.length() == 0? null: fcModule));
@@ -170,12 +170,12 @@ public class SproutAutoLoaderPlugIn
     }
     
     private void loadAnnotatedActionsAndForms() {
-        try(ScanResult scanResult = new ClassGraph()
+        try(var scanResult = new ClassGraph()
                 .enableAnnotationInfo()
                 .scan()) {
-            final ClassInfoList actionClasses = scanResult
+            final var actionClasses = scanResult
                     .getClassesWithAnnotation(SproutAction.class.getName());
-            final ClassInfoList formClasses = scanResult
+            final var formClasses = scanResult
                     .getClassesWithAnnotation(SproutForm.class.getName());
 
             for(var actionClass : actionClasses) {
@@ -221,7 +221,7 @@ public class SproutAutoLoaderPlugIn
      * @return ActionForward.
      */
     private ActionForward makeForward(final String name, final String path, final boolean redirect, final String module) {
-        final ActionForward actionForward = new ActionForward();
+        final var actionForward = new ActionForward();
 
         actionForward.setName(name);
         actionForward.setPath(path);
@@ -241,10 +241,10 @@ public class SproutAutoLoaderPlugIn
      * @throws NoSuchMethodException when corresponding method cannot be found.
      */
     private Method findMethod(final String name, final Class clazz) throws NoSuchMethodException {
-        final Method[] methods = clazz.getMethods();
+        final var methods = clazz.getMethods();
 
-        for(int i = 0; i < methods.length; i++) {
-            String methodName = methods[i].getName();
+        for(var i = 0; i < methods.length; i++) {
+            var methodName = methods[i].getName();
 
             if(methodName.equals("publick"))
                 methodName = "public";

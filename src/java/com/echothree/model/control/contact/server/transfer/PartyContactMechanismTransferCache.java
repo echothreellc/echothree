@@ -59,15 +59,15 @@ public class PartyContactMechanismTransferCache
     }
     
     public PartyContactMechanismTransfer getPartyContactMechanismTransfer(PartyContactMechanism partyContactMechanism) {
-        PartyContactMechanismTransfer partyContactMechanismTransfer = get(partyContactMechanism);
+        var partyContactMechanismTransfer = get(partyContactMechanism);
         
         if(partyContactMechanismTransfer == null) {
-            PartyContactMechanismDetail partyContactMechanismDetail = partyContactMechanism.getLastDetail();
-            PartyTransfer party = partyControl.getPartyTransfer(userVisit, partyContactMechanismDetail.getParty());
-            ContactMechanismTransfer contactMechanism = contactControl.getContactMechanismTransfer(userVisit, partyContactMechanismDetail.getContactMechanism());
-            Boolean isDefault = partyContactMechanismDetail.getIsDefault();
-            Integer sortOrder = partyContactMechanismDetail.getSortOrder();
-            String description = partyContactMechanismDetail.getDescription();
+            var partyContactMechanismDetail = partyContactMechanism.getLastDetail();
+            var party = partyControl.getPartyTransfer(userVisit, partyContactMechanismDetail.getParty());
+            var contactMechanism = contactControl.getContactMechanismTransfer(userVisit, partyContactMechanismDetail.getContactMechanism());
+            var isDefault = partyContactMechanismDetail.getIsDefault();
+            var sortOrder = partyContactMechanismDetail.getSortOrder();
+            var description = partyContactMechanismDetail.getDescription();
             
             partyContactMechanismTransfer = new PartyContactMechanismTransfer(party, contactMechanism, isDefault, sortOrder, description);
             put(partyContactMechanism, partyContactMechanismTransfer);

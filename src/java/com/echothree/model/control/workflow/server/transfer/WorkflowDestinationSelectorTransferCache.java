@@ -38,11 +38,11 @@ public class WorkflowDestinationSelectorTransferCache
     }
     
     public WorkflowDestinationSelectorTransfer getWorkflowDestinationSelectorTransfer(WorkflowDestinationSelector workflowDestinationSelector) {
-        WorkflowDestinationSelectorTransfer workflowDestinationSelectorTransfer = get(workflowDestinationSelector);
+        var workflowDestinationSelectorTransfer = get(workflowDestinationSelector);
         
         if(workflowDestinationSelectorTransfer == null) {
-            WorkflowDestinationTransfer workflowDestination = workflowControl.getWorkflowDestinationTransfer(userVisit, workflowDestinationSelector.getWorkflowDestination());
-            SelectorTransfer selector = selectorControl.getSelectorTransfer(userVisit, workflowDestinationSelector.getSelector());
+            var workflowDestination = workflowControl.getWorkflowDestinationTransfer(userVisit, workflowDestinationSelector.getWorkflowDestination());
+            var selector = selectorControl.getSelectorTransfer(userVisit, workflowDestinationSelector.getSelector());
             
             workflowDestinationSelectorTransfer = new WorkflowDestinationSelectorTransfer(workflowDestination, selector);
             put(workflowDestinationSelector, workflowDestinationSelectorTransfer);

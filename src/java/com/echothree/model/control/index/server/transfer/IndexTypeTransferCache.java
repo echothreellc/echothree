@@ -47,16 +47,16 @@ public class IndexTypeTransferCache
     }
 
     public IndexTypeTransfer getIndexTypeTransfer(IndexType indexType) {
-        IndexTypeTransfer indexTypeTransfer = get(indexType);
+        var indexTypeTransfer = get(indexType);
 
         if(indexTypeTransfer == null) {
-            IndexTypeDetail indexTypeDetail = indexType.getLastDetail();
-            String indexTypeName = indexTypeDetail.getIndexTypeName();
-            EntityType entityType = indexTypeDetail.getEntityType();
-            EntityTypeTransfer entityTypeTransfer = entityType == null ? null : coreControl.getEntityTypeTransfer(userVisit, entityType);
-            Boolean isDefault = indexTypeDetail.getIsDefault();
-            Integer sortOrder = indexTypeDetail.getSortOrder();
-            String description = indexControl.getBestIndexTypeDescription(indexType, getLanguage());
+            var indexTypeDetail = indexType.getLastDetail();
+            var indexTypeName = indexTypeDetail.getIndexTypeName();
+            var entityType = indexTypeDetail.getEntityType();
+            var entityTypeTransfer = entityType == null ? null : coreControl.getEntityTypeTransfer(userVisit, entityType);
+            var isDefault = indexTypeDetail.getIsDefault();
+            var sortOrder = indexTypeDetail.getSortOrder();
+            var description = indexControl.getBestIndexTypeDescription(indexType, getLanguage());
 
             indexTypeTransfer = new IndexTypeTransfer(indexTypeName, entityTypeTransfer, isDefault, sortOrder, description);
             put(indexType, indexTypeTransfer);

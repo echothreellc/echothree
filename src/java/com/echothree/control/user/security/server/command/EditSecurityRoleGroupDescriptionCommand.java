@@ -89,13 +89,13 @@ public class EditSecurityRoleGroupDescriptionCommand
     public SecurityRoleGroupDescription getEntity(EditSecurityRoleGroupDescriptionResult result) {
         var securityControl = Session.getModelController(SecurityControl.class);
         SecurityRoleGroupDescription securityRoleGroupDescription = null;
-        String securityRoleGroupName = spec.getSecurityRoleGroupName();
-        SecurityRoleGroup securityRoleGroup = securityControl.getSecurityRoleGroupByName(securityRoleGroupName);
+        var securityRoleGroupName = spec.getSecurityRoleGroupName();
+        var securityRoleGroup = securityControl.getSecurityRoleGroupByName(securityRoleGroupName);
 
         if(securityRoleGroup != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -137,7 +137,7 @@ public class EditSecurityRoleGroupDescriptionCommand
     @Override
     public void doUpdate(SecurityRoleGroupDescription securityRoleGroupDescription) {
         var securityControl = Session.getModelController(SecurityControl.class);
-        SecurityRoleGroupDescriptionValue securityRoleGroupDescriptionValue = securityControl.getSecurityRoleGroupDescriptionValue(securityRoleGroupDescription);
+        var securityRoleGroupDescriptionValue = securityControl.getSecurityRoleGroupDescriptionValue(securityRoleGroupDescription);
         
         securityRoleGroupDescriptionValue.setDescription(edit.getDescription());
         

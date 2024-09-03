@@ -53,16 +53,16 @@ public class DeleteAssociatePartyContactMechanismCommand
     @Override
     protected BaseResult execute() {
         var associateControl = Session.getModelController(AssociateControl.class);
-        String associateProgramName = form.getAssociateProgramName();
-        AssociateProgram associateProgram = associateControl.getAssociateProgramByName(associateProgramName);
+        var associateProgramName = form.getAssociateProgramName();
+        var associateProgram = associateControl.getAssociateProgramByName(associateProgramName);
         
         if(associateProgram != null) {
-            String associateName = form.getAssociateName();
-            Associate associate = associateControl.getAssociateByName(associateProgram, associateName);
+            var associateName = form.getAssociateName();
+            var associate = associateControl.getAssociateByName(associateProgram, associateName);
             
             if(associate != null) {
-                String associatePartyContactMechanismName = form.getAssociatePartyContactMechanismName();
-                AssociatePartyContactMechanism associatePartyContactMechanism = associateControl.getAssociatePartyContactMechanismByNameForUpdate(associate, associatePartyContactMechanismName);
+                var associatePartyContactMechanismName = form.getAssociatePartyContactMechanismName();
+                var associatePartyContactMechanism = associateControl.getAssociatePartyContactMechanismByNameForUpdate(associate, associatePartyContactMechanismName);
                 
                 if(associatePartyContactMechanism != null) {
                     associateControl.deleteAssociatePartyContactMechanism(associatePartyContactMechanism, getPartyPK());

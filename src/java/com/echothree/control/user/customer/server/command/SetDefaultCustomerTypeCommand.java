@@ -62,8 +62,8 @@ public class SetDefaultCustomerTypeCommand
     @Override
     protected BaseResult execute() {
         var customerControl = Session.getModelController(CustomerControl.class);
-        String customerTypeName = form.getCustomerTypeName();
-        CustomerTypeDetailValue customerTypeDetailValue = customerControl.getCustomerTypeDetailValueByNameForUpdate(customerTypeName);
+        var customerTypeName = form.getCustomerTypeName();
+        var customerTypeDetailValue = customerControl.getCustomerTypeDetailValueByNameForUpdate(customerTypeName);
         
         if(customerTypeDetailValue != null) {
             customerTypeDetailValue.setIsDefault(Boolean.TRUE);

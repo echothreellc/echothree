@@ -32,11 +32,11 @@ public class TimeZoneDescriptionTransferCache
     }
     
     public TimeZoneDescriptionTransfer getTimeZoneDescriptionTransfer(TimeZoneDescription timeZoneDescription) {
-        TimeZoneDescriptionTransfer timeZoneDescriptionTransfer = get(timeZoneDescription);
+        var timeZoneDescriptionTransfer = get(timeZoneDescription);
         
         if(timeZoneDescriptionTransfer == null) {
-            TimeZoneTransfer timeZoneTransfer = partyControl.getTimeZoneTransfer(userVisit, timeZoneDescription.getTimeZone());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, timeZoneDescription.getLanguage());
+            var timeZoneTransfer = partyControl.getTimeZoneTransfer(userVisit, timeZoneDescription.getTimeZone());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, timeZoneDescription.getLanguage());
             
             timeZoneDescriptionTransfer = new TimeZoneDescriptionTransfer(languageTransfer, timeZoneTransfer, timeZoneDescription.getDescription());
             put(timeZoneDescription, timeZoneDescriptionTransfer);

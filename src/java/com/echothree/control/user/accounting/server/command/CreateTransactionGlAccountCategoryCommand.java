@@ -71,20 +71,20 @@ public class CreateTransactionGlAccountCategoryCommand
     @Override
     protected BaseResult execute() {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        String transactionTypeName = form.getTransactionTypeName();
-        TransactionType transactionType = accountingControl.getTransactionTypeByName(transactionTypeName);
+        var transactionTypeName = form.getTransactionTypeName();
+        var transactionType = accountingControl.getTransactionTypeByName(transactionTypeName);
         
         if(transactionType != null) {
-            String transactionGlAccountCategoryName = form.getTransactionGlAccountCategoryName();
-            TransactionGlAccountCategory transactionGlAccountCategory = accountingControl.getTransactionGlAccountCategoryByName(transactionType, transactionGlAccountCategoryName);
+            var transactionGlAccountCategoryName = form.getTransactionGlAccountCategoryName();
+            var transactionGlAccountCategory = accountingControl.getTransactionGlAccountCategoryByName(transactionType, transactionGlAccountCategoryName);
             
             if(transactionGlAccountCategory == null) {
-                String glAccountCategoryName = form.getGlAccountCategoryName();
-                GlAccountCategory glAccountCategory = glAccountCategoryName == null? null: accountingControl.getGlAccountCategoryByName(glAccountCategoryName);
+                var glAccountCategoryName = form.getGlAccountCategoryName();
+                var glAccountCategory = glAccountCategoryName == null? null: accountingControl.getGlAccountCategoryByName(glAccountCategoryName);
                 
                 if(glAccountCategoryName == null || glAccountCategory != null) {
-                    String glAccountName = form.getGlAccountName();
-                    GlAccount glAccount = glAccountName == null? null: accountingControl.getGlAccountByName(glAccountName);
+                    var glAccountName = form.getGlAccountName();
+                    var glAccount = glAccountName == null? null: accountingControl.getGlAccountByName(glAccountName);
 
                     if(glAccountName == null || glAccount != null) {
                         if(glAccountCategory == null || glAccount == null? true: glAccountCategory.equals(glAccount.getLastDetail().getGlAccountCategory())) {

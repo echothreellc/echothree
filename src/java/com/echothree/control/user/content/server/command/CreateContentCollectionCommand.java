@@ -83,17 +83,17 @@ public class CreateContentCollectionCommand
 
         if(contentCollection == null) {
             var offerControl = Session.getModelController(OfferControl.class);
-            String defaultOfferName = form.getDefaultOfferName();
-            String defaultUseName = form.getDefaultUseName();
-            String defaultSourceName = form.getDefaultSourceName();
+            var defaultOfferName = form.getDefaultOfferName();
+            var defaultUseName = form.getDefaultUseName();
+            var defaultSourceName = form.getDefaultSourceName();
             OfferUse defaultOfferUse = null;
 
             if(defaultOfferName != null && defaultUseName != null && defaultSourceName == null) {
-                Offer defaultOffer = offerControl.getOfferByName(defaultOfferName);
+                var defaultOffer = offerControl.getOfferByName(defaultOfferName);
 
                 if(defaultOffer != null) {
                     var useControl = Session.getModelController(UseControl.class);
-                    Use defaultUse = useControl.getUseByName(defaultUseName);
+                    var defaultUse = useControl.getUseByName(defaultUseName);
 
                     if(defaultUse != null) {
                         var offerUseControl = Session.getModelController(OfferUseControl.class);
@@ -110,7 +110,7 @@ public class CreateContentCollectionCommand
                 }
             } else if(defaultOfferName == null && defaultUseName == null && defaultSourceName != null) {
                 var sourceControl = Session.getModelController(SourceControl.class);
-                Source source = sourceControl.getSourceByName(defaultSourceName);
+                var source = sourceControl.getSourceByName(defaultSourceName);
 
                 if(source != null) {
                     defaultOfferUse = source.getLastDetail().getOfferUse();
@@ -120,7 +120,7 @@ public class CreateContentCollectionCommand
             } else {
                 var sourceControl = Session.getModelController(SourceControl.class);
                 // If all three parameters are null, then try to get the default Source and use its OfferUse.
-                Source source = sourceControl.getDefaultSource();
+                var source = sourceControl.getDefaultSource();
 
                 if(source != null) {
                     defaultOfferUse = source.getLastDetail().getOfferUse();
@@ -137,7 +137,7 @@ public class CreateContentCollectionCommand
                 contentControl.createContentSection(contentCollection, ContentSections.ROOT.toString(), null, Boolean.FALSE, 0, partyPK);
 
                 if(description != null) {
-                    Language language = getPreferredLanguage();
+                    var language = getPreferredLanguage();
 
                     contentControl.createContentCollectionDescription(contentCollection, language, description, partyPK);
                 }

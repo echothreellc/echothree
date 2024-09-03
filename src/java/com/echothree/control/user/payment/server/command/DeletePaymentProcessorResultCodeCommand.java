@@ -60,8 +60,8 @@ public class DeletePaymentProcessorResultCodeCommand
     
     @Override
     protected BaseResult execute() {
-        String paymentProcessorResultCodeName = form.getPaymentProcessorResultCodeName();
-        PaymentProcessorResultCode paymentProcessorResultCode = PaymentProcessorResultCodeLogic.getInstance().getPaymentProcessorResultCodeByNameForUpdate(this, paymentProcessorResultCodeName);
+        var paymentProcessorResultCodeName = form.getPaymentProcessorResultCodeName();
+        var paymentProcessorResultCode = PaymentProcessorResultCodeLogic.getInstance().getPaymentProcessorResultCodeByNameForUpdate(this, paymentProcessorResultCodeName);
         
         if(!hasExecutionErrors()) {
             PaymentProcessorResultCodeLogic.getInstance().deletePaymentProcessorResultCode(this, paymentProcessorResultCode, getPartyPK());

@@ -52,9 +52,9 @@ public class GetTransactionGroupCommand
     @Override
     protected BaseResult execute() {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        GetTransactionGroupResult result = AccountingResultFactory.getGetTransactionGroupResult();
-        String transactionGroupName = form.getTransactionGroupName();
-        TransactionGroup transactionGroup = accountingControl.getTransactionGroupByName(transactionGroupName);
+        var result = AccountingResultFactory.getGetTransactionGroupResult();
+        var transactionGroupName = form.getTransactionGroupName();
+        var transactionGroup = accountingControl.getTransactionGroupByName(transactionGroupName);
         
         if(transactionGroup != null) {
             result.setTransactionGroup(accountingControl.getTransactionGroupTransfer(getUserVisit(), transactionGroup));

@@ -91,7 +91,7 @@ public class EditCampaignSourceCommand
     public CampaignSource getEntity(EditCampaignSourceResult result) {
         var campaignControl = Session.getModelController(CampaignControl.class);
         CampaignSource campaignSource;
-        String campaignSourceName = spec.getCampaignSourceName();
+        var campaignSourceName = spec.getCampaignSourceName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
             campaignSource = campaignControl.getCampaignSourceByName(campaignSourceName);
@@ -121,8 +121,8 @@ public class EditCampaignSourceCommand
     @Override
     public void doLock(CampaignSourceEdit edit, CampaignSource campaignSource) {
         var campaignControl = Session.getModelController(CampaignControl.class);
-        CampaignSourceDescription campaignSourceDescription = campaignControl.getCampaignSourceDescription(campaignSource, getPreferredLanguage());
-        CampaignSourceDetail campaignSourceDetail = campaignSource.getLastDetail();
+        var campaignSourceDescription = campaignControl.getCampaignSourceDescription(campaignSource, getPreferredLanguage());
+        var campaignSourceDetail = campaignSource.getLastDetail();
 
         edit.setValue(campaignSourceDetail.getValue());
         edit.setIsDefault(campaignSourceDetail.getIsDefault().toString());
@@ -136,8 +136,8 @@ public class EditCampaignSourceCommand
     @Override
     public void canUpdate(CampaignSource campaignSource) {
         var campaignControl = Session.getModelController(CampaignControl.class);
-        String value = edit.getValue();
-        CampaignSource duplicateCampaignSource = campaignControl.getCampaignSourceByValue(value);
+        var value = edit.getValue();
+        var duplicateCampaignSource = campaignControl.getCampaignSourceByValue(value);
 
         if(duplicateCampaignSource != null && !campaignSource.equals(duplicateCampaignSource)) {
             addExecutionError(ExecutionErrors.DuplicateCampaignSourceValue.name(), value);
@@ -148,9 +148,9 @@ public class EditCampaignSourceCommand
     public void doUpdate(CampaignSource campaignSource) {
         var campaignControl = Session.getModelController(CampaignControl.class);
         var partyPK = getPartyPK();
-        CampaignSourceDetailValue campaignSourceDetailValue = campaignControl.getCampaignSourceDetailValueForUpdate(campaignSource);
-        CampaignSourceDescription campaignSourceDescription = campaignControl.getCampaignSourceDescriptionForUpdate(campaignSource, getPreferredLanguage());
-        String description = edit.getDescription();
+        var campaignSourceDetailValue = campaignControl.getCampaignSourceDetailValueForUpdate(campaignSource);
+        var campaignSourceDescription = campaignControl.getCampaignSourceDescriptionForUpdate(campaignSource, getPreferredLanguage());
+        var description = edit.getDescription();
 
         campaignSourceDetailValue.setValue(edit.getValue());
         campaignSourceDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
@@ -165,7 +165,7 @@ public class EditCampaignSourceCommand
                 campaignControl.deleteCampaignSourceDescription(campaignSourceDescription, partyPK);
             } else {
                 if(campaignSourceDescription != null && description != null) {
-                    CampaignSourceDescriptionValue campaignSourceDescriptionValue = campaignControl.getCampaignSourceDescriptionValue(campaignSourceDescription);
+                    var campaignSourceDescriptionValue = campaignControl.getCampaignSourceDescriptionValue(campaignSourceDescription);
 
                     campaignSourceDescriptionValue.setDescription(description);
                     campaignControl.updateCampaignSourceDescriptionFromValue(campaignSourceDescriptionValue, partyPK);

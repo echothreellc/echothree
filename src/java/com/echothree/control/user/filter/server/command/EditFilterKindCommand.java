@@ -91,7 +91,7 @@ public class EditFilterKindCommand
     public FilterKind getEntity(EditFilterKindResult result) {
         var filterControl = Session.getModelController(FilterControl.class);
         FilterKind filterKind = null;
-        String filterKindName = spec.getFilterKindName();
+        var filterKindName = spec.getFilterKindName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
             filterKind = filterControl.getFilterKindByName(filterKindName);
@@ -121,8 +121,8 @@ public class EditFilterKindCommand
     @Override
     public void doLock(FilterKindEdit edit, FilterKind filterKind) {
         var filterControl = Session.getModelController(FilterControl.class);
-        FilterKindDescription filterKindDescription = filterControl.getFilterKindDescription(filterKind, getPreferredLanguage());
-        FilterKindDetail filterKindDetail = filterKind.getLastDetail();
+        var filterKindDescription = filterControl.getFilterKindDescription(filterKind, getPreferredLanguage());
+        var filterKindDetail = filterKind.getLastDetail();
 
         edit.setFilterKindName(filterKindDetail.getFilterKindName());
         edit.setIsDefault(filterKindDetail.getIsDefault().toString());
@@ -136,8 +136,8 @@ public class EditFilterKindCommand
     @Override
     public void canUpdate(FilterKind filterKind) {
         var filterControl = Session.getModelController(FilterControl.class);
-        String filterKindName = edit.getFilterKindName();
-        FilterKind duplicateFilterKind = filterControl.getFilterKindByName(filterKindName);
+        var filterKindName = edit.getFilterKindName();
+        var duplicateFilterKind = filterControl.getFilterKindByName(filterKindName);
 
         if(duplicateFilterKind != null && !filterKind.equals(duplicateFilterKind)) {
             addExecutionError(ExecutionErrors.DuplicateFilterKindName.name(), filterKindName);
@@ -148,9 +148,9 @@ public class EditFilterKindCommand
     public void doUpdate(FilterKind filterKind) {
         var filterControl = Session.getModelController(FilterControl.class);
         var partyPK = getPartyPK();
-        FilterKindDetailValue filterKindDetailValue = filterControl.getFilterKindDetailValueForUpdate(filterKind);
-        FilterKindDescription filterKindDescription = filterControl.getFilterKindDescriptionForUpdate(filterKind, getPreferredLanguage());
-        String description = edit.getDescription();
+        var filterKindDetailValue = filterControl.getFilterKindDetailValueForUpdate(filterKind);
+        var filterKindDescription = filterControl.getFilterKindDescriptionForUpdate(filterKind, getPreferredLanguage());
+        var description = edit.getDescription();
 
         filterKindDetailValue.setFilterKindName(edit.getFilterKindName());
         filterKindDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
@@ -163,7 +163,7 @@ public class EditFilterKindCommand
         } else if(filterKindDescription != null && description == null) {
             filterControl.deleteFilterKindDescription(filterKindDescription, partyPK);
         } else if(filterKindDescription != null && description != null) {
-            FilterKindDescriptionValue filterKindDescriptionValue = filterControl.getFilterKindDescriptionValue(filterKindDescription);
+            var filterKindDescriptionValue = filterControl.getFilterKindDescriptionValue(filterKindDescription);
 
             filterKindDescriptionValue.setDescription(description);
             filterControl.updateFilterKindDescriptionFromValue(filterKindDescriptionValue, partyPK);

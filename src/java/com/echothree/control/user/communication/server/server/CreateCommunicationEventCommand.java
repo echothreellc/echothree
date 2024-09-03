@@ -104,31 +104,31 @@ public class CreateCommunicationEventCommand
     @Override
     protected BaseResult execute() {
         var communicationControl = Session.getModelController(CommunicationControl.class);
-        String communicationSourceName = form.getCommunicationSourceName();
-        CommunicationSource communicationSource = communicationControl.getCommunicationSourceByName(communicationSourceName);
+        var communicationSourceName = form.getCommunicationSourceName();
+        var communicationSource = communicationControl.getCommunicationSourceByName(communicationSourceName);
 
         if(communicationSource != null) {
-            WorkEffortLogic workEffortLogic = WorkEffortLogic.getInstance();
-            CommunicationEmailSource communicationEmailSource = communicationControl.getCommunicationEmailSource(communicationSource);
-            WorkEffortScope receiveWorkEffortScope = communicationEmailSource.getReceiveWorkEffortScope();
-            PreparedWorkEffort preparedWorkEffort = workEffortLogic.prepareForWorkEffort(this, receiveWorkEffortScope, null, null, null);
+            var workEffortLogic = WorkEffortLogic.getInstance();
+            var communicationEmailSource = communicationControl.getCommunicationEmailSource(communicationSource);
+            var receiveWorkEffortScope = communicationEmailSource.getReceiveWorkEffortScope();
+            var preparedWorkEffort = workEffortLogic.prepareForWorkEffort(this, receiveWorkEffortScope, null, null, null);
 
             if(!hasExecutionErrors()) {
-                String communicationEventTypeName = form.getCommunicationEventTypeName();
-                CommunicationEventType communicationEventType = communicationControl.getCommunicationEventTypeByName(communicationEventTypeName);
+                var communicationEventTypeName = form.getCommunicationEventTypeName();
+                var communicationEventType = communicationControl.getCommunicationEventTypeByName(communicationEventTypeName);
 
                 if(communicationEventType != null) {
                     var contactControl = Session.getModelController(ContactControl.class);
                     var coreControl = getCoreControl();
                     var documentControl = Session.getModelController(DocumentControl.class);
                     var workflowControl = Session.getModelController(WorkflowControl.class);
-                    PartyPK createdBy = getPartyPK();
+                    var createdBy = getPartyPK();
                     Party party = null;
                     PartyContactMechanism partyContactMechanism = null;
-                    CommunicationSourceType communicationSourceType = communicationSource.getLastDetail().getCommunicationSourceType();
-                    String communicationSourceTypeName = communicationSourceType.getCommunicationSourceTypeName();
-                    ByteArray blobDocument = form.getBlobDocument();
-                    String clobDocument = form.getClobDocument();
+                    var communicationSourceType = communicationSource.getLastDetail().getCommunicationSourceType();
+                    var communicationSourceTypeName = communicationSourceType.getCommunicationSourceTypeName();
+                    var blobDocument = form.getBlobDocument();
+                    var clobDocument = form.getClobDocument();
 
                     communicationEventTypeName = communicationEventType.getCommunicationEventTypeName();
 
@@ -139,15 +139,15 @@ public class CreateCommunicationEventCommand
                         String emailAddress = null;
 
                         try {
-                            Properties props = System.getProperties();
-                            javax.mail.Session mailSession = javax.mail.Session.getInstance(props);
-                            ByteArrayInputStream bais = new ByteArrayInputStream(blobDocument.byteArrayValue());
-                            MimeMessage mimeMessage = new MimeMessage(mailSession, bais);
+                            var props = System.getProperties();
+                            var mailSession = javax.mail.Session.getInstance(props);
+                            var bais = new ByteArrayInputStream(blobDocument.byteArrayValue());
+                            var mimeMessage = new MimeMessage(mailSession, bais);
 
                             description = mimeMessage.getSubject();
 
                             if(description != null) {
-                                int length = description.length();
+                                var length = description.length();
 
                                 if(length > 80) {
                                     description = description.substring(0, 80);
@@ -156,9 +156,9 @@ public class CreateCommunicationEventCommand
                                 }
                             }
 
-                            Address[] addresses = mimeMessage.getFrom();
+                            var addresses = mimeMessage.getFrom();
                             if(addresses != null && addresses.length > 0) {
-                                Address address = addresses[0];
+                                var address = addresses[0];
 
                                 if(address instanceof InternetAddress) {
                                     emailAddress = ((InternetAddress)address).getAddress();
@@ -166,7 +166,7 @@ public class CreateCommunicationEventCommand
                             }
 
                             if(emailAddress != null) {
-                                int emailAddressLength = emailAddress.length();
+                                var emailAddressLength = emailAddress.length();
 
                                 if(emailAddressLength > 80 || emailAddressLength == 0) {
                                     addExecutionError(ExecutionErrors.InvalidEmailAddressLength.name(), emailAddress);
@@ -177,31 +177,31 @@ public class CreateCommunicationEventCommand
                         }
 
                         if(!hasExecutionErrors()) {
-                            List<PartyContactMechanism> partyContactMechanisms = contactControl.getPartyContactMechanismsByEmailAddress(emailAddress);
+                            var partyContactMechanisms = contactControl.getPartyContactMechanismsByEmailAddress(emailAddress);
 
                             if(partyContactMechanisms.isEmpty()) {
                                 var sourceControl = Session.getModelController(SourceControl.class);
-                                Source source = sourceControl.getDefaultSource();
+                                var source = sourceControl.getDefaultSource();
 
                                 if(source != null) {
                                     var customerControl = Session.getModelController(CustomerControl.class);
-                                    CustomerType customerType = customerControl.getDefaultCustomerType();
+                                    var customerType = customerControl.getDefaultCustomerType();
 
                                     if(customerType != null) {
                                         var termControl = Session.getModelController(TermControl.class);
-                                        CustomerTypeDetail customerTypeDetail = customerType.getLastDetail();
-                                        Term term = customerTypeDetail.getDefaultTerm();
+                                        var customerTypeDetail = customerType.getLastDetail();
+                                        var term = customerTypeDetail.getDefaultTerm();
 
                                         if(term == null) {
                                             term = termControl.getDefaultTerm();
                                         }
 
                                         if(term != null) {
-                                            GlAccount defaultArGlAccount = customerTypeDetail.getDefaultArGlAccount();
+                                            var defaultArGlAccount = customerTypeDetail.getDefaultArGlAccount();
 
                                             if(defaultArGlAccount == null) {
                                                 var accountingControl = Session.getModelController(AccountingControl.class);
-                                                GlAccountCategory glAccountCategory = accountingControl.getGlAccountCategoryByName(AccountingConstants.GlAccountCategory_ACCOUNTS_RECEIVABLE);
+                                                var glAccountCategory = accountingControl.getGlAccountCategoryByName(AccountingConstants.GlAccountCategory_ACCOUNTS_RECEIVABLE);
 
                                                 if(glAccountCategory != null) {
                                                     defaultArGlAccount = accountingControl.getDefaultGlAccount(glAccountCategory);
@@ -212,8 +212,8 @@ public class CreateCommunicationEventCommand
 
                                             if(defaultArGlAccount != null) {
                                                 var partyControl = Session.getModelController(PartyControl.class);
-                                                OfferUse defaultOfferUse = source.getLastDetail().getOfferUse();
-                                                PartyType partyType = partyControl.getPartyTypeByName(PartyTypes.CUSTOMER.name());
+                                                var defaultOfferUse = source.getLastDetail().getOfferUse();
+                                                var partyType = partyControl.getPartyTypeByName(PartyTypes.CUSTOMER.name());
 
                                                 party = partyControl.createParty(null, partyType, null, null, null, null, createdBy);
 
@@ -228,27 +228,27 @@ public class CreateCommunicationEventCommand
 
                                                 termControl.createPartyTerm(party, term, customerTypeDetail.getDefaultTaxable(), createdBy);
 
-                                                List<CustomerTypeCreditLimit> customerTypeCreditLimits = termControl.getCustomerTypeCreditLimitsByCustomerType(customerType);
+                                                var customerTypeCreditLimits = termControl.getCustomerTypeCreditLimitsByCustomerType(customerType);
                                                 for(var customerTypeCreditLimit : customerTypeCreditLimits) {
                                                     termControl.createPartyCreditLimit(party, customerTypeCreditLimit.getCurrency(), customerTypeCreditLimit.getCreditLimit(),
                                                             customerTypeCreditLimit.getPotentialCreditLimit(), createdBy);
                                                 }
 
-                                                Workflow customerStatusWorkflow = workflowControl.getWorkflowByName(CustomerStatusConstants.Workflow_CUSTOMER_STATUS);
-                                                WorkflowEntrance customerStatusWorkflowEntrance = customerTypeDetail.getDefaultCustomerStatus();
+                                                var customerStatusWorkflow = workflowControl.getWorkflowByName(CustomerStatusConstants.Workflow_CUSTOMER_STATUS);
+                                                var customerStatusWorkflowEntrance = customerTypeDetail.getDefaultCustomerStatus();
 
                                                 if(customerStatusWorkflowEntrance == null) {
                                                     customerStatusWorkflowEntrance = workflowControl.getDefaultWorkflowEntrance(customerStatusWorkflow);
                                                 }
 
-                                                Workflow customerCreditStatusWorkflow = workflowControl.getWorkflowByName(CustomerCreditStatusConstants.Workflow_CUSTOMER_CREDIT_STATUS);
-                                                WorkflowEntrance customerCreditStatusWorkflowEntrance = customerTypeDetail.getDefaultCustomerCreditStatus();
+                                                var customerCreditStatusWorkflow = workflowControl.getWorkflowByName(CustomerCreditStatusConstants.Workflow_CUSTOMER_CREDIT_STATUS);
+                                                var customerCreditStatusWorkflowEntrance = customerTypeDetail.getDefaultCustomerCreditStatus();
 
                                                 if(customerCreditStatusWorkflowEntrance == null) {
                                                     customerCreditStatusWorkflowEntrance = workflowControl.getDefaultWorkflowEntrance(customerCreditStatusWorkflow);
                                                 }
 
-                                                EntityInstance entityInstance = getCoreControl().getEntityInstanceByBasePK(party.getPrimaryKey());
+                                                var entityInstance = getCoreControl().getEntityInstanceByBasePK(party.getPrimaryKey());
                                                 workflowControl.addEntityToWorkflow(customerStatusWorkflowEntrance, entityInstance, null, null, createdBy);
                                                 workflowControl.addEntityToWorkflow(customerCreditStatusWorkflowEntrance, entityInstance, null, null, createdBy);
                                             } else {
@@ -271,28 +271,28 @@ public class CreateCommunicationEventCommand
                         }
 
                         if(!hasExecutionErrors()) {
-                            DocumentType documentType = documentControl.getDocumentTypeByName(DocumentConstants.DocumentType_COMMUNICATION_EVENT_EMAIL);
-                            MimeType mimeType = coreControl.getMimeTypeByName(MimeTypes.MESSAGE_RFC822.mimeTypeName());
+                            var documentType = documentControl.getDocumentTypeByName(DocumentConstants.DocumentType_COMMUNICATION_EVENT_EMAIL);
+                            var mimeType = coreControl.getMimeTypeByName(MimeTypes.MESSAGE_RFC822.mimeTypeName());
 
-                            Document document = documentControl.createDocument(documentType, mimeType, null, createdBy);
+                            var document = documentControl.createDocument(documentType, mimeType, null, createdBy);
                             documentControl.createDocumentBlob(document, blobDocument, createdBy);
 
                             if(description != null) {
                                 documentControl.createDocumentDescription(document, getPreferredLanguage(), description, createdBy);
                             }
 
-                            CommunicationEventPurpose communicationEventPurpose = communicationControl.getDefaultCommunicationEventPurpose();
-                            CommunicationEvent communicationEvent = communicationControl.createCommunicationEvent(communicationEventType, communicationSource, communicationEventPurpose, null, null,
+                            var communicationEventPurpose = communicationControl.getDefaultCommunicationEventPurpose();
+                            var communicationEvent = communicationControl.createCommunicationEvent(communicationEventType, communicationSource, communicationEventPurpose, null, null,
                                     partyContactMechanism, document, createdBy);
 
-                            EntityInstance entityInstance = getCoreControl().getEntityInstanceByBasePK(communicationEvent.getPrimaryKey());
-                            WorkEffort workEffort = WorkEffortLogic.getInstance().createWorkEffort(preparedWorkEffort, entityInstance, createdBy);
+                            var entityInstance = getCoreControl().getEntityInstanceByBasePK(communicationEvent.getPrimaryKey());
+                            var workEffort = WorkEffortLogic.getInstance().createWorkEffort(preparedWorkEffort, entityInstance, createdBy);
 
-                            CommunicationEventRoleType senderRoleType = communicationControl.getCommunicationEventRoleTypeByName(CommunicationConstants.CommunicationEventRoleType_SENDER);
+                            var senderRoleType = communicationControl.getCommunicationEventRoleTypeByName(CommunicationConstants.CommunicationEventRoleType_SENDER);
                             communicationControl.createCommunicationEventRole(communicationEvent, party, senderRoleType, createdBy);
 
-                            Workflow communicationEventWorkflow = workflowControl.getWorkflowByName(IncomingCustomerEmailConstants.Workflow_INCOMING_CUSTOMER_EMAIL);
-                            WorkflowEntrance communicationEventWorkflowEntrance = workflowControl.getWorkflowEntranceByName(communicationEventWorkflow,
+                            var communicationEventWorkflow = workflowControl.getWorkflowByName(IncomingCustomerEmailConstants.Workflow_INCOMING_CUSTOMER_EMAIL);
+                            var communicationEventWorkflowEntrance = workflowControl.getWorkflowEntranceByName(communicationEventWorkflow,
                                     IncomingCustomerEmailConstants.WorkflowEntrance_NEW_COMMUNICATION_EVENT);
                             workflowControl.addEntityToWorkflow(communicationEventWorkflowEntrance, entityInstance, workEffort, null, createdBy);
                         }

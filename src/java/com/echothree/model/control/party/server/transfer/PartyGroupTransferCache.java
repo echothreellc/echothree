@@ -30,10 +30,10 @@ public class PartyGroupTransferCache
     }
     
     public PartyGroupTransfer getPartyGroupTransfer(PartyGroup partyGroup) {
-        PartyGroupTransfer partyGroupTransfer = get(partyGroup);
+        var partyGroupTransfer = get(partyGroup);
         
         if(partyGroupTransfer == null) {
-            String name = partyGroup.getName();
+            var name = partyGroup.getName();
             
             partyGroupTransfer = new PartyGroupTransfer(name);
             put(partyGroup, partyGroupTransfer);

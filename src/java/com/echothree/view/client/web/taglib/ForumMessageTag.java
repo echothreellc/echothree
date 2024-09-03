@@ -107,15 +107,15 @@ public class ForumMessageTag
     @Override
     public int doStartTag() throws JspException {
         try {
-            GetForumMessageForm commandForm = ForumUtil.getHome().getGetForumMessageForm();
+            var commandForm = ForumUtil.getHome().getGetForumMessageForm();
 
             commandForm.setForumMessageName(forumMessageName);
             
             setOptions(options, defaultOptions, commandForm);
 
             commandForm.setTransferProperties(transferProperties);
-            
-            CommandResult commandResult = ForumUtil.getHome().getForumMessage(getUserVisitPK(), commandForm);
+
+            var commandResult = ForumUtil.getHome().getForumMessage(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -123,8 +123,8 @@ public class ForumMessageTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetForumMessageResult result = (GetForumMessageResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetForumMessageResult)executionResult.getResult();
 
                 pageContext.setAttribute(var, result.getForumMessage(), scope);
             }

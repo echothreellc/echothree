@@ -94,7 +94,7 @@ public class UnitOfMeasureKindUseTypeObject
     public List<UnitOfMeasureKindUseObject> getUnitOfMeasureKindUses(final DataFetchingEnvironment env) {
         if(UomSecurityUtils.getHasUnitOfMeasureKindUsesAccess(env)) {
             var uomControl = Session.getModelController(UomControl.class);
-            List<UnitOfMeasureKindUse> entities = uomControl.getUnitOfMeasureKindUsesByUnitOfMeasureKindUseType(unitOfMeasureKindUseType);
+            var entities = uomControl.getUnitOfMeasureKindUsesByUnitOfMeasureKindUseType(unitOfMeasureKindUseType);
             List<UnitOfMeasureKindUseObject> unitOfMeasureKindUses = new ArrayList<>(entities.size());
             
             entities.forEach((entity) -> {

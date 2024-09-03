@@ -62,8 +62,8 @@ public class SetDefaultContentPageLayoutCommand
     @Override
     protected BaseResult execute() {
         var contentControl = Session.getModelController(ContentControl.class);
-        String contentPageLayoutName = form.getContentPageLayoutName();
-        ContentPageLayoutDetailValue contentPageLayoutDetailValue = contentControl.getContentPageLayoutDetailValueByNameForUpdate(contentPageLayoutName);
+        var contentPageLayoutName = form.getContentPageLayoutName();
+        var contentPageLayoutDetailValue = contentControl.getContentPageLayoutDetailValueByNameForUpdate(contentPageLayoutName);
         
         if(contentPageLayoutDetailValue != null) {
             contentPageLayoutDetailValue.setIsDefault(Boolean.TRUE);

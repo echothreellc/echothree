@@ -88,13 +88,13 @@ public class EditServiceDescriptionCommand
     public ServiceDescription getEntity(EditServiceDescriptionResult result) {
         var coreControl = getCoreControl();
         ServiceDescription serviceDescription = null;
-        String serviceName = spec.getServiceName();
-        Service service = coreControl.getServiceByName(serviceName);
+        var serviceName = spec.getServiceName();
+        var service = coreControl.getServiceByName(serviceName);
 
         if(service != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -136,7 +136,7 @@ public class EditServiceDescriptionCommand
     @Override
     public void doUpdate(ServiceDescription serviceDescription) {
         var coreControl = getCoreControl();
-        ServiceDescriptionValue serviceDescriptionValue = coreControl.getServiceDescriptionValue(serviceDescription);
+        var serviceDescriptionValue = coreControl.getServiceDescriptionValue(serviceDescription);
         serviceDescriptionValue.setDescription(edit.getDescription());
 
         coreControl.updateServiceDescriptionFromValue(serviceDescriptionValue, getPartyPK());

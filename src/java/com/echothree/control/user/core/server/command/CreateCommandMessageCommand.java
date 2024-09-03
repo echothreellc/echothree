@@ -65,16 +65,16 @@ public class CreateCommandMessageCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String commandMessageTypeName = form.getCommandMessageTypeName();
-        CommandMessageType commandMessageType = coreControl.getCommandMessageTypeByName(commandMessageTypeName);
+        var commandMessageTypeName = form.getCommandMessageTypeName();
+        var commandMessageType = coreControl.getCommandMessageTypeByName(commandMessageTypeName);
         
         if(commandMessageType != null) {
-            String commandMessageKey = form.getCommandMessageKey();
-            CommandMessage commandMessage = coreControl.getCommandMessageByKey(commandMessageType, commandMessageKey);
+            var commandMessageKey = form.getCommandMessageKey();
+            var commandMessage = coreControl.getCommandMessageByKey(commandMessageType, commandMessageKey);
             
             if(commandMessage == null) {
                 var partyPK = getPartyPK();
-                String translation = form.getTranslation();
+                var translation = form.getTranslation();
 
                 commandMessage = coreControl.createCommandMessage(commandMessageType, commandMessageKey, partyPK);
 

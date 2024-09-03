@@ -61,8 +61,8 @@ public class DeleteFontWeightCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String fontWeightName = form.getFontWeightName();
-        FontWeight fontWeight = coreControl.getFontWeightByNameForUpdate(fontWeightName);
+        var fontWeightName = form.getFontWeightName();
+        var fontWeight = coreControl.getFontWeightByNameForUpdate(fontWeightName);
         
         if(fontWeight != null) {
             coreControl.deleteFontWeight(fontWeight, getPartyPK());

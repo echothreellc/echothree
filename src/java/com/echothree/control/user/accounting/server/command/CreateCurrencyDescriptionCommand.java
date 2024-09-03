@@ -68,16 +68,16 @@ public class CreateCurrencyDescriptionCommand
     @Override
     protected BaseResult execute() {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        String currencyIsoName = form.getCurrencyIsoName();
-        Currency currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
+        var currencyIsoName = form.getCurrencyIsoName();
+        var currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
         
         if(currency != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                CurrencyDescription currencyDescription = accountingControl.getCurrencyDescription(currency, language);
+                var currencyDescription = accountingControl.getCurrencyDescription(currency, language);
                 
                 if(currencyDescription == null) {
                     var description = form.getDescription();

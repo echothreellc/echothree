@@ -85,22 +85,22 @@ public class EditFilterAdjustmentCommand
     @Override
     protected BaseResult execute() {
         var filterControl = Session.getModelController(FilterControl.class);
-        EditFilterAdjustmentResult result = FilterResultFactory.getEditFilterAdjustmentResult();
-        String filterKindName = spec.getFilterKindName();
-        FilterKind filterKind = filterControl.getFilterKindByName(filterKindName);
+        var result = FilterResultFactory.getEditFilterAdjustmentResult();
+        var filterKindName = spec.getFilterKindName();
+        var filterKind = filterControl.getFilterKindByName(filterKindName);
         
         if(filterKind != null) {
             if(editMode.equals(EditMode.LOCK)) {
-                String filterAdjustmentName = spec.getFilterAdjustmentName();
-                FilterAdjustment filterAdjustment = filterControl.getFilterAdjustmentByName(filterKind, filterAdjustmentName);
+                var filterAdjustmentName = spec.getFilterAdjustmentName();
+                var filterAdjustment = filterControl.getFilterAdjustmentByName(filterKind, filterAdjustmentName);
                 
                 if(filterAdjustment != null) {
                     result.setFilterAdjustment(filterControl.getFilterAdjustmentTransfer(getUserVisit(), filterAdjustment));
                     
                     if(lockEntity(filterAdjustment)) {
-                        FilterAdjustmentDescription filterAdjustmentDescription = filterControl.getFilterAdjustmentDescription(filterAdjustment, getPreferredLanguage());
-                        FilterAdjustmentEdit edit = FilterEditFactory.getFilterAdjustmentEdit();
-                        FilterAdjustmentDetail filterAdjustmentDetail = filterAdjustment.getLastDetail();
+                        var filterAdjustmentDescription = filterControl.getFilterAdjustmentDescription(filterAdjustment, getPreferredLanguage());
+                        var edit = FilterEditFactory.getFilterAdjustmentEdit();
+                        var filterAdjustmentDetail = filterAdjustment.getLastDetail();
                         
                         result.setEdit(edit);
                         edit.setFilterAdjustmentName(filterAdjustmentDetail.getFilterAdjustmentName());
@@ -120,24 +120,24 @@ public class EditFilterAdjustmentCommand
                     addExecutionError(ExecutionErrors.UnknownFilterAdjustmentName.name(), filterAdjustmentName);
                 }
             } else if(editMode.equals(EditMode.UPDATE)) {
-                String filterAdjustmentName = spec.getFilterAdjustmentName();
-                FilterAdjustment filterAdjustment = filterControl.getFilterAdjustmentByNameForUpdate(filterKind, filterAdjustmentName);
+                var filterAdjustmentName = spec.getFilterAdjustmentName();
+                var filterAdjustment = filterControl.getFilterAdjustmentByNameForUpdate(filterKind, filterAdjustmentName);
                 
                 if(filterAdjustment != null) {
                     filterAdjustmentName = edit.getFilterAdjustmentName();
-                    FilterAdjustment duplicateFilterAdjustment = filterControl.getFilterAdjustmentByName(filterKind, filterAdjustmentName);
+                    var duplicateFilterAdjustment = filterControl.getFilterAdjustmentByName(filterKind, filterAdjustmentName);
                     
                     if(duplicateFilterAdjustment == null || filterAdjustment.equals(duplicateFilterAdjustment)) {
-                        String filterAdjustmentSourceName = edit.getFilterAdjustmentSourceName();
-                        FilterAdjustmentSource filterAdjustmentSource = filterControl.getFilterAdjustmentSourceByName(filterAdjustmentSourceName);
+                        var filterAdjustmentSourceName = edit.getFilterAdjustmentSourceName();
+                        var filterAdjustmentSource = filterControl.getFilterAdjustmentSourceByName(filterAdjustmentSourceName);
                         
                         if(filterAdjustmentSource != null) {
                             if(lockEntityForUpdate(filterAdjustment)) {
                                 try {
                                     var partyPK = getPartyPK();
-                                    FilterAdjustmentDetailValue filterAdjustmentDetailValue = filterControl.getFilterAdjustmentDetailValueForUpdate(filterAdjustment);
-                                    FilterAdjustmentDescription filterAdjustmentDescription = filterControl.getFilterAdjustmentDescriptionForUpdate(filterAdjustment, getPreferredLanguage());
-                                    String description = edit.getDescription();
+                                    var filterAdjustmentDetailValue = filterControl.getFilterAdjustmentDetailValueForUpdate(filterAdjustment);
+                                    var filterAdjustmentDescription = filterControl.getFilterAdjustmentDescriptionForUpdate(filterAdjustment, getPreferredLanguage());
+                                    var description = edit.getDescription();
                                     
                                     filterAdjustmentDetailValue.setFilterAdjustmentName(edit.getFilterAdjustmentName());
                                     filterAdjustmentDetailValue.setFilterAdjustmentSourcePK(filterAdjustmentSource.getPrimaryKey());
@@ -151,7 +151,7 @@ public class EditFilterAdjustmentCommand
                                     } else if(filterAdjustmentDescription != null && description == null) {
                                         filterControl.deleteFilterAdjustmentDescription(filterAdjustmentDescription, partyPK);
                                     } else if(filterAdjustmentDescription != null && description != null) {
-                                        FilterAdjustmentDescriptionValue filterAdjustmentDescriptionValue = filterControl.getFilterAdjustmentDescriptionValue(filterAdjustmentDescription);
+                                        var filterAdjustmentDescriptionValue = filterControl.getFilterAdjustmentDescriptionValue(filterAdjustmentDescription);
                                         
                                         filterAdjustmentDescriptionValue.setDescription(description);
                                         filterControl.updateFilterAdjustmentDescriptionFromValue(filterAdjustmentDescriptionValue, partyPK);

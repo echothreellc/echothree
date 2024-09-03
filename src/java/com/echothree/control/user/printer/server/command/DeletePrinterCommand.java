@@ -49,8 +49,8 @@ public class DeletePrinterCommand
    @Override
     protected BaseResult execute() {
         var printerControl = Session.getModelController(PrinterControl.class);
-        String printerName = form.getPrinterName();
-        Printer printer = printerControl.getPrinterByNameForUpdate(printerName);
+       var printerName = form.getPrinterName();
+       var printer = printerControl.getPrinterByNameForUpdate(printerName);
         
         if(printer != null) {
             // TODO: printerControl.deletePrinter(printer, getPartyPK());

@@ -69,20 +69,20 @@ public class DeleteReturnTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
-        String returnKindName = form.getReturnKindName();
-        ReturnKind returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
+        var returnKindName = form.getReturnKindName();
+        var returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
         
         if(returnKind != null) {
-            String returnTypeName = form.getReturnTypeName();
-            ReturnType returnType = returnPolicyControl.getReturnTypeByName(returnKind, returnTypeName);
+            var returnTypeName = form.getReturnTypeName();
+            var returnType = returnPolicyControl.getReturnTypeByName(returnKind, returnTypeName);
             
             if(returnType != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = form.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = form.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
                 
                 if(language != null) {
-                    ReturnTypeDescription returnTypeDescription = returnPolicyControl.getReturnTypeDescriptionForUpdate(returnType, language);
+                    var returnTypeDescription = returnPolicyControl.getReturnTypeDescriptionForUpdate(returnType, language);
                     
                     if(returnTypeDescription != null) {
                         returnPolicyControl.deleteReturnTypeDescription(returnTypeDescription, getPartyPK());

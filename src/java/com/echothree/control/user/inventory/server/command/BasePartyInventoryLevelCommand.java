@@ -51,7 +51,7 @@ public abstract class BasePartyInventoryLevelCommand<F
                 party = partyControl.getPartyByName(partyName);
                 
                 if(party != null) {
-                    String partyTypeName = getPartyTypeName(party);
+                    var partyTypeName = getPartyTypeName(party);
                     
                     if(!partyTypeName.equals(PartyTypes.COMPANY.name())
                     && !partyTypeName.equals(PartyTypes.WAREHOUSE.name())) {
@@ -62,7 +62,7 @@ public abstract class BasePartyInventoryLevelCommand<F
                     addExecutionError(ExecutionErrors.UnknownPartyName.name(), partyName);
                 }
             } else if(companyName != null) {
-                PartyCompany partyCompany = partyControl.getPartyCompanyByName(companyName);
+                var partyCompany = partyControl.getPartyCompanyByName(companyName);
                 
                 if(partyCompany != null) {
                     party = partyCompany.getParty();
@@ -72,7 +72,7 @@ public abstract class BasePartyInventoryLevelCommand<F
             }
         } else if(warehouseName != null) {
             var warehouseControl = Session.getModelController(WarehouseControl.class);
-            Warehouse warehouse = warehouseControl.getWarehouseByName(warehouseName);
+            var warehouse = warehouseControl.getWarehouseByName(warehouseName);
             
             if(warehouse != null) {
                 party = warehouse.getParty();
@@ -84,9 +84,9 @@ public abstract class BasePartyInventoryLevelCommand<F
     }
     
     protected Party getParty(PartyInventoryLevelSpec spec) {
-        String partyName = spec.getPartyName();
-        String companyName = spec.getCompanyName();
-        String warehouseName = spec.getWarehouseName();
+        var partyName = spec.getPartyName();
+        var companyName = spec.getCompanyName();
+        var warehouseName = spec.getWarehouseName();
         var parameterCount = (partyName == null ? 0 : 1) + (companyName == null ? 0 : 1) + (warehouseName == null ? 0 : 1);
         Party party = null;
         

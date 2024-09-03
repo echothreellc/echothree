@@ -91,7 +91,7 @@ public class EditPartyTrainingClassCommand
     public PartyTrainingClass getEntity(EditPartyTrainingClassResult result) {
         var trainingControl = Session.getModelController(TrainingControl.class);
         PartyTrainingClass partyTrainingClass;
-        String partyTrainingClassName = spec.getPartyTrainingClassName();
+        var partyTrainingClassName = spec.getPartyTrainingClassName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
             partyTrainingClass = trainingControl.getPartyTrainingClassByName(partyTrainingClassName);
@@ -122,10 +122,10 @@ public class EditPartyTrainingClassCommand
 
     @Override
     public void doLock(PartyTrainingClassEdit edit, PartyTrainingClass partyTrainingClass) {
-        DateUtils dateUtils = DateUtils.getInstance();
-        PartyTrainingClassDetail partyTrainingClassDetail = partyTrainingClass.getLastDetail();
-        UserVisit userVisit = getUserVisit();
-        DateTimeFormat preferredDateTimeFormat = getPreferredDateTimeFormat();
+        var dateUtils = DateUtils.getInstance();
+        var partyTrainingClassDetail = partyTrainingClass.getLastDetail();
+        var userVisit = getUserVisit();
+        var preferredDateTimeFormat = getPreferredDateTimeFormat();
         
         edit.setCompletedTime(dateUtils.formatTypicalDateTime(userVisit, preferredDateTimeFormat, partyTrainingClassDetail.getCompletedTime()));
         edit.setValidUntilTime(dateUtils.formatTypicalDateTime(userVisit, preferredDateTimeFormat, partyTrainingClassDetail.getValidUntilTime()));
@@ -136,12 +136,12 @@ public class EditPartyTrainingClassCommand
     
     @Override
     public void canUpdate(PartyTrainingClass partyTrainingClass) {
-        String strCompletedTime = edit.getCompletedTime();
+        var strCompletedTime = edit.getCompletedTime();
         
         completedTime = strCompletedTime == null ? null : Long.valueOf(strCompletedTime);
 
         if(completedTime == null || completedTime < session.START_TIME) {
-            String strValidUntilTime = edit.getValidUntilTime();
+            var strValidUntilTime = edit.getValidUntilTime();
             
             validUntilTime = strValidUntilTime == null ? null : Long.valueOf(strValidUntilTime);
 
@@ -157,7 +157,7 @@ public class EditPartyTrainingClassCommand
     public void doUpdate(PartyTrainingClass partyTrainingClass) {
         var trainingControl = Session.getModelController(TrainingControl.class);
         var partyPK = getPartyPK();
-        PartyTrainingClassDetailValue partyTrainingClassDetailValue = trainingControl.getPartyTrainingClassDetailValueForUpdate(partyTrainingClass);
+        var partyTrainingClassDetailValue = trainingControl.getPartyTrainingClassDetailValueForUpdate(partyTrainingClass);
 
         partyTrainingClassDetailValue.setCompletedTime(completedTime);
         partyTrainingClassDetailValue.setValidUntilTime(validUntilTime);

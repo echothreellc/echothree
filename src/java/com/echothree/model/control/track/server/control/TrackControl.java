@@ -95,19 +95,19 @@ public class TrackControl
 
     public Track createTrack(String value, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var sequenceControl = Session.getModelController(SequenceControl.class);
-        Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.TRACK.name());
-        String trackName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
+        var sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.TRACK.name());
+        var trackName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
         
         return createTrack(trackName, value, isDefault, sortOrder, createdBy);
     }
     
     public Track createTrack(String trackName, String value, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        String valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault()));
-        Track defaultTrack = getDefaultTrack();
-        boolean defaultFound = defaultTrack != null;
+        var valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault()));
+        var defaultTrack = getDefaultTrack();
+        var defaultFound = defaultTrack != null;
 
         if(defaultFound && isDefault) {
-            TrackDetailValue defaultTrackDetailValue = getDefaultTrackDetailValueForUpdate();
+            var defaultTrackDetailValue = getDefaultTrackDetailValueForUpdate();
 
             defaultTrackDetailValue.setIsDefault(Boolean.FALSE);
             updateTrackFromValue(defaultTrackDetailValue, false, createdBy);
@@ -115,8 +115,8 @@ public class TrackControl
             isDefault = Boolean.TRUE;
         }
 
-        Track track = TrackFactory.getInstance().create();
-        TrackDetail trackDetail = TrackDetailFactory.getInstance().create(track, trackName, valueSha1Hash, value,
+        var track = TrackFactory.getInstance().create();
+        var trackDetail = TrackDetailFactory.getInstance().create(track, trackName, valueSha1Hash, value,
                 isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -125,10 +125,10 @@ public class TrackControl
         track.setLastDetail(trackDetail);
         track.store();
 
-        TrackPK trackPK = track.getPrimaryKey();
+        var trackPK = track.getPrimaryKey();
         sendEvent(trackPK, EventTypes.CREATE, null, null, createdBy);
 
-        EntityInstance entityInstance = getCoreControl().getEntityInstanceByBasePK(trackPK);
+        var entityInstance = getCoreControl().getEntityInstanceByBasePK(trackPK);
         getWorkflowControl().addEntityToWorkflowUsingNames(null, TrackStatusConstants.Workflow_TRACK_STATUS,
                 TrackStatusConstants.WorkflowEntrance_NEW_ACTIVE, entityInstance, null, null, createdBy);
         
@@ -138,7 +138,7 @@ public class TrackControl
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.Track */
     public Track getTrackByEntityInstance(EntityInstance entityInstance) {
         TrackPK pk = new TrackPK(entityInstance.getEntityUniqueId());
-        Track track = TrackFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
+        var track = TrackFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
 
         return track;
     }
@@ -289,8 +289,8 @@ public class TrackControl
             workflowControl.getWorkflowEntranceChoices(employeeStatusChoicesBean, defaultTrackStatusChoice, language, allowNullChoice,
                     workflowControl.getWorkflowByName(TrackStatusConstants.Workflow_TRACK_STATUS), partyPK);
         } else {
-            EntityInstance entityInstance = getCoreControl().getEntityInstanceByBasePK(track.getPrimaryKey());
-            WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(TrackStatusConstants.Workflow_TRACK_STATUS,
+            var entityInstance = getCoreControl().getEntityInstanceByBasePK(track.getPrimaryKey());
+            var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(TrackStatusConstants.Workflow_TRACK_STATUS,
                     entityInstance);
             
             workflowControl.getWorkflowDestinationChoices(employeeStatusChoicesBean, defaultTrackStatusChoice, language, allowNullChoice,
@@ -302,10 +302,10 @@ public class TrackControl
     
     public void setTrackStatus(ExecutionErrorAccumulator eea, Party party, String employeeStatusChoice, PartyPK modifiedBy) {
         var workflowControl = getWorkflowControl();
-        EntityInstance entityInstance = getEntityInstanceByBaseEntity(party);
-        WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(TrackStatusConstants.Workflow_TRACK_STATUS,
+        var entityInstance = getEntityInstanceByBaseEntity(party);
+        var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(TrackStatusConstants.Workflow_TRACK_STATUS,
                 entityInstance);
-        WorkflowDestination workflowDestination = employeeStatusChoice == null? null:
+        var workflowDestination = employeeStatusChoice == null? null:
             workflowControl.getWorkflowDestinationByName(workflowEntityStatus.getWorkflowStep(), employeeStatusChoice);
         
         if(workflowDestination != null || employeeStatusChoice == null) {
@@ -320,9 +320,9 @@ public class TrackControl
     }
 
     public List<TrackTransfer> getTrackTransfers(UserVisit userVisit) {
-        List<Track> tracks = getTracks();
+        var tracks = getTracks();
         List<TrackTransfer> trackTransfers = new ArrayList<>(tracks.size());
-        TrackTransferCache trackTransferCache = getTrackTransferCaches(userVisit).getTrackTransferCache();
+        var trackTransferCache = getTrackTransferCaches(userVisit).getTrackTransferCache();
 
         tracks.forEach((track) ->
                 trackTransfers.add(trackTransferCache.getTrackTransfer(track))
@@ -332,7 +332,7 @@ public class TrackControl
     }
 
     public TrackChoicesBean getTrackChoices(String defaultTrackChoice, Language language, boolean allowNullChoice) {
-        List<Track> tracks = getTracks();
+        var tracks = getTracks();
         var size = tracks.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -348,7 +348,7 @@ public class TrackControl
         }
 
         for(var track : tracks) {
-            TrackDetail trackDetail = track.getLastDetail();
+            var trackDetail = track.getLastDetail();
 
             var label = getBestTrackDescription(track, language);
             var value = trackDetail.getTrackName();
@@ -367,27 +367,27 @@ public class TrackControl
 
     private void updateTrackFromValue(TrackDetailValue trackDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(trackDetailValue.hasBeenModified()) {
-            Track track = TrackFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var track = TrackFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      trackDetailValue.getTrackPK());
-            TrackDetail trackDetail = track.getActiveDetailForUpdate();
+            var trackDetail = track.getActiveDetailForUpdate();
 
             trackDetail.setThruTime(session.START_TIME_LONG);
             trackDetail.store();
 
-            TrackPK trackPK = trackDetail.getTrackPK(); // Not updated
-            String trackName = trackDetailValue.getTrackName();
+            var trackPK = trackDetail.getTrackPK(); // Not updated
+            var trackName = trackDetailValue.getTrackName();
             var value = trackDetailValue.getValue();
-            String valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault()));
-            Boolean isDefault = trackDetailValue.getIsDefault();
-            Integer sortOrder = trackDetailValue.getSortOrder();
+            var valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault()));
+            var isDefault = trackDetailValue.getIsDefault();
+            var sortOrder = trackDetailValue.getSortOrder();
 
             if(checkDefault) {
-                Track defaultTrack = getDefaultTrack();
-                boolean defaultFound = defaultTrack != null && !defaultTrack.equals(track);
+                var defaultTrack = getDefaultTrack();
+                var defaultFound = defaultTrack != null && !defaultTrack.equals(track);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    TrackDetailValue defaultTrackDetailValue = getDefaultTrackDetailValueForUpdate();
+                    var defaultTrackDetailValue = getDefaultTrackDetailValueForUpdate();
 
                     defaultTrackDetailValue.setIsDefault(Boolean.FALSE);
                     updateTrackFromValue(defaultTrackDetailValue, false, updatedBy);
@@ -412,7 +412,7 @@ public class TrackControl
     }
 
     private void deleteTrack(Track track, boolean checkDefault, BasePK deletedBy) {
-        TrackDetail trackDetail = track.getLastDetailForUpdate();
+        var trackDetail = track.getLastDetailForUpdate();
 
         deleteUserVisitTracksByTrack(track);
         deleteTrackDescriptionsByTrack(track, deletedBy);
@@ -423,17 +423,17 @@ public class TrackControl
 
         if(checkDefault) {
             // Check for default, and pick one if necessary
-            Track defaultTrack = getDefaultTrack();
+            var defaultTrack = getDefaultTrack();
 
             if(defaultTrack == null) {
-                List<Track> tracks = getTracksForUpdate();
+                var tracks = getTracksForUpdate();
 
                 if(!tracks.isEmpty()) {
-                    Iterator<Track> iter = tracks.iterator();
+                    var iter = tracks.iterator();
                     if(iter.hasNext()) {
                         defaultTrack = iter.next();
                     }
-                    TrackDetailValue trackDetailValue = Objects.requireNonNull(defaultTrack).getLastDetailForUpdate().getTrackDetailValue().clone();
+                    var trackDetailValue = Objects.requireNonNull(defaultTrack).getLastDetailForUpdate().getTrackDetailValue().clone();
 
                     trackDetailValue.setIsDefault(Boolean.TRUE);
                     updateTrackFromValue(trackDetailValue, false, deletedBy);
@@ -461,7 +461,7 @@ public class TrackControl
     // --------------------------------------------------------------------------------
 
     public TrackDescription createTrackDescription(Track track, Language language, String description, BasePK createdBy) {
-        TrackDescription trackDescription = TrackDescriptionFactory.getInstance().create(track, language, description,
+        var trackDescription = TrackDescriptionFactory.getInstance().create(track, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(track.getPrimaryKey(), EventTypes.MODIFY, trackDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -540,7 +540,7 @@ public class TrackControl
 
     public String getBestTrackDescription(Track track, Language language) {
         String description;
-        TrackDescription trackDescription = getTrackDescription(track, language);
+        var trackDescription = getTrackDescription(track, language);
 
         if(trackDescription == null && !language.getIsDefault()) {
             trackDescription = getTrackDescription(track, getPartyControl().getDefaultLanguage());
@@ -560,9 +560,9 @@ public class TrackControl
     }
 
     public List<TrackDescriptionTransfer> getTrackDescriptionTransfersByTrack(UserVisit userVisit, Track track) {
-        List<TrackDescription> trackDescriptions = getTrackDescriptionsByTrack(track);
+        var trackDescriptions = getTrackDescriptionsByTrack(track);
         List<TrackDescriptionTransfer> trackDescriptionTransfers = new ArrayList<>(trackDescriptions.size());
-        TrackDescriptionTransferCache trackDescriptionTransferCache = getTrackTransferCaches(userVisit).getTrackDescriptionTransferCache();
+        var trackDescriptionTransferCache = getTrackTransferCaches(userVisit).getTrackDescriptionTransferCache();
 
         trackDescriptions.forEach((trackDescription) ->
                 trackDescriptionTransfers.add(trackDescriptionTransferCache.getTrackDescriptionTransfer(trackDescription))
@@ -573,15 +573,15 @@ public class TrackControl
 
     public void updateTrackDescriptionFromValue(TrackDescriptionValue trackDescriptionValue, BasePK updatedBy) {
         if(trackDescriptionValue.hasBeenModified()) {
-            TrackDescription trackDescription = TrackDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var trackDescription = TrackDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     trackDescriptionValue.getPrimaryKey());
 
             trackDescription.setThruTime(session.START_TIME_LONG);
             trackDescription.store();
 
-            Track track = trackDescription.getTrack();
-            Language language = trackDescription.getLanguage();
-            String description = trackDescriptionValue.getDescription();
+            var track = trackDescription.getTrack();
+            var language = trackDescription.getLanguage();
+            var description = trackDescriptionValue.getDescription();
 
             trackDescription = TrackDescriptionFactory.getInstance().create(track, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -598,7 +598,7 @@ public class TrackControl
     }
 
     public void deleteTrackDescriptionsByTrack(Track track, BasePK deletedBy) {
-        List<TrackDescription> trackDescriptions = getTrackDescriptionsByTrackForUpdate(track);
+        var trackDescriptions = getTrackDescriptionsByTrackForUpdate(track);
 
         trackDescriptions.forEach((trackDescription) -> 
                 deleteTrackDescription(trackDescription, deletedBy)
@@ -611,7 +611,7 @@ public class TrackControl
 
     public UserVisitTrack createUserVisitTrack(UserVisit userVisit, Long time, Track track) {
         var userControl = Session.getModelController(UserControl.class);
-        UserVisitStatus userVisitStatus = userControl.getUserVisitStatusForUpdate(userVisit);
+        var userVisitStatus = userControl.getUserVisitStatusForUpdate(userVisit);
         Integer userVisitTrackSequence = userVisitStatus.getUserVisitTrackSequence()+ 1;
         
         userVisitStatus.setUserVisitTrackSequence(userVisitTrackSequence);
@@ -620,7 +620,7 @@ public class TrackControl
     }
 
     public UserVisitTrack createUserVisitTrack(UserVisit userVisit, Integer userVisitTrackSequence, Long time, Track track) {
-        UserVisitTrack userVisitTrack = UserVisitTrackFactory.getInstance().create(userVisit, userVisitTrackSequence, time, track,
+        var userVisitTrack = UserVisitTrackFactory.getInstance().create(userVisit, userVisitTrackSequence, time, track,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         return userVisitTrack;

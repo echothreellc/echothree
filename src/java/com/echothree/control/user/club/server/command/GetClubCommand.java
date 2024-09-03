@@ -52,9 +52,9 @@ public class GetClubCommand
     @Override
     protected BaseResult execute() {
         var clubControl = Session.getModelController(ClubControl.class);
-        GetClubResult result = ClubResultFactory.getGetClubResult();
-        String clubName = form.getClubName();
-        Club club = clubControl.getClubByName(clubName);
+        var result = ClubResultFactory.getGetClubResult();
+        var clubName = form.getClubName();
+        var club = clubControl.getClubByName(clubName);
         
         if(club != null) {
             result.setClub(clubControl.getClubTransfer(getUserVisit(), club));

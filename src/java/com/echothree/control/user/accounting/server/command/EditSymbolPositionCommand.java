@@ -82,18 +82,18 @@ public class EditSymbolPositionCommand
     @Override
     protected BaseResult execute() {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        EditSymbolPositionResult result = AccountingResultFactory.getEditSymbolPositionResult();
+        var result = AccountingResultFactory.getEditSymbolPositionResult();
         
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-            String symbolPositionName = spec.getSymbolPositionName();
-            SymbolPosition symbolPosition = accountingControl.getSymbolPositionByName(symbolPositionName);
+            var symbolPositionName = spec.getSymbolPositionName();
+            var symbolPosition = accountingControl.getSymbolPositionByName(symbolPositionName);
             
             if(symbolPosition != null) {
                 if(editMode.equals(EditMode.LOCK)) {
                     if(lockEntity(symbolPosition)) {
-                        SymbolPositionDescription symbolPositionDescription = accountingControl.getSymbolPositionDescription(symbolPosition, getPreferredLanguage());
-                        SymbolPositionEdit edit = AccountingEditFactory.getSymbolPositionEdit();
-                        SymbolPositionDetail symbolPositionDetail = symbolPosition.getLastDetail();
+                        var symbolPositionDescription = accountingControl.getSymbolPositionDescription(symbolPosition, getPreferredLanguage());
+                        var edit = AccountingEditFactory.getSymbolPositionEdit();
+                        var symbolPositionDetail = symbolPosition.getLastDetail();
 
                         result.setSymbolPosition(accountingControl.getSymbolPositionTransfer(getUserVisit(), symbolPosition));
 
@@ -117,20 +117,20 @@ public class EditSymbolPositionCommand
                 addExecutionError(ExecutionErrors.UnknownSymbolPositionName.name(), symbolPositionName);
             }
         } else if(editMode.equals(EditMode.UPDATE)) {
-            String symbolPositionName = spec.getSymbolPositionName();
-            SymbolPosition symbolPosition = accountingControl.getSymbolPositionByNameForUpdate(symbolPositionName);
+            var symbolPositionName = spec.getSymbolPositionName();
+            var symbolPosition = accountingControl.getSymbolPositionByNameForUpdate(symbolPositionName);
             
             if(symbolPosition != null) {
                 symbolPositionName = edit.getSymbolPositionName();
-                SymbolPosition duplicateSymbolPosition = accountingControl.getSymbolPositionByName(symbolPositionName);
+                var duplicateSymbolPosition = accountingControl.getSymbolPositionByName(symbolPositionName);
                 
                 if(duplicateSymbolPosition == null || symbolPosition.equals(duplicateSymbolPosition)) {
                     if(lockEntityForUpdate(symbolPosition)) {
                         try {
                             var partyPK = getPartyPK();
-                            SymbolPositionDetailValue symbolPositionDetailValue = accountingControl.getSymbolPositionDetailValueForUpdate(symbolPosition);
-                            SymbolPositionDescription symbolPositionDescription = accountingControl.getSymbolPositionDescriptionForUpdate(symbolPosition, getPreferredLanguage());
-                            String description = edit.getDescription();
+                            var symbolPositionDetailValue = accountingControl.getSymbolPositionDetailValueForUpdate(symbolPosition);
+                            var symbolPositionDescription = accountingControl.getSymbolPositionDescriptionForUpdate(symbolPosition, getPreferredLanguage());
+                            var description = edit.getDescription();
                             
                             symbolPositionDetailValue.setSymbolPositionName(edit.getSymbolPositionName());
                             symbolPositionDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
@@ -143,7 +143,7 @@ public class EditSymbolPositionCommand
                             } else if(symbolPositionDescription != null && description == null) {
                                 accountingControl.deleteSymbolPositionDescription(symbolPositionDescription, partyPK);
                             } else if(symbolPositionDescription != null && description != null) {
-                                SymbolPositionDescriptionValue symbolPositionDescriptionValue = accountingControl.getSymbolPositionDescriptionValue(symbolPositionDescription);
+                                var symbolPositionDescriptionValue = accountingControl.getSymbolPositionDescriptionValue(symbolPositionDescription);
                                 
                                 symbolPositionDescriptionValue.setDescription(description);
                                 accountingControl.updateSymbolPositionDescriptionFromValue(symbolPositionDescriptionValue, partyPK);

@@ -69,16 +69,16 @@ public class GetEmployeeAvailabilityChoicesCommand
     @Override
     protected BaseResult execute() {
         var employeeControl = Session.getModelController(EmployeeControl.class);
-        GetEmployeeAvailabilityChoicesResult result = PartyResultFactory.getGetEmployeeAvailabilityChoicesResult();
-        String employeeName = form.getEmployeeName();
-        String partyName = form.getPartyName();
+        var result = PartyResultFactory.getGetEmployeeAvailabilityChoicesResult();
+        var employeeName = form.getEmployeeName();
+        var partyName = form.getPartyName();
         var parameterCount = (employeeName == null ? 0 : 1) + (partyName == null ? 0 : 1);
         
         if(parameterCount < 2) {
             Party party = null;
             
             if(employeeName != null) {
-                PartyEmployee partyEmployee = employeeControl.getPartyEmployeeByName(employeeName);
+                var partyEmployee = employeeControl.getPartyEmployeeByName(employeeName);
                 
                 if(partyEmployee != null) {
                     party = partyEmployee.getParty();
@@ -97,8 +97,8 @@ public class GetEmployeeAvailabilityChoicesCommand
             }
             
             if(!hasExecutionErrors()) {
-                String defaultEmployeeAvailabilityChoice = form.getDefaultEmployeeAvailabilityChoice();
-                boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+                var defaultEmployeeAvailabilityChoice = form.getDefaultEmployeeAvailabilityChoice();
+                var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
                 
                 result.setEmployeeAvailabilityChoices(employeeControl.getEmployeeAvailabilityChoices(defaultEmployeeAvailabilityChoice,
                         getPreferredLanguage(), allowNullChoice, party, getPartyPK()));

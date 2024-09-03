@@ -32,11 +32,11 @@ public class SearchCheckSpellingActionTypeDescriptionTransferCache
     }
     
     public SearchCheckSpellingActionTypeDescriptionTransfer getSearchCheckSpellingActionTypeDescriptionTransfer(SearchCheckSpellingActionTypeDescription searchCheckSpellingActionTypeDescription) {
-        SearchCheckSpellingActionTypeDescriptionTransfer searchCheckSpellingActionTypeDescriptionTransfer = get(searchCheckSpellingActionTypeDescription);
+        var searchCheckSpellingActionTypeDescriptionTransfer = get(searchCheckSpellingActionTypeDescription);
         
         if(searchCheckSpellingActionTypeDescriptionTransfer == null) {
-            SearchCheckSpellingActionTypeTransfer searchCheckSpellingActionTypeTransfer = searchControl.getSearchCheckSpellingActionTypeTransfer(userVisit, searchCheckSpellingActionTypeDescription.getSearchCheckSpellingActionType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, searchCheckSpellingActionTypeDescription.getLanguage());
+            var searchCheckSpellingActionTypeTransfer = searchControl.getSearchCheckSpellingActionTypeTransfer(userVisit, searchCheckSpellingActionTypeDescription.getSearchCheckSpellingActionType());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, searchCheckSpellingActionTypeDescription.getLanguage());
             
             searchCheckSpellingActionTypeDescriptionTransfer = new SearchCheckSpellingActionTypeDescriptionTransfer(languageTransfer, searchCheckSpellingActionTypeTransfer, searchCheckSpellingActionTypeDescription.getDescription());
             put(searchCheckSpellingActionTypeDescription, searchCheckSpellingActionTypeDescriptionTransfer);

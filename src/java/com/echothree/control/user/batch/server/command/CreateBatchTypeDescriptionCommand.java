@@ -68,16 +68,16 @@ public class CreateBatchTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var batchControl = Session.getModelController(BatchControl.class);
-        String batchTypeName = form.getBatchTypeName();
-        BatchType batchType = batchControl.getBatchTypeByName(batchTypeName);
+        var batchTypeName = form.getBatchTypeName();
+        var batchType = batchControl.getBatchTypeByName(batchTypeName);
         
         if(batchType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                BatchTypeDescription batchTypeDescription = batchControl.getBatchTypeDescription(batchType, language);
+                var batchTypeDescription = batchControl.getBatchTypeDescription(batchType, language);
                 
                 if(batchTypeDescription == null) {
                     var description = form.getDescription();

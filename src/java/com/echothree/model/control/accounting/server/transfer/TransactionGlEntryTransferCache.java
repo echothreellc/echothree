@@ -44,26 +44,26 @@ public class TransactionGlEntryTransferCache
 
     @Override
     public TransactionGlEntryTransfer getTransfer(TransactionGlEntry transactionGlEntry) {
-        TransactionGlEntryTransfer transactionGlEntryTransfer = get(transactionGlEntry);
+        var transactionGlEntryTransfer = get(transactionGlEntry);
 
         if(transactionGlEntryTransfer == null) {
-            TransactionTransfer transactionTransfer = accountingControl.getTransactionTransfer(userVisit, transactionGlEntry.getTransaction());
-            Integer transactionGlEntrySequence = transactionGlEntry.getTransactionGlEntrySequence();
-            TransactionGlEntry parentTransactionGlEntry = transactionGlEntry.getParentTransactionGlEntry();
-            TransactionGlEntryTransfer parentTransactionGlEntryTransfer = parentTransactionGlEntry == null ? null : accountingControl.getTransactionGlEntryTransfer(userVisit, parentTransactionGlEntry);
-            PartyTransfer groupPartyTransfer = partyControl.getPartyTransfer(userVisit, transactionGlEntry.getGroupParty());
-            TransactionGlAccountCategory transactionGlAccountCategory = transactionGlEntry.getTransactionGlAccountCategory();
-            TransactionGlAccountCategoryTransfer transactionGlAccountCategoryTransfer = transactionGlAccountCategory == null ? null : accountingControl.getTransactionGlAccountCategoryTransfer(userVisit, transactionGlEntry.getTransactionGlAccountCategory());
-            GlAccount glAccount = transactionGlEntry.getGlAccount();
-            GlAccountTransfer glAccountTransfer = accountingControl.getGlAccountTransfer(userVisit, glAccount);
-            Currency originalCurrency = transactionGlEntry.getOriginalCurrency();
-            CurrencyTransfer originalCurrencyTransfer = originalCurrency == null ? null : accountingControl.getCurrencyTransfer(userVisit, originalCurrency);
-            Long unformattedOriginalAmount = transactionGlEntry.getOriginalAmount();
-            String originalDebit = unformattedOriginalAmount >= 0 ? null : AmountUtils.getInstance().formatAmount(originalCurrency, -unformattedOriginalAmount);
-            String originalCredit = originalDebit == null ? AmountUtils.getInstance().formatAmount(originalCurrency, unformattedOriginalAmount) : null;
-            Long unformattedAmount = transactionGlEntry.getAmount();
-            String debit = unformattedAmount >= 0 ? null : AmountUtils.getInstance().formatAmount(originalCurrency, -unformattedAmount);
-            String credit = debit == null ? AmountUtils.getInstance().formatAmount(originalCurrency, unformattedAmount) : null;
+            var transactionTransfer = accountingControl.getTransactionTransfer(userVisit, transactionGlEntry.getTransaction());
+            var transactionGlEntrySequence = transactionGlEntry.getTransactionGlEntrySequence();
+            var parentTransactionGlEntry = transactionGlEntry.getParentTransactionGlEntry();
+            var parentTransactionGlEntryTransfer = parentTransactionGlEntry == null ? null : accountingControl.getTransactionGlEntryTransfer(userVisit, parentTransactionGlEntry);
+            var groupPartyTransfer = partyControl.getPartyTransfer(userVisit, transactionGlEntry.getGroupParty());
+            var transactionGlAccountCategory = transactionGlEntry.getTransactionGlAccountCategory();
+            var transactionGlAccountCategoryTransfer = transactionGlAccountCategory == null ? null : accountingControl.getTransactionGlAccountCategoryTransfer(userVisit, transactionGlEntry.getTransactionGlAccountCategory());
+            var glAccount = transactionGlEntry.getGlAccount();
+            var glAccountTransfer = accountingControl.getGlAccountTransfer(userVisit, glAccount);
+            var originalCurrency = transactionGlEntry.getOriginalCurrency();
+            var originalCurrencyTransfer = originalCurrency == null ? null : accountingControl.getCurrencyTransfer(userVisit, originalCurrency);
+            var unformattedOriginalAmount = transactionGlEntry.getOriginalAmount();
+            var originalDebit = unformattedOriginalAmount >= 0 ? null : AmountUtils.getInstance().formatAmount(originalCurrency, -unformattedOriginalAmount);
+            var originalCredit = originalDebit == null ? AmountUtils.getInstance().formatAmount(originalCurrency, unformattedOriginalAmount) : null;
+            var unformattedAmount = transactionGlEntry.getAmount();
+            var debit = unformattedAmount >= 0 ? null : AmountUtils.getInstance().formatAmount(originalCurrency, -unformattedAmount);
+            var credit = debit == null ? AmountUtils.getInstance().formatAmount(originalCurrency, unformattedAmount) : null;
 
             transactionGlEntryTransfer = new TransactionGlEntryTransfer(transactionTransfer, transactionGlEntrySequence, parentTransactionGlEntryTransfer, groupPartyTransfer,
                     transactionGlAccountCategoryTransfer, glAccountTransfer, originalCurrencyTransfer, unformattedOriginalAmount, originalDebit, originalCredit, unformattedAmount, debit, credit);

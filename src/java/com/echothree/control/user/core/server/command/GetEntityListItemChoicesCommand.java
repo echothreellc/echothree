@@ -69,10 +69,10 @@ public class GetEntityListItemChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        GetEntityListItemChoicesResult result = CoreResultFactory.getGetEntityListItemChoicesResult();
-        String entityRef = form.getEntityRef();
-        String componentVendorName = form.getComponentVendorName();
-        String entityTypeName = form.getEntityTypeName();
+        var result = CoreResultFactory.getGetEntityListItemChoicesResult();
+        var entityRef = form.getEntityRef();
+        var componentVendorName = form.getComponentVendorName();
+        var entityTypeName = form.getEntityTypeName();
         var parameterCount = (entityRef != null && componentVendorName == null && entityTypeName == null? 1: 0)
                 + (entityRef == null && componentVendorName != null && entityTypeName != null? 1: 0);
         
@@ -81,7 +81,7 @@ public class GetEntityListItemChoicesCommand
             EntityType entityType = null;
             
             if(entityRef == null) {
-                ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+                var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
                 
                 if(componentVendor != null) {
                     entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
@@ -93,7 +93,7 @@ public class GetEntityListItemChoicesCommand
                     addExecutionError(ExecutionErrors.UnknownComponentVendorName.name(), componentVendorName);
                 }
             } else {
-                EntityInstance entityInstance = coreControl.getEntityInstanceByEntityRef(entityRef);
+                var entityInstance = coreControl.getEntityInstanceByEntityRef(entityRef);
                 
                 if(entityInstance != null) {
                     entityType = entityInstance.getEntityType();
@@ -103,17 +103,17 @@ public class GetEntityListItemChoicesCommand
             }
             
             if(!hasExecutionErrors()) {
-                String entityAttributeName = form.getEntityAttributeName();
-                EntityAttribute entityAttribute = coreControl.getEntityAttributeByName(entityType, entityAttributeName);
+                var entityAttributeName = form.getEntityAttributeName();
+                var entityAttribute = coreControl.getEntityAttributeByName(entityType, entityAttributeName);
                 
                 if(entityAttribute != null) {
-                    EntityAttributeType entityAttributeType = entityAttribute.getLastDetail().getEntityAttributeType();
-                    String entityAttributeTypeName = entityAttributeType.getEntityAttributeTypeName();
+                    var entityAttributeType = entityAttribute.getLastDetail().getEntityAttributeType();
+                    var entityAttributeTypeName = entityAttributeType.getEntityAttributeTypeName();
                     
                     if(entityAttributeTypeName.equals(EntityAttributeTypes.LISTITEM.name())
                             || entityAttributeTypeName.equals(EntityAttributeTypes.MULTIPLELISTITEM.name())) {
-                        String defaultEntityListItemChoice = form.getDefaultEntityListItemChoice();
-                        Boolean allowNullChoice = Boolean.valueOf(form.getAllowNullChoice());
+                        var defaultEntityListItemChoice = form.getDefaultEntityListItemChoice();
+                        var allowNullChoice = Boolean.valueOf(form.getAllowNullChoice());
                         
                         result.setEntityListItemChoices(coreControl.getEntityListItemChoices(defaultEntityListItemChoice,
                                 getPreferredLanguage(), allowNullChoice, entityAttribute));

@@ -89,16 +89,16 @@ public class EditRelatedItemCommand
     public RelatedItem getEntity(EditRelatedItemResult result) {
         var itemControl = Session.getModelController(ItemControl.class);
         RelatedItem relatedItem = null;
-        String relatedItemTypeName = spec.getRelatedItemTypeName();
-        RelatedItemType relatedItemType = itemControl.getRelatedItemTypeByName(relatedItemTypeName);
+        var relatedItemTypeName = spec.getRelatedItemTypeName();
+        var relatedItemType = itemControl.getRelatedItemTypeByName(relatedItemTypeName);
 
         if(relatedItemType != null) {
-            String fromItemName = spec.getFromItemName();
-            Item fromItem = itemControl.getItemByName(fromItemName);
+            var fromItemName = spec.getFromItemName();
+            var fromItem = itemControl.getItemByName(fromItemName);
 
             if(fromItem != null) {
-                String toItemName = spec.getToItemName();
-                Item toItem = itemControl.getItemByName(toItemName);
+                var toItemName = spec.getToItemName();
+                var toItem = itemControl.getItemByName(toItemName);
 
                 if(toItem != null) {
                     if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -143,7 +143,7 @@ public class EditRelatedItemCommand
     @Override
     public void doUpdate(RelatedItem relatedItem) {
         var itemControl = Session.getModelController(ItemControl.class);
-        RelatedItemDetailValue relatedItemValueDetail = itemControl.getRelatedItemDetailValueForUpdate(relatedItem);
+        var relatedItemValueDetail = itemControl.getRelatedItemDetailValueForUpdate(relatedItem);
 
         relatedItemValueDetail.setSortOrder(Integer.valueOf(edit.getSortOrder()));
 

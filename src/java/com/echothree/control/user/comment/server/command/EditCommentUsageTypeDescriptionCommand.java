@@ -71,37 +71,37 @@ public class EditCommentUsageTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        EditCommentUsageTypeDescriptionResult result = CommentResultFactory.getEditCommentUsageTypeDescriptionResult();
-        String componentVendorName = spec.getComponentVendorName();
-        ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+        var result = CommentResultFactory.getEditCommentUsageTypeDescriptionResult();
+        var componentVendorName = spec.getComponentVendorName();
+        var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
         
         if(componentVendor != null) {
-            String entityTypeName = spec.getEntityTypeName();
-            EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+            var entityTypeName = spec.getEntityTypeName();
+            var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
             
             if(entityType != null) {
                 var commentControl = Session.getModelController(CommentControl.class);
-                String commentTypeName = spec.getCommentTypeName();
-                CommentType commentType = commentControl.getCommentTypeByName(entityType, commentTypeName);
+                var commentTypeName = spec.getCommentTypeName();
+                var commentType = commentControl.getCommentTypeByName(entityType, commentTypeName);
                 
                 if(commentType != null) {
-                    String commentUsageTypeName = spec.getCommentUsageTypeName();
-                    CommentUsageType commentUsageType = commentControl.getCommentUsageTypeByName(commentType, commentUsageTypeName);
+                    var commentUsageTypeName = spec.getCommentUsageTypeName();
+                    var commentUsageType = commentControl.getCommentUsageTypeByName(commentType, commentUsageTypeName);
                     
                     if(commentUsageType != null) {
                         var partyControl = Session.getModelController(PartyControl.class);
-                        String languageIsoName = spec.getLanguageIsoName();
-                        Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                        var languageIsoName = spec.getLanguageIsoName();
+                        var language = partyControl.getLanguageByIsoName(languageIsoName);
                         
                         if(language != null) {
                             if(editMode.equals(EditMode.LOCK)) {
-                                CommentUsageTypeDescription commentUsageTypeDescription = commentControl.getCommentUsageTypeDescription(commentUsageType, language);
+                                var commentUsageTypeDescription = commentControl.getCommentUsageTypeDescription(commentUsageType, language);
                                 
                                 if(commentUsageTypeDescription != null) {
                                     result.setCommentUsageTypeDescription(commentControl.getCommentUsageTypeDescriptionTransfer(getUserVisit(), commentUsageTypeDescription));
                                     
                                     if(lockEntity(commentUsageType)) {
-                                        CommentUsageTypeDescriptionEdit edit = CommentEditFactory.getCommentUsageTypeDescriptionEdit();
+                                        var edit = CommentEditFactory.getCommentUsageTypeDescriptionEdit();
                                         
                                         result.setEdit(edit);
                                         edit.setDescription(commentUsageTypeDescription.getDescription());
@@ -114,12 +114,12 @@ public class EditCommentUsageTypeDescriptionCommand
                                     addExecutionError(ExecutionErrors.UnknownCommentUsageTypeDescription.name());
                                 }
                             } else if(editMode.equals(EditMode.UPDATE)) {
-                                CommentUsageTypeDescriptionValue commentUsageTypeDescriptionValue = commentControl.getCommentUsageTypeDescriptionValueForUpdate(commentUsageType, language);
+                                var commentUsageTypeDescriptionValue = commentControl.getCommentUsageTypeDescriptionValueForUpdate(commentUsageType, language);
                                 
                                 if(commentUsageTypeDescriptionValue != null) {
                                     if(lockEntityForUpdate(commentUsageType)) {
                                         try {
-                                            String description = edit.getDescription();
+                                            var description = edit.getDescription();
                                             
                                             commentUsageTypeDescriptionValue.setDescription(description);
                                             

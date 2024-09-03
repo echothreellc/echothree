@@ -68,20 +68,20 @@ public class GetEntityAliasTypeDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        GetEntityAliasTypeDescriptionsResult result = CoreResultFactory.getGetEntityAliasTypeDescriptionsResult();
-        String componentVendorName = form.getComponentVendorName();
-        ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+        var result = CoreResultFactory.getGetEntityAliasTypeDescriptionsResult();
+        var componentVendorName = form.getComponentVendorName();
+        var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
         
         if(componentVendor != null) {
-            String entityTypeName = form.getEntityTypeName();
-            EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+            var entityTypeName = form.getEntityTypeName();
+            var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
             
             if(entityType != null) {
-                String entityAliasTypeName = form.getEntityAliasTypeName();
-                EntityAliasType entityAliasType = coreControl.getEntityAliasTypeByName(entityType, entityAliasTypeName);
+                var entityAliasTypeName = form.getEntityAliasTypeName();
+                var entityAliasType = coreControl.getEntityAliasTypeByName(entityType, entityAliasTypeName);
                 
                 if(entityAliasType != null) {
-                    UserVisit userVisit = getUserVisit();
+                    var userVisit = getUserVisit();
                     
                     result.setEntityAliasType(coreControl.getEntityAliasTypeTransfer(userVisit, entityAliasType, null));
                     result.setEntityAliasTypeDescriptions(coreControl.getEntityAliasTypeDescriptionTransfersByEntityAliasType(userVisit, entityAliasType, null));

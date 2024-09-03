@@ -33,12 +33,12 @@ public class ItemAliasTypeDescriptionTransferCache
     
     @Override
     public ItemAliasTypeDescriptionTransfer getTransfer(ItemAliasTypeDescription itemAliasTypeDescription) {
-        ItemAliasTypeDescriptionTransfer itemAliasTypeDescriptionTransfer = get(itemAliasTypeDescription);
+        var itemAliasTypeDescriptionTransfer = get(itemAliasTypeDescription);
         
         if(itemAliasTypeDescriptionTransfer == null) {
-            ItemAliasTypeTransferCache itemAliasTypeTransferCache = itemControl.getItemTransferCaches(userVisit).getItemAliasTypeTransferCache();
-            ItemAliasTypeTransfer itemAliasTypeTransfer = itemAliasTypeTransferCache.getTransfer(itemAliasTypeDescription.getItemAliasType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, itemAliasTypeDescription.getLanguage());
+            var itemAliasTypeTransferCache = itemControl.getItemTransferCaches(userVisit).getItemAliasTypeTransferCache();
+            var itemAliasTypeTransfer = itemAliasTypeTransferCache.getTransfer(itemAliasTypeDescription.getItemAliasType());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, itemAliasTypeDescription.getLanguage());
             
             itemAliasTypeDescriptionTransfer = new ItemAliasTypeDescriptionTransfer(languageTransfer, itemAliasTypeTransfer, itemAliasTypeDescription.getDescription());
             put(itemAliasTypeDescription, itemAliasTypeDescriptionTransfer);

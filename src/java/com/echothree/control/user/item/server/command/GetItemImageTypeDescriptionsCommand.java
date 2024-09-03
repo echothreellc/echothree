@@ -65,9 +65,9 @@ public class GetItemImageTypeDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var itemControl = Session.getModelController(ItemControl.class);
-        GetItemImageTypeDescriptionsResult result = ItemResultFactory.getGetItemImageTypeDescriptionsResult();
-        String itemImageTypeName = form.getItemImageTypeName();
-        ItemImageType itemImageType = itemControl.getItemImageTypeByName(itemImageTypeName);
+        var result = ItemResultFactory.getGetItemImageTypeDescriptionsResult();
+        var itemImageTypeName = form.getItemImageTypeName();
+        var itemImageType = itemControl.getItemImageTypeByName(itemImageTypeName);
         
         if(itemImageType != null) {
             result.setItemImageType(itemControl.getItemImageTypeTransfer(getUserVisit(), itemImageType));

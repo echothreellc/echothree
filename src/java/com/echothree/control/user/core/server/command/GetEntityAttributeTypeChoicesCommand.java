@@ -61,8 +61,8 @@ public class GetEntityAttributeTypeChoicesCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        GetEntityAttributeTypeChoicesResult result = CoreResultFactory.getGetEntityAttributeTypeChoicesResult();
-        String defaultEntityAttributeTypeChoice = form.getDefaultEntityAttributeTypeChoice();
+        var result = CoreResultFactory.getGetEntityAttributeTypeChoicesResult();
+        var defaultEntityAttributeTypeChoice = form.getDefaultEntityAttributeTypeChoice();
         
         result.setEntityAttributeTypeChoices(coreControl.getEntityAttributeTypeChoices(defaultEntityAttributeTypeChoice, getPreferredLanguage()));
         

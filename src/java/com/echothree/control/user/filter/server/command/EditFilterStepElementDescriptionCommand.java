@@ -87,40 +87,40 @@ public class EditFilterStepElementDescriptionCommand
     @Override
     protected BaseResult execute() {
         var filterControl = Session.getModelController(FilterControl.class);
-        EditFilterStepElementDescriptionResult result = FilterResultFactory.getEditFilterStepElementDescriptionResult();
-        String filterKindName = spec.getFilterKindName();
-        FilterKind filterKind = filterControl.getFilterKindByName(filterKindName);
+        var result = FilterResultFactory.getEditFilterStepElementDescriptionResult();
+        var filterKindName = spec.getFilterKindName();
+        var filterKind = filterControl.getFilterKindByName(filterKindName);
         
         if(filterKind != null) {
-            String filterTypeName = spec.getFilterTypeName();
-            FilterType filterType = filterControl.getFilterTypeByName(filterKind, filterTypeName);
+            var filterTypeName = spec.getFilterTypeName();
+            var filterType = filterControl.getFilterTypeByName(filterKind, filterTypeName);
             
             if(filterType != null) {
-                String filterName = spec.getFilterName();
-                Filter filter = filterControl.getFilterByName(filterType, filterName);
+                var filterName = spec.getFilterName();
+                var filter = filterControl.getFilterByName(filterType, filterName);
                 
                 if(filter != null) {
-                    String filterStepName = spec.getFilterStepName();
-                    FilterStep filterStep = filterControl.getFilterStepByName(filter, filterStepName);
+                    var filterStepName = spec.getFilterStepName();
+                    var filterStep = filterControl.getFilterStepByName(filter, filterStepName);
                     
                     if(filterStep != null) {
-                        String filterStepElementName = spec.getFilterStepElementName();
-                        FilterStepElement filterStepElement = filterControl.getFilterStepElementByName(filterStep, filterStepElementName);
+                        var filterStepElementName = spec.getFilterStepElementName();
+                        var filterStepElement = filterControl.getFilterStepElementByName(filterStep, filterStepElementName);
                         
                         if(filterStepElement != null) {
                             var partyControl = Session.getModelController(PartyControl.class);
-                            String languageIsoName = spec.getLanguageIsoName();
-                            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                            var languageIsoName = spec.getLanguageIsoName();
+                            var language = partyControl.getLanguageByIsoName(languageIsoName);
                             
                             if(language != null) {
                                 if(editMode.equals(EditMode.LOCK)) {
-                                    FilterStepElementDescription filterStepElementDescription = filterControl.getFilterStepElementDescription(filterStepElement, language);
+                                    var filterStepElementDescription = filterControl.getFilterStepElementDescription(filterStepElement, language);
                                     
                                     if(filterStepElementDescription != null) {
                                         result.setFilterStepElementDescription(filterControl.getFilterStepElementDescriptionTransfer(getUserVisit(), filterStepElementDescription));
                                         
                                         if(lockEntity(filterStepElement)) {
-                                            FilterStepElementDescriptionEdit edit = FilterEditFactory.getFilterStepElementDescriptionEdit();
+                                            var edit = FilterEditFactory.getFilterStepElementDescriptionEdit();
                                             
                                             result.setEdit(edit);
                                             edit.setDescription(filterStepElementDescription.getDescription());
@@ -133,12 +133,12 @@ public class EditFilterStepElementDescriptionCommand
                                         addExecutionError(ExecutionErrors.UnknownFilterStepElementDescription.name());
                                     }
                                 } else if(editMode.equals(EditMode.UPDATE)) {
-                                    FilterStepElementDescriptionValue filterStepElementDescriptionValue = filterControl.getFilterStepElementDescriptionValueForUpdate(filterStepElement, language);
+                                    var filterStepElementDescriptionValue = filterControl.getFilterStepElementDescriptionValueForUpdate(filterStepElement, language);
                                     
                                     if(filterStepElementDescriptionValue != null) {
                                         if(lockEntityForUpdate(filterStepElement)) {
                                             try {
-                                                String description = edit.getDescription();
+                                                var description = edit.getDescription();
                                                 
                                                 filterStepElementDescriptionValue.setDescription(description);
                                                 

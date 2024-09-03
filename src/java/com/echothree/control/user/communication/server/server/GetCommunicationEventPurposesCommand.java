@@ -46,7 +46,7 @@ public class GetCommunicationEventPurposesCommand
     
     @Override
     protected BaseResult execute() {
-        GetCommunicationEventPurposesResult result = CommunicationResultFactory.getGetCommunicationEventPurposesResult();
+        var result = CommunicationResultFactory.getGetCommunicationEventPurposesResult();
         var communicationControl = Session.getModelController(CommunicationControl.class);
         
         result.setCommunicationEventPurposes(communicationControl.getCommunicationEventPurposeTransfers(getUserVisit()));

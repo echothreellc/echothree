@@ -77,19 +77,19 @@ public class GetRecoveryQuestionCommand
     @Override
     protected RecoveryQuestion getEntity() {
         RecoveryQuestion recoveryQuestion = null;
-        String recoveryQuestionName = form.getRecoveryQuestionName();
-        String username = form.getUsername();
-        String partyName = form.getPartyName();
-        String employeeName = form.getEmployeeName();
-        String customerName = form.getCustomerName();
-        String vendorName = form.getVendorName();
-        int nameOrEntitySpecsCount = (recoveryQuestionName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
+        var recoveryQuestionName = form.getRecoveryQuestionName();
+        var username = form.getUsername();
+        var partyName = form.getPartyName();
+        var employeeName = form.getEmployeeName();
+        var customerName = form.getCustomerName();
+        var vendorName = form.getVendorName();
+        var nameOrEntitySpecsCount = (recoveryQuestionName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
         var parameterCount = nameOrEntitySpecsCount + (username == null ? 0 : 1) + (partyName == null ? 0 : 1)
                 + (employeeName == null ? 0 : 1) + (customerName == null ? 0 : 1) + (vendorName == null ? 0 : 1);
 
         if(parameterCount < 2) {
-            UserControl userControl = getUserControl();
-            Party self = getParty();
+            var userControl = getUserControl();
+            var self = getParty();
             
             if(nameOrEntitySpecsCount == 1) {
                 if(recoveryQuestionName == null) {
@@ -110,7 +110,7 @@ public class GetRecoveryQuestionCommand
                 Party party = null;
                 
                 if(username != null) {
-                    UserLogin userLogin = userControl.getUserLoginByUsername(username);
+                    var userLogin = userControl.getUserLoginByUsername(username);
                     
                     if(userLogin != null) {
                         party = userLogin.getParty();
@@ -126,7 +126,7 @@ public class GetRecoveryQuestionCommand
                     }
                 } else if(employeeName != null) {
                     var employeeControl = Session.getModelController(EmployeeControl.class);
-                    PartyEmployee partyEmployee = employeeControl.getPartyEmployeeByName(employeeName);
+                    var partyEmployee = employeeControl.getPartyEmployeeByName(employeeName);
                     
                     if(partyEmployee != null) {
                         party = partyEmployee.getParty();
@@ -135,7 +135,7 @@ public class GetRecoveryQuestionCommand
                     }
                 } else if(customerName != null) {
                     var customerControl = Session.getModelController(CustomerControl.class);
-                    Customer customer = customerControl.getCustomerByName(customerName);
+                    var customer = customerControl.getCustomerByName(customerName);
                     
                     if(customer != null) {
                         party = customer.getParty();
@@ -144,7 +144,7 @@ public class GetRecoveryQuestionCommand
                     }
                 } else if(vendorName != null) {
                     var vendorControl = Session.getModelController(VendorControl.class);
-                    Vendor vendor = vendorControl.getVendorByName(vendorName);
+                    var vendor = vendorControl.getVendorByName(vendorName);
                     
                     if(vendor != null) {
                         party = vendor.getParty();
@@ -157,7 +157,7 @@ public class GetRecoveryQuestionCommand
                 
                 if(!hasExecutionErrors()) {
                     if(party != null) {
-                        RecoveryAnswer recoveryAnswer = userControl.getRecoveryAnswer(party);
+                        var recoveryAnswer = userControl.getRecoveryAnswer(party);
 
                         if(recoveryAnswer != null) {
                             recoveryQuestion = recoveryAnswer.getLastDetail().getRecoveryQuestion();
@@ -178,11 +178,11 @@ public class GetRecoveryQuestionCommand
     
     @Override
     protected BaseResult getResult(RecoveryQuestion recoveryQuestion) {
-        UserControl userControl = getUserControl();
-        GetRecoveryQuestionResult result = UserResultFactory.getGetRecoveryQuestionResult();
+        var userControl = getUserControl();
+        var result = UserResultFactory.getGetRecoveryQuestionResult();
 
         if(recoveryQuestion != null) {
-            Party self = getParty();
+            var self = getParty();
 
             result.setRecoveryQuestion(userControl.getRecoveryQuestionTransfer(getUserVisit(), recoveryQuestion));
                 

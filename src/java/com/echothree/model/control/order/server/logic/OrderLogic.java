@@ -356,7 +356,7 @@ public class OrderLogic
                 if(eea == null || !eea.hasExecutionErrors()) {
                     var orderPaymentPreferenceControl = Session.getModelController(OrderPaymentPreferenceControl.class);
                     var orderControl = Session.getModelController(OrderControl.class);
-                    OrderStatus orderStatus = orderControl.getOrderStatusForUpdate(order);
+                    var orderStatus = orderControl.getOrderStatusForUpdate(order);
 
                     if(orderPaymentPreferenceSequence == null) {
                         orderPaymentPreferenceSequence = orderStatus.getOrderPaymentPreferenceSequence() + 1;

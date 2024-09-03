@@ -53,13 +53,13 @@ public class CreateUnitOfMeasureKindUseTypeCommand
     @Override
     protected BaseResult execute() {
         var uomControl = Session.getModelController(UomControl.class);
-        String unitOfMeasureKindUseTypeName = form.getUnitOfMeasureKindUseTypeName();
-        UnitOfMeasureKindUseType unitOfMeasureKindUseType = uomControl.getUnitOfMeasureKindUseTypeByName(unitOfMeasureKindUseTypeName);
+        var unitOfMeasureKindUseTypeName = form.getUnitOfMeasureKindUseTypeName();
+        var unitOfMeasureKindUseType = uomControl.getUnitOfMeasureKindUseTypeByName(unitOfMeasureKindUseTypeName);
         
         if(unitOfMeasureKindUseType == null) {
-            Boolean allowMultiple = Boolean.valueOf(form.getAllowMultiple());
+            var allowMultiple = Boolean.valueOf(form.getAllowMultiple());
             var isDefault = Boolean.valueOf(form.getIsDefault());
-            Boolean allowFractionDigits = Boolean.valueOf(form.getAllowFractionDigits());
+            var allowFractionDigits = Boolean.valueOf(form.getAllowFractionDigits());
             var sortOrder = Integer.valueOf(form.getSortOrder());
             
             uomControl.createUnitOfMeasureKindUseType(unitOfMeasureKindUseTypeName, allowMultiple, allowFractionDigits, isDefault, sortOrder);

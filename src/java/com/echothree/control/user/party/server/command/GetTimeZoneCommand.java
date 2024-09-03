@@ -63,7 +63,7 @@ public class GetTimeZoneCommand
     protected TimeZone getEntity() {
         var partyControl = Session.getModelController(PartyControl.class);
         TimeZone timeZone = null;
-        String timeZoneName = form.getJavaTimeZoneName();
+        var timeZoneName = form.getJavaTimeZoneName();
         var parameterCount = (timeZoneName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         switch(parameterCount) {
@@ -97,7 +97,7 @@ public class GetTimeZoneCommand
     @Override
     protected BaseResult getResult(TimeZone timeZone) {
         var partyControl = Session.getModelController(PartyControl.class);
-        GetTimeZoneResult result = PartyResultFactory.getGetTimeZoneResult();
+        var result = PartyResultFactory.getGetTimeZoneResult();
 
         if(timeZone != null) {
             result.setTimeZone(partyControl.getTimeZoneTransfer(getUserVisit(), timeZone));

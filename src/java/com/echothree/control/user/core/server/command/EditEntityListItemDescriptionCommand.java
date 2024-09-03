@@ -94,25 +94,25 @@ public class EditEntityListItemDescriptionCommand
     public EntityListItemDescription getEntity(EditEntityListItemDescriptionResult result) {
         var coreControl = getCoreControl();
         EntityListItemDescription entityListItemDescription = null;
-        String componentVendorName = spec.getComponentVendorName();
-        ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+        var componentVendorName = spec.getComponentVendorName();
+        var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
 
         if(componentVendor != null) {
-            String entityTypeName = spec.getEntityTypeName();
-            EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+            var entityTypeName = spec.getEntityTypeName();
+            var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
 
             if(entityType != null) {
-                String entityAttributeName = spec.getEntityAttributeName();
-                EntityAttribute entityAttribute = coreControl.getEntityAttributeByName(entityType, entityAttributeName);
+                var entityAttributeName = spec.getEntityAttributeName();
+                var entityAttribute = coreControl.getEntityAttributeByName(entityType, entityAttributeName);
 
                 if(entityAttribute != null) {
-                    String entityListItemName = spec.getEntityListItemName();
-                    EntityListItem entityListItem = coreControl.getEntityListItemByName(entityAttribute, entityListItemName);
+                    var entityListItemName = spec.getEntityListItemName();
+                    var entityListItem = coreControl.getEntityListItemByName(entityAttribute, entityListItemName);
 
                     if(entityListItem != null) {
                         var partyControl = Session.getModelController(PartyControl.class);
-                        String languageIsoName = spec.getLanguageIsoName();
-                        Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                        var languageIsoName = spec.getLanguageIsoName();
+                        var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                         if(language != null) {
                             if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -164,7 +164,7 @@ public class EditEntityListItemDescriptionCommand
     @Override
     public void doUpdate(EntityListItemDescription entityListItemDescription) {
         var coreControl = getCoreControl();
-        EntityListItemDescriptionValue entityListItemDescriptionValue = coreControl.getEntityListItemDescriptionValue(entityListItemDescription);
+        var entityListItemDescriptionValue = coreControl.getEntityListItemDescriptionValue(entityListItemDescription);
         
         entityListItemDescriptionValue.setDescription(edit.getDescription());
 

@@ -35,14 +35,14 @@ public class CreditCardYearFieldType
     
     @Override
     public String validate() {
-        boolean hadErrors = false;
-        
-        Matcher m = Patterns.CreditCardYear.matcher(fieldValue);
+        var hadErrors = false;
+
+        var m = Patterns.CreditCardYear.matcher(fieldValue);
         if(!m.matches()) {
             validationMessages.add(fieldName, new Message(Validator.ERROR_INVALID_FORMAT));
             hadErrors = true;
         } else {
-            int creditCardYear = Integer.parseInt(fieldValue);
+            var creditCardYear = Integer.parseInt(fieldValue);
 
             if(creditCardYear < 100) {
                 fieldValue = Integer.toString(creditCardYear + 2000);

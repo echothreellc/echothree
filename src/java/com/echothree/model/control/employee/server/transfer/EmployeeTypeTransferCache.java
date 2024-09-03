@@ -33,14 +33,14 @@ public class EmployeeTypeTransferCache
     }
     
     public EmployeeTypeTransfer getEmployeeTypeTransfer(EmployeeType employeeType) {
-        EmployeeTypeTransfer employeeTypeTransfer = get(employeeType);
+        var employeeTypeTransfer = get(employeeType);
         
         if(employeeTypeTransfer == null) {
-            EmployeeTypeDetail employeeTypeDetail = employeeType.getLastDetail();
-            String employeeTypeName = employeeTypeDetail.getEmployeeTypeName();
-            Boolean isDefault = employeeTypeDetail.getIsDefault();
-            Integer sortOrder = employeeTypeDetail.getSortOrder();
-            String description = employeeControl.getBestEmployeeTypeDescription(employeeType, getLanguage());
+            var employeeTypeDetail = employeeType.getLastDetail();
+            var employeeTypeName = employeeTypeDetail.getEmployeeTypeName();
+            var isDefault = employeeTypeDetail.getIsDefault();
+            var sortOrder = employeeTypeDetail.getSortOrder();
+            var description = employeeControl.getBestEmployeeTypeDescription(employeeType, getLanguage());
             
             employeeTypeTransfer = new EmployeeTypeTransfer(employeeTypeName, isDefault, sortOrder, description);
             put(employeeType, employeeTypeTransfer);

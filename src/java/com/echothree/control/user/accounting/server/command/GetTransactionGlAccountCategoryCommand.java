@@ -54,13 +54,13 @@ public class GetTransactionGlAccountCategoryCommand
     @Override
     protected BaseResult execute() {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        GetTransactionGlAccountCategoryResult result = AccountingResultFactory.getGetTransactionGlAccountCategoryResult();
-        String transactionTypeName = form.getTransactionTypeName();
-        TransactionType transactionType = accountingControl.getTransactionTypeByName(transactionTypeName);
+        var result = AccountingResultFactory.getGetTransactionGlAccountCategoryResult();
+        var transactionTypeName = form.getTransactionTypeName();
+        var transactionType = accountingControl.getTransactionTypeByName(transactionTypeName);
         
         if(transactionType != null) {
-            String transactionGlAccountCategoryName = form.getTransactionGlAccountCategoryName();
-            TransactionGlAccountCategory transactionGlAccountCategory = accountingControl.getTransactionGlAccountCategoryByName(transactionType, transactionGlAccountCategoryName);
+            var transactionGlAccountCategoryName = form.getTransactionGlAccountCategoryName();
+            var transactionGlAccountCategory = accountingControl.getTransactionGlAccountCategoryByName(transactionType, transactionGlAccountCategoryName);
             
             if(transactionGlAccountCategory != null) {
                 result.setTransactionGlAccountCategory(accountingControl.getTransactionGlAccountCategoryTransfer(getUserVisit(), transactionGlAccountCategory));

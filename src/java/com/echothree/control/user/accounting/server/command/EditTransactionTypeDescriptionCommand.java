@@ -79,25 +79,25 @@ public class EditTransactionTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        EditTransactionTypeDescriptionResult result = AccountingResultFactory.getEditTransactionTypeDescriptionResult();
-        String transactionTypeName = spec.getTransactionTypeName();
-        TransactionType transactionType = accountingControl.getTransactionTypeByName(transactionTypeName);
+        var result = AccountingResultFactory.getEditTransactionTypeDescriptionResult();
+        var transactionTypeName = spec.getTransactionTypeName();
+        var transactionType = accountingControl.getTransactionTypeByName(transactionTypeName);
         
         if(transactionType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                    TransactionTypeDescription transactionTypeDescription = accountingControl.getTransactionTypeDescription(transactionType, language);
+                    var transactionTypeDescription = accountingControl.getTransactionTypeDescription(transactionType, language);
                     
                     if(transactionTypeDescription != null) {
                         if(editMode.equals(EditMode.LOCK)) {
                             result.setTransactionTypeDescription(accountingControl.getTransactionTypeDescriptionTransfer(getUserVisit(), transactionTypeDescription));
 
                             if(lockEntity(transactionType)) {
-                                TransactionTypeDescriptionEdit edit = AccountingEditFactory.getTransactionTypeDescriptionEdit();
+                                var edit = AccountingEditFactory.getTransactionTypeDescriptionEdit();
 
                                 result.setEdit(edit);
                                 edit.setDescription(transactionTypeDescription.getDescription());
@@ -113,12 +113,12 @@ public class EditTransactionTypeDescriptionCommand
                         addExecutionError(ExecutionErrors.UnknownTransactionTypeDescription.name());
                     }
                 } else if(editMode.equals(EditMode.UPDATE)) {
-                    TransactionTypeDescriptionValue transactionTypeDescriptionValue = accountingControl.getTransactionTypeDescriptionValueForUpdate(transactionType, language);
+                    var transactionTypeDescriptionValue = accountingControl.getTransactionTypeDescriptionValueForUpdate(transactionType, language);
                     
                     if(transactionTypeDescriptionValue != null) {
                         if(lockEntityForUpdate(transactionType)) {
                             try {
-                                String description = edit.getDescription();
+                                var description = edit.getDescription();
                                 
                                 transactionTypeDescriptionValue.setDescription(description);
                                 

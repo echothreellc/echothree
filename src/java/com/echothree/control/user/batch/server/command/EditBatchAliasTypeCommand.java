@@ -96,12 +96,12 @@ public class EditBatchAliasTypeCommand
     public BatchAliasType getEntity(EditBatchAliasTypeResult result) {
         var batchControl = Session.getModelController(BatchControl.class);
         BatchAliasType batchAliasType = null;
-        String batchTypeName = spec.getBatchTypeName();
+        var batchTypeName = spec.getBatchTypeName();
 
         batchType = batchControl.getBatchTypeByName(batchTypeName);
 
         if(batchType != null) {
-            String batchAliasTypeName = spec.getBatchAliasTypeName();
+            var batchAliasTypeName = spec.getBatchAliasTypeName();
 
             if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
                 batchAliasType = batchControl.getBatchAliasTypeByName(batchType, batchAliasTypeName);
@@ -136,8 +136,8 @@ public class EditBatchAliasTypeCommand
     @Override
     public void doLock(BatchAliasTypeEdit edit, BatchAliasType batchAliasType) {
         var batchControl = Session.getModelController(BatchControl.class);
-        BatchAliasTypeDescription batchAliasTypeDescription = batchControl.getBatchAliasTypeDescription(batchAliasType, getPreferredLanguage());
-        BatchAliasTypeDetail batchAliasTypeDetail = batchAliasType.getLastDetail();
+        var batchAliasTypeDescription = batchControl.getBatchAliasTypeDescription(batchAliasType, getPreferredLanguage());
+        var batchAliasTypeDetail = batchAliasType.getLastDetail();
 
         edit.setBatchAliasTypeName(batchAliasTypeDetail.getBatchAliasTypeName());
         edit.setValidationPattern(batchAliasTypeDetail.getValidationPattern());
@@ -152,8 +152,8 @@ public class EditBatchAliasTypeCommand
     @Override
     public void canUpdate(BatchAliasType batchAliasType) {
         var batchControl = Session.getModelController(BatchControl.class);
-        String batchAliasTypeName = edit.getBatchAliasTypeName();
-        BatchAliasType duplicateBatchAliasType = batchControl.getBatchAliasTypeByName(batchType, batchAliasTypeName);
+        var batchAliasTypeName = edit.getBatchAliasTypeName();
+        var duplicateBatchAliasType = batchControl.getBatchAliasTypeByName(batchType, batchAliasTypeName);
 
         if(duplicateBatchAliasType != null && !batchAliasType.equals(duplicateBatchAliasType)) {
             addExecutionError(ExecutionErrors.DuplicateBatchAliasTypeName.name(), spec.getBatchTypeName(), batchAliasTypeName);
@@ -164,9 +164,9 @@ public class EditBatchAliasTypeCommand
     public void doUpdate(BatchAliasType batchAliasType) {
         var batchControl = Session.getModelController(BatchControl.class);
         var partyPK = getPartyPK();
-        BatchAliasTypeDetailValue batchAliasTypeDetailValue = batchControl.getBatchAliasTypeDetailValueForUpdate(batchAliasType);
-        BatchAliasTypeDescription batchAliasTypeDescription = batchControl.getBatchAliasTypeDescriptionForUpdate(batchAliasType, getPreferredLanguage());
-        String description = edit.getDescription();
+        var batchAliasTypeDetailValue = batchControl.getBatchAliasTypeDetailValueForUpdate(batchAliasType);
+        var batchAliasTypeDescription = batchControl.getBatchAliasTypeDescriptionForUpdate(batchAliasType, getPreferredLanguage());
+        var description = edit.getDescription();
 
         batchAliasTypeDetailValue.setBatchAliasTypeName(edit.getBatchAliasTypeName());
         batchAliasTypeDetailValue.setValidationPattern(edit.getValidationPattern());
@@ -180,7 +180,7 @@ public class EditBatchAliasTypeCommand
         } else if(batchAliasTypeDescription != null && description == null) {
             batchControl.deleteBatchAliasTypeDescription(batchAliasTypeDescription, partyPK);
         } else if(batchAliasTypeDescription != null && description != null) {
-            BatchAliasTypeDescriptionValue batchAliasTypeDescriptionValue = batchControl.getBatchAliasTypeDescriptionValue(batchAliasTypeDescription);
+            var batchAliasTypeDescriptionValue = batchControl.getBatchAliasTypeDescriptionValue(batchAliasTypeDescription);
 
             batchAliasTypeDescriptionValue.setDescription(description);
             batchControl.updateBatchAliasTypeDescriptionFromValue(batchAliasTypeDescriptionValue, partyPK);

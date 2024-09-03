@@ -53,11 +53,11 @@ public class CreateIconUsageTypeCommand
     @Override
     protected BaseResult execute() {
         var iconControl = Session.getModelController(IconControl.class);
-        String iconUsageTypeName = form.getIconUsageTypeName();
-        IconUsageType iconUsageType = iconControl.getIconUsageTypeByName(iconUsageTypeName);
+        var iconUsageTypeName = form.getIconUsageTypeName();
+        var iconUsageType = iconControl.getIconUsageTypeByName(iconUsageTypeName);
         
         if(iconUsageType == null) {
-            PartyPK createdBy = getPartyPK();
+            var createdBy = getPartyPK();
             var isDefault = Boolean.valueOf(form.getIsDefault());
             var sortOrder = Integer.valueOf(form.getSortOrder());
             var description = form.getDescription();

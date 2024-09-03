@@ -66,13 +66,13 @@ public class DeleteLocationCommand
     @Override
     protected BaseResult execute() {
         var warehouseControl = Session.getModelController(WarehouseControl.class);
-        String warehouseName = form.getWarehouseName();
-        Warehouse warehouse = warehouseControl.getWarehouseByName(warehouseName);
+        var warehouseName = form.getWarehouseName();
+        var warehouse = warehouseControl.getWarehouseByName(warehouseName);
         
         if(warehouse != null) {
-            Party warehouseParty = warehouse.getParty();
-            String locationName = form.getLocationName();
-            Location location = warehouseControl.getLocationByNameForUpdate(warehouseParty, locationName);
+            var warehouseParty = warehouse.getParty();
+            var locationName = form.getLocationName();
+            var location = warehouseControl.getLocationByNameForUpdate(warehouseParty, locationName);
             
             if(location != null) {
                 // TODO: Verify there is no inventory in the location, perhaps by checking for InventoryAssignedLocations

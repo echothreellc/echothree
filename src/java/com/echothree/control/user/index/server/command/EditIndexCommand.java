@@ -92,7 +92,7 @@ public class EditIndexCommand
     public Index getEntity(EditIndexResult result) {
         var indexControl = Session.getModelController(IndexControl.class);
         Index index;
-        String indexName = spec.getIndexName();
+        var indexName = spec.getIndexName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
             index = indexControl.getIndexByName(indexName);
@@ -122,8 +122,8 @@ public class EditIndexCommand
     @Override
     public void doLock(IndexEdit edit, Index index) {
         var indexControl = Session.getModelController(IndexControl.class);
-        IndexDescription indexDescription = indexControl.getIndexDescription(index, getPreferredLanguage());
-        IndexDetail indexDetail = index.getLastDetail();
+        var indexDescription = indexControl.getIndexDescription(index, getPreferredLanguage());
+        var indexDetail = index.getLastDetail();
 
         edit.setIndexName(indexDetail.getIndexName());
         edit.setIsDefault(indexDetail.getIsDefault().toString());
@@ -137,8 +137,8 @@ public class EditIndexCommand
     @Override
     public void canUpdate(Index index) {
         var indexControl = Session.getModelController(IndexControl.class);
-        String indexName = edit.getIndexName();
-        Index duplicateIndex = indexControl.getIndexByName(indexName);
+        var indexName = edit.getIndexName();
+        var duplicateIndex = indexControl.getIndexByName(indexName);
 
         if(duplicateIndex != null && !index.equals(duplicateIndex)) {
             addExecutionError(ExecutionErrors.DuplicateIndexName.name(), indexName);
@@ -149,9 +149,9 @@ public class EditIndexCommand
     public void doUpdate(Index index) {
         var indexControl = Session.getModelController(IndexControl.class);
         var partyPK = getPartyPK();
-        IndexDetailValue indexDetailValue = indexControl.getIndexDetailValueForUpdate(index);
-        IndexDescription indexDescription = indexControl.getIndexDescriptionForUpdate(index, getPreferredLanguage());
-        String description = edit.getDescription();
+        var indexDetailValue = indexControl.getIndexDetailValueForUpdate(index);
+        var indexDescription = indexControl.getIndexDescriptionForUpdate(index, getPreferredLanguage());
+        var description = edit.getDescription();
 
         indexDetailValue.setIndexName(edit.getIndexName());
         indexDetailValue.setDirectory(edit.getDirectory());
@@ -167,7 +167,7 @@ public class EditIndexCommand
                 indexControl.deleteIndexDescription(indexDescription, partyPK);
             } else {
                 if(indexDescription != null && description != null) {
-                    IndexDescriptionValue indexDescriptionValue = indexControl.getIndexDescriptionValue(indexDescription);
+                    var indexDescriptionValue = indexControl.getIndexDescriptionValue(indexDescription);
 
                     indexDescriptionValue.setDescription(description);
                     indexControl.updateIndexDescriptionFromValue(indexDescriptionValue, partyPK);

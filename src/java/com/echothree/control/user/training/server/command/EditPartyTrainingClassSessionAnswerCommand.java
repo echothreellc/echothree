@@ -101,28 +101,28 @@ public class EditPartyTrainingClassSessionAnswerCommand
     @Override
     public PartyTrainingClassSessionAnswer getEntity(EditPartyTrainingClassSessionAnswerResult result) {
         PartyTrainingClassSessionAnswer partyTrainingClassSessionAnswer = null;
-        PartyTrainingClass partyTrainingClass = PartyTrainingClassLogic.getInstance().getPartyTrainingClassByName(this, spec.getPartyTrainingClassName());
+        var partyTrainingClass = PartyTrainingClassLogic.getInstance().getPartyTrainingClassByName(this, spec.getPartyTrainingClassName());
         
         if(!hasExecutionErrors()) {
-            Integer partyTrainingClassSessionSequence = Integer.valueOf(spec.getPartyTrainingClassSessionSequence());
-            PartyTrainingClassSession partyTrainingClassSession = PartyTrainingClassSessionLogic.getInstance().getPartyTrainingClassSession(this,
+            var partyTrainingClassSessionSequence = Integer.valueOf(spec.getPartyTrainingClassSessionSequence());
+            var partyTrainingClassSession = PartyTrainingClassSessionLogic.getInstance().getPartyTrainingClassSession(this,
                     partyTrainingClass, partyTrainingClassSessionSequence);
             
             if(!hasExecutionErrors()) {
-                TrainingClassSection trainingClassSection = TrainingClassLogic.getInstance().getTrainingClassSectionByName(this,
+                var trainingClassSection = TrainingClassLogic.getInstance().getTrainingClassSectionByName(this,
                         partyTrainingClassSession.getLastDetail().getPartyTrainingClass().getLastDetail().getTrainingClass(),
                         spec.getTrainingClassSectionName());
                 
                 if(!hasExecutionErrors()) {
-                    TrainingClassQuestion trainingClassQuestion = TrainingClassLogic.getInstance().getTrainingClassQuestionByName(this, trainingClassSection,
+                    var trainingClassQuestion = TrainingClassLogic.getInstance().getTrainingClassQuestionByName(this, trainingClassSection,
                             spec.getTrainingClassQuestionName());
                     
                     if(!hasExecutionErrors()) {
-                        PartyTrainingClassSessionQuestion partyTrainingClassSessionQuestion = PartyTrainingClassSessionLogic.getInstance().getPartyTrainingClassSessionQuestion(this,
+                        var partyTrainingClassSessionQuestion = PartyTrainingClassSessionLogic.getInstance().getPartyTrainingClassSessionQuestion(this,
                                 partyTrainingClassSession, trainingClassQuestion);
                         
                         if(!hasExecutionErrors()) {
-                            Integer partyTrainingClassSessionAnswerSequence = Integer.valueOf(spec.getPartyTrainingClassSessionAnswerSequence());
+                            var partyTrainingClassSessionAnswerSequence = Integer.valueOf(spec.getPartyTrainingClassSessionAnswerSequence());
 
                             if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
                                 partyTrainingClassSessionAnswer = PartyTrainingClassSessionLogic.getInstance().getPartyTrainingClassSessionAnswer(this,
@@ -156,9 +156,9 @@ public class EditPartyTrainingClassSessionAnswerCommand
     
     @Override
     public void doLock(PartyTrainingClassSessionAnswerEdit edit, PartyTrainingClassSessionAnswer partyTrainingClassSessionAnswer) {
-        DateUtils dateUtils = DateUtils.getInstance();
-        UserVisit userVisit = getUserVisit();
-        DateTimeFormat preferredDateTimeFormat = getPreferredDateTimeFormat();
+        var dateUtils = DateUtils.getInstance();
+        var userVisit = getUserVisit();
+        var preferredDateTimeFormat = getPreferredDateTimeFormat();
         
         trainingClassAnswer = partyTrainingClassSessionAnswer.getTrainingClassAnswer();
         
@@ -172,13 +172,13 @@ public class EditPartyTrainingClassSessionAnswerCommand
     
     @Override
     public void canUpdate(PartyTrainingClassSessionAnswer partyTrainingClassSessionAnswer) {
-        String trainingClassAnswerName = edit.getTrainingClassAnswerName();
+        var trainingClassAnswerName = edit.getTrainingClassAnswerName();
 
         trainingClassAnswer = trainingClassAnswerName == null ? null : TrainingClassLogic.getInstance().getTrainingClassAnswerByName(this,
                 partyTrainingClassSessionAnswer.getTrainingClassAnswer().getLastDetail().getTrainingClassQuestion(), trainingClassAnswerName);
         
         if(!hasExecutionErrors()) {
-            String strQuestionEndTime = edit.getQuestionEndTime();
+            var strQuestionEndTime = edit.getQuestionEndTime();
             
             questionStartTime = Long.valueOf(edit.getQuestionStartTime());
             questionEndTime = strQuestionEndTime == null ? null : Long.valueOf(strQuestionEndTime);
@@ -189,7 +189,7 @@ public class EditPartyTrainingClassSessionAnswerCommand
     public void doUpdate(PartyTrainingClassSessionAnswer partyTrainingClassSessionAnswer) {
         var trainingControl = Session.getModelController(TrainingControl.class);
         var partyPK = getPartyPK();
-        PartyTrainingClassSessionAnswerValue partyTrainingClassSessionAnswerValue = trainingControl.getPartyTrainingClassSessionAnswerValue(partyTrainingClassSessionAnswer);
+        var partyTrainingClassSessionAnswerValue = trainingControl.getPartyTrainingClassSessionAnswerValue(partyTrainingClassSessionAnswer);
 
         partyTrainingClassSessionAnswerValue.setTrainingClassAnswerPK(trainingClassAnswer == null ? null : trainingClassAnswer.getPrimaryKey());
         partyTrainingClassSessionAnswerValue.setQuestionStartTime(questionStartTime);

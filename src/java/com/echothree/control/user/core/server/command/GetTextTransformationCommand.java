@@ -61,7 +61,7 @@ public class GetTextTransformationCommand
     protected TextTransformation getEntity() {
         var coreControl = getCoreControl();
         TextTransformation textTransformation = null;
-        String textTransformationName = form.getTextTransformationName();
+        var textTransformationName = form.getTextTransformationName();
         var parameterCount = (textTransformationName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {
@@ -89,7 +89,7 @@ public class GetTextTransformationCommand
     @Override
     protected BaseResult getResult(TextTransformation textTransformation) {
         var coreControl = getCoreControl();
-        GetTextTransformationResult result = CoreResultFactory.getGetTextTransformationResult();
+        var result = CoreResultFactory.getGetTextTransformationResult();
 
         if(textTransformation != null) {
             result.setTextTransformation(coreControl.getTextTransformationTransfer(getUserVisit(), textTransformation));

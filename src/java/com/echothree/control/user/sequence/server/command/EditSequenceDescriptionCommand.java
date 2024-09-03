@@ -93,18 +93,18 @@ public class EditSequenceDescriptionCommand
     public SequenceDescription getEntity(EditSequenceDescriptionResult result) {
         var sequenceControl = Session.getModelController(SequenceControl.class);
         SequenceDescription sequenceDescription = null;
-        String sequenceTypeName = spec.getSequenceTypeName();
+        var sequenceTypeName = spec.getSequenceTypeName();
         
         sequenceType = sequenceControl.getSequenceTypeByName(sequenceTypeName);
 
         if(sequenceType != null) {
-            String sequenceName = spec.getSequenceName();
-            Sequence sequence = sequenceControl.getSequenceByName(sequenceType, sequenceName);
+            var sequenceName = spec.getSequenceName();
+            var sequence = sequenceControl.getSequenceByName(sequenceType, sequenceName);
 
             if(sequence != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = spec.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = spec.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                 if(language != null) {
                     if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -149,7 +149,7 @@ public class EditSequenceDescriptionCommand
     @Override
     public void doUpdate(SequenceDescription sequenceDescription) {
         var sequenceControl = Session.getModelController(SequenceControl.class);
-        SequenceDescriptionValue sequenceDescriptionValue = sequenceControl.getSequenceDescriptionValue(sequenceDescription);
+        var sequenceDescriptionValue = sequenceControl.getSequenceDescriptionValue(sequenceDescription);
         
         sequenceDescriptionValue.setDescription(edit.getDescription());
         

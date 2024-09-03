@@ -64,12 +64,12 @@ public class SetDefaultPicklistTimeTypeCommand
     @Override
     protected BaseResult execute() {
         var picklistControl = Session.getModelController(PicklistControl.class);
-        String picklistTypeName = form.getPicklistTypeName();
-        PicklistType picklistType = picklistControl.getPicklistTypeByName(picklistTypeName);
+        var picklistTypeName = form.getPicklistTypeName();
+        var picklistType = picklistControl.getPicklistTypeByName(picklistTypeName);
 
         if(picklistType != null) {
-            String picklistTimeTypeName = form.getPicklistTimeTypeName();
-            PicklistTimeTypeDetailValue picklistTimeTypeDetailValue = picklistControl.getPicklistTimeTypeDetailValueByNameForUpdate(picklistType, picklistTimeTypeName);
+            var picklistTimeTypeName = form.getPicklistTimeTypeName();
+            var picklistTimeTypeDetailValue = picklistControl.getPicklistTimeTypeDetailValueByNameForUpdate(picklistType, picklistTimeTypeName);
 
             if(picklistTimeTypeDetailValue != null) {
                 picklistTimeTypeDetailValue.setIsDefault(Boolean.TRUE);

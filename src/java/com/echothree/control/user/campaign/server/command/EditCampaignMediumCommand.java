@@ -91,7 +91,7 @@ public class EditCampaignMediumCommand
     public CampaignMedium getEntity(EditCampaignMediumResult result) {
         var campaignControl = Session.getModelController(CampaignControl.class);
         CampaignMedium campaignMedium;
-        String campaignMediumName = spec.getCampaignMediumName();
+        var campaignMediumName = spec.getCampaignMediumName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
             campaignMedium = campaignControl.getCampaignMediumByName(campaignMediumName);
@@ -121,8 +121,8 @@ public class EditCampaignMediumCommand
     @Override
     public void doLock(CampaignMediumEdit edit, CampaignMedium campaignMedium) {
         var campaignControl = Session.getModelController(CampaignControl.class);
-        CampaignMediumDescription campaignMediumDescription = campaignControl.getCampaignMediumDescription(campaignMedium, getPreferredLanguage());
-        CampaignMediumDetail campaignMediumDetail = campaignMedium.getLastDetail();
+        var campaignMediumDescription = campaignControl.getCampaignMediumDescription(campaignMedium, getPreferredLanguage());
+        var campaignMediumDetail = campaignMedium.getLastDetail();
 
         edit.setValue(campaignMediumDetail.getValue());
         edit.setIsDefault(campaignMediumDetail.getIsDefault().toString());
@@ -136,8 +136,8 @@ public class EditCampaignMediumCommand
     @Override
     public void canUpdate(CampaignMedium campaignMedium) {
         var campaignControl = Session.getModelController(CampaignControl.class);
-        String value = edit.getValue();
-        CampaignMedium duplicateCampaignMedium = campaignControl.getCampaignMediumByValue(value);
+        var value = edit.getValue();
+        var duplicateCampaignMedium = campaignControl.getCampaignMediumByValue(value);
 
         if(duplicateCampaignMedium != null && !campaignMedium.equals(duplicateCampaignMedium)) {
             addExecutionError(ExecutionErrors.DuplicateCampaignMediumValue.name(), value);
@@ -148,9 +148,9 @@ public class EditCampaignMediumCommand
     public void doUpdate(CampaignMedium campaignMedium) {
         var campaignControl = Session.getModelController(CampaignControl.class);
         var partyPK = getPartyPK();
-        CampaignMediumDetailValue campaignMediumDetailValue = campaignControl.getCampaignMediumDetailValueForUpdate(campaignMedium);
-        CampaignMediumDescription campaignMediumDescription = campaignControl.getCampaignMediumDescriptionForUpdate(campaignMedium, getPreferredLanguage());
-        String description = edit.getDescription();
+        var campaignMediumDetailValue = campaignControl.getCampaignMediumDetailValueForUpdate(campaignMedium);
+        var campaignMediumDescription = campaignControl.getCampaignMediumDescriptionForUpdate(campaignMedium, getPreferredLanguage());
+        var description = edit.getDescription();
 
         campaignMediumDetailValue.setValue(edit.getValue());
         campaignMediumDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
@@ -165,7 +165,7 @@ public class EditCampaignMediumCommand
                 campaignControl.deleteCampaignMediumDescription(campaignMediumDescription, partyPK);
             } else {
                 if(campaignMediumDescription != null && description != null) {
-                    CampaignMediumDescriptionValue campaignMediumDescriptionValue = campaignControl.getCampaignMediumDescriptionValue(campaignMediumDescription);
+                    var campaignMediumDescriptionValue = campaignControl.getCampaignMediumDescriptionValue(campaignMediumDescription);
 
                     campaignMediumDescriptionValue.setDescription(description);
                     campaignControl.updateCampaignMediumDescriptionFromValue(campaignMediumDescriptionValue, partyPK);

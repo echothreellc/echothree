@@ -34,14 +34,14 @@ public class HarmonizedTariffScheduleCodeUnitTransferCache
     
     @Override
     public HarmonizedTariffScheduleCodeUnitTransfer getTransfer(HarmonizedTariffScheduleCodeUnit harmonizedTariffScheduleCodeUnit) {
-        HarmonizedTariffScheduleCodeUnitTransfer harmonizedTariffScheduleCodeUnitTransfer = get(harmonizedTariffScheduleCodeUnit);
+        var harmonizedTariffScheduleCodeUnitTransfer = get(harmonizedTariffScheduleCodeUnit);
         
         if(harmonizedTariffScheduleCodeUnitTransfer == null) {
-            HarmonizedTariffScheduleCodeUnitDetail harmonizedTariffScheduleCodeUnitDetail = harmonizedTariffScheduleCodeUnit.getLastDetail();
-            String harmonizedTariffScheduleCodeUnitName = harmonizedTariffScheduleCodeUnitDetail.getHarmonizedTariffScheduleCodeUnitName();
-            Boolean isDefault = harmonizedTariffScheduleCodeUnitDetail.getIsDefault();
-            Integer sortOrder = harmonizedTariffScheduleCodeUnitDetail.getSortOrder();
-            String description = itemControl.getBestHarmonizedTariffScheduleCodeUnitDescription(harmonizedTariffScheduleCodeUnit, getLanguage());
+            var harmonizedTariffScheduleCodeUnitDetail = harmonizedTariffScheduleCodeUnit.getLastDetail();
+            var harmonizedTariffScheduleCodeUnitName = harmonizedTariffScheduleCodeUnitDetail.getHarmonizedTariffScheduleCodeUnitName();
+            var isDefault = harmonizedTariffScheduleCodeUnitDetail.getIsDefault();
+            var sortOrder = harmonizedTariffScheduleCodeUnitDetail.getSortOrder();
+            var description = itemControl.getBestHarmonizedTariffScheduleCodeUnitDescription(harmonizedTariffScheduleCodeUnit, getLanguage());
             
             harmonizedTariffScheduleCodeUnitTransfer = new HarmonizedTariffScheduleCodeUnitTransfer(harmonizedTariffScheduleCodeUnitName, isDefault, sortOrder, description);
             put(harmonizedTariffScheduleCodeUnit, harmonizedTariffScheduleCodeUnitTransfer);

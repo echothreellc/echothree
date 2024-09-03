@@ -50,9 +50,9 @@ public class GetForumTypeChoicesCommand
     @Override
     protected BaseResult execute() {
         var forumControl = Session.getModelController(ForumControl.class);
-        GetForumTypeChoicesResult result = ForumResultFactory.getGetForumTypeChoicesResult();
-        String defaultForumTypeChoice = form.getDefaultForumTypeChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = ForumResultFactory.getGetForumTypeChoicesResult();
+        var defaultForumTypeChoice = form.getDefaultForumTypeChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setForumTypeChoices(forumControl.getForumTypeChoices(defaultForumTypeChoice, getPreferredLanguage(),
                 allowNullChoice));

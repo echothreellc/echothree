@@ -87,13 +87,13 @@ public class CompaniesTag
     public int doStartTag()
             throws JspException {
         try {
-            GetCompaniesForm commandForm = PartyUtil.getHome().getGetCompaniesForm();
+            var commandForm = PartyUtil.getHome().getGetCompaniesForm();
             
             setOptions(options, null, commandForm);
 
             commandForm.setTransferProperties(transferProperties);
-            
-            CommandResult commandResult = PartyUtil.getHome().getCompanies(getUserVisitPK(), commandForm);
+
+            var commandResult = PartyUtil.getHome().getCompanies(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -101,8 +101,8 @@ public class CompaniesTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetCompaniesResult result = (GetCompaniesResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetCompaniesResult)executionResult.getResult();
 
                 pageContext.setAttribute(var, new ListWrapper<>(result.getCompanies()), scope);
             }

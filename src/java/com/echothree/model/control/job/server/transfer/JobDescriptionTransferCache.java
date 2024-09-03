@@ -32,11 +32,11 @@ public class JobDescriptionTransferCache
     }
     
     public JobDescriptionTransfer getJobDescriptionTransfer(JobDescription jobDescription) {
-        JobDescriptionTransfer jobDescriptionTransfer = get(jobDescription);
+        var jobDescriptionTransfer = get(jobDescription);
         
         if(jobDescriptionTransfer == null) {
-            JobTransfer jobTransfer = jobControl.getJobTransfer(userVisit, jobDescription.getJob());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, jobDescription.getLanguage());
+            var jobTransfer = jobControl.getJobTransfer(userVisit, jobDescription.getJob());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, jobDescription.getLanguage());
             
             jobDescriptionTransfer = new JobDescriptionTransfer(languageTransfer, jobTransfer, jobDescription.getDescription());
             put(jobDescription, jobDescriptionTransfer);

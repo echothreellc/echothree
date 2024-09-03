@@ -85,7 +85,7 @@ public class EntityInstanceLogic
     private EntityInstance checkEntityTimeForDeletion(CoreControl coreControl, EntityInstance entityInstance) {
         // If the EntityInstance is null, then it is already going to indicate it has been deleted, otherwise...
         if(entityInstance != null) {
-            EntityTime entityTime = coreControl.getEntityTime(entityInstance);
+            var entityTime = coreControl.getEntityTime(entityInstance);
 
             // If the EntityTime is null, then we're not going to find a DeletedTime, which means it must exist...
             if(entityTime != null) {
@@ -102,7 +102,7 @@ public class EntityInstanceLogic
     
     public EntityInstance getEntityInstanceByEntityRef(final ExecutionErrorAccumulator eea, final String entityRef) {
         var coreControl = Session.getModelController(CoreControl.class);
-        EntityInstance entityInstance = checkEntityTimeForDeletion(coreControl, coreControl.getEntityInstanceByEntityRef(entityRef));
+        var entityInstance = checkEntityTimeForDeletion(coreControl, coreControl.getEntityInstanceByEntityRef(entityRef));
         
         if(entityInstance == null) {
             handleExecutionError(UnknownEntityRefException.class, eea, ExecutionErrors.UnknownEntityRef.name(), entityRef);
@@ -117,7 +117,7 @@ public class EntityInstanceLogic
     
     public EntityInstance getEntityInstanceByKey(final ExecutionErrorAccumulator eea, final String key) {
         var coreControl = Session.getModelController(CoreControl.class);
-        EntityInstance entityInstance = checkEntityTimeForDeletion(coreControl, coreControl.getEntityInstanceByKey(key));
+        var entityInstance = checkEntityTimeForDeletion(coreControl, coreControl.getEntityInstanceByKey(key));
 
         if(entityInstance == null) {
             handleExecutionError(UnknownKeyException.class, eea, ExecutionErrors.UnknownKey.name(), key);
@@ -132,7 +132,7 @@ public class EntityInstanceLogic
     
     public EntityInstance getEntityInstanceByGuid(final ExecutionErrorAccumulator eea, final String guid) {
         var coreControl = Session.getModelController(CoreControl.class);
-        EntityInstance entityInstance = checkEntityTimeForDeletion(coreControl, coreControl.getEntityInstanceByGuid(guid));
+        var entityInstance = checkEntityTimeForDeletion(coreControl, coreControl.getEntityInstanceByGuid(guid));
 
         if(entityInstance == null) {
             handleExecutionError(UnknownGuidException.class, eea, ExecutionErrors.UnknownGuid.name(), guid);
@@ -143,7 +143,7 @@ public class EntityInstanceLogic
 
     public EntityInstance getEntityInstanceByUlid(final ExecutionErrorAccumulator eea, final String ulid) {
         var coreControl = Session.getModelController(CoreControl.class);
-        EntityInstance entityInstance = checkEntityTimeForDeletion(coreControl, coreControl.getEntityInstanceByUlid(ulid));
+        var entityInstance = checkEntityTimeForDeletion(coreControl, coreControl.getEntityInstanceByUlid(ulid));
 
         if(entityInstance == null) {
             handleExecutionError(UnknownUlidException.class, eea, ExecutionErrors.UnknownUlid.name(), ulid);
@@ -180,10 +180,10 @@ public class EntityInstanceLogic
         }
         
         if((eea == null || !eea.hasExecutionErrors()) && componentVendorName != null && entityTypeNames.length > 0) {
-            EntityTypeDetail entityTypeDetail = entityInstance.getEntityType().getLastDetail();
-            String foundComponentVendorName = entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName();
-            String foundEntityTypeName = entityTypeDetail.getEntityTypeName();
-            boolean found = false;
+            var entityTypeDetail = entityInstance.getEntityType().getLastDetail();
+            var foundComponentVendorName = entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName();
+            var foundEntityTypeName = entityTypeDetail.getEntityTypeName();
+            var found = false;
             
             if(foundComponentVendorName.equals(componentVendorName)) {
                 for(var entityTypeName : entityTypeNames) {

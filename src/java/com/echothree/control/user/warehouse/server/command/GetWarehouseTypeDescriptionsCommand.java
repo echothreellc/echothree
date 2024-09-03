@@ -65,9 +65,9 @@ public class GetWarehouseTypeDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var warehouseControl = Session.getModelController(WarehouseControl.class);
-        GetWarehouseTypeDescriptionsResult result = WarehouseResultFactory.getGetWarehouseTypeDescriptionsResult();
-        String warehouseTypeName = form.getWarehouseTypeName();
-        WarehouseType warehouseType = warehouseControl.getWarehouseTypeByName(warehouseTypeName);
+        var result = WarehouseResultFactory.getGetWarehouseTypeDescriptionsResult();
+        var warehouseTypeName = form.getWarehouseTypeName();
+        var warehouseType = warehouseControl.getWarehouseTypeByName(warehouseTypeName);
         
         if(warehouseType != null) {
             result.setWarehouseType(warehouseControl.getWarehouseTypeTransfer(getUserVisit(), warehouseType));

@@ -167,7 +167,7 @@ public class LocationUseTypeControl
 
     public LocationUseTypeChoicesBean getLocationUseTypeChoices(String defaultLocationUseTypeChoice, Language language,
             boolean allowNullChoice) {
-        List<LocationUseType> locationUseTypes = getLocationUseTypes();
+        var locationUseTypes = getLocationUseTypes();
         var size = locationUseTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -213,7 +213,7 @@ public class LocationUseTypeControl
         LocationUseTypeDescription locationUseTypeDescription;
         
         try {
-            PreparedStatement ps = LocationUseTypeDescriptionFactory.getInstance().prepareStatement(
+            var ps = LocationUseTypeDescriptionFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM locationusetypedescriptions " +
                     "WHERE locutypd_locutyp_locationusetypeid = ? AND locutypd_lang_languageid = ?");
@@ -231,7 +231,7 @@ public class LocationUseTypeControl
     
     public String getBestLocationUseTypeDescription(LocationUseType locationUseType, Language language) {
         String description;
-        LocationUseTypeDescription locationUseTypeDescription = getLocationUseTypeDescription(locationUseType, language);
+        var locationUseTypeDescription = getLocationUseTypeDescription(locationUseType, language);
         
         if(locationUseTypeDescription == null && !language.getIsDefault()) {
             locationUseTypeDescription = getLocationUseTypeDescription(locationUseType, getPartyControl().getDefaultLanguage());

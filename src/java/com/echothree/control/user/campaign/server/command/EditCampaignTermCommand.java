@@ -91,7 +91,7 @@ public class EditCampaignTermCommand
     public CampaignTerm getEntity(EditCampaignTermResult result) {
         var campaignControl = Session.getModelController(CampaignControl.class);
         CampaignTerm campaignTerm;
-        String campaignTermName = spec.getCampaignTermName();
+        var campaignTermName = spec.getCampaignTermName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
             campaignTerm = campaignControl.getCampaignTermByName(campaignTermName);
@@ -121,8 +121,8 @@ public class EditCampaignTermCommand
     @Override
     public void doLock(CampaignTermEdit edit, CampaignTerm campaignTerm) {
         var campaignControl = Session.getModelController(CampaignControl.class);
-        CampaignTermDescription campaignTermDescription = campaignControl.getCampaignTermDescription(campaignTerm, getPreferredLanguage());
-        CampaignTermDetail campaignTermDetail = campaignTerm.getLastDetail();
+        var campaignTermDescription = campaignControl.getCampaignTermDescription(campaignTerm, getPreferredLanguage());
+        var campaignTermDetail = campaignTerm.getLastDetail();
 
         edit.setValue(campaignTermDetail.getValue());
         edit.setIsDefault(campaignTermDetail.getIsDefault().toString());
@@ -136,8 +136,8 @@ public class EditCampaignTermCommand
     @Override
     public void canUpdate(CampaignTerm campaignTerm) {
         var campaignControl = Session.getModelController(CampaignControl.class);
-        String value = edit.getValue();
-        CampaignTerm duplicateCampaignTerm = campaignControl.getCampaignTermByValue(value);
+        var value = edit.getValue();
+        var duplicateCampaignTerm = campaignControl.getCampaignTermByValue(value);
 
         if(duplicateCampaignTerm != null && !campaignTerm.equals(duplicateCampaignTerm)) {
             addExecutionError(ExecutionErrors.DuplicateCampaignTermValue.name(), value);
@@ -148,9 +148,9 @@ public class EditCampaignTermCommand
     public void doUpdate(CampaignTerm campaignTerm) {
         var campaignControl = Session.getModelController(CampaignControl.class);
         var partyPK = getPartyPK();
-        CampaignTermDetailValue campaignTermDetailValue = campaignControl.getCampaignTermDetailValueForUpdate(campaignTerm);
-        CampaignTermDescription campaignTermDescription = campaignControl.getCampaignTermDescriptionForUpdate(campaignTerm, getPreferredLanguage());
-        String description = edit.getDescription();
+        var campaignTermDetailValue = campaignControl.getCampaignTermDetailValueForUpdate(campaignTerm);
+        var campaignTermDescription = campaignControl.getCampaignTermDescriptionForUpdate(campaignTerm, getPreferredLanguage());
+        var description = edit.getDescription();
 
         campaignTermDetailValue.setValue(edit.getValue());
         campaignTermDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
@@ -165,7 +165,7 @@ public class EditCampaignTermCommand
                 campaignControl.deleteCampaignTermDescription(campaignTermDescription, partyPK);
             } else {
                 if(campaignTermDescription != null && description != null) {
-                    CampaignTermDescriptionValue campaignTermDescriptionValue = campaignControl.getCampaignTermDescriptionValue(campaignTermDescription);
+                    var campaignTermDescriptionValue = campaignControl.getCampaignTermDescriptionValue(campaignTermDescription);
 
                     campaignTermDescriptionValue.setDescription(description);
                     campaignControl.updateCampaignTermDescriptionFromValue(campaignTermDescriptionValue, partyPK);

@@ -73,25 +73,25 @@ public class GetChainEntityRoleTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var chainControl = Session.getModelController(ChainControl.class);
-        GetChainEntityRoleTypeDescriptionResult result = ChainResultFactory.getGetChainEntityRoleTypeDescriptionResult();
-        String chainKindName = form.getChainKindName();
-        ChainKind chainKind = chainControl.getChainKindByName(chainKindName);
+        var result = ChainResultFactory.getGetChainEntityRoleTypeDescriptionResult();
+        var chainKindName = form.getChainKindName();
+        var chainKind = chainControl.getChainKindByName(chainKindName);
 
         if(chainKind != null) {
-            String chainTypeName = form.getChainTypeName();
-            ChainType chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
+            var chainTypeName = form.getChainTypeName();
+            var chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
 
             if(chainType != null) {
-                String chainEntityRoleTypeName = form.getChainEntityRoleTypeName();
-                ChainEntityRoleType chainEntityRoleType = chainControl.getChainEntityRoleTypeByName(chainType, chainEntityRoleTypeName);
+                var chainEntityRoleTypeName = form.getChainEntityRoleTypeName();
+                var chainEntityRoleType = chainControl.getChainEntityRoleTypeByName(chainType, chainEntityRoleTypeName);
 
                 if(chainEntityRoleType != null) {
                     var partyControl = Session.getModelController(PartyControl.class);
-                    String languageIsoName = form.getLanguageIsoName();
-                    Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                    var languageIsoName = form.getLanguageIsoName();
+                    var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                     if(language != null) {
-                        ChainEntityRoleTypeDescription chainEntityRoleTypeDescription = chainControl.getChainEntityRoleTypeDescription(chainEntityRoleType, language);
+                        var chainEntityRoleTypeDescription = chainControl.getChainEntityRoleTypeDescription(chainEntityRoleType, language);
 
                         if(chainEntityRoleTypeDescription != null) {
                             result.setChainEntityRoleTypeDescription(chainControl.getChainEntityRoleTypeDescriptionTransfer(getUserVisit(), chainEntityRoleTypeDescription));

@@ -203,7 +203,7 @@ public class LeaveSearchEvaluator
             
             if(resultSet == null || resultSet.size() > 0) {
                 if(party != null) {
-                    EntityInstancePKHolder entityInstancePKHolder = getEntityInstancePKHolderByParty(party);
+                    var entityInstancePKHolder = getEntityInstancePKHolderByParty(party);
                     
                     if(resultSet == null) {
                         resultSet = entityInstancePKHolder;
@@ -215,7 +215,7 @@ public class LeaveSearchEvaluator
             
             if(resultSet == null || resultSet.size() > 0) {
                 if(companyParty != null) {
-                    EntityInstancePKHolder entityInstancePKHolder = getEntityInstancePKHolderByCompanyParty(companyParty);
+                    var entityInstancePKHolder = getEntityInstancePKHolderByCompanyParty(companyParty);
                     
                     if(resultSet == null) {
                         resultSet = entityInstancePKHolder;
@@ -227,7 +227,7 @@ public class LeaveSearchEvaluator
             
             if(resultSet == null || resultSet.size() > 0) {
                 if(leaveType != null) {
-                    EntityInstancePKHolder entityInstancePKHolder = getEntityInstancePKHolderByLeaveType(leaveType);
+                    var entityInstancePKHolder = getEntityInstancePKHolderByLeaveType(leaveType);
                     
                     if(resultSet == null) {
                         resultSet = entityInstancePKHolder;
@@ -239,7 +239,7 @@ public class LeaveSearchEvaluator
             
             if(resultSet == null || resultSet.size() > 0) {
                 if(leaveReason != null) {
-                    EntityInstancePKHolder entityInstancePKHolder = getEntityInstancePKHolderByLeaveReason(leaveReason);
+                    var entityInstancePKHolder = getEntityInstancePKHolderByLeaveReason(leaveReason);
                     
                     if(resultSet == null) {
                         resultSet = entityInstancePKHolder;
@@ -251,7 +251,7 @@ public class LeaveSearchEvaluator
 
             if(resultSet == null || resultSet.size() > 0) {
                 if(leaveStatusWorkflowStep != null) {
-                    EntityInstancePKHolder entityInstancePKHolder = getEntityInstancePKHolderByLeaveStatusWorkflowStep(leaveStatusWorkflowStep);
+                    var entityInstancePKHolder = getEntityInstancePKHolderByLeaveStatusWorkflowStep(leaveStatusWorkflowStep);
 
                     if(resultSet == null) {
                         resultSet = entityInstancePKHolder;
@@ -262,7 +262,7 @@ public class LeaveSearchEvaluator
             }
         } else {
             var employeeControl = Session.getModelController(EmployeeControl.class);
-            Leave leave = employeeControl.getLeaveByName(leaveName);
+            var leave = employeeControl.getLeaveByName(leaveName);
             
             if(leave != null) {
                 resultSet = new EntityInstancePKHolder(1);

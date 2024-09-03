@@ -69,20 +69,20 @@ public class DeleteReturnPolicyTranslationCommand
     @Override
     protected BaseResult execute() {
         var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
-        String returnKindName = form.getReturnKindName();
-        ReturnKind returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
+        var returnKindName = form.getReturnKindName();
+        var returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
 
         if(returnKind != null) {
-            String returnPolicyName = form.getReturnPolicyName();
-            ReturnPolicy returnPolicy = returnPolicyControl.getReturnPolicyByName(returnKind, returnPolicyName);
+            var returnPolicyName = form.getReturnPolicyName();
+            var returnPolicy = returnPolicyControl.getReturnPolicyByName(returnKind, returnPolicyName);
 
             if(returnPolicy != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = form.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = form.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                 if(language != null) {
-                    ReturnPolicyTranslation returnPolicyTranslation = returnPolicyControl.getReturnPolicyTranslationForUpdate(returnPolicy, language);
+                    var returnPolicyTranslation = returnPolicyControl.getReturnPolicyTranslationForUpdate(returnPolicy, language);
 
                     if(returnPolicyTranslation != null) {
                         returnPolicyControl.deleteReturnPolicyTranslation(returnPolicyTranslation, getPartyPK());

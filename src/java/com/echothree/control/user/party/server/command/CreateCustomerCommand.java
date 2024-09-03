@@ -132,66 +132,66 @@ public class CreateCustomerCommand
     
     @Override
     protected BaseResult execute() {
-        CreateCustomerResult result = PartyResultFactory.getCreateCustomerResult();
+        var result = PartyResultFactory.getCreateCustomerResult();
         var customerControl = Session.getModelController(CustomerControl.class);
         Customer customer = null;
-        String customerTypeName = form.getCustomerTypeName();
-        CustomerType customerType = customerTypeName == null ? customerControl.getDefaultCustomerType() : customerControl.getCustomerTypeByName(customerTypeName);
+        var customerTypeName = form.getCustomerTypeName();
+        var customerType = customerTypeName == null ? customerControl.getDefaultCustomerType() : customerControl.getCustomerTypeByName(customerTypeName);
 
         if(customerType != null) {
-            String cancellationPolicyName = form.getCancellationPolicyName();
+            var cancellationPolicyName = form.getCancellationPolicyName();
             CancellationPolicy cancellationPolicy = null;
 
             if(cancellationPolicyName != null) {
                 var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
-                CancellationKind returnKind = cancellationPolicyControl.getCancellationKindByName(CancellationKinds.CUSTOMER_CANCELLATION.name());
+                var returnKind = cancellationPolicyControl.getCancellationKindByName(CancellationKinds.CUSTOMER_CANCELLATION.name());
 
                 cancellationPolicy = cancellationPolicyControl.getCancellationPolicyByName(returnKind, cancellationPolicyName);
             }
 
             if(cancellationPolicyName == null || cancellationPolicy != null) {
-                String returnPolicyName = form.getReturnPolicyName();
+                var returnPolicyName = form.getReturnPolicyName();
                 ReturnPolicy returnPolicy = null;
 
                 if(returnPolicyName != null) {
                     var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
-                    ReturnKind returnKind = returnPolicyControl.getReturnKindByName(ReturnKinds.CUSTOMER_RETURN.name());
+                    var returnKind = returnPolicyControl.getReturnKindByName(ReturnKinds.CUSTOMER_RETURN.name());
 
                     returnPolicy = returnPolicyControl.getReturnPolicyByName(returnKind, returnPolicyName);
                 }
 
                 if(returnPolicyName == null || returnPolicy != null) {
                     var accountingControl = Session.getModelController(AccountingControl.class);
-                    String arGlAccountName = form.getArGlAccountName();
-                    GlAccount arGlAccount = arGlAccountName == null ? null : accountingControl.getGlAccountByName(arGlAccountName);
+                    var arGlAccountName = form.getArGlAccountName();
+                    var arGlAccount = arGlAccountName == null ? null : accountingControl.getGlAccountByName(arGlAccountName);
 
                     if(arGlAccountName == null || arGlAccount != null) {
-                        String glAccountCategoryName = arGlAccount == null ? null
+                        var glAccountCategoryName = arGlAccount == null ? null
                                 : arGlAccount.getLastDetail().getGlAccountCategory().getLastDetail().getGlAccountCategoryName();
 
                         if(glAccountCategoryName == null || glAccountCategoryName.equals(AccountingConstants.GlAccountCategory_ACCOUNTS_RECEIVABLE)) {
                             var termControl = Session.getModelController(TermControl.class);
-                            CustomerTypeDetail customerTypeDetail = customerType.getLastDetail();
-                            Term term = customerTypeDetail.getDefaultTerm();
+                            var customerTypeDetail = customerType.getLastDetail();
+                            var term = customerTypeDetail.getDefaultTerm();
 
                             if(term == null) {
                                 term = termControl.getDefaultTerm();
                             }
 
                             if(term != null) {
-                                String initialOfferName = form.getInitialOfferName();
-                                String initialUseName = form.getInitialUseName();
-                                String initialSourceName = form.getInitialSourceName();
+                                var initialOfferName = form.getInitialOfferName();
+                                var initialUseName = form.getInitialUseName();
+                                var initialSourceName = form.getInitialSourceName();
                                 OfferUse initialOfferUse = null;
-                                boolean invalidInitialOfferOrSourceSpecification = false;
+                                var invalidInitialOfferOrSourceSpecification = false;
 
                                 if(initialOfferName != null && initialUseName != null && initialSourceName == null) {
                                     var offerControl = Session.getModelController(OfferControl.class);
-                                    Offer initialOffer = offerControl.getOfferByName(initialOfferName);
+                                    var initialOffer = offerControl.getOfferByName(initialOfferName);
 
                                     if(initialOffer != null) {
                                         var useControl = Session.getModelController(UseControl.class);
-                                        Use initialUse = useControl.getUseByName(initialUseName);
+                                        var initialUse = useControl.getUseByName(initialUseName);
 
                                         if(initialUse != null) {
                                             var offerUseControl = Session.getModelController(OfferUseControl.class);
@@ -210,7 +210,7 @@ public class CreateCustomerCommand
                                     var sourceControl = Session.getModelController(SourceControl.class);
 
                                     if(initialOfferName == null && initialUseName == null && initialSourceName != null) {
-                                        Source source = sourceControl.getSourceByName(initialSourceName);
+                                        var source = sourceControl.getSourceByName(initialSourceName);
 
                                         if(source != null) {
                                             initialOfferUse = source.getLastDetail().getOfferUse();
@@ -222,7 +222,7 @@ public class CreateCustomerCommand
 
                                         if(initialOfferUse == null) {
                                             // If all three parameters are null, then try to get the default Source and use its OfferUse.
-                                            Source source = sourceControl.getDefaultSource();
+                                            var source = sourceControl.getDefaultSource();
 
                                             if(source != null) {
                                                 initialOfferUse = source.getLastDetail().getOfferUse();
@@ -236,19 +236,19 @@ public class CreateCustomerCommand
 
                                 if(initialOfferUse != null) {
                                     var partyControl = Session.getModelController(PartyControl.class);
-                                    String preferredLanguageIsoName = form.getPreferredLanguageIsoName();
-                                    Language preferredLanguage = preferredLanguageIsoName == null ? null : partyControl.getLanguageByIsoName(preferredLanguageIsoName);
+                                    var preferredLanguageIsoName = form.getPreferredLanguageIsoName();
+                                    var preferredLanguage = preferredLanguageIsoName == null ? null : partyControl.getLanguageByIsoName(preferredLanguageIsoName);
 
                                     if(preferredLanguageIsoName == null || (preferredLanguage != null)) {
-                                        String preferredJavaTimeZoneName = form.getPreferredJavaTimeZoneName();
-                                        TimeZone preferredTimeZone = preferredJavaTimeZoneName == null ? null : partyControl.getTimeZoneByJavaName(preferredJavaTimeZoneName);
+                                        var preferredJavaTimeZoneName = form.getPreferredJavaTimeZoneName();
+                                        var preferredTimeZone = preferredJavaTimeZoneName == null ? null : partyControl.getTimeZoneByJavaName(preferredJavaTimeZoneName);
 
                                         if(preferredJavaTimeZoneName == null || (preferredTimeZone != null)) {
-                                            String preferredDateTimeFormatName = form.getPreferredDateTimeFormatName();
-                                            DateTimeFormat preferredDateTimeFormat = preferredDateTimeFormatName == null ? null : partyControl.getDateTimeFormatByName(preferredDateTimeFormatName);
+                                            var preferredDateTimeFormatName = form.getPreferredDateTimeFormatName();
+                                            var preferredDateTimeFormat = preferredDateTimeFormatName == null ? null : partyControl.getDateTimeFormatByName(preferredDateTimeFormatName);
 
                                             if(preferredDateTimeFormatName == null || (preferredDateTimeFormat != null)) {
-                                                String preferredCurrencyIsoName = form.getPreferredCurrencyIsoName();
+                                                var preferredCurrencyIsoName = form.getPreferredCurrencyIsoName();
                                                 Currency preferredCurrency;
 
                                                 if(preferredCurrencyIsoName == null) {
@@ -262,20 +262,20 @@ public class CreateCustomerCommand
                                                     var partyFreeOnBoardControl = Session.getModelController(PartyFreeOnBoardControl.class);
                                                     var workflowControl = Session.getModelController(WorkflowControl.class);
                                                     Soundex soundex = new Soundex();
-                                                    PartyType partyType = partyControl.getPartyTypeByName(PartyTypes.CUSTOMER.name());
+                                                    var partyType = partyControl.getPartyTypeByName(PartyTypes.CUSTOMER.name());
                                                     BasePK createdBy = getPartyPK();
-                                                    String personalTitleId = form.getPersonalTitleId();
-                                                    PersonalTitle personalTitle = personalTitleId == null ? null : partyControl.convertPersonalTitleIdToEntity(personalTitleId,
+                                                    var personalTitleId = form.getPersonalTitleId();
+                                                    var personalTitle = personalTitleId == null ? null : partyControl.convertPersonalTitleIdToEntity(personalTitleId,
                                                             EntityPermission.READ_ONLY);
-                                                    String firstName = form.getFirstName();
-                                                    String middleName = form.getMiddleName();
-                                                    String lastName = form.getLastName();
-                                                    String nameSuffixId = form.getNameSuffixId();
-                                                    NameSuffix nameSuffix = nameSuffixId == null ? null : partyControl.convertNameSuffixIdToEntity(nameSuffixId,
+                                                    var firstName = form.getFirstName();
+                                                    var middleName = form.getMiddleName();
+                                                    var lastName = form.getLastName();
+                                                    var nameSuffixId = form.getNameSuffixId();
+                                                    var nameSuffix = nameSuffixId == null ? null : partyControl.convertNameSuffixIdToEntity(nameSuffixId,
                                                             EntityPermission.READ_ONLY);
-                                                    String name = form.getName();
-                                                    String emailAddress = form.getEmailAddress();
-                                                    Boolean allowSolicitation = Boolean.valueOf(form.getAllowSolicitation());
+                                                    var name = form.getName();
+                                                    var emailAddress = form.getEmailAddress();
+                                                    var allowSolicitation = Boolean.valueOf(form.getAllowSolicitation());
 
                                                     String firstNameSdx;
                                                     try {
@@ -298,7 +298,7 @@ public class CreateCustomerCommand
                                                         lastNameSdx = null;
                                                     }
 
-                                                    Party party = partyControl.createParty(null, partyType, preferredLanguage, preferredCurrency, preferredTimeZone, preferredDateTimeFormat, createdBy);
+                                                    var party = partyControl.createParty(null, partyType, preferredLanguage, preferredCurrency, preferredTimeZone, preferredDateTimeFormat, createdBy);
 
                                                     if(createdBy == null) {
                                                         createdBy = party.getPrimaryKey();
@@ -329,18 +329,18 @@ public class CreateCustomerCommand
 
                                                     partyFreeOnBoardControl.createPartyFreeOnBoard(party, freeOnBoardControl.getDefaultFreeOnBoard(), createdBy);
 
-                                                    for(CustomerTypeCreditLimit customerTypeCreditLimit : termControl.getCustomerTypeCreditLimitsByCustomerType(customerType)) {
-                                                        Currency currency = customerTypeCreditLimit.getCurrency();
-                                                        Long creditLimit = customerTypeCreditLimit.getCreditLimit();
-                                                        Long potentialCreditLimit = customerTypeCreditLimit.getPotentialCreditLimit();
+                                                    for(var customerTypeCreditLimit : termControl.getCustomerTypeCreditLimitsByCustomerType(customerType)) {
+                                                        var currency = customerTypeCreditLimit.getCurrency();
+                                                        var creditLimit = customerTypeCreditLimit.getCreditLimit();
+                                                        var potentialCreditLimit = customerTypeCreditLimit.getPotentialCreditLimit();
 
                                                         termControl.createPartyCreditLimit(party, currency, creditLimit, potentialCreditLimit, createdBy);
                                                     }
 
                                                     // TODO: error checking for unknown customerStatusChoice
-                                                    String customerStatusChoice = form.getCustomerStatusChoice();
-                                                    Workflow customerStatusWorkflow = workflowControl.getWorkflowByName(CustomerStatusConstants.Workflow_CUSTOMER_STATUS);
-                                                    WorkflowEntrance customerStatusWorkflowEntrance = customerStatusChoice == null ? customerTypeDetail.getDefaultCustomerStatus()
+                                                    var customerStatusChoice = form.getCustomerStatusChoice();
+                                                    var customerStatusWorkflow = workflowControl.getWorkflowByName(CustomerStatusConstants.Workflow_CUSTOMER_STATUS);
+                                                    var customerStatusWorkflowEntrance = customerStatusChoice == null ? customerTypeDetail.getDefaultCustomerStatus()
                                                             : workflowControl.getWorkflowEntranceByName(customerStatusWorkflow,
                                                             customerStatusChoice);
 
@@ -349,16 +349,16 @@ public class CreateCustomerCommand
                                                     }
 
                                                     // TODO: error checking for unknown customerCreditStatusChoice
-                                                    String customerCreditStatusChoice = form.getCustomerCreditStatusChoice();
-                                                    Workflow customerCreditStatusWorkflow = workflowControl.getWorkflowByName(CustomerCreditStatusConstants.Workflow_CUSTOMER_CREDIT_STATUS);
-                                                    WorkflowEntrance customerCreditStatusWorkflowEntrance = customerCreditStatusChoice == null ? customerTypeDetail.getDefaultCustomerCreditStatus()
+                                                    var customerCreditStatusChoice = form.getCustomerCreditStatusChoice();
+                                                    var customerCreditStatusWorkflow = workflowControl.getWorkflowByName(CustomerCreditStatusConstants.Workflow_CUSTOMER_CREDIT_STATUS);
+                                                    var customerCreditStatusWorkflowEntrance = customerCreditStatusChoice == null ? customerTypeDetail.getDefaultCustomerCreditStatus()
                                                             : workflowControl.getWorkflowEntranceByName(customerCreditStatusWorkflow, customerCreditStatusChoice);
 
                                                     if(customerCreditStatusWorkflowEntrance == null) {
                                                         customerCreditStatusWorkflowEntrance = workflowControl.getDefaultWorkflowEntrance(customerCreditStatusWorkflow);
                                                     }
 
-                                                    EntityInstance entityInstance = getCoreControl().getEntityInstanceByBasePK(party.getPrimaryKey());
+                                                    var entityInstance = getCoreControl().getEntityInstanceByBasePK(party.getPrimaryKey());
                                                     workflowControl.addEntityToWorkflow(customerStatusWorkflowEntrance, entityInstance, null, null, createdBy);
                                                     workflowControl.addEntityToWorkflow(customerCreditStatusWorkflowEntrance, entityInstance, null, null, createdBy);
 
@@ -403,7 +403,7 @@ public class CreateCustomerCommand
         }
 
         if(customer != null) {
-            Party party = customer.getParty();
+            var party = customer.getParty();
 
             result.setEntityRef(party.getPrimaryKey().getEntityRef());
             result.setCustomerName(customer.getCustomerName());

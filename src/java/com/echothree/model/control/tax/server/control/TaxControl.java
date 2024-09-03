@@ -112,11 +112,11 @@ public class TaxControl
 
     public TaxClassification createTaxClassification(GeoCode countryGeoCode, String taxClassificationName, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
-        TaxClassification defaultTaxClassification = getDefaultTaxClassification(countryGeoCode);
-        boolean defaultFound = defaultTaxClassification != null;
+        var defaultTaxClassification = getDefaultTaxClassification(countryGeoCode);
+        var defaultFound = defaultTaxClassification != null;
 
         if(defaultFound && isDefault) {
-            TaxClassificationDetailValue defaultTaxClassificationDetailValue = getDefaultTaxClassificationDetailValueForUpdate(countryGeoCode);
+            var defaultTaxClassificationDetailValue = getDefaultTaxClassificationDetailValueForUpdate(countryGeoCode);
 
             defaultTaxClassificationDetailValue.setIsDefault(Boolean.FALSE);
             updateTaxClassificationFromValue(defaultTaxClassificationDetailValue, false, createdBy);
@@ -124,8 +124,8 @@ public class TaxControl
             isDefault = Boolean.TRUE;
         }
 
-        TaxClassification taxClassification = TaxClassificationFactory.getInstance().create();
-        TaxClassificationDetail taxClassificationDetail = TaxClassificationDetailFactory.getInstance().create(session, taxClassification, countryGeoCode,
+        var taxClassification = TaxClassificationFactory.getInstance().create();
+        var taxClassificationDetail = TaxClassificationDetailFactory.getInstance().create(session, taxClassification, countryGeoCode,
                 taxClassificationName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -151,7 +151,7 @@ public class TaxControl
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.TaxClassification */
     public TaxClassification getTaxClassificationByEntityInstance(EntityInstance entityInstance) {
         TaxClassificationPK pk = new TaxClassificationPK(entityInstance.getEntityUniqueId());
-        TaxClassification taxClassification = TaxClassificationFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
+        var taxClassification = TaxClassificationFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
         
         return taxClassification;
     }
@@ -272,7 +272,7 @@ public class TaxControl
     }
 
     public TaxClassificationChoicesBean getTaxClassificationChoices(String defaultTaxClassificationChoice, Language language, boolean allowNullChoice, GeoCode countryGeoCode) {
-        List<TaxClassification> taxClassificationes = getTaxClassificationsByCountryGeoCode(countryGeoCode);
+        var taxClassificationes = getTaxClassificationsByCountryGeoCode(countryGeoCode);
         var size = taxClassificationes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -288,9 +288,9 @@ public class TaxControl
         }
         
         for(var taxClassification : taxClassificationes) {
-            TaxClassificationDetail taxClassificationDetail = taxClassification.getLastDetail();
-            String taxClassificationName = taxClassificationDetail.getTaxClassificationName();
-            TaxClassificationTranslation taxClassificationTranslation = getBestTaxClassificationTranslation(taxClassification, language);
+            var taxClassificationDetail = taxClassification.getLastDetail();
+            var taxClassificationName = taxClassificationDetail.getTaxClassificationName();
+            var taxClassificationTranslation = getBestTaxClassificationTranslation(taxClassification, language);
             
             var label = taxClassificationTranslation == null ? taxClassificationName : taxClassificationTranslation.getDescription();
             var value = taxClassificationName;
@@ -313,7 +313,7 @@ public class TaxControl
 
     public List<TaxClassificationTransfer> getTaxClassificationTransfers(UserVisit userVisit, Collection<TaxClassification> taxClassifications) {
         List<TaxClassificationTransfer> taxClassificationTransfers = new ArrayList<>(taxClassifications.size());
-        TaxClassificationTransferCache taxClassificationTransferCache = getTaxTransferCaches(userVisit).getTaxClassificationTransferCache();
+        var taxClassificationTransferCache = getTaxTransferCaches(userVisit).getTaxClassificationTransferCache();
 
         taxClassifications.forEach((taxClassification) ->
                 taxClassificationTransfers.add(taxClassificationTransferCache.getTransfer(taxClassification))
@@ -329,27 +329,27 @@ public class TaxControl
     private void updateTaxClassificationFromValue(TaxClassificationDetailValue taxClassificationDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(taxClassificationDetailValue.hasBeenModified()) {
-            TaxClassification taxClassification = TaxClassificationFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var taxClassification = TaxClassificationFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      taxClassificationDetailValue.getTaxClassificationPK());
-            TaxClassificationDetail taxClassificationDetail = taxClassification.getActiveDetailForUpdate();
+            var taxClassificationDetail = taxClassification.getActiveDetailForUpdate();
 
             taxClassificationDetail.setThruTime(session.START_TIME_LONG);
             taxClassificationDetail.store();
 
-            TaxClassificationPK taxClassificationPK = taxClassificationDetail.getTaxClassificationPK();
-            GeoCode countryGeoCode = taxClassificationDetail.getCountryGeoCode();
-            GeoCodePK countryGeoCodePK = countryGeoCode.getPrimaryKey();
-            String taxClassificationName = taxClassificationDetailValue.getTaxClassificationName();
-            Boolean isDefault = taxClassificationDetailValue.getIsDefault();
-            Integer sortOrder = taxClassificationDetailValue.getSortOrder();
+            var taxClassificationPK = taxClassificationDetail.getTaxClassificationPK();
+            var countryGeoCode = taxClassificationDetail.getCountryGeoCode();
+            var countryGeoCodePK = countryGeoCode.getPrimaryKey();
+            var taxClassificationName = taxClassificationDetailValue.getTaxClassificationName();
+            var isDefault = taxClassificationDetailValue.getIsDefault();
+            var sortOrder = taxClassificationDetailValue.getSortOrder();
 
             if(checkDefault) {
-                TaxClassification defaultTaxClassification = getDefaultTaxClassification(countryGeoCode);
-                boolean defaultFound = defaultTaxClassification != null && !defaultTaxClassification.equals(taxClassification);
+                var defaultTaxClassification = getDefaultTaxClassification(countryGeoCode);
+                var defaultFound = defaultTaxClassification != null && !defaultTaxClassification.equals(taxClassification);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    TaxClassificationDetailValue defaultTaxClassificationDetailValue = getDefaultTaxClassificationDetailValueForUpdate(countryGeoCode);
+                    var defaultTaxClassificationDetailValue = getDefaultTaxClassificationDetailValueForUpdate(countryGeoCode);
 
                     defaultTaxClassificationDetailValue.setIsDefault(Boolean.FALSE);
                     updateTaxClassificationFromValue(defaultTaxClassificationDetailValue, false, updatedBy);
@@ -376,24 +376,24 @@ public class TaxControl
     public void deleteTaxClassification(TaxClassification taxClassification, BasePK deletedBy) {
         deleteTaxClassificationTranslationsByTaxClassification(taxClassification, deletedBy);
         deleteItemTaxClassificationsByTaxClassification(taxClassification, deletedBy);
-        
-        TaxClassificationDetail taxClassificationDetail = taxClassification.getLastDetailForUpdate();
+
+        var taxClassificationDetail = taxClassification.getLastDetailForUpdate();
         taxClassificationDetail.setThruTime(session.START_TIME_LONG);
         taxClassification.setActiveDetail(null);
         taxClassification.store();
 
         // Check for default, and pick one if necessary
-        GeoCode countryGeoCode = taxClassificationDetail.getCountryGeoCode();
-        TaxClassification defaultTaxClassification = getDefaultTaxClassification(countryGeoCode);
+        var countryGeoCode = taxClassificationDetail.getCountryGeoCode();
+        var defaultTaxClassification = getDefaultTaxClassification(countryGeoCode);
         if(defaultTaxClassification == null) {
-            List<TaxClassification> taxClassifications = getTaxClassificationsByCountryGeoCode(countryGeoCode);
+            var taxClassifications = getTaxClassificationsByCountryGeoCode(countryGeoCode);
 
             if(!taxClassifications.isEmpty()) {
-                Iterator<TaxClassification> iter = taxClassifications.iterator();
+                var iter = taxClassifications.iterator();
                 if(iter.hasNext()) {
                     defaultTaxClassification = iter.next();
                 }
-                TaxClassificationDetailValue taxClassificationDetailValue = Objects.requireNonNull(defaultTaxClassification).getLastDetailForUpdate().getTaxClassificationDetailValue().clone();
+                var taxClassificationDetailValue = Objects.requireNonNull(defaultTaxClassification).getLastDetailForUpdate().getTaxClassificationDetailValue().clone();
 
                 taxClassificationDetailValue.setIsDefault(Boolean.TRUE);
                 updateTaxClassificationFromValue(taxClassificationDetailValue, false, deletedBy);
@@ -419,7 +419,7 @@ public class TaxControl
 
     public TaxClassificationTranslation createTaxClassificationTranslation(TaxClassification taxClassification,
             Language language, String description, MimeType overviewMimeType, String overview, BasePK createdBy) {
-        TaxClassificationTranslation taxClassificationTranslation = TaxClassificationTranslationFactory.getInstance().create(taxClassification,
+        var taxClassificationTranslation = TaxClassificationTranslationFactory.getInstance().create(taxClassification,
                 language, description, overviewMimeType, overview, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(taxClassification.getPrimaryKey(), EventTypes.MODIFY, taxClassificationTranslation.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -497,7 +497,7 @@ public class TaxControl
     }
 
     public TaxClassificationTranslation getBestTaxClassificationTranslation(TaxClassification taxClassification, Language language) {
-        TaxClassificationTranslation taxClassificationTranslation = getTaxClassificationTranslation(taxClassification, language);
+        var taxClassificationTranslation = getTaxClassificationTranslation(taxClassification, language);
         
         if(taxClassificationTranslation == null && !language.getIsDefault()) {
             taxClassificationTranslation = getTaxClassificationTranslation(taxClassification, getPartyControl().getDefaultLanguage());
@@ -511,7 +511,7 @@ public class TaxControl
     }
 
     public List<TaxClassificationTranslationTransfer> getTaxClassificationTranslationTransfersByTaxClassification(UserVisit userVisit, TaxClassification taxClassification) {
-        List<TaxClassificationTranslation> taxClassificationTranslations = getTaxClassificationTranslationsByTaxClassification(taxClassification);
+        var taxClassificationTranslations = getTaxClassificationTranslationsByTaxClassification(taxClassification);
         List<TaxClassificationTranslationTransfer> taxClassificationTranslationTransfers = new ArrayList<>(taxClassificationTranslations.size());
 
         taxClassificationTranslations.forEach((taxClassificationTranslation) -> {
@@ -523,17 +523,17 @@ public class TaxControl
 
     public void updateTaxClassificationTranslationFromValue(TaxClassificationTranslationValue taxClassificationTranslationValue, BasePK updatedBy) {
         if(taxClassificationTranslationValue.hasBeenModified()) {
-            TaxClassificationTranslation taxClassificationTranslation = TaxClassificationTranslationFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var taxClassificationTranslation = TaxClassificationTranslationFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      taxClassificationTranslationValue.getPrimaryKey());
 
             taxClassificationTranslation.setThruTime(session.START_TIME_LONG);
             taxClassificationTranslation.store();
 
-            TaxClassificationPK taxClassificationPK = taxClassificationTranslation.getTaxClassificationPK();
-            LanguagePK languagePK = taxClassificationTranslation.getLanguagePK();
-            String description = taxClassificationTranslationValue.getDescription();
-            MimeTypePK overviewMimeTypePK = taxClassificationTranslationValue.getOverviewMimeTypePK();
-            String overview = taxClassificationTranslationValue.getOverview();
+            var taxClassificationPK = taxClassificationTranslation.getTaxClassificationPK();
+            var languagePK = taxClassificationTranslation.getLanguagePK();
+            var description = taxClassificationTranslationValue.getDescription();
+            var overviewMimeTypePK = taxClassificationTranslationValue.getOverviewMimeTypePK();
+            var overview = taxClassificationTranslationValue.getOverview();
 
             taxClassificationTranslation = TaxClassificationTranslationFactory.getInstance().create(taxClassificationPK,
                     languagePK, description, overviewMimeTypePK, overview, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -550,7 +550,7 @@ public class TaxControl
     }
 
     public void deleteTaxClassificationTranslationsByTaxClassification(TaxClassification taxClassification, BasePK deletedBy) {
-        List<TaxClassificationTranslation> taxClassificationTranslations = getTaxClassificationTranslationsByTaxClassificationForUpdate(taxClassification);
+        var taxClassificationTranslations = getTaxClassificationTranslationsByTaxClassificationForUpdate(taxClassification);
 
         taxClassificationTranslations.forEach((taxClassificationTranslation) -> 
                 deleteTaxClassificationTranslation(taxClassificationTranslation, deletedBy)
@@ -562,8 +562,8 @@ public class TaxControl
     // --------------------------------------------------------------------------------
 
     public ItemTaxClassification createItemTaxClassification(Item item, GeoCode countryGeoCode, TaxClassification taxClassification, BasePK createdBy) {
-        ItemTaxClassification itemTaxClassification = ItemTaxClassificationFactory.getInstance().create();
-        ItemTaxClassificationDetail itemTaxClassificationDetail = ItemTaxClassificationDetailFactory.getInstance().create(session,
+        var itemTaxClassification = ItemTaxClassificationFactory.getInstance().create();
+        var itemTaxClassificationDetail = ItemTaxClassificationDetailFactory.getInstance().create(session,
                 itemTaxClassification, item, countryGeoCode, taxClassification, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
 
@@ -722,7 +722,7 @@ public class TaxControl
 
     public List<ItemTaxClassificationTransfer> getItemTaxClassificationTransfers(UserVisit userVisit, Collection<ItemTaxClassification> itemTaxClassifications) {
         List<ItemTaxClassificationTransfer> itemTaxClassificationTransfers = new ArrayList<>(itemTaxClassifications.size());
-        ItemTaxClassificationTransferCache itemTaxClassificationTransferCache = getTaxTransferCaches(userVisit).getItemTaxClassificationTransferCache();
+        var itemTaxClassificationTransferCache = getTaxTransferCaches(userVisit).getItemTaxClassificationTransferCache();
 
         itemTaxClassifications.forEach((itemTaxClassification) ->
                 itemTaxClassificationTransfers.add(itemTaxClassificationTransferCache.getTransfer(itemTaxClassification))
@@ -746,17 +746,17 @@ public class TaxControl
     public void updateItemTaxClassificationFromValue(ItemTaxClassificationDetailValue itemTaxClassificationDetailValue,
             BasePK updatedBy) {
         if(itemTaxClassificationDetailValue.hasBeenModified()) {
-            ItemTaxClassification itemTaxClassification = ItemTaxClassificationFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var itemTaxClassification = ItemTaxClassificationFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      itemTaxClassificationDetailValue.getItemTaxClassificationPK());
-            ItemTaxClassificationDetail itemTaxClassificationDetail = itemTaxClassification.getActiveDetailForUpdate();
+            var itemTaxClassificationDetail = itemTaxClassification.getActiveDetailForUpdate();
 
             itemTaxClassificationDetail.setThruTime(session.START_TIME_LONG);
             itemTaxClassificationDetail.store();
 
-            ItemTaxClassificationPK itemTaxClassificationPK = itemTaxClassificationDetail.getItemTaxClassificationPK();
-            ItemPK itemPK = itemTaxClassificationDetail.getItemPK();
-            GeoCodePK countryGeoCodePK = itemTaxClassificationDetail.getCountryGeoCodePK();
-            TaxClassificationPK taxClassificationPK = itemTaxClassificationDetailValue.getTaxClassificationPK();
+            var itemTaxClassificationPK = itemTaxClassificationDetail.getItemTaxClassificationPK();
+            var itemPK = itemTaxClassificationDetail.getItemPK();
+            var countryGeoCodePK = itemTaxClassificationDetail.getCountryGeoCodePK();
+            var taxClassificationPK = itemTaxClassificationDetailValue.getTaxClassificationPK();
 
             itemTaxClassificationDetail = ItemTaxClassificationDetailFactory.getInstance().create(itemTaxClassificationPK, itemPK, countryGeoCodePK,
                     taxClassificationPK, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -769,7 +769,7 @@ public class TaxControl
     }
 
     public void deleteItemTaxClassification(ItemTaxClassification itemTaxClassification, BasePK deletedBy) {
-        ItemTaxClassificationDetail itemTaxClassificationDetail = itemTaxClassification.getLastDetailForUpdate();
+        var itemTaxClassificationDetail = itemTaxClassification.getLastDetailForUpdate();
         itemTaxClassificationDetail.setThruTime(session.START_TIME_LONG);
         itemTaxClassification.setActiveDetail(null);
         itemTaxClassification.store();
@@ -802,20 +802,20 @@ public class TaxControl
     public Tax createTax(String taxName, ContactMechanismPurpose contactMechanismPurpose, GlAccount glAccount,
             Boolean includeShippingCharge, Boolean includeProcessingCharge, Boolean includeInsuranceCharge, Integer percent,
             Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        Tax defaultTax = getDefaultTax();
-        boolean defaultFound = defaultTax != null;
+        var defaultTax = getDefaultTax();
+        var defaultFound = defaultTax != null;
         
         if(defaultFound && isDefault) {
-            TaxDetailValue defaultTaxDetailValue = getDefaultTaxDetailValueForUpdate();
+            var defaultTaxDetailValue = getDefaultTaxDetailValueForUpdate();
             
             defaultTaxDetailValue.setIsDefault(Boolean.FALSE);
             updateTaxFromValue(defaultTaxDetailValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        Tax tax = TaxFactory.getInstance().create();
-        TaxDetail taxDetail = TaxDetailFactory.getInstance().create(tax, taxName, contactMechanismPurpose, glAccount,
+
+        var tax = TaxFactory.getInstance().create();
+        var taxDetail = TaxDetailFactory.getInstance().create(tax, taxName, contactMechanismPurpose, glAccount,
                 includeShippingCharge, includeProcessingCharge, includeInsuranceCharge, percent, isDefault, sortOrder,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
@@ -844,8 +844,8 @@ public class TaxControl
                     "WHERE tx_activedetailid = txdt_taxdetailid " +
                     "FOR UPDATE";
         }
-        
-        PreparedStatement ps = TaxFactory.getInstance().prepareStatement(query);
+
+        var ps = TaxFactory.getInstance().prepareStatement(query);
         
         return TaxFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
     }
@@ -874,8 +874,8 @@ public class TaxControl
                         "WHERE tx_activedetailid = txdt_taxdetailid AND txdt_taxname = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = TaxFactory.getInstance().prepareStatement(query);
+
+            var ps = TaxFactory.getInstance().prepareStatement(query);
             
             ps.setString(1, taxName);
             
@@ -916,8 +916,8 @@ public class TaxControl
                     "WHERE tx_activedetailid = txdt_taxdetailid AND txdt_isdefault = 1 " +
                     "FOR UPDATE";
         }
-        
-        PreparedStatement ps = TaxFactory.getInstance().prepareStatement(query);
+
+        var ps = TaxFactory.getInstance().prepareStatement(query);
         
         return TaxFactory.getInstance().getEntityFromQuery(entityPermission, ps);
     }
@@ -939,9 +939,9 @@ public class TaxControl
     }
     
     public List<TaxTransfer> getTaxTransfers(UserVisit userVisit) {
-        List<Tax> taxes = getTaxes();
+        var taxes = getTaxes();
         List<TaxTransfer> taxTransfers = new ArrayList<>(taxes.size());
-        TaxTransferCache taxTransferCache = getTaxTransferCaches(userVisit).getTaxTransferCache();
+        var taxTransferCache = getTaxTransferCaches(userVisit).getTaxTransferCache();
         
         taxes.forEach((tax) ->
                 taxTransfers.add(taxTransferCache.getTransfer(tax))
@@ -953,31 +953,31 @@ public class TaxControl
     private void updateTaxFromValue(TaxDetailValue taxDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(taxDetailValue.hasBeenModified()) {
-            Tax tax = TaxFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var tax = TaxFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      taxDetailValue.getTaxPK());
-            TaxDetail taxDetail = tax.getActiveDetailForUpdate();
+            var taxDetail = tax.getActiveDetailForUpdate();
             
             taxDetail.setThruTime(session.START_TIME_LONG);
             taxDetail.store();
-            
-            TaxPK taxPK = taxDetail.getTaxPK();
-            String taxName = taxDetailValue.getTaxName();
-            ContactMechanismPurposePK contactMechanismPurposePK = taxDetailValue.getContactMechanismPurposePK();
-            GlAccountPK glAccountPK = taxDetailValue.getGlAccountPK();
-            Boolean includeShippingCharge = taxDetailValue.getIncludeShippingCharge();
-            Boolean includeProcessingCharge = taxDetailValue.getIncludeProcessingCharge();
-            Boolean includeInsuranceCharge = taxDetailValue.getIncludeInsuranceCharge();
-            Integer percent = taxDetailValue.getPercent();
-            Boolean isDefault = taxDetailValue.getIsDefault();
-            Integer sortOrder = taxDetailValue.getSortOrder();
+
+            var taxPK = taxDetail.getTaxPK();
+            var taxName = taxDetailValue.getTaxName();
+            var contactMechanismPurposePK = taxDetailValue.getContactMechanismPurposePK();
+            var glAccountPK = taxDetailValue.getGlAccountPK();
+            var includeShippingCharge = taxDetailValue.getIncludeShippingCharge();
+            var includeProcessingCharge = taxDetailValue.getIncludeProcessingCharge();
+            var includeInsuranceCharge = taxDetailValue.getIncludeInsuranceCharge();
+            var percent = taxDetailValue.getPercent();
+            var isDefault = taxDetailValue.getIsDefault();
+            var sortOrder = taxDetailValue.getSortOrder();
             
             if(checkDefault) {
-                Tax defaultTax = getDefaultTax();
-                boolean defaultFound = defaultTax != null && !defaultTax.equals(tax);
+                var defaultTax = getDefaultTax();
+                var defaultFound = defaultTax != null && !defaultTax.equals(tax);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    TaxDetailValue defaultTaxDetailValue = getDefaultTaxDetailValueForUpdate();
+                    var defaultTaxDetailValue = getDefaultTaxDetailValueForUpdate();
                     
                     defaultTaxDetailValue.setIsDefault(Boolean.FALSE);
                     updateTaxFromValue(defaultTaxDetailValue, false, updatedBy);
@@ -1005,23 +1005,23 @@ public class TaxControl
     public void deleteTax(Tax tax, BasePK deletedBy) {
         deleteTaxDescriptionsByTax(tax, deletedBy);
         deleteGeoCodeTaxesByTax(tax, deletedBy);
-        
-        TaxDetail taxDetail = tax.getLastDetailForUpdate();
+
+        var taxDetail = tax.getLastDetailForUpdate();
         taxDetail.setThruTime(session.START_TIME_LONG);
         tax.setActiveDetail(null);
         tax.store();
         
         // Check for default, and pick one if necessary
-        Tax defaultTax = getDefaultTax();
+        var defaultTax = getDefaultTax();
         if(defaultTax == null) {
-            List<Tax> taxes = getTaxesForUpdate();
+            var taxes = getTaxesForUpdate();
             
             if(!taxes.isEmpty()) {
-                Iterator<Tax> iter = taxes.iterator();
+                var iter = taxes.iterator();
                 if(iter.hasNext()) {
                     defaultTax = iter.next();
                 }
-                TaxDetailValue taxDetailValue = Objects.requireNonNull(defaultTax).getLastDetailForUpdate().getTaxDetailValue().clone();
+                var taxDetailValue = Objects.requireNonNull(defaultTax).getLastDetailForUpdate().getTaxDetailValue().clone();
                 
                 taxDetailValue.setIsDefault(Boolean.TRUE);
                 updateTaxFromValue(taxDetailValue, false, deletedBy);
@@ -1036,7 +1036,7 @@ public class TaxControl
     // --------------------------------------------------------------------------------
     
     public TaxDescription createTaxDescription(Tax tax, Language language, String description, BasePK createdBy) {
-        TaxDescription taxDescription = TaxDescriptionFactory.getInstance().create(tax, language, description,
+        var taxDescription = TaxDescriptionFactory.getInstance().create(tax, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(tax.getPrimaryKey(), EventTypes.MODIFY, taxDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1060,8 +1060,8 @@ public class TaxControl
                         "WHERE txd_tx_taxid = ? AND txd_lang_languageid = ? AND txd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = TaxDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = TaxDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, tax.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -1108,8 +1108,8 @@ public class TaxControl
                         "WHERE txd_tx_taxid = ? AND txd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = TaxDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = TaxDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, tax.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1132,7 +1132,7 @@ public class TaxControl
     
     public String getBestTaxDescription(Tax tax, Language language) {
         String description;
-        TaxDescription taxDescription = getTaxDescription(tax, language);
+        var taxDescription = getTaxDescription(tax, language);
         
         if(taxDescription == null && !language.getIsDefault()) {
             taxDescription = getTaxDescription(tax, getPartyControl().getDefaultLanguage());
@@ -1152,7 +1152,7 @@ public class TaxControl
     }
     
     public List<TaxDescriptionTransfer> getTaxDescriptionTransfersByTax(UserVisit userVisit, Tax tax) {
-        List<TaxDescription> taxDescriptions = getTaxDescriptionsByTax(tax);
+        var taxDescriptions = getTaxDescriptionsByTax(tax);
         List<TaxDescriptionTransfer> taxDescriptionTransfers = null;
         
         if(taxDescriptions != null) {
@@ -1168,15 +1168,15 @@ public class TaxControl
     
     public void updateTaxDescriptionFromValue(TaxDescriptionValue taxDescriptionValue, BasePK updatedBy) {
         if(taxDescriptionValue.hasBeenModified()) {
-            TaxDescription taxDescription = TaxDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var taxDescription = TaxDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     taxDescriptionValue.getPrimaryKey());
             
             taxDescription.setThruTime(session.START_TIME_LONG);
             taxDescription.store();
-            
-            Tax tax = taxDescription.getTax();
-            Language language = taxDescription.getLanguage();
-            String description = taxDescriptionValue.getDescription();
+
+            var tax = taxDescription.getTax();
+            var language = taxDescription.getLanguage();
+            var description = taxDescriptionValue.getDescription();
             
             taxDescription = TaxDescriptionFactory.getInstance().create(tax, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1193,7 +1193,7 @@ public class TaxControl
     }
     
     public void deleteTaxDescriptionsByTax(Tax tax, BasePK deletedBy) {
-        List<TaxDescription> taxDescriptions = getTaxDescriptionsByTaxForUpdate(tax);
+        var taxDescriptions = getTaxDescriptionsByTaxForUpdate(tax);
         
         taxDescriptions.forEach((taxDescription) -> 
                 deleteTaxDescription(taxDescription, deletedBy)
@@ -1205,7 +1205,7 @@ public class TaxControl
     // --------------------------------------------------------------------------------
     
     public GeoCodeTax createGeoCodeTax(GeoCode geoCode, Tax tax, BasePK createdBy) {
-        GeoCodeTax geoCodeTax = GeoCodeTaxFactory.getInstance().create(geoCode, tax, session.START_TIME_LONG,
+        var geoCodeTax = GeoCodeTaxFactory.getInstance().create(geoCode, tax, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
         sendEvent(geoCode.getPrimaryKey(), EventTypes.MODIFY, geoCodeTax.getPrimaryKey(), null, createdBy);
@@ -1238,8 +1238,8 @@ public class TaxControl
                         "WHERE geotx_geo_geocodeid = ? AND geotx_tx_taxid = ? AND geotx_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = GeoCodeTaxFactory.getInstance().prepareStatement(query);
+
+            var ps = GeoCodeTaxFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, geoCode.getPrimaryKey().getEntityId());
             ps.setLong(2, tax.getPrimaryKey().getEntityId());
@@ -1280,8 +1280,8 @@ public class TaxControl
                         "AND geotx_tx_taxid = tx_taxid AND tx_activedetailid = txdt_taxdetailid " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = GeoCodeTaxFactory.getInstance().prepareStatement(query);
+
+            var ps = GeoCodeTaxFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, geoCode.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1321,8 +1321,8 @@ public class TaxControl
                         "AND geotx_tx_taxid = tx_taxid AND tx_activedetailid = txdt_taxdetailid " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = GeoCodeTaxFactory.getInstance().prepareStatement(query);
+
+            var ps = GeoCodeTaxFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, tax.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);

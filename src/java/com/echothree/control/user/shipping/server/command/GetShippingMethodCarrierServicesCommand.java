@@ -73,13 +73,13 @@ public class GetShippingMethodCarrierServicesCommand
     @Override
     protected BaseResult execute() {
         var shippingControl = Session.getModelController(ShippingControl.class);
-        GetShippingMethodCarrierServicesResult result = ShippingResultFactory.getGetShippingMethodCarrierServicesResult();
-        String shippingMethodName = form.getShippingMethodName();
-        String carrierName = form.getCarrierName();
-        String carrierServiceName = form.getCarrierServiceName();
+        var result = ShippingResultFactory.getGetShippingMethodCarrierServicesResult();
+        var shippingMethodName = form.getShippingMethodName();
+        var carrierName = form.getCarrierName();
+        var carrierServiceName = form.getCarrierServiceName();
         
         if(shippingMethodName != null && carrierName == null && carrierServiceName == null) {
-            ShippingMethod shippingMethod = shippingControl.getShippingMethodByName(shippingMethodName);
+            var shippingMethod = shippingControl.getShippingMethodByName(shippingMethodName);
             
             if(shippingMethod != null) {
                 result.setShippingMethod(shippingControl.getShippingMethodTransfer(getUserVisit(), shippingMethod));
@@ -90,11 +90,11 @@ public class GetShippingMethodCarrierServicesCommand
             }
         } else if(shippingMethodName == null && carrierName != null && carrierServiceName != null) {
             var carrierControl = Session.getModelController(CarrierControl.class);
-            Carrier carrier = carrierControl.getCarrierByName(carrierName);
+            var carrier = carrierControl.getCarrierByName(carrierName);
             
             if(carrier != null) {
-                Party carrierParty = carrier.getParty();
-                CarrierService carrierService = carrierControl.getCarrierServiceByName(carrierParty, carrierServiceName);
+                var carrierParty = carrier.getParty();
+                var carrierService = carrierControl.getCarrierServiceByName(carrierParty, carrierServiceName);
                 
                 if(carrierService != null) {
                     result.setCarrierService(carrierControl.getCarrierServiceTransfer(getUserVisit(), carrierService));

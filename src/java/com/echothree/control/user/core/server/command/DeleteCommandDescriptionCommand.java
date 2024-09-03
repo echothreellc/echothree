@@ -54,20 +54,20 @@ public class DeleteCommandDescriptionCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String componentVendorName = form.getComponentVendorName();
-        ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+        var componentVendorName = form.getComponentVendorName();
+        var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
         
         if(componentVendor != null) {
-            String commandName = form.getCommandName();
-            Command command = coreControl.getCommandByName(componentVendor, commandName);
+            var commandName = form.getCommandName();
+            var command = coreControl.getCommandByName(componentVendor, commandName);
             
             if(command != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = form.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = form.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
                 
                 if(language != null) {
-                    CommandDescription commandDescription = coreControl.getCommandDescriptionForUpdate(command, language);
+                    var commandDescription = coreControl.getCommandDescriptionForUpdate(command, language);
                     
                     if(commandDescription != null) {
                         coreControl.deleteCommandDescription(commandDescription, getPartyPK());

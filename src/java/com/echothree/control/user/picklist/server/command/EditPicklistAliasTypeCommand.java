@@ -96,12 +96,12 @@ public class EditPicklistAliasTypeCommand
     public PicklistAliasType getEntity(EditPicklistAliasTypeResult result) {
         var picklistControl = Session.getModelController(PicklistControl.class);
         PicklistAliasType picklistAliasType = null;
-        String picklistTypeName = spec.getPicklistTypeName();
+        var picklistTypeName = spec.getPicklistTypeName();
 
         picklistType = picklistControl.getPicklistTypeByName(picklistTypeName);
 
         if(picklistType != null) {
-            String picklistAliasTypeName = spec.getPicklistAliasTypeName();
+            var picklistAliasTypeName = spec.getPicklistAliasTypeName();
 
             if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
                 picklistAliasType = picklistControl.getPicklistAliasTypeByName(picklistType, picklistAliasTypeName);
@@ -136,8 +136,8 @@ public class EditPicklistAliasTypeCommand
     @Override
     public void doLock(PicklistAliasTypeEdit edit, PicklistAliasType picklistAliasType) {
         var picklistControl = Session.getModelController(PicklistControl.class);
-        PicklistAliasTypeDescription picklistAliasTypeDescription = picklistControl.getPicklistAliasTypeDescription(picklistAliasType, getPreferredLanguage());
-        PicklistAliasTypeDetail picklistAliasTypeDetail = picklistAliasType.getLastDetail();
+        var picklistAliasTypeDescription = picklistControl.getPicklistAliasTypeDescription(picklistAliasType, getPreferredLanguage());
+        var picklistAliasTypeDetail = picklistAliasType.getLastDetail();
 
         edit.setPicklistAliasTypeName(picklistAliasTypeDetail.getPicklistAliasTypeName());
         edit.setValidationPattern(picklistAliasTypeDetail.getValidationPattern());
@@ -152,8 +152,8 @@ public class EditPicklistAliasTypeCommand
     @Override
     public void canUpdate(PicklistAliasType picklistAliasType) {
         var picklistControl = Session.getModelController(PicklistControl.class);
-        String picklistAliasTypeName = edit.getPicklistAliasTypeName();
-        PicklistAliasType duplicatePicklistAliasType = picklistControl.getPicklistAliasTypeByName(picklistType, picklistAliasTypeName);
+        var picklistAliasTypeName = edit.getPicklistAliasTypeName();
+        var duplicatePicklistAliasType = picklistControl.getPicklistAliasTypeByName(picklistType, picklistAliasTypeName);
 
         if(duplicatePicklistAliasType != null && !picklistAliasType.equals(duplicatePicklistAliasType)) {
             addExecutionError(ExecutionErrors.DuplicatePicklistAliasTypeName.name(), spec.getPicklistTypeName(), picklistAliasTypeName);
@@ -164,9 +164,9 @@ public class EditPicklistAliasTypeCommand
     public void doUpdate(PicklistAliasType picklistAliasType) {
         var picklistControl = Session.getModelController(PicklistControl.class);
         var partyPK = getPartyPK();
-        PicklistAliasTypeDetailValue picklistAliasTypeDetailValue = picklistControl.getPicklistAliasTypeDetailValueForUpdate(picklistAliasType);
-        PicklistAliasTypeDescription picklistAliasTypeDescription = picklistControl.getPicklistAliasTypeDescriptionForUpdate(picklistAliasType, getPreferredLanguage());
-        String description = edit.getDescription();
+        var picklistAliasTypeDetailValue = picklistControl.getPicklistAliasTypeDetailValueForUpdate(picklistAliasType);
+        var picklistAliasTypeDescription = picklistControl.getPicklistAliasTypeDescriptionForUpdate(picklistAliasType, getPreferredLanguage());
+        var description = edit.getDescription();
 
         picklistAliasTypeDetailValue.setPicklistAliasTypeName(edit.getPicklistAliasTypeName());
         picklistAliasTypeDetailValue.setValidationPattern(edit.getValidationPattern());
@@ -180,7 +180,7 @@ public class EditPicklistAliasTypeCommand
         } else if(picklistAliasTypeDescription != null && description == null) {
             picklistControl.deletePicklistAliasTypeDescription(picklistAliasTypeDescription, partyPK);
         } else if(picklistAliasTypeDescription != null && description != null) {
-            PicklistAliasTypeDescriptionValue picklistAliasTypeDescriptionValue = picklistControl.getPicklistAliasTypeDescriptionValue(picklistAliasTypeDescription);
+            var picklistAliasTypeDescriptionValue = picklistControl.getPicklistAliasTypeDescriptionValue(picklistAliasTypeDescription);
 
             picklistAliasTypeDescriptionValue.setDescription(description);
             picklistControl.updatePicklistAliasTypeDescriptionFromValue(picklistAliasTypeDescriptionValue, partyPK);

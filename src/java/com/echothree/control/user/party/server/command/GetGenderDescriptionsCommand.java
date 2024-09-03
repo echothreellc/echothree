@@ -51,9 +51,9 @@ public class GetGenderDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        GetGenderDescriptionsResult result = PartyResultFactory.getGetGenderDescriptionsResult();
-        String genderName = form.getGenderName();
-        Gender gender = partyControl.getGenderByName(genderName);
+        var result = PartyResultFactory.getGetGenderDescriptionsResult();
+        var genderName = form.getGenderName();
+        var gender = partyControl.getGenderByName(genderName);
         
         if(gender != null) {
             result.setGender(partyControl.getGenderTransfer(getUserVisit(), gender));

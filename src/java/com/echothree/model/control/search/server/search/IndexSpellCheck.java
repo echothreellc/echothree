@@ -51,7 +51,7 @@ public class IndexSpellCheck
     }
     
     private boolean hasNonNullElements(Collection<?> collection) {
-        boolean result = false;
+        var result = false;
         
         for(var o : collection) {
             if(o != null) {
@@ -86,13 +86,13 @@ public class IndexSpellCheck
             throws IOException {
         List<List<CheckSpellingSuggestionTransfer>> suggestions;
         DirectSpellChecker directSpellChecker = new DirectSpellChecker();
-        Iterator<String> analyzedWordsIter = analyzedWords.iterator();
+        var analyzedWordsIter = analyzedWords.iterator();
 
         suggestions = new ArrayList<>(words.size());
 
         for(var word : words) {
             List<CheckSpellingSuggestionTransfer> checkSpellingSuggestions = null;
-            String analyzedWord = analyzedWordsIter.next();
+            var analyzedWord = analyzedWordsIter.next();
 
             if(analyzedWord == null) {
                 if(EvaluatorDebugFlags.LogCheckSpelling) {
@@ -100,7 +100,7 @@ public class IndexSpellCheck
                 }
             } else {
                 Term term = new Term(dictionaryField, word);
-                SuggestWord[] suggestWords = directSpellChecker.suggestSimilar(term, 5, ir);
+                var suggestWords = directSpellChecker.suggestSimilar(term, 5, ir);
 
                 if(EvaluatorDebugFlags.LogCheckSpelling) {
                     getLog().info("  Checking: " + word);

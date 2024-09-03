@@ -97,22 +97,22 @@ public class ItemDescriptionTypeTransferCache
     
     @Override
     public ItemDescriptionTypeTransfer getTransfer(ItemDescriptionType itemDescriptionType) {
-        ItemDescriptionTypeTransfer itemDescriptionTypeTransfer = get(itemDescriptionType);
+        var itemDescriptionTypeTransfer = get(itemDescriptionType);
         
         if(itemDescriptionTypeTransfer == null) {
-            ItemDescriptionTypeDetail itemDescriptionTypeDetail = itemDescriptionType.getLastDetail();
-            String itemDescriptionTypeName = filterItemDescriptionTypeName ? null : itemDescriptionTypeDetail.getItemDescriptionTypeName();
-            ItemDescriptionType parentItemDescriptionType = filterParentItemDescriptionType ? null : itemDescriptionTypeDetail.getParentItemDescriptionType();
-            ItemDescriptionTypeTransfer parentItemDescriptionTypeTransfer = parentItemDescriptionType == null ? null : itemControl.getItemDescriptionTypeTransfer(userVisit, parentItemDescriptionType);
-            Boolean useParentIfMissing = filterUseParentIfMissing ? null : itemDescriptionTypeDetail.getUseParentIfMissing();
-            MimeTypeUsageType mimeTypeUsageType = filterMimeTypeUsageType ? null : itemDescriptionTypeDetail.getMimeTypeUsageType();
-            MimeTypeUsageTypeTransfer mimeTypeUsageTypeTransfer = mimeTypeUsageType == null ? null : coreControl.getMimeTypeUsageTypeTransfer(userVisit, mimeTypeUsageType);
-            Boolean checkContentWebAddress = filterCheckContentWebAddress ? null : itemDescriptionTypeDetail.getCheckContentWebAddress();
-            Boolean includeInIndex = filterIncludeInIndex ? null : itemDescriptionTypeDetail.getIncludeInIndex();
-            Boolean indexDefault = filterIndexDefault ? null : itemDescriptionTypeDetail.getIndexDefault();
-            Boolean isDefault = filterIsDefault ? null : itemDescriptionTypeDetail.getIsDefault();
-            Integer sortOrder = filterSortOrder ? null : itemDescriptionTypeDetail.getSortOrder();
-            String description = filterDescription ? null : itemControl.getBestItemDescriptionTypeDescription(itemDescriptionType, getLanguage());
+            var itemDescriptionTypeDetail = itemDescriptionType.getLastDetail();
+            var itemDescriptionTypeName = filterItemDescriptionTypeName ? null : itemDescriptionTypeDetail.getItemDescriptionTypeName();
+            var parentItemDescriptionType = filterParentItemDescriptionType ? null : itemDescriptionTypeDetail.getParentItemDescriptionType();
+            var parentItemDescriptionTypeTransfer = parentItemDescriptionType == null ? null : itemControl.getItemDescriptionTypeTransfer(userVisit, parentItemDescriptionType);
+            var useParentIfMissing = filterUseParentIfMissing ? null : itemDescriptionTypeDetail.getUseParentIfMissing();
+            var mimeTypeUsageType = filterMimeTypeUsageType ? null : itemDescriptionTypeDetail.getMimeTypeUsageType();
+            var mimeTypeUsageTypeTransfer = mimeTypeUsageType == null ? null : coreControl.getMimeTypeUsageTypeTransfer(userVisit, mimeTypeUsageType);
+            var checkContentWebAddress = filterCheckContentWebAddress ? null : itemDescriptionTypeDetail.getCheckContentWebAddress();
+            var includeInIndex = filterIncludeInIndex ? null : itemDescriptionTypeDetail.getIncludeInIndex();
+            var indexDefault = filterIndexDefault ? null : itemDescriptionTypeDetail.getIndexDefault();
+            var isDefault = filterIsDefault ? null : itemDescriptionTypeDetail.getIsDefault();
+            var sortOrder = filterSortOrder ? null : itemDescriptionTypeDetail.getSortOrder();
+            var description = filterDescription ? null : itemControl.getBestItemDescriptionTypeDescription(itemDescriptionType, getLanguage());
             Integer minimumHeight = null;
             Integer minimumWidth = null;
             Integer maximumHeight = null;
@@ -124,8 +124,8 @@ public class ItemDescriptionTypeTransferCache
             Boolean scaleFromParent = null;
 
             if(mimeTypeUsageType != null && mimeTypeUsageType.getMimeTypeUsageTypeName().equals(MimeTypeUsageTypes.IMAGE.name())) {
-                ItemImageDescriptionType itemImageDescriptionType = itemControl.getItemImageDescriptionType(itemDescriptionType);
-                MimeType preferredMimeType = filterPreferredMimeType ? null : itemImageDescriptionType.getPreferredMimeType();
+                var itemImageDescriptionType = itemControl.getItemImageDescriptionType(itemDescriptionType);
+                var preferredMimeType = filterPreferredMimeType ? null : itemImageDescriptionType.getPreferredMimeType();
 
                 minimumHeight = filterMinimumHeight ? null : itemImageDescriptionType.getMinimumHeight();
                 minimumWidth = filterMinimumWidth ? null : itemImageDescriptionType.getMinimumWidth();

@@ -64,9 +64,9 @@ public class GetEditorCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        GetEditorResult result = CoreResultFactory.getGetEditorResult();
-        String editorName = form.getEditorName();
-        Editor editor = coreControl.getEditorByName(editorName);
+        var result = CoreResultFactory.getGetEditorResult();
+        var editorName = form.getEditorName();
+        var editor = coreControl.getEditorByName(editorName);
         
         if(editor != null) {
             result.setEditor(coreControl.getEditorTransfer(getUserVisit(), editor));

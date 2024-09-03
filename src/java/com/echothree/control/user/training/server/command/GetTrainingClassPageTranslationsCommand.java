@@ -69,17 +69,17 @@ public class GetTrainingClassPageTranslationsCommand
     @Override
     protected BaseResult execute() {
         var trainingControl = Session.getModelController(TrainingControl.class);
-        GetTrainingClassPageTranslationsResult result = TrainingResultFactory.getGetTrainingClassPageTranslationsResult();
-        String trainingClassName = form.getTrainingClassName();
-        TrainingClass trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
+        var result = TrainingResultFactory.getGetTrainingClassPageTranslationsResult();
+        var trainingClassName = form.getTrainingClassName();
+        var trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
 
         if(trainingClass != null) {
-            String trainingClassSectionName = form.getTrainingClassSectionName();
-            TrainingClassSection trainingClassSection = trainingControl.getTrainingClassSectionByName(trainingClass, trainingClassSectionName);
+            var trainingClassSectionName = form.getTrainingClassSectionName();
+            var trainingClassSection = trainingControl.getTrainingClassSectionByName(trainingClass, trainingClassSectionName);
 
             if(trainingClassSection != null) {
-                String trainingClassPageName = form.getTrainingClassPageName();
-                TrainingClassPage trainingClassPage = trainingControl.getTrainingClassPageByName(trainingClassSection, trainingClassPageName);
+                var trainingClassPageName = form.getTrainingClassPageName();
+                var trainingClassPage = trainingControl.getTrainingClassPageByName(trainingClassSection, trainingClassPageName);
 
                 if(trainingClassPage != null) {
                     result.setTrainingClassPage(trainingControl.getTrainingClassPageTransfer(getUserVisit(), trainingClassPage));

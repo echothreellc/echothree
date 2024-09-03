@@ -58,7 +58,7 @@ public class SequenceLogic
     public Sequence createSequence(final ExecutionErrorAccumulator eea, final String sequenceTypeName, final String sequenceName,
             final String value, final String mask, final Integer chunkSize, final Boolean isDefault, final Integer sortOrder,
             final String description, final Language language, final BasePK createdBy) {
-        SequenceType sequenceType = SequenceTypeLogic.getInstance().getSequenceTypeByName(eea, sequenceTypeName);
+        var sequenceType = SequenceTypeLogic.getInstance().getSequenceTypeByName(eea, sequenceTypeName);
         Sequence sequence = null;
         
         if(eea == null || !eea.hasExecutionErrors()) {
@@ -88,12 +88,12 @@ public class SequenceLogic
                     sequence = sequenceControl.createSequence(sequenceType, sequenceName, mask, chunkSize, isDefault, sortOrder, createdBy);
 
                     if(value == null) {
-                        char[] maskChars = mask.toCharArray();
-                        int maskLength = mask.length();
+                        var maskChars = mask.toCharArray();
+                        var maskLength = mask.length();
                         StringBuilder valueBuilder = new StringBuilder(maskLength);
 
-                        for(int index = 0; index < maskLength; index++) {
-                            char maskChar = maskChars[index];
+                        for(var index = 0; index < maskLength; index++) {
+                            var maskChar = maskChars[index];
 
                             switch(maskChar) {
                                 case '9':

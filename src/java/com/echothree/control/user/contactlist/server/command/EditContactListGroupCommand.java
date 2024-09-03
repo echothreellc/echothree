@@ -92,7 +92,7 @@ public class EditContactListGroupCommand
     public ContactListGroup getEntity(EditContactListGroupResult result) {
         var contactListControl = Session.getModelController(ContactListControl.class);
         ContactListGroup contactListGroup = null;
-        String contactListGroupName = spec.getContactListGroupName();
+        var contactListGroupName = spec.getContactListGroupName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
             contactListGroup = contactListControl.getContactListGroupByName(contactListGroupName);
@@ -122,8 +122,8 @@ public class EditContactListGroupCommand
     @Override
     public void doLock(ContactListGroupEdit edit, ContactListGroup contactListGroup) {
         var contactListControl = Session.getModelController(ContactListControl.class);
-        ContactListGroupDescription contactListGroupDescription = contactListControl.getContactListGroupDescription(contactListGroup, getPreferredLanguage());
-        ContactListGroupDetail contactListGroupDetail = contactListGroup.getLastDetail();
+        var contactListGroupDescription = contactListControl.getContactListGroupDescription(contactListGroup, getPreferredLanguage());
+        var contactListGroupDetail = contactListGroup.getLastDetail();
 
         edit.setContactListGroupName(contactListGroupDetail.getContactListGroupName());
         edit.setIsDefault(contactListGroupDetail.getIsDefault().toString());
@@ -137,8 +137,8 @@ public class EditContactListGroupCommand
     @Override
     public void canUpdate(ContactListGroup contactListGroup) {
         var contactListControl = Session.getModelController(ContactListControl.class);
-        String contactListGroupName = edit.getContactListGroupName();
-        ContactListGroup duplicateContactListGroup = contactListControl.getContactListGroupByName(contactListGroupName);
+        var contactListGroupName = edit.getContactListGroupName();
+        var duplicateContactListGroup = contactListControl.getContactListGroupByName(contactListGroupName);
 
         if(duplicateContactListGroup != null && !contactListGroup.equals(duplicateContactListGroup)) {
             addExecutionError(ExecutionErrors.DuplicateContactListGroupName.name(), contactListGroupName);
@@ -149,9 +149,9 @@ public class EditContactListGroupCommand
     public void doUpdate(ContactListGroup contactListGroup) {
         var contactListControl = Session.getModelController(ContactListControl.class);
         var partyPK = getPartyPK();
-        ContactListGroupDetailValue contactListGroupDetailValue = contactListControl.getContactListGroupDetailValueForUpdate(contactListGroup);
-        ContactListGroupDescription contactListGroupDescription = contactListControl.getContactListGroupDescriptionForUpdate(contactListGroup, getPreferredLanguage());
-        String description = edit.getDescription();
+        var contactListGroupDetailValue = contactListControl.getContactListGroupDetailValueForUpdate(contactListGroup);
+        var contactListGroupDescription = contactListControl.getContactListGroupDescriptionForUpdate(contactListGroup, getPreferredLanguage());
+        var description = edit.getDescription();
 
         contactListGroupDetailValue.setContactListGroupName(edit.getContactListGroupName());
         contactListGroupDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
@@ -164,7 +164,7 @@ public class EditContactListGroupCommand
         } else if(contactListGroupDescription != null && description == null) {
             contactListControl.deleteContactListGroupDescription(contactListGroupDescription, partyPK);
         } else if(contactListGroupDescription != null && description != null) {
-            ContactListGroupDescriptionValue contactListGroupDescriptionValue = contactListControl.getContactListGroupDescriptionValue(contactListGroupDescription);
+            var contactListGroupDescriptionValue = contactListControl.getContactListGroupDescriptionValue(contactListGroupDescription);
 
             contactListGroupDescriptionValue.setDescription(description);
             contactListControl.updateContactListGroupDescriptionFromValue(contactListGroupDescriptionValue, partyPK);

@@ -69,17 +69,17 @@ public class GetPartyTypeContactListCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        GetPartyTypeContactListResult result = ContactListResultFactory.getGetPartyTypeContactListResult();
-        String partyTypeName = form.getPartyTypeName();
-        PartyType partyType = partyControl.getPartyTypeByName(partyTypeName);
+        var result = ContactListResultFactory.getGetPartyTypeContactListResult();
+        var partyTypeName = form.getPartyTypeName();
+        var partyType = partyControl.getPartyTypeByName(partyTypeName);
         
         if(partyType != null) {
             var contactListControl = Session.getModelController(ContactListControl.class);
-            String contactListName = form.getContactListName();
-            ContactList contactList = contactListControl.getContactListByName(contactListName);
+            var contactListName = form.getContactListName();
+            var contactList = contactListControl.getContactListByName(contactListName);
             
             if(contactList != null) {
-                PartyTypeContactList partyTypeContactList = contactListControl.getPartyTypeContactList(partyType, contactList);
+                var partyTypeContactList = contactListControl.getPartyTypeContactList(partyType, contactList);
                 
                 if(partyTypeContactList != null) {
                     result.setPartyTypeContactList(contactListControl.getPartyTypeContactListTransfer(getUserVisit(), partyTypeContactList));

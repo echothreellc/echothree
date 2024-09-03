@@ -64,12 +64,12 @@ public class SetDefaultSelectorTypeCommand
     @Override
     protected BaseResult execute() {
         var selectorControl = Session.getModelController(SelectorControl.class);
-        String selectorKindName = form.getSelectorKindName();
-        SelectorKind selectorKind = selectorControl.getSelectorKindByName(selectorKindName);
+        var selectorKindName = form.getSelectorKindName();
+        var selectorKind = selectorControl.getSelectorKindByName(selectorKindName);
         
         if(selectorKind != null) {
-            String selectorTypeName = form.getSelectorTypeName();
-            SelectorTypeDetailValue selectorTypeDetailValue = selectorControl.getSelectorTypeDetailValueByNameForUpdate(selectorKind,
+            var selectorTypeName = form.getSelectorTypeName();
+            var selectorTypeDetailValue = selectorControl.getSelectorTypeDetailValueByNameForUpdate(selectorKind,
                     selectorTypeName);
             
             if(selectorTypeDetailValue != null) {

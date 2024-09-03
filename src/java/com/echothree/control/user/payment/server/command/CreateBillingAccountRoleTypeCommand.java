@@ -58,8 +58,8 @@ public class CreateBillingAccountRoleTypeCommand
     @Override
     protected BaseResult execute() {
         var billingControl = Session.getModelController(BillingControl.class);
-        String billingAccountRoleTypeName = form.getBillingAccountRoleTypeName();
-        BillingAccountRoleType billingAccountRoleType = billingControl.getBillingAccountRoleTypeByName(billingAccountRoleTypeName);
+        var billingAccountRoleTypeName = form.getBillingAccountRoleTypeName();
+        var billingAccountRoleType = billingControl.getBillingAccountRoleTypeByName(billingAccountRoleTypeName);
         
         if(billingAccountRoleType == null) {
             var sortOrder = Integer.valueOf(form.getSortOrder());

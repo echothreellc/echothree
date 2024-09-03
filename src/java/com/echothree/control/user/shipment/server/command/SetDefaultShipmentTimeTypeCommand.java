@@ -64,12 +64,12 @@ public class SetDefaultShipmentTimeTypeCommand
     @Override
     protected BaseResult execute() {
         var shipmentControl = Session.getModelController(ShipmentControl.class);
-        String shipmentTypeName = form.getShipmentTypeName();
-        ShipmentType shipmentType = shipmentControl.getShipmentTypeByName(shipmentTypeName);
+        var shipmentTypeName = form.getShipmentTypeName();
+        var shipmentType = shipmentControl.getShipmentTypeByName(shipmentTypeName);
 
         if(shipmentType != null) {
-            String shipmentTimeTypeName = form.getShipmentTimeTypeName();
-            ShipmentTimeTypeDetailValue shipmentTimeTypeDetailValue = shipmentControl.getShipmentTimeTypeDetailValueByNameForUpdate(shipmentType, shipmentTimeTypeName);
+            var shipmentTimeTypeName = form.getShipmentTimeTypeName();
+            var shipmentTimeTypeDetailValue = shipmentControl.getShipmentTimeTypeDetailValueByNameForUpdate(shipmentType, shipmentTimeTypeName);
 
             if(shipmentTimeTypeDetailValue != null) {
                 shipmentTimeTypeDetailValue.setIsDefault(Boolean.TRUE);

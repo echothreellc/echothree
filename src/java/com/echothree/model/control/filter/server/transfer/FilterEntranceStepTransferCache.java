@@ -36,11 +36,11 @@ public class FilterEntranceStepTransferCache
 
     @Override
     public FilterEntranceStepTransfer getTransfer(FilterEntranceStep filterEntranceStep) {
-        FilterEntranceStepTransfer filterEntranceStepTransfer = get(filterEntranceStep);
+        var filterEntranceStepTransfer = get(filterEntranceStep);
         
         if(filterEntranceStepTransfer == null) {
-            FilterTransfer filter = filterControl.getFilterTransfer(userVisit, filterEntranceStep.getFilter());
-            FilterStepTransfer filterStep = filterControl.getFilterStepTransfer(userVisit, filterEntranceStep.getFilterStep());
+            var filter = filterControl.getFilterTransfer(userVisit, filterEntranceStep.getFilter());
+            var filterStep = filterControl.getFilterStepTransfer(userVisit, filterEntranceStep.getFilterStep());
             
             filterEntranceStepTransfer = new FilterEntranceStepTransfer(filter, filterStep);
             put(filterEntranceStep, filterEntranceStepTransfer);

@@ -66,9 +66,9 @@ public class GetTerminationReasonCommand
     @Override
     protected BaseResult execute() {
         var employeeControl = Session.getModelController(EmployeeControl.class);
-        GetTerminationReasonResult result = EmployeeResultFactory.getGetTerminationReasonResult();
-        String terminationReasonName = form.getTerminationReasonName();
-        TerminationReason terminationReason = employeeControl.getTerminationReasonByName(terminationReasonName);
+        var result = EmployeeResultFactory.getGetTerminationReasonResult();
+        var terminationReasonName = form.getTerminationReasonName();
+        var terminationReason = employeeControl.getTerminationReasonByName(terminationReasonName);
         
         if(terminationReason != null) {
             result.setTerminationReason(employeeControl.getTerminationReasonTransfer(getUserVisit(), terminationReason));

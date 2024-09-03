@@ -67,16 +67,16 @@ public class DeleteTagScopeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var tagControl = Session.getModelController(TagControl.class);
-        String tagScopeName = form.getTagScopeName();
-        TagScope tagScope = tagControl.getTagScopeByName(tagScopeName);
+        var tagScopeName = form.getTagScopeName();
+        var tagScope = tagControl.getTagScopeByName(tagScopeName);
         
         if(tagScope != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                TagScopeDescription tagScopeDescription = tagControl.getTagScopeDescriptionForUpdate(tagScope, language);
+                var tagScopeDescription = tagControl.getTagScopeDescriptionForUpdate(tagScope, language);
                 
                 if(tagScopeDescription != null) {
                     tagControl.deleteTagScopeDescription(tagScopeDescription, getPartyPK());

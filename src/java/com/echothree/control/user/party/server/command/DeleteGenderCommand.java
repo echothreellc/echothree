@@ -49,8 +49,8 @@ public class DeleteGenderCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        String genderName = form.getGenderName();
-        Gender gender = partyControl.getGenderByNameForUpdate(genderName);
+        var genderName = form.getGenderName();
+        var gender = partyControl.getGenderByNameForUpdate(genderName);
         
         if(gender != null) {
             partyControl.deleteGender(gender, getPartyPK());

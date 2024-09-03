@@ -63,8 +63,8 @@ public class DeleteLicenseTypeCommand
     @Override
     protected BaseResult execute() {
         var licenseControl = Session.getModelController(LicenseControl.class);
-        String licenseTypeName = form.getLicenseTypeName();
-        LicenseType licenseType = licenseControl.getLicenseTypeByNameForUpdate(licenseTypeName);
+        var licenseTypeName = form.getLicenseTypeName();
+        var licenseType = licenseControl.getLicenseTypeByNameForUpdate(licenseTypeName);
         
         if(licenseType != null) {
             licenseControl.deleteLicenseType(licenseType, getPartyPK());

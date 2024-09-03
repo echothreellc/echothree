@@ -51,9 +51,9 @@ public class GetCommunicationSourceDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var communicationControl = Session.getModelController(CommunicationControl.class);
-        GetCommunicationSourceDescriptionsResult result = CommunicationResultFactory.getGetCommunicationSourceDescriptionsResult();
-        String communicationSourceName = form.getCommunicationSourceName();
-        CommunicationSource communicationSource = communicationControl.getCommunicationSourceByName(communicationSourceName);
+        var result = CommunicationResultFactory.getGetCommunicationSourceDescriptionsResult();
+        var communicationSourceName = form.getCommunicationSourceName();
+        var communicationSource = communicationControl.getCommunicationSourceByName(communicationSourceName);
         
         if(communicationSource != null) {
             result.setCommunicationSource(communicationControl.getCommunicationSourceTransfer(getUserVisit(), communicationSource));

@@ -35,14 +35,14 @@ public class SourceTransferCache
     }
     
     public SourceTransfer getSourceTransfer(Source source) {
-        SourceTransfer sourceTransfer = get(source);
+        var sourceTransfer = get(source);
         
         if(sourceTransfer == null) {
-            SourceDetail sourceDetail = source.getLastDetail();
-            String sourceName = sourceDetail.getSourceName();
-            OfferUseTransfer offerUseTransfer = offerUseControl.getOfferUseTransfer(userVisit, sourceDetail.getOfferUse());
-            Boolean isDefault = sourceDetail.getIsDefault();
-            Integer sortOrder = sourceDetail.getSortOrder();
+            var sourceDetail = source.getLastDetail();
+            var sourceName = sourceDetail.getSourceName();
+            var offerUseTransfer = offerUseControl.getOfferUseTransfer(userVisit, sourceDetail.getOfferUse());
+            var isDefault = sourceDetail.getIsDefault();
+            var sortOrder = sourceDetail.getSortOrder();
             
             sourceTransfer = new SourceTransfer(sourceName, offerUseTransfer, isDefault, sortOrder);
             put(source, sourceTransfer);

@@ -69,17 +69,17 @@ public class GetItemAccountingCategoryDescriptionCommand
     @Override
     protected BaseResult execute() {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        GetItemAccountingCategoryDescriptionResult result = AccountingResultFactory.getGetItemAccountingCategoryDescriptionResult();
-        String itemAccountingCategoryName = form.getItemAccountingCategoryName();
-        ItemAccountingCategory itemAccountingCategory = accountingControl.getItemAccountingCategoryByName(itemAccountingCategoryName);
+        var result = AccountingResultFactory.getGetItemAccountingCategoryDescriptionResult();
+        var itemAccountingCategoryName = form.getItemAccountingCategoryName();
+        var itemAccountingCategory = accountingControl.getItemAccountingCategoryByName(itemAccountingCategoryName);
         
         if(itemAccountingCategory != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                ItemAccountingCategoryDescription itemAccountingCategoryDescription = accountingControl.getItemAccountingCategoryDescription(itemAccountingCategory, language);
+                var itemAccountingCategoryDescription = accountingControl.getItemAccountingCategoryDescription(itemAccountingCategory, language);
                 
                 if(itemAccountingCategoryDescription != null) {
                     result.setItemAccountingCategoryDescription(accountingControl.getItemAccountingCategoryDescriptionTransfer(getUserVisit(), itemAccountingCategoryDescription));

@@ -33,14 +33,14 @@ public class GeoCodeScopeTransferCache
     }
     
     public GeoCodeScopeTransfer getGeoCodeScopeTransfer(GeoCodeScope geoCodeScope) {
-        GeoCodeScopeTransfer geoCodeScopeTransfer = get(geoCodeScope);
+        var geoCodeScopeTransfer = get(geoCodeScope);
         
         if(geoCodeScopeTransfer == null) {
-            GeoCodeScopeDetail geoCodeScopeDetail = geoCodeScope.getLastDetail();
-            String geoCodeScopeName = geoCodeScopeDetail.getGeoCodeScopeName();
-            Boolean isDefault = geoCodeScopeDetail.getIsDefault();
-            Integer sortOrder = geoCodeScopeDetail.getSortOrder();
-            String description = geoControl.getBestGeoCodeScopeDescription(geoCodeScope, getLanguage());
+            var geoCodeScopeDetail = geoCodeScope.getLastDetail();
+            var geoCodeScopeName = geoCodeScopeDetail.getGeoCodeScopeName();
+            var isDefault = geoCodeScopeDetail.getIsDefault();
+            var sortOrder = geoCodeScopeDetail.getSortOrder();
+            var description = geoControl.getBestGeoCodeScopeDescription(geoCodeScope, getLanguage());
             
             geoCodeScopeTransfer = new GeoCodeScopeTransfer(geoCodeScopeName, isDefault, sortOrder, description);
             put(geoCodeScope, geoCodeScopeTransfer);

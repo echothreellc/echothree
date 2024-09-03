@@ -67,17 +67,17 @@ public class GetFilterChoicesCommand
     @Override
     protected BaseResult execute() {
         var filterControl = Session.getModelController(FilterControl.class);
-        GetFilterChoicesResult result = FilterResultFactory.getGetFilterChoicesResult();
-        String filterKindName = form.getFilterKindName();
-        FilterKind filterKind = filterControl.getFilterKindByName(filterKindName);
+        var result = FilterResultFactory.getGetFilterChoicesResult();
+        var filterKindName = form.getFilterKindName();
+        var filterKind = filterControl.getFilterKindByName(filterKindName);
         
         if(filterKind != null) {
-            String filterTypeName = form.getFilterTypeName();
-            FilterType filterType = filterControl.getFilterTypeByName(filterKind, filterTypeName);
+            var filterTypeName = form.getFilterTypeName();
+            var filterType = filterControl.getFilterTypeByName(filterKind, filterTypeName);
             
             if(filterType != null) {
-                String defaultFilterChoice = form.getDefaultFilterChoice();
-                boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+                var defaultFilterChoice = form.getDefaultFilterChoice();
+                var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
                 
                 result.setFilterChoices(filterControl.getFilterChoices(defaultFilterChoice, getPreferredLanguage(),
                         allowNullChoice, filterType));

@@ -68,12 +68,12 @@ public class CreatePicklistTimeTypeCommand
     @Override
     protected BaseResult execute() {
         var picklistControl = Session.getModelController(PicklistControl.class);
-        String picklistTypeName = form.getPicklistTypeName();
-        PicklistType picklistType = picklistControl.getPicklistTypeByName(picklistTypeName);
+        var picklistTypeName = form.getPicklistTypeName();
+        var picklistType = picklistControl.getPicklistTypeByName(picklistTypeName);
 
         if(picklistType != null) {
-            String picklistTimeTypeName = form.getPicklistTimeTypeName();
-            PicklistTimeType picklistTimeType = picklistControl.getPicklistTimeTypeByName(picklistType, picklistTimeTypeName);
+            var picklistTimeTypeName = form.getPicklistTimeTypeName();
+            var picklistTimeType = picklistControl.getPicklistTimeTypeByName(picklistType, picklistTimeTypeName);
 
             if(picklistTimeType == null) {
                 var partyPK = getPartyPK();

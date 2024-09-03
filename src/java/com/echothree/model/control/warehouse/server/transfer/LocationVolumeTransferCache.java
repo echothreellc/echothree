@@ -39,14 +39,14 @@ public class LocationVolumeTransferCache
     }
     
     public LocationVolumeTransfer getLocationVolumeTransfer(LocationVolume locationVolume) {
-        LocationVolumeTransfer locationVolumeTransfer = get(locationVolume);
+        var locationVolumeTransfer = get(locationVolume);
         
         if(locationVolumeTransfer == null) {
-            LocationTransfer locationTransfer = warehouseControl.getLocationTransfer(userVisit, locationVolume.getLocation());
-            UnitOfMeasureKind volumeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_VOLUME);
-            String height = formatUnitOfMeasure(volumeUnitOfMeasureKind, locationVolume.getHeight());
-            String width = formatUnitOfMeasure(volumeUnitOfMeasureKind, locationVolume.getWidth());
-            String depth = formatUnitOfMeasure(volumeUnitOfMeasureKind, locationVolume.getDepth());
+            var locationTransfer = warehouseControl.getLocationTransfer(userVisit, locationVolume.getLocation());
+            var volumeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_VOLUME);
+            var height = formatUnitOfMeasure(volumeUnitOfMeasureKind, locationVolume.getHeight());
+            var width = formatUnitOfMeasure(volumeUnitOfMeasureKind, locationVolume.getWidth());
+            var depth = formatUnitOfMeasure(volumeUnitOfMeasureKind, locationVolume.getDepth());
             Long cubicVolume = locationVolume.getHeight() * locationVolume.getWidth()
                     * locationVolume.getDepth();
             

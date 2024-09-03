@@ -73,8 +73,8 @@ public class GetTrackCommand
     
     @Override
     protected BaseResult execute() {
-        GetTrackResult result = TrackResultFactory.getGetTrackResult();
-        String trackName = form.getTrackName();
+        var result = TrackResultFactory.getGetTrackResult();
+        var trackName = form.getTrackName();
         var parameterCount = (trackName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {

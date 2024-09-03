@@ -47,12 +47,12 @@ public class RemoveCacheEntryCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String cacheEntryKey = form.getCacheEntryKey();
+        var cacheEntryKey = form.getCacheEntryKey();
         
         if(cacheEntryKey == null) {
             coreControl.removeCacheEntries();
         } else {
-            CacheEntry cacheEntry = coreControl.getCacheEntryByCacheEntryKeyForUpdate(cacheEntryKey);
+            var cacheEntry = coreControl.getCacheEntryByCacheEntryKeyForUpdate(cacheEntryKey);
 
             if(cacheEntry != null) {
                 coreControl.removeCacheEntry(cacheEntry);

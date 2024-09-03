@@ -63,38 +63,38 @@ public class CreateClubItemCommand
     @Override
     protected BaseResult execute() {
         var clubControl = Session.getModelController(ClubControl.class);
-        String clubName = form.getClubName();
-        Club club = clubControl.getClubByName(clubName);
+        var clubName = form.getClubName();
+        var club = clubControl.getClubByName(clubName);
         
         if(club != null) {
-            String clubItemTypeName = form.getClubItemTypeName();
-            ClubItemType clubItemType = clubControl.getClubItemTypeByName(clubItemTypeName);
+            var clubItemTypeName = form.getClubItemTypeName();
+            var clubItemType = clubControl.getClubItemTypeByName(clubItemTypeName);
             
             if(clubItemType != null) {
                 var itemControl = Session.getModelController(ItemControl.class);
-                String itemName = form.getItemName();
-                Item item = itemControl.getItemByName(itemName);
+                var itemName = form.getItemName();
+                var item = itemControl.getItemByName(itemName);
                 
                 if(item != null) {
-                    String itemUseTypeName = item.getLastDetail().getItemUseType().getItemUseTypeName();
+                    var itemUseTypeName = item.getLastDetail().getItemUseType().getItemUseTypeName();
                     
                     if(itemUseTypeName.equals(ItemConstants.ItemUseType_CLUB)) {
-                        ClubItem clubItem = clubControl.getClubItem(club, clubItemType, item);
+                        var clubItem = clubControl.getClubItem(club, clubItemType, item);
                         
                         if(clubItem == null) {
                             var uomControl = Session.getModelController(UomControl.class);
-                            String unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
+                            var unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
                             UnitOfMeasureType unitOfMeasureType = null;
                             
                             if(unitOfMeasureTypeName != null) {
-                                UnitOfMeasureKind unitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
+                                var unitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
                                 
                                 unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
                             }
                             
                             if(unitOfMeasureTypeName == null || unitOfMeasureType != null) {
-                                String strSubscriptionTime = form.getSubscriptionTime();
-                                Long subscriptionTime = strSubscriptionTime == null? null: Long.valueOf(strSubscriptionTime);
+                                var strSubscriptionTime = form.getSubscriptionTime();
+                                var subscriptionTime = strSubscriptionTime == null? null: Long.valueOf(strSubscriptionTime);
                                 
                                 if(unitOfMeasureTypeName == null || subscriptionTime != null) {
                                     Conversion conversion = null;

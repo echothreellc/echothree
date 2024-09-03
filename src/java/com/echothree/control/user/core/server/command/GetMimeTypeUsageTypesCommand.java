@@ -54,7 +54,7 @@ public class GetMimeTypeUsageTypesCommand
     @Override
     protected BaseResult getResult(Collection<MimeTypeUsageType> entities) {
         var coreControl = getCoreControl();
-        GetMimeTypeUsageTypesResult result = CoreResultFactory.getGetMimeTypeUsageTypesResult();
+        var result = CoreResultFactory.getGetMimeTypeUsageTypesResult();
 
         result.setMimeTypeUsageTypes(coreControl.getMimeTypeUsageTypeTransfers(getUserVisit(), entities));
 

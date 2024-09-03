@@ -43,14 +43,14 @@ public class NameSuffixesHelper {
     public NameSuffixChoicesBean getNameSuffixChoices(final UserVisitPK userVisitPK, final Boolean allowNullChoice)
             throws NamingException {
         NameSuffixChoicesBean nameSuffixChoices = null;
-        GetNameSuffixChoicesForm commandForm = PartyFormFactory.getGetNameSuffixChoicesForm();
+        var commandForm = PartyFormFactory.getGetNameSuffixChoicesForm();
 
         commandForm.setAllowNullChoice(allowNullChoice.toString());
 
-        CommandResult commandResult = PartyUtil.getHome().getNameSuffixChoices(userVisitPK, commandForm);
+        var commandResult = PartyUtil.getHome().getNameSuffixChoices(userVisitPK, commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetNameSuffixChoicesResult result = (GetNameSuffixChoicesResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetNameSuffixChoicesResult)executionResult.getResult();
 
             nameSuffixChoices = result.getNameSuffixChoices();
         }

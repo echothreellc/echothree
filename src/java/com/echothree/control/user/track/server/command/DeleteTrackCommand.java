@@ -63,8 +63,8 @@ public class DeleteTrackCommand
     @Override
     protected BaseResult execute() {
         var trackControl = Session.getModelController(TrackControl.class);
-        String trackName = form.getTrackName();
-        Track track = trackControl.getTrackByNameForUpdate(trackName);
+        var trackName = form.getTrackName();
+        var track = trackControl.getTrackByNameForUpdate(trackName);
         
         if(track != null) {
             trackControl.deleteTrack(track, getPartyPK());

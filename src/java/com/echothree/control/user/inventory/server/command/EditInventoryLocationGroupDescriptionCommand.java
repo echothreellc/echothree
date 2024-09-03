@@ -69,30 +69,30 @@ public class EditInventoryLocationGroupDescriptionCommand
     @Override
     protected BaseResult execute() {
         var warehouseControl = Session.getModelController(WarehouseControl.class);
-        EditInventoryLocationGroupDescriptionResult result = InventoryResultFactory.getEditInventoryLocationGroupDescriptionResult();
-        String warehouseName = spec.getWarehouseName();
-        Warehouse warehouse = warehouseControl.getWarehouseByName(warehouseName);
+        var result = InventoryResultFactory.getEditInventoryLocationGroupDescriptionResult();
+        var warehouseName = spec.getWarehouseName();
+        var warehouse = warehouseControl.getWarehouseByName(warehouseName);
         
         if(warehouse != null) {
             var inventoryControl = Session.getModelController(InventoryControl.class);
-            Party warehouseParty = warehouse.getParty();
-            String inventoryLocationGroupName = spec.getInventoryLocationGroupName();
-            InventoryLocationGroup inventoryLocationGroup = inventoryControl.getInventoryLocationGroupByName(warehouseParty, inventoryLocationGroupName);
+            var warehouseParty = warehouse.getParty();
+            var inventoryLocationGroupName = spec.getInventoryLocationGroupName();
+            var inventoryLocationGroup = inventoryControl.getInventoryLocationGroupByName(warehouseParty, inventoryLocationGroupName);
             
             if(inventoryLocationGroup != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = spec.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = spec.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
                 
                 if(language != null) {
                     if(editMode.equals(EditMode.LOCK)) {
-                        InventoryLocationGroupDescription inventoryLocationGroupDescription = inventoryControl.getInventoryLocationGroupDescription(inventoryLocationGroup, language);
+                        var inventoryLocationGroupDescription = inventoryControl.getInventoryLocationGroupDescription(inventoryLocationGroup, language);
                         
                         if(inventoryLocationGroupDescription != null) {
                             result.setInventoryLocationGroupDescription(inventoryControl.getInventoryLocationGroupDescriptionTransfer(getUserVisit(), inventoryLocationGroupDescription));
                             
                             if(lockEntity(inventoryLocationGroup)) {
-                                InventoryLocationGroupDescriptionEdit edit = InventoryEditFactory.getInventoryLocationGroupDescriptionEdit();
+                                var edit = InventoryEditFactory.getInventoryLocationGroupDescriptionEdit();
                                 
                                 result.setEdit(edit);
                                 edit.setDescription(inventoryLocationGroupDescription.getDescription());
@@ -105,12 +105,12 @@ public class EditInventoryLocationGroupDescriptionCommand
                             addExecutionError(ExecutionErrors.UnknownInventoryLocationGroupDescription.name());
                         }
                     } else if(editMode.equals(EditMode.UPDATE)) {
-                        InventoryLocationGroupDescriptionValue inventoryLocationGroupDescriptionValue = inventoryControl.getInventoryLocationGroupDescriptionValueForUpdate(inventoryLocationGroup, language);
+                        var inventoryLocationGroupDescriptionValue = inventoryControl.getInventoryLocationGroupDescriptionValueForUpdate(inventoryLocationGroup, language);
                         
                         if(inventoryLocationGroupDescriptionValue != null) {
                             if(lockEntityForUpdate(inventoryLocationGroup)) {
                                 try {
-                                    String description = edit.getDescription();
+                                    var description = edit.getDescription();
                                     
                                     inventoryLocationGroupDescriptionValue.setDescription(description);
                                     

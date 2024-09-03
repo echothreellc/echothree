@@ -66,9 +66,9 @@ public class GetContactMechanismAliasTypeCommand
     @Override
     protected BaseResult execute() {
         var contactControl = Session.getModelController(ContactControl.class);
-        GetContactMechanismAliasTypeResult result = ContactResultFactory.getGetContactMechanismAliasTypeResult();
-        String contactMechanismAliasTypeName = form.getContactMechanismAliasTypeName();
-        ContactMechanismAliasType contactMechanismAliasType = contactControl.getContactMechanismAliasTypeByName(contactMechanismAliasTypeName);
+        var result = ContactResultFactory.getGetContactMechanismAliasTypeResult();
+        var contactMechanismAliasTypeName = form.getContactMechanismAliasTypeName();
+        var contactMechanismAliasType = contactControl.getContactMechanismAliasTypeByName(contactMechanismAliasTypeName);
         
         if(contactMechanismAliasType != null) {
             result.setContactMechanismAliasType(contactControl.getContactMechanismAliasTypeTransfer(getUserVisit(), contactMechanismAliasType));

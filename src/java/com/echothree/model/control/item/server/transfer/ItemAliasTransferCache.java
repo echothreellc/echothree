@@ -40,13 +40,13 @@ public class ItemAliasTransferCache
     
     @Override
     public ItemAliasTransfer getTransfer(ItemAlias itemAlias) {
-        ItemAliasTransfer itemAliasTransfer = get(itemAlias);
+        var itemAliasTransfer = get(itemAlias);
         
         if(itemAliasTransfer == null) {
-            ItemTransfer item = itemControl.getItemTransfer(userVisit, itemAlias.getItem());
-            UnitOfMeasureTypeTransfer unitOfMeasureType = uomControl.getUnitOfMeasureTypeTransfer(userVisit, itemAlias.getUnitOfMeasureType());
-            ItemAliasTypeTransfer itemAliasType = itemControl.getItemAliasTypeTransfer(userVisit, itemAlias.getItemAliasType());
-            String alias = itemAlias.getAlias();
+            var item = itemControl.getItemTransfer(userVisit, itemAlias.getItem());
+            var unitOfMeasureType = uomControl.getUnitOfMeasureTypeTransfer(userVisit, itemAlias.getUnitOfMeasureType());
+            var itemAliasType = itemControl.getItemAliasTypeTransfer(userVisit, itemAlias.getItemAliasType());
+            var alias = itemAlias.getAlias();
             
             itemAliasTransfer = new ItemAliasTransfer(item, unitOfMeasureType, itemAliasType, alias);
             put(itemAlias, itemAliasTransfer);

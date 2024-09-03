@@ -66,13 +66,13 @@ public class GetReturnReasonChoicesCommand
     @Override
     protected BaseResult execute() {
         var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
-        GetReturnReasonChoicesResult result = ReturnPolicyResultFactory.getGetReturnReasonChoicesResult();
-        String returnKindName = form.getReturnKindName();
-        ReturnKind returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
+        var result = ReturnPolicyResultFactory.getGetReturnReasonChoicesResult();
+        var returnKindName = form.getReturnKindName();
+        var returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
         
         if(returnKind != null) {
-            String defaultReturnReasonChoice = form.getDefaultReturnReasonChoice();
-            boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+            var defaultReturnReasonChoice = form.getDefaultReturnReasonChoice();
+            var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
             
             result.setReturnReasonChoices(returnPolicyControl.getReturnReasonChoices(defaultReturnReasonChoice, getPreferredLanguage(),
                     allowNullChoice, returnKind));

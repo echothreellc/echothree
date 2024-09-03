@@ -60,8 +60,8 @@ public class DeletePaymentMethodTypeCommand
     
     @Override
     protected BaseResult execute() {
-        String paymentMethodTypeName = form.getPaymentMethodTypeName();
-        PaymentMethodType paymentMethodType = PaymentMethodTypeLogic.getInstance().getPaymentMethodTypeByNameForUpdate(this, paymentMethodTypeName);
+        var paymentMethodTypeName = form.getPaymentMethodTypeName();
+        var paymentMethodType = PaymentMethodTypeLogic.getInstance().getPaymentMethodTypeByNameForUpdate(this, paymentMethodTypeName);
         
         if(!hasExecutionErrors()) {
             PaymentMethodTypeLogic.getInstance().deletePaymentMethodType(this, paymentMethodType, getPartyPK());

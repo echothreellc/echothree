@@ -63,8 +63,8 @@ public class DeleteContactListTypeCommand
     @Override
     protected BaseResult execute() {
         var contactListControl = Session.getModelController(ContactListControl.class);
-        String contactListTypeName = form.getContactListTypeName();
-        ContactListType contactListType = contactListControl.getContactListTypeByNameForUpdate(contactListTypeName);
+        var contactListTypeName = form.getContactListTypeName();
+        var contactListType = contactListControl.getContactListTypeByNameForUpdate(contactListTypeName);
         
         if(contactListType != null) {
             contactListControl.deleteContactListType(contactListType, getPartyPK());

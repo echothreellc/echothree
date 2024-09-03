@@ -249,8 +249,8 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
     }
 
     protected void setupEntityAttributeGroups(CoreControl coreControl, EntityInstance entityInstance, V transfer) {
-        List<EntityAttributeGroupTransfer> entityAttributeGroupTransfers = coreControl.getEntityAttributeGroupTransfersByEntityType(userVisit, entityInstance.getEntityType(), entityInstance);
-        MapWrapper<EntityAttributeGroupTransfer> mapWrapper = new MapWrapper<>(entityAttributeGroupTransfers.size());
+        var entityAttributeGroupTransfers = coreControl.getEntityAttributeGroupTransfersByEntityType(userVisit, entityInstance.getEntityType(), entityInstance);
+        var mapWrapper = new MapWrapper<EntityAttributeGroupTransfer>(entityAttributeGroupTransfers.size());
 
         entityAttributeGroupTransfers.forEach((entityAttributeGroupTransfer) -> {
             mapWrapper.put(entityAttributeGroupTransfer.getEntityAttributeGroupName(), entityAttributeGroupTransfer);
@@ -276,15 +276,15 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
     }
 
     protected void setupTagScopes(CoreControl coreControl, EntityInstance entityInstance, V transfer) {
-        TagControl tagControl = Session.getModelController(TagControl.class);
-        List<TagScope> tagScopes = tagControl.getTagScopesByEntityType(entityInstance.getEntityType());
-        MapWrapper<TagScopeTransfer> mapWrapper = new MapWrapper<>(tagScopes.size());
+        var tagControl = Session.getModelController(TagControl.class);
+        var tagScopes = tagControl.getTagScopesByEntityType(entityInstance.getEntityType());
+        var mapWrapper = new MapWrapper<TagScopeTransfer>(tagScopes.size());
 
         tagScopes.stream().map((tagScope) -> {
             // We get a copy of the TagScopeTransfer since we'll be modifying a field on it. Because there may be multiple instances of the
             // TransferObject that we're building at this point, they may each have their own List of Tags within a given TagScope, so we do
             // not want the tags property to be shared among all of them.
-            TagScopeTransfer tagScopeTransfer = tagControl.getTagScopeTransfer(userVisit, tagScope).copy();
+            var tagScopeTransfer = tagControl.getTagScopeTransfer(userVisit, tagScope).copy();
             tagScopeTransfer.setTags(new ListWrapper<>(tagControl.getTagTransfersByTagScopeAndEntityInstance(userVisit, tagScope, entityInstance)));
             return tagScopeTransfer;
         }).forEach((tagScopeTransfer) -> {
@@ -400,7 +400,7 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
     }
     
     protected void setupEntityInstance(final K baseEntity, EntityInstance entityInstance, final V transfer) {
-        CoreControl coreControl = Session.getModelController(CoreControl.class);
+        var coreControl = Session.getModelController(CoreControl.class);
         
         if(entityInstance == null) {
             entityInstance = coreControl.getEntityInstanceByBasePK(baseEntity.getPrimaryKey());
@@ -429,15 +429,15 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
     }
 
     protected EntityInstance setupComments(final K commentedEntity, EntityInstance commentedEntityInstance, final V transfer, final String commentTypeName) {
-        CommentControl commentControl = Session.getModelController(CommentControl.class);
+        var commentControl = Session.getModelController(CommentControl.class);
         
         if(commentedEntityInstance == null) {
-            CoreControl coreControl = Session.getModelController(CoreControl.class);
+            var coreControl = Session.getModelController(CoreControl.class);
             
             commentedEntityInstance = coreControl.getEntityInstanceByBasePK(commentedEntity.getPrimaryKey());
         }
-        
-        CommentType commentType = commentControl.getCommentTypeByName(commentedEntityInstance.getEntityType(), commentTypeName);
+
+        var commentType = commentControl.getCommentTypeByName(commentedEntityInstance.getEntityType(), commentTypeName);
         transfer.addComments(commentTypeName, new CommentListWrapper(commentControl.getCommentTypeTransfer(userVisit, commentType),
                 commentControl.getCommentTransfersByCommentedEntityInstanceAndCommentType(userVisit, commentedEntityInstance, commentType)));
         
@@ -445,15 +445,15 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
     }
 
     protected EntityInstance setupRatings(final K ratedEntity, EntityInstance ratedEntityInstance, final V transfer, final String ratingTypeName) {
-        RatingControl ratingControl = Session.getModelController(RatingControl.class);
+        var ratingControl = Session.getModelController(RatingControl.class);
         
         if(ratedEntityInstance == null) {
-            CoreControl coreControl = Session.getModelController(CoreControl.class);
+            var coreControl = Session.getModelController(CoreControl.class);
             
             ratedEntityInstance = coreControl.getEntityInstanceByBasePK(ratedEntity.getPrimaryKey());
         }
-        
-        RatingType ratingType = ratingControl.getRatingTypeByName(ratedEntityInstance.getEntityType(), ratingTypeName);
+
+        var ratingType = ratingControl.getRatingTypeByName(ratedEntityInstance.getEntityType(), ratingTypeName);
         transfer.addRatings(ratingTypeName, new RatingListWrapper(ratingControl.getRatingTypeTransfer(userVisit, ratingType),
                 ratingControl.getRatingTransfersByRatedEntityInstanceAndRatingType(userVisit, ratedEntityInstance, ratingType)));
 
@@ -461,15 +461,15 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
     }
 
     protected EntityInstance setupOwnedWorkEfforts(final K baseEntity, EntityInstance owningEntityInstance, final V transfer) {
-        WorkEffortControl workEffortControl = Session.getModelController(WorkEffortControl.class);
+        var workEffortControl = Session.getModelController(WorkEffortControl.class);
         
         if(owningEntityInstance == null) {
-            CoreControl coreControl = Session.getModelController(CoreControl.class);
+            var coreControl = Session.getModelController(CoreControl.class);
             
             owningEntityInstance = coreControl.getEntityInstanceByBasePK(baseEntity.getPrimaryKey());
         }
         
-        for(WorkEffortTransfer workEffort: workEffortControl.getWorkEffortTransfersByOwningEntityInstance(userVisit, owningEntityInstance)) {
+        for(var workEffort: workEffortControl.getWorkEffortTransfersByOwningEntityInstance(userVisit, owningEntityInstance)) {
             transfer.addOwnedWorkEffort(workEffort.getWorkEffortScope().getWorkEffortType().getWorkEffortTypeName(), workEffort);
         }
 

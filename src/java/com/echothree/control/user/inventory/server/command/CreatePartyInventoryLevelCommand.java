@@ -65,15 +65,15 @@ public class CreatePartyInventoryLevelCommand
     @Override
     protected BaseResult execute() {
         var inventoryControl = Session.getModelController(InventoryControl.class);
-        Party party = getParty(form);
+        var party = getParty(form);
         
         if(party != null) {
             var itemControl = Session.getModelController(ItemControl.class);
-            String itemName = form.getItemName();
-            Item item = itemControl.getItemByName(itemName);
+            var itemName = form.getItemName();
+            var item = itemControl.getItemByName(itemName);
             
             if(item != null) {
-                String partyTypeName = getPartyTypeName(party);
+                var partyTypeName = getPartyTypeName(party);
                 
                 if(partyTypeName.equals(PartyTypes.COMPANY.name())) {
                     if(!party.equals(item.getLastDetail().getCompanyParty())) {
@@ -82,31 +82,31 @@ public class CreatePartyInventoryLevelCommand
                 }
                 
                 if(!hasExecutionErrors()) {
-                    String inventoryConditionName = form.getInventoryConditionName();
-                    InventoryCondition inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
+                    var inventoryConditionName = form.getInventoryConditionName();
+                    var inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
                     
                     if(inventoryCondition != null) {
-                        UnitOfMeasureTypeLogic unitOfMeasureTypeLogic = UnitOfMeasureTypeLogic.getInstance();
-                        UnitOfMeasureKind unitOfMeasureKind = item.getLastDetail().getUnitOfMeasureKind();
-                        Long minimumInventory = unitOfMeasureTypeLogic.checkUnitOfMeasure(this, unitOfMeasureKind,
+                        var unitOfMeasureTypeLogic = UnitOfMeasureTypeLogic.getInstance();
+                        var unitOfMeasureKind = item.getLastDetail().getUnitOfMeasureKind();
+                        var minimumInventory = unitOfMeasureTypeLogic.checkUnitOfMeasure(this, unitOfMeasureKind,
                                 form.getMinimumInventory(), form.getMinimumInventoryUnitOfMeasureTypeName(),
                                 null, ExecutionErrors.MissingRequiredMinimumInventory.name(), null, ExecutionErrors.MissingRequiredMinimumInventoryUnitOfMeasureTypeName.name(),
                                 null, ExecutionErrors.UnknownMinimumInventoryUnitOfMeasureTypeName.name());
 
                         if(!hasExecutionErrors()) {
-                            Long maximumInventory = unitOfMeasureTypeLogic.checkUnitOfMeasure(this, unitOfMeasureKind,
+                            var maximumInventory = unitOfMeasureTypeLogic.checkUnitOfMeasure(this, unitOfMeasureKind,
                                     form.getMaximumInventory(), form.getMaximumInventoryUnitOfMeasureTypeName(),
                                     null, ExecutionErrors.MissingRequiredMaximumInventory.name(), null, ExecutionErrors.MissingRequiredMaximumInventoryUnitOfMeasureTypeName.name(),
                                     null, ExecutionErrors.UnknownMaximumInventoryUnitOfMeasureTypeName.name());
 
                             if(!hasExecutionErrors()) {
-                                Long reorderQuantity = unitOfMeasureTypeLogic.checkUnitOfMeasure(this, unitOfMeasureKind,
+                                var reorderQuantity = unitOfMeasureTypeLogic.checkUnitOfMeasure(this, unitOfMeasureKind,
                                         form.getReorderQuantity(), form.getReorderQuantityUnitOfMeasureTypeName(),
                                         null, ExecutionErrors.MissingRequiredReorderQuantity.name(), null, ExecutionErrors.MissingRequiredReorderQuantityUnitOfMeasureTypeName.name(),
                                         null, ExecutionErrors.UnknownReorderQuantityUnitOfMeasureTypeName.name());
 
                                 if(!hasExecutionErrors()) {
-                                    PartyInventoryLevel partyInventoryLevel = inventoryControl.getPartyInventoryLevel(party, item, inventoryCondition);
+                                    var partyInventoryLevel = inventoryControl.getPartyInventoryLevel(party, item, inventoryCondition);
                                     
                                     if(partyInventoryLevel == null) {
                                         inventoryControl.createPartyInventoryLevel(party, item, inventoryCondition, minimumInventory, maximumInventory,

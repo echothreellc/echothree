@@ -69,17 +69,17 @@ public class GetItemAliasTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var itemControl = Session.getModelController(ItemControl.class);
-        GetItemAliasTypeDescriptionResult result = ItemResultFactory.getGetItemAliasTypeDescriptionResult();
-        String itemAliasTypeName = form.getItemAliasTypeName();
-        ItemAliasType itemAliasType = itemControl.getItemAliasTypeByName(itemAliasTypeName);
+        var result = ItemResultFactory.getGetItemAliasTypeDescriptionResult();
+        var itemAliasTypeName = form.getItemAliasTypeName();
+        var itemAliasType = itemControl.getItemAliasTypeByName(itemAliasTypeName);
         
         if(itemAliasType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                ItemAliasTypeDescription itemAliasTypeDescription = itemControl.getItemAliasTypeDescription(itemAliasType, language);
+                var itemAliasTypeDescription = itemControl.getItemAliasTypeDescription(itemAliasType, language);
                 
                 if(itemAliasTypeDescription != null) {
                     result.setItemAliasTypeDescription(itemControl.getItemAliasTypeDescriptionTransfer(getUserVisit(), itemAliasTypeDescription));

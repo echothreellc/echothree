@@ -41,14 +41,14 @@ public class BatchTransferCache
     
     @Override
     public BatchTransfer getTransfer(Batch batch) {
-        BatchTransfer batchTransfer = get(batch);
+        var batchTransfer = get(batch);
         
         if(batchTransfer == null) {
-            BatchDetail batchDetail = batch.getLastDetail();
-            BatchType batchType = batchDetail.getBatchType();
-            BatchTypeTransfer batchTypeTransfer = batchControl.getBatchTypeTransfer(userVisit, batchType);
-            String batchName = batchDetail.getBatchName();
-            EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(batch.getPrimaryKey());
+            var batchDetail = batch.getLastDetail();
+            var batchType = batchDetail.getBatchType();
+            var batchTypeTransfer = batchControl.getBatchTypeTransfer(userVisit, batchType);
+            var batchName = batchDetail.getBatchName();
+            var entityInstance = coreControl.getEntityInstanceByBasePK(batch.getPrimaryKey());
             
             batchTransfer = new BatchTransfer(batchTypeTransfer, batchName, getBatchStatus(batch, entityInstance));
             put(batch, batchTransfer, entityInstance);

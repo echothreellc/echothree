@@ -39,15 +39,15 @@ public class TaxClassificationTranslationTransferCache
     
     @Override
     public TaxClassificationTranslationTransfer getTransfer(TaxClassificationTranslation taxClassificationTranslation) {
-        TaxClassificationTranslationTransfer taxClassificationTranslationTransfer = get(taxClassificationTranslation);
+        var taxClassificationTranslationTransfer = get(taxClassificationTranslation);
         
         if(taxClassificationTranslationTransfer == null) {
-            TaxClassificationTransfer taxClassificationTransfer = taxControl.getTaxClassificationTransfer(userVisit, taxClassificationTranslation.getTaxClassification());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, taxClassificationTranslation.getLanguage());
-            String description = taxClassificationTranslation.getDescription();
-            MimeType overviewMimeType = taxClassificationTranslation.getOverviewMimeType();
-            MimeTypeTransfer overviewMimeTypeTransfer = overviewMimeType == null? null: coreControl.getMimeTypeTransfer(userVisit, overviewMimeType);
-            String overview = taxClassificationTranslation.getOverview();
+            var taxClassificationTransfer = taxControl.getTaxClassificationTransfer(userVisit, taxClassificationTranslation.getTaxClassification());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, taxClassificationTranslation.getLanguage());
+            var description = taxClassificationTranslation.getDescription();
+            var overviewMimeType = taxClassificationTranslation.getOverviewMimeType();
+            var overviewMimeTypeTransfer = overviewMimeType == null? null: coreControl.getMimeTypeTransfer(userVisit, overviewMimeType);
+            var overview = taxClassificationTranslation.getOverview();
             
             taxClassificationTranslationTransfer = new TaxClassificationTranslationTransfer(languageTransfer,
                     taxClassificationTransfer, description, overviewMimeTypeTransfer, overview);

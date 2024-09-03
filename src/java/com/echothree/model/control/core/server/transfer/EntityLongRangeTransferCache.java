@@ -67,17 +67,17 @@ public class EntityLongRangeTransferCache
     }
     
     public EntityLongRangeTransfer getEntityLongRangeTransfer(EntityLongRange entityLongRange, EntityInstance entityInstance) {
-        EntityLongRangeTransfer entityLongRangeTransfer = get(entityLongRange);
+        var entityLongRangeTransfer = get(entityLongRange);
         
         if(entityLongRangeTransfer == null) {
-            EntityLongRangeDetail entityLongRangeDetail = entityLongRange.getLastDetail();
-            EntityAttributeTransfer entityAttributeTransfer = filterEntityAttribute ? null : entityInstance == null ? coreControl.getEntityAttributeTransfer(userVisit, entityLongRangeDetail.getEntityAttribute(), entityInstance) : null;
-            String entityLongRangeName = filterEntityLongRangeName ? null : entityLongRangeDetail.getEntityLongRangeName();
-            Long minimumLongValue = filterMinimumLongValue ? null : entityLongRangeDetail.getMinimumLongValue();
-            Long maximumLongValue = filterMaximumLongValue ? null : entityLongRangeDetail.getMaximumLongValue();
-            Boolean isDefault = filterIsDefault ? null : entityLongRangeDetail.getIsDefault();
-            Integer sortOrder = filterSortOrder ? null : entityLongRangeDetail.getSortOrder();
-            String description = coreControl.getBestEntityLongRangeDescription(entityLongRange, getLanguage());
+            var entityLongRangeDetail = entityLongRange.getLastDetail();
+            var entityAttributeTransfer = filterEntityAttribute ? null : entityInstance == null ? coreControl.getEntityAttributeTransfer(userVisit, entityLongRangeDetail.getEntityAttribute(), entityInstance) : null;
+            var entityLongRangeName = filterEntityLongRangeName ? null : entityLongRangeDetail.getEntityLongRangeName();
+            var minimumLongValue = filterMinimumLongValue ? null : entityLongRangeDetail.getMinimumLongValue();
+            var maximumLongValue = filterMaximumLongValue ? null : entityLongRangeDetail.getMaximumLongValue();
+            var isDefault = filterIsDefault ? null : entityLongRangeDetail.getIsDefault();
+            var sortOrder = filterSortOrder ? null : entityLongRangeDetail.getSortOrder();
+            var description = coreControl.getBestEntityLongRangeDescription(entityLongRange, getLanguage());
             
             entityLongRangeTransfer = new EntityLongRangeTransfer(entityAttributeTransfer, entityLongRangeName, minimumLongValue, maximumLongValue, isDefault,
                     sortOrder, description);

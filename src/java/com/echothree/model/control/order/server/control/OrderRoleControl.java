@@ -62,7 +62,7 @@ public class OrderRoleControl
         OrderRoleType orderRoleType;
         
         try {
-            PreparedStatement ps = OrderRoleTypeFactory.getInstance().prepareStatement(
+            var ps = OrderRoleTypeFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM orderroletypes " +
                     "WHERE ordrtyp_orderroletypename = ?");
@@ -94,7 +94,7 @@ public class OrderRoleControl
         OrderRoleTypeDescription orderRoleTypeDescription;
         
         try {
-            PreparedStatement ps = OrderRoleTypeDescriptionFactory.getInstance().prepareStatement(
+            var ps = OrderRoleTypeDescriptionFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM orderroletypedescriptions " +
                     "WHERE ordrtyps_ordrtyp_orderroletypeid = ? AND ordrtyps_lang_languageid = ?");
@@ -113,7 +113,7 @@ public class OrderRoleControl
     
     public String getBestOrderRoleTypeDescription(OrderRoleType orderRoleType, Language language) {
         String description;
-        OrderRoleTypeDescription orderRoleTypeDescription = getOrderRoleTypeDescription(orderRoleType, language);
+        var orderRoleTypeDescription = getOrderRoleTypeDescription(orderRoleType, language);
 
         if(orderRoleTypeDescription == null && !language.getIsDefault()) {
             orderRoleTypeDescription = getOrderRoleTypeDescription(orderRoleType, getPartyControl().getDefaultLanguage());
@@ -137,7 +137,7 @@ public class OrderRoleControl
     }
 
     public OrderRole createOrderRole(Order order, Party party, OrderRoleType orderRoleType, BasePK createdBy) {
-        OrderRole orderRole = OrderRoleFactory.getInstance().create(order, party, orderRoleType, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        var orderRole = OrderRoleFactory.getInstance().create(order, party, orderRoleType, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(order.getPrimaryKey(), EventTypes.MODIFY, orderRole.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -192,7 +192,7 @@ public class OrderRoleControl
         if(false) {
             throw new IllegalArgumentException();
         } else {
-            List<OrderRole> orderRoles = getOrderRolesByOrderAndOrderRoleType(order, orderRoleType, entityPermission);
+            var orderRoles = getOrderRolesByOrderAndOrderRoleType(order, orderRoleType, entityPermission);
             var size = orderRoles.size();
 
             if(size > 1) {

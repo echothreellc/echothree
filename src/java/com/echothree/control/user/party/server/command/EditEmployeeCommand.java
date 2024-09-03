@@ -271,7 +271,7 @@ public class EditEmployeeCommand
 
         partySecurityRoleTemplateUseValue.setPartySecurityRoleTemplatePK(partySecurityRoleTemplate.getPrimaryKey());
 
-        PartyPK updatedBy = getPartyPK();
+        var updatedBy = getPartyPK();
         employeeControl.updatePartyEmployeeFromValue(partyEmployeeValue, updatedBy);
         partyControl.updatePartyFromValue(partyDetailValue, updatedBy);
         partyControl.updatePersonFromValue(personValue, updatedBy);

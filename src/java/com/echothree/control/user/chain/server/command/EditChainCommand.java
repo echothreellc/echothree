@@ -103,16 +103,16 @@ public class EditChainCommand
     public Chain getEntity(EditChainResult result) {
         var chainControl = Session.getModelController(ChainControl.class);
         Chain chain = null;
-        String chainKindName = spec.getChainKindName();
-        ChainKind chainKind = chainControl.getChainKindByName(chainKindName);
+        var chainKindName = spec.getChainKindName();
+        var chainKind = chainControl.getChainKindByName(chainKindName);
 
         if(chainKind != null) {
-            String chainTypeName = spec.getChainTypeName();
+            var chainTypeName = spec.getChainTypeName();
 
             chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
 
             if(chainType != null) {
-                String chainName = spec.getChainName();
+                var chainName = spec.getChainName();
 
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
                     chain = chainControl.getChainByName(chainType, chainName);
@@ -150,8 +150,8 @@ public class EditChainCommand
     @Override
     public void doLock(ChainEdit edit, Chain chain) {
         var chainControl = Session.getModelController(ChainControl.class);
-        ChainDescription chainDescription = chainControl.getChainDescription(chain, getPreferredLanguage());
-        ChainDetail chainDetail = chain.getLastDetail();
+        var chainDescription = chainControl.getChainDescription(chain, getPreferredLanguage());
+        var chainDetail = chain.getLastDetail();
         
         chainInstanceSequence = chainDetail.getChainInstanceSequence();
 
@@ -168,16 +168,16 @@ public class EditChainCommand
     @Override
     public void canUpdate(Chain chain) {
         var chainControl = Session.getModelController(ChainControl.class);
-        ChainTypeDetail chainTypeDetail = chainType.getLastDetail();
-        String chainName = edit.getChainName();
-        Chain duplicateChain = chainControl.getChainByName(chainType, chainName);
+        var chainTypeDetail = chainType.getLastDetail();
+        var chainName = edit.getChainName();
+        var duplicateChain = chainControl.getChainByName(chainType, chainName);
 
         if(duplicateChain != null && !chain.equals(duplicateChain)) {
             addExecutionError(ExecutionErrors.DuplicateChainName.name(), chainTypeDetail.getChainTypeName(), chainName);
         } else {
             var sequenceControl = Session.getModelController(SequenceControl.class);
-            SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.CHAIN_INSTANCE.name());
-            String chainInstanceSequenceName = edit.getChainInstanceSequenceName();
+            var sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.CHAIN_INSTANCE.name());
+            var chainInstanceSequenceName = edit.getChainInstanceSequenceName();
 
             chainInstanceSequence = sequenceControl.getSequenceByName(sequenceType, chainInstanceSequenceName);
             
@@ -191,9 +191,9 @@ public class EditChainCommand
     public void doUpdate(Chain chain) {
         var chainControl = Session.getModelController(ChainControl.class);
         var partyPK = getPartyPK();
-        ChainDetailValue chainDetailValue = chainControl.getChainDetailValueForUpdate(chain);
-        ChainDescription chainDescription = chainControl.getChainDescriptionForUpdate(chain, getPreferredLanguage());
-        String description = edit.getDescription();
+        var chainDetailValue = chainControl.getChainDetailValueForUpdate(chain);
+        var chainDescription = chainControl.getChainDescriptionForUpdate(chain, getPreferredLanguage());
+        var description = edit.getDescription();
 
         chainDetailValue.setChainName(edit.getChainName());
         chainDetailValue.setChainInstanceSequencePK(chainInstanceSequence == null ? null : chainInstanceSequence.getPrimaryKey());
@@ -207,7 +207,7 @@ public class EditChainCommand
         } else if(chainDescription != null && description == null) {
             chainControl.deleteChainDescription(chainDescription, partyPK);
         } else if(chainDescription != null && description != null) {
-            ChainDescriptionValue chainDescriptionValue = chainControl.getChainDescriptionValue(chainDescription);
+            var chainDescriptionValue = chainControl.getChainDescriptionValue(chainDescription);
 
             chainDescriptionValue.setDescription(description);
             chainControl.updateChainDescriptionFromValue(chainDescriptionValue, partyPK);

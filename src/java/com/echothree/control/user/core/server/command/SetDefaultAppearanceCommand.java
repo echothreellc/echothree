@@ -61,8 +61,8 @@ public class SetDefaultAppearanceCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String appearanceName = form.getAppearanceName();
-        AppearanceDetailValue appearanceDetailValue = coreControl.getAppearanceDetailValueByNameForUpdate(appearanceName);
+        var appearanceName = form.getAppearanceName();
+        var appearanceDetailValue = coreControl.getAppearanceDetailValueByNameForUpdate(appearanceName);
         
         if(appearanceDetailValue != null) {
             appearanceDetailValue.setIsDefault(Boolean.TRUE);

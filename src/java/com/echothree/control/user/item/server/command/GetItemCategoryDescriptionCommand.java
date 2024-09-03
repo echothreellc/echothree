@@ -69,17 +69,17 @@ public class GetItemCategoryDescriptionCommand
     @Override
     protected BaseResult execute() {
         var itemControl = Session.getModelController(ItemControl.class);
-        GetItemCategoryDescriptionResult result = ItemResultFactory.getGetItemCategoryDescriptionResult();
-        String itemCategoryName = form.getItemCategoryName();
-        ItemCategory itemCategory = itemControl.getItemCategoryByName(itemCategoryName);
+        var result = ItemResultFactory.getGetItemCategoryDescriptionResult();
+        var itemCategoryName = form.getItemCategoryName();
+        var itemCategory = itemControl.getItemCategoryByName(itemCategoryName);
         
         if(itemCategory != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                ItemCategoryDescription itemCategoryDescription = itemControl.getItemCategoryDescription(itemCategory, language);
+                var itemCategoryDescription = itemControl.getItemCategoryDescription(itemCategory, language);
                 
                 if(itemCategoryDescription != null) {
                     result.setItemCategoryDescription(itemControl.getItemCategoryDescriptionTransfer(getUserVisit(), itemCategoryDescription));

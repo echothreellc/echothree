@@ -65,9 +65,9 @@ public class GetSearchSortDirectionDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var searchControl = Session.getModelController(SearchControl.class);
-        GetSearchSortDirectionDescriptionsResult result = SearchResultFactory.getGetSearchSortDirectionDescriptionsResult();
-        String searchSortDirectionName = form.getSearchSortDirectionName();
-        SearchSortDirection searchSortDirection = searchControl.getSearchSortDirectionByName(searchSortDirectionName);
+        var result = SearchResultFactory.getGetSearchSortDirectionDescriptionsResult();
+        var searchSortDirectionName = form.getSearchSortDirectionName();
+        var searchSortDirection = searchControl.getSearchSortDirectionByName(searchSortDirectionName);
         
         if(searchSortDirection != null) {
             result.setSearchSortDirection(searchControl.getSearchSortDirectionTransfer(getUserVisit(), searchSortDirection));

@@ -73,24 +73,24 @@ public class CreateColorCommand
     
     @Override
     protected BaseResult execute() {
-        CreateColorResult result = CoreResultFactory.getCreateColorResult();
+        var result = CoreResultFactory.getCreateColorResult();
         var coreControl = getCoreControl();
-        String colorName = form.getColorName();
+        var colorName = form.getColorName();
         
         if(colorName == null) {
             var sequenceControl = Session.getModelController(SequenceControl.class);
-            Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.COLOR.name());
+            var sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.COLOR.name());
             
             colorName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
         }
-        
-        Color color = coreControl.getColorByName(colorName);
+
+        var color = coreControl.getColorByName(colorName);
         
         if(color == null) {
             var partyPK = getPartyPK();
-            Integer red = Integer.valueOf(form.getRed());
-            Integer green = Integer.valueOf(form.getGreen());
-            Integer blue = Integer.valueOf(form.getBlue());
+            var red = Integer.valueOf(form.getRed());
+            var green = Integer.valueOf(form.getGreen());
+            var blue = Integer.valueOf(form.getBlue());
             var isDefault = Boolean.valueOf(form.getIsDefault());
             var sortOrder = Integer.valueOf(form.getSortOrder());
             var description = form.getDescription();

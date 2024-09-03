@@ -67,17 +67,17 @@ public class GetTextTransformationDescriptionCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        GetTextTransformationDescriptionResult result = CoreResultFactory.getGetTextTransformationDescriptionResult();
-        String textTransformationName = form.getTextTransformationName();
-        TextTransformation textTransformation = coreControl.getTextTransformationByName(textTransformationName);
+        var result = CoreResultFactory.getGetTextTransformationDescriptionResult();
+        var textTransformationName = form.getTextTransformationName();
+        var textTransformation = coreControl.getTextTransformationByName(textTransformationName);
 
         if(textTransformation != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
-                TextTransformationDescription textTransformationDescription = coreControl.getTextTransformationDescription(textTransformation, language);
+                var textTransformationDescription = coreControl.getTextTransformationDescription(textTransformation, language);
 
                 if(textTransformationDescription != null) {
                     result.setTextTransformationDescription(coreControl.getTextTransformationDescriptionTransfer(getUserVisit(), textTransformationDescription));

@@ -51,7 +51,7 @@ public class UnitOfMeasureKindUseLogic
 
     public UnitOfMeasureKindUseType getUnitOfMeasureKindUseTypeByName(final ExecutionErrorAccumulator eea, final String unitOfMeasureKindUseTypeName) {
         var uomControl = Session.getModelController(UomControl.class);
-        UnitOfMeasureKindUseType unitOfMeasureKindUseType = uomControl.getUnitOfMeasureKindUseTypeByName(unitOfMeasureKindUseTypeName);
+        var unitOfMeasureKindUseType = uomControl.getUnitOfMeasureKindUseTypeByName(unitOfMeasureKindUseTypeName);
 
         if(unitOfMeasureKindUseType == null) {
             handleExecutionError(UnknownUnitOfMeasureKindUseTypeNameException.class, eea, ExecutionErrors.UnknownUnitOfMeasureKindUseTypeName.name(), unitOfMeasureKindUseTypeName);
@@ -86,7 +86,7 @@ public class UnitOfMeasureKindUseLogic
     public UnitOfMeasureKindUse getUnitOfMeasureKindUse(final ExecutionErrorAccumulator eea, final UnitOfMeasureKindUseType unitOfMeasureKindUseType,
             final UnitOfMeasureKind unitOfMeasureKind) {
         var uomControl = Session.getModelController(UomControl.class);
-        UnitOfMeasureKindUse unitOfMeasureKindUse = uomControl.getUnitOfMeasureKindUse(unitOfMeasureKindUseType, unitOfMeasureKind);
+        var unitOfMeasureKindUse = uomControl.getUnitOfMeasureKindUse(unitOfMeasureKindUseType, unitOfMeasureKind);
 
         if(unitOfMeasureKindUse == null) {
             handleExecutionError(UnknownUnitOfMeasureKindUseException.class, eea, ExecutionErrors.UnknownUnitOfMeasureKindUse.name(),
@@ -98,8 +98,8 @@ public class UnitOfMeasureKindUseLogic
 
     public UnitOfMeasureKindUse getUnitOfMeasureKindUse(final ExecutionErrorAccumulator eea, final String unitOfMeasureKindUseTypeName,
             final String unitOfMeasureKindName) {
-        UnitOfMeasureKindUseType unitOfMeasureKindUseType = getUnitOfMeasureKindUseTypeByName(eea, unitOfMeasureKindUseTypeName);
-        UnitOfMeasureKind unitOfMeasureKind = UnitOfMeasureKindLogic.getInstance().getUnitOfMeasureKindByName(eea, unitOfMeasureKindName);
+        var unitOfMeasureKindUseType = getUnitOfMeasureKindUseTypeByName(eea, unitOfMeasureKindUseTypeName);
+        var unitOfMeasureKind = UnitOfMeasureKindLogic.getInstance().getUnitOfMeasureKindByName(eea, unitOfMeasureKindName);
         UnitOfMeasureKindUse unitOfMeasureKindUse = null;
         
         if(!hasExecutionErrors(eea)) {
@@ -137,7 +137,7 @@ public class UnitOfMeasureKindUseLogic
     }
 
     public void checkDeleteUnitOfMeasureKindUse(final ExecutionErrorAccumulator ema, final UnitOfMeasureKindUse unitOfMeasureKindUse) {
-        UnitOfMeasureKindUseType unitOfMeasureKindUseType = unitOfMeasureKindUse.getUnitOfMeasureKindUseType();
+        var unitOfMeasureKindUseType = unitOfMeasureKindUse.getUnitOfMeasureKindUseType();
 
         if(unitOfMeasureKindUseType.getAllowMultiple()) {
             var itemControl = Session.getModelController(ItemControl.class);

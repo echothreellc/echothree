@@ -32,12 +32,12 @@ public class CommunicationEventPurposeDescriptionTransferCache
     }
     
     public CommunicationEventPurposeDescriptionTransfer getCommunicationEventPurposeDescriptionTransfer(CommunicationEventPurposeDescription communicationEventPurposeDescription) {
-        CommunicationEventPurposeDescriptionTransfer communicationEventPurposeDescriptionTransfer = get(communicationEventPurposeDescription);
+        var communicationEventPurposeDescriptionTransfer = get(communicationEventPurposeDescription);
         
         if(communicationEventPurposeDescriptionTransfer == null) {
-            CommunicationEventPurposeTransfer communicationEventPurposeTransfer = communicationControl.getCommunicationEventPurposeTransfer(userVisit,
+            var communicationEventPurposeTransfer = communicationControl.getCommunicationEventPurposeTransfer(userVisit,
                     communicationEventPurposeDescription.getCommunicationEventPurpose());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, communicationEventPurposeDescription.getLanguage());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, communicationEventPurposeDescription.getLanguage());
             
             communicationEventPurposeDescriptionTransfer = new CommunicationEventPurposeDescriptionTransfer(languageTransfer, communicationEventPurposeTransfer, communicationEventPurposeDescription.getDescription());
             put(communicationEventPurposeDescription, communicationEventPurposeDescriptionTransfer);

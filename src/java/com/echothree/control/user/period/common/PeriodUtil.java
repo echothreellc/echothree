@@ -30,7 +30,7 @@ public class PeriodUtil {
     public static PeriodLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
 
             cachedLocal = (PeriodLocal)ctx.lookup("ejb:echothree/echothree-server/PeriodBean!com.echothree.control.user.period.server.PeriodLocal");
         }
@@ -42,7 +42,7 @@ public class PeriodUtil {
     public static PeriodRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
             
             cachedRemote = (PeriodRemote)ctx.lookup("ejb:echothree/echothree-server/PeriodBean!com.echothree.control.user.period.common.PeriodRemote");
         }

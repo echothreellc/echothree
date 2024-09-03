@@ -63,9 +63,9 @@ public class GetCampaignContentChoicesCommand
     @Override
     protected BaseResult execute() {
         var campaignControl = Session.getModelController(CampaignControl.class);
-        GetCampaignContentChoicesResult result = CampaignResultFactory.getGetCampaignContentChoicesResult();
-        String defaultCampaignContentChoice = form.getDefaultCampaignContentChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = CampaignResultFactory.getGetCampaignContentChoicesResult();
+        var defaultCampaignContentChoice = form.getDefaultCampaignContentChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setCampaignContentChoices(campaignControl.getCampaignContentChoices(defaultCampaignContentChoice, getPreferredLanguage(), allowNullChoice));
         

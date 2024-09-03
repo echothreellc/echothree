@@ -71,21 +71,21 @@ public class GetBatchAliasTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var batchControl = Session.getModelController(BatchControl.class);
-        GetBatchAliasTypeDescriptionResult result = BatchResultFactory.getGetBatchAliasTypeDescriptionResult();
-        String batchTypeName = form.getBatchTypeName();
-        BatchType batchType = batchControl.getBatchTypeByName(batchTypeName);
+        var result = BatchResultFactory.getGetBatchAliasTypeDescriptionResult();
+        var batchTypeName = form.getBatchTypeName();
+        var batchType = batchControl.getBatchTypeByName(batchTypeName);
 
         if(batchType != null) {
-            String batchAliasTypeName = form.getBatchAliasTypeName();
-            BatchAliasType batchAliasType = batchControl.getBatchAliasTypeByName(batchType, batchAliasTypeName);
+            var batchAliasTypeName = form.getBatchAliasTypeName();
+            var batchAliasType = batchControl.getBatchAliasTypeByName(batchType, batchAliasTypeName);
 
             if(batchAliasType != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = form.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = form.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                 if(language != null) {
-                    BatchAliasTypeDescription batchAliasTypeDescription = batchControl.getBatchAliasTypeDescription(batchAliasType, language);
+                    var batchAliasTypeDescription = batchControl.getBatchAliasTypeDescription(batchAliasType, language);
 
                     if(batchAliasTypeDescription != null) {
                         result.setBatchAliasTypeDescription(batchControl.getBatchAliasTypeDescriptionTransfer(getUserVisit(), batchAliasTypeDescription));

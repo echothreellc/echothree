@@ -63,7 +63,7 @@ public class CompanyLogic
                     handleExecutionError(UnknownCompanyNameException.class, eea, ExecutionErrors.UnknownCompanyName.name(), companyName);
                 }
             } else if(partyName != null) {
-                Party party = partyControl.getPartyByName(partyName);
+                var party = partyControl.getPartyByName(partyName);
 
                 if(party != null) {
                     PartyLogic.getInstance().checkPartyType(eea, party, PartyTypes.COMPANY.name());

@@ -61,8 +61,8 @@ public class DeleteAppearanceCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String appearanceName = form.getAppearanceName();
-        Appearance appearance = coreControl.getAppearanceByNameForUpdate(appearanceName);
+        var appearanceName = form.getAppearanceName();
+        var appearance = coreControl.getAppearanceByNameForUpdate(appearanceName);
         
         if(appearance != null) {
             coreControl.deleteAppearance(appearance, getPartyPK());

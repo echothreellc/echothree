@@ -72,15 +72,15 @@ public class CreateInvoiceLineTypeCommand
     @Override
     protected BaseResult execute() {
         var invoiceControl = Session.getModelController(InvoiceControl.class);
-        String invoiceTypeName = form.getInvoiceTypeName();
-        InvoiceType invoiceType = invoiceControl.getInvoiceTypeByName(invoiceTypeName);
+        var invoiceTypeName = form.getInvoiceTypeName();
+        var invoiceType = invoiceControl.getInvoiceTypeByName(invoiceTypeName);
         
         if(invoiceType != null) {
-            String invoiceLineTypeName = form.getInvoiceLineTypeName();
-            InvoiceLineType invoiceLineType = invoiceControl.getInvoiceLineTypeByName(invoiceType, invoiceLineTypeName);
+            var invoiceLineTypeName = form.getInvoiceLineTypeName();
+            var invoiceLineType = invoiceControl.getInvoiceLineTypeByName(invoiceType, invoiceLineTypeName);
             
             if(invoiceLineType == null) {
-                String parentInvoiceLineTypeName = form.getParentInvoiceLineTypeName();
+                var parentInvoiceLineTypeName = form.getParentInvoiceLineTypeName();
                 InvoiceLineType parentInvoiceLineType = null;
                 
                 if(parentInvoiceLineTypeName != null) {
@@ -89,8 +89,8 @@ public class CreateInvoiceLineTypeCommand
                 
                 if(parentInvoiceLineTypeName == null || parentInvoiceLineType != null) {
                     var accountingControl = Session.getModelController(AccountingControl.class);
-                    String defaultGlAccountName = form.getDefaultGlAccountName();
-                    GlAccount defaultGlAccount = defaultGlAccountName == null? null: accountingControl.getGlAccountByName(defaultGlAccountName);
+                    var defaultGlAccountName = form.getDefaultGlAccountName();
+                    var defaultGlAccount = defaultGlAccountName == null? null: accountingControl.getGlAccountByName(defaultGlAccountName);
                     
                     if(defaultGlAccountName == null || defaultGlAccount != null) {
                         var partyPK = getPartyPK();

@@ -58,24 +58,24 @@ public class ChainInstanceStatusLogic {
     }
     
     private void processChainActionLetter(final ChainControl chainControl, final ChainInstance chainInstance, final ChainAction chainAction, final BasePK processedBy) {
-        ChainActionLetter chainActionLetter = chainControl.getChainActionLetter(chainAction);
-        Letter letter = chainActionLetter.getLetter();
-        ContactList contactList = letter.getLastDetail().getContactList();
+        var chainActionLetter = chainControl.getChainActionLetter(chainAction);
+        var letter = chainActionLetter.getLetter();
+        var contactList = letter.getLastDetail().getContactList();
         
         if(contactList != null) {
             var coreControl = Session.getModelController(CoreControl.class);
-            ChainType chainType = chainInstance.getLastDetail().getChain().getLastDetail().getChainType();
-            EntityType partyEntityType = coreControl.getEntityTypeByName(coreControl.getComponentVendorByName(ComponentVendors.ECHO_THREE.name()), EntityTypes.Party.name());
+            var chainType = chainInstance.getLastDetail().getChain().getLastDetail().getChainType();
+            var partyEntityType = coreControl.getEntityTypeByName(coreControl.getComponentVendorByName(ComponentVendors.ECHO_THREE.name()), EntityTypes.Party.name());
             
-            for(ChainEntityRoleType chainEntityRoleType: chainControl.getChainEntityRoleTypes(chainType)) {
+            for(var chainEntityRoleType: chainControl.getChainEntityRoleTypes(chainType)) {
                 if(chainEntityRoleType.getLastDetail().getEntityType().equals(partyEntityType)) {
-                    ChainInstanceEntityRole chainInstanceEntityRole = chainControl.getChainInstanceEntityRole(chainInstance, chainEntityRoleType);
+                    var chainInstanceEntityRole = chainControl.getChainInstanceEntityRole(chainInstance, chainEntityRoleType);
                     
                     if(chainInstanceEntityRole != null) {
                         var contactListControl = Session.getModelController(ContactListControl.class);
-                        EntityInstance entityInstance = chainInstanceEntityRole.getEntityInstance();
-                        Party party = PartyLogic.getInstance().getPartyFromEntityInstance(entityInstance);
-                        PartyContactList partyContactList = contactListControl.getPartyContactList(party, contactList);
+                        var entityInstance = chainInstanceEntityRole.getEntityInstance();
+                        var party = PartyLogic.getInstance().getPartyFromEntityInstance(entityInstance);
+                        var partyContactList = contactListControl.getPartyContactList(party, contactList);
                         
                         if(partyContactList == null) {
                             letter = null; // Don't send.
@@ -93,14 +93,14 @@ public class ChainInstanceStatusLogic {
     }    
     
     private void processChainActionSurvey(final ChainControl chainControl, final ChainInstance chainInstance, final ChainAction chainAction, final BasePK processedBy) {
-        ChainActionSurvey chainActionSurvey = chainControl.getChainActionSurvey(chainAction);
+        var chainActionSurvey = chainControl.getChainActionSurvey(chainAction);
         
         // TODO
     }    
     
     private void processChainActionChainActionSet(final Session session, final ChainControl chainControl, final ChainInstanceStatus chainInstanceStatus, final ChainAction chainAction, final BasePK processedBy) {
-        ChainActionChainActionSet chainActionChainActionSet = chainControl.getChainActionChainActionSet(chainAction);
-        ChainActionSet nextChainActionSet = chainActionChainActionSet.getNextChainActionSet();
+        var chainActionChainActionSet = chainControl.getChainActionChainActionSet(chainAction);
+        var nextChainActionSet = chainActionChainActionSet.getNextChainActionSet();
         Long nextChainActionSetTime = session.START_TIME + chainActionChainActionSet.getDelayTime();
 
         chainInstanceStatus.setNextChainActionSet(nextChainActionSet);
@@ -108,12 +108,12 @@ public class ChainInstanceStatusLogic {
     }    
     
     public void processChainInstanceStatus(final Session session, final ChainControl chainControl, final ChainInstanceStatus chainInstanceStatus, final BasePK processedBy) {
-        ChainInstance chainInstance = chainInstanceStatus.getChainInstance();
-        ChainActionSet chainActionSet = chainInstanceStatus.getNextChainActionSet();
-        boolean hasNextChainActionSet = false;
+        var chainInstance = chainInstanceStatus.getChainInstance();
+        var chainActionSet = chainInstanceStatus.getNextChainActionSet();
+        var hasNextChainActionSet = false;
 
-        for(ChainAction chainAction: chainControl.getChainActionsByChainActionSet(chainActionSet)) {
-            String chainActionTypeName = chainAction.getLastDetail().getChainActionType().getLastDetail().getChainActionTypeName();
+        for(var chainAction: chainControl.getChainActionsByChainActionSet(chainActionSet)) {
+            var chainActionTypeName = chainAction.getLastDetail().getChainActionType().getLastDetail().getChainActionTypeName();
             
             if(chainActionTypeName.equals(ChainConstants.ChainActionType_LETTER)) {
                 processChainActionLetter(chainControl, chainInstance, chainAction, processedBy);

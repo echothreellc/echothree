@@ -89,13 +89,13 @@ public class EditSelectorKindDescriptionCommand
     public SelectorKindDescription getEntity(EditSelectorKindDescriptionResult result) {
         var selectorControl = Session.getModelController(SelectorControl.class);
         SelectorKindDescription selectorKindDescription = null;
-        String selectorKindName = spec.getSelectorKindName();
-        SelectorKind selectorKind = selectorControl.getSelectorKindByName(selectorKindName);
+        var selectorKindName = spec.getSelectorKindName();
+        var selectorKind = selectorControl.getSelectorKindByName(selectorKindName);
 
         if(selectorKind != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -137,7 +137,7 @@ public class EditSelectorKindDescriptionCommand
     @Override
     public void doUpdate(SelectorKindDescription selectorKindDescription) {
         var selectorControl = Session.getModelController(SelectorControl.class);
-        SelectorKindDescriptionValue selectorKindDescriptionValue = selectorControl.getSelectorKindDescriptionValue(selectorKindDescription);
+        var selectorKindDescriptionValue = selectorControl.getSelectorKindDescriptionValue(selectorKindDescription);
 
         selectorKindDescriptionValue.setDescription(edit.getDescription());
 

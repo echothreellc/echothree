@@ -70,20 +70,20 @@ public class CreateCancellationReasonDescriptionCommand
     @Override
     protected BaseResult execute() {
         var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
-        String cancellationKindName = form.getCancellationKindName();
-        CancellationKind cancellationKind = cancellationPolicyControl.getCancellationKindByName(cancellationKindName);
+        var cancellationKindName = form.getCancellationKindName();
+        var cancellationKind = cancellationPolicyControl.getCancellationKindByName(cancellationKindName);
         
         if(cancellationKind != null) {
-            String cancellationReasonName = form.getCancellationReasonName();
-            CancellationReason cancellationReason = cancellationPolicyControl.getCancellationReasonByName(cancellationKind, cancellationReasonName);
+            var cancellationReasonName = form.getCancellationReasonName();
+            var cancellationReason = cancellationPolicyControl.getCancellationReasonByName(cancellationKind, cancellationReasonName);
             
             if(cancellationReason != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = form.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = form.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
                 
                 if(language != null) {
-                    CancellationReasonDescription cancellationReasonDescription = cancellationPolicyControl.getCancellationReasonDescription(cancellationReason, language);
+                    var cancellationReasonDescription = cancellationPolicyControl.getCancellationReasonDescription(cancellationReason, language);
                     
                     if(cancellationReasonDescription == null) {
                         var description = form.getDescription();

@@ -65,12 +65,12 @@ public class DeleteInvoiceTimeTypeCommand
     @Override
     protected BaseResult execute() {
         var invoiceControl = Session.getModelController(InvoiceControl.class);
-        String invoiceTypeName = form.getInvoiceTypeName();
-        InvoiceType invoiceType = invoiceControl.getInvoiceTypeByName(invoiceTypeName);
+        var invoiceTypeName = form.getInvoiceTypeName();
+        var invoiceType = invoiceControl.getInvoiceTypeByName(invoiceTypeName);
 
         if(invoiceType != null) {
-            String invoiceTimeTypeName = form.getInvoiceTimeTypeName();
-            InvoiceTimeType invoiceTimeType = invoiceControl.getInvoiceTimeTypeByNameForUpdate(invoiceType, invoiceTimeTypeName);
+            var invoiceTimeTypeName = form.getInvoiceTimeTypeName();
+            var invoiceTimeType = invoiceControl.getInvoiceTimeTypeByNameForUpdate(invoiceType, invoiceTimeTypeName);
 
             if(invoiceTimeType != null) {
                 invoiceControl.deleteInvoiceTimeType(invoiceTimeType, getPartyPK());

@@ -69,17 +69,17 @@ public class GetContactListDescriptionCommand
     @Override
     protected BaseResult execute() {
         var contactListControl = Session.getModelController(ContactListControl.class);
-        GetContactListDescriptionResult result = ContactListResultFactory.getGetContactListDescriptionResult();
-        String contactListName = form.getContactListName();
-        ContactList contactList = contactListControl.getContactListByName(contactListName);
+        var result = ContactListResultFactory.getGetContactListDescriptionResult();
+        var contactListName = form.getContactListName();
+        var contactList = contactListControl.getContactListByName(contactListName);
         
         if(contactList != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                ContactListDescription contactListDescription = contactListControl.getContactListDescription(contactList, language);
+                var contactListDescription = contactListControl.getContactListDescription(contactList, language);
                 
                 if(contactListDescription != null) {
                     result.setContactListDescription(contactListControl.getContactListDescriptionTransfer(getUserVisit(), contactListDescription));

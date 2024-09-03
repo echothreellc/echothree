@@ -63,9 +63,9 @@ public class GetCommandMessagesCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        GetCommandMessagesResult result = CoreResultFactory.getGetCommandMessagesResult();
-        String commandMessageTypeName = form.getCommandMessageTypeName();
-        CommandMessageType commandMessageType = coreControl.getCommandMessageTypeByName(commandMessageTypeName);
+        var result = CoreResultFactory.getGetCommandMessagesResult();
+        var commandMessageTypeName = form.getCommandMessageTypeName();
+        var commandMessageType = coreControl.getCommandMessageTypeByName(commandMessageTypeName);
         
         if(commandMessageType != null) {
             result.setCommandMessageType(coreControl.getCommandMessageTypeTransfer(getUserVisit(), commandMessageType));

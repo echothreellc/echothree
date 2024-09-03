@@ -35,11 +35,11 @@ public class OrderAdjustmentTypeDescriptionTransferCache
     }
     
     public OrderAdjustmentTypeDescriptionTransfer getOrderAdjustmentTypeDescriptionTransfer(OrderAdjustmentTypeDescription orderAdjustmentTypeDescription) {
-        OrderAdjustmentTypeDescriptionTransfer orderAdjustmentTypeDescriptionTransfer = get(orderAdjustmentTypeDescription);
+        var orderAdjustmentTypeDescriptionTransfer = get(orderAdjustmentTypeDescription);
         
         if(orderAdjustmentTypeDescriptionTransfer == null) {
-            OrderAdjustmentTypeTransfer orderAdjustmentTypeTransfer = orderAdjustmentControl.getOrderAdjustmentTypeTransfer(userVisit, orderAdjustmentTypeDescription.getOrderAdjustmentType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, orderAdjustmentTypeDescription.getLanguage());
+            var orderAdjustmentTypeTransfer = orderAdjustmentControl.getOrderAdjustmentTypeTransfer(userVisit, orderAdjustmentTypeDescription.getOrderAdjustmentType());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, orderAdjustmentTypeDescription.getLanguage());
             
             orderAdjustmentTypeDescriptionTransfer = new OrderAdjustmentTypeDescriptionTransfer(languageTransfer, orderAdjustmentTypeTransfer, orderAdjustmentTypeDescription.getDescription());
             put(orderAdjustmentTypeDescription, orderAdjustmentTypeDescriptionTransfer);

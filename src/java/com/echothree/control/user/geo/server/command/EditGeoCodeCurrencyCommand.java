@@ -80,24 +80,24 @@ public class EditGeoCodeCurrencyCommand
     @Override
     protected BaseResult execute() {
         var geoControl = Session.getModelController(GeoControl.class);
-        EditGeoCodeCurrencyResult result = GeoResultFactory.getEditGeoCodeCurrencyResult();
-        String geoCodeName = spec.getGeoCodeName();
-        GeoCode geoCode = geoControl.getGeoCodeByName(geoCodeName);
+        var result = GeoResultFactory.getEditGeoCodeCurrencyResult();
+        var geoCodeName = spec.getGeoCodeName();
+        var geoCode = geoControl.getGeoCodeByName(geoCodeName);
         
         if(geoCode != null) {
             var accountingControl = Session.getModelController(AccountingControl.class);
-            String currencyIsoName = spec.getCurrencyIsoName();
-            Currency currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
+            var currencyIsoName = spec.getCurrencyIsoName();
+            var currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
             
             if(currency != null) {
                 if(editMode.equals(EditMode.LOCK)) {
-                    GeoCodeCurrency geoCodeCurrency = geoControl.getGeoCodeCurrency(geoCode, currency);
+                    var geoCodeCurrency = geoControl.getGeoCodeCurrency(geoCode, currency);
                     
                     if(geoCodeCurrency != null) {
                         result.setGeoCodeCurrency(geoControl.getGeoCodeCurrencyTransfer(getUserVisit(), geoCodeCurrency));
                         
                         if(lockEntity(geoCode)) {
-                            GeoCodeCurrencyEdit edit = GeoEditFactory.getGeoCodeCurrencyEdit();
+                            var edit = GeoEditFactory.getGeoCodeCurrencyEdit();
                             
                             result.setEdit(edit);
                             edit.setIsDefault(geoCodeCurrency.getIsDefault().toString());
@@ -112,10 +112,10 @@ public class EditGeoCodeCurrencyCommand
                         addExecutionError(ExecutionErrors.UnknownGeoCodeCurrency.name(), geoCodeName, currencyIsoName);
                     }
                 } else if(editMode.equals(EditMode.UPDATE)) {
-                    GeoCodeCurrency geoCodeCurrency = geoControl.getGeoCodeCurrencyForUpdate(geoCode, currency);
+                    var geoCodeCurrency = geoControl.getGeoCodeCurrencyForUpdate(geoCode, currency);
                     
                     if(geoCodeCurrency != null) {
-                        GeoCodeCurrencyValue geoCodeCurrencyValue = geoControl.getGeoCodeCurrencyValue(geoCodeCurrency);
+                        var geoCodeCurrencyValue = geoControl.getGeoCodeCurrencyValue(geoCodeCurrency);
                         
                         if(lockEntityForUpdate(geoCode)) {
                             try {

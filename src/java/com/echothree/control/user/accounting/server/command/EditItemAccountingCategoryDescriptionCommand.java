@@ -79,25 +79,25 @@ public class EditItemAccountingCategoryDescriptionCommand
     @Override
     protected BaseResult execute() {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        EditItemAccountingCategoryDescriptionResult result = AccountingResultFactory.getEditItemAccountingCategoryDescriptionResult();
-        String itemAccountingCategoryName = spec.getItemAccountingCategoryName();
-        ItemAccountingCategory itemAccountingCategory = accountingControl.getItemAccountingCategoryByName(itemAccountingCategoryName);
+        var result = AccountingResultFactory.getEditItemAccountingCategoryDescriptionResult();
+        var itemAccountingCategoryName = spec.getItemAccountingCategoryName();
+        var itemAccountingCategory = accountingControl.getItemAccountingCategoryByName(itemAccountingCategoryName);
         
         if(itemAccountingCategory != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                    ItemAccountingCategoryDescription itemAccountingCategoryDescription = accountingControl.getItemAccountingCategoryDescription(itemAccountingCategory, language);
+                    var itemAccountingCategoryDescription = accountingControl.getItemAccountingCategoryDescription(itemAccountingCategory, language);
                     
                     if(itemAccountingCategoryDescription != null) {
                         if(editMode.equals(EditMode.LOCK)) {
                             result.setItemAccountingCategoryDescription(accountingControl.getItemAccountingCategoryDescriptionTransfer(getUserVisit(), itemAccountingCategoryDescription));
 
                             if(lockEntity(itemAccountingCategory)) {
-                                ItemAccountingCategoryDescriptionEdit edit = AccountingEditFactory.getItemAccountingCategoryDescriptionEdit();
+                                var edit = AccountingEditFactory.getItemAccountingCategoryDescriptionEdit();
 
                                 result.setEdit(edit);
                                 edit.setDescription(itemAccountingCategoryDescription.getDescription());
@@ -113,12 +113,12 @@ public class EditItemAccountingCategoryDescriptionCommand
                         addExecutionError(ExecutionErrors.UnknownItemAccountingCategoryDescription.name());
                     }
                 } else if(editMode.equals(EditMode.UPDATE)) {
-                    ItemAccountingCategoryDescriptionValue itemAccountingCategoryDescriptionValue = accountingControl.getItemAccountingCategoryDescriptionValueForUpdate(itemAccountingCategory, language);
+                    var itemAccountingCategoryDescriptionValue = accountingControl.getItemAccountingCategoryDescriptionValueForUpdate(itemAccountingCategory, language);
                     
                     if(itemAccountingCategoryDescriptionValue != null) {
                         if(lockEntityForUpdate(itemAccountingCategory)) {
                             try {
-                                String description = edit.getDescription();
+                                var description = edit.getDescription();
                                 
                                 itemAccountingCategoryDescriptionValue.setDescription(description);
                                 

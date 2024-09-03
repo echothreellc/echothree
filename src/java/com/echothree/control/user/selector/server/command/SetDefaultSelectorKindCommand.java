@@ -62,8 +62,8 @@ public class SetDefaultSelectorKindCommand
     @Override
     protected BaseResult execute() {
         var selectorControl = Session.getModelController(SelectorControl.class);
-        String selectorKindName = form.getSelectorKindName();
-        SelectorKindDetailValue selectorKindDetailValue = selectorControl.getSelectorKindDetailValueByNameForUpdate(selectorKindName);
+        var selectorKindName = form.getSelectorKindName();
+        var selectorKindDetailValue = selectorControl.getSelectorKindDetailValueByNameForUpdate(selectorKindName);
         
         if(selectorKindDetailValue != null) {
             selectorKindDetailValue.setIsDefault(Boolean.TRUE);

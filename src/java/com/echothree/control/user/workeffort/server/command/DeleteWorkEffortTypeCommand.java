@@ -49,8 +49,8 @@ public class DeleteWorkEffortTypeCommand
     @Override
     protected BaseResult execute() {
         var workEffortControl = Session.getModelController(WorkEffortControl.class);
-        String workEffortTypeName = form.getWorkEffortTypeName();
-        WorkEffortType workEffortType = workEffortControl.getWorkEffortTypeByNameForUpdate(workEffortTypeName);
+        var workEffortTypeName = form.getWorkEffortTypeName();
+        var workEffortType = workEffortControl.getWorkEffortTypeByNameForUpdate(workEffortTypeName);
         
         if(workEffortType != null) {
             workEffortControl.deleteWorkEffortType(workEffortType, getPartyPK());

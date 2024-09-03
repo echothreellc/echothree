@@ -69,16 +69,16 @@ public class CreateOfferCustomerTypeCommand
     @Override
     protected BaseResult execute() {
         var offerControl = Session.getModelController(OfferControl.class);
-        String offerName = form.getOfferName();
-        Offer offer = offerControl.getOfferByName(offerName);
+        var offerName = form.getOfferName();
+        var offer = offerControl.getOfferByName(offerName);
 
         if(offer != null) {
             var customerControl = Session.getModelController(CustomerControl.class);
-            String customerTypeName = form.getCustomerTypeName();
-            CustomerType customerType = customerControl.getCustomerTypeByName(customerTypeName);
+            var customerTypeName = form.getCustomerTypeName();
+            var customerType = customerControl.getCustomerTypeByName(customerTypeName);
 
             if(customerType != null) {
-                OfferCustomerType offerCustomerType = offerControl.getOfferCustomerType(offer, customerType);
+                var offerCustomerType = offerControl.getOfferCustomerType(offer, customerType);
 
                 if(offerCustomerType == null) {
                     var isDefault = Boolean.valueOf(form.getIsDefault());

@@ -70,8 +70,8 @@ public class SetDefaultOrderTimeTypeCommand
 
         if(orderType != null) {
             var orderTimeControl = Session.getModelController(OrderTimeControl.class);
-            String orderTimeTypeName = form.getOrderTimeTypeName();
-            OrderTimeTypeDetailValue orderTimeTypeDetailValue = orderTimeControl.getOrderTimeTypeDetailValueByNameForUpdate(orderType, orderTimeTypeName);
+            var orderTimeTypeName = form.getOrderTimeTypeName();
+            var orderTimeTypeDetailValue = orderTimeControl.getOrderTimeTypeDetailValueByNameForUpdate(orderType, orderTimeTypeName);
 
             if(orderTimeTypeDetailValue != null) {
                 orderTimeTypeDetailValue.setIsDefault(Boolean.TRUE);

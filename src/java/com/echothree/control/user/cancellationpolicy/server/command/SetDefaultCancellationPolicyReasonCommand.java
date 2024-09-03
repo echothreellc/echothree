@@ -68,19 +68,19 @@ public class SetDefaultCancellationPolicyReasonCommand
     @Override
     protected BaseResult execute() {
         var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
-        String cancellationKindName = form.getCancellationKindName();
-        CancellationKind cancellationKind = cancellationPolicyControl.getCancellationKindByName(cancellationKindName);
+        var cancellationKindName = form.getCancellationKindName();
+        var cancellationKind = cancellationPolicyControl.getCancellationKindByName(cancellationKindName);
         
         if(cancellationKind != null) {
-            String cancellationPolicyName = form.getCancellationPolicyName();
-            CancellationPolicy cancellationPolicy = cancellationPolicyControl.getCancellationPolicyByName(cancellationKind, cancellationPolicyName);
+            var cancellationPolicyName = form.getCancellationPolicyName();
+            var cancellationPolicy = cancellationPolicyControl.getCancellationPolicyByName(cancellationKind, cancellationPolicyName);
             
             if(cancellationPolicy != null) {
-                String cancellationReasonName = form.getCancellationReasonName();
-                CancellationReason cancellationReason = cancellationPolicyControl.getCancellationReasonByName(cancellationKind, cancellationReasonName);
+                var cancellationReasonName = form.getCancellationReasonName();
+                var cancellationReason = cancellationPolicyControl.getCancellationReasonByName(cancellationKind, cancellationReasonName);
                 
                 if(cancellationReason != null) {
-                    CancellationPolicyReasonValue cancellationPolicyReasonValue = cancellationPolicyControl.getCancellationPolicyReasonValueForUpdate(cancellationPolicy,
+                    var cancellationPolicyReasonValue = cancellationPolicyControl.getCancellationPolicyReasonValueForUpdate(cancellationPolicy,
                             cancellationReason);
                     
                     if(cancellationPolicyReasonValue != null) {

@@ -97,7 +97,7 @@ public class EditSalesOrderBatchCommand
     @Override
     public Batch getEntity(EditSalesOrderBatchResult result) {
         Batch batch = null;
-        String batchName = spec.getBatchName();
+        var batchName = spec.getBatchName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
             batch = SalesOrderBatchLogic.getInstance().getBatchByName(this, batchName);
@@ -130,9 +130,9 @@ public class EditSalesOrderBatchCommand
     public void doLock(SalesOrderBatchEdit edit, Batch batch) {
         var orderBatchControl = Session.getModelController(OrderBatchControl.class);
         var salesOrderBatchControl = Session.getModelController(SalesOrderBatchControl.class);
-        OrderBatch orderBatch = orderBatchControl.getOrderBatch(batch);
-        SalesOrderBatch salesOrderBatch = salesOrderBatchControl.getSalesOrderBatch(batch);
-        Long count = orderBatch.getCount();
+        var orderBatch = orderBatchControl.getOrderBatch(batch);
+        var salesOrderBatch = salesOrderBatchControl.getSalesOrderBatch(batch);
+        var count = orderBatch.getCount();
 
         // TODO: currency and payment method should be editable only if the batch has no orders in it.
         edit.setCurrencyIsoName(orderBatch.getCurrency().getCurrencyIsoName());
@@ -148,7 +148,7 @@ public class EditSalesOrderBatchCommand
     public void canUpdate(Batch batch) {
         // TODO: currency and payment method should be checked only if the batch has no orders in it.
         var accountingControl = Session.getModelController(AccountingControl.class);
-        String currencyIsoName = edit.getCurrencyIsoName();
+        var currencyIsoName = edit.getCurrencyIsoName();
 
         currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
 
@@ -171,12 +171,12 @@ public class EditSalesOrderBatchCommand
         var salesOrderBatchControl = Session.getModelController(SalesOrderBatchControl.class);
         var orderBatchControl = Session.getModelController(OrderBatchControl.class);
         var partyPK = getPartyPK();
-        String strCount = edit.getCount();
-        Long count = strCount == null ? null : Long.valueOf(strCount);
-        String strAmount = edit.getAmount();
-        Long amount = strAmount == null ? null : Long.valueOf(strAmount);
-        OrderBatchValue orderBatchValue = orderBatchControl.getOrderBatchValueForUpdate(batch);
-        SalesOrderBatchValue salesOrderBatchValue = salesOrderBatchControl.getSalesOrderBatchValueForUpdate(batch);
+        var strCount = edit.getCount();
+        var count = strCount == null ? null : Long.valueOf(strCount);
+        var strAmount = edit.getAmount();
+        var amount = strAmount == null ? null : Long.valueOf(strAmount);
+        var orderBatchValue = orderBatchControl.getOrderBatchValueForUpdate(batch);
+        var salesOrderBatchValue = salesOrderBatchControl.getSalesOrderBatchValueForUpdate(batch);
 
         if(currency != null) {
             orderBatchValue.setCurrencyPK(currency.getPrimaryKey());

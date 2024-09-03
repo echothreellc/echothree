@@ -68,16 +68,16 @@ public class CreateItemImageTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var itemControl = Session.getModelController(ItemControl.class);
-        String itemImageTypeName = form.getItemImageTypeName();
-        ItemImageType itemImageType = itemControl.getItemImageTypeByName(itemImageTypeName);
+        var itemImageTypeName = form.getItemImageTypeName();
+        var itemImageType = itemControl.getItemImageTypeByName(itemImageTypeName);
         
         if(itemImageType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                ItemImageTypeDescription itemImageTypeDescription = itemControl.getItemImageTypeDescription(itemImageType, language);
+                var itemImageTypeDescription = itemControl.getItemImageTypeDescription(itemImageType, language);
                 
                 if(itemImageTypeDescription == null) {
                     var description = form.getDescription();

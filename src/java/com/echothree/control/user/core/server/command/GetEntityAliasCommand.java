@@ -67,7 +67,7 @@ public class GetEntityAliasCommand
 
     @Override
     protected EntityAlias getEntity() {
-        EntityAliasType entityAliasType = EntityAliasTypeLogic.getInstance().getEntityAliasTypeByUniversalSpec(this, form);
+        var entityAliasType = EntityAliasTypeLogic.getInstance().getEntityAliasTypeByUniversalSpec(this, form);
         EntityAlias entityAlias = null;
 
         if(!hasExecutionErrors()) {

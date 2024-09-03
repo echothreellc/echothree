@@ -89,7 +89,7 @@ public class PaymentProcessorTypeActionLogic
             final PaymentProcessorType paymentProcessorType, final PaymentProcessorActionType paymentProcessorActionType,
             final EntityPermission entityPermission) {
         var paymentProcessorTypeActionControl = Session.getModelController(PaymentProcessorTypeActionControl.class);
-        PaymentProcessorTypeAction paymentProcessorTypeAction = paymentProcessorTypeActionControl.getPaymentProcessorTypeAction(paymentProcessorType,
+        var paymentProcessorTypeAction = paymentProcessorTypeActionControl.getPaymentProcessorTypeAction(paymentProcessorType,
                 paymentProcessorActionType, entityPermission);
 
         if(paymentProcessorTypeAction == null) {

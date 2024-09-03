@@ -68,16 +68,16 @@ public class CreateGeoCodeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var geoControl = Session.getModelController(GeoControl.class);
-        String geoCodeName = form.getGeoCodeName();
-        GeoCode geoCode = geoControl.getGeoCodeByName(geoCodeName);
+        var geoCodeName = form.getGeoCodeName();
+        var geoCode = geoControl.getGeoCodeByName(geoCodeName);
         
         if(geoCode != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                GeoCodeDescription geoCodeDescription = geoControl.getGeoCodeDescription(geoCode, language);
+                var geoCodeDescription = geoControl.getGeoCodeDescription(geoCode, language);
                 
                 if(geoCodeDescription == null) {
                     var description = form.getDescription();

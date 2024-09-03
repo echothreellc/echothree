@@ -92,15 +92,15 @@ public class OfferTag
     public int doStartTag()
             throws JspException {
         try {
-            GetOfferForm commandForm = OfferUtil.getHome().getGetOfferForm();
+            var commandForm = OfferUtil.getHome().getGetOfferForm();
             
             commandForm.setOfferName(offerName);
             
             setOptions(options, null, commandForm);
 
             commandForm.setTransferProperties(transferProperties);
-            
-            CommandResult commandResult = OfferUtil.getHome().getOffer(getUserVisitPK(), commandForm);
+
+            var commandResult = OfferUtil.getHome().getOffer(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -108,8 +108,8 @@ public class OfferTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetOfferResult result = (GetOfferResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetOfferResult)executionResult.getResult();
 
                 pageContext.setAttribute(var, result.getOffer(), scope);
             }

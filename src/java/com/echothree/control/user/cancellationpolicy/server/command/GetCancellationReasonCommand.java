@@ -68,13 +68,13 @@ public class GetCancellationReasonCommand
     @Override
     protected BaseResult execute() {
         var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
-        GetCancellationReasonResult result = CancellationPolicyResultFactory.getGetCancellationReasonResult();
-        String cancellationKindName = form.getCancellationKindName();
-        CancellationKind cancellationKind = cancellationPolicyControl.getCancellationKindByName(cancellationKindName);
+        var result = CancellationPolicyResultFactory.getGetCancellationReasonResult();
+        var cancellationKindName = form.getCancellationKindName();
+        var cancellationKind = cancellationPolicyControl.getCancellationKindByName(cancellationKindName);
         
         if(cancellationKind != null) {
-            String cancellationReasonName = form.getCancellationReasonName();
-            CancellationReason cancellationReason = cancellationPolicyControl.getCancellationReasonByName(cancellationKind, cancellationReasonName);
+            var cancellationReasonName = form.getCancellationReasonName();
+            var cancellationReason = cancellationPolicyControl.getCancellationReasonByName(cancellationKind, cancellationReasonName);
             
             if(cancellationReason != null) {
                 result.setCancellationReason(cancellationPolicyControl.getCancellationReasonTransfer(getUserVisit(), cancellationReason));

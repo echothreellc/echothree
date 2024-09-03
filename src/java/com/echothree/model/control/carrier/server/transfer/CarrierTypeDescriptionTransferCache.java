@@ -32,12 +32,12 @@ public class CarrierTypeDescriptionTransferCache
     }
     
     public CarrierTypeDescriptionTransfer getCarrierTypeDescriptionTransfer(CarrierTypeDescription carrierTypeDescription) {
-        CarrierTypeDescriptionTransfer carrierTypeDescriptionTransfer = get(carrierTypeDescription);
+        var carrierTypeDescriptionTransfer = get(carrierTypeDescription);
         
         if(carrierTypeDescriptionTransfer == null) {
-            CarrierTypeTransfer carrierTypeTransfer = carrierControl.getCarrierTypeTransfer(userVisit, carrierTypeDescription.getCarrierType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, carrierTypeDescription.getLanguage());
-            String description = carrierTypeDescription.getDescription();
+            var carrierTypeTransfer = carrierControl.getCarrierTypeTransfer(userVisit, carrierTypeDescription.getCarrierType());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, carrierTypeDescription.getLanguage());
+            var description = carrierTypeDescription.getDescription();
             
             carrierTypeDescriptionTransfer = new CarrierTypeDescriptionTransfer(languageTransfer, carrierTypeTransfer, description);
             put(carrierTypeDescription, carrierTypeDescriptionTransfer);

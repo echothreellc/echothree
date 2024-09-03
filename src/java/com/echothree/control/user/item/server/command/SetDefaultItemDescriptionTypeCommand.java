@@ -62,8 +62,8 @@ public class SetDefaultItemDescriptionTypeCommand
     @Override
     protected BaseResult execute() {
         var itemControl = Session.getModelController(ItemControl.class);
-        String itemDescriptionTypeName = form.getItemDescriptionTypeName();
-        ItemDescriptionTypeDetailValue itemDescriptionTypeDetailValue = itemControl.getItemDescriptionTypeDetailValueByNameForUpdate(itemDescriptionTypeName);
+        var itemDescriptionTypeName = form.getItemDescriptionTypeName();
+        var itemDescriptionTypeDetailValue = itemControl.getItemDescriptionTypeDetailValueByNameForUpdate(itemDescriptionTypeName);
         
         if(itemDescriptionTypeDetailValue != null) {
             itemDescriptionTypeDetailValue.setIsDefault(Boolean.TRUE);

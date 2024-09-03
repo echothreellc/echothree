@@ -65,9 +65,9 @@ public class GetSearchResultActionTypeDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var searchControl = Session.getModelController(SearchControl.class);
-        GetSearchResultActionTypeDescriptionsResult result = SearchResultFactory.getGetSearchResultActionTypeDescriptionsResult();
-        String searchResultActionTypeName = form.getSearchResultActionTypeName();
-        SearchResultActionType searchResultActionType = searchControl.getSearchResultActionTypeByName(searchResultActionTypeName);
+        var result = SearchResultFactory.getGetSearchResultActionTypeDescriptionsResult();
+        var searchResultActionTypeName = form.getSearchResultActionTypeName();
+        var searchResultActionType = searchControl.getSearchResultActionTypeByName(searchResultActionTypeName);
         
         if(searchResultActionType != null) {
             result.setSearchResultActionType(searchControl.getSearchResultActionTypeTransfer(getUserVisit(), searchResultActionType));

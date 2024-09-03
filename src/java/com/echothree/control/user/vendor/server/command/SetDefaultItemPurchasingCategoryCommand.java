@@ -63,8 +63,8 @@ public class SetDefaultItemPurchasingCategoryCommand
     protected BaseResult execute() {
         var vendorControl = Session.getModelController(VendorControl.class);
 
-        String itemPurchasingCategoryName = form.getItemPurchasingCategoryName();
-        ItemPurchasingCategoryDetailValue itemPurchasingCategoryDetailValue = vendorControl.getItemPurchasingCategoryDetailValueByNameForUpdate(itemPurchasingCategoryName);
+        var itemPurchasingCategoryName = form.getItemPurchasingCategoryName();
+        var itemPurchasingCategoryDetailValue = vendorControl.getItemPurchasingCategoryDetailValueByNameForUpdate(itemPurchasingCategoryName);
         
         if(itemPurchasingCategoryDetailValue != null) {
             itemPurchasingCategoryDetailValue.setIsDefault(Boolean.TRUE);

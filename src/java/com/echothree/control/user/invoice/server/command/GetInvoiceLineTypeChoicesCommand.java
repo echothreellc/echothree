@@ -66,13 +66,13 @@ public class GetInvoiceLineTypeChoicesCommand
     @Override
     protected BaseResult execute() {
         var invoiceControl = Session.getModelController(InvoiceControl.class);
-        GetInvoiceLineTypeChoicesResult result = InvoiceResultFactory.getGetInvoiceLineTypeChoicesResult();
-        String invoiceTypeName = form.getInvoiceTypeName();
-        InvoiceType invoiceType = invoiceControl.getInvoiceTypeByName(invoiceTypeName);
+        var result = InvoiceResultFactory.getGetInvoiceLineTypeChoicesResult();
+        var invoiceTypeName = form.getInvoiceTypeName();
+        var invoiceType = invoiceControl.getInvoiceTypeByName(invoiceTypeName);
         
         if(invoiceType != null) {
-            String defaultInvoiceLineTypeChoice = form.getDefaultInvoiceLineTypeChoice();
-            boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+            var defaultInvoiceLineTypeChoice = form.getDefaultInvoiceLineTypeChoice();
+            var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
             
             result.setInvoiceLineTypeChoices(invoiceControl.getInvoiceLineTypeChoices(invoiceType, defaultInvoiceLineTypeChoice,
                     getPreferredLanguage(), allowNullChoice));

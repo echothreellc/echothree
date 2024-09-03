@@ -67,16 +67,16 @@ public class DeletePartyCarrierAccountCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        String partyName = form.getPartyName();
-        Party party = partyControl.getPartyByName(partyName);
+        var partyName = form.getPartyName();
+        var party = partyControl.getPartyByName(partyName);
 
         if(party != null) {
             var carrierControl = Session.getModelController(CarrierControl.class);
-            String carrierName = form.getCarrierName();
-            Carrier carrier = carrierControl.getCarrierByName(carrierName);
+            var carrierName = form.getCarrierName();
+            var carrier = carrierControl.getCarrierByName(carrierName);
 
             if(carrier != null) {
-                PartyCarrierAccount partyCarrierAccount = carrierControl.getPartyCarrierAccountForUpdate(party, carrier.getParty());
+                var partyCarrierAccount = carrierControl.getPartyCarrierAccountForUpdate(party, carrier.getParty());
 
                 if(partyCarrierAccount != null) {
                     carrierControl.deletePartyCarrierAccount(partyCarrierAccount, getPartyPK());

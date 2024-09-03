@@ -33,18 +33,18 @@ public class SelectorNodeTransferCache
     }
     
     public SelectorNodeTransfer getSelectorNodeTransfer(SelectorNode selectorNode) {
-        SelectorNodeTransfer selectorNodeTransfer = get(selectorNode);
+        var selectorNodeTransfer = get(selectorNode);
         
         if(selectorNodeTransfer == null) {
-            SelectorNodeDetail selectorNodeDetail = selectorNode.getLastDetail();
-            SelectorTransferCache selectorTransferCache = selectorControl.getSelectorTransferCaches(userVisit).getSelectorTransferCache();
-            SelectorTransfer selector = selectorTransferCache.getSelectorTransfer(selectorNodeDetail.getSelector());
-            String selectorNodeName = selectorNodeDetail.getSelectorNodeName();
-            Boolean isRootSelectorNode = selectorNodeDetail.getIsRootSelectorNode();
-            SelectorNodeTypeTransferCache selectorNodeTypeTransferCache = selectorControl.getSelectorTransferCaches(userVisit).getSelectorNodeTypeTransferCache();
-            SelectorNodeTypeTransfer selectorNodeType = selectorNodeTypeTransferCache.getSelectorNodeTypeTransfer(selectorNodeDetail.getSelectorNodeType());
-            Boolean negate = selectorNodeDetail.getNegate();
-            String description = selectorControl.getBestSelectorNodeDescription(selectorNode, getLanguage());
+            var selectorNodeDetail = selectorNode.getLastDetail();
+            var selectorTransferCache = selectorControl.getSelectorTransferCaches(userVisit).getSelectorTransferCache();
+            var selector = selectorTransferCache.getSelectorTransfer(selectorNodeDetail.getSelector());
+            var selectorNodeName = selectorNodeDetail.getSelectorNodeName();
+            var isRootSelectorNode = selectorNodeDetail.getIsRootSelectorNode();
+            var selectorNodeTypeTransferCache = selectorControl.getSelectorTransferCaches(userVisit).getSelectorNodeTypeTransferCache();
+            var selectorNodeType = selectorNodeTypeTransferCache.getSelectorNodeTypeTransfer(selectorNodeDetail.getSelectorNodeType());
+            var negate = selectorNodeDetail.getNegate();
+            var description = selectorControl.getBestSelectorNodeDescription(selectorNode, getLanguage());
             
             selectorNodeTransfer = new SelectorNodeTransfer(selector, selectorNodeName, isRootSelectorNode, selectorNodeType,
             negate, description);

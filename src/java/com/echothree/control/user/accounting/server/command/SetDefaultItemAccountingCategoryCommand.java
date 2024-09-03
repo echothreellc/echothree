@@ -62,8 +62,8 @@ public class SetDefaultItemAccountingCategoryCommand
     @Override
     protected BaseResult execute() {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        String itemAccountingCategoryName = form.getItemAccountingCategoryName();
-        ItemAccountingCategoryDetailValue itemAccountingCategoryDetailValue = accountingControl.getItemAccountingCategoryDetailValueByNameForUpdate(itemAccountingCategoryName);
+        var itemAccountingCategoryName = form.getItemAccountingCategoryName();
+        var itemAccountingCategoryDetailValue = accountingControl.getItemAccountingCategoryDetailValueByNameForUpdate(itemAccountingCategoryName);
         
         if(itemAccountingCategoryDetailValue != null) {
             itemAccountingCategoryDetailValue.setIsDefault(Boolean.TRUE);

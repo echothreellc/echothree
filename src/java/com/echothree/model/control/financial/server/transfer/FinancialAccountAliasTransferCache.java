@@ -32,12 +32,12 @@ public class FinancialAccountAliasTransferCache
     }
     
     public FinancialAccountAliasTransfer getFinancialAccountAliasTransfer(FinancialAccountAlias financialAccountAlias) {
-        FinancialAccountAliasTransfer financialAccountAliasTransfer = get(financialAccountAlias);
+        var financialAccountAliasTransfer = get(financialAccountAlias);
         
         if(financialAccountAliasTransfer == null) {
-            FinancialAccountTransfer financial = financialControl.getFinancialAccountTransfer(userVisit, financialAccountAlias.getFinancialAccount());
-            FinancialAccountAliasTypeTransfer financialAccountAliasType = financialControl.getFinancialAccountAliasTypeTransfer(userVisit, financialAccountAlias.getFinancialAccountAliasType());
-            String alias = financialAccountAlias.getAlias();
+            var financial = financialControl.getFinancialAccountTransfer(userVisit, financialAccountAlias.getFinancialAccount());
+            var financialAccountAliasType = financialControl.getFinancialAccountAliasTypeTransfer(userVisit, financialAccountAlias.getFinancialAccountAliasType());
+            var alias = financialAccountAlias.getAlias();
             
             financialAccountAliasTransfer = new FinancialAccountAliasTransfer(financial, financialAccountAliasType, alias);
             put(financialAccountAlias, financialAccountAliasTransfer);

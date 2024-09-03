@@ -48,29 +48,29 @@ public class UserLoginTransferCache
     }
     
     public UserLoginTransfer getUserLoginTransfer(UserLogin userLogin) {
-        UserLoginTransfer userLoginTransfer = get(userLogin);
+        var userLoginTransfer = get(userLogin);
         
         if(userLoginTransfer == null) {
-            Party party = userLogin.getParty();
-            PartyTransfer partyTransfer = partyControl.getPartyTransfer(userVisit, party);
-            UserLoginStatus userLoginStatus = userControl.getUserLoginStatus(party);
-            String username = userLogin.getUsername();
-            Long unformattedLastLoginTime = userLoginStatus.getLastLoginTime();
-            String lastLoginTime = formatTypicalDateTime(unformattedLastLoginTime);
-            Integer failureCount = userLoginStatus.getFailureCount();
-            Long unformattedFirstFailureTime = userLoginStatus.getFirstFailureTime();
-            String firstFailureTime = formatTypicalDateTime(unformattedFirstFailureTime);
-            Long unformattedLastFailureTime = userLoginStatus.getLastFailureTime();
-            String lastFailureTime = formatTypicalDateTime(unformattedLastFailureTime);
-            Integer expiredCount = userLoginStatus.getExpiredCount();
-            Boolean forceChange = userLoginStatus.getForceChange();
+            var party = userLogin.getParty();
+            var partyTransfer = partyControl.getPartyTransfer(userVisit, party);
+            var userLoginStatus = userControl.getUserLoginStatus(party);
+            var username = userLogin.getUsername();
+            var unformattedLastLoginTime = userLoginStatus.getLastLoginTime();
+            var lastLoginTime = formatTypicalDateTime(unformattedLastLoginTime);
+            var failureCount = userLoginStatus.getFailureCount();
+            var unformattedFirstFailureTime = userLoginStatus.getFirstFailureTime();
+            var firstFailureTime = formatTypicalDateTime(unformattedFirstFailureTime);
+            var unformattedLastFailureTime = userLoginStatus.getLastFailureTime();
+            var lastFailureTime = formatTypicalDateTime(unformattedLastFailureTime);
+            var expiredCount = userLoginStatus.getExpiredCount();
+            var forceChange = userLoginStatus.getForceChange();
             
             userLoginTransfer = new UserLoginTransfer(partyTransfer, username, unformattedLastLoginTime, lastLoginTime, failureCount,
                     unformattedFirstFailureTime, firstFailureTime, unformattedLastFailureTime, lastFailureTime, expiredCount, forceChange);
             put(userLogin, userLoginTransfer);
 
             if(includeUserLoginPasswords) {
-                List<UserLoginPasswordTransfer> userLoginPasswordTransfers = userControl.getUserLoginPasswordTransfersByParty(userVisit, userLogin.getParty());
+                var userLoginPasswordTransfers = userControl.getUserLoginPasswordTransfersByParty(userVisit, userLogin.getParty());
                 MapWrapper<UserLoginPasswordTransfer> userLoginPasswords = new MapWrapper<>(userLoginPasswordTransfers.size());
 
                 userLoginPasswordTransfers.forEach((userLoginPasswordTransfer) -> {

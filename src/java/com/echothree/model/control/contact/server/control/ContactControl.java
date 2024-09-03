@@ -233,7 +233,7 @@ public class ContactControl
         ContactMechanismType contactMechanismType;
         
         try {
-            PreparedStatement ps = ContactMechanismTypeFactory.getInstance().prepareStatement(
+            var ps = ContactMechanismTypeFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM contactmechanismtypes " +
                     "WHERE cmt_contactmechanismtypename = ?");
@@ -249,7 +249,7 @@ public class ContactControl
     }
     
     public List<ContactMechanismType> getContactMechanismTypes() {
-        PreparedStatement ps = ContactMechanismTypeFactory.getInstance().prepareStatement(
+        var ps = ContactMechanismTypeFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
                 "FROM contactmechanismtypes " +
                 "ORDER BY cmt_sortorder, cmt_contactmechanismtypename");
@@ -258,7 +258,7 @@ public class ContactControl
     }
     
     public ContactMechanismTypeChoicesBean getContactMechanismTypeChoices(String defaultContactMechanismTypeChoice, Language language, boolean allowNullChoice) {
-        List<ContactMechanismType> contactMechanismTypes = getContactMechanismTypes();
+        var contactMechanismTypes = getContactMechanismTypes();
         var size = contactMechanismTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -290,9 +290,9 @@ public class ContactControl
     }
     
     public List<ContactMechanismTypeTransfer> getContactMechanismTypeTransfers(UserVisit userVisit) {
-        List<ContactMechanismType> entities = getContactMechanismTypes();
+        var entities = getContactMechanismTypes();
         List<ContactMechanismTypeTransfer> transfers = new ArrayList<>(entities.size());
-        ContactMechanismTypeTransferCache cache = getContactTransferCaches(userVisit).getContactMechanismTypeTransferCache();
+        var cache = getContactTransferCaches(userVisit).getContactMechanismTypeTransferCache();
         
         entities.forEach((entity) ->
                 transfers.add(cache.getContactMechanismTypeTransfer(entity))
@@ -315,7 +315,7 @@ public class ContactControl
         ContactMechanismTypeDescription contactMechanismTypeDescription;
         
         try {
-            PreparedStatement ps = ContactMechanismTypeDescriptionFactory.getInstance().prepareStatement(
+            var ps = ContactMechanismTypeDescriptionFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM contactmechanismtypedescriptions " +
                     "WHERE cmtd_cmt_contactmechanismtypeid = ? AND cmtd_lang_languageid = ?");
@@ -333,7 +333,7 @@ public class ContactControl
     
     public String getBestContactMechanismTypeDescription(ContactMechanismType contactMechanismType, Language language) {
         String description;
-        ContactMechanismTypeDescription contactMechanismTypeDescription = getContactMechanismTypeDescription(contactMechanismType, language);
+        var contactMechanismTypeDescription = getContactMechanismTypeDescription(contactMechanismType, language);
         
         if(contactMechanismTypeDescription == null && !language.getIsDefault()) {
             contactMechanismTypeDescription = getContactMechanismTypeDescription(contactMechanismType, getPartyControl().getDefaultLanguage());
@@ -354,11 +354,11 @@ public class ContactControl
 
     public ContactMechanismAliasType createContactMechanismAliasType(String contactMechanismAliasTypeName, String validationPattern, Boolean isDefault,
             Integer sortOrder, BasePK createdBy) {
-        ContactMechanismAliasType defaultContactMechanismAliasType = getDefaultContactMechanismAliasType();
-        boolean defaultFound = defaultContactMechanismAliasType != null;
+        var defaultContactMechanismAliasType = getDefaultContactMechanismAliasType();
+        var defaultFound = defaultContactMechanismAliasType != null;
 
         if(defaultFound && isDefault) {
-            ContactMechanismAliasTypeDetailValue defaultContactMechanismAliasTypeDetailValue = getDefaultContactMechanismAliasTypeDetailValueForUpdate();
+            var defaultContactMechanismAliasTypeDetailValue = getDefaultContactMechanismAliasTypeDetailValueForUpdate();
 
             defaultContactMechanismAliasTypeDetailValue.setIsDefault(Boolean.FALSE);
             updateContactMechanismAliasTypeFromValue(defaultContactMechanismAliasTypeDetailValue, false, createdBy);
@@ -366,8 +366,8 @@ public class ContactControl
             isDefault = Boolean.TRUE;
         }
 
-        ContactMechanismAliasType contactMechanismAliasType = ContactMechanismAliasTypeFactory.getInstance().create();
-        ContactMechanismAliasTypeDetail contactMechanismAliasTypeDetail = ContactMechanismAliasTypeDetailFactory.getInstance().create(contactMechanismAliasType,
+        var contactMechanismAliasType = ContactMechanismAliasTypeFactory.getInstance().create();
+        var contactMechanismAliasTypeDetail = ContactMechanismAliasTypeDetailFactory.getInstance().create(contactMechanismAliasType,
                 contactMechanismAliasTypeName, validationPattern, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -506,7 +506,7 @@ public class ContactControl
                         "FOR UPDATE";
             }
 
-            PreparedStatement ps = ContactMechanismAliasTypeFactory.getInstance().prepareStatement(query);
+            var ps = ContactMechanismAliasTypeFactory.getInstance().prepareStatement(query);
 
             ps.setLong(1, parentContactMechanismAliasType.getPrimaryKey().getEntityId());
 
@@ -532,7 +532,7 @@ public class ContactControl
 
     public List<ContactMechanismAliasTypeTransfer> getContactMechanismAliasTypeTransfers(UserVisit userVisit, Collection<ContactMechanismAliasType> contactMechanismAliasTypes) {
         List<ContactMechanismAliasTypeTransfer> contactMechanismAliasTypeTransfers = new ArrayList<>(contactMechanismAliasTypes.size());
-        ContactMechanismAliasTypeTransferCache contactMechanismAliasTypeTransferCache = getContactTransferCaches(userVisit).getContactMechanismAliasTypeTransferCache();
+        var contactMechanismAliasTypeTransferCache = getContactTransferCaches(userVisit).getContactMechanismAliasTypeTransferCache();
 
         contactMechanismAliasTypes.forEach((contactMechanismAliasType) ->
                 contactMechanismAliasTypeTransfers.add(contactMechanismAliasTypeTransferCache.getContactMechanismAliasTypeTransfer(contactMechanismAliasType))
@@ -551,7 +551,7 @@ public class ContactControl
     }
 
     public ContactMechanismAliasTypeChoicesBean getContactMechanismAliasTypeChoices(String defaultContactMechanismAliasTypeChoice, Language language, boolean allowNullChoice) {
-        List<ContactMechanismAliasType> contactMechanismAliasTypes = getContactMechanismAliasTypes();
+        var contactMechanismAliasTypes = getContactMechanismAliasTypes();
         var size = contactMechanismAliasTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -567,7 +567,7 @@ public class ContactControl
         }
 
         for(var contactMechanismAliasType : contactMechanismAliasTypes) {
-            ContactMechanismAliasTypeDetail contactMechanismAliasTypeDetail = contactMechanismAliasType.getLastDetail();
+            var contactMechanismAliasTypeDetail = contactMechanismAliasType.getLastDetail();
 
             var label = getBestContactMechanismAliasTypeDescription(contactMechanismAliasType, language);
             var value = contactMechanismAliasTypeDetail.getContactMechanismAliasTypeName();
@@ -587,26 +587,26 @@ public class ContactControl
     private void updateContactMechanismAliasTypeFromValue(ContactMechanismAliasTypeDetailValue contactMechanismAliasTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(contactMechanismAliasTypeDetailValue.hasBeenModified()) {
-            ContactMechanismAliasType contactMechanismAliasType = ContactMechanismAliasTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var contactMechanismAliasType = ContactMechanismAliasTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      contactMechanismAliasTypeDetailValue.getContactMechanismAliasTypePK());
-            ContactMechanismAliasTypeDetail contactMechanismAliasTypeDetail = contactMechanismAliasType.getActiveDetailForUpdate();
+            var contactMechanismAliasTypeDetail = contactMechanismAliasType.getActiveDetailForUpdate();
 
             contactMechanismAliasTypeDetail.setThruTime(session.START_TIME_LONG);
             contactMechanismAliasTypeDetail.store();
 
-            ContactMechanismAliasTypePK contactMechanismAliasTypePK = contactMechanismAliasTypeDetail.getContactMechanismAliasTypePK(); // Not updated
-            String contactMechanismAliasTypeName = contactMechanismAliasTypeDetailValue.getContactMechanismAliasTypeName();
-            String validationPattern = contactMechanismAliasTypeDetailValue.getValidationPattern();
-            Boolean isDefault = contactMechanismAliasTypeDetailValue.getIsDefault();
-            Integer sortOrder = contactMechanismAliasTypeDetailValue.getSortOrder();
+            var contactMechanismAliasTypePK = contactMechanismAliasTypeDetail.getContactMechanismAliasTypePK(); // Not updated
+            var contactMechanismAliasTypeName = contactMechanismAliasTypeDetailValue.getContactMechanismAliasTypeName();
+            var validationPattern = contactMechanismAliasTypeDetailValue.getValidationPattern();
+            var isDefault = contactMechanismAliasTypeDetailValue.getIsDefault();
+            var sortOrder = contactMechanismAliasTypeDetailValue.getSortOrder();
 
             if(checkDefault) {
-                ContactMechanismAliasType defaultContactMechanismAliasType = getDefaultContactMechanismAliasType();
-                boolean defaultFound = defaultContactMechanismAliasType != null && !defaultContactMechanismAliasType.equals(contactMechanismAliasType);
+                var defaultContactMechanismAliasType = getDefaultContactMechanismAliasType();
+                var defaultFound = defaultContactMechanismAliasType != null && !defaultContactMechanismAliasType.equals(contactMechanismAliasType);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    ContactMechanismAliasTypeDetailValue defaultContactMechanismAliasTypeDetailValue = getDefaultContactMechanismAliasTypeDetailValueForUpdate();
+                    var defaultContactMechanismAliasTypeDetailValue = getDefaultContactMechanismAliasTypeDetailValueForUpdate();
 
                     defaultContactMechanismAliasTypeDetailValue.setIsDefault(Boolean.FALSE);
                     updateContactMechanismAliasTypeFromValue(defaultContactMechanismAliasTypeDetailValue, false, updatedBy);
@@ -634,22 +634,22 @@ public class ContactControl
         deleteContactMechanismAliasTypeDescriptionsByContactMechanismAliasType(contactMechanismAliasType, deletedBy);
         deleteContactMechanismAliasesByContactMechanismAliasType(contactMechanismAliasType, deletedBy);
 
-        ContactMechanismAliasTypeDetail contactMechanismAliasTypeDetail = contactMechanismAliasType.getLastDetailForUpdate();
+        var contactMechanismAliasTypeDetail = contactMechanismAliasType.getLastDetailForUpdate();
         contactMechanismAliasTypeDetail.setThruTime(session.START_TIME_LONG);
         contactMechanismAliasType.setActiveDetail(null);
         contactMechanismAliasType.store();
 
         // Check for default, and pick one if necessary
-        ContactMechanismAliasType defaultContactMechanismAliasType = getDefaultContactMechanismAliasType();
+        var defaultContactMechanismAliasType = getDefaultContactMechanismAliasType();
         if(defaultContactMechanismAliasType == null) {
-            List<ContactMechanismAliasType> contactMechanismAliasTypes = getContactMechanismAliasTypesForUpdate();
+            var contactMechanismAliasTypes = getContactMechanismAliasTypesForUpdate();
 
             if(!contactMechanismAliasTypes.isEmpty()) {
-                Iterator<ContactMechanismAliasType> iter = contactMechanismAliasTypes.iterator();
+                var iter = contactMechanismAliasTypes.iterator();
                 if(iter.hasNext()) {
                     defaultContactMechanismAliasType = iter.next();
                 }
-                ContactMechanismAliasTypeDetailValue contactMechanismAliasTypeDetailValue = Objects.requireNonNull(defaultContactMechanismAliasType).getLastDetailForUpdate().getContactMechanismAliasTypeDetailValue().clone();
+                var contactMechanismAliasTypeDetailValue = Objects.requireNonNull(defaultContactMechanismAliasType).getLastDetailForUpdate().getContactMechanismAliasTypeDetailValue().clone();
 
                 contactMechanismAliasTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateContactMechanismAliasTypeFromValue(contactMechanismAliasTypeDetailValue, false, deletedBy);
@@ -665,7 +665,7 @@ public class ContactControl
 
     public ContactMechanismAliasTypeDescription createContactMechanismAliasTypeDescription(ContactMechanismAliasType contactMechanismAliasType,
             Language language, String description, BasePK createdBy) {
-        ContactMechanismAliasTypeDescription contactMechanismAliasTypeDescription = ContactMechanismAliasTypeDescriptionFactory.getInstance().create(contactMechanismAliasType,
+        var contactMechanismAliasTypeDescription = ContactMechanismAliasTypeDescriptionFactory.getInstance().create(contactMechanismAliasType,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(contactMechanismAliasType.getPrimaryKey(), EventTypes.MODIFY, contactMechanismAliasTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -747,7 +747,7 @@ public class ContactControl
 
     public String getBestContactMechanismAliasTypeDescription(ContactMechanismAliasType contactMechanismAliasType, Language language) {
         String description;
-        ContactMechanismAliasTypeDescription contactMechanismAliasTypeDescription = getContactMechanismAliasTypeDescription(contactMechanismAliasType, language);
+        var contactMechanismAliasTypeDescription = getContactMechanismAliasTypeDescription(contactMechanismAliasType, language);
 
         if(contactMechanismAliasTypeDescription == null && !language.getIsDefault()) {
             contactMechanismAliasTypeDescription = getContactMechanismAliasTypeDescription(contactMechanismAliasType, getPartyControl().getDefaultLanguage());
@@ -767,9 +767,9 @@ public class ContactControl
     }
 
     public List<ContactMechanismAliasTypeDescriptionTransfer> getContactMechanismAliasTypeDescriptionTransfersByContactMechanismAliasType(UserVisit userVisit, ContactMechanismAliasType contactMechanismAliasType) {
-        List<ContactMechanismAliasTypeDescription> contactMechanismAliasTypeDescriptions = getContactMechanismAliasTypeDescriptionsByContactMechanismAliasType(contactMechanismAliasType);
+        var contactMechanismAliasTypeDescriptions = getContactMechanismAliasTypeDescriptionsByContactMechanismAliasType(contactMechanismAliasType);
         List<ContactMechanismAliasTypeDescriptionTransfer> contactMechanismAliasTypeDescriptionTransfers = new ArrayList<>(contactMechanismAliasTypeDescriptions.size());
-        ContactMechanismAliasTypeDescriptionTransferCache contactMechanismAliasTypeDescriptionTransferCache = getContactTransferCaches(userVisit).getContactMechanismAliasTypeDescriptionTransferCache();
+        var contactMechanismAliasTypeDescriptionTransferCache = getContactTransferCaches(userVisit).getContactMechanismAliasTypeDescriptionTransferCache();
 
         contactMechanismAliasTypeDescriptions.forEach((contactMechanismAliasTypeDescription) ->
                 contactMechanismAliasTypeDescriptionTransfers.add(contactMechanismAliasTypeDescriptionTransferCache.getContactMechanismAliasTypeDescriptionTransfer(contactMechanismAliasTypeDescription))
@@ -780,15 +780,15 @@ public class ContactControl
 
     public void updateContactMechanismAliasTypeDescriptionFromValue(ContactMechanismAliasTypeDescriptionValue contactMechanismAliasTypeDescriptionValue, BasePK updatedBy) {
         if(contactMechanismAliasTypeDescriptionValue.hasBeenModified()) {
-            ContactMechanismAliasTypeDescription contactMechanismAliasTypeDescription = ContactMechanismAliasTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var contactMechanismAliasTypeDescription = ContactMechanismAliasTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     contactMechanismAliasTypeDescriptionValue.getPrimaryKey());
 
             contactMechanismAliasTypeDescription.setThruTime(session.START_TIME_LONG);
             contactMechanismAliasTypeDescription.store();
 
-            ContactMechanismAliasType contactMechanismAliasType = contactMechanismAliasTypeDescription.getContactMechanismAliasType();
-            Language language = contactMechanismAliasTypeDescription.getLanguage();
-            String description = contactMechanismAliasTypeDescriptionValue.getDescription();
+            var contactMechanismAliasType = contactMechanismAliasTypeDescription.getContactMechanismAliasType();
+            var language = contactMechanismAliasTypeDescription.getLanguage();
+            var description = contactMechanismAliasTypeDescriptionValue.getDescription();
 
             contactMechanismAliasTypeDescription = ContactMechanismAliasTypeDescriptionFactory.getInstance().create(contactMechanismAliasType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -805,7 +805,7 @@ public class ContactControl
     }
 
     public void deleteContactMechanismAliasTypeDescriptionsByContactMechanismAliasType(ContactMechanismAliasType contactMechanismAliasType, BasePK deletedBy) {
-        List<ContactMechanismAliasTypeDescription> contactMechanismAliasTypeDescriptions = getContactMechanismAliasTypeDescriptionsByContactMechanismAliasTypeForUpdate(contactMechanismAliasType);
+        var contactMechanismAliasTypeDescriptions = getContactMechanismAliasTypeDescriptionsByContactMechanismAliasTypeForUpdate(contactMechanismAliasType);
 
         contactMechanismAliasTypeDescriptions.forEach((contactMechanismAliasTypeDescription) -> 
                 deleteContactMechanismAliasTypeDescription(contactMechanismAliasTypeDescription, deletedBy)
@@ -826,7 +826,7 @@ public class ContactControl
         ContactMechanismPurpose contactMechanismPurpose;
         
         try {
-            PreparedStatement ps = ContactMechanismPurposeFactory.getInstance().prepareStatement(
+            var ps = ContactMechanismPurposeFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM contactmechanismpurposes " +
                     "WHERE cmpr_contactmechanismpurposename = ?");
@@ -842,7 +842,7 @@ public class ContactControl
     }
     
     public List<ContactMechanismPurpose> getContactMechanismPurposes() {
-        PreparedStatement ps = ContactMechanismPurposeFactory.getInstance().prepareStatement(
+        var ps = ContactMechanismPurposeFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
                 "FROM contactmechanismpurposes " +
                 "ORDER BY cmpr_sortorder, cmpr_contactmechanismpurposename");
@@ -854,7 +854,7 @@ public class ContactControl
         List<ContactMechanismPurpose> contactMechanismPurposes;
         
         try {
-            PreparedStatement ps = ContactMechanismPurposeFactory.getInstance().prepareStatement(
+            var ps = ContactMechanismPurposeFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM contactmechanismpurposes " +
                     "WHERE cmpr_cmt_contactmechanismtypeid = ? " +
@@ -873,7 +873,7 @@ public class ContactControl
     
     public ContactMechanismPurposeChoicesBean getContactMechanismPurposeChoices(String defaultContactMechanismPurposeChoice, Language language,
             boolean allowNullChoice) {
-        List<ContactMechanismPurpose> contactMechanismPurposes = getContactMechanismPurposes();
+        var contactMechanismPurposes = getContactMechanismPurposes();
         var size = contactMechanismPurposes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -905,7 +905,7 @@ public class ContactControl
     
     public ContactMechanismPurposeChoicesBean getContactMechanismPurposeChoicesByContactMechanismType(ContactMechanismType contactMechanismType,
             String defaultContactMechanismPurposeChoice, Language language, boolean allowNullChoice) {
-        List<ContactMechanismPurpose> contactMechanismPurposes = getContactMechanismPurposesByContactMechanismType(contactMechanismType);
+        var contactMechanismPurposes = getContactMechanismPurposesByContactMechanismType(contactMechanismType);
         var size = contactMechanismPurposes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -935,7 +935,7 @@ public class ContactControl
     public ContactMechanismPurposeChoicesBean getContactMechanismPurposeChoicesByContactList(String defaultContactListContactMechanismPurposeChoice, Language language, boolean allowNullChoice,
             ContactList contactList) {
         var contactListControl = Session.getModelController(ContactListControl.class);
-        List<ContactListContactMechanismPurpose> contactListContactMechanismPurposes = contactListControl.getContactListContactMechanismPurposesByContactList(contactList);
+        var contactListContactMechanismPurposes = contactListControl.getContactListContactMechanismPurposesByContactList(contactList);
         var size = contactListContactMechanismPurposes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -951,8 +951,8 @@ public class ContactControl
         }
 
         for(var contactListContactMechanismPurpose : contactListContactMechanismPurposes) {
-            ContactListContactMechanismPurposeDetail contactListContactMechanismPurposeDetail = contactListContactMechanismPurpose.getLastDetail();
-            ContactMechanismPurpose contactMechanismPurpose = contactListContactMechanismPurposeDetail.getContactMechanismPurpose();
+            var contactListContactMechanismPurposeDetail = contactListContactMechanismPurpose.getLastDetail();
+            var contactMechanismPurpose = contactListContactMechanismPurposeDetail.getContactMechanismPurpose();
 
             var label = getBestContactMechanismPurposeDescription(contactMechanismPurpose, language);
             var value = contactMechanismPurpose.getContactMechanismPurposeName();
@@ -975,7 +975,7 @@ public class ContactControl
     
     public List<ContactMechanismPurposeTransfer> getContactMechanismPurposeTransfers(UserVisit userVisit, Collection<ContactMechanismPurpose> entities) {
         List<ContactMechanismPurposeTransfer> transfers = new ArrayList<>(entities.size());
-        ContactMechanismPurposeTransferCache cache = getContactTransferCaches(userVisit).getContactMechanismPurposeTransferCache();
+        var cache = getContactTransferCaches(userVisit).getContactMechanismPurposeTransferCache();
         
         entities.forEach((entity) ->
                 transfers.add(cache.getContactMechanismPurposeTransfer(entity))
@@ -1006,7 +1006,7 @@ public class ContactControl
         ContactMechanismPurposeDescription contactMechanismPurposeDescription;
         
         try {
-            PreparedStatement ps = ContactMechanismPurposeDescriptionFactory.getInstance().prepareStatement(
+            var ps = ContactMechanismPurposeDescriptionFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM contactmechanismpurposedescriptions " +
                     "WHERE cmprd_cmpr_contactmechanismpurposeid = ? AND cmprd_lang_languageid = ?");
@@ -1024,7 +1024,7 @@ public class ContactControl
     
     public String getBestContactMechanismPurposeDescription(ContactMechanismPurpose contactMechanismPurpose, Language language) {
         String description;
-        ContactMechanismPurposeDescription contactMechanismPurposeDescription = getContactMechanismPurposeDescription(contactMechanismPurpose, language);
+        var contactMechanismPurposeDescription = getContactMechanismPurposeDescription(contactMechanismPurpose, language);
         
         if(contactMechanismPurposeDescription == null && !language.getIsDefault()) {
             contactMechanismPurposeDescription = getContactMechanismPurposeDescription(contactMechanismPurpose, getPartyControl().getDefaultLanguage());
@@ -1045,8 +1045,8 @@ public class ContactControl
     
     public ContactMechanism createContactMechanism(String contactMechanismName, ContactMechanismType contactMechanismType,
             Boolean allowSolicitation, BasePK createdBy) {
-        ContactMechanism contactMechanism = ContactMechanismFactory.getInstance().create();
-        ContactMechanismDetail contactMechanismDetail = ContactMechanismDetailFactory.getInstance().create(contactMechanism,
+        var contactMechanism = ContactMechanismFactory.getInstance().create();
+        var contactMechanismDetail = ContactMechanismDetailFactory.getInstance().create(contactMechanism,
                 contactMechanismName, contactMechanismType, allowSolicitation, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -1064,7 +1064,7 @@ public class ContactControl
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.ContactMechanism */
     public ContactMechanism getContactMechanismByEntityInstance(EntityInstance entityInstance) {
         ContactMechanismPK pk = new ContactMechanismPK(entityInstance.getEntityUniqueId());
-        ContactMechanism contactMechanism = ContactMechanismFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
+        var contactMechanism = ContactMechanismFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
         
         return contactMechanism;
     }
@@ -1092,8 +1092,8 @@ public class ContactControl
                         "WHERE cmch_activedetailid = cmchdt_contactmechanismdetailid AND cmchdt_contactmechanismname = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ContactMechanismFactory.getInstance().prepareStatement(query);
+
+            var ps = ContactMechanismFactory.getInstance().prepareStatement(query);
             
             ps.setString(1, contactMechanismName);
             
@@ -1118,7 +1118,7 @@ public class ContactControl
     }
     
     public ContactMechanismDetailValue getContactMechanismDetailValueByNameForUpdate(String contactMechanismName) {
-        ContactMechanism contactMechanism = getContactMechanismByNameForUpdate(contactMechanismName);
+        var contactMechanism = getContactMechanismByNameForUpdate(contactMechanismName);
         
         return contactMechanism == null? null: getContactMechanismDetailValue(contactMechanism.getLastDetailForUpdate());
     }
@@ -1128,9 +1128,9 @@ public class ContactControl
     }
     
     public List<ContactMechanismTransfer> getContactMechanismTransfersByParty(UserVisit userVisit, Party party) {
-        List<PartyContactMechanism> partyContactMechanisms = getPartyContactMechanismsByParty(party);
+        var partyContactMechanisms = getPartyContactMechanismsByParty(party);
         List<ContactMechanismTransfer> contactMechanismTransfers = new ArrayList<>(partyContactMechanisms.size());
-        ContactMechanismTransferCache contactMechanismTransferCache = getContactTransferCaches(userVisit).getContactMechanismTransferCache();
+        var contactMechanismTransferCache = getContactTransferCaches(userVisit).getContactMechanismTransferCache();
         
         partyContactMechanisms.forEach((partyContactMechanism) -> {
             contactMechanismTransfers.add(contactMechanismTransferCache.getContactMechanismTransfer(partyContactMechanism.getLastDetail().getContactMechanism()));
@@ -1143,8 +1143,8 @@ public class ContactControl
             PartyPK partyPK) {
         var workflowControl = getWorkflowControl();
         EmailAddressStatusChoicesBean emailAddressStatusChoicesBean = new EmailAddressStatusChoicesBean();
-        EntityInstance entityInstance = getEntityInstanceByBaseEntity(contactMechanism);
-        WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(EmailAddressStatusConstants.Workflow_EMAIL_ADDRESS_STATUS,
+        var entityInstance = getEntityInstanceByBaseEntity(contactMechanism);
+        var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(EmailAddressStatusConstants.Workflow_EMAIL_ADDRESS_STATUS,
                 entityInstance);
         
         workflowControl.getWorkflowDestinationChoices(emailAddressStatusChoicesBean, defaultEmailAddressStatusChoice, language, allowNullChoice, workflowEntityStatus.getWorkflowStep(), partyPK);
@@ -1154,10 +1154,10 @@ public class ContactControl
     
     public void setEmailAddressStatus(ExecutionErrorAccumulator eea,  ContactMechanism contactMechanism, String emailAddressStatusChoice, PartyPK modifiedBy) {
         var workflowControl = getWorkflowControl();
-        EntityInstance entityInstance = getEntityInstanceByBaseEntity(contactMechanism);
-        WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(EmailAddressStatusConstants.Workflow_EMAIL_ADDRESS_STATUS,
+        var entityInstance = getEntityInstanceByBaseEntity(contactMechanism);
+        var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(EmailAddressStatusConstants.Workflow_EMAIL_ADDRESS_STATUS,
                 entityInstance);
-        WorkflowDestination workflowDestination = emailAddressStatusChoice == null? null:
+        var workflowDestination = emailAddressStatusChoice == null? null:
             workflowControl.getWorkflowDestinationByName(workflowEntityStatus.getWorkflowStep(), emailAddressStatusChoice);
         
         if(workflowDestination != null || emailAddressStatusChoice == null) {
@@ -1171,8 +1171,8 @@ public class ContactControl
             PartyPK partyPK) {
         var workflowControl = getWorkflowControl();
         EmailAddressVerificationChoicesBean emailAddressVerificationChoicesBean = new EmailAddressVerificationChoicesBean();
-        EntityInstance entityInstance = getEntityInstanceByBaseEntity(contactMechanism);
-        WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(EmailAddressVerificationConstants.Workflow_EMAIL_ADDRESS_VERIFICATION,
+        var entityInstance = getEntityInstanceByBaseEntity(contactMechanism);
+        var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(EmailAddressVerificationConstants.Workflow_EMAIL_ADDRESS_VERIFICATION,
                 entityInstance);
         
         workflowControl.getWorkflowDestinationChoices(emailAddressVerificationChoicesBean, defaultEmailAddressVerificationChoice, language, allowNullChoice, workflowEntityStatus.getWorkflowStep(), partyPK);
@@ -1182,10 +1182,10 @@ public class ContactControl
     
     public void setEmailAddressVerification(ExecutionErrorAccumulator eea,  ContactMechanism contactMechanism, String emailAddressVerificationChoice, PartyPK modifiedBy) {
         var workflowControl = getWorkflowControl();
-        EntityInstance entityInstance = getEntityInstanceByBaseEntity(contactMechanism);
-        WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(EmailAddressVerificationConstants.Workflow_EMAIL_ADDRESS_VERIFICATION,
+        var entityInstance = getEntityInstanceByBaseEntity(contactMechanism);
+        var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(EmailAddressVerificationConstants.Workflow_EMAIL_ADDRESS_VERIFICATION,
                 entityInstance);
-        WorkflowDestination workflowDestination = emailAddressVerificationChoice == null? null:
+        var workflowDestination = emailAddressVerificationChoice == null? null:
             workflowControl.getWorkflowDestinationByName(workflowEntityStatus.getWorkflowStep(), emailAddressVerificationChoice);
         
         if(workflowDestination != null || emailAddressVerificationChoice == null) {
@@ -1199,8 +1199,8 @@ public class ContactControl
             PartyPK partyPK) {
         var workflowControl = getWorkflowControl();
         PostalAddressStatusChoicesBean postalAddressStatusChoicesBean = new PostalAddressStatusChoicesBean();
-        EntityInstance entityInstance = getEntityInstanceByBaseEntity(contactMechanism);
-        WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(PostalAddressStatusConstants.Workflow_POSTAL_ADDRESS_STATUS,
+        var entityInstance = getEntityInstanceByBaseEntity(contactMechanism);
+        var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(PostalAddressStatusConstants.Workflow_POSTAL_ADDRESS_STATUS,
                 entityInstance);
         
         workflowControl.getWorkflowDestinationChoices(postalAddressStatusChoicesBean, defaultPostalAddressStatusChoice, language, allowNullChoice, workflowEntityStatus.getWorkflowStep(), partyPK);
@@ -1210,10 +1210,10 @@ public class ContactControl
     
     public void setPostalAddressStatus(ExecutionErrorAccumulator eea,  ContactMechanism contactMechanism, String postalAddressStatusChoice, PartyPK modifiedBy) {
         var workflowControl = getWorkflowControl();
-        EntityInstance entityInstance = getEntityInstanceByBaseEntity(contactMechanism);
-        WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(PostalAddressStatusConstants.Workflow_POSTAL_ADDRESS_STATUS,
+        var entityInstance = getEntityInstanceByBaseEntity(contactMechanism);
+        var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(PostalAddressStatusConstants.Workflow_POSTAL_ADDRESS_STATUS,
                 entityInstance);
-        WorkflowDestination workflowDestination = postalAddressStatusChoice == null? null:
+        var workflowDestination = postalAddressStatusChoice == null? null:
             workflowControl.getWorkflowDestinationByName(workflowEntityStatus.getWorkflowStep(), postalAddressStatusChoice);
         
         if(workflowDestination != null || postalAddressStatusChoice == null) {
@@ -1227,8 +1227,8 @@ public class ContactControl
             PartyPK partyPK) {
         var workflowControl = getWorkflowControl();
         TelephoneStatusChoicesBean telephoneStatusChoicesBean = new TelephoneStatusChoicesBean();
-        EntityInstance entityInstance = getEntityInstanceByBaseEntity(contactMechanism);
-        WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(TelephoneStatusConstants.Workflow_TELEPHONE_STATUS,
+        var entityInstance = getEntityInstanceByBaseEntity(contactMechanism);
+        var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(TelephoneStatusConstants.Workflow_TELEPHONE_STATUS,
                 entityInstance);
         
         workflowControl.getWorkflowDestinationChoices(telephoneStatusChoicesBean, defaultTelephoneStatusChoice, language, allowNullChoice, workflowEntityStatus.getWorkflowStep(), partyPK);
@@ -1238,10 +1238,10 @@ public class ContactControl
     
     public void setTelephoneStatus(ExecutionErrorAccumulator eea,  ContactMechanism contactMechanism, String telephoneStatusChoice, PartyPK modifiedBy) {
         var workflowControl = getWorkflowControl();
-        EntityInstance entityInstance = getEntityInstanceByBaseEntity(contactMechanism);
-        WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(TelephoneStatusConstants.Workflow_TELEPHONE_STATUS,
+        var entityInstance = getEntityInstanceByBaseEntity(contactMechanism);
+        var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(TelephoneStatusConstants.Workflow_TELEPHONE_STATUS,
                 entityInstance);
-        WorkflowDestination workflowDestination = telephoneStatusChoice == null? null:
+        var workflowDestination = telephoneStatusChoice == null? null:
             workflowControl.getWorkflowDestinationByName(workflowEntityStatus.getWorkflowStep(), telephoneStatusChoice);
         
         if(workflowDestination != null || telephoneStatusChoice == null) {
@@ -1255,8 +1255,8 @@ public class ContactControl
             PartyPK partyPK) {
         var workflowControl = getWorkflowControl();
         WebAddressStatusChoicesBean webAddressStatusChoicesBean = new WebAddressStatusChoicesBean();
-        EntityInstance entityInstance = getEntityInstanceByBaseEntity(contactMechanism);
-        WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(WebAddressStatusConstants.Workflow_WEB_ADDRESS_STATUS,
+        var entityInstance = getEntityInstanceByBaseEntity(contactMechanism);
+        var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(WebAddressStatusConstants.Workflow_WEB_ADDRESS_STATUS,
                 entityInstance);
         
         workflowControl.getWorkflowDestinationChoices(webAddressStatusChoicesBean, defaultWebAddressStatusChoice, language, allowNullChoice, workflowEntityStatus.getWorkflowStep(), partyPK);
@@ -1266,10 +1266,10 @@ public class ContactControl
     
     public void setWebAddressStatus(ExecutionErrorAccumulator eea,  ContactMechanism contactMechanism, String webAddressStatusChoice, PartyPK modifiedBy) {
         var workflowControl = getWorkflowControl();
-        EntityInstance entityInstance = getEntityInstanceByBaseEntity(contactMechanism);
-        WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(WebAddressStatusConstants.Workflow_WEB_ADDRESS_STATUS,
+        var entityInstance = getEntityInstanceByBaseEntity(contactMechanism);
+        var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(WebAddressStatusConstants.Workflow_WEB_ADDRESS_STATUS,
                 entityInstance);
-        WorkflowDestination workflowDestination = webAddressStatusChoice == null? null:
+        var workflowDestination = webAddressStatusChoice == null? null:
             workflowControl.getWorkflowDestinationByName(workflowEntityStatus.getWorkflowStep(), webAddressStatusChoice);
         
         if(workflowDestination != null || webAddressStatusChoice == null) {
@@ -1281,17 +1281,17 @@ public class ContactControl
     
     public void updateContactMechanismFromValue(ContactMechanismDetailValue contactMechanismDetailValue,  BasePK updatedBy) {
         if(contactMechanismDetailValue.hasBeenModified()) {
-            ContactMechanism contactMechanism = ContactMechanismFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var contactMechanism = ContactMechanismFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      contactMechanismDetailValue.getContactMechanismPK());
-            ContactMechanismDetail contactMechanismDetail = contactMechanism.getActiveDetailForUpdate();
+            var contactMechanismDetail = contactMechanism.getActiveDetailForUpdate();
             
             contactMechanismDetail.setThruTime(session.START_TIME_LONG);
             contactMechanismDetail.store();
-            
-            ContactMechanismPK contactMechanismPK = contactMechanismDetail.getContactMechanismPK(); // Not updated
-            String contactMechanismName = contactMechanismDetailValue.getContactMechanismName();
-            ContactMechanismTypePK contactMechanismTypePK = contactMechanismDetail.getContactMechanismTypePK(); // Not updated
-            Boolean allowSolicitation = contactMechanismDetailValue.getAllowSolicitation();
+
+            var contactMechanismPK = contactMechanismDetail.getContactMechanismPK(); // Not updated
+            var contactMechanismName = contactMechanismDetailValue.getContactMechanismName();
+            var contactMechanismTypePK = contactMechanismDetail.getContactMechanismTypePK(); // Not updated
+            var allowSolicitation = contactMechanismDetailValue.getAllowSolicitation();
             
             contactMechanismDetail = ContactMechanismDetailFactory.getInstance().create(contactMechanismPK,
                     contactMechanismName, contactMechanismTypePK, allowSolicitation, session.START_TIME_LONG,
@@ -1308,13 +1308,13 @@ public class ContactControl
         deletePartyContactMechanismsByContactMechanism(contactMechanism, deletedBy);
         deletePartyContactMechanismAliasesByContactMechanism(contactMechanism, deletedBy);
         deleteContactMechanismAliasesByContactMechanism(contactMechanism, deletedBy);
-        
-        ContactMechanismDetail contactMechanismDetail = contactMechanism.getLastDetailForUpdate();
+
+        var contactMechanismDetail = contactMechanism.getLastDetailForUpdate();
         contactMechanismDetail.setThruTime(session.START_TIME_LONG);
         contactMechanism.setActiveDetail(null);
         contactMechanism.store();
 
-        String contactMechanismTypeName = contactMechanismDetail.getContactMechanismType().getContactMechanismTypeName();
+        var contactMechanismTypeName = contactMechanismDetail.getContactMechanismType().getContactMechanismTypeName();
         if(contactMechanismTypeName.equals(ContactMechanismTypes.EMAIL_ADDRESS.name())) {
             deleteContactEmailAddressByContactMechanism(contactMechanism, deletedBy);
         } else if(contactMechanismTypeName.equals(ContactMechanismTypes.INET_4.name())) {
@@ -1339,8 +1339,8 @@ public class ContactControl
     
     public ContactMechanismAlias createContactMechanismAlias(ContactMechanism contactMechanism,
             ContactMechanismAliasType contactMechanismAliasType, String alias, BasePK createdBy) {
-        
-        ContactMechanismAlias contactMechanismAlias = ContactMechanismAliasFactory.getInstance().create(contactMechanism,
+
+        var contactMechanismAlias = ContactMechanismAliasFactory.getInstance().create(contactMechanism,
                 contactMechanismAliasType, alias, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(contactMechanism.getPrimaryKey(), EventTypes.MODIFY, contactMechanismAlias.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1366,7 +1366,7 @@ public class ContactControl
                         "FOR UPDATE";
             }
 
-            PreparedStatement ps = ContactMechanismAliasFactory.getInstance().prepareStatement(query);
+            var ps = ContactMechanismAliasFactory.getInstance().prepareStatement(query);
 
             ps.setLong(1, contactMechanism.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1405,7 +1405,7 @@ public class ContactControl
                         "FOR UPDATE";
             }
 
-            PreparedStatement ps = ContactMechanismAliasFactory.getInstance().prepareStatement(query);
+            var ps = ContactMechanismAliasFactory.getInstance().prepareStatement(query);
 
             ps.setLong(1, contactMechanismAliasType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1443,8 +1443,8 @@ public class ContactControl
                         "WHERE cmchal_cmchaltyp_contactmechanismaliastypeid = ? AND cmchal_alias = ? AND cmchal_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ContactMechanismAliasFactory.getInstance().prepareStatement(query);
+
+            var ps = ContactMechanismAliasFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, contactMechanismAliasType.getPrimaryKey().getEntityId());
             ps.setString(2, alias);
@@ -1473,9 +1473,9 @@ public class ContactControl
     }
     
     public List<ContactMechanismAliasTransfer> getContactMechanismAliasTransfersByContactMechanism(UserVisit userVisit, ContactMechanism contactMechanism) {
-        List<ContactMechanismAlias> entities = getContactMechanismAliasesByContactMechanism(contactMechanism);
+        var entities = getContactMechanismAliasesByContactMechanism(contactMechanism);
         List<ContactMechanismAliasTransfer> transfers = new ArrayList<>(entities.size());
-        ContactMechanismAliasTransferCache cache = getContactTransferCaches(userVisit).getContactMechanismAliasTransferCache();
+        var cache = getContactTransferCaches(userVisit).getContactMechanismAliasTransferCache();
         
         entities.forEach((entity) ->
                 transfers.add(cache.getContactMechanismAliasTransfer(entity))
@@ -1509,7 +1509,7 @@ public class ContactControl
     // --------------------------------------------------------------------------------
     
     public ContactEmailAddress createContactEmailAddress(ContactMechanism contactMechanism, String emailAddress, BasePK createdBy) {
-        ContactEmailAddress contactEmailAddress = ContactEmailAddressFactory.getInstance().create(contactMechanism,
+        var contactEmailAddress = ContactEmailAddressFactory.getInstance().create(contactMechanism,
                 emailAddress, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(contactMechanism.getPrimaryKey(), EventTypes.MODIFY, contactEmailAddress.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1533,8 +1533,8 @@ public class ContactControl
                         "WHERE ctea_cmch_contactmechanismid = ? AND ctea_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ContactEmailAddressFactory.getInstance().prepareStatement(query);
+
+            var ps = ContactEmailAddressFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, contactMechanism.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1565,13 +1565,13 @@ public class ContactControl
     
     public void updateContactEmailAddressFromValue(ContactEmailAddressValue contactEmailAddressValue, BasePK updatedBy) {
         if(contactEmailAddressValue.hasBeenModified()) {
-            ContactEmailAddress contactEmailAddress = ContactEmailAddressFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, contactEmailAddressValue.getPrimaryKey());
+            var contactEmailAddress = ContactEmailAddressFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, contactEmailAddressValue.getPrimaryKey());
             
             contactEmailAddress.setThruTime(session.START_TIME_LONG);
             contactEmailAddress.store();
-            
-            ContactMechanismPK contactMechanismPK = contactEmailAddress.getContactMechanismPK(); // Not updated
-            String emailAddress = contactEmailAddressValue.getEmailAddress();
+
+            var contactMechanismPK = contactEmailAddress.getContactMechanismPK(); // Not updated
+            var emailAddress = contactEmailAddressValue.getEmailAddress();
             
             contactEmailAddress = ContactEmailAddressFactory.getInstance().create(contactMechanismPK, emailAddress,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1595,7 +1595,7 @@ public class ContactControl
     // --------------------------------------------------------------------------------
     
     public ContactInet4Address createContactInet4Address(ContactMechanism contactMechanism, Integer inet4Address, BasePK createdBy) {
-        ContactInet4Address contactInet4Address = ContactInet4AddressFactory.getInstance().create(contactMechanism,
+        var contactInet4Address = ContactInet4AddressFactory.getInstance().create(contactMechanism,
                 inet4Address, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(contactMechanism.getPrimaryKey(), EventTypes.MODIFY, contactInet4Address.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1619,8 +1619,8 @@ public class ContactControl
                         "WHERE cti4a_cmch_contactmechanismid = ? AND cti4a_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = session.prepareStatement(ContactInet4AddressFactory.class, query);
+
+            var ps = session.prepareStatement(ContactInet4AddressFactory.class, query);
             
             ps.setLong(1, contactMechanism.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1651,13 +1651,13 @@ public class ContactControl
     
     public void updateContactInet4AddressFromValue(ContactInet4AddressValue contactInet4AddressValue, BasePK updatedBy) {
         if(contactInet4AddressValue.hasBeenModified()) {
-            ContactInet4Address contactInet4Address = ContactInet4AddressFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, contactInet4AddressValue.getPrimaryKey());
+            var contactInet4Address = ContactInet4AddressFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, contactInet4AddressValue.getPrimaryKey());
             
             contactInet4Address.setThruTime(session.START_TIME_LONG);
             contactInet4Address.store();
-            
-            ContactMechanismPK contactMechanismPK = contactInet4Address.getContactMechanismPK(); // Not updated
-            Integer inet4Address = contactInet4Address.getInet4Address();
+
+            var contactMechanismPK = contactInet4Address.getContactMechanismPK(); // Not updated
+            var inet4Address = contactInet4Address.getInet4Address();
             
             contactInet4Address = ContactInet4AddressFactory.getInstance().create(contactMechanismPK, inet4Address,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1682,7 +1682,7 @@ public class ContactControl
     
     public ContactInet6Address createContactInet6Address(ContactMechanism contactMechanism, Long inet6AddressLow,
             Long inet6AddressHigh, BasePK createdBy) {
-        ContactInet6Address contactInet6Address = ContactInet6AddressFactory.getInstance().create(contactMechanism,
+        var contactInet6Address = ContactInet6AddressFactory.getInstance().create(contactMechanism,
                 inet6AddressLow, inet6AddressHigh, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(contactMechanism.getPrimaryKey(), EventTypes.MODIFY, contactInet6Address.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1706,8 +1706,8 @@ public class ContactControl
                         "WHERE cti6a_cmch_contactmechanismid = ? AND cti6a_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = session.prepareStatement(ContactInet6AddressFactory.class, query);
+
+            var ps = session.prepareStatement(ContactInet6AddressFactory.class, query);
             
             ps.setLong(1, contactMechanism.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1734,14 +1734,14 @@ public class ContactControl
     
     public void updateContactInet6AddressFromValue(ContactInet6AddressValue contactInet6AddressValue, BasePK updatedBy) {
         if(contactInet6AddressValue.hasBeenModified()) {
-            ContactInet6Address contactInet6Address = ContactInet6AddressFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, contactInet6AddressValue.getPrimaryKey());
+            var contactInet6Address = ContactInet6AddressFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, contactInet6AddressValue.getPrimaryKey());
             
             contactInet6Address.setThruTime(session.START_TIME_LONG);
             contactInet6Address.store();
-            
-            ContactMechanismPK contactMechanismPK = contactInet6Address.getContactMechanismPK(); // Not updated
-            Long inet6AddressLow = contactInet6Address.getInet6AddressLow();
-            Long inet6AddressHigh = contactInet6Address.getInet6AddressHigh();
+
+            var contactMechanismPK = contactInet6Address.getContactMechanismPK(); // Not updated
+            var inet6AddressLow = contactInet6Address.getInet6AddressLow();
+            var inet6AddressHigh = contactInet6Address.getInet6AddressHigh();
             
             contactInet6Address = ContactInet6AddressFactory.getInstance().create(contactMechanismPK, inet6AddressLow,
                     inet6AddressHigh, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1769,7 +1769,7 @@ public class ContactControl
             NameSuffix nameSuffix, String companyName, String attention, String address1, String address2, String address3, String city,
             GeoCode cityGeoCode, GeoCode countyGeoCode, String state, GeoCode stateGeoCode, String postalCode,
             GeoCode postalCodeGeoCode, GeoCode countryGeoCode, Boolean isCommercial, BasePK createdBy) {
-        ContactPostalAddress contactPostalAddress = ContactPostalAddressFactory.getInstance().create(contactMechanism,
+        var contactPostalAddress = ContactPostalAddressFactory.getInstance().create(contactMechanism,
                 personalTitle, firstName, firstNameSdx, middleName, middleNameSdx, lastName, lastNameSdx, nameSuffix, companyName, attention,
                 address1, address2, address3, city, cityGeoCode, countyGeoCode, state, stateGeoCode, postalCode, postalCodeGeoCode,
                 countryGeoCode, isCommercial, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1851,8 +1851,8 @@ public class ContactControl
                         "WHERE ctpa_cmch_contactmechanismid = ? AND ctpa_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ContactPostalAddressFactory.getInstance().prepareStatement(query);
+
+            var ps = ContactPostalAddressFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, contactMechanism.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1883,34 +1883,34 @@ public class ContactControl
     
     public void updateContactPostalAddressFromValue(ContactPostalAddressValue contactPostalAddressValue, BasePK updatedBy) {
         if(contactPostalAddressValue.hasBeenModified()) {
-            ContactPostalAddress contactPostalAddress = ContactPostalAddressFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, contactPostalAddressValue.getPrimaryKey());
+            var contactPostalAddress = ContactPostalAddressFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, contactPostalAddressValue.getPrimaryKey());
             
             contactPostalAddress.setThruTime(session.START_TIME_LONG);
             contactPostalAddress.store();
-            
-            ContactMechanismPK contactMechanismPK = contactPostalAddress.getContactMechanismPK(); // Not updated
-            PersonalTitlePK personalTitlePK = contactPostalAddressValue.getPersonalTitlePK();
-            String firstName = contactPostalAddressValue.getFirstName();
-            String firstNameSdx = contactPostalAddressValue.getFirstNameSdx();
-            String middleName = contactPostalAddressValue.getMiddleName();
-            String middleNameSdx = contactPostalAddressValue.getMiddleNameSdx();
-            String lastName = contactPostalAddressValue.getLastName();
-            String lastNameSdx = contactPostalAddressValue.getLastNameSdx();
-            NameSuffixPK nameSuffixPK = contactPostalAddressValue.getNameSuffixPK();
-            String companyName = contactPostalAddressValue.getCompanyName();
-            String attention = contactPostalAddressValue.getAttention();
-            String address1 = contactPostalAddressValue.getAddress1();
-            String address2 = contactPostalAddressValue.getAddress2();
-            String address3 = contactPostalAddressValue.getAddress3();
-            String city = contactPostalAddressValue.getCity();
-            GeoCodePK cityGeoCodePK = contactPostalAddressValue.getCityGeoCodePK();
-            GeoCodePK countyGeoCodePK = contactPostalAddressValue.getCountyGeoCodePK();
-            String state = contactPostalAddressValue.getState();
-            GeoCodePK stateGeoCodePK = contactPostalAddressValue.getStateGeoCodePK();
-            String postalCode = contactPostalAddressValue.getPostalCode();
-            GeoCodePK postalCodeGeoCodePK = contactPostalAddressValue.getPostalCodeGeoCodePK();
-            GeoCodePK countryGeoCodePK = contactPostalAddressValue.getCountryGeoCodePK();
-            Boolean isCommercial = contactPostalAddressValue.getIsCommercial();
+
+            var contactMechanismPK = contactPostalAddress.getContactMechanismPK(); // Not updated
+            var personalTitlePK = contactPostalAddressValue.getPersonalTitlePK();
+            var firstName = contactPostalAddressValue.getFirstName();
+            var firstNameSdx = contactPostalAddressValue.getFirstNameSdx();
+            var middleName = contactPostalAddressValue.getMiddleName();
+            var middleNameSdx = contactPostalAddressValue.getMiddleNameSdx();
+            var lastName = contactPostalAddressValue.getLastName();
+            var lastNameSdx = contactPostalAddressValue.getLastNameSdx();
+            var nameSuffixPK = contactPostalAddressValue.getNameSuffixPK();
+            var companyName = contactPostalAddressValue.getCompanyName();
+            var attention = contactPostalAddressValue.getAttention();
+            var address1 = contactPostalAddressValue.getAddress1();
+            var address2 = contactPostalAddressValue.getAddress2();
+            var address3 = contactPostalAddressValue.getAddress3();
+            var city = contactPostalAddressValue.getCity();
+            var cityGeoCodePK = contactPostalAddressValue.getCityGeoCodePK();
+            var countyGeoCodePK = contactPostalAddressValue.getCountyGeoCodePK();
+            var state = contactPostalAddressValue.getState();
+            var stateGeoCodePK = contactPostalAddressValue.getStateGeoCodePK();
+            var postalCode = contactPostalAddressValue.getPostalCode();
+            var postalCodeGeoCodePK = contactPostalAddressValue.getPostalCodeGeoCodePK();
+            var countryGeoCodePK = contactPostalAddressValue.getCountryGeoCodePK();
+            var isCommercial = contactPostalAddressValue.getIsCommercial();
             
             contactPostalAddress = ContactPostalAddressFactory.getInstance().create(contactMechanismPK, personalTitlePK,
                     firstName, firstNameSdx, middleName, middleNameSdx, lastName, lastNameSdx, nameSuffixPK, companyName, attention, address1,
@@ -1938,7 +1938,7 @@ public class ContactControl
     public ContactPostalAddressCorrection createContactPostalAddressCorrection(ContactMechanism contactMechanism, String address1,
             String address2, String address3, String city, GeoCode cityGeoCode, GeoCode countyGeoCode, String state,
             GeoCode stateGeoCode, String postalCode, GeoCode postalCodeGeoCode, GeoCode countryGeoCode, BasePK createdBy) {
-        ContactPostalAddressCorrection contactPostalAddressCorrection = ContactPostalAddressCorrectionFactory.getInstance().create(session,
+        var contactPostalAddressCorrection = ContactPostalAddressCorrectionFactory.getInstance().create(session,
                 contactMechanism, address1, address2, address3, city, cityGeoCode, countyGeoCode, state, stateGeoCode, postalCode,
                 postalCodeGeoCode, countryGeoCode, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
@@ -2003,8 +2003,8 @@ public class ContactControl
                         "WHERE ctpac_cmch_contactmechanismid = ? AND ctpac_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ContactPostalAddressCorrectionFactory.getInstance().prepareStatement(query);
+
+            var ps = ContactPostalAddressCorrectionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, contactMechanism.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -2031,23 +2031,23 @@ public class ContactControl
     
     public void updateContactPostalAddressCorrectionFromValue(ContactPostalAddressCorrectionValue contactPostalAddressCorrectionValue, BasePK updatedBy) {
         if(contactPostalAddressCorrectionValue.hasBeenModified()) {
-            ContactPostalAddressCorrection contactPostalAddressCorrection = ContactPostalAddressCorrectionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, contactPostalAddressCorrectionValue.getPrimaryKey());
+            var contactPostalAddressCorrection = ContactPostalAddressCorrectionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, contactPostalAddressCorrectionValue.getPrimaryKey());
             
             contactPostalAddressCorrection.setThruTime(session.START_TIME_LONG);
             contactPostalAddressCorrection.store();
-            
-            ContactMechanismPK contactMechanismPK = contactPostalAddressCorrection.getContactMechanismPK(); // Not updated
-            String address1 = contactPostalAddressCorrectionValue.getAddress1();
-            String address2 = contactPostalAddressCorrectionValue.getAddress2();
-            String address3 = contactPostalAddressCorrectionValue.getAddress3();
-            String city = contactPostalAddressCorrectionValue.getCity();
-            GeoCodePK cityGeoCodePK = contactPostalAddressCorrectionValue.getCityGeoCodePK();
-            GeoCodePK countyGeoCodePK = contactPostalAddressCorrectionValue.getCountyGeoCodePK();
-            String state = contactPostalAddressCorrectionValue.getState();
-            GeoCodePK stateGeoCodePK = contactPostalAddressCorrectionValue.getStateGeoCodePK();
-            String postalCode = contactPostalAddressCorrectionValue.getPostalCode();
-            GeoCodePK postalCodeGeoCodePK = contactPostalAddressCorrectionValue.getPostalCodeGeoCodePK();
-            GeoCodePK countryGeoCodePK = contactPostalAddressCorrectionValue.getCountryGeoCodePK();
+
+            var contactMechanismPK = contactPostalAddressCorrection.getContactMechanismPK(); // Not updated
+            var address1 = contactPostalAddressCorrectionValue.getAddress1();
+            var address2 = contactPostalAddressCorrectionValue.getAddress2();
+            var address3 = contactPostalAddressCorrectionValue.getAddress3();
+            var city = contactPostalAddressCorrectionValue.getCity();
+            var cityGeoCodePK = contactPostalAddressCorrectionValue.getCityGeoCodePK();
+            var countyGeoCodePK = contactPostalAddressCorrectionValue.getCountyGeoCodePK();
+            var state = contactPostalAddressCorrectionValue.getState();
+            var stateGeoCodePK = contactPostalAddressCorrectionValue.getStateGeoCodePK();
+            var postalCode = contactPostalAddressCorrectionValue.getPostalCode();
+            var postalCodeGeoCodePK = contactPostalAddressCorrectionValue.getPostalCodeGeoCodePK();
+            var countryGeoCodePK = contactPostalAddressCorrectionValue.getCountryGeoCodePK();
             
             contactPostalAddressCorrection = ContactPostalAddressCorrectionFactory.getInstance().create(contactMechanismPK,
                     address1, address2, address3, city, cityGeoCodePK, countyGeoCodePK, state, stateGeoCodePK, postalCode,
@@ -2064,7 +2064,7 @@ public class ContactControl
     }
     
     public void deleteContactPostalAddressCorrectionByContactMechanism(ContactMechanism contactMechanism, BasePK deletedBy) {
-        ContactPostalAddressCorrection contactPostalAddressCorrection = getContactPostalAddressCorrectionForUpdate(contactMechanism);
+        var contactPostalAddressCorrection = getContactPostalAddressCorrectionForUpdate(contactMechanism);
         
         if(contactPostalAddressCorrection != null) {
             deleteContactPostalAddressCorrection(contactPostalAddressCorrection, deletedBy);
@@ -2077,7 +2077,7 @@ public class ContactControl
     
     public ContactTelephone createContactTelephone(ContactMechanism contactMechanism, GeoCode countryGeoCode, String areaCode,
             String telephoneNumber, String telephoneExtension, BasePK createdBy) {
-        ContactTelephone contactTelephone = ContactTelephoneFactory.getInstance().create(contactMechanism, countryGeoCode,
+        var contactTelephone = ContactTelephoneFactory.getInstance().create(contactMechanism, countryGeoCode,
                 areaCode, telephoneNumber, telephoneExtension, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(contactMechanism.getPrimaryKey(), EventTypes.MODIFY, contactTelephone.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2109,8 +2109,8 @@ public class ContactControl
                         "WHERE cttp_cmch_contactmechanismid = ? AND cttp_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ContactTelephoneFactory.getInstance().prepareStatement(query);
+
+            var ps = ContactTelephoneFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, contactMechanism.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -2141,16 +2141,16 @@ public class ContactControl
     
     public void updateContactTelephoneFromValue(ContactTelephoneValue contactTelephoneValue, BasePK updatedBy) {
         if(contactTelephoneValue.hasBeenModified()) {
-            ContactTelephone contactTelephone = ContactTelephoneFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, contactTelephoneValue.getPrimaryKey());
+            var contactTelephone = ContactTelephoneFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, contactTelephoneValue.getPrimaryKey());
             
             contactTelephone.setThruTime(session.START_TIME_LONG);
             contactTelephone.store();
-            
-            ContactMechanismPK contactMechanismPK = contactTelephone.getContactMechanismPK(); // Not updated
-            GeoCodePK countryGeoCodePK = contactTelephoneValue.getCountryGeoCodePK();
-            String areaCode = contactTelephoneValue.getAreaCode();
-            String telephoneNumber = contactTelephoneValue.getTelephoneNumber();
-            String telephoneExtension = contactTelephoneValue.getTelephoneExtension();
+
+            var contactMechanismPK = contactTelephone.getContactMechanismPK(); // Not updated
+            var countryGeoCodePK = contactTelephoneValue.getCountryGeoCodePK();
+            var areaCode = contactTelephoneValue.getAreaCode();
+            var telephoneNumber = contactTelephoneValue.getTelephoneNumber();
+            var telephoneExtension = contactTelephoneValue.getTelephoneExtension();
             
             contactTelephone = ContactTelephoneFactory.getInstance().create(contactMechanismPK, countryGeoCodePK,
                     areaCode, telephoneNumber, telephoneExtension, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -2174,7 +2174,7 @@ public class ContactControl
     // --------------------------------------------------------------------------------
     
     public ContactWebAddress createContactWebAddress(ContactMechanism contactMechanism, String url, BasePK createdBy) {
-        ContactWebAddress contactWebAddress = ContactWebAddressFactory.getInstance().create(contactMechanism, url,
+        var contactWebAddress = ContactWebAddressFactory.getInstance().create(contactMechanism, url,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(contactMechanism.getPrimaryKey(), EventTypes.MODIFY, contactWebAddress.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2198,8 +2198,8 @@ public class ContactControl
                         "WHERE ctwa_cmch_contactmechanismid = ? AND ctwa_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ContactWebAddressFactory.getInstance().prepareStatement(query);
+
+            var ps = ContactWebAddressFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, contactMechanism.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -2230,13 +2230,13 @@ public class ContactControl
     
     public void updateContactWebAddressFromValue(ContactWebAddressValue contactWebAddressValue, BasePK updatedBy) {
         if(contactWebAddressValue.hasBeenModified()) {
-            ContactWebAddress contactWebAddress = ContactWebAddressFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, contactWebAddressValue.getPrimaryKey());
+            var contactWebAddress = ContactWebAddressFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, contactWebAddressValue.getPrimaryKey());
             
             contactWebAddress.setThruTime(session.START_TIME_LONG);
             contactWebAddress.store();
-            
-            ContactMechanismPK contactMechanismPK = contactWebAddress.getContactMechanismPK(); // Not updated
-            String url = contactWebAddressValue.getUrl();
+
+            var contactMechanismPK = contactWebAddress.getContactMechanismPK(); // Not updated
+            var url = contactWebAddressValue.getUrl();
             
             contactWebAddress = ContactWebAddressFactory.getInstance().create(contactMechanismPK, url, session.START_TIME_LONG,
                     Session.MAX_TIME_LONG);
@@ -2261,20 +2261,20 @@ public class ContactControl
     
     public PartyContactMechanism createPartyContactMechanism(Party party, ContactMechanism contactMechanism, String description,
             Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        PartyContactMechanism defaultPartyContactMechanism = getDefaultPartyContactMechanism(party);
-        boolean defaultFound = defaultPartyContactMechanism != null;
+        var defaultPartyContactMechanism = getDefaultPartyContactMechanism(party);
+        var defaultFound = defaultPartyContactMechanism != null;
         
         if(defaultFound && isDefault) {
-            PartyContactMechanismDetailValue defaultPartyContactMechanismDetailValue = getDefaultPartyContactMechanismDetailValueForUpdate(party);
+            var defaultPartyContactMechanismDetailValue = getDefaultPartyContactMechanismDetailValueForUpdate(party);
             
             defaultPartyContactMechanismDetailValue.setIsDefault(Boolean.FALSE);
             updatePartyContactMechanismFromValue(defaultPartyContactMechanismDetailValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        PartyContactMechanism partyContactMechanism = PartyContactMechanismFactory.getInstance().create();
-        PartyContactMechanismDetail partyContactMechanismDetail = PartyContactMechanismDetailFactory.getInstance().create(session,
+
+        var partyContactMechanism = PartyContactMechanismFactory.getInstance().create();
+        var partyContactMechanismDetail = PartyContactMechanismDetailFactory.getInstance().create(session,
                 partyContactMechanism, party, contactMechanism, description, isDefault, sortOrder, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
@@ -2305,8 +2305,8 @@ public class ContactControl
                         "WHERE pcm_activedetailid = pcmdt_partycontactmechanismdetailid AND pcmdt_par_partyid = ? AND pcmdt_isdefault = 1 " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PartyContactMechanismFactory.getInstance().prepareStatement(query);
+
+            var ps = PartyContactMechanismFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, party.getPrimaryKey().getEntityId());
             
@@ -2347,8 +2347,8 @@ public class ContactControl
                         "WHERE pcm_activedetailid = pcmdt_partycontactmechanismdetailid AND pcmdt_par_partyid = ? AND pcmdt_cmch_contactmechanismid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PartyContactMechanismFactory.getInstance().prepareStatement(query);
+
+            var ps = PartyContactMechanismFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, party.getPrimaryKey().getEntityId());
             ps.setLong(2, contactMechanism.getPrimaryKey().getEntityId());
@@ -2396,8 +2396,8 @@ public class ContactControl
                         "WHERE pcm_activedetailid = pcmdt_partycontactmechanismdetailid AND pcmdt_par_partyid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PartyContactMechanismFactory.getInstance().prepareStatement(query);
+
+            var ps = PartyContactMechanismFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, party.getPrimaryKey().getEntityId());
             
@@ -2437,8 +2437,8 @@ public class ContactControl
                         "WHERE pcmdt_activedetailid = pcmdt_partycontactmechanismdetailid AND pcmdt_par_partyid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PartyContactMechanismFactory.getInstance().prepareStatement(query);
+
+            var ps = PartyContactMechanismFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, party.getPrimaryKey().getEntityId());
             ps.setLong(2, contactMechanismType.getPrimaryKey().getEntityId());
@@ -2481,8 +2481,8 @@ public class ContactControl
                         "WHERE pcm_activedetailid = pcmdt_partycontactmechanismdetailid AND pcmdt_cmch_contactmechanismid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PartyContactMechanismFactory.getInstance().prepareStatement(query);
+
+            var ps = PartyContactMechanismFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, contactMechanism.getPrimaryKey().getEntityId());
             
@@ -2504,7 +2504,7 @@ public class ContactControl
     
     public PartyContactMechanism getPartyContactMechanismByContactMechanismName(ExecutionErrorAccumulator eea, Party party, String contactMechanismName) {
         PartyContactMechanism partyContactMechanism = null;
-        ContactMechanism contactMechanism = getContactMechanismByName(contactMechanismName);
+        var contactMechanism = getContactMechanismByName(contactMechanismName);
         
         if(contactMechanism != null) {
             partyContactMechanism = getPartyContactMechanism(party, contactMechanism);
@@ -2521,7 +2521,7 @@ public class ContactControl
     
     public ContactMechanismChoicesBean getContactMechanismChoicesByParty(Party party, String defaultContactMechanismChoice, Language language,
             boolean allowNullChoice) {
-        List<PartyContactMechanism> partyContactMechanisms = getPartyContactMechanismsByParty(party);
+        var partyContactMechanisms = getPartyContactMechanismsByParty(party);
         var size = partyContactMechanisms.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -2533,7 +2533,7 @@ public class ContactControl
         }
 
         for(var partyContactMechanism : partyContactMechanisms) {
-            PartyContactMechanismDetail partyContactMechanismDetail = partyContactMechanism.getLastDetail();
+            var partyContactMechanismDetail = partyContactMechanism.getLastDetail();
             var label = partyContactMechanismDetail.getDescription();
             var value = partyContactMechanismDetail.getContactMechanism().getLastDetail().getContactMechanismName();
 
@@ -2552,7 +2552,7 @@ public class ContactControl
 
     public ContactMechanismChoicesBean getContactMechanismChoicesByPartyAndContactMechanismType(Party party, ContactMechanismType contactMechanismType,
             String defaultContactMechanismChoice, Language language, boolean allowNullChoice) {
-        List<PartyContactMechanism> partyContactMechanisms = getPartyContactMechanismsByPartyAndContactMechanismType(party, contactMechanismType);
+        var partyContactMechanisms = getPartyContactMechanismsByPartyAndContactMechanismType(party, contactMechanismType);
         var size = partyContactMechanisms.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -2564,7 +2564,7 @@ public class ContactControl
         }
 
         for(var partyContactMechanism : partyContactMechanisms) {
-            PartyContactMechanismDetail partyContactMechanismDetail = partyContactMechanism.getLastDetail();
+            var partyContactMechanismDetail = partyContactMechanism.getLastDetail();
             var label = partyContactMechanismDetail.getDescription();
             var value = partyContactMechanismDetail.getContactMechanism().getLastDetail().getContactMechanismName();
 
@@ -2586,9 +2586,9 @@ public class ContactControl
     }
     
     public List<PartyContactMechanismTransfer> getPartyContactMechanismTransfersByParty(UserVisit userVisit, Party party) {
-        List<PartyContactMechanism> entities = getPartyContactMechanismsByParty(party);
+        var entities = getPartyContactMechanismsByParty(party);
         List<PartyContactMechanismTransfer> transfers = new ArrayList<>(entities.size());
-        PartyContactMechanismTransferCache cache = getContactTransferCaches(userVisit).getPartyContactMechanismTransferCache();
+        var cache = getContactTransferCaches(userVisit).getPartyContactMechanismTransferCache();
         
         entities.forEach((entity) ->
                 transfers.add(cache.getPartyContactMechanismTransfer(entity))
@@ -2600,28 +2600,28 @@ public class ContactControl
     private void updatePartyContactMechanismFromValue(PartyContactMechanismDetailValue partyContactMechanismDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(partyContactMechanismDetailValue.hasBeenModified()) {
-            PartyContactMechanism partyContactMechanism = PartyContactMechanismFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var partyContactMechanism = PartyContactMechanismFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      partyContactMechanismDetailValue.getPartyContactMechanismPK());
-            PartyContactMechanismDetail partyContactMechanismDetail = partyContactMechanism.getActiveDetailForUpdate();
+            var partyContactMechanismDetail = partyContactMechanism.getActiveDetailForUpdate();
             
             partyContactMechanismDetail.setThruTime(session.START_TIME_LONG);
             partyContactMechanismDetail.store();
-            
-            PartyContactMechanismPK partyContactMechanismPK = partyContactMechanismDetail.getPartyContactMechanismPK();
-            Party party = partyContactMechanismDetail.getParty(); // Not updated
-            PartyPK partyPK = party.getPrimaryKey();
-            ContactMechanismPK contactMechanismPK = partyContactMechanismDetail.getContactMechanismPK(); // Not updated
-            String description = partyContactMechanismDetailValue.getDescription();
-            Boolean isDefault = partyContactMechanismDetailValue.getIsDefault();
-            Integer sortOrder = partyContactMechanismDetailValue.getSortOrder();
+
+            var partyContactMechanismPK = partyContactMechanismDetail.getPartyContactMechanismPK();
+            var party = partyContactMechanismDetail.getParty(); // Not updated
+            var partyPK = party.getPrimaryKey();
+            var contactMechanismPK = partyContactMechanismDetail.getContactMechanismPK(); // Not updated
+            var description = partyContactMechanismDetailValue.getDescription();
+            var isDefault = partyContactMechanismDetailValue.getIsDefault();
+            var sortOrder = partyContactMechanismDetailValue.getSortOrder();
             
             if(checkDefault) {
-                PartyContactMechanism defaultPartyContactMechanism = getDefaultPartyContactMechanism(party);
-                boolean defaultFound = defaultPartyContactMechanism != null && !defaultPartyContactMechanism.equals(partyContactMechanism);
+                var defaultPartyContactMechanism = getDefaultPartyContactMechanism(party);
+                var defaultFound = defaultPartyContactMechanism != null && !defaultPartyContactMechanism.equals(partyContactMechanism);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    PartyContactMechanismDetailValue defaultPartyContactMechanismDetailValue = getDefaultPartyContactMechanismDetailValueForUpdate(party);
+                    var defaultPartyContactMechanismDetailValue = getDefaultPartyContactMechanismDetailValueForUpdate(party);
                     
                     defaultPartyContactMechanismDetailValue.setIsDefault(Boolean.FALSE);
                     updatePartyContactMechanismFromValue(defaultPartyContactMechanismDetailValue, false, updatedBy);
@@ -2666,24 +2666,24 @@ public class ContactControl
         orderShipmentGroupControl.deleteOrderShipmentGroupsByPartyContactMechanism(partyContactMechanism, deletedBy);
         partyPaymentMethodControl.deletePartyPaymentMethodCreditCardsByPartyContactMechanism(partyContactMechanism, deletedBy);
         shipmentControl.deleteShipmentsByPartyContactMechanism(partyContactMechanism, deletedBy);
-        
-        PartyContactMechanismDetail partyContactMechanismDetail = partyContactMechanism.getLastDetailForUpdate();
+
+        var partyContactMechanismDetail = partyContactMechanism.getLastDetailForUpdate();
         partyContactMechanismDetail.setThruTime(session.START_TIME_LONG);
         partyContactMechanism.setActiveDetail(null);
         partyContactMechanism.store();
         
         // Check for default, and pick one if necessary
-        Party party = partyContactMechanismDetail.getParty();
-        PartyContactMechanism defaultPartyContactMechanism = getDefaultPartyContactMechanism(party);
+        var party = partyContactMechanismDetail.getParty();
+        var defaultPartyContactMechanism = getDefaultPartyContactMechanism(party);
         if(defaultPartyContactMechanism == null) {
-            List<PartyContactMechanism> partyContactMechanisms = getPartyContactMechanismsByPartyForUpdate(party);
+            var partyContactMechanisms = getPartyContactMechanismsByPartyForUpdate(party);
             
             if(!partyContactMechanisms.isEmpty()) {
-                Iterator<PartyContactMechanism> iter = partyContactMechanisms.iterator();
+                var iter = partyContactMechanisms.iterator();
                 if(iter.hasNext()) {
                     defaultPartyContactMechanism = iter.next();
                 }
-                PartyContactMechanismDetailValue partyContactMechanismDetailValue = Objects.requireNonNull(defaultPartyContactMechanism).getLastDetailForUpdate().getPartyContactMechanismDetailValue().clone();
+                var partyContactMechanismDetailValue = Objects.requireNonNull(defaultPartyContactMechanism).getLastDetailForUpdate().getPartyContactMechanismDetailValue().clone();
                 
                 partyContactMechanismDetailValue.setIsDefault(Boolean.TRUE);
                 updatePartyContactMechanismFromValue(partyContactMechanismDetailValue, false, deletedBy);
@@ -2694,7 +2694,7 @@ public class ContactControl
     }
     
     public void deletePartyContactMechanismsByParty(Party party, BasePK deletedBy) {
-        List<PartyContactMechanism> partyContactMechanisms = getPartyContactMechanismsByPartyForUpdate(party);
+        var partyContactMechanisms = getPartyContactMechanismsByPartyForUpdate(party);
         
         partyContactMechanisms.forEach((partyContactMechanism) -> 
                 deletePartyContactMechanism(partyContactMechanism, deletedBy)
@@ -2702,7 +2702,7 @@ public class ContactControl
     }
     
     public void deletePartyContactMechanismsByContactMechanism(ContactMechanism contactMechanism, BasePK deletedBy) {
-        List<PartyContactMechanism> partyContactMechanisms = getPartyContactMechanismsByContactMechanismForUpdate(contactMechanism);
+        var partyContactMechanisms = getPartyContactMechanismsByContactMechanismForUpdate(contactMechanism);
         
         partyContactMechanisms.forEach((partyContactMechanism) -> 
                 deletePartyContactMechanism(partyContactMechanism, deletedBy)
@@ -2717,7 +2717,7 @@ public class ContactControl
         PartyContactMechanism partyContactMechanism;
         
         try {
-            PreparedStatement ps = PartyContactMechanismFactory.getInstance().prepareStatement(
+            var ps = PartyContactMechanismFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM partycontactmechanisms, partycontactmechanismdetails, contactmechanisms, contactmechanismdetails, contactinet4addresses " +
                     "WHERE pcm_activedetailid = pcmdt_partycontactmechanismdetailid AND pcmdt_par_partyid = ? " +
@@ -2741,7 +2741,7 @@ public class ContactControl
         PartyContactMechanism partyContactMechanism;
         
         try {
-            PreparedStatement ps = PartyContactMechanismFactory.getInstance().prepareStatement(
+            var ps = PartyContactMechanismFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM partycontactmechanisms, partycontactmechanismdetails, contactmechanisms, contactmechanismdetails, contactemailaddresses " +
                     "WHERE pcm_activedetailid = pcmdt_partycontactmechanismdetailid AND pcmdt_par_partyid = ? " +
@@ -2765,7 +2765,7 @@ public class ContactControl
         List<PartyContactMechanism> partyContactMechanisms;
         
         try {
-            PreparedStatement ps = PartyContactMechanismFactory.getInstance().prepareStatement(
+            var ps = PartyContactMechanismFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM partycontactmechanisms, partycontactmechanismdetails, contactmechanisms, contactmechanismdetails, contactemailaddresses " +
                     "WHERE pcm_activedetailid = pcmdt_partycontactmechanismdetailid " +
@@ -2791,8 +2791,8 @@ public class ContactControl
     
     public PartyContactMechanismAlias createPartyContactMechanismAlias(Party party, ContactMechanism contactMechanism,
             ContactMechanismAliasType contactMechanismAliasType, String alias, BasePK createdBy) {
-        
-        PartyContactMechanismAlias partyContactMechanismAlias = PartyContactMechanismAliasFactory.getInstance().create(session,
+
+        var partyContactMechanismAlias = PartyContactMechanismAliasFactory.getInstance().create(session,
                 party, contactMechanism, contactMechanismAliasType, alias, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partyContactMechanismAlias.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2817,8 +2817,8 @@ public class ContactControl
                         "WHERE pcmchal_cmch_contactmechanismid = ? AND pcmchal_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PartyContactMechanismAliasFactory.getInstance().prepareStatement(query);
+
+            var ps = PartyContactMechanismAliasFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, party.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -2859,8 +2859,8 @@ public class ContactControl
                         "WHERE pcmchal_cmch_contactmechanismid = ? AND pcmchal_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PartyContactMechanismAliasFactory.getInstance().prepareStatement(query);
+
+            var ps = PartyContactMechanismAliasFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, contactMechanism.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -2901,8 +2901,8 @@ public class ContactControl
                         "AND pcmchal_alias = ? AND pcmchal_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PartyContactMechanismAliasFactory.getInstance().prepareStatement(query);
+
+            var ps = PartyContactMechanismAliasFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, party.getPrimaryKey().getEntityId());
             ps.setLong(2, contactMechanismAliasType.getPrimaryKey().getEntityId());
@@ -2939,7 +2939,7 @@ public class ContactControl
     }
     
     public void deletePartyContactMechanismAliasesByParty(Party party, BasePK deletedBy) {
-        List<PartyContactMechanismAlias> partyContactMechanismAliases = getPartyContactMechanismAliasesByParty(party);
+        var partyContactMechanismAliases = getPartyContactMechanismAliasesByParty(party);
         
         partyContactMechanismAliases.forEach((partyContactMechanismAlias) -> 
                 deletePartyContactMechanismAlias(partyContactMechanismAlias, deletedBy)
@@ -2947,7 +2947,7 @@ public class ContactControl
     }
     
     public void deletePartyContactMechanismAliasesByContactMechanism(ContactMechanism contactMechanism, BasePK deletedBy) {
-        List<PartyContactMechanismAlias> partyContactMechanismAliases = getPartyContactMechanismAliasesByContactMechanismForUpdate(contactMechanism);
+        var partyContactMechanismAliases = getPartyContactMechanismAliasesByContactMechanismForUpdate(contactMechanism);
         
         partyContactMechanismAliases.forEach((partyContactMechanismAlias) -> 
                 deletePartyContactMechanismAlias(partyContactMechanismAlias, deletedBy)
@@ -2960,11 +2960,11 @@ public class ContactControl
     
     public PartyContactMechanismPurpose createPartyContactMechanismPurpose(PartyContactMechanism partyContactMechanism,
             ContactMechanismPurpose contactMechanismPurpose, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        PartyContactMechanismPurpose defaultPartyContactMechanismPurpose = getDefaultPartyContactMechanismPurpose(partyContactMechanism, contactMechanismPurpose);
-        boolean defaultFound = defaultPartyContactMechanismPurpose != null;
+        var defaultPartyContactMechanismPurpose = getDefaultPartyContactMechanismPurpose(partyContactMechanism, contactMechanismPurpose);
+        var defaultFound = defaultPartyContactMechanismPurpose != null;
         
         if(defaultFound && isDefault) {
-            PartyContactMechanismPurposeDetailValue defaultPartyContactMechanismPurposeDetailValue = getDefaultPartyContactMechanismPurposeDetailValueForUpdate(partyContactMechanism,
+            var defaultPartyContactMechanismPurposeDetailValue = getDefaultPartyContactMechanismPurposeDetailValueForUpdate(partyContactMechanism,
                     contactMechanismPurpose);
             
             defaultPartyContactMechanismPurposeDetailValue.setIsDefault(Boolean.FALSE);
@@ -2972,9 +2972,9 @@ public class ContactControl
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        PartyContactMechanismPurpose partyContactMechanismPurpose = PartyContactMechanismPurposeFactory.getInstance().create();
-        PartyContactMechanismPurposeDetail partyContactMechanismPurposeDetail = PartyContactMechanismPurposeDetailFactory.getInstance().create(session,
+
+        var partyContactMechanismPurpose = PartyContactMechanismPurposeFactory.getInstance().create();
+        var partyContactMechanismPurposeDetail = PartyContactMechanismPurposeDetailFactory.getInstance().create(session,
                 partyContactMechanismPurpose, partyContactMechanism, contactMechanismPurpose, isDefault, sortOrder,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
@@ -3009,8 +3009,8 @@ public class ContactControl
                         "AND pcm_partycontactmechanismid = pcmpdt_pcm_partycontactmechanismid AND pcmpdt_cmpr_contactmechanismpurposeid = ? AND pcmpdt_isdefault = 1 " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PartyContactMechanismPurposeFactory.getInstance().prepareStatement(query);
+
+            var ps = PartyContactMechanismPurposeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, partyPK.getEntityId());
             ps.setLong(2, contactMechanismPurpose.getPrimaryKey().getEntityId());
@@ -3028,7 +3028,7 @@ public class ContactControl
     }
     
     public PartyContactMechanismPurpose getDefaultPartyContactMechanismPurposeUsingNames(Party party, String contactMechanismPurposeName) {
-        ContactMechanismPurpose contactMechanismPurpose = getContactMechanismPurposeByName(contactMechanismPurposeName);
+        var contactMechanismPurpose = getContactMechanismPurposeByName(contactMechanismPurposeName);
         
         return getDefaultPartyContactMechanismPurpose(party.getPrimaryKey(), contactMechanismPurpose, EntityPermission.READ_ONLY);
     }
@@ -3071,8 +3071,8 @@ public class ContactControl
                         "WHERE pcmp_activedetailid = pcmpdt_partycontactmechanismpurposedetailid AND pcmpdt_pcm_partycontactmechanismid = ? AND pcmpdt_cmpr_contactmechanismpurposeid = ?  " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PartyContactMechanismPurposeFactory.getInstance().prepareStatement(query);
+
+            var ps = PartyContactMechanismPurposeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, partyContactMechanism.getPrimaryKey().getEntityId());
             ps.setLong(2, contactMechanismPurpose.getPrimaryKey().getEntityId());
@@ -3106,7 +3106,7 @@ public class ContactControl
         List<PartyContactMechanismPurpose> partyContactMechanismPurposes;
         
         try {
-            PreparedStatement ps = PartyContactMechanismPurposeFactory.getInstance().prepareStatement(
+            var ps = PartyContactMechanismPurposeFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM partycontactmechanisms, partycontactmechanismdetails, partycontactmechanismpurposes, partycontactmechanismpurposedetails " +
                     "WHERE pcm_activedetailid = pcmdt_partycontactmechanismdetailid AND pcmdt_par_partyid = ? " +
@@ -3159,8 +3159,8 @@ public class ContactControl
                         "WHERE pcmp_activedetailid = pcmpdt_partycontactmechanismpurposedetailid AND pcmpdt_pcm_partycontactmechanismid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PartyContactMechanismPurposeFactory.getInstance().prepareStatement(query);
+
+            var ps = PartyContactMechanismPurposeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, partyContactMechanism.getPrimaryKey().getEntityId());
             
@@ -3187,9 +3187,9 @@ public class ContactControl
     
     public List<PartyContactMechanismPurposeTransfer> getPartyContactMechanismPurposeTransfersByPartyContactMechanism(UserVisit userVisit,
             PartyContactMechanism partyContactMechanism) {
-        List<PartyContactMechanismPurpose> entities = getPartyContactMechanismPurposesByPartyContactMechanism(partyContactMechanism);
+        var entities = getPartyContactMechanismPurposesByPartyContactMechanism(partyContactMechanism);
         List<PartyContactMechanismPurposeTransfer> transfers = new ArrayList<>(entities.size());
-        PartyContactMechanismPurposeTransferCache cache = getContactTransferCaches(userVisit).getPartyContactMechanismPurposeTransferCache();
+        var cache = getContactTransferCaches(userVisit).getPartyContactMechanismPurposeTransferCache();
         
         entities.forEach((entity) ->
                 transfers.add(cache.getPartyContactMechanismPurposeTransfer(entity))
@@ -3201,26 +3201,26 @@ public class ContactControl
     private void updatePartyContactMechanismPurposeFromValue(PartyContactMechanismPurposeDetailValue partyContactMechanismPurposeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(partyContactMechanismPurposeDetailValue.hasBeenModified()) {
-            PartyContactMechanismPurpose partyContactMechanismPurpose = PartyContactMechanismPurposeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var partyContactMechanismPurpose = PartyContactMechanismPurposeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      partyContactMechanismPurposeDetailValue.getPartyContactMechanismPurposePK());
-            PartyContactMechanismPurposeDetail partyContactMechanismPurposeDetail = partyContactMechanismPurpose.getActiveDetailForUpdate();
+            var partyContactMechanismPurposeDetail = partyContactMechanismPurpose.getActiveDetailForUpdate();
             
             partyContactMechanismPurposeDetail.setThruTime(session.START_TIME_LONG);
             partyContactMechanismPurposeDetail.store();
-            
-            PartyContactMechanismPurposePK partyContactMechanismPurposePK = partyContactMechanismPurposeDetail.getPartyContactMechanismPurposePK();
-            PartyContactMechanism partyContactMechanism = partyContactMechanismPurposeDetail.getPartyContactMechanism();
-            ContactMechanismPurpose contactMechanismPurpose = partyContactMechanismPurposeDetail.getContactMechanismPurpose();
-            Boolean isDefault = partyContactMechanismPurposeDetailValue.getIsDefault();
-            Integer sortOrder = partyContactMechanismPurposeDetailValue.getSortOrder();
+
+            var partyContactMechanismPurposePK = partyContactMechanismPurposeDetail.getPartyContactMechanismPurposePK();
+            var partyContactMechanism = partyContactMechanismPurposeDetail.getPartyContactMechanism();
+            var contactMechanismPurpose = partyContactMechanismPurposeDetail.getContactMechanismPurpose();
+            var isDefault = partyContactMechanismPurposeDetailValue.getIsDefault();
+            var sortOrder = partyContactMechanismPurposeDetailValue.getSortOrder();
             
             if(checkDefault) {
-                PartyContactMechanismPurpose defaultPartyContactMechanismPurpose = getDefaultPartyContactMechanismPurpose(partyContactMechanism, contactMechanismPurpose);
-                boolean defaultFound = defaultPartyContactMechanismPurpose != null && !defaultPartyContactMechanismPurpose.equals(partyContactMechanismPurpose);
+                var defaultPartyContactMechanismPurpose = getDefaultPartyContactMechanismPurpose(partyContactMechanism, contactMechanismPurpose);
+                var defaultFound = defaultPartyContactMechanismPurpose != null && !defaultPartyContactMechanismPurpose.equals(partyContactMechanismPurpose);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    PartyContactMechanismPurposeDetailValue defaultPartyContactMechanismPurposeDetailValue = getDefaultPartyContactMechanismPurposeDetailValueForUpdate(partyContactMechanism, contactMechanismPurpose);
+                    var defaultPartyContactMechanismPurposeDetailValue = getDefaultPartyContactMechanismPurposeDetailValueForUpdate(partyContactMechanism, contactMechanismPurpose);
                     
                     defaultPartyContactMechanismPurposeDetailValue.setIsDefault(Boolean.FALSE);
                     updatePartyContactMechanismPurposeFromValue(defaultPartyContactMechanismPurposeDetailValue, false, updatedBy);
@@ -3246,24 +3246,24 @@ public class ContactControl
     }
     
     public void deletePartyContactMechanismPurpose(PartyContactMechanismPurpose partyContactMechanismPurpose, BasePK deletedBy) {
-        PartyContactMechanismPurposeDetail partyContactMechanismPurposeDetail = partyContactMechanismPurpose.getLastDetailForUpdate();
+        var partyContactMechanismPurposeDetail = partyContactMechanismPurpose.getLastDetailForUpdate();
         partyContactMechanismPurposeDetail.setThruTime(session.START_TIME_LONG);
         partyContactMechanismPurpose.setActiveDetail(null);
         partyContactMechanismPurpose.store();
         
         // Check for default, and pick one if necessary
-        PartyContactMechanism partyContactMechanism = partyContactMechanismPurposeDetail.getPartyContactMechanism();
-        ContactMechanismPurpose contactMechanismPurpose = partyContactMechanismPurposeDetail.getContactMechanismPurpose();
-        PartyContactMechanismPurpose defaultPartyContactMechanismPurpose = getDefaultPartyContactMechanismPurpose(partyContactMechanism, contactMechanismPurpose);
+        var partyContactMechanism = partyContactMechanismPurposeDetail.getPartyContactMechanism();
+        var contactMechanismPurpose = partyContactMechanismPurposeDetail.getContactMechanismPurpose();
+        var defaultPartyContactMechanismPurpose = getDefaultPartyContactMechanismPurpose(partyContactMechanism, contactMechanismPurpose);
         if(defaultPartyContactMechanismPurpose == null) {
-            List<PartyContactMechanismPurpose> partyContactMechanismPurposes = getPartyContactMechanismPurposesForUpdate(partyContactMechanism, contactMechanismPurpose);
+            var partyContactMechanismPurposes = getPartyContactMechanismPurposesForUpdate(partyContactMechanism, contactMechanismPurpose);
             
             if(!partyContactMechanismPurposes.isEmpty()) {
-                Iterator<PartyContactMechanismPurpose> iter = partyContactMechanismPurposes.iterator();
+                var iter = partyContactMechanismPurposes.iterator();
                 if(iter.hasNext()) {
                     defaultPartyContactMechanismPurpose = iter.next();
                 }
-                PartyContactMechanismPurposeDetailValue partyContactMechanismPurposeDetailValue = Objects.requireNonNull(defaultPartyContactMechanismPurpose).getLastDetailForUpdate().getPartyContactMechanismPurposeDetailValue().clone();
+                var partyContactMechanismPurposeDetailValue = Objects.requireNonNull(defaultPartyContactMechanismPurpose).getLastDetailForUpdate().getPartyContactMechanismPurposeDetailValue().clone();
                 
                 partyContactMechanismPurposeDetailValue.setIsDefault(Boolean.TRUE);
                 updatePartyContactMechanismPurposeFromValue(partyContactMechanismPurposeDetailValue, false, deletedBy);
@@ -3275,7 +3275,7 @@ public class ContactControl
     
     public void deletePartyContactMechanismPurposesByPartyContactMechanism(PartyContactMechanism partyContactMechanism,
             BasePK deletedBy) {
-        List<PartyContactMechanismPurpose> partyContactMechanismPurposes = getPartyContactMechanismPurposesByPartyContactMechanismForUpdate(partyContactMechanism);
+        var partyContactMechanismPurposes = getPartyContactMechanismPurposesByPartyContactMechanismForUpdate(partyContactMechanism);
         
         partyContactMechanismPurposes.forEach((partyContactMechanismPurpose) -> 
                 deletePartyContactMechanismPurpose(partyContactMechanismPurpose, deletedBy)
@@ -3288,7 +3288,7 @@ public class ContactControl
     
     public PartyContactMechanismRelationship createPartyContactMechanismRelationship(PartyContactMechanism fromPartyContactMechanism,
             PartyContactMechanism toPartyContactMechanism, BasePK createdBy) {
-        PartyContactMechanismRelationship partyContactMechanismRelationship = PartyContactMechanismRelationshipFactory.getInstance().create(fromPartyContactMechanism,
+        var partyContactMechanismRelationship = PartyContactMechanismRelationshipFactory.getInstance().create(fromPartyContactMechanism,
                 toPartyContactMechanism, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(fromPartyContactMechanism.getPrimaryKey(), EventTypes.MODIFY, partyContactMechanismRelationship.getPrimaryKey(), null, createdBy);
@@ -3426,7 +3426,7 @@ public class ContactControl
 
     public List<PartyContactMechanismRelationshipTransfer> getPartyContactMechanismRelationshipTransfers(UserVisit userVisit, Collection<PartyContactMechanismRelationship> partyContactMechanismRelationships) {
         List<PartyContactMechanismRelationshipTransfer> partyContactMechanismRelationshipTransfers = new ArrayList<>(partyContactMechanismRelationships.size());
-        PartyContactMechanismRelationshipTransferCache partyContactMechanismRelationshipTransferCache = getContactTransferCaches(userVisit).getPartyContactMechanismRelationshipTransferCache();
+        var partyContactMechanismRelationshipTransferCache = getContactTransferCaches(userVisit).getPartyContactMechanismRelationshipTransferCache();
         
         partyContactMechanismRelationships.forEach((partyContactMechanismRelationship) ->
                 partyContactMechanismRelationshipTransfers.add(partyContactMechanismRelationshipTransferCache.getPartyContactMechanismRelationshipTransfer(partyContactMechanismRelationship))
@@ -3482,7 +3482,7 @@ public class ContactControl
         PostalAddressElementType postalAddressElementType;
         
         try {
-            PreparedStatement ps = PostalAddressElementTypeFactory.getInstance().prepareStatement(
+            var ps = PostalAddressElementTypeFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM postaladdresselementtypes " +
                     "WHERE pstaetyp_postaladdresselementtypename = ?");
@@ -3498,7 +3498,7 @@ public class ContactControl
     }
     
     public List<PostalAddressElementType> getPostalAddressElementTypes() {
-        PreparedStatement ps = PostalAddressElementTypeFactory.getInstance().prepareStatement(
+        var ps = PostalAddressElementTypeFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
                 "FROM postaladdresselementtypes " +
                 "ORDER BY pstaetyp_sortorder, pstaetyp_postaladdresselementtypename");
@@ -3508,7 +3508,7 @@ public class ContactControl
     
     public PostalAddressElementTypeChoicesBean getPostalAddressElementTypeChoices(String defaultPostalAddressElementTypeChoice, Language language,
             boolean allowNullChoice) {
-        List<PostalAddressElementType> postalAddressElementTypes = getPostalAddressElementTypes();
+        var postalAddressElementTypes = getPostalAddressElementTypes();
         var size = postalAddressElementTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -3553,7 +3553,7 @@ public class ContactControl
         PostalAddressElementTypeDescription postalAddressElementTypeDescription = null;
 
         try {
-            PreparedStatement ps = PostalAddressElementTypeDescriptionFactory.getInstance().prepareStatement(
+            var ps = PostalAddressElementTypeDescriptionFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM postaladdresselementtypedescriptions " +
                     "WHERE pstaetypd_pstaetyp_postaladdresselementtypeid = ? AND pstaetypd_lang_languageid = ?");
@@ -3571,7 +3571,7 @@ public class ContactControl
     
     public String getBestPostalAddressElementTypeDescription(PostalAddressElementType postalAddressElementType, Language language) {
         String description;
-        PostalAddressElementTypeDescription postalAddressElementTypeDescription = getPostalAddressElementTypeDescription(postalAddressElementType, language);
+        var postalAddressElementTypeDescription = getPostalAddressElementTypeDescription(postalAddressElementType, language);
         
         if(postalAddressElementTypeDescription == null && !language.getIsDefault()) {
             postalAddressElementTypeDescription = getPostalAddressElementTypeDescription(postalAddressElementType, getPartyControl().getDefaultLanguage());
@@ -3592,20 +3592,20 @@ public class ContactControl
     
     public PostalAddressFormat createPostalAddressFormat(String postalAddressFormatName, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
-        PostalAddressFormat defaultPostalAddressFormat = getDefaultPostalAddressFormat();
-        boolean defaultFound = defaultPostalAddressFormat != null;
+        var defaultPostalAddressFormat = getDefaultPostalAddressFormat();
+        var defaultFound = defaultPostalAddressFormat != null;
         
         if(defaultFound && isDefault) {
-            PostalAddressFormatDetailValue defaultPostalAddressFormatDetailValue = getDefaultPostalAddressFormatDetailValueForUpdate();
+            var defaultPostalAddressFormatDetailValue = getDefaultPostalAddressFormatDetailValueForUpdate();
             
             defaultPostalAddressFormatDetailValue.setIsDefault(Boolean.FALSE);
             updatePostalAddressFormatFromValue(defaultPostalAddressFormatDetailValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        PostalAddressFormat postalAddressFormat = PostalAddressFormatFactory.getInstance().create();
-        PostalAddressFormatDetail postalAddressFormatDetail = PostalAddressFormatDetailFactory.getInstance().create(postalAddressFormat,
+
+        var postalAddressFormat = PostalAddressFormatFactory.getInstance().create();
+        var postalAddressFormatDetail = PostalAddressFormatDetailFactory.getInstance().create(postalAddressFormat,
                 postalAddressFormatName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -3634,8 +3634,8 @@ public class ContactControl
                     "WHERE pstafmt_activedetailid = pstafmtdt_postaladdressformatdetailid " +
                     "FOR UPDATE";
         }
-        
-        PreparedStatement ps = PostalAddressFormatFactory.getInstance().prepareStatement(query);
+
+        var ps = PostalAddressFormatFactory.getInstance().prepareStatement(query);
         
         return PostalAddressFormatFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
     }
@@ -3661,8 +3661,8 @@ public class ContactControl
                     "WHERE pstafmt_activedetailid = pstafmtdt_postaladdressformatdetailid AND pstafmtdt_isdefault = 1 " +
                     "FOR UPDATE";
         }
-        
-        PreparedStatement ps = PostalAddressFormatFactory.getInstance().prepareStatement(query);
+
+        var ps = PostalAddressFormatFactory.getInstance().prepareStatement(query);
         
         return PostalAddressFormatFactory.getInstance().getEntityFromQuery(entityPermission, ps);
     }
@@ -3695,8 +3695,8 @@ public class ContactControl
                         "WHERE pstafmt_activedetailid = pstafmtdt_postaladdressformatdetailid AND pstafmtdt_postaladdressformatname = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PostalAddressFormatFactory.getInstance().prepareStatement(query);
+
+            var ps = PostalAddressFormatFactory.getInstance().prepareStatement(query);
             
             ps.setString(1, postalAddressFormatName);
             
@@ -3726,7 +3726,7 @@ public class ContactControl
     
     public PostalAddressFormatChoicesBean getPostalAddressFormatChoices(String defaultPostalAddressFormatChoice, Language language,
             boolean allowNullChoice) {
-        List<PostalAddressFormat> postalAddressFormats = getPostalAddressFormats();
+        var postalAddressFormats = getPostalAddressFormats();
         var size = postalAddressFormats.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -3742,7 +3742,7 @@ public class ContactControl
         }
         
         for(var postalAddressFormat : postalAddressFormats) {
-            PostalAddressFormatDetail postalAddressFormatDetail = postalAddressFormat.getLastDetail();
+            var postalAddressFormatDetail = postalAddressFormat.getLastDetail();
             var label = getBestPostalAddressFormatDescription(postalAddressFormat, language);
             var value = postalAddressFormatDetail.getPostalAddressFormatName();
             
@@ -3763,9 +3763,9 @@ public class ContactControl
     }
     
     public List<PostalAddressFormatTransfer> getPostalAddressFormatTransfers(UserVisit userVisit) {
-        List<PostalAddressFormat> postalAddressFormats = getPostalAddressFormats();
+        var postalAddressFormats = getPostalAddressFormats();
         List<PostalAddressFormatTransfer> postalAddressFormatTransfers = new ArrayList<>(postalAddressFormats.size());
-        PostalAddressFormatTransferCache postalAddressFormatTransferCache = getContactTransferCaches(userVisit).getPostalAddressFormatTransferCache();
+        var postalAddressFormatTransferCache = getContactTransferCaches(userVisit).getPostalAddressFormatTransferCache();
         
         postalAddressFormats.forEach((postalAddressFormat) ->
                 postalAddressFormatTransfers.add(postalAddressFormatTransferCache.getPostalAddressFormatTransfer(postalAddressFormat))
@@ -3777,25 +3777,25 @@ public class ContactControl
     private void updatePostalAddressFormatFromValue(PostalAddressFormatDetailValue postalAddressFormatDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(postalAddressFormatDetailValue.hasBeenModified()) {
-            PostalAddressFormat postalAddressFormat = PostalAddressFormatFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var postalAddressFormat = PostalAddressFormatFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      postalAddressFormatDetailValue.getPostalAddressFormatPK());
-            PostalAddressFormatDetail postalAddressFormatDetail = postalAddressFormat.getActiveDetailForUpdate();
+            var postalAddressFormatDetail = postalAddressFormat.getActiveDetailForUpdate();
             
             postalAddressFormatDetail.setThruTime(session.START_TIME_LONG);
             postalAddressFormatDetail.store();
-            
-            PostalAddressFormatPK postalAddressFormatPK = postalAddressFormatDetail.getPostalAddressFormatPK();
-            String postalAddressFormatName = postalAddressFormatDetailValue.getPostalAddressFormatName();
-            Boolean isDefault = postalAddressFormatDetailValue.getIsDefault();
-            Integer sortOrder = postalAddressFormatDetailValue.getSortOrder();
+
+            var postalAddressFormatPK = postalAddressFormatDetail.getPostalAddressFormatPK();
+            var postalAddressFormatName = postalAddressFormatDetailValue.getPostalAddressFormatName();
+            var isDefault = postalAddressFormatDetailValue.getIsDefault();
+            var sortOrder = postalAddressFormatDetailValue.getSortOrder();
             
             if(checkDefault) {
-                PostalAddressFormat defaultPostalAddressFormat = getDefaultPostalAddressFormat();
-                boolean defaultFound = defaultPostalAddressFormat != null && !defaultPostalAddressFormat.equals(postalAddressFormat);
+                var defaultPostalAddressFormat = getDefaultPostalAddressFormat();
+                var defaultFound = defaultPostalAddressFormat != null && !defaultPostalAddressFormat.equals(postalAddressFormat);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    PostalAddressFormatDetailValue defaultPostalAddressFormatDetailValue = getDefaultPostalAddressFormatDetailValueForUpdate();
+                    var defaultPostalAddressFormatDetailValue = getDefaultPostalAddressFormatDetailValueForUpdate();
                     
                     defaultPostalAddressFormatDetailValue.setIsDefault(Boolean.FALSE);
                     updatePostalAddressFormatFromValue(defaultPostalAddressFormatDetailValue, false, updatedBy);
@@ -3822,23 +3822,23 @@ public class ContactControl
     public void deletePostalAddressFormat(PostalAddressFormat postalAddressFormat, BasePK deletedBy) {
         deletePostalAddressFormatDescriptionsByPostalAddressFormat(postalAddressFormat, deletedBy);
         deletePostalAddressLinesByPostalAddressFormat(postalAddressFormat, deletedBy);
-        
-        PostalAddressFormatDetail postalAddressFormatDetail = postalAddressFormat.getLastDetailForUpdate();
+
+        var postalAddressFormatDetail = postalAddressFormat.getLastDetailForUpdate();
         postalAddressFormatDetail.setThruTime(session.START_TIME_LONG);
         postalAddressFormat.setActiveDetail(null);
         postalAddressFormat.store();
         
         // Check for default, and pick one if necessary
-        PostalAddressFormat defaultPostalAddressFormat = getDefaultPostalAddressFormat();
+        var defaultPostalAddressFormat = getDefaultPostalAddressFormat();
         if(defaultPostalAddressFormat == null) {
-            List<PostalAddressFormat> postalAddressFormats = getPostalAddressFormatsForUpdate();
+            var postalAddressFormats = getPostalAddressFormatsForUpdate();
             
             if(!postalAddressFormats.isEmpty()) {
-                Iterator<PostalAddressFormat> iter = postalAddressFormats.iterator();
+                var iter = postalAddressFormats.iterator();
                 if(iter.hasNext()) {
                     defaultPostalAddressFormat = iter.next();
                 }
-                PostalAddressFormatDetailValue postalAddressFormatDetailValue = Objects.requireNonNull(defaultPostalAddressFormat).getLastDetailForUpdate().getPostalAddressFormatDetailValue().clone();
+                var postalAddressFormatDetailValue = Objects.requireNonNull(defaultPostalAddressFormat).getLastDetailForUpdate().getPostalAddressFormatDetailValue().clone();
                 
                 postalAddressFormatDetailValue.setIsDefault(Boolean.TRUE);
                 updatePostalAddressFormatFromValue(postalAddressFormatDetailValue, false, deletedBy);
@@ -3854,7 +3854,7 @@ public class ContactControl
     
     public PostalAddressFormatDescription createPostalAddressFormatDescription(PostalAddressFormat postalAddressFormat,
             Language language, String description, BasePK createdBy) {
-        PostalAddressFormatDescription postalAddressFormatDescription = PostalAddressFormatDescriptionFactory.getInstance().create(session,
+        var postalAddressFormatDescription = PostalAddressFormatDescriptionFactory.getInstance().create(session,
                 postalAddressFormat, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(postalAddressFormat.getPrimaryKey(), EventTypes.MODIFY, postalAddressFormatDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -3878,8 +3878,8 @@ public class ContactControl
                         "WHERE pstafmtd_pstafmt_postaladdressformatid = ? AND pstafmtd_lang_languageid = ? AND pstafmtd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PostalAddressFormatDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = PostalAddressFormatDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, postalAddressFormat.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -3926,8 +3926,8 @@ public class ContactControl
                         "WHERE pstafmtd_pstafmt_postaladdressformatid = ? AND pstafmtd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PostalAddressFormatDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = PostalAddressFormatDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, postalAddressFormat.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -3950,7 +3950,7 @@ public class ContactControl
     
     public String getBestPostalAddressFormatDescription(PostalAddressFormat postalAddressFormat, Language language) {
         String description;
-        PostalAddressFormatDescription postalAddressFormatDescription = getPostalAddressFormatDescription(postalAddressFormat, language);
+        var postalAddressFormatDescription = getPostalAddressFormatDescription(postalAddressFormat, language);
         
         if(postalAddressFormatDescription == null && !language.getIsDefault()) {
             postalAddressFormatDescription = getPostalAddressFormatDescription(postalAddressFormat, getPartyControl().getDefaultLanguage());
@@ -3970,9 +3970,9 @@ public class ContactControl
     }
     
     public List<PostalAddressFormatDescriptionTransfer> getPostalAddressFormatDescriptionTransfersByPostalAddressFormat(UserVisit userVisit, PostalAddressFormat postalAddressFormat) {
-        List<PostalAddressFormatDescription> postalAddressFormatDescriptions = getPostalAddressFormatDescriptionsByPostalAddressFormat(postalAddressFormat);
+        var postalAddressFormatDescriptions = getPostalAddressFormatDescriptionsByPostalAddressFormat(postalAddressFormat);
         List<PostalAddressFormatDescriptionTransfer> postalAddressFormatDescriptionTransfers = new ArrayList<>(postalAddressFormatDescriptions.size());
-        PostalAddressFormatDescriptionTransferCache postalAddressFormatDescriptionTransferCache = getContactTransferCaches(userVisit).getPostalAddressFormatDescriptionTransferCache();
+        var postalAddressFormatDescriptionTransferCache = getContactTransferCaches(userVisit).getPostalAddressFormatDescriptionTransferCache();
         
         postalAddressFormatDescriptions.forEach((postalAddressFormatDescription) ->
                 postalAddressFormatDescriptionTransfers.add(postalAddressFormatDescriptionTransferCache.getPostalAddressFormatDescriptionTransfer(postalAddressFormatDescription))
@@ -3983,14 +3983,14 @@ public class ContactControl
     
     public void updatePostalAddressFormatDescriptionFromValue(PostalAddressFormatDescriptionValue postalAddressFormatDescriptionValue, BasePK updatedBy) {
         if(postalAddressFormatDescriptionValue.hasBeenModified()) {
-            PostalAddressFormatDescription postalAddressFormatDescription = PostalAddressFormatDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, postalAddressFormatDescriptionValue.getPrimaryKey());
+            var postalAddressFormatDescription = PostalAddressFormatDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, postalAddressFormatDescriptionValue.getPrimaryKey());
             
             postalAddressFormatDescription.setThruTime(session.START_TIME_LONG);
             postalAddressFormatDescription.store();
-            
-            PostalAddressFormat postalAddressFormat = postalAddressFormatDescription.getPostalAddressFormat();
-            Language language = postalAddressFormatDescription.getLanguage();
-            String description = postalAddressFormatDescriptionValue.getDescription();
+
+            var postalAddressFormat = postalAddressFormatDescription.getPostalAddressFormat();
+            var language = postalAddressFormatDescription.getLanguage();
+            var description = postalAddressFormatDescriptionValue.getDescription();
             
             postalAddressFormatDescription = PostalAddressFormatDescriptionFactory.getInstance().create(postalAddressFormat, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -4007,7 +4007,7 @@ public class ContactControl
     }
     
     public void deletePostalAddressFormatDescriptionsByPostalAddressFormat(PostalAddressFormat postalAddressFormat, BasePK deletedBy) {
-        List<PostalAddressFormatDescription> postalAddressFormatDescriptions = getPostalAddressFormatDescriptionsByPostalAddressFormatForUpdate(postalAddressFormat);
+        var postalAddressFormatDescriptions = getPostalAddressFormatDescriptionsByPostalAddressFormatForUpdate(postalAddressFormat);
         
         postalAddressFormatDescriptions.forEach((postalAddressFormatDescription) -> 
                 deletePostalAddressFormatDescription(postalAddressFormatDescription, deletedBy)
@@ -4021,8 +4021,8 @@ public class ContactControl
     public PostalAddressLine createPostalAddressLine(PostalAddressFormat postalAddressFormat, Integer postalAddressLineSortOrder,
             String prefix, Boolean alwaysIncludePrefix, String suffix, Boolean alwaysIncludeSuffix, Boolean collapseIfEmpty,
             BasePK createdBy) {
-        PostalAddressLine postalAddressLine = PostalAddressLineFactory.getInstance().create();
-        PostalAddressLineDetail postalAddressLineDetail = PostalAddressLineDetailFactory.getInstance().create(session,
+        var postalAddressLine = PostalAddressLineFactory.getInstance().create();
+        var postalAddressLineDetail = PostalAddressLineDetailFactory.getInstance().create(session,
                 postalAddressLine, postalAddressFormat, postalAddressLineSortOrder, prefix, alwaysIncludePrefix, suffix,
                 alwaysIncludeSuffix, collapseIfEmpty, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
@@ -4057,8 +4057,8 @@ public class ContactControl
                         "AND pstaldt_pstafmt_postaladdressformatid = ? AND pstaldt_postaladdresslinesortorder = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PostalAddressLineFactory.getInstance().prepareStatement(query);
+
+            var ps = PostalAddressLineFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, postalAddressFormat.getPrimaryKey().getEntityId());
             ps.setInt(2, postalAddressLineSortOrder);
@@ -4107,8 +4107,8 @@ public class ContactControl
                         "AND pstaldt_pstafmt_postaladdressformatid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PostalAddressLineFactory.getInstance().prepareStatement(query);
+
+            var ps = PostalAddressLineFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, postalAddressFormat.getPrimaryKey().getEntityId());
             
@@ -4133,9 +4133,9 @@ public class ContactControl
     }
     
     public List<PostalAddressLineTransfer> getPostalAddressLineTransfersByPostalAddressFormat(UserVisit userVisit, PostalAddressFormat postalAddressFormat) {
-        List<PostalAddressLine> postalAddressLines = getPostalAddressLinesByPostalAddressFormat(postalAddressFormat);
+        var postalAddressLines = getPostalAddressLinesByPostalAddressFormat(postalAddressFormat);
         List<PostalAddressLineTransfer> postalAddressLineTransfers = new ArrayList<>(postalAddressLines.size());
-        PostalAddressLineTransferCache postalAddressLineTransferCache = getContactTransferCaches(userVisit).getPostalAddressLineTransferCache();
+        var postalAddressLineTransferCache = getContactTransferCaches(userVisit).getPostalAddressLineTransferCache();
         
         postalAddressLines.forEach((postalAddressLine) ->
                 postalAddressLineTransfers.add(postalAddressLineTransferCache.getPostalAddressLineTransfer(postalAddressLine))
@@ -4146,21 +4146,21 @@ public class ContactControl
     
     public void updatePostalAddressLineFromValue(PostalAddressLineDetailValue postalAddressLineDetailValue, BasePK updatedBy) {
         if(postalAddressLineDetailValue.hasBeenModified()) {
-            PostalAddressLine postalAddressLine = PostalAddressLineFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var postalAddressLine = PostalAddressLineFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      postalAddressLineDetailValue.getPostalAddressLinePK());
-            PostalAddressLineDetail postalAddressLineDetail = postalAddressLine.getActiveDetailForUpdate();
+            var postalAddressLineDetail = postalAddressLine.getActiveDetailForUpdate();
             
             postalAddressLineDetail.setThruTime(session.START_TIME_LONG);
             postalAddressLineDetail.store();
-            
-            PostalAddressLinePK postalAddressLinePK = postalAddressLineDetail.getPostalAddressLinePK();
-            PostalAddressFormatPK postalAddressFormatPK = postalAddressLineDetail.getPostalAddressFormatPK();
-            Integer postalAddressLineSortOrder = postalAddressLineDetailValue.getPostalAddressLineSortOrder();
-            String prefix = postalAddressLineDetailValue.getPrefix();
-            Boolean alwaysIncludePrefix = postalAddressLineDetailValue.getAlwaysIncludePrefix();
-            String suffix = postalAddressLineDetailValue.getSuffix();
-            Boolean alwaysIncludeSuffix = postalAddressLineDetailValue.getAlwaysIncludeSuffix();
-            Boolean collapseIfEmpty = postalAddressLineDetailValue.getCollapseIfEmpty();
+
+            var postalAddressLinePK = postalAddressLineDetail.getPostalAddressLinePK();
+            var postalAddressFormatPK = postalAddressLineDetail.getPostalAddressFormatPK();
+            var postalAddressLineSortOrder = postalAddressLineDetailValue.getPostalAddressLineSortOrder();
+            var prefix = postalAddressLineDetailValue.getPrefix();
+            var alwaysIncludePrefix = postalAddressLineDetailValue.getAlwaysIncludePrefix();
+            var suffix = postalAddressLineDetailValue.getSuffix();
+            var alwaysIncludeSuffix = postalAddressLineDetailValue.getAlwaysIncludeSuffix();
+            var collapseIfEmpty = postalAddressLineDetailValue.getCollapseIfEmpty();
             
             postalAddressLineDetail = PostalAddressLineDetailFactory.getInstance().create(postalAddressLinePK,
                     postalAddressFormatPK, postalAddressLineSortOrder, prefix, alwaysIncludePrefix, suffix, alwaysIncludeSuffix,
@@ -4175,8 +4175,8 @@ public class ContactControl
     
     public void deletePostalAddressLine(PostalAddressLine postalAddressLine, BasePK deletedBy) {
         deletePostalAddressLineElementsByPostalAddressLine(postalAddressLine, deletedBy);
-        
-        PostalAddressLineDetail postalAddressLineDetail = postalAddressLine.getLastDetailForUpdate();
+
+        var postalAddressLineDetail = postalAddressLine.getLastDetailForUpdate();
         postalAddressLineDetail.setThruTime(session.START_TIME_LONG);
         postalAddressLine.setActiveDetail(null);
         postalAddressLine.store();
@@ -4185,7 +4185,7 @@ public class ContactControl
     }
     
     public void deletePostalAddressLinesByPostalAddressFormat(PostalAddressFormat postalAddressFormat, BasePK deletedBy) {
-        List<PostalAddressLine> postalAddressLines = getPostalAddressLinesByPostalAddressFormatForUpdate(postalAddressFormat);
+        var postalAddressLines = getPostalAddressLinesByPostalAddressFormatForUpdate(postalAddressFormat);
         
         postalAddressLines.forEach((postalAddressLine) -> 
                 deletePostalAddressLine(postalAddressLine, deletedBy)
@@ -4199,8 +4199,8 @@ public class ContactControl
     public PostalAddressLineElement createPostalAddressLineElement(PostalAddressLine postalAddressLine,
             Integer postalAddressLineElementSortOrder, PostalAddressElementType postalAddressElementType, String prefix,
             Boolean alwaysIncludePrefix, String suffix, Boolean alwaysIncludeSuffix, BasePK createdBy) {
-        
-        PostalAddressLineElement postalAddressLineElement = PostalAddressLineElementFactory.getInstance().create(session,
+
+        var postalAddressLineElement = PostalAddressLineElementFactory.getInstance().create(session,
                 postalAddressLine, postalAddressLineElementSortOrder, postalAddressElementType, prefix, alwaysIncludePrefix, suffix,
                 alwaysIncludeSuffix, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
@@ -4214,7 +4214,7 @@ public class ContactControl
         PostalAddressLineElement postalAddressLineElement;
         
         try {
-            PreparedStatement ps = PostalAddressLineElementFactory.getInstance().prepareStatement(
+            var ps = PostalAddressLineElementFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM postaladdresslineelements " +
                     "WHERE pstale_pstal_postaladdresslineid = ? AND pstale_postaladdresslineelementsortorder = ? " +
@@ -4257,7 +4257,7 @@ public class ContactControl
         List<PostalAddressLineElement> postalAddressLineElements;
         
         try {
-            PreparedStatement ps = PostalAddressLineElementFactory.getInstance().prepareStatement(
+            var ps = PostalAddressLineElementFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM postaladdresslineelements " +
                     "WHERE pstale_pstal_postaladdresslineid = ? AND pstale_thrutime = ? " +
@@ -4288,9 +4288,9 @@ public class ContactControl
     }
     
     public List<PostalAddressLineElementTransfer> getPostalAddressLineElementTransfersByPostalAddressLine(UserVisit userVisit, PostalAddressLine postalAddressLine) {
-        List<PostalAddressLineElement> postalAddressLineElements = getPostalAddressLineElementsByPostalAddressLine(postalAddressLine);
+        var postalAddressLineElements = getPostalAddressLineElementsByPostalAddressLine(postalAddressLine);
         List<PostalAddressLineElementTransfer> postalAddressLineElementTransfers = new ArrayList<>(postalAddressLineElements.size());
-        PostalAddressLineElementTransferCache postalAddressLineElementTransferCache = getContactTransferCaches(userVisit).getPostalAddressLineElementTransferCache();
+        var postalAddressLineElementTransferCache = getContactTransferCaches(userVisit).getPostalAddressLineElementTransferCache();
         
         postalAddressLineElements.forEach((postalAddressLineElement) ->
                 postalAddressLineElementTransfers.add(postalAddressLineElementTransferCache.getPostalAddressLineElementTransfer(postalAddressLineElement))
@@ -4301,19 +4301,19 @@ public class ContactControl
     
     public void updatePostalAddressLineElementFromValue(PostalAddressLineElementValue postalAddressLineElementValue, BasePK updatedBy) {
         if(postalAddressLineElementValue.hasBeenModified()) {
-            PostalAddressLineElement postalAddressLineElement = PostalAddressLineElementFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var postalAddressLineElement = PostalAddressLineElementFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      postalAddressLineElementValue.getPrimaryKey());
             
             postalAddressLineElement.setThruTime(session.START_TIME_LONG);
             postalAddressLineElement.store();
-            
-            PostalAddressLinePK postalAddressLinePK = postalAddressLineElement.getPostalAddressLinePK();
-            Integer postalAddressLineElementSortOrder = postalAddressLineElementValue.getPostalAddressLineElementSortOrder();
-            PostalAddressElementTypePK postalAddressElementTypePK = postalAddressLineElementValue.getPostalAddressElementTypePK();
-            String prefix = postalAddressLineElementValue.getPrefix();
-            Boolean alwaysIncludePrefix = postalAddressLineElementValue.getAlwaysIncludePrefix();
-            String suffix = postalAddressLineElementValue.getSuffix();
-            Boolean alwaysIncludeSuffix = postalAddressLineElementValue.getAlwaysIncludeSuffix();
+
+            var postalAddressLinePK = postalAddressLineElement.getPostalAddressLinePK();
+            var postalAddressLineElementSortOrder = postalAddressLineElementValue.getPostalAddressLineElementSortOrder();
+            var postalAddressElementTypePK = postalAddressLineElementValue.getPostalAddressElementTypePK();
+            var prefix = postalAddressLineElementValue.getPrefix();
+            var alwaysIncludePrefix = postalAddressLineElementValue.getAlwaysIncludePrefix();
+            var suffix = postalAddressLineElementValue.getSuffix();
+            var alwaysIncludeSuffix = postalAddressLineElementValue.getAlwaysIncludeSuffix();
             
             postalAddressLineElement = PostalAddressLineElementFactory.getInstance().create(postalAddressLinePK,
                     postalAddressLineElementSortOrder, postalAddressElementTypePK, prefix, alwaysIncludePrefix, suffix, alwaysIncludeSuffix,
@@ -4330,7 +4330,7 @@ public class ContactControl
     }
     
     public void deletePostalAddressLineElementsByPostalAddressLine(PostalAddressLine postalAddressLine, BasePK deletedBy) {
-        List<PostalAddressLineElement> postalAddressLineElements = getPostalAddressLineElementsByPostalAddressLineForUpdate(postalAddressLine);
+        var postalAddressLineElements = getPostalAddressLineElementsByPostalAddressLineForUpdate(postalAddressLine);
         
         postalAddressLineElements.forEach((postalAddressLineElement) -> 
                 deletePostalAddressLineElement(postalAddressLineElement, deletedBy)

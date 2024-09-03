@@ -49,8 +49,8 @@ public class GetPreferredCurrencyCommand
     @Override
     protected BaseResult execute() {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        GetPreferredCurrencyResult result = AccountingResultFactory.getGetPreferredCurrencyResult();
-        Currency currency = getPreferredCurrency();
+        var result = AccountingResultFactory.getGetPreferredCurrencyResult();
+        var currency = getPreferredCurrency();
 
         result.setPreferredCurrency(accountingControl.getCurrencyTransfer(getUserVisit(), currency));
         sendEvent(currency.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());

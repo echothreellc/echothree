@@ -48,9 +48,9 @@ public class GetSalesOrderLineTimesCommand
     
     @Override
     protected BaseResult execute() {
-        GetSalesOrderLineTimesResult result = SalesResultFactory.getGetSalesOrderLineTimesResult();
-        String orderName = form.getOrderName();
-        String orderLineSequence = form.getOrderLineSequence();
+        var result = SalesResultFactory.getGetSalesOrderLineTimesResult();
+        var orderName = form.getOrderName();
+        var orderLineSequence = form.getOrderLineSequence();
         
         result.setOrderLineTimes(SalesOrderLineTimeLogic.getInstance().getOrderLineTimeTransfersByOrder(this, getUserVisit(), orderName, orderLineSequence));
         

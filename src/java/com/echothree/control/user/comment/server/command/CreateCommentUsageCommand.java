@@ -52,15 +52,15 @@ public class CreateCommentUsageCommand
     @Override
     protected BaseResult execute() {
         var commentControl = Session.getModelController(CommentControl.class);
-        String commentName = form.getCommentName();
-        Comment comment = commentControl.getCommentByName(commentName);
+        var commentName = form.getCommentName();
+        var comment = commentControl.getCommentByName(commentName);
         
         if(comment != null) {
-            String commentUsageTypeName = form.getCommentUsageTypeName();
-            CommentUsageType commentUsageType = commentControl.getCommentUsageTypeByName(comment.getLastDetail().getCommentType(), commentUsageTypeName);
+            var commentUsageTypeName = form.getCommentUsageTypeName();
+            var commentUsageType = commentControl.getCommentUsageTypeByName(comment.getLastDetail().getCommentType(), commentUsageTypeName);
             
             if(commentUsageType != null) {
-                CommentUsage commentUsage = commentControl.getCommentUsage(comment, commentUsageType);
+                var commentUsage = commentControl.getCommentUsage(comment, commentUsageType);
                 
                 if(commentUsage == null) {
                     commentControl.createCommentUsage(comment, commentUsageType, getPartyPK());

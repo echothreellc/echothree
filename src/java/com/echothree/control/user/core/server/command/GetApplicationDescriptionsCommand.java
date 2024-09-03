@@ -63,9 +63,9 @@ public class GetApplicationDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        GetApplicationDescriptionsResult result = CoreResultFactory.getGetApplicationDescriptionsResult();
-        String applicationName = form.getApplicationName();
-        Application application = coreControl.getApplicationByName(applicationName);
+        var result = CoreResultFactory.getGetApplicationDescriptionsResult();
+        var applicationName = form.getApplicationName();
+        var application = coreControl.getApplicationByName(applicationName);
         
         if(application != null) {
             result.setApplication(coreControl.getApplicationTransfer(getUserVisit(), application));

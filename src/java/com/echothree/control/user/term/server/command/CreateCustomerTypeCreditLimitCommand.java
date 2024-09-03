@@ -56,23 +56,23 @@ public class CreateCustomerTypeCreditLimitCommand
     @Override
     protected BaseResult execute() {
         var customerControl = Session.getModelController(CustomerControl.class);
-        String customerTypeName = form.getCustomerTypeName();
-        CustomerType customerType = customerControl.getCustomerTypeByName(customerTypeName);
+        var customerTypeName = form.getCustomerTypeName();
+        var customerType = customerControl.getCustomerTypeByName(customerTypeName);
         
         if(customerType != null) {
             var accountingControl = Session.getModelController(AccountingControl.class);
-            String currencyIsoName = form.getCurrencyIsoName();
-            Currency currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
+            var currencyIsoName = form.getCurrencyIsoName();
+            var currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
             
             if(currency != null) {
                 var termControl = Session.getModelController(TermControl.class);
-                CustomerTypeCreditLimit customerTypeCreditLimit = termControl.getCustomerTypeCreditLimit(customerType, currency);
+                var customerTypeCreditLimit = termControl.getCustomerTypeCreditLimit(customerType, currency);
                 
                 if(customerTypeCreditLimit == null) {
-                    String strCreditLimit = form.getCreditLimit();
-                    Long creditLimit = strCreditLimit == null? null: Long.valueOf(strCreditLimit);
-                    String strPotentialCreditLimit = form.getPotentialCreditLimit();
-                    Long potentialCreditLimit = strPotentialCreditLimit == null? null: Long.valueOf(strPotentialCreditLimit);
+                    var strCreditLimit = form.getCreditLimit();
+                    var creditLimit = strCreditLimit == null? null: Long.valueOf(strCreditLimit);
+                    var strPotentialCreditLimit = form.getPotentialCreditLimit();
+                    var potentialCreditLimit = strPotentialCreditLimit == null? null: Long.valueOf(strPotentialCreditLimit);
                     
                     if(creditLimit != null || potentialCreditLimit != null) {
                         termControl.createCustomerTypeCreditLimit(customerType, currency, creditLimit, potentialCreditLimit,

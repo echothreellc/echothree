@@ -111,8 +111,8 @@ public class EditUseTypeCommand
     @Override
     public void doLock(UseTypeEdit edit, UseType useType) {
         var useTypeControl = Session.getModelController(UseTypeControl.class);
-        UseTypeDescription useTypeDescription = useTypeControl.getUseTypeDescription(useType, getPreferredLanguage());
-        UseTypeDetail useTypeDetail = useType.getLastDetail();
+        var useTypeDescription = useTypeControl.getUseTypeDescription(useType, getPreferredLanguage());
+        var useTypeDetail = useType.getLastDetail();
         
         edit.setUseTypeName(useTypeDetail.getUseTypeName());
         edit.setIsDefault(useTypeDetail.getIsDefault().toString());
@@ -126,8 +126,8 @@ public class EditUseTypeCommand
     @Override
     public void canUpdate(UseType useType) {
         var useTypeControl = Session.getModelController(UseTypeControl.class);
-        String useTypeName = edit.getUseTypeName();
-        UseType duplicateUseType = useTypeControl.getUseTypeByName(useTypeName);
+        var useTypeName = edit.getUseTypeName();
+        var duplicateUseType = useTypeControl.getUseTypeByName(useTypeName);
 
         if(duplicateUseType != null && !useType.equals(duplicateUseType)) {
             addExecutionError(ExecutionErrors.DuplicateUseTypeName.name(), useTypeName);
@@ -138,9 +138,9 @@ public class EditUseTypeCommand
     public void doUpdate(UseType useType) {
         var useTypeControl = Session.getModelController(UseTypeControl.class);
         var partyPK = getPartyPK();
-        UseTypeDetailValue useTypeDetailValue = useTypeControl.getUseTypeDetailValueForUpdate(useType);
-        UseTypeDescription useTypeDescription = useTypeControl.getUseTypeDescriptionForUpdate(useType, getPreferredLanguage());
-        String description = edit.getDescription();
+        var useTypeDetailValue = useTypeControl.getUseTypeDetailValueForUpdate(useType);
+        var useTypeDescription = useTypeControl.getUseTypeDescriptionForUpdate(useType, getPreferredLanguage());
+        var description = edit.getDescription();
 
         useTypeDetailValue.setUseTypeName(edit.getUseTypeName());
         useTypeDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
@@ -153,7 +153,7 @@ public class EditUseTypeCommand
         } else if(useTypeDescription != null && description == null) {
             useTypeControl.deleteUseTypeDescription(useTypeDescription, partyPK);
         } else if(useTypeDescription != null && description != null) {
-            UseTypeDescriptionValue useTypeDescriptionValue = useTypeControl.getUseTypeDescriptionValue(useTypeDescription);
+            var useTypeDescriptionValue = useTypeControl.getUseTypeDescriptionValue(useTypeDescription);
 
             useTypeDescriptionValue.setDescription(description);
             useTypeControl.updateUseTypeDescriptionFromValue(useTypeDescriptionValue, partyPK);

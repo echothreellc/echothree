@@ -38,11 +38,11 @@ public class PartySkillTransferCache
     }
     
     public PartySkillTransfer getPartySkillTransfer(PartySkill partySkill) {
-        PartySkillTransfer partySkillTransfer = get(partySkill);
+        var partySkillTransfer = get(partySkill);
         
         if(partySkillTransfer == null) {
-            PartyTransfer party = partyControl.getPartyTransfer(userVisit, partySkill.getParty());
-            SkillTypeTransfer skillType = employeeControl.getSkillTypeTransfer(userVisit, partySkill.getSkillType());
+            var party = partyControl.getPartyTransfer(userVisit, partySkill.getParty());
+            var skillType = employeeControl.getSkillTypeTransfer(userVisit, partySkill.getSkillType());
             
             partySkillTransfer = new PartySkillTransfer(party, skillType);
             put(partySkill, partySkillTransfer);

@@ -40,28 +40,28 @@ public class InvoiceLineTransferCache
     }
     
     public InvoiceLineTransfer getInvoiceLineTransfer(InvoiceLine invoiceLine) {
-        InvoiceLineTransfer invoiceLineTransfer = get(invoiceLine);
+        var invoiceLineTransfer = get(invoiceLine);
         
         if(invoiceLineTransfer == null) {
-            InvoiceLineDetail invoiceLineDetail = invoiceLine.getLastDetail();
-            Invoice invoice = invoiceLineDetail.getInvoice();
-            InvoiceTransfer invoiceTransfer = invoiceControl.getInvoiceTransfer(userVisit, invoice);
-            Integer invoiceLineSequence = invoiceLineDetail.getInvoiceLineSequence();
-            InvoiceLine parentInvoiceLine = invoiceLineDetail.getParentInvoiceLine();
-            InvoiceLineTransfer parentInvoiceLineTransfer = parentInvoiceLine == null? null: getInvoiceLineTransfer(parentInvoiceLine);
-            InvoiceLineTypeTransfer invoiceLineTypeTransfer = invoiceControl.getInvoiceLineTypeTransfer(userVisit, invoiceLineDetail.getInvoiceLineType());
-            InvoiceLineUseTypeTransfer invoiceLineUseTypeTransfer = invoiceControl.getInvoiceLineUseTypeTransfer(userVisit, invoiceLineDetail.getInvoiceLineUseType());
-            String description = invoiceLineDetail.getDescription();
-            
-            Currency currency = invoice.getLastDetail().getBillingAccount().getLastDetail().getCurrency();
-            Long unformattedAmount = invoiceLineDetail.getAmount();
-            String amount = AmountUtils.getInstance().formatCostUnit(currency, unformattedAmount);
+            var invoiceLineDetail = invoiceLine.getLastDetail();
+            var invoice = invoiceLineDetail.getInvoice();
+            var invoiceTransfer = invoiceControl.getInvoiceTransfer(userVisit, invoice);
+            var invoiceLineSequence = invoiceLineDetail.getInvoiceLineSequence();
+            var parentInvoiceLine = invoiceLineDetail.getParentInvoiceLine();
+            var parentInvoiceLineTransfer = parentInvoiceLine == null? null: getInvoiceLineTransfer(parentInvoiceLine);
+            var invoiceLineTypeTransfer = invoiceControl.getInvoiceLineTypeTransfer(userVisit, invoiceLineDetail.getInvoiceLineType());
+            var invoiceLineUseTypeTransfer = invoiceControl.getInvoiceLineUseTypeTransfer(userVisit, invoiceLineDetail.getInvoiceLineUseType());
+            var description = invoiceLineDetail.getDescription();
+
+            var currency = invoice.getLastDetail().getBillingAccount().getLastDetail().getCurrency();
+            var unformattedAmount = invoiceLineDetail.getAmount();
+            var amount = AmountUtils.getInstance().formatCostUnit(currency, unformattedAmount);
             
             invoiceLineTransfer = new InvoiceLineTransfer(invoiceTransfer, invoiceLineSequence, parentInvoiceLineTransfer, invoiceLineTypeTransfer, invoiceLineUseTypeTransfer, amount,
                     unformattedAmount, description);
             put(invoiceLine, invoiceLineTransfer);
-            
-            String invoiceLineUseTypeName = invoiceLineUseTypeTransfer.getInvoiceLineUseTypeName();
+
+            var invoiceLineUseTypeName = invoiceLineUseTypeTransfer.getInvoiceLineUseTypeName();
             if(invoiceLineUseTypeName.equals(InvoiceLineUseTypes.ITEM.name())) {
                 invoiceLineTransfer.setInvoiceLineItem(invoiceControl.getInvoiceLineItemTransfer(userVisit, invoiceControl.getInvoiceLineItem(invoiceLine)));
             } else if(invoiceLineUseTypeName.equals(InvoiceLineUseTypes.GL_ACCOUNT.name())) {

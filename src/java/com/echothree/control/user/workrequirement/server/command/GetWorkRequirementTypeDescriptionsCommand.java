@@ -54,14 +54,14 @@ public class GetWorkRequirementTypeDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var workEffortControl = Session.getModelController(WorkEffortControl.class);
-        GetWorkRequirementTypeDescriptionsResult result = WorkRequirementResultFactory.getGetWorkRequirementTypeDescriptionsResult();
-        String workEffortTypeName = form.getWorkEffortTypeName();
-        WorkEffortType workEffortType = workEffortControl.getWorkEffortTypeByName(workEffortTypeName);
+        var result = WorkRequirementResultFactory.getGetWorkRequirementTypeDescriptionsResult();
+        var workEffortTypeName = form.getWorkEffortTypeName();
+        var workEffortType = workEffortControl.getWorkEffortTypeByName(workEffortTypeName);
         
         if(workEffortType != null) {
             var workRequirementControl = Session.getModelController(WorkRequirementControl.class);
-            String workRequirementTypeName = form.getWorkRequirementTypeName();
-            WorkRequirementType workRequirementType = workRequirementControl.getWorkRequirementTypeByName(workEffortType, workRequirementTypeName);
+            var workRequirementTypeName = form.getWorkRequirementTypeName();
+            var workRequirementType = workRequirementControl.getWorkRequirementTypeByName(workEffortType, workRequirementTypeName);
             
             if(workRequirementType != null) {
                 result.setWorkRequirementType(workRequirementControl.getWorkRequirementTypeTransfer(getUserVisit(), workRequirementType));

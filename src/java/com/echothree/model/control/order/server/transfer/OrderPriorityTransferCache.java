@@ -36,15 +36,15 @@ public class OrderPriorityTransferCache
     }
     
     public OrderPriorityTransfer getOrderPriorityTransfer(OrderPriority orderPriority) {
-        OrderPriorityTransfer orderPriorityTransfer = get(orderPriority);
+        var orderPriorityTransfer = get(orderPriority);
         
         if(orderPriorityTransfer == null) {
-            OrderPriorityDetail orderPriorityDetail = orderPriority.getLastDetail();
-            String orderPriorityName = orderPriorityDetail.getOrderPriorityName();
-            Integer priority = orderPriorityDetail.getPriority();
-            Boolean isDefault = orderPriorityDetail.getIsDefault();
-            Integer sortOrder = orderPriorityDetail.getSortOrder();
-            String description = orderPriorityControl.getBestOrderPriorityDescription(orderPriority, getLanguage());
+            var orderPriorityDetail = orderPriority.getLastDetail();
+            var orderPriorityName = orderPriorityDetail.getOrderPriorityName();
+            var priority = orderPriorityDetail.getPriority();
+            var isDefault = orderPriorityDetail.getIsDefault();
+            var sortOrder = orderPriorityDetail.getSortOrder();
+            var description = orderPriorityControl.getBestOrderPriorityDescription(orderPriority, getLanguage());
             
             orderPriorityTransfer = new OrderPriorityTransfer(orderPriorityName, priority, isDefault, sortOrder, description);
             put(orderPriority, orderPriorityTransfer);

@@ -64,8 +64,8 @@ public class SetDefaultOfferCommand
     @Override
     protected BaseResult execute() {
         var offerControl = Session.getModelController(OfferControl.class);
-        String offerName = form.getOfferName();
-        OfferDetailValue offerDetailValue = offerControl.getOfferDetailValueByNameForUpdate(offerName);
+        var offerName = form.getOfferName();
+        var offerDetailValue = offerControl.getOfferDetailValueByNameForUpdate(offerName);
         
         if(offerDetailValue != null) {
             offerDetailValue.setIsDefault(Boolean.TRUE);

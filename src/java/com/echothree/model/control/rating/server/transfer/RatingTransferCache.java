@@ -37,10 +37,10 @@ public class RatingTransferCache
     }
     
     public RatingTransfer getRatingTransfer(Rating rating) {
-        RatingTransfer ratingTransfer = get(rating);
+        var ratingTransfer = get(rating);
         
         if(ratingTransfer == null) {
-            RatingDetail ratingDetail = rating.getLastDetail();
+            var ratingDetail = rating.getLastDetail();
             
             ratingTransfer = new RatingTransfer();
             put(rating, ratingTransfer);

@@ -70,20 +70,20 @@ public class CreateGeoCodeAliasTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var geoControl = Session.getModelController(GeoControl.class);
-        String geoCodeTypeName = form.getGeoCodeTypeName();
-        GeoCodeType geoCodeType = geoControl.getGeoCodeTypeByName(geoCodeTypeName);
+        var geoCodeTypeName = form.getGeoCodeTypeName();
+        var geoCodeType = geoControl.getGeoCodeTypeByName(geoCodeTypeName);
 
         if(geoCodeType != null) {
-            String geoAliasTypeName = form.getGeoCodeAliasTypeName();
-            GeoCodeAliasType geoAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, geoAliasTypeName);
+            var geoAliasTypeName = form.getGeoCodeAliasTypeName();
+            var geoAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, geoAliasTypeName);
 
             if(geoAliasType != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = form.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = form.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                 if(language != null) {
-                    GeoCodeAliasTypeDescription geoAliasTypeDescription = geoControl.getGeoCodeAliasTypeDescription(geoAliasType, language);
+                    var geoAliasTypeDescription = geoControl.getGeoCodeAliasTypeDescription(geoAliasType, language);
 
                     if(geoAliasTypeDescription == null) {
                         var description = form.getDescription();

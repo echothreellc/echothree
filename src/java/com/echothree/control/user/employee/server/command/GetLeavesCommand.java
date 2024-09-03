@@ -67,13 +67,13 @@ public class GetLeavesCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        GetLeavesResult result = EmployeeResultFactory.getGetLeavesResult();
-        String partyName = form.getPartyName();
-        Party party = partyControl.getPartyByName(partyName);
+        var result = EmployeeResultFactory.getGetLeavesResult();
+        var partyName = form.getPartyName();
+        var party = partyControl.getPartyByName(partyName);
 
         if(party != null) {
             var employeeControl = Session.getModelController(EmployeeControl.class);
-            UserVisit userVisit = getUserVisit();
+            var userVisit = getUserVisit();
 
             result.setParty(partyControl.getPartyTransfer(userVisit, party));
             result.setLeaves(employeeControl.getLeaveTransfersByParty(userVisit, party));

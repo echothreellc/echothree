@@ -89,13 +89,13 @@ public class EditItemCategoryDescriptionCommand
     public ItemCategoryDescription getEntity(EditItemCategoryDescriptionResult result) {
         var itemControl = Session.getModelController(ItemControl.class);
         ItemCategoryDescription itemCategoryDescription = null;
-        String itemCategoryName = spec.getItemCategoryName();
-        ItemCategory itemCategory = itemControl.getItemCategoryByName(itemCategoryName);
+        var itemCategoryName = spec.getItemCategoryName();
+        var itemCategory = itemControl.getItemCategoryByName(itemCategoryName);
 
         if(itemCategory != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -137,7 +137,7 @@ public class EditItemCategoryDescriptionCommand
     @Override
     public void doUpdate(ItemCategoryDescription itemCategoryDescription) {
         var itemControl = Session.getModelController(ItemControl.class);
-        ItemCategoryDescriptionValue itemCategoryDescriptionValue = itemControl.getItemCategoryDescriptionValue(itemCategoryDescription);
+        var itemCategoryDescriptionValue = itemControl.getItemCategoryDescriptionValue(itemCategoryDescription);
         
         itemCategoryDescriptionValue.setDescription(edit.getDescription());
         

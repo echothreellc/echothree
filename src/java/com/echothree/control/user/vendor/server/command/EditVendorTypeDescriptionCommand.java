@@ -79,24 +79,24 @@ public class EditVendorTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var vendorControl = Session.getModelController(VendorControl.class);
-        EditVendorTypeDescriptionResult result = VendorResultFactory.getEditVendorTypeDescriptionResult();
-        String vendorTypeName = spec.getVendorTypeName();
-        VendorType vendorType = vendorControl.getVendorTypeByName(vendorTypeName);
+        var result = VendorResultFactory.getEditVendorTypeDescriptionResult();
+        var vendorTypeName = spec.getVendorTypeName();
+        var vendorType = vendorControl.getVendorTypeByName(vendorTypeName);
         
         if(vendorType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK)) {
-                    VendorTypeDescription vendorTypeDescription = vendorControl.getVendorTypeDescription(vendorType, language);
+                    var vendorTypeDescription = vendorControl.getVendorTypeDescription(vendorType, language);
                     
                     if(vendorTypeDescription != null) {
                         result.setVendorTypeDescription(vendorControl.getVendorTypeDescriptionTransfer(getUserVisit(), vendorTypeDescription));
                         
                         if(lockEntity(vendorType)) {
-                            VendorTypeDescriptionEdit edit = VendorEditFactory.getVendorTypeDescriptionEdit();
+                            var edit = VendorEditFactory.getVendorTypeDescriptionEdit();
                             
                             result.setEdit(edit);
                             edit.setDescription(vendorTypeDescription.getDescription());
@@ -109,12 +109,12 @@ public class EditVendorTypeDescriptionCommand
                         addExecutionError(ExecutionErrors.UnknownVendorTypeDescription.name());
                     }
                 } else if(editMode.equals(EditMode.UPDATE)) {
-                    VendorTypeDescriptionValue vendorTypeDescriptionValue = vendorControl.getVendorTypeDescriptionValueForUpdate(vendorType, language);
+                    var vendorTypeDescriptionValue = vendorControl.getVendorTypeDescriptionValueForUpdate(vendorType, language);
                     
                     if(vendorTypeDescriptionValue != null) {
                         if(lockEntityForUpdate(vendorType)) {
                             try {
-                                String description = edit.getDescription();
+                                var description = edit.getDescription();
                                 
                                 vendorTypeDescriptionValue.setDescription(description);
                                 

@@ -36,14 +36,14 @@ public class RelatedItemTransferCache
     
     @Override
     public RelatedItemTransfer getTransfer(RelatedItem relatedItem) {
-        RelatedItemTransfer relatedItemTransfer = get(relatedItem);
+        var relatedItemTransfer = get(relatedItem);
         
         if(relatedItemTransfer == null) {
-            RelatedItemDetail relatedItemDetail = relatedItem.getLastDetail();
-            RelatedItemTypeTransfer relatedItemType = itemControl.getRelatedItemTypeTransfer(userVisit, relatedItemDetail.getRelatedItemType());
-            ItemTransfer fromItem = itemControl.getItemTransfer(userVisit, relatedItemDetail.getFromItem());
-            ItemTransfer toItem = itemControl.getItemTransfer(userVisit, relatedItemDetail.getToItem());
-            Integer sortOrder = relatedItemDetail.getSortOrder();
+            var relatedItemDetail = relatedItem.getLastDetail();
+            var relatedItemType = itemControl.getRelatedItemTypeTransfer(userVisit, relatedItemDetail.getRelatedItemType());
+            var fromItem = itemControl.getItemTransfer(userVisit, relatedItemDetail.getFromItem());
+            var toItem = itemControl.getItemTransfer(userVisit, relatedItemDetail.getToItem());
+            var sortOrder = relatedItemDetail.getSortOrder();
             
             relatedItemTransfer = new RelatedItemTransfer(relatedItemType, fromItem, toItem, sortOrder);
             put(relatedItem, relatedItemTransfer);

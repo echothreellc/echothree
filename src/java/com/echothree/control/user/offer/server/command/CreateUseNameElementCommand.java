@@ -66,14 +66,14 @@ public class CreateUseNameElementCommand
     
     @Override
     protected BaseResult execute() {
-        CreateUseNameElementResult result = OfferResultFactory.getCreateUseNameElementResult();
-        String useNameElementName = form.getUseNameElementName();
-        Integer offset = Integer.valueOf(form.getOffset());
-        Integer length = Integer.valueOf(form.getLength());
-        String validationPattern = form.getValidationPattern();
+        var result = OfferResultFactory.getCreateUseNameElementResult();
+        var useNameElementName = form.getUseNameElementName();
+        var offset = Integer.valueOf(form.getOffset());
+        var length = Integer.valueOf(form.getLength());
+        var validationPattern = form.getValidationPattern();
         var description = form.getDescription();
 
-        UseNameElement useNameElement = UseNameElementLogic.getInstance().createUseNameElement(this,
+        var useNameElement = UseNameElementLogic.getInstance().createUseNameElement(this,
                 useNameElementName, offset, length, validationPattern, getPreferredLanguage(), description,
                 getPartyPK());
 

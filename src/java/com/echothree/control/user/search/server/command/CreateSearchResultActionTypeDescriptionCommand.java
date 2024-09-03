@@ -68,16 +68,16 @@ public class CreateSearchResultActionTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var searchControl = Session.getModelController(SearchControl.class);
-        String searchResultActionTypeName = form.getSearchResultActionTypeName();
-        SearchResultActionType searchResultActionType = searchControl.getSearchResultActionTypeByName(searchResultActionTypeName);
+        var searchResultActionTypeName = form.getSearchResultActionTypeName();
+        var searchResultActionType = searchControl.getSearchResultActionTypeByName(searchResultActionTypeName);
         
         if(searchResultActionType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                SearchResultActionTypeDescription searchResultActionTypeDescription = searchControl.getSearchResultActionTypeDescription(searchResultActionType, language);
+                var searchResultActionTypeDescription = searchControl.getSearchResultActionTypeDescription(searchResultActionType, language);
                 
                 if(searchResultActionTypeDescription == null) {
                     var description = form.getDescription();

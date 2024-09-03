@@ -52,15 +52,15 @@ public class DeleteUnitOfMeasureTypeWeightCommand
     @Override
     protected BaseResult execute() {
         var uomControl = Session.getModelController(UomControl.class);
-        String unitOfMeasureKindName = form.getUnitOfMeasureKindName();
-        UnitOfMeasureKind unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);
+        var unitOfMeasureKindName = form.getUnitOfMeasureKindName();
+        var unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);
         
         if(unitOfMeasureKind != null) {
-            String unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
-            UnitOfMeasureType unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
+            var unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
+            var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
             
             if(unitOfMeasureType != null) {
-                UnitOfMeasureTypeWeight unitOfMeasureTypeWeight = uomControl.getUnitOfMeasureTypeWeightForUpdate(unitOfMeasureType);
+                var unitOfMeasureTypeWeight = uomControl.getUnitOfMeasureTypeWeightForUpdate(unitOfMeasureType);
                 
                 if(unitOfMeasureTypeWeight != null) {
                     uomControl.deleteUnitOfMeasureTypeWeight(unitOfMeasureTypeWeight, getPartyPK());

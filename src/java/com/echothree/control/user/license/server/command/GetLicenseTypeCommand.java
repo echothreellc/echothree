@@ -73,8 +73,8 @@ public class GetLicenseTypeCommand
     
     @Override
     protected BaseResult execute() {
-        GetLicenseTypeResult result = LicenseResultFactory.getGetLicenseTypeResult();
-        String licenseTypeName = form.getLicenseTypeName();
+        var result = LicenseResultFactory.getGetLicenseTypeResult();
+        var licenseTypeName = form.getLicenseTypeName();
         var parameterCount = (licenseTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {

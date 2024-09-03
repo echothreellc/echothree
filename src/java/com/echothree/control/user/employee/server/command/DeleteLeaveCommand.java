@@ -64,8 +64,8 @@ public class DeleteLeaveCommand
     @Override
     protected BaseResult execute() {
         var employeeControl = Session.getModelController(EmployeeControl.class);
-        String leaveName = form.getLeaveName();
-        Leave leave = employeeControl.getLeaveByNameForUpdate(leaveName);
+        var leaveName = form.getLeaveName();
+        var leave = employeeControl.getLeaveByNameForUpdate(leaveName);
 
         if(leave != null) {
             LeaveLogic.getInstance().deleteLeave(leave, getPartyPK());

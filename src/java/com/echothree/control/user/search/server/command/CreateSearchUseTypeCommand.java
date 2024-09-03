@@ -66,8 +66,8 @@ public class CreateSearchUseTypeCommand
     @Override
     protected BaseResult execute() {
         var searchControl = Session.getModelController(SearchControl.class);
-        String searchUseTypeName = form.getSearchUseTypeName();
-        SearchUseType searchUseType = searchControl.getSearchUseTypeByName(searchUseTypeName);
+        var searchUseTypeName = form.getSearchUseTypeName();
+        var searchUseType = searchControl.getSearchUseTypeByName(searchUseTypeName);
         
         if(searchUseType == null) {
             var partyPK = getPartyPK();

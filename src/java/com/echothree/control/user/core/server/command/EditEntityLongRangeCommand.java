@@ -99,20 +99,20 @@ public class EditEntityLongRangeCommand
     public EntityLongRange getEntity(EditEntityLongRangeResult result) {
         var coreControl = getCoreControl();
         EntityLongRange entityLongRange = null;
-        String componentVendorName = spec.getComponentVendorName();
-        ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+        var componentVendorName = spec.getComponentVendorName();
+        var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
 
         if(componentVendor != null) {
-            String entityTypeName = spec.getEntityTypeName();
-            EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+            var entityTypeName = spec.getEntityTypeName();
+            var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
 
             if(entityType != null) {
-                String entityAttributeName = spec.getEntityAttributeName();
+                var entityAttributeName = spec.getEntityAttributeName();
                 
                 entityAttribute = coreControl.getEntityAttributeByName(entityType, entityAttributeName);
 
                 if(entityAttribute != null) {
-                    String entityLongRangeName = spec.getEntityLongRangeName();
+                    var entityLongRangeName = spec.getEntityLongRangeName();
 
                     if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
                         entityLongRange = coreControl.getEntityLongRangeByName(entityAttribute, entityLongRangeName);
@@ -151,10 +151,10 @@ public class EditEntityLongRangeCommand
     @Override
     public void doLock(EntityLongRangeEdit edit, EntityLongRange entityLongRange) {
         var coreControl = getCoreControl();
-        EntityLongRangeDescription entityLongRangeDescription = coreControl.getEntityLongRangeDescription(entityLongRange, getPreferredLanguage());
-        EntityLongRangeDetail entityLongRangeDetail = entityLongRange.getLastDetail();
-        Long minimumLongValue = entityLongRangeDetail.getMinimumLongValue();
-        Long maximumLongValue = entityLongRangeDetail.getMaximumLongValue();
+        var entityLongRangeDescription = coreControl.getEntityLongRangeDescription(entityLongRange, getPreferredLanguage());
+        var entityLongRangeDetail = entityLongRange.getLastDetail();
+        var minimumLongValue = entityLongRangeDetail.getMinimumLongValue();
+        var maximumLongValue = entityLongRangeDetail.getMaximumLongValue();
 
         edit.setEntityLongRangeName(entityLongRangeDetail.getEntityLongRangeName());
         edit.setMinimumLongValue(minimumLongValue == null ? null : minimumLongValue.toString());
@@ -169,15 +169,15 @@ public class EditEntityLongRangeCommand
 
     @Override
     public void canUpdate(EntityLongRange entityLongRange) {
-        String strMinimumLongValue = edit.getMinimumLongValue();
-        Long minimumLongValue = strMinimumLongValue == null ? null : Long.valueOf(strMinimumLongValue);
-        String strMaximumLongValue = edit.getMaximumLongValue();
-        Long maximumLongValue = strMaximumLongValue == null ? null : Long.valueOf(strMaximumLongValue);
+        var strMinimumLongValue = edit.getMinimumLongValue();
+        var minimumLongValue = strMinimumLongValue == null ? null : Long.valueOf(strMinimumLongValue);
+        var strMaximumLongValue = edit.getMaximumLongValue();
+        var maximumLongValue = strMaximumLongValue == null ? null : Long.valueOf(strMaximumLongValue);
 
         if(minimumLongValue == null || maximumLongValue == null || maximumLongValue >= minimumLongValue) {
             var coreControl = getCoreControl();
-            String entityLongRangeName = edit.getEntityLongRangeName();
-            EntityLongRange duplicateEntityLongRange = coreControl.getEntityLongRangeByName(entityAttribute, entityLongRangeName);
+            var entityLongRangeName = edit.getEntityLongRangeName();
+            var duplicateEntityLongRange = coreControl.getEntityLongRangeByName(entityAttribute, entityLongRangeName);
 
             if(duplicateEntityLongRange != null && !entityLongRange.equals(duplicateEntityLongRange)) {
                 addExecutionError(ExecutionErrors.DuplicateEntityLongRangeName.name(), entityLongRangeName);
@@ -191,11 +191,11 @@ public class EditEntityLongRangeCommand
     public void doUpdate(EntityLongRange entityLongRange) {
         var coreControl = getCoreControl();
         var partyPK = getPartyPK();
-        EntityLongRangeDetailValue entityLongRangeDetailValue = coreControl.getEntityLongRangeDetailValueForUpdate(entityLongRange);
-        EntityLongRangeDescription entityLongRangeDescription = coreControl.getEntityLongRangeDescriptionForUpdate(entityLongRange, getPreferredLanguage());
-        String strMinimumLongValue = edit.getMinimumLongValue();
-        String strMaximumLongValue = edit.getMaximumLongValue();
-        String description = edit.getDescription();
+        var entityLongRangeDetailValue = coreControl.getEntityLongRangeDetailValueForUpdate(entityLongRange);
+        var entityLongRangeDescription = coreControl.getEntityLongRangeDescriptionForUpdate(entityLongRange, getPreferredLanguage());
+        var strMinimumLongValue = edit.getMinimumLongValue();
+        var strMaximumLongValue = edit.getMaximumLongValue();
+        var description = edit.getDescription();
 
         entityLongRangeDetailValue.setEntityLongRangeName(edit.getEntityLongRangeName());
         entityLongRangeDetailValue.setMinimumLongValue(strMinimumLongValue == null ? null : Long.valueOf(strMinimumLongValue));
@@ -212,7 +212,7 @@ public class EditEntityLongRangeCommand
                 coreControl.deleteEntityLongRangeDescription(entityLongRangeDescription, partyPK);
             } else {
                 if(entityLongRangeDescription != null && description != null) {
-                    EntityLongRangeDescriptionValue entityLongRangeDescriptionValue = coreControl.getEntityLongRangeDescriptionValue(entityLongRangeDescription);
+                    var entityLongRangeDescriptionValue = coreControl.getEntityLongRangeDescriptionValue(entityLongRangeDescription);
 
                     entityLongRangeDescriptionValue.setDescription(description);
                     coreControl.updateEntityLongRangeDescriptionFromValue(entityLongRangeDescriptionValue, partyPK);

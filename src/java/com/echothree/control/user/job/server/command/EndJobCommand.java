@@ -58,11 +58,11 @@ public class EndJobCommand
     @Override
     protected BaseResult execute() {
         var jobControl = Session.getModelController(JobControl.class);
-        String jobName = form.getJobName();
-        Job job = jobControl.getJobByName(jobName);
+        var jobName = form.getJobName();
+        var job = jobControl.getJobByName(jobName);
         
         if(job != null) {
-            JobStatus jobStatus = jobControl.getJobStatusForUpdate(job);
+            var jobStatus = jobControl.getJobStatusForUpdate(job);
             
             jobStatus.setLastEndTime(session.START_TIME);
         } else {

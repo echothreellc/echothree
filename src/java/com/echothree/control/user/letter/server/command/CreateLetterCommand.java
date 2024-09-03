@@ -76,26 +76,26 @@ public class CreateLetterCommand
     @Override
     protected BaseResult execute() {
         var chainControl = Session.getModelController(ChainControl.class);
-        String chainKindName = form.getChainKindName();
-        ChainKind chainKind = chainControl.getChainKindByName(chainKindName);
+        var chainKindName = form.getChainKindName();
+        var chainKind = chainControl.getChainKindByName(chainKindName);
         
         if(chainKind != null) {
-            String chainTypeName = form.getChainTypeName();
-            ChainType chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
+            var chainTypeName = form.getChainTypeName();
+            var chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
             
             if(chainType != null) {
                 var letterControl = Session.getModelController(LetterControl.class);
-                String letterName = form.getLetterName();
-                Letter letter = letterControl.getLetterByName(chainType, letterName);
+                var letterName = form.getLetterName();
+                var letter = letterControl.getLetterByName(chainType, letterName);
                 
                 if(letter == null) {
-                    String letterSourceName = form.getLetterSourceName();
-                    LetterSource letterSource = letterControl.getLetterSourceByName(letterSourceName);
+                    var letterSourceName = form.getLetterSourceName();
+                    var letterSource = letterControl.getLetterSourceByName(letterSourceName);
                     
                     if(letterSource != null) {
                         var contactListControl = Session.getModelController(ContactListControl.class);
-                        String contactListName = form.getContactListName();
-                        ContactList contactList = contactListName == null? null: contactListControl.getContactListByName(contactListName);
+                        var contactListName = form.getContactListName();
+                        var contactList = contactListName == null? null: contactListControl.getContactListByName(contactListName);
                         
                         if(contactListName == null || contactList != null) {
                             var partyPK = getPartyPK();

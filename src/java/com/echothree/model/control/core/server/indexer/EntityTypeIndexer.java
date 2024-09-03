@@ -53,8 +53,8 @@ public class EntityTypeIndexer
     
     @Override
     protected Document convertToDocument(final EntityInstance entityInstance, final EntityType entityType) {
-        EntityTypeDetail entityTypeDetail = entityType.getLastDetail();
-        String description = coreControl.getBestEntityTypeDescription(entityType, language);
+        var entityTypeDetail = entityType.getLastDetail();
+        var description = coreControl.getBestEntityTypeDescription(entityType, language);
 
         var document = newDocumentWithEntityInstanceFields(entityInstance, entityType.getPrimaryKey());
 

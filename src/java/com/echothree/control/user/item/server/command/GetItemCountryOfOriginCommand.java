@@ -55,17 +55,17 @@ public class GetItemCountryOfOriginCommand
     @Override
     protected BaseResult execute() {
         var itemControl = Session.getModelController(ItemControl.class);
-        GetItemCountryOfOriginResult result = ItemResultFactory.getGetItemCountryOfOriginResult();
-        String itemName = form.getItemName();
-        Item item = itemControl.getItemByName(itemName);
+        var result = ItemResultFactory.getGetItemCountryOfOriginResult();
+        var itemName = form.getItemName();
+        var item = itemControl.getItemByName(itemName);
         
         if(item != null) {
             var geoControl = Session.getModelController(GeoControl.class);
-            String countryName = form.getCountryName();
-            GeoCode countryGeoCode = geoControl.getCountryByAlias(countryName);
+            var countryName = form.getCountryName();
+            var countryGeoCode = geoControl.getCountryByAlias(countryName);
             
             if(countryGeoCode != null) {
-                ItemCountryOfOrigin itemCountryOfOrigin = itemControl.getItemCountryOfOrigin(item, countryGeoCode);
+                var itemCountryOfOrigin = itemControl.getItemCountryOfOrigin(item, countryGeoCode);
                 
                 if(itemCountryOfOrigin != null) {
                     result.setItemCountryOfOrigin(itemControl.getItemCountryOfOriginTransfer(getUserVisit(), itemCountryOfOrigin));

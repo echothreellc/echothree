@@ -242,7 +242,7 @@ public final class EntityTypeTransfer
         if(o == null || getClass() != o.getClass()) {
             return false;
         }
-        EntityTypeTransfer that = (EntityTypeTransfer) o;
+        var that = (EntityTypeTransfer) o;
         return componentVendor.equals(that.componentVendor) && entityTypeName.equals(that.entityTypeName);
     }
 

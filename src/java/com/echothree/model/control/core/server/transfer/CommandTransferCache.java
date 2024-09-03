@@ -37,14 +37,14 @@ public class CommandTransferCache
     }
     
     public CommandTransfer getCommandTransfer(Command command) {
-        CommandTransfer commandTransfer = get(command);
+        var commandTransfer = get(command);
         
         if(commandTransfer == null) {
-            CommandDetail commandDetail = command.getLastDetail();
-            ComponentVendorTransfer componentVendor = coreControl.getComponentVendorTransfer(userVisit, commandDetail.getComponentVendor());
-            String commandName = commandDetail.getCommandName();
-            Integer sortOrder = commandDetail.getSortOrder();
-            String description = coreControl.getBestCommandDescription(command, getLanguage());
+            var commandDetail = command.getLastDetail();
+            var componentVendor = coreControl.getComponentVendorTransfer(userVisit, commandDetail.getComponentVendor());
+            var commandName = commandDetail.getCommandName();
+            var sortOrder = commandDetail.getSortOrder();
+            var description = coreControl.getBestCommandDescription(command, getLanguage());
     
             commandTransfer = new CommandTransfer(componentVendor, commandName, sortOrder, description);
             put(command, commandTransfer);

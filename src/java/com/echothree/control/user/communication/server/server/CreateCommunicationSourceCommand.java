@@ -78,11 +78,11 @@ public class CreateCommunicationSourceCommand
     
     @Override
     protected ValidationResult validate() {
-        Validator validator = new Validator(this);
-        ValidationResult validationResult = validator.validate(form, FORM_FIELD_DEFINITIONS);
+        var validator = new Validator(this);
+        var validationResult = validator.validate(form, FORM_FIELD_DEFINITIONS);
         
         if(!validationResult.getHasErrors()) {
-            String communicationSourceTypeName = form.getCommunicationSourceTypeName();
+            var communicationSourceTypeName = form.getCommunicationSourceTypeName();
             
             if(communicationSourceTypeName.equals(CommunicationConstants.CommunicationSourceType_EMAIL)) {
                 validationResult = validator.validate(form, formEmailFieldDefinitions);
@@ -95,15 +95,15 @@ public class CreateCommunicationSourceCommand
     @Override
     protected BaseResult execute() {
         var communicationControl = Session.getModelController(CommunicationControl.class);
-        String communicationSourceName = form.getCommunicationSourceName();
-        CommunicationSource communicationSource = communicationControl.getCommunicationSourceByName(communicationSourceName);
+        var communicationSourceName = form.getCommunicationSourceName();
+        var communicationSource = communicationControl.getCommunicationSourceByName(communicationSourceName);
         
         if(communicationSource == null) {
-            String communicationSourceTypeName = form.getCommunicationSourceTypeName();
-            CommunicationSourceType communicationSourceType = communicationControl.getCommunicationSourceTypeByName(communicationSourceTypeName);
+            var communicationSourceTypeName = form.getCommunicationSourceTypeName();
+            var communicationSourceType = communicationControl.getCommunicationSourceTypeByName(communicationSourceTypeName);
             
             if(communicationSourceType != null) {
-                PartyPK createdBy = getPartyPK();
+                var createdBy = getPartyPK();
                 var sortOrder = Integer.valueOf(form.getSortOrder());
                 var description = form.getDescription();
                 
@@ -111,31 +111,31 @@ public class CreateCommunicationSourceCommand
                 
                 if(communicationSourceTypeName.equals(CommunicationConstants.CommunicationSourceType_EMAIL)) {
                     var coreControl = getCoreControl();
-                    String serverName = form.getServerName();
-                    Server server = coreControl.getServerByName(serverName);
+                    var serverName = form.getServerName();
+                    var server = coreControl.getServerByName(serverName);
                     
                     if(server != null) {
                         var workEffortControl = Session.getModelController(WorkEffortControl.class);
-                        String receiveWorkEffortScopeName = form.getReceiveWorkEffortScopeName();
-                        WorkEffortType workEffortType = workEffortControl.getWorkEffortTypeByName(ReceiveCustomerEmailConstants.WorkEffortType_RECEIVE_CUSTOMER_EMAIL);
-                        WorkEffortScope receiveWorkEffortScope = workEffortControl.getWorkEffortScopeByName(workEffortType, receiveWorkEffortScopeName);
+                        var receiveWorkEffortScopeName = form.getReceiveWorkEffortScopeName();
+                        var workEffortType = workEffortControl.getWorkEffortTypeByName(ReceiveCustomerEmailConstants.WorkEffortType_RECEIVE_CUSTOMER_EMAIL);
+                        var receiveWorkEffortScope = workEffortControl.getWorkEffortScopeByName(workEffortType, receiveWorkEffortScopeName);
                         
                         if(receiveWorkEffortScope != null) {
-                            String sendWorkEffortScopeName = form.getSendWorkEffortScopeName();
+                            var sendWorkEffortScopeName = form.getSendWorkEffortScopeName();
                             
                             workEffortType = workEffortControl.getWorkEffortTypeByName(SendCustomerEmailConstants.WorkEffortType_SEND_CUSTOMER_EMAIL);
-                            WorkEffortScope sendWorkEffortScope = workEffortControl.getWorkEffortScopeByName(workEffortType, sendWorkEffortScopeName);
+                            var sendWorkEffortScope = workEffortControl.getWorkEffortScopeByName(workEffortType, sendWorkEffortScopeName);
                             
                             if(sendWorkEffortScope != null) {
-                                String reviewEmployeeSelectorName = form.getReviewEmployeeSelectorName();
+                                var reviewEmployeeSelectorName = form.getReviewEmployeeSelectorName();
                                 Selector reviewEmployeeSelector = null;
                                 
                                 if(reviewEmployeeSelectorName != null) {
                                     var selectorControl = Session.getModelController(SelectorControl.class);
-                                    SelectorKind selectorKind = selectorControl.getSelectorKindByName(SelectorKinds.EMPLOYEE.name());
+                                    var selectorKind = selectorControl.getSelectorKindByName(SelectorKinds.EMPLOYEE.name());
                                     
                                     if(selectorKind != null) {
-                                        SelectorType selectorType = selectorControl.getSelectorTypeByName(selectorKind, SelectorTypes.EMAIL_REVIEW.name());
+                                        var selectorType = selectorControl.getSelectorTypeByName(selectorKind, SelectorTypes.EMAIL_REVIEW.name());
                                         
                                         if(selectorType != null) {
                                             reviewEmployeeSelector = selectorControl.getSelectorByName(selectorType, reviewEmployeeSelectorName);
@@ -148,8 +148,8 @@ public class CreateCommunicationSourceCommand
                                 }
                                 
                                 if(reviewEmployeeSelectorName == null || reviewEmployeeSelector != null) {
-                                    String username = form.getUsername();
-                                    String password = form.getPassword();
+                                    var username = form.getUsername();
+                                    var password = form.getPassword();
                                     
                                     communicationSource = communicationControl.createCommunicationSource(communicationSourceName,
                                             communicationSourceType, sortOrder, createdBy);

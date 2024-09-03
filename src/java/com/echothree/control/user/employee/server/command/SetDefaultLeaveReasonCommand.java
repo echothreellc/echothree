@@ -63,8 +63,8 @@ public class SetDefaultLeaveReasonCommand
    @Override
     protected BaseResult execute() {
         var employeeControl = Session.getModelController(EmployeeControl.class);
-        String leaveReasonName = form.getLeaveReasonName();
-        LeaveReasonDetailValue leaveReasonDetailValue = employeeControl.getLeaveReasonDetailValueByNameForUpdate(leaveReasonName);
+       var leaveReasonName = form.getLeaveReasonName();
+       var leaveReasonDetailValue = employeeControl.getLeaveReasonDetailValueByNameForUpdate(leaveReasonName);
         
         if(leaveReasonDetailValue != null) {
             leaveReasonDetailValue.setIsDefault(Boolean.TRUE);

@@ -30,7 +30,7 @@ public class SubscriptionUtil {
     public static SubscriptionLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
 
             cachedLocal = (SubscriptionLocal)ctx.lookup("ejb:echothree/echothree-server/SubscriptionBean!com.echothree.control.user.subscription.server.SubscriptionLocal");
         }
@@ -42,7 +42,7 @@ public class SubscriptionUtil {
     public static SubscriptionRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
             
             cachedRemote = (SubscriptionRemote)ctx.lookup("ejb:echothree/echothree-server/SubscriptionBean!com.echothree.control.user.subscription.common.SubscriptionRemote");
         }

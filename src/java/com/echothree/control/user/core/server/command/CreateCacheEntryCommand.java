@@ -59,26 +59,26 @@ public class CreateCacheEntryCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String cacheEntryKey = form.getCacheEntryKey();
-        CacheEntry cacheEntry = coreControl.getCacheEntryByCacheEntryKey(cacheEntryKey);
+        var cacheEntryKey = form.getCacheEntryKey();
+        var cacheEntry = coreControl.getCacheEntryByCacheEntryKey(cacheEntryKey);
 
         if(cacheEntry == null) {
-            String mimeTypeName = form.getMimeTypeName();
-            MimeType mimeType = coreControl.getMimeTypeByName(mimeTypeName);
+            var mimeTypeName = form.getMimeTypeName();
+            var mimeType = coreControl.getMimeTypeByName(mimeTypeName);
 
             if(mimeType != null) {
-                Long validForTime = UnitOfMeasureTypeLogic.getInstance().checkUnitOfMeasure(this, UomConstants.UnitOfMeasureKindUseType_TIME,
+                var validForTime = UnitOfMeasureTypeLogic.getInstance().checkUnitOfMeasure(this, UomConstants.UnitOfMeasureKindUseType_TIME,
                         form.getValidForTime(), form.getValidForTimeUnitOfMeasureTypeName(),
                         null, ExecutionErrors.MissingRequiredValidForTime.name(), null, ExecutionErrors.MissingRequiredValidForTimeUnitOfMeasureTypeName.name(),
                         null, ExecutionErrors.UnknownValidForTimeUnitOfMeasureTypeName.name());
 
                 if(!hasExecutionErrors()) {
-                    String entityAttributeTypeName = mimeType.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
-                    Set<String> entityRefs = form.getEntityRefs();
+                    var entityAttributeTypeName = mimeType.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
+                    var entityRefs = form.getEntityRefs();
 
                     try {
                         if(entityAttributeTypeName.equals(EntityAttributeTypes.CLOB.name())) {
-                            String clob = form.getClob();
+                            var clob = form.getClob();
 
                             if(clob != null) {
                                 coreControl.createCacheEntry(cacheEntryKey, mimeType, session.START_TIME_LONG,
@@ -87,7 +87,7 @@ public class CreateCacheEntryCommand
                                 addExecutionError(ExecutionErrors.MissingClob.name());
                             }
                         } else if(entityAttributeTypeName.equals(EntityAttributeTypes.BLOB.name())) {
-                            ByteArray blob = form.getBlob();
+                            var blob = form.getBlob();
 
                             if(blob != null) {
                                 coreControl.createCacheEntry(cacheEntryKey, mimeType, session.START_TIME_LONG,

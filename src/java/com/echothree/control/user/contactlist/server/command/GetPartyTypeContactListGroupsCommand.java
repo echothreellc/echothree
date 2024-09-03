@@ -68,18 +68,18 @@ public class GetPartyTypeContactListGroupsCommand
     
     @Override
     protected BaseResult execute() {
-        GetPartyTypeContactListGroupsResult result = ContactListResultFactory.getGetPartyTypeContactListGroupsResult();
-        String partyTypeName = form.getPartyTypeName();
-        String contactListGroupName = form.getContactListGroupName();
+        var result = ContactListResultFactory.getGetPartyTypeContactListGroupsResult();
+        var partyTypeName = form.getPartyTypeName();
+        var contactListGroupName = form.getContactListGroupName();
         var parameterCount = (partyTypeName != null? 1: 0) + (contactListGroupName != null? 1: 0);
         
         if(parameterCount == 1) {
             var contactListControl = Session.getModelController(ContactListControl.class);
-            UserVisit userVisit = getUserVisit();
+            var userVisit = getUserVisit();
             
             if(partyTypeName != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                PartyType partyType = partyControl.getPartyTypeByName(partyTypeName);
+                var partyType = partyControl.getPartyTypeByName(partyTypeName);
                 
                 if(partyType != null) {
                     result.setPartyType(partyControl.getPartyTypeTransfer(userVisit, partyType));
@@ -88,7 +88,7 @@ public class GetPartyTypeContactListGroupsCommand
                     addExecutionError(ExecutionErrors.UnknownPartyTypeName.name(), partyTypeName);
                 }
             } else if(contactListGroupName != null) {
-                ContactListGroup contactListGroup = contactListControl.getContactListGroupByName(contactListGroupName);
+                var contactListGroup = contactListControl.getContactListGroupByName(contactListGroupName);
                 
                 if(contactListGroup != null) {
                     result.setContactListGroup(contactListControl.getContactListGroupTransfer(userVisit, contactListGroup));

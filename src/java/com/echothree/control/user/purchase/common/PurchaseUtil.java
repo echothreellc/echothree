@@ -30,7 +30,7 @@ public class PurchaseUtil {
     public static PurchaseLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
 
             cachedLocal = (PurchaseLocal)ctx.lookup("ejb:echothree/echothree-server/PurchaseBean!com.echothree.control.user.purchase.server.PurchaseLocal");
         }
@@ -42,7 +42,7 @@ public class PurchaseUtil {
     public static PurchaseRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
             
             cachedRemote = (PurchaseRemote)ctx.lookup("ejb:echothree/echothree-server/PurchaseBean!com.echothree.control.user.purchase.common.PurchaseRemote");
         }

@@ -66,8 +66,8 @@ public class CreateLicenseTypeCommand
     @Override
     protected BaseResult execute() {
         var licenseControl = Session.getModelController(LicenseControl.class);
-        String licenseTypeName = form.getLicenseTypeName();
-        LicenseType licenseType = licenseControl.getLicenseTypeByName(licenseTypeName);
+        var licenseTypeName = form.getLicenseTypeName();
+        var licenseType = licenseControl.getLicenseTypeByName(licenseTypeName);
         
         if(licenseType == null) {
             var partyPK = getPartyPK();

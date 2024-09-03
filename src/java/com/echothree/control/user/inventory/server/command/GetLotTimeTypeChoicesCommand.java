@@ -63,9 +63,9 @@ public class GetLotTimeTypeChoicesCommand
     @Override
     protected BaseResult execute() {
         var lotTimeControl = Session.getModelController(LotTimeControl.class);
-        GetLotTimeTypeChoicesResult result = InventoryResultFactory.getGetLotTimeTypeChoicesResult();
-        String defaultLotTimeTypeChoice = form.getDefaultLotTimeTypeChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = InventoryResultFactory.getGetLotTimeTypeChoicesResult();
+        var defaultLotTimeTypeChoice = form.getDefaultLotTimeTypeChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 
         result.setLotTimeTypeChoices(lotTimeControl.getLotTimeTypeChoices(defaultLotTimeTypeChoice, getPreferredLanguage(), allowNullChoice));
 

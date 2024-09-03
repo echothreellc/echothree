@@ -33,14 +33,14 @@ public class UnitOfMeasureTypeVolumeTransferCache
     }
     
     public UnitOfMeasureTypeVolumeTransfer getUnitOfMeasureTypeVolumeTransfer(UnitOfMeasureTypeVolume unitOfMeasureTypeVolume) {
-        UnitOfMeasureTypeVolumeTransfer unitOfMeasureTypeVolumeTransfer = get(unitOfMeasureTypeVolume);
+        var unitOfMeasureTypeVolumeTransfer = get(unitOfMeasureTypeVolume);
         
         if(unitOfMeasureTypeVolumeTransfer == null) {
-            UnitOfMeasureTypeTransfer unitOfMeasureTypeTransfer = uomControl.getUnitOfMeasureTypeTransfer(userVisit, unitOfMeasureTypeVolume.getUnitOfMeasureType());
-            UnitOfMeasureKind volumeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_VOLUME);
-            String height = formatUnitOfMeasure(volumeUnitOfMeasureKind, unitOfMeasureTypeVolume.getHeight());
-            String width = formatUnitOfMeasure(volumeUnitOfMeasureKind, unitOfMeasureTypeVolume.getWidth());
-            String depth = formatUnitOfMeasure(volumeUnitOfMeasureKind, unitOfMeasureTypeVolume.getDepth());
+            var unitOfMeasureTypeTransfer = uomControl.getUnitOfMeasureTypeTransfer(userVisit, unitOfMeasureTypeVolume.getUnitOfMeasureType());
+            var volumeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_VOLUME);
+            var height = formatUnitOfMeasure(volumeUnitOfMeasureKind, unitOfMeasureTypeVolume.getHeight());
+            var width = formatUnitOfMeasure(volumeUnitOfMeasureKind, unitOfMeasureTypeVolume.getWidth());
+            var depth = formatUnitOfMeasure(volumeUnitOfMeasureKind, unitOfMeasureTypeVolume.getDepth());
             
             unitOfMeasureTypeVolumeTransfer = new UnitOfMeasureTypeVolumeTransfer(unitOfMeasureTypeTransfer, height, width, depth);
             put(unitOfMeasureTypeVolume, unitOfMeasureTypeVolumeTransfer);

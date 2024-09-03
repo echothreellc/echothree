@@ -66,13 +66,13 @@ public class GetPicklistAliasTypeChoicesCommand
     @Override
     protected BaseResult execute() {
         var picklistControl = Session.getModelController(PicklistControl.class);
-        GetPicklistAliasTypeChoicesResult result = PicklistResultFactory.getGetPicklistAliasTypeChoicesResult();
-        String picklistTypeName = form.getPicklistTypeName();
-        PicklistType picklistType = picklistControl.getPicklistTypeByName(picklistTypeName);
+        var result = PicklistResultFactory.getGetPicklistAliasTypeChoicesResult();
+        var picklistTypeName = form.getPicklistTypeName();
+        var picklistType = picklistControl.getPicklistTypeByName(picklistTypeName);
 
         if(picklistType != null) {
-            String defaultPicklistAliasTypeChoice = form.getDefaultPicklistAliasTypeChoice();
-            boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+            var defaultPicklistAliasTypeChoice = form.getDefaultPicklistAliasTypeChoice();
+            var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 
             result.setPicklistAliasTypeChoices(picklistControl.getPicklistAliasTypeChoices(defaultPicklistAliasTypeChoice, getPreferredLanguage(), allowNullChoice,
                     picklistType));

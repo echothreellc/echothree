@@ -54,15 +54,15 @@ public class CreateSelectorNodeTypeUseCommand
     @Override
     protected BaseResult execute() {
         var selectorControl = Session.getModelController(SelectorControl.class);
-        String selectorKindName = form.getSelectorKindName();
-        SelectorKind selectorKind = selectorControl.getSelectorKindByName(selectorKindName);
+        var selectorKindName = form.getSelectorKindName();
+        var selectorKind = selectorControl.getSelectorKindByName(selectorKindName);
         
         if(selectorKind != null) {
-            String selectorNodeTypeName = form.getSelectorNodeTypeName();
-            SelectorNodeType selectorNodeType = selectorControl.getSelectorNodeTypeByName(selectorNodeTypeName);
+            var selectorNodeTypeName = form.getSelectorNodeTypeName();
+            var selectorNodeType = selectorControl.getSelectorNodeTypeByName(selectorNodeTypeName);
             
             if(selectorNodeType != null) {
-                SelectorNodeTypeUse selectorNodeTypeUse = selectorControl.getSelectorNodeTypeUse(selectorKind, selectorNodeType);
+                var selectorNodeTypeUse = selectorControl.getSelectorNodeTypeUse(selectorKind, selectorNodeType);
                 
                 if(selectorNodeTypeUse == null) {
                     var isDefault = Boolean.valueOf(form.getIsDefault());

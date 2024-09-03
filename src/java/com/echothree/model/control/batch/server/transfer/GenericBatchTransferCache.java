@@ -50,7 +50,7 @@ public abstract class GenericBatchTransferCache<V extends GenericBatchTransfer>
     }
     
     protected WorkflowEntityStatusTransfer getBatchStatus(Batch batch, EntityInstance entityInstance) {
-        Workflow batchWorkflow = batch.getLastDetail().getBatchType().getLastDetail().getBatchWorkflow();
+        var batchWorkflow = batch.getLastDetail().getBatchType().getLastDetail().getBatchWorkflow();
         
         return batchWorkflow == null ? null : workflowControl.getWorkflowEntityStatusTransferByEntityInstance(userVisit, batchWorkflow, entityInstance);
     }

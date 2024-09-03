@@ -68,16 +68,16 @@ public class CreateContactMechanismAliasTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var contactControl = Session.getModelController(ContactControl.class);
-        String contactMechanismAliasTypeName = form.getContactMechanismAliasTypeName();
-        ContactMechanismAliasType contactMechanismAliasType = contactControl.getContactMechanismAliasTypeByName(contactMechanismAliasTypeName);
+        var contactMechanismAliasTypeName = form.getContactMechanismAliasTypeName();
+        var contactMechanismAliasType = contactControl.getContactMechanismAliasTypeByName(contactMechanismAliasTypeName);
         
         if(contactMechanismAliasType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                ContactMechanismAliasTypeDescription contactMechanismAliasTypeDescription = contactControl.getContactMechanismAliasTypeDescription(contactMechanismAliasType, language);
+                var contactMechanismAliasTypeDescription = contactControl.getContactMechanismAliasTypeDescription(contactMechanismAliasType, language);
                 
                 if(contactMechanismAliasTypeDescription == null) {
                     var description = form.getDescription();

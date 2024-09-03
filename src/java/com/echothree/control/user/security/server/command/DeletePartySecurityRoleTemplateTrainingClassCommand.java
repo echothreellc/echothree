@@ -68,16 +68,16 @@ public class DeletePartySecurityRoleTemplateTrainingClassCommand
     @Override
     protected BaseResult execute() {
         var securityControl = Session.getModelController(SecurityControl.class);
-        String partySecurityRoleTemplateName = form.getPartySecurityRoleTemplateName();
-        PartySecurityRoleTemplate partySecurityRoleTemplate = securityControl.getPartySecurityRoleTemplateByName(partySecurityRoleTemplateName);
+        var partySecurityRoleTemplateName = form.getPartySecurityRoleTemplateName();
+        var partySecurityRoleTemplate = securityControl.getPartySecurityRoleTemplateByName(partySecurityRoleTemplateName);
         
         if(partySecurityRoleTemplate != null) {
             var trainingControl = Session.getModelController(TrainingControl.class);
-            String trainingClassName = form.getTrainingClassName();
-            TrainingClass trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
+            var trainingClassName = form.getTrainingClassName();
+            var trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
             
             if(trainingClass != null) {
-                PartySecurityRoleTemplateTrainingClass partySecurityRoleTemplateTrainingClass = securityControl.getPartySecurityRoleTemplateTrainingClassForUpdate(partySecurityRoleTemplate, trainingClass);
+                var partySecurityRoleTemplateTrainingClass = securityControl.getPartySecurityRoleTemplateTrainingClassForUpdate(partySecurityRoleTemplate, trainingClass);
 
                 if(partySecurityRoleTemplateTrainingClass != null) {
                     PartySecurityRoleTemplateLogic.getInstance().deletePartySecurityRoleTemplateTrainingClass(partySecurityRoleTemplateTrainingClass, getPartyPK());

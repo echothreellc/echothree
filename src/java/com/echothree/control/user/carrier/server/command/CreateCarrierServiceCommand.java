@@ -78,24 +78,24 @@ public class CreateCarrierServiceCommand
     @Override
     protected BaseResult execute() {
         var carrierControl = Session.getModelController(CarrierControl.class);
-        String carrierName = form.getCarrierName();
-        Carrier carrier = carrierControl.getCarrierByName(carrierName);
+        var carrierName = form.getCarrierName();
+        var carrier = carrierControl.getCarrierByName(carrierName);
         
         if(carrier != null) {
-            Party carrierParty = carrier.getParty();
-            String carrierServiceName = form.getCarrierServiceName();
-            CarrierService carrierService = carrierControl.getCarrierServiceByName(carrierParty, carrierServiceName);
+            var carrierParty = carrier.getParty();
+            var carrierServiceName = form.getCarrierServiceName();
+            var carrierService = carrierControl.getCarrierServiceByName(carrierParty, carrierServiceName);
             
             if(carrierService == null) {
-                String geoCodeSelectorName = form.getGeoCodeSelectorName();
+                var geoCodeSelectorName = form.getGeoCodeSelectorName();
                 Selector geoCodeSelector = null;
 
                 if(geoCodeSelectorName != null) {
                     var selectorControl = Session.getModelController(SelectorControl.class);
-                    SelectorKind selectorKind = selectorControl.getSelectorKindByName(SelectorKinds.POSTAL_ADDRESS.name());
+                    var selectorKind = selectorControl.getSelectorKindByName(SelectorKinds.POSTAL_ADDRESS.name());
 
                     if(selectorKind != null) {
-                        SelectorType selectorType = selectorControl.getSelectorTypeByName(selectorKind,
+                        var selectorType = selectorControl.getSelectorTypeByName(selectorKind,
                                 SelectorTypes.CARRIER.name());
 
                         if(selectorType != null) {
@@ -110,15 +110,15 @@ public class CreateCarrierServiceCommand
                 }
 
                 if(geoCodeSelectorName == null || geoCodeSelector != null) {
-                    String itemSelectorName = form.getItemSelectorName();
+                    var itemSelectorName = form.getItemSelectorName();
                     Selector itemSelector = null;
 
                     if(itemSelectorName != null) {
                         var selectorControl = Session.getModelController(SelectorControl.class);
-                        SelectorKind selectorKind = selectorControl.getSelectorKindByName(SelectorKinds.ITEM.name());
+                        var selectorKind = selectorControl.getSelectorKindByName(SelectorKinds.ITEM.name());
 
                         if(selectorKind != null) {
-                            SelectorType selectorType = selectorControl.getSelectorTypeByName(selectorKind,
+                            var selectorType = selectorControl.getSelectorTypeByName(selectorKind,
                                     SelectorTypes.CARRIER.name());
 
                             if(selectorType != null) {
@@ -133,7 +133,7 @@ public class CreateCarrierServiceCommand
                     }
 
                     if(itemSelectorName == null || itemSelector != null) {
-                        PartyPK createdBy = getPartyPK();
+                        var createdBy = getPartyPK();
                         var isDefault = Boolean.valueOf(form.getIsDefault());
                         var sortOrder = Integer.valueOf(form.getSortOrder());
                         var description = form.getDescription();

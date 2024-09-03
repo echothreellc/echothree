@@ -52,12 +52,12 @@ public class GetPrinterGroupJobStatusChoicesCommand
    @Override
     protected BaseResult execute() {
         var printerControl = Session.getModelController(PrinterControl.class);
-        GetPrinterGroupJobStatusChoicesResult result = PrinterResultFactory.getGetPrinterGroupJobStatusChoicesResult();
-        String printerGroupJobName = form.getPrinterGroupJobName();
-        PrinterGroupJob printerGroupJob = printerControl.getPrinterGroupJobByName(printerGroupJobName);
+       var result = PrinterResultFactory.getGetPrinterGroupJobStatusChoicesResult();
+       var printerGroupJobName = form.getPrinterGroupJobName();
+       var printerGroupJob = printerControl.getPrinterGroupJobByName(printerGroupJobName);
         
         if(printerGroupJob != null) {
-            String defaultPrinterGroupJobStatusChoice = form.getDefaultPrinterGroupJobStatusChoice();
+            var defaultPrinterGroupJobStatusChoice = form.getDefaultPrinterGroupJobStatusChoice();
             
             result.setPrinterGroupJobStatusChoices(printerControl.getPrinterGroupJobStatusChoices(defaultPrinterGroupJobStatusChoice,
                     getPreferredLanguage(), printerGroupJob, getPartyPK()));

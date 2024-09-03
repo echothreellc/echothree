@@ -32,11 +32,11 @@ public class InvoiceTimeTypeDescriptionTransferCache
     }
     
     public InvoiceTimeTypeDescriptionTransfer getInvoiceTimeTypeDescriptionTransfer(InvoiceTimeTypeDescription invoiceTimeTypeDescription) {
-        InvoiceTimeTypeDescriptionTransfer invoiceTimeTypeDescriptionTransfer = get(invoiceTimeTypeDescription);
+        var invoiceTimeTypeDescriptionTransfer = get(invoiceTimeTypeDescription);
         
         if(invoiceTimeTypeDescriptionTransfer == null) {
-            InvoiceTimeTypeTransfer invoiceTimeTypeTransfer = invoiceControl.getInvoiceTimeTypeTransfer(userVisit, invoiceTimeTypeDescription.getInvoiceTimeType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, invoiceTimeTypeDescription.getLanguage());
+            var invoiceTimeTypeTransfer = invoiceControl.getInvoiceTimeTypeTransfer(userVisit, invoiceTimeTypeDescription.getInvoiceTimeType());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, invoiceTimeTypeDescription.getLanguage());
             
             invoiceTimeTypeDescriptionTransfer = new InvoiceTimeTypeDescriptionTransfer(languageTransfer, invoiceTimeTypeTransfer, invoiceTimeTypeDescription.getDescription());
             put(invoiceTimeTypeDescription, invoiceTimeTypeDescriptionTransfer);

@@ -40,13 +40,13 @@ public class SecurityRolePartyTypeTransferCache
     }
     
     public SecurityRolePartyTypeTransfer getSecurityRolePartyTypeTransfer(SecurityRolePartyType securityRolePartyType) {
-        SecurityRolePartyTypeTransfer securityRolePartyTypeTransfer = get(securityRolePartyType);
+        var securityRolePartyTypeTransfer = get(securityRolePartyType);
         
         if(securityRolePartyTypeTransfer == null) {
-            SecurityRoleTransfer securityRoleTransfer = securityControl.getSecurityRoleTransfer(userVisit, securityRolePartyType.getSecurityRole());
-            PartyTypeTransfer partyTypeTransfer = partyControl.getPartyTypeTransfer(userVisit, securityRolePartyType.getPartyType());
-            Selector partySelector = securityRolePartyType.getPartySelector();
-            SelectorTransfer partySelectorTransfer = partySelector == null? null: selectorControl.getSelectorTransfer(userVisit, partySelector);
+            var securityRoleTransfer = securityControl.getSecurityRoleTransfer(userVisit, securityRolePartyType.getSecurityRole());
+            var partyTypeTransfer = partyControl.getPartyTypeTransfer(userVisit, securityRolePartyType.getPartyType());
+            var partySelector = securityRolePartyType.getPartySelector();
+            var partySelectorTransfer = partySelector == null? null: selectorControl.getSelectorTransfer(userVisit, partySelector);
             
             securityRolePartyTypeTransfer = new SecurityRolePartyTypeTransfer(securityRoleTransfer, partyTypeTransfer, partySelectorTransfer);
             put(securityRolePartyType, securityRolePartyTypeTransfer);

@@ -67,16 +67,16 @@ public class DeleteShipmentTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var shipmentControl = Session.getModelController(ShipmentControl.class);
-        String shipmentTypeName = form.getShipmentTypeName();
-        ShipmentType shipmentType = shipmentControl.getShipmentTypeByName(shipmentTypeName);
+        var shipmentTypeName = form.getShipmentTypeName();
+        var shipmentType = shipmentControl.getShipmentTypeByName(shipmentTypeName);
         
         if(shipmentType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                ShipmentTypeDescription shipmentTypeDescription = shipmentControl.getShipmentTypeDescriptionForUpdate(shipmentType, language);
+                var shipmentTypeDescription = shipmentControl.getShipmentTypeDescriptionForUpdate(shipmentType, language);
                 
                 if(shipmentTypeDescription != null) {
                     shipmentControl.deleteShipmentTypeDescription(shipmentTypeDescription, getPartyPK());

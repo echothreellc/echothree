@@ -36,14 +36,14 @@ public class TextDecorationTransferCache
     }
 
     public TextDecorationTransfer getTextDecorationTransfer(TextDecoration textDecoration) {
-        TextDecorationTransfer textDecorationTransfer = get(textDecoration);
+        var textDecorationTransfer = get(textDecoration);
 
         if(textDecorationTransfer == null) {
-            TextDecorationDetail textDecorationDetail = textDecoration.getLastDetail();
-            String textDecorationName = textDecorationDetail.getTextDecorationName();
-            Boolean isDefault = textDecorationDetail.getIsDefault();
-            Integer sortOrder = textDecorationDetail.getSortOrder();
-            String description = coreControl.getBestTextDecorationDescription(textDecoration, getLanguage());
+            var textDecorationDetail = textDecoration.getLastDetail();
+            var textDecorationName = textDecorationDetail.getTextDecorationName();
+            var isDefault = textDecorationDetail.getIsDefault();
+            var sortOrder = textDecorationDetail.getSortOrder();
+            var description = coreControl.getBestTextDecorationDescription(textDecoration, getLanguage());
 
             textDecorationTransfer = new TextDecorationTransfer(textDecorationName, isDefault, sortOrder, description);
             put(textDecoration, textDecorationTransfer);

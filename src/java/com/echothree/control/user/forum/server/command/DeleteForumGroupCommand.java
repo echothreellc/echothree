@@ -49,8 +49,8 @@ public class DeleteForumGroupCommand
     @Override
     protected BaseResult execute() {
         var forumControl = Session.getModelController(ForumControl.class);
-        String forumGroupName = form.getForumGroupName();
-        ForumGroup forumGroup = forumControl.getForumGroupByNameForUpdate(forumGroupName);
+        var forumGroupName = form.getForumGroupName();
+        var forumGroup = forumControl.getForumGroupByNameForUpdate(forumGroupName);
         
         if(forumGroup != null) {
             forumControl.deleteForumGroup(forumGroup, getPartyPK());

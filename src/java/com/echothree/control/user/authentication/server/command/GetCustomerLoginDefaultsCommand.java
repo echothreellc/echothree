@@ -51,24 +51,24 @@ public class GetCustomerLoginDefaultsCommand
     
     @Override
     protected BaseResult execute() {
-        GetCustomerLoginDefaultsResult result = AuthenticationResultFactory.getGetCustomerLoginDefaultsResult();
-        UserControl userControl = getUserControl();
-        UserSession userSession = userControl.getUserSessionByUserVisit(getUserVisit());
+        var result = AuthenticationResultFactory.getGetCustomerLoginDefaultsResult();
+        var userControl = getUserControl();
+        var userSession = userControl.getUserSessionByUserVisit(getUserVisit());
         String username = null;
         
         if(userSession != null) {
-            Party party = userSession.getParty();
+            var party = userSession.getParty();
             
             if(party != null) {
                 if(party.getLastDetail().getPartyType().getPartyTypeName().equals(PartyTypes.CUSTOMER.name())) {
-                    UserLogin userLogin = userControl.getUserLogin(party);
+                    var userLogin = userControl.getUserLogin(party);
                     
                     username = userLogin.getUsername();
                 }
             }
         }
-        
-        CustomerLoginForm customerLoginForm = AuthenticationFormFactory.getCustomerLoginForm();
+
+        var customerLoginForm = AuthenticationFormFactory.getCustomerLoginForm();
         customerLoginForm.setUsername(username);
         result.setCustomerLoginForm(customerLoginForm);
         

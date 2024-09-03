@@ -83,24 +83,24 @@ public class EditItemUnitCustomerTypeLimitCommand
     public ItemUnitCustomerTypeLimit getEntity(EditItemUnitCustomerTypeLimitResult result) {
         var itemControl = Session.getModelController(ItemControl.class);
         ItemUnitCustomerTypeLimit itemUnitCustomerTypeLimit = null;
-        String itemName = spec.getItemName();
-        Item item = itemControl.getItemByName(itemName);
+        var itemName = spec.getItemName();
+        var item = itemControl.getItemByName(itemName);
 
         if(item != null) {
             var inventoryControl = Session.getModelController(InventoryControl.class);
-            String inventoryConditionName = spec.getInventoryConditionName();
-            InventoryCondition inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
+            var inventoryConditionName = spec.getInventoryConditionName();
+            var inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
 
             if(inventoryCondition != null) {
                 var uomControl = Session.getModelController(UomControl.class);
-                ItemDetail itemDetail = item.getLastDetail();
-                String unitOfMeasureTypeName = spec.getUnitOfMeasureTypeName();
-                UnitOfMeasureType unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(itemDetail.getUnitOfMeasureKind(), unitOfMeasureTypeName);
+                var itemDetail = item.getLastDetail();
+                var unitOfMeasureTypeName = spec.getUnitOfMeasureTypeName();
+                var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(itemDetail.getUnitOfMeasureKind(), unitOfMeasureTypeName);
 
                 if(unitOfMeasureType != null) {
                     var customerControl = Session.getModelController(CustomerControl.class);
-                    String customerTypeName = spec.getCustomerTypeName();
-                    CustomerType customerType = customerControl.getCustomerTypeByName(customerTypeName);
+                    var customerTypeName = spec.getCustomerTypeName();
+                    var customerType = customerControl.getCustomerTypeByName(customerTypeName);
 
                     if(customerType != null) {
                         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -155,8 +155,8 @@ public class EditItemUnitCustomerTypeLimitCommand
 
     @Override
     public void canUpdate(ItemUnitCustomerTypeLimit itemUnitCustomerTypeLimit) {
-        String strMinimumQuantity = edit.getMinimumQuantity();
-        String strMaximumQuantity = edit.getMaximumQuantity();
+        var strMinimumQuantity = edit.getMinimumQuantity();
+        var strMaximumQuantity = edit.getMaximumQuantity();
 
         minimumQuantity = strMinimumQuantity == null ? null : Long.valueOf(strMinimumQuantity);
         maximumQuantity = strMaximumQuantity == null ? null : Long.valueOf(strMaximumQuantity);
@@ -171,7 +171,7 @@ public class EditItemUnitCustomerTypeLimitCommand
     @Override
     public void doUpdate(ItemUnitCustomerTypeLimit itemUnitCustomerTypeLimit) {
         var itemControl = Session.getModelController(ItemControl.class);
-        ItemUnitCustomerTypeLimitValue itemUnitCustomerTypeLimitValue = itemControl.getItemUnitCustomerTypeLimitValue(itemUnitCustomerTypeLimit);
+        var itemUnitCustomerTypeLimitValue = itemControl.getItemUnitCustomerTypeLimitValue(itemUnitCustomerTypeLimit);
 
         itemUnitCustomerTypeLimitValue.setMinimumQuantity(minimumQuantity);
         itemUnitCustomerTypeLimitValue.setMaximumQuantity(maximumQuantity);

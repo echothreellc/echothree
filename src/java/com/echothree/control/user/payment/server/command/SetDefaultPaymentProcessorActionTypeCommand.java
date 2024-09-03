@@ -62,8 +62,8 @@ public class SetDefaultPaymentProcessorActionTypeCommand
     @Override
     protected BaseResult execute() {
         var paymentProcessorActionTypeControl = Session.getModelController(PaymentProcessorActionTypeControl.class);
-        String paymentProcessorActionTypeName = form.getPaymentProcessorActionTypeName();
-        PaymentProcessorActionTypeDetailValue paymentProcessorActionTypeDetailValue = paymentProcessorActionTypeControl.getPaymentProcessorActionTypeDetailValueByNameForUpdate(paymentProcessorActionTypeName);
+        var paymentProcessorActionTypeName = form.getPaymentProcessorActionTypeName();
+        var paymentProcessorActionTypeDetailValue = paymentProcessorActionTypeControl.getPaymentProcessorActionTypeDetailValueByNameForUpdate(paymentProcessorActionTypeName);
         
         if(paymentProcessorActionTypeDetailValue != null) {
             paymentProcessorActionTypeDetailValue.setIsDefault(Boolean.TRUE);

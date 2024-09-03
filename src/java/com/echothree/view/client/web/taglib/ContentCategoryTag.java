@@ -152,7 +152,7 @@ public class ContentCategoryTag
     public int doStartTag()
             throws JspException {
         try {
-            GetContentCategoryForm commandForm = ContentUtil.getHome().getGetContentCategoryForm();
+            var commandForm = ContentUtil.getHome().getGetContentCategoryForm();
             Map<String, Limit> limits = new HashMap<>();
 
             commandForm.setContentWebAddressName(contentWebAddressName);
@@ -172,7 +172,7 @@ public class ContentCategoryTag
             }
             commandForm.setLimits(limits);
 
-            CommandResult commandResult = ContentUtil.getHome().getContentCategory(getUserVisitPK(), commandForm);
+            var commandResult = ContentUtil.getHome().getContentCategory(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -180,8 +180,8 @@ public class ContentCategoryTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetContentCategoryResult result = (GetContentCategoryResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetContentCategoryResult)executionResult.getResult();
 
                 pageContext.setAttribute(var, result.getContentCategory(), scope);
             }

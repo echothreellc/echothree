@@ -39,16 +39,16 @@ public class OrderAliasTypeTransferCache
     }
     
     public OrderAliasTypeTransfer getOrderAliasTypeTransfer(OrderAliasType orderAliasType) {
-        OrderAliasTypeTransfer orderAliasTypeTransfer = get(orderAliasType);
+        var orderAliasTypeTransfer = get(orderAliasType);
         
         if(orderAliasTypeTransfer == null) {
-            OrderAliasTypeDetail orderAliasTypeDetail = orderAliasType.getLastDetail();
-            OrderTypeTransfer orderType = orderTypeControl.getOrderTypeTransfer(userVisit, orderAliasTypeDetail.getOrderType());
-            String orderAliasTypeName = orderAliasTypeDetail.getOrderAliasTypeName();
-            String validationPattern = orderAliasTypeDetail.getValidationPattern();
-            Boolean isDefault = orderAliasTypeDetail.getIsDefault();
-            Integer sortOrder = orderAliasTypeDetail.getSortOrder();
-            String description = orderAliasControl.getBestOrderAliasTypeDescription(orderAliasType, getLanguage());
+            var orderAliasTypeDetail = orderAliasType.getLastDetail();
+            var orderType = orderTypeControl.getOrderTypeTransfer(userVisit, orderAliasTypeDetail.getOrderType());
+            var orderAliasTypeName = orderAliasTypeDetail.getOrderAliasTypeName();
+            var validationPattern = orderAliasTypeDetail.getValidationPattern();
+            var isDefault = orderAliasTypeDetail.getIsDefault();
+            var sortOrder = orderAliasTypeDetail.getSortOrder();
+            var description = orderAliasControl.getBestOrderAliasTypeDescription(orderAliasType, getLanguage());
             
             orderAliasTypeTransfer = new OrderAliasTypeTransfer(orderType, orderAliasTypeName, validationPattern, isDefault, sortOrder, description);
             put(orderAliasType, orderAliasTypeTransfer);

@@ -36,11 +36,11 @@ public class EntityListItemDescriptionTransferCache
     }
     
     public EntityListItemDescriptionTransfer getEntityListItemDescriptionTransfer(EntityListItemDescription entityListItemDescription, EntityInstance entityInstance) {
-        EntityListItemDescriptionTransfer entityListItemDescriptionTransfer = get(entityListItemDescription);
+        var entityListItemDescriptionTransfer = get(entityListItemDescription);
         
         if(entityListItemDescriptionTransfer == null) {
-            EntityListItemTransfer entityListItemTransfer = coreControl.getEntityListItemTransfer(userVisit, entityListItemDescription.getEntityListItem(), entityInstance);
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, entityListItemDescription.getLanguage());
+            var entityListItemTransfer = coreControl.getEntityListItemTransfer(userVisit, entityListItemDescription.getEntityListItem(), entityInstance);
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, entityListItemDescription.getLanguage());
             
             entityListItemDescriptionTransfer = new EntityListItemDescriptionTransfer(languageTransfer, entityListItemTransfer,
                     entityListItemDescription.getDescription());

@@ -53,13 +53,13 @@ public class ContentCategoryItemTransferCache
     }
     
     public ContentCategoryItemTransfer getContentCategoryItemTransfer(ContentCategoryItem contentCategoryItem) {
-        ContentCategoryItemTransfer contentCategoryItemTransfer = get(contentCategoryItem);
+        var contentCategoryItemTransfer = get(contentCategoryItem);
         
         if(contentCategoryItemTransfer == null) {
-            ContentCategoryTransfer contentCategory = filterContentCategory ? null : contentControl.getContentCategoryTransfer(userVisit, contentCategoryItem.getContentCategory());
-            ContentCatalogItemTransfer contentCatalogItem = filterContentCatalogItem ? null : contentControl.getContentCatalogItemTransfer(userVisit, contentCategoryItem.getContentCatalogItem());
-            Boolean isDefault = filterIsDefault ? null : contentCategoryItem.getIsDefault();
-            Integer sortOrder = filterSortOrder ? null : contentCategoryItem.getSortOrder();
+            var contentCategory = filterContentCategory ? null : contentControl.getContentCategoryTransfer(userVisit, contentCategoryItem.getContentCategory());
+            var contentCatalogItem = filterContentCatalogItem ? null : contentControl.getContentCatalogItemTransfer(userVisit, contentCategoryItem.getContentCatalogItem());
+            var isDefault = filterIsDefault ? null : contentCategoryItem.getIsDefault();
+            var sortOrder = filterSortOrder ? null : contentCategoryItem.getSortOrder();
             
             contentCategoryItemTransfer = new ContentCategoryItemTransfer(contentCategory, contentCatalogItem, isDefault, sortOrder);
             put(contentCategoryItem, contentCategoryItemTransfer);

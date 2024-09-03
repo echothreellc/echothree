@@ -32,12 +32,12 @@ public class ContentWebAddressDescriptionTransferCache
     }
     
     public ContentWebAddressDescriptionTransfer getContentWebAddressDescriptionTransfer(ContentWebAddressDescription contentWebAddressDescription) {
-        ContentWebAddressDescriptionTransfer contentWebAddressDescriptionTransfer = get(contentWebAddressDescription);
+        var contentWebAddressDescriptionTransfer = get(contentWebAddressDescription);
         
         if(contentWebAddressDescriptionTransfer == null) {
-            ContentWebAddressTransferCache contentWebAddressTransferCache = contentControl.getContentTransferCaches(userVisit).getContentWebAddressTransferCache();
-            ContentWebAddressTransfer contentWebAddressTransfer = contentWebAddressTransferCache.getContentWebAddressTransfer(contentWebAddressDescription.getContentWebAddress());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, contentWebAddressDescription.getLanguage());
+            var contentWebAddressTransferCache = contentControl.getContentTransferCaches(userVisit).getContentWebAddressTransferCache();
+            var contentWebAddressTransfer = contentWebAddressTransferCache.getContentWebAddressTransfer(contentWebAddressDescription.getContentWebAddress());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, contentWebAddressDescription.getLanguage());
             
             contentWebAddressDescriptionTransfer = new ContentWebAddressDescriptionTransfer(languageTransfer, contentWebAddressTransfer, contentWebAddressDescription.getDescription());
             put(contentWebAddressDescription, contentWebAddressDescriptionTransfer);

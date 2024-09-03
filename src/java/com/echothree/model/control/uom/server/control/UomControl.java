@@ -122,20 +122,20 @@ public class UomControl
     
     public UnitOfMeasureKind createUnitOfMeasureKind(String unitOfMeasureKindName, Integer fractionDigits, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
-        UnitOfMeasureKind defaultUnitOfMeasureKind = getDefaultUnitOfMeasureKind();
-        boolean defaultFound = defaultUnitOfMeasureKind != null;
+        var defaultUnitOfMeasureKind = getDefaultUnitOfMeasureKind();
+        var defaultFound = defaultUnitOfMeasureKind != null;
         
         if(defaultFound && isDefault) {
-            UnitOfMeasureKindDetailValue defaultUnitOfMeasureKindDetailValue = getDefaultUnitOfMeasureKindDetailValueForUpdate();
+            var defaultUnitOfMeasureKindDetailValue = getDefaultUnitOfMeasureKindDetailValueForUpdate();
             
             defaultUnitOfMeasureKindDetailValue.setIsDefault(Boolean.FALSE);
             updateUnitOfMeasureKindFromValue(defaultUnitOfMeasureKindDetailValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        UnitOfMeasureKind unitOfMeasureKind = UnitOfMeasureKindFactory.getInstance().create();
-        UnitOfMeasureKindDetail unitOfMeasureKindDetail = UnitOfMeasureKindDetailFactory.getInstance().create(session, unitOfMeasureKind, unitOfMeasureKindName,
+
+        var unitOfMeasureKind = UnitOfMeasureKindFactory.getInstance().create();
+        var unitOfMeasureKindDetail = UnitOfMeasureKindDetailFactory.getInstance().create(session, unitOfMeasureKind, unitOfMeasureKindName,
                 fractionDigits, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -185,8 +185,8 @@ public class UomControl
                     "WHERE uomk_activedetailid = uomkdt_unitofmeasurekinddetailid " +
                     "FOR UPDATE";
         }
-        
-        PreparedStatement ps = UnitOfMeasureKindFactory.getInstance().prepareStatement(query);
+
+        var ps = UnitOfMeasureKindFactory.getInstance().prepareStatement(query);
         
         return UnitOfMeasureKindFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
     }
@@ -203,7 +203,7 @@ public class UomControl
         List<UnitOfMeasureKind> unitOfMeasureKinds;
         
         try {
-            PreparedStatement ps = UnitOfMeasureKindFactory.getInstance().prepareStatement(
+            var ps = UnitOfMeasureKindFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM unitofmeasurekinds, unitofmeasurekinddetails, unitofmeasurekinduses " +
                     "WHERE uomk_unitofmeasurekindid = uomkdt_uomk_unitofmeasurekindid AND uomkdt_thrutime = ? " +
@@ -235,8 +235,8 @@ public class UomControl
                     "WHERE uomk_activedetailid = uomkdt_unitofmeasurekinddetailid AND uomkdt_isdefault = 1 " +
                     "FOR UPDATE";
         }
-        
-        PreparedStatement ps = UnitOfMeasureKindFactory.getInstance().prepareStatement(query);
+
+        var ps = UnitOfMeasureKindFactory.getInstance().prepareStatement(query);
         
         return UnitOfMeasureKindFactory.getInstance().getEntityFromQuery(entityPermission, ps);
     }
@@ -271,8 +271,8 @@ public class UomControl
                         "AND uomkdt_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = UnitOfMeasureKindFactory.getInstance().prepareStatement(query);
+
+            var ps = UnitOfMeasureKindFactory.getInstance().prepareStatement(query);
             
             ps.setString(1, unitOfMeasureKindName);
             ps.setLong(2, Session.MAX_TIME);
@@ -307,7 +307,7 @@ public class UomControl
     
     public List<UnitOfMeasureKindTransfer> getUnitOfMeasureKindTransfers(UserVisit userVisit, Collection<UnitOfMeasureKind> unitOfMeasureKinds) {
         List<UnitOfMeasureKindTransfer> unitOfMeasureKindTransfers = new ArrayList<>(unitOfMeasureKinds.size());
-        UnitOfMeasureKindTransferCache unitOfMeasureKindTransferCache = getUomTransferCaches(userVisit).getUnitOfMeasureKindTransferCache();
+        var unitOfMeasureKindTransferCache = getUomTransferCaches(userVisit).getUnitOfMeasureKindTransferCache();
         
         unitOfMeasureKinds.forEach((unitOfMeasureKind) ->
                 unitOfMeasureKindTransfers.add(unitOfMeasureKindTransferCache.getUnitOfMeasureKindTransfer(unitOfMeasureKind))
@@ -322,14 +322,14 @@ public class UomControl
     
     public UnitOfMeasureKindChoicesBean getUnitOfMeasureKindChoices(String defaultUnitOfMeasureKindChoice, Language language,
             boolean allowNullChoice) {
-        List<UnitOfMeasureKind> unitOfMeasureKinds = getUnitOfMeasureKinds();
+        var unitOfMeasureKinds = getUnitOfMeasureKinds();
         
         return getUnitOfMeasureKindChoices(defaultUnitOfMeasureKindChoice, language, allowNullChoice, unitOfMeasureKinds);
     }
     
     public UnitOfMeasureKindChoicesBean getUnitOfMeasureKindChoicesByUnitOfMeasureKindUseType(String defaultUnitOfMeasureKindChoice, Language language,
             boolean allowNullChoice, UnitOfMeasureKindUseType unitOfMeasureKindUseType) {
-        List<UnitOfMeasureKind> unitOfMeasureKinds = getUnitOfMeasureKindsByUnitOfMeasureKindUseType(unitOfMeasureKindUseType);
+        var unitOfMeasureKinds = getUnitOfMeasureKindsByUnitOfMeasureKindUseType(unitOfMeasureKindUseType);
         
         return getUnitOfMeasureKindChoices(defaultUnitOfMeasureKindChoice, language, allowNullChoice, unitOfMeasureKinds);
     }
@@ -351,7 +351,7 @@ public class UomControl
         }
         
         for(var unitOfMeasureKind : unitOfMeasureKinds) {
-            UnitOfMeasureKindDetail unitOfMeasureKindDetail = unitOfMeasureKind.getLastDetail();
+            var unitOfMeasureKindDetail = unitOfMeasureKind.getLastDetail();
             
             var label = getBestUnitOfMeasureKindDescription(unitOfMeasureKind, language);
             var value = unitOfMeasureKindDetail.getUnitOfMeasureKindName();
@@ -370,27 +370,27 @@ public class UomControl
     
     public UnitOfMeasureChoicesBean getUnitOfMeasureChoicesByUnitOfMeasureKindUseType(String defaultUnitOfMeasureChoice,
             Language language, UnitOfMeasureKindUseType unitOfMeasureKindUseType) {
-        List<UnitOfMeasureKind> unitOfMeasureKinds = getUnitOfMeasureKindsByUnitOfMeasureKindUseType(unitOfMeasureKindUseType);
+        var unitOfMeasureKinds = getUnitOfMeasureKindsByUnitOfMeasureKindUseType(unitOfMeasureKindUseType);
         ArrayList<String> labels = new ArrayList<>();
         ArrayList<String> values = new ArrayList<>();
         String defaultValue = null;
-        Iterator<UnitOfMeasureKind> uomkIter = unitOfMeasureKinds.iterator();
+        var uomkIter = unitOfMeasureKinds.iterator();
         
         while(uomkIter.hasNext()) {
-            UnitOfMeasureKind unitOfMeasureKind = uomkIter.next();
-            String uomkDescription = getBestUnitOfMeasureKindDescription(unitOfMeasureKind, language);
-            String uomkName = unitOfMeasureKind.getLastDetail().getUnitOfMeasureKindName();
-            List<UnitOfMeasureType> unitOfMeasureTypes = getUnitOfMeasureTypesByUnitOfMeasureKind(unitOfMeasureKind);
-            Iterator<UnitOfMeasureType> uomtIter = unitOfMeasureTypes.iterator();
+            var unitOfMeasureKind = uomkIter.next();
+            var uomkDescription = getBestUnitOfMeasureKindDescription(unitOfMeasureKind, language);
+            var uomkName = unitOfMeasureKind.getLastDetail().getUnitOfMeasureKindName();
+            var unitOfMeasureTypes = getUnitOfMeasureTypesByUnitOfMeasureKind(unitOfMeasureKind);
+            var uomtIter = unitOfMeasureTypes.iterator();
             
             if(uomkDescription == null) {
                 uomkDescription = uomkName;
             }
             
             while(uomtIter.hasNext()) {
-                UnitOfMeasureType unitOfMeasureType = uomtIter.next();
-                String uomtDescription = getBestSingularUnitOfMeasureTypeDescription(unitOfMeasureType, language);
-                String uomtName = unitOfMeasureType.getLastDetail().getUnitOfMeasureTypeName();
+                var unitOfMeasureType = uomtIter.next();
+                var uomtDescription = getBestSingularUnitOfMeasureTypeDescription(unitOfMeasureType, language);
+                var uomtName = unitOfMeasureType.getLastDetail().getUnitOfMeasureTypeName();
                 
                 if(uomtDescription == null) {
                     uomtDescription = uomtName;
@@ -414,26 +414,26 @@ public class UomControl
     private void updateUnitOfMeasureKindFromValue(UnitOfMeasureKindDetailValue unitOfMeasureKindDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(unitOfMeasureKindDetailValue.hasBeenModified()) {
-            UnitOfMeasureKind unitOfMeasureKind = UnitOfMeasureKindFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var unitOfMeasureKind = UnitOfMeasureKindFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      unitOfMeasureKindDetailValue.getUnitOfMeasureKindPK());
-            UnitOfMeasureKindDetail unitOfMeasureKindDetail = unitOfMeasureKind.getActiveDetailForUpdate();
+            var unitOfMeasureKindDetail = unitOfMeasureKind.getActiveDetailForUpdate();
             
             unitOfMeasureKindDetail.setThruTime(session.START_TIME_LONG);
             unitOfMeasureKindDetail.store();
-            
-            UnitOfMeasureKindPK unitOfMeasureKindPK = unitOfMeasureKindDetail.getUnitOfMeasureKindPK();
-            String unitOfMeasureKindName = unitOfMeasureKindDetailValue.getUnitOfMeasureKindName();
-            Integer fractionDigits = unitOfMeasureKindDetailValue.getFractionDigits();
-            Boolean isDefault = unitOfMeasureKindDetailValue.getIsDefault();
-            Integer sortOrder = unitOfMeasureKindDetailValue.getSortOrder();
+
+            var unitOfMeasureKindPK = unitOfMeasureKindDetail.getUnitOfMeasureKindPK();
+            var unitOfMeasureKindName = unitOfMeasureKindDetailValue.getUnitOfMeasureKindName();
+            var fractionDigits = unitOfMeasureKindDetailValue.getFractionDigits();
+            var isDefault = unitOfMeasureKindDetailValue.getIsDefault();
+            var sortOrder = unitOfMeasureKindDetailValue.getSortOrder();
             
             if(checkDefault) {
-                UnitOfMeasureKind defaultUnitOfMeasureKind = getDefaultUnitOfMeasureKind();
-                boolean defaultFound = defaultUnitOfMeasureKind != null && !defaultUnitOfMeasureKind.equals(unitOfMeasureKind);
+                var defaultUnitOfMeasureKind = getDefaultUnitOfMeasureKind();
+                var defaultFound = defaultUnitOfMeasureKind != null && !defaultUnitOfMeasureKind.equals(unitOfMeasureKind);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    UnitOfMeasureKindDetailValue defaultUnitOfMeasureKindDetailValue = getDefaultUnitOfMeasureKindDetailValueForUpdate();
+                    var defaultUnitOfMeasureKindDetailValue = getDefaultUnitOfMeasureKindDetailValueForUpdate();
                     
                     defaultUnitOfMeasureKindDetailValue.setIsDefault(Boolean.FALSE);
                     updateUnitOfMeasureKindFromValue(defaultUnitOfMeasureKindDetailValue, false, updatedBy);
@@ -461,23 +461,23 @@ public class UomControl
         deleteUnitOfMeasureKindUseByUnitOfMeasureKind(unitOfMeasureKind, deletedBy);
         deleteUnitOfMeasureKindDescriptionsByUnitOfMeasureKind(unitOfMeasureKind, deletedBy);
         deleteUnitOfMeasureTypesByUnitOfMeasureKind(unitOfMeasureKind, deletedBy);
-        
-        UnitOfMeasureKindDetail unitOfMeasureKindDetail = unitOfMeasureKind.getLastDetailForUpdate();
+
+        var unitOfMeasureKindDetail = unitOfMeasureKind.getLastDetailForUpdate();
         unitOfMeasureKindDetail.setThruTime(session.START_TIME_LONG);
         unitOfMeasureKindDetail.store();
         unitOfMeasureKind.setActiveDetail(null);
         
         // Check for default, and pick one if necessary
-        UnitOfMeasureKind defaultUnitOfMeasureKind = getDefaultUnitOfMeasureKind();
+        var defaultUnitOfMeasureKind = getDefaultUnitOfMeasureKind();
         if(defaultUnitOfMeasureKind == null) {
-            List<UnitOfMeasureKind> unitOfMeasureKinds = getUnitOfMeasureKindsForUpdate();
+            var unitOfMeasureKinds = getUnitOfMeasureKindsForUpdate();
             
             if(!unitOfMeasureKinds.isEmpty()) {
-                Iterator<UnitOfMeasureKind> iter = unitOfMeasureKinds.iterator();
+                var iter = unitOfMeasureKinds.iterator();
                 if(iter.hasNext()) {
                     defaultUnitOfMeasureKind = (UnitOfMeasureKind)iter.next();
                 }
-                UnitOfMeasureKindDetailValue unitOfMeasureKindDetailValue = Objects.requireNonNull(defaultUnitOfMeasureKind).getLastDetailForUpdate().getUnitOfMeasureKindDetailValue().clone();
+                var unitOfMeasureKindDetailValue = Objects.requireNonNull(defaultUnitOfMeasureKind).getLastDetailForUpdate().getUnitOfMeasureKindDetailValue().clone();
                 
                 unitOfMeasureKindDetailValue.setIsDefault(Boolean.TRUE);
                 updateUnitOfMeasureKindFromValue(unitOfMeasureKindDetailValue, false, deletedBy);
@@ -492,7 +492,7 @@ public class UomControl
     // --------------------------------------------------------------------------------
     
     public UnitOfMeasureKindDescription createUnitOfMeasureKindDescription(UnitOfMeasureKind unitOfMeasureKind, Language language, String description, BasePK createdBy) {
-        UnitOfMeasureKindDescription unitOfMeasureKindDescription = UnitOfMeasureKindDescriptionFactory.getInstance().create(unitOfMeasureKind, language, description,
+        var unitOfMeasureKindDescription = UnitOfMeasureKindDescriptionFactory.getInstance().create(unitOfMeasureKind, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(unitOfMeasureKind.getPrimaryKey(), EventTypes.MODIFY, unitOfMeasureKindDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -516,8 +516,8 @@ public class UomControl
                         "WHERE uomkd_uomk_unitofmeasurekindid = ? AND uomkd_lang_languageid = ? AND uomkd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = UnitOfMeasureKindDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = UnitOfMeasureKindDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, unitOfMeasureKind.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -565,8 +565,8 @@ public class UomControl
                         "WHERE uomkd_uomk_unitofmeasurekindid = ? AND uomkd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = UnitOfMeasureKindDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = UnitOfMeasureKindDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, unitOfMeasureKind.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -589,7 +589,7 @@ public class UomControl
     
     public String getBestUnitOfMeasureKindDescription(UnitOfMeasureKind unitOfMeasureKind, Language language) {
         String description;
-        UnitOfMeasureKindDescription unitOfMeasureKindDescription = getUnitOfMeasureKindDescription(unitOfMeasureKind, language);
+        var unitOfMeasureKindDescription = getUnitOfMeasureKindDescription(unitOfMeasureKind, language);
         
         if(unitOfMeasureKindDescription == null && !language.getIsDefault()) {
             unitOfMeasureKindDescription = getUnitOfMeasureKindDescription(unitOfMeasureKind, getPartyControl().getDefaultLanguage());
@@ -609,9 +609,9 @@ public class UomControl
     }
     
     public List<UnitOfMeasureKindDescriptionTransfer> getUnitOfMeasureKindDescriptionTransfers(UserVisit userVisit, UnitOfMeasureKind unitOfMeasureKind) {
-        List<UnitOfMeasureKindDescription> unitOfMeasureKindDescriptions = getUnitOfMeasureKindDescriptionsByUnitOfMeasureKind(unitOfMeasureKind);
+        var unitOfMeasureKindDescriptions = getUnitOfMeasureKindDescriptionsByUnitOfMeasureKind(unitOfMeasureKind);
         List<UnitOfMeasureKindDescriptionTransfer> unitOfMeasureKindDescriptionTransfers = new ArrayList<>(unitOfMeasureKindDescriptions.size());
-        UnitOfMeasureKindDescriptionTransferCache unitOfMeasureKindDescriptionTransferCache = getUomTransferCaches(userVisit).getUnitOfMeasureKindDescriptionTransferCache();
+        var unitOfMeasureKindDescriptionTransferCache = getUomTransferCaches(userVisit).getUnitOfMeasureKindDescriptionTransferCache();
         
         unitOfMeasureKindDescriptions.forEach((unitOfMeasureKindDescription) ->
                 unitOfMeasureKindDescriptionTransfers.add(unitOfMeasureKindDescriptionTransferCache.getUnitOfMeasureKindDescriptionTransfer(unitOfMeasureKindDescription))
@@ -622,15 +622,15 @@ public class UomControl
     
     public void updateUnitOfMeasureKindDescriptionFromValue(UnitOfMeasureKindDescriptionValue unitOfMeasureKindDescriptionValue, BasePK updatedBy) {
         if(unitOfMeasureKindDescriptionValue.hasBeenModified()) {
-            UnitOfMeasureKindDescription unitOfMeasureKindDescription = UnitOfMeasureKindDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var unitOfMeasureKindDescription = UnitOfMeasureKindDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      unitOfMeasureKindDescriptionValue.getPrimaryKey());
             
             unitOfMeasureKindDescription.setThruTime(session.START_TIME_LONG);
             unitOfMeasureKindDescription.store();
-            
-            UnitOfMeasureKind unitOfMeasureKind = unitOfMeasureKindDescription.getUnitOfMeasureKind();
-            Language language = unitOfMeasureKindDescription.getLanguage();
-            String description = unitOfMeasureKindDescriptionValue.getDescription();
+
+            var unitOfMeasureKind = unitOfMeasureKindDescription.getUnitOfMeasureKind();
+            var language = unitOfMeasureKindDescription.getLanguage();
+            var description = unitOfMeasureKindDescriptionValue.getDescription();
             
             unitOfMeasureKindDescription = UnitOfMeasureKindDescriptionFactory.getInstance().create(unitOfMeasureKind,
                     language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -646,7 +646,7 @@ public class UomControl
     }
     
     public void deleteUnitOfMeasureKindDescriptionsByUnitOfMeasureKind(UnitOfMeasureKind unitOfMeasureKind, BasePK deletedBy) {
-        List<UnitOfMeasureKindDescription> unitOfMeasureKindDescriptions = getUnitOfMeasureKindDescriptionsByUnitOfMeasureKindForUpdate(unitOfMeasureKind);
+        var unitOfMeasureKindDescriptions = getUnitOfMeasureKindDescriptionsByUnitOfMeasureKindForUpdate(unitOfMeasureKind);
         
         unitOfMeasureKindDescriptions.forEach((unitOfMeasureKindDescription) -> 
                 deleteUnitOfMeasureKindDescription(unitOfMeasureKindDescription, deletedBy)
@@ -660,20 +660,20 @@ public class UomControl
     public UnitOfMeasureType createUnitOfMeasureType(UnitOfMeasureKind unitOfMeasureKind, String unitOfMeasureTypeName,
             SymbolPosition symbolPosition, Boolean suppressSymbolSeparator, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
-        UnitOfMeasureType defaultUnitOfMeasureType = getDefaultUnitOfMeasureType(unitOfMeasureKind);
-        boolean defaultFound = defaultUnitOfMeasureType != null;
+        var defaultUnitOfMeasureType = getDefaultUnitOfMeasureType(unitOfMeasureKind);
+        var defaultFound = defaultUnitOfMeasureType != null;
         
         if(defaultFound && isDefault) {
-            UnitOfMeasureTypeDetailValue defaultUnitOfMeasureTypeDetailValue = getDefaultUnitOfMeasureTypeDetailValueForUpdate(unitOfMeasureKind);
+            var defaultUnitOfMeasureTypeDetailValue = getDefaultUnitOfMeasureTypeDetailValueForUpdate(unitOfMeasureKind);
             
             defaultUnitOfMeasureTypeDetailValue.setIsDefault(Boolean.FALSE);
             updateUnitOfMeasureTypeFromValue(defaultUnitOfMeasureTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        UnitOfMeasureType unitOfMeasureType = UnitOfMeasureTypeFactory.getInstance().create();
-        UnitOfMeasureTypeDetail unitOfMeasureTypeDetail = UnitOfMeasureTypeDetailFactory.getInstance().create(unitOfMeasureType,
+
+        var unitOfMeasureType = UnitOfMeasureTypeFactory.getInstance().create();
+        var unitOfMeasureTypeDetail = UnitOfMeasureTypeDetailFactory.getInstance().create(unitOfMeasureType,
                 unitOfMeasureKind, unitOfMeasureTypeName, symbolPosition, suppressSymbolSeparator, isDefault, sortOrder,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
@@ -730,8 +730,8 @@ public class UomControl
                         "AND uomtdt_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = UnitOfMeasureTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = UnitOfMeasureTypeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, unitOfMeasureKind.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -770,8 +770,8 @@ public class UomControl
                         "AND uomtdt_isdefault = 1 " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = UnitOfMeasureTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = UnitOfMeasureTypeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, unitOfMeasureKind.getPrimaryKey().getEntityId());
             
@@ -814,8 +814,8 @@ public class UomControl
                         "AND uomtdt_unitofmeasuretypename = ? AND uomtdt_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = UnitOfMeasureTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = UnitOfMeasureTypeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, unitOfMeasureKind.getPrimaryKey().getEntityId());
             ps.setString(2, unitOfMeasureTypeName);
@@ -852,7 +852,7 @@ public class UomControl
     
     public List<UnitOfMeasureTypeTransfer> getUnitOfMeasureTypeTransfers(UserVisit userVisit, Collection<UnitOfMeasureType> unitOfMeasureTypes) {
         List<UnitOfMeasureTypeTransfer> unitOfMeasureTypeTransfers = new ArrayList<>(unitOfMeasureTypes.size());
-        UnitOfMeasureTypeTransferCache unitOfMeasureTypeTransferCache = getUomTransferCaches(userVisit).getUnitOfMeasureTypeTransferCache();
+        var unitOfMeasureTypeTransferCache = getUomTransferCaches(userVisit).getUnitOfMeasureTypeTransferCache();
         
         unitOfMeasureTypes.forEach((unitOfMeasureType) ->
                 unitOfMeasureTypeTransfers.add(unitOfMeasureTypeTransferCache.getUnitOfMeasureTypeTransfer(unitOfMeasureType))
@@ -867,7 +867,7 @@ public class UomControl
     
     public UnitOfMeasureTypeChoicesBean getUnitOfMeasureTypeChoices(String defaultUnitOfMeasureTypeChoice, Language language,
             boolean allowNullChoice, UnitOfMeasureKind unitOfMeasureKind) {
-        List<UnitOfMeasureType> unitOfMeasureTypes = getUnitOfMeasureTypesByUnitOfMeasureKind(unitOfMeasureKind);
+        var unitOfMeasureTypes = getUnitOfMeasureTypesByUnitOfMeasureKind(unitOfMeasureKind);
         var size = unitOfMeasureTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -883,7 +883,7 @@ public class UomControl
         }
         
         for(var unitOfMeasureType : unitOfMeasureTypes) {
-            UnitOfMeasureTypeDetail unitOfMeasureTypeDetail = unitOfMeasureType.getLastDetail();
+            var unitOfMeasureTypeDetail = unitOfMeasureType.getLastDetail();
             
             var label = getBestSingularUnitOfMeasureTypeDescription(unitOfMeasureType, language);
             var value = unitOfMeasureTypeDetail.getUnitOfMeasureTypeName();
@@ -903,29 +903,29 @@ public class UomControl
     private void updateUnitOfMeasureTypeFromValue(UnitOfMeasureTypeDetailValue unitOfMeasureTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(unitOfMeasureTypeDetailValue.hasBeenModified()) {
-            UnitOfMeasureType unitOfMeasureType = UnitOfMeasureTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var unitOfMeasureType = UnitOfMeasureTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      unitOfMeasureTypeDetailValue.getUnitOfMeasureTypePK());
-            UnitOfMeasureTypeDetail unitOfMeasureTypeDetail = unitOfMeasureType.getActiveDetailForUpdate();
+            var unitOfMeasureTypeDetail = unitOfMeasureType.getActiveDetailForUpdate();
             
             unitOfMeasureTypeDetail.setThruTime(session.START_TIME_LONG);
             unitOfMeasureTypeDetail.store();
-            
-            UnitOfMeasureTypePK unitOfMeasureTypePK = unitOfMeasureTypeDetail.getUnitOfMeasureTypePK();
-            UnitOfMeasureKindPK unitOfMeasureKindPK = unitOfMeasureTypeDetail.getUnitOfMeasureKindPK();
-            UnitOfMeasureKind unitOfMeasureKind = unitOfMeasureTypeDetail.getUnitOfMeasureKind();
-            String unitOfMeasureTypeName = unitOfMeasureTypeDetailValue.getUnitOfMeasureTypeName();
-            SymbolPositionPK symbolPositionPK = unitOfMeasureTypeDetailValue.getSymbolPositionPK();
-            Boolean suppressSymbolSeparator = unitOfMeasureTypeDetailValue.getSuppressSymbolSeparator();
-            Boolean isDefault = unitOfMeasureTypeDetailValue.getIsDefault();
-            Integer sortOrder = unitOfMeasureTypeDetailValue.getSortOrder();
+
+            var unitOfMeasureTypePK = unitOfMeasureTypeDetail.getUnitOfMeasureTypePK();
+            var unitOfMeasureKindPK = unitOfMeasureTypeDetail.getUnitOfMeasureKindPK();
+            var unitOfMeasureKind = unitOfMeasureTypeDetail.getUnitOfMeasureKind();
+            var unitOfMeasureTypeName = unitOfMeasureTypeDetailValue.getUnitOfMeasureTypeName();
+            var symbolPositionPK = unitOfMeasureTypeDetailValue.getSymbolPositionPK();
+            var suppressSymbolSeparator = unitOfMeasureTypeDetailValue.getSuppressSymbolSeparator();
+            var isDefault = unitOfMeasureTypeDetailValue.getIsDefault();
+            var sortOrder = unitOfMeasureTypeDetailValue.getSortOrder();
             
             if(checkDefault) {
-                UnitOfMeasureType defaultUnitOfMeasureType = getDefaultUnitOfMeasureType(unitOfMeasureKind);
-                boolean defaultFound = defaultUnitOfMeasureType != null && !defaultUnitOfMeasureType.equals(unitOfMeasureType);
+                var defaultUnitOfMeasureType = getDefaultUnitOfMeasureType(unitOfMeasureKind);
+                var defaultFound = defaultUnitOfMeasureType != null && !defaultUnitOfMeasureType.equals(unitOfMeasureType);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    UnitOfMeasureTypeDetailValue defaultUnitOfMeasureTypeDetailValue = getDefaultUnitOfMeasureTypeDetailValueForUpdate(unitOfMeasureKind);
+                    var defaultUnitOfMeasureTypeDetailValue = getDefaultUnitOfMeasureTypeDetailValueForUpdate(unitOfMeasureKind);
                     
                     defaultUnitOfMeasureTypeDetailValue.setIsDefault(Boolean.FALSE);
                     updateUnitOfMeasureTypeFromValue(defaultUnitOfMeasureTypeDetailValue, false, updatedBy);
@@ -960,24 +960,24 @@ public class UomControl
         deleteUnitOfMeasureTypeWeightByUnitOfMeasureType(unitOfMeasureType, deletedBy);
         itemControl.deleteItemUnitOfMeasureTypesByUnitOfMeasureType(unitOfMeasureType, deletedBy);
         vendorControl.deleteVendorItemCostsByUnitOfMeasureType(unitOfMeasureType, deletedBy);
-        
-        UnitOfMeasureTypeDetail unitOfMeasureTypeDetail = unitOfMeasureType.getLastDetailForUpdate();
+
+        var unitOfMeasureTypeDetail = unitOfMeasureType.getLastDetailForUpdate();
         unitOfMeasureTypeDetail.setThruTime(session.START_TIME_LONG);
         unitOfMeasureTypeDetail.store();
         unitOfMeasureType.setActiveDetail(null);
         
         // Check for default, and pick one if necessary
-        UnitOfMeasureKind unitOfMeasureKind = unitOfMeasureTypeDetail.getUnitOfMeasureKind();
-        UnitOfMeasureType defaultUnitOfMeasureType = getDefaultUnitOfMeasureType(unitOfMeasureKind);
+        var unitOfMeasureKind = unitOfMeasureTypeDetail.getUnitOfMeasureKind();
+        var defaultUnitOfMeasureType = getDefaultUnitOfMeasureType(unitOfMeasureKind);
         if(defaultUnitOfMeasureType == null) {
-            List<UnitOfMeasureType> unitOfMeasureTypes = getUnitOfMeasureTypesByUnitOfMeasureKindForUpdate(unitOfMeasureKind);
+            var unitOfMeasureTypes = getUnitOfMeasureTypesByUnitOfMeasureKindForUpdate(unitOfMeasureKind);
             
             if(!unitOfMeasureTypes.isEmpty()) {
-                Iterator<UnitOfMeasureType> iter = unitOfMeasureTypes.iterator();
+                var iter = unitOfMeasureTypes.iterator();
                 if(iter.hasNext()) {
                     defaultUnitOfMeasureType = (UnitOfMeasureType)iter.next();
                 }
-                UnitOfMeasureTypeDetailValue unitOfMeasureTypeDetailValue = Objects.requireNonNull(defaultUnitOfMeasureType).getLastDetailForUpdate().getUnitOfMeasureTypeDetailValue().clone();
+                var unitOfMeasureTypeDetailValue = Objects.requireNonNull(defaultUnitOfMeasureType).getLastDetailForUpdate().getUnitOfMeasureTypeDetailValue().clone();
                 
                 unitOfMeasureTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateUnitOfMeasureTypeFromValue(unitOfMeasureTypeDetailValue, false, deletedBy);
@@ -988,7 +988,7 @@ public class UomControl
     }
     
     public void deleteUnitOfMeasureTypesByUnitOfMeasureKind(UnitOfMeasureKind unitOfMeasureKind, BasePK deletedBy) {
-        List<UnitOfMeasureType> unitOfMeasureTypes = getUnitOfMeasureTypesByUnitOfMeasureKindForUpdate(unitOfMeasureKind);
+        var unitOfMeasureTypes = getUnitOfMeasureTypesByUnitOfMeasureKindForUpdate(unitOfMeasureKind);
         
         unitOfMeasureTypes.forEach((unitOfMeasureType) -> 
                 deleteUnitOfMeasureType(unitOfMeasureType, deletedBy)
@@ -1001,7 +1001,7 @@ public class UomControl
     
     public UnitOfMeasureTypeDescription createUnitOfMeasureTypeDescription(UnitOfMeasureType unitOfMeasureType, Language language,
             String singularDescription, String pluralDescription, String symbol, BasePK createdBy) {
-        UnitOfMeasureTypeDescription unitOfMeasureTypeDescription = UnitOfMeasureTypeDescriptionFactory.getInstance().create(session,
+        var unitOfMeasureTypeDescription = UnitOfMeasureTypeDescriptionFactory.getInstance().create(session,
                 unitOfMeasureType, language, singularDescription, pluralDescription, symbol, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
@@ -1026,8 +1026,8 @@ public class UomControl
                         "WHERE uomtd_uomt_unitofmeasuretypeid = ? AND uomtd_lang_languageid = ? AND uomtd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = UnitOfMeasureTypeDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = UnitOfMeasureTypeDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, unitOfMeasureType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -1074,8 +1074,8 @@ public class UomControl
                         "WHERE uomtd_uomt_unitofmeasuretypeid = ? AND uomtd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = UnitOfMeasureTypeDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = UnitOfMeasureTypeDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, unitOfMeasureType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1097,7 +1097,7 @@ public class UomControl
     }
     
     public UnitOfMeasureTypeDescription getBestUnitOfMeasureTypeDescription(UnitOfMeasureType unitOfMeasureType, Language language) {
-        UnitOfMeasureTypeDescription unitOfMeasureTypeDescription = getUnitOfMeasureTypeDescription(unitOfMeasureType, language);
+        var unitOfMeasureTypeDescription = getUnitOfMeasureTypeDescription(unitOfMeasureType, language);
         
         if(unitOfMeasureTypeDescription == null && !language.getIsDefault()) {
             unitOfMeasureTypeDescription = getUnitOfMeasureTypeDescription(unitOfMeasureType, getPartyControl().getDefaultLanguage());
@@ -1159,9 +1159,9 @@ public class UomControl
     }
     
     public List<UnitOfMeasureTypeDescriptionTransfer> getUnitOfMeasureTypeDescriptionTransfers(UserVisit userVisit, UnitOfMeasureType unitOfMeasureType) {
-        List<UnitOfMeasureTypeDescription> unitOfMeasureTypeDescriptions = getUnitOfMeasureTypeDescriptionsByUnitOfMeasureType(unitOfMeasureType);
+        var unitOfMeasureTypeDescriptions = getUnitOfMeasureTypeDescriptionsByUnitOfMeasureType(unitOfMeasureType);
         List<UnitOfMeasureTypeDescriptionTransfer> unitOfMeasureTypeDescriptionTransfers = new ArrayList<>(unitOfMeasureTypeDescriptions.size());
-        UnitOfMeasureTypeDescriptionTransferCache unitOfMeasureTypeDescriptionTransferCache = getUomTransferCaches(userVisit).getUnitOfMeasureTypeDescriptionTransferCache();
+        var unitOfMeasureTypeDescriptionTransferCache = getUomTransferCaches(userVisit).getUnitOfMeasureTypeDescriptionTransferCache();
         
         unitOfMeasureTypeDescriptions.forEach((unitOfMeasureTypeDescription) ->
                 unitOfMeasureTypeDescriptionTransfers.add(unitOfMeasureTypeDescriptionTransferCache.getUnitOfMeasureTypeDescriptionTransfer(unitOfMeasureTypeDescription))
@@ -1172,17 +1172,17 @@ public class UomControl
     
     public void updateUnitOfMeasureTypeDescriptionFromValue(UnitOfMeasureTypeDescriptionValue unitOfMeasureTypeDescriptionValue, BasePK updatedBy) {
         if(unitOfMeasureTypeDescriptionValue.hasBeenModified()) {
-            UnitOfMeasureTypeDescription unitOfMeasureTypeDescription = UnitOfMeasureTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var unitOfMeasureTypeDescription = UnitOfMeasureTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      unitOfMeasureTypeDescriptionValue.getPrimaryKey());
             
             unitOfMeasureTypeDescription.setThruTime(session.START_TIME_LONG);
             unitOfMeasureTypeDescription.store();
-            
-            UnitOfMeasureType unitOfMeasureType = unitOfMeasureTypeDescription.getUnitOfMeasureType();
-            Language language = unitOfMeasureTypeDescription.getLanguage();
-            String singularDescription = unitOfMeasureTypeDescriptionValue.getSingularDescription();
-            String pluralDescription = unitOfMeasureTypeDescriptionValue.getPluralDescription();
-            String symbol = unitOfMeasureTypeDescriptionValue.getSymbol();
+
+            var unitOfMeasureType = unitOfMeasureTypeDescription.getUnitOfMeasureType();
+            var language = unitOfMeasureTypeDescription.getLanguage();
+            var singularDescription = unitOfMeasureTypeDescriptionValue.getSingularDescription();
+            var pluralDescription = unitOfMeasureTypeDescriptionValue.getPluralDescription();
+            var symbol = unitOfMeasureTypeDescriptionValue.getSymbol();
             
             unitOfMeasureTypeDescription = UnitOfMeasureTypeDescriptionFactory.getInstance().create(unitOfMeasureType, language,
                     singularDescription, pluralDescription, symbol, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1198,7 +1198,7 @@ public class UomControl
     }
     
     public void deleteUnitOfMeasureTypeDescriptionsByUnitOfMeasureType(UnitOfMeasureType unitOfMeasureType, BasePK deletedBy) {
-        List<UnitOfMeasureTypeDescription> unitOfMeasureTypeDescriptions = getUnitOfMeasureTypeDescriptionsByUnitOfMeasureTypeForUpdate(unitOfMeasureType);
+        var unitOfMeasureTypeDescriptions = getUnitOfMeasureTypeDescriptionsByUnitOfMeasureTypeForUpdate(unitOfMeasureType);
         
         unitOfMeasureTypeDescriptions.forEach((unitOfMeasureTypeDescription) -> 
                 deleteUnitOfMeasureTypeDescription(unitOfMeasureTypeDescription, deletedBy)
@@ -1211,7 +1211,7 @@ public class UomControl
     
     public UnitOfMeasureTypeVolume createUnitOfMeasureTypeVolume(UnitOfMeasureType unitOfMeasureType, Long height, Long width,
             Long depth, BasePK createdBy) {
-        UnitOfMeasureTypeVolume unitOfMeasureTypeVolume = UnitOfMeasureTypeVolumeFactory.getInstance().create(session,
+        var unitOfMeasureTypeVolume = UnitOfMeasureTypeVolumeFactory.getInstance().create(session,
                 unitOfMeasureType, height, width, depth, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(unitOfMeasureType.getPrimaryKey(), EventTypes.MODIFY, unitOfMeasureTypeVolume.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1235,8 +1235,8 @@ public class UomControl
                         "WHERE uomtvol_uomt_unitofmeasuretypeid = ? AND uomtvol_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = UnitOfMeasureTypeVolumeFactory.getInstance().prepareStatement(query);
+
+            var ps = UnitOfMeasureTypeVolumeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, unitOfMeasureType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1258,7 +1258,7 @@ public class UomControl
     }
     
     public UnitOfMeasureTypeVolumeValue getUnitOfMeasureTypeVolumeValueForUpdate(UnitOfMeasureType unitOfMeasureType) {
-        UnitOfMeasureTypeVolume unitOfMeasureTypeVolume = getUnitOfMeasureTypeVolumeForUpdate(unitOfMeasureType);
+        var unitOfMeasureTypeVolume = getUnitOfMeasureTypeVolumeForUpdate(unitOfMeasureType);
         
         return unitOfMeasureTypeVolume == null? null: unitOfMeasureTypeVolume.getUnitOfMeasureTypeVolumeValue().clone();
     }
@@ -1273,16 +1273,16 @@ public class UomControl
     
     public void updateUnitOfMeasureTypeVolumeFromValue(UnitOfMeasureTypeVolumeValue unitOfMeasureTypeVolumeValue, BasePK updatedBy) {
         if(unitOfMeasureTypeVolumeValue.hasBeenModified()) {
-            UnitOfMeasureTypeVolume unitOfMeasureTypeVolume = UnitOfMeasureTypeVolumeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var unitOfMeasureTypeVolume = UnitOfMeasureTypeVolumeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      unitOfMeasureTypeVolumeValue.getPrimaryKey());
             
             unitOfMeasureTypeVolume.setThruTime(session.START_TIME_LONG);
             unitOfMeasureTypeVolume.store();
-            
-            UnitOfMeasureTypePK unitOfMeasureTypePK = unitOfMeasureTypeVolume.getUnitOfMeasureTypePK(); // Not updated
-            Long height = unitOfMeasureTypeVolumeValue.getHeight();
-            Long width = unitOfMeasureTypeVolumeValue.getWidth();
-            Long depth = unitOfMeasureTypeVolumeValue.getDepth();
+
+            var unitOfMeasureTypePK = unitOfMeasureTypeVolume.getUnitOfMeasureTypePK(); // Not updated
+            var height = unitOfMeasureTypeVolumeValue.getHeight();
+            var width = unitOfMeasureTypeVolumeValue.getWidth();
+            var depth = unitOfMeasureTypeVolumeValue.getDepth();
             
             unitOfMeasureTypeVolume = UnitOfMeasureTypeVolumeFactory.getInstance().create(unitOfMeasureTypePK, height,
                     width, depth, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1298,7 +1298,7 @@ public class UomControl
     }
     
     public void deleteUnitOfMeasureTypeVolumeByUnitOfMeasureType(UnitOfMeasureType unitOfMeasureType, BasePK deletedBy) {
-        UnitOfMeasureTypeVolume unitOfMeasureTypeVolume = getUnitOfMeasureTypeVolumeForUpdate(unitOfMeasureType);
+        var unitOfMeasureTypeVolume = getUnitOfMeasureTypeVolumeForUpdate(unitOfMeasureType);
         
         if(unitOfMeasureTypeVolume != null)
             deleteUnitOfMeasureTypeVolume(unitOfMeasureTypeVolume, deletedBy);
@@ -1309,7 +1309,7 @@ public class UomControl
     // --------------------------------------------------------------------------------
     
     public UnitOfMeasureTypeWeight createUnitOfMeasureTypeWeight(UnitOfMeasureType unitOfMeasureType, Long weight, BasePK createdBy) {
-        UnitOfMeasureTypeWeight unitOfMeasureTypeWeight = UnitOfMeasureTypeWeightFactory.getInstance().create(unitOfMeasureType, weight,
+        var unitOfMeasureTypeWeight = UnitOfMeasureTypeWeightFactory.getInstance().create(unitOfMeasureType, weight,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(unitOfMeasureType.getPrimaryKey(), EventTypes.MODIFY, unitOfMeasureTypeWeight.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1333,8 +1333,8 @@ public class UomControl
                         "WHERE uomtwght_uomt_unitofmeasuretypeid = ? AND uomtwght_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = UnitOfMeasureTypeWeightFactory.getInstance().prepareStatement(query);
+
+            var ps = UnitOfMeasureTypeWeightFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, unitOfMeasureType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1356,7 +1356,7 @@ public class UomControl
     }
     
     public UnitOfMeasureTypeWeightValue getUnitOfMeasureTypeWeightValueForUpdate(UnitOfMeasureType unitOfMeasureType) {
-        UnitOfMeasureTypeWeight unitOfMeasureTypeWeight = getUnitOfMeasureTypeWeightForUpdate(unitOfMeasureType);
+        var unitOfMeasureTypeWeight = getUnitOfMeasureTypeWeightForUpdate(unitOfMeasureType);
         
         return unitOfMeasureTypeWeight == null? null: unitOfMeasureTypeWeight.getUnitOfMeasureTypeWeightValue().clone();
     }
@@ -1371,14 +1371,14 @@ public class UomControl
     
     public void updateUnitOfMeasureTypeWeightFromValue(UnitOfMeasureTypeWeightValue unitOfMeasureTypeWeightValue, BasePK updatedBy) {
         if(unitOfMeasureTypeWeightValue.hasBeenModified()) {
-            UnitOfMeasureTypeWeight unitOfMeasureTypeWeight = UnitOfMeasureTypeWeightFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var unitOfMeasureTypeWeight = UnitOfMeasureTypeWeightFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      unitOfMeasureTypeWeightValue.getPrimaryKey());
             
             unitOfMeasureTypeWeight.setThruTime(session.START_TIME_LONG);
             unitOfMeasureTypeWeight.store();
-            
-            UnitOfMeasureTypePK unitOfMeasureTypePK = unitOfMeasureTypeWeight.getUnitOfMeasureTypePK(); // Not updated
-            Long weight = unitOfMeasureTypeWeightValue.getWeight();
+
+            var unitOfMeasureTypePK = unitOfMeasureTypeWeight.getUnitOfMeasureTypePK(); // Not updated
+            var weight = unitOfMeasureTypeWeightValue.getWeight();
             
             unitOfMeasureTypeWeight = UnitOfMeasureTypeWeightFactory.getInstance().create(unitOfMeasureTypePK, weight,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1394,7 +1394,7 @@ public class UomControl
     }
     
     public void deleteUnitOfMeasureTypeWeightByUnitOfMeasureType(UnitOfMeasureType unitOfMeasureType, BasePK deletedBy) {
-        UnitOfMeasureTypeWeight unitOfMeasureTypeWeight = getUnitOfMeasureTypeWeightForUpdate(unitOfMeasureType);
+        var unitOfMeasureTypeWeight = getUnitOfMeasureTypeWeightForUpdate(unitOfMeasureType);
         
         if(unitOfMeasureTypeWeight != null)
             deleteUnitOfMeasureTypeWeight(unitOfMeasureTypeWeight, deletedBy);
@@ -1406,7 +1406,7 @@ public class UomControl
     
     public UnitOfMeasureEquivalent createUnitOfMeasureEquivalent(UnitOfMeasureType fromUnitOfMeasureType,
             UnitOfMeasureType toUnitOfMeasureType, Long toQuantity, BasePK createdBy) {
-        UnitOfMeasureEquivalent unitOfMeasureEquivalent = UnitOfMeasureEquivalentFactory.getInstance().create(session,
+        var unitOfMeasureEquivalent = UnitOfMeasureEquivalentFactory.getInstance().create(session,
                 fromUnitOfMeasureType, toUnitOfMeasureType, toQuantity, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(fromUnitOfMeasureType.getPrimaryKey(), EventTypes.MODIFY, unitOfMeasureEquivalent.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1431,8 +1431,8 @@ public class UomControl
                         "WHERE uomeq_fromunitofmeasuretypeid = ? AND uomeq_tounitofmeasuretypeid = ? AND uomeq_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = UnitOfMeasureEquivalentFactory.getInstance().prepareStatement(query);
+
+            var ps = UnitOfMeasureEquivalentFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, fromUnitOfMeasureType.getPrimaryKey().getEntityId());
             ps.setLong(2, toUnitOfMeasureType.getPrimaryKey().getEntityId());
@@ -1458,7 +1458,7 @@ public class UomControl
     
     public UnitOfMeasureEquivalentValue getUnitOfMeasureEquivalentValueForUpdate(UnitOfMeasureType fromUnitOfMeasureType,
             UnitOfMeasureType toUnitOfMeasureType) {
-        UnitOfMeasureEquivalent unitOfMeasureEquivalent = getUnitOfMeasureEquivalentForUpdate(fromUnitOfMeasureType,
+        var unitOfMeasureEquivalent = getUnitOfMeasureEquivalentForUpdate(fromUnitOfMeasureType,
                 toUnitOfMeasureType);
         
         return unitOfMeasureEquivalent == null? null: unitOfMeasureEquivalent.getUnitOfMeasureEquivalentValue().clone();
@@ -1488,8 +1488,8 @@ public class UomControl
                         "AND uomkdt_uomk_unitofmeasurekindid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = UnitOfMeasureEquivalentFactory.getInstance().prepareStatement(query);
+
+            var ps = UnitOfMeasureEquivalentFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, Session.MAX_TIME);
             ps.setLong(2, Session.MAX_TIME);
@@ -1531,8 +1531,8 @@ public class UomControl
                         "WHERE uomeq_fromunitofmeasuretypeid = ? AND uomeq_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = UnitOfMeasureEquivalentFactory.getInstance().prepareStatement(query);
+
+            var ps = UnitOfMeasureEquivalentFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, fromUnitOfMeasureType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1575,8 +1575,8 @@ public class UomControl
                         "WHERE uomeq_tounitofmeasuretypeid = ? AND uomeq_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = UnitOfMeasureEquivalentFactory.getInstance().prepareStatement(query);
+
+            var ps = UnitOfMeasureEquivalentFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, toUnitOfMeasureType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1608,7 +1608,7 @@ public class UomControl
     private List<UnitOfMeasureEquivalentTransfer> getUnitOfMeasureEquivalentTransfers(final UserVisit userVisit,
             final List<UnitOfMeasureEquivalent> unitOfMeasureEquivalents) {
         List<UnitOfMeasureEquivalentTransfer> unitOfMeasureEquivalentTransfers = new ArrayList<>(unitOfMeasureEquivalents.size());
-        UnitOfMeasureEquivalentTransferCache unitOfMeasureEquivalentTransferCache = getUomTransferCaches(userVisit).getUnitOfMeasureEquivalentTransferCache();
+        var unitOfMeasureEquivalentTransferCache = getUomTransferCaches(userVisit).getUnitOfMeasureEquivalentTransferCache();
         
         unitOfMeasureEquivalents.forEach((unitOfMeasureEquivalent) ->
                 unitOfMeasureEquivalentTransfers.add(unitOfMeasureEquivalentTransferCache.getUnitOfMeasureEquivalentTransfer(unitOfMeasureEquivalent))
@@ -1634,15 +1634,15 @@ public class UomControl
     
     public void updateUnitOfMeasureEquivalentFromValue(UnitOfMeasureEquivalentValue unitOfMeasureEquivalentValue, BasePK updatedBy) {
         if(unitOfMeasureEquivalentValue.hasBeenModified()) {
-            UnitOfMeasureEquivalent unitOfMeasureEquivalent = UnitOfMeasureEquivalentFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var unitOfMeasureEquivalent = UnitOfMeasureEquivalentFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      unitOfMeasureEquivalentValue.getPrimaryKey());
             
             unitOfMeasureEquivalent.setThruTime(session.START_TIME_LONG);
             unitOfMeasureEquivalent.store();
-            
-            UnitOfMeasureTypePK fromUnitOfMeasureTypePK = unitOfMeasureEquivalent.getFromUnitOfMeasureTypePK(); // Not updated
-            UnitOfMeasureTypePK toUnitOfMeasureTypePK = unitOfMeasureEquivalent.getToUnitOfMeasureTypePK(); // Not updated
-            Long toQuantity = unitOfMeasureEquivalentValue.getToQuantity();
+
+            var fromUnitOfMeasureTypePK = unitOfMeasureEquivalent.getFromUnitOfMeasureTypePK(); // Not updated
+            var toUnitOfMeasureTypePK = unitOfMeasureEquivalent.getToUnitOfMeasureTypePK(); // Not updated
+            var toQuantity = unitOfMeasureEquivalentValue.getToQuantity();
             
             unitOfMeasureEquivalent = UnitOfMeasureEquivalentFactory.getInstance().create(fromUnitOfMeasureTypePK,
                     toUnitOfMeasureTypePK, toQuantity, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1659,7 +1659,7 @@ public class UomControl
     }
     
     public void deleteUnitOfMeasureEquivalentsByFromUnitOfMeasureType(UnitOfMeasureType fromUnitOfMeasureType, BasePK deletedBy) {
-        List<UnitOfMeasureEquivalent> unitOfMeasureEquivalents = getUnitOfMeasureEquivalentsByFromUnitOfMeasureTypeForUpdate(fromUnitOfMeasureType);
+        var unitOfMeasureEquivalents = getUnitOfMeasureEquivalentsByFromUnitOfMeasureTypeForUpdate(fromUnitOfMeasureType);
         
         unitOfMeasureEquivalents.forEach((unitOfMeasureEquivalent) -> 
                 deleteUnitOfMeasureEquivalent(unitOfMeasureEquivalent, deletedBy)
@@ -1667,7 +1667,7 @@ public class UomControl
     }
     
     public void deleteUnitOfMeasureEquivalentsByToUnitOfMeasureType(UnitOfMeasureType toUnitOfMeasureType, BasePK deletedBy) {
-        List<UnitOfMeasureEquivalent> unitOfMeasureEquivalents = getUnitOfMeasureEquivalentsByToUnitOfMeasureTypeForUpdate(toUnitOfMeasureType);
+        var unitOfMeasureEquivalents = getUnitOfMeasureEquivalentsByToUnitOfMeasureTypeForUpdate(toUnitOfMeasureType);
         
         unitOfMeasureEquivalents.forEach((unitOfMeasureEquivalent) -> 
                 deleteUnitOfMeasureEquivalent(unitOfMeasureEquivalent, deletedBy)
@@ -1704,7 +1704,7 @@ public class UomControl
     }
     
     public List<UnitOfMeasureKindUseType> getUnitOfMeasureKindUseTypes() {
-        PreparedStatement ps = UnitOfMeasureKindUseTypeFactory.getInstance().prepareStatement(
+        var ps = UnitOfMeasureKindUseTypeFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
                 "FROM unitofmeasurekindusetypes " +
                 "ORDER BY uomkut_sortorder, uomkut_unitofmeasurekindusetypename");
@@ -1716,7 +1716,7 @@ public class UomControl
         UnitOfMeasureKindUseType unitOfMeasureKindUseType;
         
         try {
-            PreparedStatement ps = UnitOfMeasureKindUseTypeFactory.getInstance().prepareStatement(
+            var ps = UnitOfMeasureKindUseTypeFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM unitofmeasurekindusetypes " +
                     "WHERE uomkut_unitofmeasurekindusetypename = ?");
@@ -1733,7 +1733,7 @@ public class UomControl
     
     public UnitOfMeasureKindUseTypeChoicesBean getUnitOfMeasureKindUseTypeChoices(String defaultUnitOfMeasureKindUseTypeChoice,
             Language language, boolean allowNullChoice) {
-        List<UnitOfMeasureKindUseType> unitOfMeasureKindUseTypes = getUnitOfMeasureKindUseTypes();
+        var unitOfMeasureKindUseTypes = getUnitOfMeasureKindUseTypes();
         var size = unitOfMeasureKindUseTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -1770,7 +1770,7 @@ public class UomControl
     
     public List<UnitOfMeasureKindUseTypeTransfer> getUnitOfMeasureKindUseTypeTransfers(UserVisit userVisit, Collection<UnitOfMeasureKindUseType> unitOfMeasureKindUseTypes) {
         List<UnitOfMeasureKindUseTypeTransfer> unitOfMeasureKindUseTypeTransfers = new ArrayList<>(unitOfMeasureKindUseTypes.size());
-        UnitOfMeasureKindUseTypeTransferCache unitOfMeasureKindUseTypeTransferCache = getUomTransferCaches(userVisit).getUnitOfMeasureKindUseTypeTransferCache();
+        var unitOfMeasureKindUseTypeTransferCache = getUomTransferCaches(userVisit).getUnitOfMeasureKindUseTypeTransferCache();
         
         unitOfMeasureKindUseTypes.forEach((unitOfMeasureKindUseType) ->
                 unitOfMeasureKindUseTypeTransfers.add(unitOfMeasureKindUseTypeTransferCache.getUnitOfMeasureKindUseTypeTransfer(unitOfMeasureKindUseType))
@@ -1795,7 +1795,7 @@ public class UomControl
         UnitOfMeasureKindUseTypeDescription unitOfMeasureKindUseTypeDescription;
         
         try {
-            PreparedStatement ps = UnitOfMeasureKindUseTypeDescriptionFactory.getInstance().prepareStatement(
+            var ps = UnitOfMeasureKindUseTypeDescriptionFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM unitofmeasurekindusetypedescriptions " +
                     "WHERE uomkutd_uomkut_unitofmeasurekindusetypeid = ? AND uomkutd_lang_languageid = ?");
@@ -1813,7 +1813,7 @@ public class UomControl
     
     public String getBestUnitOfMeasureKindUseTypeDescription(UnitOfMeasureKindUseType unitOfMeasureKindUseType, Language language) {
         String description;
-        UnitOfMeasureKindUseTypeDescription unitOfMeasureKindUseTypeDescription = getUnitOfMeasureKindUseTypeDescription(unitOfMeasureKindUseType, language);
+        var unitOfMeasureKindUseTypeDescription = getUnitOfMeasureKindUseTypeDescription(unitOfMeasureKindUseType, language);
         
         if(unitOfMeasureKindUseTypeDescription == null && !language.getIsDefault()) {
             unitOfMeasureKindUseTypeDescription = getUnitOfMeasureKindUseTypeDescription(unitOfMeasureKindUseType, getPartyControl().getDefaultLanguage());
@@ -1834,19 +1834,19 @@ public class UomControl
     
     public UnitOfMeasureKindUse createUnitOfMeasureKindUse(UnitOfMeasureKindUseType unitOfMeasureKindUseType,
             UnitOfMeasureKind unitOfMeasureKind, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        UnitOfMeasureKindUse defaultUnitOfMeasureKindUse = getDefaultUnitOfMeasureKindUse(unitOfMeasureKindUseType);
-        boolean defaultFound = defaultUnitOfMeasureKindUse != null;
+        var defaultUnitOfMeasureKindUse = getDefaultUnitOfMeasureKindUse(unitOfMeasureKindUseType);
+        var defaultFound = defaultUnitOfMeasureKindUse != null;
         
         if(defaultFound && isDefault) {
-            UnitOfMeasureKindUseValue defaultUnitOfMeasureKindUseValue = getDefaultUnitOfMeasureKindUseValueForUpdate(unitOfMeasureKindUseType);
+            var defaultUnitOfMeasureKindUseValue = getDefaultUnitOfMeasureKindUseValueForUpdate(unitOfMeasureKindUseType);
             
             defaultUnitOfMeasureKindUseValue.setIsDefault(Boolean.FALSE);
             updateUnitOfMeasureKindUseFromValue(defaultUnitOfMeasureKindUseValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        UnitOfMeasureKindUse unitOfMeasureKindUse = UnitOfMeasureKindUseFactory.getInstance().create(session,
+
+        var unitOfMeasureKindUse = UnitOfMeasureKindUseFactory.getInstance().create(session,
                 unitOfMeasureKindUseType, unitOfMeasureKind, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(unitOfMeasureKind.getPrimaryKey(), EventTypes.MODIFY, unitOfMeasureKindUse.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1904,7 +1904,7 @@ public class UomControl
                         "AND uomku_thrutime = ? " +
                         "FOR UPDATE";
             }
-            PreparedStatement ps = UnitOfMeasureKindUseFactory.getInstance().prepareStatement(query);
+            var ps = UnitOfMeasureKindUseFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, unitOfMeasureKindUseType.getPrimaryKey().getEntityId());
             ps.setLong(2, unitOfMeasureKind.getPrimaryKey().getEntityId());
@@ -1950,7 +1950,7 @@ public class UomControl
                         "WHERE uomku_uomkut_unitofmeasurekindusetypeid = ? AND uomku_isdefault = 1 AND uomku_thrutime = ? " +
                         "FOR UPDATE";
             }
-            PreparedStatement ps = UnitOfMeasureKindUseFactory.getInstance().prepareStatement(query);
+            var ps = UnitOfMeasureKindUseFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, unitOfMeasureKindUseType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1994,8 +1994,8 @@ public class UomControl
                         "WHERE uomku_uomk_unitofmeasurekindid = ? AND uomku_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = UnitOfMeasureKindUseFactory.getInstance().prepareStatement(query);
+
+            var ps = UnitOfMeasureKindUseFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, unitOfMeasureKind.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -2039,8 +2039,8 @@ public class UomControl
                         "AND uomku_uomk_unitofmeasurekindid = uomkdt_uomk_unitofmeasurekindid AND uomkdt_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = UnitOfMeasureKindUseFactory.getInstance().prepareStatement(query);
+
+            var ps = UnitOfMeasureKindUseFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, unitOfMeasureKindUseType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -2070,7 +2070,7 @@ public class UomControl
         
         if(!unitOfMeasureKindUseType.getAllowMultiple()) {
             try {
-                PreparedStatement ps = UnitOfMeasureKindUseFactory.getInstance().prepareStatement(
+                var ps = UnitOfMeasureKindUseFactory.getInstance().prepareStatement(
                         "SELECT _ALL_ " +
                         "FROM unitofmeasurekinduses " +
                         "WHERE uomku_uomkut_unitofmeasurekindusetypeid = ? AND uomku_thrutime = ?");
@@ -2090,14 +2090,14 @@ public class UomControl
     }
     
     public UnitOfMeasureKind getUnitOfMeasureKindByUnitOfMeasureKindUseType(UnitOfMeasureKindUseType unitOfMeasureKindUseType) {
-        UnitOfMeasureKindUse unitOfMeasureKindUse = getUnitOfMeasureKindUseByUnitOfMeasureKindUseType(unitOfMeasureKindUseType);
+        var unitOfMeasureKindUse = getUnitOfMeasureKindUseByUnitOfMeasureKindUseType(unitOfMeasureKindUseType);
         
         return unitOfMeasureKindUse == null? null: unitOfMeasureKindUse.getUnitOfMeasureKind();
     }
     
     public UnitOfMeasureKind getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(String unitOfMeasureKindUseTypeName) {
         UnitOfMeasureKindUse unitOfMeasureKindUse = null;
-        UnitOfMeasureKindUseType unitOfMeasureKindUseType = getUnitOfMeasureKindUseTypeByName(unitOfMeasureKindUseTypeName);
+        var unitOfMeasureKindUseType = getUnitOfMeasureKindUseTypeByName(unitOfMeasureKindUseTypeName);
         
         if(unitOfMeasureKindUseType != null) {
             unitOfMeasureKindUse = getUnitOfMeasureKindUseByUnitOfMeasureKindUseType(unitOfMeasureKindUseType);
@@ -2113,7 +2113,7 @@ public class UomControl
     public List<UnitOfMeasureKindUseTransfer> getUnitOfMeasureKindUseTransfers(final UserVisit userVisit,
             final Collection<UnitOfMeasureKindUse> unitOfMeasureKindUses) {
         List<UnitOfMeasureKindUseTransfer> unitOfMeasureKindUseTransfers = new ArrayList<>(unitOfMeasureKindUses.size());
-        UnitOfMeasureKindUseTransferCache unitOfMeasureKindUseTransferCache = getUomTransferCaches(userVisit).getUnitOfMeasureKindUseTransferCache();
+        var unitOfMeasureKindUseTransferCache = getUomTransferCaches(userVisit).getUnitOfMeasureKindUseTransferCache();
         
         unitOfMeasureKindUses.forEach((unitOfMeasureKindUse) ->
                 unitOfMeasureKindUseTransfers.add(unitOfMeasureKindUseTransferCache.getUnitOfMeasureKindUseTransfer(unitOfMeasureKindUse))
@@ -2135,25 +2135,25 @@ public class UomControl
     private void updateUnitOfMeasureKindUseFromValue(UnitOfMeasureKindUseValue unitOfMeasureKindUseValue, boolean checkDefault,
             BasePK updatedBy) {
         if(unitOfMeasureKindUseValue.hasBeenModified()) {
-            UnitOfMeasureKindUse unitOfMeasureKindUse = UnitOfMeasureKindUseFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var unitOfMeasureKindUse = UnitOfMeasureKindUseFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      unitOfMeasureKindUseValue.getPrimaryKey());
             
             unitOfMeasureKindUse.setThruTime(session.START_TIME_LONG);
             unitOfMeasureKindUse.store();
-            
-            UnitOfMeasureKindUseTypePK unitOfMeasureKindUseTypePK = unitOfMeasureKindUse.getUnitOfMeasureKindUseTypePK();
-            UnitOfMeasureKindUseType unitOfMeasureKindUseType = unitOfMeasureKindUse.getUnitOfMeasureKindUseType();
-            UnitOfMeasureKindPK unitOfMeasureKindPK = unitOfMeasureKindUse.getUnitOfMeasureKindPK();
-            Boolean isDefault = unitOfMeasureKindUseValue.getIsDefault();
-            Integer sortOrder = unitOfMeasureKindUseValue.getSortOrder();
+
+            var unitOfMeasureKindUseTypePK = unitOfMeasureKindUse.getUnitOfMeasureKindUseTypePK();
+            var unitOfMeasureKindUseType = unitOfMeasureKindUse.getUnitOfMeasureKindUseType();
+            var unitOfMeasureKindPK = unitOfMeasureKindUse.getUnitOfMeasureKindPK();
+            var isDefault = unitOfMeasureKindUseValue.getIsDefault();
+            var sortOrder = unitOfMeasureKindUseValue.getSortOrder();
             
             if(checkDefault) {
-                UnitOfMeasureKindUse defaultUnitOfMeasureKindUse = getDefaultUnitOfMeasureKindUse(unitOfMeasureKindUseType);
-                boolean defaultFound = defaultUnitOfMeasureKindUse != null && !defaultUnitOfMeasureKindUse.equals(unitOfMeasureKindUse);
+                var defaultUnitOfMeasureKindUse = getDefaultUnitOfMeasureKindUse(unitOfMeasureKindUseType);
+                var defaultFound = defaultUnitOfMeasureKindUse != null && !defaultUnitOfMeasureKindUse.equals(unitOfMeasureKindUse);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    UnitOfMeasureKindUseValue defaultUnitOfMeasureKindUseValue = getDefaultUnitOfMeasureKindUseValueForUpdate(unitOfMeasureKindUseType);
+                    var defaultUnitOfMeasureKindUseValue = getDefaultUnitOfMeasureKindUseValueForUpdate(unitOfMeasureKindUseType);
                     
                     defaultUnitOfMeasureKindUseValue.setIsDefault(Boolean.FALSE);
                     updateUnitOfMeasureKindUseFromValue(defaultUnitOfMeasureKindUseValue, false, updatedBy);
@@ -2181,17 +2181,17 @@ public class UomControl
         unitOfMeasureKindUse.store();
         
         // Check for default, and pick one if necessary
-        UnitOfMeasureKindUseType unitOfMeasureKindUseType = unitOfMeasureKindUse.getUnitOfMeasureKindUseType();
-        UnitOfMeasureKindUse defaultUnitOfMeasureKindUse = getDefaultUnitOfMeasureKindUse(unitOfMeasureKindUseType);
+        var unitOfMeasureKindUseType = unitOfMeasureKindUse.getUnitOfMeasureKindUseType();
+        var defaultUnitOfMeasureKindUse = getDefaultUnitOfMeasureKindUse(unitOfMeasureKindUseType);
         if(defaultUnitOfMeasureKindUse == null) {
-            List<UnitOfMeasureKindUse> unitOfMeasureKindUses = getUnitOfMeasureKindUsesByUnitOfMeasureKindUseTypeForUpdate(unitOfMeasureKindUseType);
+            var unitOfMeasureKindUses = getUnitOfMeasureKindUsesByUnitOfMeasureKindUseTypeForUpdate(unitOfMeasureKindUseType);
             
             if(!unitOfMeasureKindUses.isEmpty()) {
-                Iterator<UnitOfMeasureKindUse> iter = unitOfMeasureKindUses.iterator();
+                var iter = unitOfMeasureKindUses.iterator();
                 if(iter.hasNext()) {
                     defaultUnitOfMeasureKindUse = (UnitOfMeasureKindUse)iter.next();
                 }
-                UnitOfMeasureKindUseValue unitOfMeasureKindUseValue = defaultUnitOfMeasureKindUse.getUnitOfMeasureKindUseValue().clone();
+                var unitOfMeasureKindUseValue = defaultUnitOfMeasureKindUse.getUnitOfMeasureKindUseValue().clone();
                 
                 unitOfMeasureKindUseValue.setIsDefault(Boolean.TRUE);
                 updateUnitOfMeasureKindUseFromValue(unitOfMeasureKindUseValue, false, deletedBy);
@@ -2202,7 +2202,7 @@ public class UomControl
     }
     
     public void deleteUnitOfMeasureKindUseByUnitOfMeasureKind(UnitOfMeasureKind unitOfMeasureKind, BasePK deletedBy) {
-        List<UnitOfMeasureKindUse> unitOfMeasureKindUses = getUnitOfMeasureKindUsesByUnitOfMeasureKindForUpdate(unitOfMeasureKind);
+        var unitOfMeasureKindUses = getUnitOfMeasureKindUsesByUnitOfMeasureKindForUpdate(unitOfMeasureKind);
         
         unitOfMeasureKindUses.forEach((unitOfMeasureKindUse) -> 
                 deleteUnitOfMeasureKindUse(unitOfMeasureKindUse, deletedBy)

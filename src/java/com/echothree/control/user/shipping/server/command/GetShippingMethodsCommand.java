@@ -61,7 +61,7 @@ public class GetShippingMethodsCommand
     @Override
     protected BaseResult execute() {
         var shippingControl = Session.getModelController(ShippingControl.class);
-        GetShippingMethodsResult result = ShippingResultFactory.getGetShippingMethodsResult();
+        var result = ShippingResultFactory.getGetShippingMethodsResult();
         
         result.setShippingMethods(shippingControl.getShippingMethodTransfers(getUserVisit()));
         

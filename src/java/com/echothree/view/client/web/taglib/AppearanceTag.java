@@ -111,12 +111,12 @@ public class AppearanceTag
         if(appearance != null) {
             StringBuilder style = new StringBuilder("<span");
             List<StringBuilder> appliedStyles = new ArrayList<>();
-            ColorTransfer textColor = appearance.getTextColor();
-            ColorTransfer backgroundColor = appearance.getBackgroundColor();
-            FontStyleTransfer fontStyle = appearance.getFontStyle();
-            FontWeightTransfer fontWeight = appearance.getFontWeight();
-            List<AppearanceTextDecorationTransfer> appearanceTextDecorations = appearance.getAppearanceTextDecorations().getList();
-            List<AppearanceTextTransformationTransfer> appearanceTextTransformations = appearance.getAppearanceTextTransformations().getList();
+            var textColor = appearance.getTextColor();
+            var backgroundColor = appearance.getBackgroundColor();
+            var fontStyle = appearance.getFontStyle();
+            var fontWeight = appearance.getFontWeight();
+            var appearanceTextDecorations = appearance.getAppearanceTextDecorations().getList();
+            var appearanceTextTransformations = appearance.getAppearanceTextTransformations().getList();
             
             // color:rgb(255,0,0);
             if(textColor != null) {
@@ -145,7 +145,7 @@ public class AppearanceTag
             // text-decoration:overline; (may be multiple, separated by spaces)
             if(appearanceTextDecorations != null && !appearanceTextDecorations.isEmpty()) {
                 StringBuilder appliedStyle = new StringBuilder("text-decoration:");
-                boolean secondOrLater = false;
+                var secondOrLater = false;
                 
                 for(var appearanceTextDecoration : appearanceTextDecorations) {
                     if(secondOrLater) {
@@ -163,7 +163,7 @@ public class AppearanceTag
             // text-transform:uppercase; (may be multiple, separated by spaces)
             if(appearanceTextTransformations != null && !appearanceTextTransformations.isEmpty()) {
                 StringBuilder appliedStyle = new StringBuilder("text-transform:");
-                boolean secondOrLater = false;
+                var secondOrLater = false;
                 
                 for(var appearanceTextTransformation : appearanceTextTransformations) {
                     if(secondOrLater) {

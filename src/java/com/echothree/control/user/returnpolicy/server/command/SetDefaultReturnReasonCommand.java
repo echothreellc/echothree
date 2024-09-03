@@ -64,12 +64,12 @@ public class SetDefaultReturnReasonCommand
     @Override
     protected BaseResult execute() {
         var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
-        String returnKindName = form.getReturnKindName();
-        ReturnKind returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
+        var returnKindName = form.getReturnKindName();
+        var returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
         
         if(returnKind != null) {
-            String returnReasonName = form.getReturnReasonName();
-            ReturnReasonDetailValue returnReasonDetailValue = returnPolicyControl.getReturnReasonDetailValueByNameForUpdate(returnKind,
+            var returnReasonName = form.getReturnReasonName();
+            var returnReasonDetailValue = returnPolicyControl.getReturnReasonDetailValueByNameForUpdate(returnKind,
                     returnReasonName);
             
             if(returnReasonDetailValue != null) {

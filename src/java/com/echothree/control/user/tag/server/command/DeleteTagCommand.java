@@ -65,12 +65,12 @@ public class DeleteTagCommand
     @Override
     protected BaseResult execute() {
         var tagControl = Session.getModelController(TagControl.class);
-        String tagScopeName = form.getTagScopeName();
-        TagScope tagScope = tagControl.getTagScopeByName(tagScopeName);
+        var tagScopeName = form.getTagScopeName();
+        var tagScope = tagControl.getTagScopeByName(tagScopeName);
         
         if(tagScope != null) {
-            String tagName = form.getTagName();
-            Tag tag = tagControl.getTagByNameForUpdate(tagScope, tagName);
+            var tagName = form.getTagName();
+            var tag = tagControl.getTagByNameForUpdate(tagScope, tagName);
             
             if(tag != null) {
                 tagControl.deleteTag(tag, getPartyPK());

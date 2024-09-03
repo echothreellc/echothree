@@ -53,13 +53,13 @@ public class GetAssociatePartyContactMechanismsCommand
     @Override
     protected BaseResult execute() {
         var associateControl = Session.getModelController(AssociateControl.class);
-        GetAssociatePartyContactMechanismsResult result = AssociateResultFactory.getGetAssociatePartyContactMechanismsResult();
-        String associateProgramName = form.getAssociateProgramName();
-        AssociateProgram associateProgram = associateControl.getAssociateProgramByName(associateProgramName);
+        var result = AssociateResultFactory.getGetAssociatePartyContactMechanismsResult();
+        var associateProgramName = form.getAssociateProgramName();
+        var associateProgram = associateControl.getAssociateProgramByName(associateProgramName);
         
         if(associateProgram != null) {
-            String associateName = form.getAssociateName();
-            Associate associate = associateControl.getAssociateByName(associateProgram, associateName);
+            var associateName = form.getAssociateName();
+            var associate = associateControl.getAssociateByName(associateProgram, associateName);
             
             result.setAssociateProgram(associateControl.getAssociateProgramTransfer(getUserVisit(), associateProgram));
             

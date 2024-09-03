@@ -57,8 +57,8 @@ public class OfferIndexer
     
     @Override
     protected Document convertToDocument(final EntityInstance entityInstance, final Offer offer) {
-        OfferDetail offerDetail = offer.getLastDetail();
-        String description = offerControl.getBestOfferDescription(offer, language);
+        var offerDetail = offer.getLastDetail();
+        var description = offerControl.getBestOfferDescription(offer, language);
 
         var document = newDocumentWithEntityInstanceFields(entityInstance, offer.getPrimaryKey());
 

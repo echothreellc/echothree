@@ -65,12 +65,12 @@ public class DeletePicklistAliasTypeCommand
     @Override
     protected BaseResult execute() {
         var picklistControl = Session.getModelController(PicklistControl.class);
-        String picklistTypeName = form.getPicklistTypeName();
-        PicklistType picklistType = picklistControl.getPicklistTypeByName(picklistTypeName);
+        var picklistTypeName = form.getPicklistTypeName();
+        var picklistType = picklistControl.getPicklistTypeByName(picklistTypeName);
 
         if(picklistType != null) {
-            String picklistAliasTypeName = form.getPicklistAliasTypeName();
-            PicklistAliasType picklistAliasType = picklistControl.getPicklistAliasTypeByNameForUpdate(picklistType, picklistAliasTypeName);
+            var picklistAliasTypeName = form.getPicklistAliasTypeName();
+            var picklistAliasType = picklistControl.getPicklistAliasTypeByNameForUpdate(picklistType, picklistAliasTypeName);
 
             if(picklistAliasType != null) {
                 picklistControl.deletePicklistAliasType(picklistAliasType, getPartyPK());

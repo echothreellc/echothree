@@ -64,12 +64,12 @@ public class SetDefaultWorkflowStepCommand
     @Override
     protected BaseResult execute() {
         var workflowControl = Session.getModelController(WorkflowControl.class);
-        String workflowName = form.getWorkflowName();
+        var workflowName = form.getWorkflowName();
         var workflow = workflowControl.getWorkflowByName(workflowName);
         
         if(workflow != null) {
-            String workflowStepName = form.getWorkflowStepName();
-            WorkflowStepDetailValue workflowStepDetailValue = workflowControl.getWorkflowStepDetailValueByNameForUpdate(workflow, workflowStepName);
+            var workflowStepName = form.getWorkflowStepName();
+            var workflowStepDetailValue = workflowControl.getWorkflowStepDetailValueByNameForUpdate(workflow, workflowStepName);
             
             if(workflowStepDetailValue != null) {
                 workflowStepDetailValue.setIsDefault(Boolean.TRUE);

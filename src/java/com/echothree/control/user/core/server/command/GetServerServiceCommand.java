@@ -65,16 +65,16 @@ public class GetServerServiceCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        GetServerServiceResult result = CoreResultFactory.getGetServerServiceResult();
-        String serverName = form.getServerName();
-        Server server = coreControl.getServerByName(serverName);
+        var result = CoreResultFactory.getGetServerServiceResult();
+        var serverName = form.getServerName();
+        var server = coreControl.getServerByName(serverName);
 
         if(server != null) {
-            String serviceName = form.getServiceName();
-            Service service = coreControl.getServiceByName(serviceName);
+            var serviceName = form.getServiceName();
+            var service = coreControl.getServiceByName(serviceName);
 
             if(service != null) {
-                ServerService serverService = coreControl.getServerService(server, service);
+                var serverService = coreControl.getServerService(server, service);
 
                 if(serverService != null) {
                     result.setServerService(coreControl.getServerServiceTransfer(getUserVisit(), serverService));

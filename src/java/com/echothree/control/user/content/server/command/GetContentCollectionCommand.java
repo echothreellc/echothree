@@ -53,8 +53,8 @@ public class GetContentCollectionCommand
     @Override
     protected ContentCollection getEntity() {
         var contentControl = Session.getModelController(ContentControl.class);
-        String contentCollectionName = form.getContentCollectionName();
-        ContentCollection contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
+        var contentCollectionName = form.getContentCollectionName();
+        var contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
         
         if(contentCollection != null) {
             sendEvent(contentCollection.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -67,7 +67,7 @@ public class GetContentCollectionCommand
     
     @Override
     protected BaseResult getResult(ContentCollection contentCollection) {
-        GetContentCollectionResult result = ContentResultFactory.getGetContentCollectionResult();
+        var result = ContentResultFactory.getGetContentCollectionResult();
         
         if(contentCollection != null) {
             var contentControl = Session.getModelController(ContentControl.class);

@@ -49,13 +49,13 @@ public class ProcessChainInstanceStatusesCommand
     @Override
     protected BaseResult execute() {
         var chainControl = Session.getModelController(ChainControl.class);
-        ChainInstanceStatusLogic chainInstanceStatusLogic = ChainInstanceStatusLogic.getInstance();
+        var chainInstanceStatusLogic = ChainInstanceStatusLogic.getInstance();
         BasePK processedBy = getPartyPK();
         long chainInstanceStatusesProcessed = 0;
-        long remainingTime = (long) 2 * 60 * 1000; // 2 minutes
+        var remainingTime = (long) 2 * 60 * 1000; // 2 minutes
         
-        for(ChainInstanceStatus chainInstanceStatus: chainControl.getChainInstanceStatusesByNextChainActionSetTimeForUpdate(session.START_TIME_LONG)) {
-            long startTime = System.currentTimeMillis();
+        for(var chainInstanceStatus: chainControl.getChainInstanceStatusesByNextChainActionSetTimeForUpdate(session.START_TIME_LONG)) {
+            var startTime = System.currentTimeMillis();
 
             chainInstanceStatusLogic.processChainInstanceStatus(session, chainControl, chainInstanceStatus, processedBy);
             

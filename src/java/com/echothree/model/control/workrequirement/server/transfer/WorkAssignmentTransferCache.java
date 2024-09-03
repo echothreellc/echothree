@@ -46,20 +46,20 @@ public class WorkAssignmentTransferCache
     }
     
     public WorkAssignmentTransfer getWorkAssignmentTransfer(WorkAssignment workAssignment) {
-        WorkAssignmentTransfer workAssignmentTransfer = get(workAssignment);
+        var workAssignmentTransfer = get(workAssignment);
         
         if(workAssignmentTransfer == null) {
-            WorkAssignmentDetail workAssignmentDetail = workAssignment.getLastDetail();
-            WorkRequirementTransfer workRequirement = workRequirementControl.getWorkRequirementTransfer(userVisit, workAssignmentDetail.getWorkRequirement());
-            Integer workAssignmentSequence = workAssignmentDetail.getWorkAssignmentSequence();
-            PartyTransfer party = partyControl.getPartyTransfer(userVisit, workAssignmentDetail.getParty());
-            Long unformattedStartTime = workAssignmentDetail.getStartTime();
-            String startTime = formatTypicalDateTime(unformattedStartTime);
-            Long unformattedEndTime = workAssignmentDetail.getEndTime();
-            String endTime = formatTypicalDateTime(unformattedEndTime);
+            var workAssignmentDetail = workAssignment.getLastDetail();
+            var workRequirement = workRequirementControl.getWorkRequirementTransfer(userVisit, workAssignmentDetail.getWorkRequirement());
+            var workAssignmentSequence = workAssignmentDetail.getWorkAssignmentSequence();
+            var party = partyControl.getPartyTransfer(userVisit, workAssignmentDetail.getParty());
+            var unformattedStartTime = workAssignmentDetail.getStartTime();
+            var startTime = formatTypicalDateTime(unformattedStartTime);
+            var unformattedEndTime = workAssignmentDetail.getEndTime();
+            var endTime = formatTypicalDateTime(unformattedEndTime);
 
-            EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(workAssignment.getPrimaryKey());
-            WorkflowEntityStatusTransfer workAssignmentStatus = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
+            var entityInstance = coreControl.getEntityInstanceByBasePK(workAssignment.getPrimaryKey());
+            var workAssignmentStatus = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
                     WorkAssignmentStatusConstants.Workflow_WORK_ASSIGNMENT_STATUS, entityInstance);
 
             workAssignmentTransfer = new WorkAssignmentTransfer(workRequirement, workAssignmentSequence, party, unformattedStartTime, startTime,

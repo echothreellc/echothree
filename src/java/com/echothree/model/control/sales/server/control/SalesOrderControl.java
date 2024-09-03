@@ -59,7 +59,7 @@ public class SalesOrderControl
     // --------------------------------------------------------------------------------
 
     public SalesOrder createSalesOrder(Order order, OfferUse offerUse, AssociateReferral associateReferral, BasePK createdBy) {
-        SalesOrder salesOrder = SalesOrderFactory.getInstance().create(order, offerUse, associateReferral,
+        var salesOrder = SalesOrderFactory.getInstance().create(order, offerUse, associateReferral,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(order.getPrimaryKey(), EventTypes.MODIFY, salesOrder.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -100,7 +100,7 @@ public class SalesOrderControl
                         "FOR UPDATE";
             }
 
-            PreparedStatement ps = SalesOrderFactory.getInstance().prepareStatement(query);
+            var ps = SalesOrderFactory.getInstance().prepareStatement(query);
 
             ps.setLong(1, order.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -131,15 +131,15 @@ public class SalesOrderControl
 
     public void updateSalesOrderFromValue(SalesOrderValue salesOrderValue, BasePK updatedBy) {
         if(salesOrderValue.hasBeenModified()) {
-            SalesOrder salesOrder = SalesOrderFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var salesOrder = SalesOrderFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     salesOrderValue.getPrimaryKey());
 
             salesOrder.setThruTime(session.START_TIME_LONG);
             salesOrder.store();
 
-            OrderPK orderPK = salesOrder.getOrderPK(); // Not updated
-            OfferUsePK offerUsePK = salesOrderValue.getOfferUsePK();
-            AssociateReferralPK associateReferralPK = salesOrderValue.getAssociateReferralPK();
+            var orderPK = salesOrder.getOrderPK(); // Not updated
+            var offerUsePK = salesOrderValue.getOfferUsePK();
+            var associateReferralPK = salesOrderValue.getAssociateReferralPK();
 
             salesOrder = SalesOrderFactory.getInstance().create(orderPK, offerUsePK, associateReferralPK,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -160,7 +160,7 @@ public class SalesOrderControl
 
     public SalesOrderLine createSalesOrderLine(OrderLine orderLine, OfferUse offerUse, AssociateReferral associateReferral,
             BasePK createdBy) {
-        SalesOrderLine salesOrderLine = SalesOrderLineFactory.getInstance().create(orderLine, offerUse, associateReferral,
+        var salesOrderLine = SalesOrderLineFactory.getInstance().create(orderLine, offerUse, associateReferral,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(orderLine.getPrimaryKey(), EventTypes.MODIFY, salesOrderLine.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -201,7 +201,7 @@ public class SalesOrderControl
                         "FOR UPDATE";
             }
 
-            PreparedStatement ps = SalesOrderLineFactory.getInstance().prepareStatement(query);
+            var ps = SalesOrderLineFactory.getInstance().prepareStatement(query);
 
             ps.setLong(1, orderLine.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -232,15 +232,15 @@ public class SalesOrderControl
 
     public void updateSalesOrderLineFromValue(SalesOrderLineValue salesOrderLineValue, BasePK updatedBy) {
         if(salesOrderLineValue.hasBeenModified()) {
-            SalesOrderLine salesOrderLine = SalesOrderLineFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var salesOrderLine = SalesOrderLineFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     salesOrderLineValue.getPrimaryKey());
 
             salesOrderLine.setThruTime(session.START_TIME_LONG);
             salesOrderLine.store();
 
-            OrderLinePK orderLinePK = salesOrderLine.getOrderLinePK(); // Not updated
-            OfferUsePK offerUsePK = salesOrderLineValue.getOfferUsePK();
-            AssociateReferralPK associateReferralPK = salesOrderLineValue.getAssociateReferralPK();
+            var orderLinePK = salesOrderLine.getOrderLinePK(); // Not updated
+            var offerUsePK = salesOrderLineValue.getOfferUsePK();
+            var associateReferralPK = salesOrderLineValue.getAssociateReferralPK();
 
             salesOrderLine = SalesOrderLineFactory.getInstance().create(orderLinePK, offerUsePK, associateReferralPK,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);

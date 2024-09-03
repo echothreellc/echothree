@@ -63,8 +63,8 @@ public class SetDefaultIndexTypeCommand
     @Override
     protected BaseResult execute() {
         var indexControl = Session.getModelController(IndexControl.class);
-        String indexTypeName = form.getIndexTypeName();
-        IndexTypeDetailValue indexTypeDetailValue = indexControl.getIndexTypeDetailValueByNameForUpdate(indexTypeName);
+        var indexTypeName = form.getIndexTypeName();
+        var indexTypeDetailValue = indexControl.getIndexTypeDetailValueByNameForUpdate(indexTypeName);
         
         if(indexTypeDetailValue != null) {
             indexTypeDetailValue.setIsDefault(Boolean.TRUE);

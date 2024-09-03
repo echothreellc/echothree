@@ -76,31 +76,31 @@ public class CreateTrainingClassQuestionTranslationCommand
     @Override
     protected BaseResult execute() {
         var trainingControl = Session.getModelController(TrainingControl.class);
-        String trainingClassName = form.getTrainingClassName();
-        TrainingClass trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
+        var trainingClassName = form.getTrainingClassName();
+        var trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
 
         if(trainingClass != null) {
-            String trainingClassSectionName = form.getTrainingClassSectionName();
-            TrainingClassSection trainingClassSection = trainingControl.getTrainingClassSectionByName(trainingClass, trainingClassSectionName);
+            var trainingClassSectionName = form.getTrainingClassSectionName();
+            var trainingClassSection = trainingControl.getTrainingClassSectionByName(trainingClass, trainingClassSectionName);
 
             if(trainingClassSection != null) {
-                String trainingClassQuestionName = form.getTrainingClassQuestionName();
-                TrainingClassQuestion trainingClassQuestion = trainingControl.getTrainingClassQuestionByName(trainingClassSection, trainingClassQuestionName);
+                var trainingClassQuestionName = form.getTrainingClassQuestionName();
+                var trainingClassQuestion = trainingControl.getTrainingClassQuestionByName(trainingClassSection, trainingClassQuestionName);
 
                 if(trainingClassQuestion != null) {
                     var partyControl = Session.getModelController(PartyControl.class);
-                    String languageIsoName = form.getLanguageIsoName();
-                    Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                    var languageIsoName = form.getLanguageIsoName();
+                    var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                     if(language != null) {
-                        TrainingClassQuestionTranslation trainingClassQuestionTranslation = trainingControl.getTrainingClassQuestionTranslation(trainingClassQuestion, language);
+                        var trainingClassQuestionTranslation = trainingControl.getTrainingClassQuestionTranslation(trainingClassQuestion, language);
 
                         if(trainingClassQuestionTranslation == null) {
-                            MimeTypeLogic mimeTypeLogic = MimeTypeLogic.getInstance();
-                            String questionMimeTypeName = form.getQuestionMimeTypeName();
-                            String question = form.getQuestion();
+                            var mimeTypeLogic = MimeTypeLogic.getInstance();
+                            var questionMimeTypeName = form.getQuestionMimeTypeName();
+                            var question = form.getQuestion();
 
-                            MimeType questionMimeType = mimeTypeLogic.checkMimeType(this, questionMimeTypeName, question, MimeTypeUsageTypes.TEXT.name(),
+                            var questionMimeType = mimeTypeLogic.checkMimeType(this, questionMimeTypeName, question, MimeTypeUsageTypes.TEXT.name(),
                                     ExecutionErrors.MissingRequiredQuestionMimeTypeName.name(), ExecutionErrors.MissingRequiredQuestion.name(),
                                     ExecutionErrors.UnknownQuestionMimeTypeName.name(), ExecutionErrors.UnknownQuestionMimeTypeUsage.name());
 

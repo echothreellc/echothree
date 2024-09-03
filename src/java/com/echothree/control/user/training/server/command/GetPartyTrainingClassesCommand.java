@@ -67,9 +67,9 @@ public class GetPartyTrainingClassesCommand
     
     @Override
     protected BaseResult execute() {
-        GetPartyTrainingClassesResult result = TrainingResultFactory.getGetPartyTrainingClassesResult();
-        String partyName = form.getPartyName();
-        String trainingClassName = form.getTrainingClassName();
+        var result = TrainingResultFactory.getGetPartyTrainingClassesResult();
+        var partyName = form.getPartyName();
+        var trainingClassName = form.getTrainingClassName();
         var parameterCount = (partyName == null ? 0 : 1) + (trainingClassName == null ? 0 : 1);
         
         if(parameterCount == 1) {
@@ -77,7 +77,7 @@ public class GetPartyTrainingClassesCommand
             
             if(partyName != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                Party party = partyControl.getPartyByName(partyName);
+                var party = partyControl.getPartyByName(partyName);
                 
                 if(party != null) {
                     result.setParty(partyControl.getPartyTransfer(getUserVisit(), party));
@@ -86,7 +86,7 @@ public class GetPartyTrainingClassesCommand
                     addExecutionError(ExecutionErrors.UnknownPartyName.name(), partyName);
                 }
             } else if(trainingClassName != null) {
-                TrainingClass trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
+                var trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
                 
                 if(trainingClass != null) {
                     result.setTrainingClass(trainingControl.getTrainingClassTransfer(getUserVisit(), trainingClass));

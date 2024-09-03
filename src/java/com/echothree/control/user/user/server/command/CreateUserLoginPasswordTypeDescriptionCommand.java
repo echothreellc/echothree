@@ -52,17 +52,17 @@ public class CreateUserLoginPasswordTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        UserControl userControl = getUserControl();
-        String userLoginPasswordTypeName = form.getUserLoginPasswordTypeName();
-        UserLoginPasswordType userLoginPasswordType = userControl.getUserLoginPasswordTypeByName(userLoginPasswordTypeName);
+        var userControl = getUserControl();
+        var userLoginPasswordTypeName = form.getUserLoginPasswordTypeName();
+        var userLoginPasswordType = userControl.getUserLoginPasswordTypeByName(userLoginPasswordTypeName);
         
         if(userLoginPasswordType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                UserLoginPasswordTypeDescription userLoginPasswordTypeDescription = userControl.getUserLoginPasswordTypeDescription(userLoginPasswordType, language);
+                var userLoginPasswordTypeDescription = userControl.getUserLoginPasswordTypeDescription(userLoginPasswordType, language);
                 
                 if(userLoginPasswordTypeDescription == null) {
                     var description = form.getDescription();

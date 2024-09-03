@@ -32,12 +32,12 @@ public class WorkRequirementTypeDescriptionTransferCache
     }
     
     public WorkRequirementTypeDescriptionTransfer getWorkRequirementTypeDescriptionTransfer(WorkRequirementTypeDescription workRequirementTypeDescription) {
-        WorkRequirementTypeDescriptionTransfer workRequirementTypeDescriptionTransfer = get(workRequirementTypeDescription);
+        var workRequirementTypeDescriptionTransfer = get(workRequirementTypeDescription);
         
         if(workRequirementTypeDescriptionTransfer == null) {
-            WorkRequirementTypeTransfer workRequirementTypeTransfer = workRequirementControl.getWorkRequirementTypeTransfer(userVisit, workRequirementTypeDescription.getWorkRequirementType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, workRequirementTypeDescription.getLanguage());
-            String description = workRequirementTypeDescription.getDescription();
+            var workRequirementTypeTransfer = workRequirementControl.getWorkRequirementTypeTransfer(userVisit, workRequirementTypeDescription.getWorkRequirementType());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, workRequirementTypeDescription.getLanguage());
+            var description = workRequirementTypeDescription.getDescription();
             
             workRequirementTypeDescriptionTransfer = new WorkRequirementTypeDescriptionTransfer(languageTransfer, workRequirementTypeTransfer,
                     description);

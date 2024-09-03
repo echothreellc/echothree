@@ -71,22 +71,22 @@ public class GetOrderPriorityDescriptionCommand
     @Override
     protected BaseResult execute() {
         var orderTypeControl = Session.getModelController(OrderTypeControl.class);
-        GetOrderPriorityDescriptionResult result = OrderResultFactory.getGetOrderPriorityDescriptionResult();
+        var result = OrderResultFactory.getGetOrderPriorityDescriptionResult();
         var orderTypeName = form.getOrderTypeName();
         var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
             var orderPriorityControl = Session.getModelController(OrderPriorityControl.class);
-            String orderPriorityName = form.getOrderPriorityName();
-            OrderPriority orderPriority = orderPriorityControl.getOrderPriorityByName(orderType, orderPriorityName);
+            var orderPriorityName = form.getOrderPriorityName();
+            var orderPriority = orderPriorityControl.getOrderPriorityByName(orderType, orderPriorityName);
 
             if(orderPriority != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = form.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = form.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                 if(language != null) {
-                    OrderPriorityDescription orderPriorityDescription = orderPriorityControl.getOrderPriorityDescription(orderPriority, language);
+                    var orderPriorityDescription = orderPriorityControl.getOrderPriorityDescription(orderPriority, language);
 
                     if(orderPriorityDescription != null) {
                         result.setOrderPriorityDescription(orderPriorityControl.getOrderPriorityDescriptionTransfer(getUserVisit(), orderPriorityDescription));

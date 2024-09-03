@@ -30,7 +30,7 @@ public class ReturnPolicyUtil {
     public static ReturnPolicyLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
 
             cachedLocal = (ReturnPolicyLocal)ctx.lookup("ejb:echothree/echothree-server/ReturnPolicyBean!com.echothree.control.user.returnpolicy.server.ReturnPolicyLocal");
         }
@@ -42,7 +42,7 @@ public class ReturnPolicyUtil {
     public static ReturnPolicyRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
             
             cachedRemote = (ReturnPolicyRemote)ctx.lookup("ejb:echothree/echothree-server/ReturnPolicyBean!com.echothree.control.user.returnpolicy.common.ReturnPolicyRemote");
         }

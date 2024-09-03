@@ -84,33 +84,33 @@ public class EditLetterDescriptionCommand
     @Override
     protected BaseResult execute() {
         var chainControl = Session.getModelController(ChainControl.class);
-        EditLetterDescriptionResult result = LetterResultFactory.getEditLetterDescriptionResult();
-        String chainKindName = spec.getChainKindName();
-        ChainKind chainKind = chainControl.getChainKindByName(chainKindName);
+        var result = LetterResultFactory.getEditLetterDescriptionResult();
+        var chainKindName = spec.getChainKindName();
+        var chainKind = chainControl.getChainKindByName(chainKindName);
         
         if(chainKind != null) {
-            String chainTypeName = spec.getChainTypeName();
-            ChainType chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
+            var chainTypeName = spec.getChainTypeName();
+            var chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
             
             if(chainType != null) {
                 var letterControl = Session.getModelController(LetterControl.class);
-                String letterName = spec.getLetterName();
-                Letter letter = letterControl.getLetterByName(chainType, letterName);
+                var letterName = spec.getLetterName();
+                var letter = letterControl.getLetterByName(chainType, letterName);
                 
                 if(letter != null) {
                     var partyControl = Session.getModelController(PartyControl.class);
-                    String languageIsoName = spec.getLanguageIsoName();
-                    Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                    var languageIsoName = spec.getLanguageIsoName();
+                    var language = partyControl.getLanguageByIsoName(languageIsoName);
                     
                     if(language != null) {
                         if(editMode.equals(EditMode.LOCK)) {
-                            LetterDescription letterDescription = letterControl.getLetterDescription(letter, language);
+                            var letterDescription = letterControl.getLetterDescription(letter, language);
                             
                             if(letterDescription != null) {
                                 result.setLetterDescription(letterControl.getLetterDescriptionTransfer(getUserVisit(), letterDescription));
                                 
                                 if(lockEntity(letter)) {
-                                    LetterDescriptionEdit edit = LetterEditFactory.getLetterDescriptionEdit();
+                                    var edit = LetterEditFactory.getLetterDescriptionEdit();
                                     
                                     result.setEdit(edit);
                                     edit.setDescription(letterDescription.getDescription());
@@ -123,12 +123,12 @@ public class EditLetterDescriptionCommand
                                 addExecutionError(ExecutionErrors.UnknownLetterDescription.name());
                             }
                         } else if(editMode.equals(EditMode.UPDATE)) {
-                            LetterDescriptionValue letterDescriptionValue = letterControl.getLetterDescriptionValueForUpdate(letter, language);
+                            var letterDescriptionValue = letterControl.getLetterDescriptionValueForUpdate(letter, language);
                             
                             if(letterDescriptionValue != null) {
                                 if(lockEntityForUpdate(letter)) {
                                     try {
-                                        String description = edit.getDescription();
+                                        var description = edit.getDescription();
                                         
                                         letterDescriptionValue.setDescription(description);
                                         

@@ -92,15 +92,15 @@ public class ChainInstanceTag
     public int doStartTag()
             throws JspException {
         try {
-            GetChainInstanceForm commandForm = ChainUtil.getHome().getGetChainInstanceForm();
+            var commandForm = ChainUtil.getHome().getGetChainInstanceForm();
             
             commandForm.setChainInstanceName(chainInstanceName);
             
             setOptions(options, null, commandForm);
 
             commandForm.setTransferProperties(transferProperties);
-            
-            CommandResult commandResult = ChainUtil.getHome().getChainInstance(getUserVisitPK(), commandForm);
+
+            var commandResult = ChainUtil.getHome().getChainInstance(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -108,8 +108,8 @@ public class ChainInstanceTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetChainInstanceResult result = (GetChainInstanceResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetChainInstanceResult)executionResult.getResult();
 
                 pageContext.setAttribute(var, result.getChainInstance(), scope);
             }

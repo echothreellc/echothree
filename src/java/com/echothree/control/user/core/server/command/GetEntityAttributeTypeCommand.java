@@ -51,7 +51,7 @@ public class GetEntityAttributeTypeCommand
     
     @Override
     protected EntityAttributeType getEntity() {
-        String entityAttributeTypeName = form.getEntityAttributeTypeName();
+        var entityAttributeTypeName = form.getEntityAttributeTypeName();
         
         return EntityAttributeLogic.getInstance().getEntityAttributeTypeByName(this, entityAttributeTypeName);
     }
@@ -59,7 +59,7 @@ public class GetEntityAttributeTypeCommand
     @Override
     protected BaseResult getResult(EntityAttributeType entityAttributeType) {
         var coreControl = getCoreControl();
-        GetEntityAttributeTypeResult result = CoreResultFactory.getGetEntityAttributeTypeResult();
+        var result = CoreResultFactory.getGetEntityAttributeTypeResult();
 
         if(entityAttributeType != null) {
             sendEvent(entityAttributeType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());

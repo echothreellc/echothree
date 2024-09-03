@@ -32,11 +32,11 @@ public class CancellationKindDescriptionTransferCache
     }
     
     public CancellationKindDescriptionTransfer getCancellationKindDescriptionTransfer(CancellationKindDescription cancellationKindDescription) {
-        CancellationKindDescriptionTransfer cancellationKindDescriptionTransfer = get(cancellationKindDescription);
+        var cancellationKindDescriptionTransfer = get(cancellationKindDescription);
         
         if(cancellationKindDescriptionTransfer == null) {
-            CancellationKindTransfer cancellationKindTransfer = cancellationPolicyControl.getCancellationKindTransfer(userVisit, cancellationKindDescription.getCancellationKind());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, cancellationKindDescription.getLanguage());
+            var cancellationKindTransfer = cancellationPolicyControl.getCancellationKindTransfer(userVisit, cancellationKindDescription.getCancellationKind());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, cancellationKindDescription.getLanguage());
             
             cancellationKindDescriptionTransfer = new CancellationKindDescriptionTransfer(languageTransfer, cancellationKindTransfer, cancellationKindDescription.getDescription());
             put(cancellationKindDescription, cancellationKindDescriptionTransfer);

@@ -33,14 +33,14 @@ public class GenderTransferCache
     }
     
     public GenderTransfer getGenderTransfer(Gender gender) {
-        GenderTransfer genderTransfer = get(gender);
+        var genderTransfer = get(gender);
         
         if(genderTransfer == null) {
-            GenderDetail genderDetail = gender.getLastDetail();
-            String genderName = genderDetail.getGenderName();
-            Boolean isDefault = genderDetail.getIsDefault();
-            Integer sortOrder = genderDetail.getSortOrder();
-            String description = partyControl.getBestGenderDescription(gender, getLanguage());
+            var genderDetail = gender.getLastDetail();
+            var genderName = genderDetail.getGenderName();
+            var isDefault = genderDetail.getIsDefault();
+            var sortOrder = genderDetail.getSortOrder();
+            var description = partyControl.getBestGenderDescription(gender, getLanguage());
             
             genderTransfer = new GenderTransfer(genderName, isDefault, sortOrder, description);
             put(gender, genderTransfer);

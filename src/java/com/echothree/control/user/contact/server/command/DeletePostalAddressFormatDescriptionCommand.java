@@ -53,16 +53,16 @@ public class DeletePostalAddressFormatDescriptionCommand
     @Override
     protected BaseResult execute() {
         var contactControl = Session.getModelController(ContactControl.class);
-        String postalAddressFormatName = form.getPostalAddressFormatName();
-        PostalAddressFormat postalAddressFormat = contactControl.getPostalAddressFormatByName(postalAddressFormatName);
+        var postalAddressFormatName = form.getPostalAddressFormatName();
+        var postalAddressFormat = contactControl.getPostalAddressFormatByName(postalAddressFormatName);
         
         if(postalAddressFormat != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                PostalAddressFormatDescription postalAddressFormatDescription = contactControl.getPostalAddressFormatDescriptionForUpdate(postalAddressFormat, language);
+                var postalAddressFormatDescription = contactControl.getPostalAddressFormatDescriptionForUpdate(postalAddressFormat, language);
                 
                 if(postalAddressFormatDescription != null) {
                     contactControl.deletePostalAddressFormatDescription(postalAddressFormatDescription, getPartyPK());

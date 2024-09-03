@@ -91,7 +91,7 @@ public class EditPrinterCommand
     public Printer getEntity(EditPrinterResult result) {
         var printerControl = Session.getModelController(PrinterControl.class);
         Printer printer = null;
-        String printerName = spec.getPrinterName();
+        var printerName = spec.getPrinterName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
             printer = printerControl.getPrinterByName(printerName);
@@ -123,8 +123,8 @@ public class EditPrinterCommand
     @Override
     public void doLock(PrinterEdit edit, Printer printer) {
         var printerControl = Session.getModelController(PrinterControl.class);
-        PrinterDescription printerDescription = printerControl.getPrinterDescription(printer, getPreferredLanguage());
-        PrinterDetail printerDetail = printer.getLastDetail();
+        var printerDescription = printerControl.getPrinterDescription(printer, getPreferredLanguage());
+        var printerDetail = printer.getLastDetail();
 
         edit.setPrinterName(printerDetail.getPrinterName());
         edit.setPrinterGroupName(printerDetail.getPrinterGroup().getLastDetail().getPrinterGroupName());
@@ -140,13 +140,13 @@ public class EditPrinterCommand
     @Override
     public void canUpdate(Printer printer) {
         var printerControl = Session.getModelController(PrinterControl.class);
-        String printerName = edit.getPrinterName();
-        Printer duplicatePrinter = printerControl.getPrinterByName(printerName);
+        var printerName = edit.getPrinterName();
+        var duplicatePrinter = printerControl.getPrinterByName(printerName);
 
         if(duplicatePrinter != null && !printer.equals(duplicatePrinter)) {
             addExecutionError(ExecutionErrors.DuplicatePrinterName.name(), printerName);
         } else {
-            String printerGroupName = edit.getPrinterGroupName();
+            var printerGroupName = edit.getPrinterGroupName();
 
             printerGroup = printerControl.getPrinterGroupByName(printerGroupName);
 
@@ -160,9 +160,9 @@ public class EditPrinterCommand
     public void doUpdate(Printer printer) {
         var printerControl = Session.getModelController(PrinterControl.class);
         var partyPK = getPartyPK();
-        PrinterDetailValue printerDetailValue = printerControl.getPrinterDetailValueForUpdate(printer);
-        PrinterDescription printerDescription = printerControl.getPrinterDescriptionForUpdate(printer, getPreferredLanguage());
-        String description = edit.getDescription();
+        var printerDetailValue = printerControl.getPrinterDetailValueForUpdate(printer);
+        var printerDescription = printerControl.getPrinterDescriptionForUpdate(printer, getPreferredLanguage());
+        var description = edit.getDescription();
 
         printerDetailValue.setPrinterName(edit.getPrinterName());
         printerDetailValue.setPrinterGroupPK(printerGroup.getPrimaryKey());
@@ -175,7 +175,7 @@ public class EditPrinterCommand
         } else if(printerDescription != null && description == null) {
             printerControl.deletePrinterDescription(printerDescription, partyPK);
         } else if(printerDescription != null && description != null) {
-            PrinterDescriptionValue printerDescriptionValue = printerControl.getPrinterDescriptionValue(printerDescription);
+            var printerDescriptionValue = printerControl.getPrinterDescriptionValue(printerDescription);
 
             printerDescriptionValue.setDescription(description);
             printerControl.updatePrinterDescriptionFromValue(printerDescriptionValue, partyPK);

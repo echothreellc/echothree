@@ -64,16 +64,16 @@ public class CheckSecurityRolesTag
     public int doStartTag()
             throws JspException {
         String newSecurityRoles = null;
-        HashSet<String> pageSecurityRoles = (HashSet<String>)pageContext.getAttribute(WebConstants.Attribute_SECURITY_ROLES, PageContext.REQUEST_SCOPE);
+        var pageSecurityRoles = (HashSet<String>)pageContext.getAttribute(WebConstants.Attribute_SECURITY_ROLES, PageContext.REQUEST_SCOPE);
         
         try {
-            CheckSecurityRolesForm commandForm = SecurityUtil.getHome().getCheckSecurityRolesForm();
+            var commandForm = SecurityUtil.getHome().getCheckSecurityRolesForm();
 
             commandForm.setSecurityRoles(securityRoles);
 
-            CommandResult commandResult = SecurityUtil.getHome().checkSecurityRoles(getUserVisitPK(), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            CheckSecurityRolesResult checkSecurityRolesResult = (CheckSecurityRolesResult)executionResult.getResult();
+            var commandResult = SecurityUtil.getHome().checkSecurityRoles(getUserVisitPK(), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var checkSecurityRolesResult = (CheckSecurityRolesResult)executionResult.getResult();
             
             if(commandResult.hasErrors()) {
                 if(logErrors) {
@@ -87,14 +87,14 @@ public class CheckSecurityRolesTag
         }
         
         if(newSecurityRoles != null) {
-            String []newSecurityRolesArray = Splitter.on(':').trimResults().omitEmptyStrings().splitToList(newSecurityRoles).toArray(new String[0]);
-            int newSecurityRolesArrayLength = newSecurityRolesArray.length;
+            var newSecurityRolesArray = Splitter.on(':').trimResults().omitEmptyStrings().splitToList(newSecurityRoles).toArray(new String[0]);
+            var newSecurityRolesArrayLength = newSecurityRolesArray.length;
             
             if(pageSecurityRoles == null) {
                 pageSecurityRoles = new HashSet<>(newSecurityRolesArrayLength);
             }
             
-            for(int i = 0; i < newSecurityRolesArrayLength; i++) {
+            for(var i = 0; i < newSecurityRolesArrayLength; i++) {
                 pageSecurityRoles.add(newSecurityRolesArray[i]);
             }
         }

@@ -36,14 +36,14 @@ public class ChainInstanceStatusTransferCache
     }
     
     public ChainInstanceStatusTransfer getChainInstanceStatusTransfer(ChainInstanceStatus chainInstanceStatus) {
-        ChainInstanceStatusTransfer chainInstanceStatusTransfer = get(chainInstanceStatus);
+        var chainInstanceStatusTransfer = get(chainInstanceStatus);
         
         if(chainInstanceStatusTransfer == null) {
-            ChainInstanceTransfer chainInstance = chainControl.getChainInstanceTransfer(userVisit, chainInstanceStatus.getChainInstance());
-            ChainActionSetTransfer nextChainActionSet = chainControl.getChainActionSetTransfer(userVisit, chainInstanceStatus.getNextChainActionSet());
-            Long unformattedNextChainActionSetTime = chainInstanceStatus.getNextChainActionSetTime();
-            String nextChainActionSetTime = formatTypicalDateTime(unformattedNextChainActionSetTime);
-            Integer queuedLetterSequence = chainInstanceStatus.getQueuedLetterSequence();
+            var chainInstance = chainControl.getChainInstanceTransfer(userVisit, chainInstanceStatus.getChainInstance());
+            var nextChainActionSet = chainControl.getChainActionSetTransfer(userVisit, chainInstanceStatus.getNextChainActionSet());
+            var unformattedNextChainActionSetTime = chainInstanceStatus.getNextChainActionSetTime();
+            var nextChainActionSetTime = formatTypicalDateTime(unformattedNextChainActionSetTime);
+            var queuedLetterSequence = chainInstanceStatus.getQueuedLetterSequence();
             
             chainInstanceStatusTransfer = new ChainInstanceStatusTransfer(chainInstance, nextChainActionSet, unformattedNextChainActionSetTime,
                     nextChainActionSetTime, queuedLetterSequence);

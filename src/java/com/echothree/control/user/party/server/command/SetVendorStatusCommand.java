@@ -66,10 +66,10 @@ public class SetVendorStatusCommand
     
     @Override
     protected BaseResult execute() {
-        Vendor vendor = VendorLogic.getInstance().getVendorByUniversalSpec(this, form);
+        var vendor = VendorLogic.getInstance().getVendorByUniversalSpec(this, form);
 
         if(!hasExecutionErrors()) {
-            String vendorStatusChoice = form.getVendorStatusChoice();
+            var vendorStatusChoice = form.getVendorStatusChoice();
             
             VendorLogic.getInstance().setVendorStatus(session, this, vendor.getParty(), vendorStatusChoice, getPartyPK());
         }

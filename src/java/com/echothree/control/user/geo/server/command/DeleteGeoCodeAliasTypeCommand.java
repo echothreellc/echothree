@@ -65,12 +65,12 @@ public class DeleteGeoCodeAliasTypeCommand
     @Override
     protected BaseResult execute() {
         var geoControl = Session.getModelController(GeoControl.class);
-        String geoCodeTypeName = form.getGeoCodeTypeName();
-        GeoCodeType geoCodeType = geoControl.getGeoCodeTypeByName(geoCodeTypeName);
+        var geoCodeTypeName = form.getGeoCodeTypeName();
+        var geoCodeType = geoControl.getGeoCodeTypeByName(geoCodeTypeName);
 
         if(geoCodeType != null) {
-            String geoAliasTypeName = form.getGeoCodeAliasTypeName();
-            GeoCodeAliasType geoAliasType = geoControl.getGeoCodeAliasTypeByNameForUpdate(geoCodeType, geoAliasTypeName);
+            var geoAliasTypeName = form.getGeoCodeAliasTypeName();
+            var geoAliasType = geoControl.getGeoCodeAliasTypeByNameForUpdate(geoCodeType, geoAliasTypeName);
 
             if(geoAliasType != null) {
                 geoControl.deleteGeoCodeAliasType(geoAliasType, getPartyPK());

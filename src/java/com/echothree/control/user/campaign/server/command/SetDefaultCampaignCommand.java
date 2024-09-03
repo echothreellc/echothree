@@ -63,8 +63,8 @@ public class SetDefaultCampaignCommand
     @Override
     protected BaseResult execute() {
         var campaignControl = Session.getModelController(CampaignControl.class);
-        String campaignName = form.getCampaignName();
-        CampaignDetailValue campaignDetailValue = campaignControl.getCampaignDetailValueByNameForUpdate(campaignName);
+        var campaignName = form.getCampaignName();
+        var campaignDetailValue = campaignControl.getCampaignDetailValueByNameForUpdate(campaignName);
         
         if(campaignDetailValue != null) {
             campaignDetailValue.setIsDefault(Boolean.TRUE);

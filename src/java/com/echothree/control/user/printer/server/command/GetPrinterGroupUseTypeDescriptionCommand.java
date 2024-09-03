@@ -69,17 +69,17 @@ public class GetPrinterGroupUseTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var printerControl = Session.getModelController(PrinterControl.class);
-        GetPrinterGroupUseTypeDescriptionResult result = PrinterResultFactory.getGetPrinterGroupUseTypeDescriptionResult();
-        String printerGroupUseTypeName = form.getPrinterGroupUseTypeName();
-        PrinterGroupUseType printerGroupUseType = printerControl.getPrinterGroupUseTypeByName(printerGroupUseTypeName);
+        var result = PrinterResultFactory.getGetPrinterGroupUseTypeDescriptionResult();
+        var printerGroupUseTypeName = form.getPrinterGroupUseTypeName();
+        var printerGroupUseType = printerControl.getPrinterGroupUseTypeByName(printerGroupUseTypeName);
         
         if(printerGroupUseType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                PrinterGroupUseTypeDescription printerGroupUseTypeDescription = printerControl.getPrinterGroupUseTypeDescription(printerGroupUseType, language);
+                var printerGroupUseTypeDescription = printerControl.getPrinterGroupUseTypeDescription(printerGroupUseType, language);
                 
                 if(printerGroupUseTypeDescription != null) {
                     result.setPrinterGroupUseTypeDescription(printerControl.getPrinterGroupUseTypeDescriptionTransfer(getUserVisit(), printerGroupUseTypeDescription));

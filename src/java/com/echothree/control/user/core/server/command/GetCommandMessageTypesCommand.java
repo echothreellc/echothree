@@ -59,7 +59,7 @@ public class GetCommandMessageTypesCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        GetCommandMessageTypesResult result = CoreResultFactory.getGetCommandMessageTypesResult();
+        var result = CoreResultFactory.getGetCommandMessageTypesResult();
         
         result.setCommandMessageTypes(coreControl.getCommandMessageTypeTransfers(getUserVisit()));
         

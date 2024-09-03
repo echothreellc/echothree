@@ -65,9 +65,9 @@ public class GetGlAccountCategoryDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        GetGlAccountCategoryDescriptionsResult result = AccountingResultFactory.getGetGlAccountCategoryDescriptionsResult();
-        String glAccountCategoryName = form.getGlAccountCategoryName();
-        GlAccountCategory glAccountCategory = accountingControl.getGlAccountCategoryByName(glAccountCategoryName);
+        var result = AccountingResultFactory.getGetGlAccountCategoryDescriptionsResult();
+        var glAccountCategoryName = form.getGlAccountCategoryName();
+        var glAccountCategory = accountingControl.getGlAccountCategoryByName(glAccountCategoryName);
         
         if(glAccountCategory != null) {
             result.setGlAccountCategory(accountingControl.getGlAccountCategoryTransfer(getUserVisit(), glAccountCategory));

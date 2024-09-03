@@ -60,7 +60,7 @@ public class CountedObjects<T>
     public List<Edge<T>> getEdges() {
         var edges = new ArrayList<Edge<T>>();
 
-        for(final T beio : this) {
+        for(final var beio : this) {
             edges.add(new DefaultEdge<>(beio, new DefaultConnectionCursor(getCursor(null))));
         }
 

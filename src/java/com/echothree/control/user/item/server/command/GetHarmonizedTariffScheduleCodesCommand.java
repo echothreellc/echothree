@@ -67,9 +67,9 @@ public class GetHarmonizedTariffScheduleCodesCommand
     @Override
     protected BaseResult execute() {
         var geoControl = Session.getModelController(GeoControl.class);
-        GetHarmonizedTariffScheduleCodesResult result = ItemResultFactory.getGetHarmonizedTariffScheduleCodesResult();
-        String countryName = form.getCountryName();
-        GeoCode geoCode = geoControl.getCountryByAlias(countryName);
+        var result = ItemResultFactory.getGetHarmonizedTariffScheduleCodesResult();
+        var countryName = form.getCountryName();
+        var geoCode = geoControl.getCountryByAlias(countryName);
         
         if(geoCode != null) {
             var itemControl = Session.getModelController(ItemControl.class);

@@ -30,7 +30,7 @@ public class GeoUtil {
     public static GeoLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
 
             cachedLocal = (GeoLocal)ctx.lookup("ejb:echothree/echothree-server/GeoBean!com.echothree.control.user.geo.server.GeoLocal");
         }
@@ -42,7 +42,7 @@ public class GeoUtil {
     public static GeoRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
             
             cachedRemote = (GeoRemote)ctx.lookup("ejb:echothree/echothree-server/GeoBean!com.echothree.control.user.geo.common.GeoRemote");
         }

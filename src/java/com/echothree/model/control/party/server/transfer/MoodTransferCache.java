@@ -39,16 +39,16 @@ public class MoodTransferCache
     }
     
     public MoodTransfer getMoodTransfer(Mood mood) {
-        MoodTransfer moodTransfer = get(mood);
+        var moodTransfer = get(mood);
         
         if(moodTransfer == null) {
-            MoodDetail moodDetail = mood.getLastDetail();
-            String moodName = moodDetail.getMoodName();
-            Icon icon = moodDetail.getIcon();
-            IconTransfer iconTransfer = icon == null? null: iconControl.getIconTransfer(userVisit, icon);
-            Boolean isDefault = moodDetail.getIsDefault();
-            Integer sortOrder = moodDetail.getSortOrder();
-            String description = partyControl.getBestMoodDescription(mood, getLanguage());
+            var moodDetail = mood.getLastDetail();
+            var moodName = moodDetail.getMoodName();
+            var icon = moodDetail.getIcon();
+            var iconTransfer = icon == null? null: iconControl.getIconTransfer(userVisit, icon);
+            var isDefault = moodDetail.getIsDefault();
+            var sortOrder = moodDetail.getSortOrder();
+            var description = partyControl.getBestMoodDescription(mood, getLanguage());
             
             moodTransfer = new MoodTransfer(moodName, iconTransfer, isDefault, sortOrder, description);
             put(mood, moodTransfer);

@@ -40,16 +40,16 @@ public class MessageTypeTransferCache
     }
     
     public MessageTypeTransfer getMessageTypeTransfer(MessageType messageType) {
-        MessageTypeTransfer messageTypeTransfer = get(messageType);
+        var messageTypeTransfer = get(messageType);
         
         if(messageTypeTransfer == null) {
-            MessageTypeDetail messageTypeDetail = messageType.getLastDetail();
-            EntityTypeTransfer entityTypeTransfer = coreControl.getEntityTypeTransfer(userVisit, messageTypeDetail.getEntityType());
-            String messageTypeName = messageTypeDetail.getMessageTypeName();
-            MimeTypeUsageType mimeTypeUsageType = messageTypeDetail.getMimeTypeUsageType();
-            MimeTypeUsageTypeTransfer mimeTypeUsageTypeTransfer = mimeTypeUsageType == null? null: coreControl.getMimeTypeUsageTypeTransfer(userVisit, mimeTypeUsageType);
-            Integer sortOrder = messageTypeDetail.getSortOrder();
-            String description = messageControl.getBestMessageTypeDescription(messageType, getLanguage());
+            var messageTypeDetail = messageType.getLastDetail();
+            var entityTypeTransfer = coreControl.getEntityTypeTransfer(userVisit, messageTypeDetail.getEntityType());
+            var messageTypeName = messageTypeDetail.getMessageTypeName();
+            var mimeTypeUsageType = messageTypeDetail.getMimeTypeUsageType();
+            var mimeTypeUsageTypeTransfer = mimeTypeUsageType == null? null: coreControl.getMimeTypeUsageTypeTransfer(userVisit, mimeTypeUsageType);
+            var sortOrder = messageTypeDetail.getSortOrder();
+            var description = messageControl.getBestMessageTypeDescription(messageType, getLanguage());
             
             messageTypeTransfer = new MessageTypeTransfer(entityTypeTransfer, messageTypeName, mimeTypeUsageTypeTransfer, sortOrder, description);
             put(messageType, messageTypeTransfer);

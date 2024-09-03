@@ -66,16 +66,16 @@ public class CreateContentWebAddressServerCommand
     @Override
     protected BaseResult execute() {
         var contentControl = Session.getModelController(ContentControl.class);
-        String contentWebAddressName = form.getContentWebAddressName();
-        ContentWebAddress contentWebAddress = contentControl.getContentWebAddressByName(contentWebAddressName);
+        var contentWebAddressName = form.getContentWebAddressName();
+        var contentWebAddress = contentControl.getContentWebAddressByName(contentWebAddressName);
         
         if(contentWebAddress != null) {
             var coreControl = getCoreControl();
-            String serverName = form.getServerName();
-            Server server = coreControl.getServerByName(serverName);
+            var serverName = form.getServerName();
+            var server = coreControl.getServerByName(serverName);
             
             if(server != null) {
-                ContentWebAddressServer contentWebAddressServer = contentControl.getContentWebAddressServer(contentWebAddress, server);
+                var contentWebAddressServer = contentControl.getContentWebAddressServer(contentWebAddress, server);
                 
                 if(contentWebAddressServer == null) {
                     contentControl.createContentWebAddressServer(contentWebAddress, server, getPartyPK());

@@ -55,18 +55,18 @@ public class FilterTransferCache
 
     @Override
     public FilterTransfer getTransfer(Filter filter) {
-        FilterTransfer filterTransfer = get(filter);
+        var filterTransfer = get(filter);
         
         if(filterTransfer == null) {
-            FilterDetail filterDetail = filter.getLastDetail();
-            FilterTypeTransfer filterTypeTransfer = filterControl.getFilterTypeTransfer(userVisit, filterDetail.getFilterType());
-            String filterName = filterDetail.getFilterName();
-            FilterAdjustmentTransfer initialFilterAdjustmentTransfer = filterControl.getFilterAdjustmentTransfer(userVisit, filterDetail.getInitialFilterAdjustment());
-            Selector filterItemSelector = filterDetail.getFilterItemSelector();
-            SelectorTransfer filterItemSelectorTransfer = filterItemSelector == null? null: selectorControl.getSelectorTransfer(userVisit, filterItemSelector);
-            Boolean isDefault = filterDetail.getIsDefault();
-            Integer sortOrder = filterDetail.getSortOrder();
-            String description = filterControl.getBestFilterDescription(filter, getLanguage());
+            var filterDetail = filter.getLastDetail();
+            var filterTypeTransfer = filterControl.getFilterTypeTransfer(userVisit, filterDetail.getFilterType());
+            var filterName = filterDetail.getFilterName();
+            var initialFilterAdjustmentTransfer = filterControl.getFilterAdjustmentTransfer(userVisit, filterDetail.getInitialFilterAdjustment());
+            var filterItemSelector = filterDetail.getFilterItemSelector();
+            var filterItemSelectorTransfer = filterItemSelector == null? null: selectorControl.getSelectorTransfer(userVisit, filterItemSelector);
+            var isDefault = filterDetail.getIsDefault();
+            var sortOrder = filterDetail.getSortOrder();
+            var description = filterControl.getBestFilterDescription(filter, getLanguage());
             
             filterTransfer = new FilterTransfer(filterTypeTransfer, filterName, initialFilterAdjustmentTransfer,
                     filterItemSelectorTransfer, isDefault, sortOrder, description);

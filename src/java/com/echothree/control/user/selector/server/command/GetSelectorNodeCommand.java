@@ -57,25 +57,25 @@ public class GetSelectorNodeCommand
     @Override
     protected BaseResult execute() {
         var selectorControl = Session.getModelController(SelectorControl.class);
-        GetSelectorNodeResult result = SelectorResultFactory.getGetSelectorNodeResult();
-        String selectorKindName = form.getSelectorKindName();
-        SelectorKind selectorKind = selectorControl.getSelectorKindByName(selectorKindName);
+        var result = SelectorResultFactory.getGetSelectorNodeResult();
+        var selectorKindName = form.getSelectorKindName();
+        var selectorKind = selectorControl.getSelectorKindByName(selectorKindName);
         
         if(selectorKind != null) {
-            String selectorTypeName = form.getSelectorTypeName();
-            SelectorType selectorType = selectorControl.getSelectorTypeByName(selectorKind, selectorTypeName);
+            var selectorTypeName = form.getSelectorTypeName();
+            var selectorType = selectorControl.getSelectorTypeByName(selectorKind, selectorTypeName);
             
             result.setSelectorKind(selectorControl.getSelectorKindTransfer(getUserVisit(), selectorKind));
             
             if(selectorType != null) {
-                String selectorName = form.getSelectorName();
-                Selector selector = selectorControl.getSelectorByName(selectorType, selectorName);
+                var selectorName = form.getSelectorName();
+                var selector = selectorControl.getSelectorByName(selectorType, selectorName);
                 
                 result.setSelectorType(selectorControl.getSelectorTypeTransfer(getUserVisit(), selectorType));
                 
                 if(selector != null) {
-                    String selectorNodeName = form.getSelectorNodeName();
-                    SelectorNode selectorNode = selectorControl.getSelectorNodeByName(selector, selectorNodeName);
+                    var selectorNodeName = form.getSelectorNodeName();
+                    var selectorNode = selectorControl.getSelectorNodeByName(selector, selectorNodeName);
                     
                     result.setSelector(selectorControl.getSelectorTransfer(getUserVisit(), selector));
                     

@@ -91,7 +91,7 @@ public class EditDocumentTypeUsageTypeCommand
     public DocumentTypeUsageType getEntity(EditDocumentTypeUsageTypeResult result) {
         var documentControl = Session.getModelController(DocumentControl.class);
         DocumentTypeUsageType documentTypeUsageType = null;
-        String documentTypeUsageTypeName = spec.getDocumentTypeUsageTypeName();
+        var documentTypeUsageTypeName = spec.getDocumentTypeUsageTypeName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
             documentTypeUsageType = documentControl.getDocumentTypeUsageTypeByName(documentTypeUsageTypeName);
@@ -123,8 +123,8 @@ public class EditDocumentTypeUsageTypeCommand
     @Override
     public void doLock(DocumentTypeUsageTypeEdit edit, DocumentTypeUsageType documentTypeUsageType) {
         var documentControl = Session.getModelController(DocumentControl.class);
-        DocumentTypeUsageTypeDescription documentTypeUsageTypeDescription = documentControl.getDocumentTypeUsageTypeDescription(documentTypeUsageType, getPreferredLanguage());
-        DocumentTypeUsageTypeDetail documentTypeUsageTypeDetail = documentTypeUsageType.getLastDetail();
+        var documentTypeUsageTypeDescription = documentControl.getDocumentTypeUsageTypeDescription(documentTypeUsageType, getPreferredLanguage());
+        var documentTypeUsageTypeDetail = documentTypeUsageType.getLastDetail();
 
         edit.setDocumentTypeUsageTypeName(documentTypeUsageTypeDetail.getDocumentTypeUsageTypeName());
         edit.setIsDefault(documentTypeUsageTypeDetail.getIsDefault().toString());
@@ -138,8 +138,8 @@ public class EditDocumentTypeUsageTypeCommand
     @Override
     public void canUpdate(DocumentTypeUsageType documentTypeUsageType) {
         var documentControl = Session.getModelController(DocumentControl.class);
-        String documentTypeUsageTypeName = edit.getDocumentTypeUsageTypeName();
-        DocumentTypeUsageType duplicateDocumentTypeUsageType = documentControl.getDocumentTypeUsageTypeByName(documentTypeUsageTypeName);
+        var documentTypeUsageTypeName = edit.getDocumentTypeUsageTypeName();
+        var duplicateDocumentTypeUsageType = documentControl.getDocumentTypeUsageTypeByName(documentTypeUsageTypeName);
 
         if(duplicateDocumentTypeUsageType != null && !documentTypeUsageType.equals(duplicateDocumentTypeUsageType)) {
             addExecutionError(ExecutionErrors.DuplicateDocumentTypeUsageTypeName.name(), documentTypeUsageTypeName);
@@ -150,9 +150,9 @@ public class EditDocumentTypeUsageTypeCommand
     public void doUpdate(DocumentTypeUsageType documentTypeUsageType) {
         var documentControl = Session.getModelController(DocumentControl.class);
         var partyPK = getPartyPK();
-        DocumentTypeUsageTypeDetailValue documentTypeUsageTypeDetailValue = documentControl.getDocumentTypeUsageTypeDetailValueForUpdate(documentTypeUsageType);
-        DocumentTypeUsageTypeDescription documentTypeUsageTypeDescription = documentControl.getDocumentTypeUsageTypeDescriptionForUpdate(documentTypeUsageType, getPreferredLanguage());
-        String description = edit.getDescription();
+        var documentTypeUsageTypeDetailValue = documentControl.getDocumentTypeUsageTypeDetailValueForUpdate(documentTypeUsageType);
+        var documentTypeUsageTypeDescription = documentControl.getDocumentTypeUsageTypeDescriptionForUpdate(documentTypeUsageType, getPreferredLanguage());
+        var description = edit.getDescription();
 
         documentTypeUsageTypeDetailValue.setDocumentTypeUsageTypeName(edit.getDocumentTypeUsageTypeName());
         documentTypeUsageTypeDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
@@ -167,7 +167,7 @@ public class EditDocumentTypeUsageTypeCommand
                 documentControl.deleteDocumentTypeUsageTypeDescription(documentTypeUsageTypeDescription, partyPK);
             } else {
                 if(documentTypeUsageTypeDescription != null && description != null) {
-                    DocumentTypeUsageTypeDescriptionValue documentTypeUsageTypeDescriptionValue = documentControl.getDocumentTypeUsageTypeDescriptionValue(documentTypeUsageTypeDescription);
+                    var documentTypeUsageTypeDescriptionValue = documentControl.getDocumentTypeUsageTypeDescriptionValue(documentTypeUsageTypeDescription);
 
                     documentTypeUsageTypeDescriptionValue.setDescription(description);
                     documentControl.updateDocumentTypeUsageTypeDescriptionFromValue(documentTypeUsageTypeDescriptionValue, partyPK);

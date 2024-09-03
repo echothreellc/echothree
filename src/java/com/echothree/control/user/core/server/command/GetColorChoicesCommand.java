@@ -61,9 +61,9 @@ public class GetColorChoicesCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        GetColorChoicesResult result = CoreResultFactory.getGetColorChoicesResult();
-        String defaultColorChoice = form.getDefaultColorChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = CoreResultFactory.getGetColorChoicesResult();
+        var defaultColorChoice = form.getDefaultColorChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setColorChoices(coreControl.getColorChoices(defaultColorChoice, getPreferredLanguage(), allowNullChoice));
         

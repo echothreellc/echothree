@@ -89,13 +89,13 @@ public class EditIndexTypeDescriptionCommand
     public IndexTypeDescription getEntity(EditIndexTypeDescriptionResult result) {
         var indexControl = Session.getModelController(IndexControl.class);
         IndexTypeDescription indexTypeDescription = null;
-        String indexTypeName = spec.getIndexTypeName();
-        IndexType indexType = indexControl.getIndexTypeByName(indexTypeName);
+        var indexTypeName = spec.getIndexTypeName();
+        var indexType = indexControl.getIndexTypeByName(indexTypeName);
 
         if(indexType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -137,7 +137,7 @@ public class EditIndexTypeDescriptionCommand
     @Override
     public void doUpdate(IndexTypeDescription indexTypeDescription) {
         var indexControl = Session.getModelController(IndexControl.class);
-        IndexTypeDescriptionValue indexTypeDescriptionValue = indexControl.getIndexTypeDescriptionValue(indexTypeDescription);
+        var indexTypeDescriptionValue = indexControl.getIndexTypeDescriptionValue(indexTypeDescription);
         indexTypeDescriptionValue.setDescription(edit.getDescription());
 
         indexControl.updateIndexTypeDescriptionFromValue(indexTypeDescriptionValue, getPartyPK());

@@ -62,8 +62,8 @@ public class SetDefaultCarrierCommand
     @Override
     protected BaseResult execute() {
         var carrierControl = Session.getModelController(CarrierControl.class);
-        String carrierName = form.getCarrierName();
-        CarrierValue carrierValue = carrierControl.getCarrierValueByNameForUpdate(carrierName);
+        var carrierName = form.getCarrierName();
+        var carrierValue = carrierControl.getCarrierValueByNameForUpdate(carrierName);
         
         if(carrierValue != null) {
             carrierValue.setIsDefault(Boolean.TRUE);

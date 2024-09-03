@@ -63,8 +63,8 @@ public class DeleteLotAliasTypeCommand
     @Override
     protected BaseResult execute() {
         var lotAliasControl = Session.getModelController(LotAliasControl.class);
-        String lotAliasTypeName = form.getLotAliasTypeName();
-        LotAliasType lotAliasType = lotAliasControl.getLotAliasTypeByNameForUpdate(lotAliasTypeName);
+        var lotAliasTypeName = form.getLotAliasTypeName();
+        var lotAliasType = lotAliasControl.getLotAliasTypeByNameForUpdate(lotAliasTypeName);
 
         if(lotAliasType != null) {
             lotAliasControl.deleteLotAliasType(lotAliasType, getPartyPK());

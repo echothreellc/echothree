@@ -68,17 +68,17 @@ public class GetOrderTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var orderTypeControl = Session.getModelController(OrderTypeControl.class);
-        GetOrderTypeDescriptionResult result = OrderResultFactory.getGetOrderTypeDescriptionResult();
+        var result = OrderResultFactory.getGetOrderTypeDescriptionResult();
         var orderTypeName = form.getOrderTypeName();
         var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
         
         if(orderType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
-                OrderTypeDescription orderTypeDescription = orderTypeControl.getOrderTypeDescription(orderType, language);
+                var orderTypeDescription = orderTypeControl.getOrderTypeDescription(orderType, language);
 
                 if(orderTypeDescription != null) {
                     result.setOrderTypeDescription(orderTypeControl.getOrderTypeDescriptionTransfer(getUserVisit(), orderTypeDescription));

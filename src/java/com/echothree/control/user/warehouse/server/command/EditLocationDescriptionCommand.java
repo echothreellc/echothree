@@ -82,29 +82,29 @@ public class EditLocationDescriptionCommand
     @Override
     protected BaseResult execute() {
         var warehouseControl = Session.getModelController(WarehouseControl.class);
-        EditLocationDescriptionResult result = WarehouseResultFactory.getEditLocationDescriptionResult();
-        String warehouseName = spec.getWarehouseName();
-        Warehouse warehouse = warehouseControl.getWarehouseByName(warehouseName);
+        var result = WarehouseResultFactory.getEditLocationDescriptionResult();
+        var warehouseName = spec.getWarehouseName();
+        var warehouse = warehouseControl.getWarehouseByName(warehouseName);
         
         if(warehouse != null) {
-            Party warehouseParty = warehouse.getParty();
-            String locationName = spec.getLocationName();
-            Location location = warehouseControl.getLocationByName(warehouseParty, locationName);
+            var warehouseParty = warehouse.getParty();
+            var locationName = spec.getLocationName();
+            var location = warehouseControl.getLocationByName(warehouseParty, locationName);
             
             if(location != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = spec.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = spec.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
                 
                 if(language != null) {
                     if(editMode.equals(EditMode.LOCK)) {
-                        LocationDescription locationDescription = warehouseControl.getLocationDescription(location, language);
+                        var locationDescription = warehouseControl.getLocationDescription(location, language);
                         
                         if(locationDescription != null) {
                             result.setLocationDescription(warehouseControl.getLocationDescriptionTransfer(getUserVisit(), locationDescription));
                             
                             if(lockEntity(location)) {
-                                LocationDescriptionEdit edit = WarehouseEditFactory.getLocationDescriptionEdit();
+                                var edit = WarehouseEditFactory.getLocationDescriptionEdit();
                                 
                                 result.setEdit(edit);
                                 edit.setDescription(locationDescription.getDescription());
@@ -117,12 +117,12 @@ public class EditLocationDescriptionCommand
                             addExecutionError(ExecutionErrors.UnknownLocationDescription.name());
                         }
                     } else if(editMode.equals(EditMode.UPDATE)) {
-                        LocationDescriptionValue locationDescriptionValue = warehouseControl.getLocationDescriptionValueForUpdate(location, language);
+                        var locationDescriptionValue = warehouseControl.getLocationDescriptionValueForUpdate(location, language);
                         
                         if(locationDescriptionValue != null) {
                             if(lockEntityForUpdate(location)) {
                                 try {
-                                    String description = edit.getDescription();
+                                    var description = edit.getDescription();
                                     
                                     locationDescriptionValue.setDescription(description);
                                     

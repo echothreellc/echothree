@@ -67,16 +67,16 @@ public class DeleteQueueTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var queueControl = Session.getModelController(QueueControl.class);
-        String queueTypeName = form.getQueueTypeName();
-        QueueType queueType = queueControl.getQueueTypeByName(queueTypeName);
+        var queueTypeName = form.getQueueTypeName();
+        var queueType = queueControl.getQueueTypeByName(queueTypeName);
         
         if(queueType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                QueueTypeDescription queueTypeDescription = queueControl.getQueueTypeDescriptionForUpdate(queueType, language);
+                var queueTypeDescription = queueControl.getQueueTypeDescriptionForUpdate(queueType, language);
                 
                 if(queueTypeDescription != null) {
                     queueControl.deleteQueueTypeDescription(queueTypeDescription, getPartyPK());

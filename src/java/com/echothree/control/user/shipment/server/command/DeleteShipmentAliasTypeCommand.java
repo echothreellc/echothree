@@ -65,12 +65,12 @@ public class DeleteShipmentAliasTypeCommand
     @Override
     protected BaseResult execute() {
         var shipmentControl = Session.getModelController(ShipmentControl.class);
-        String shipmentTypeName = form.getShipmentTypeName();
-        ShipmentType shipmentType = shipmentControl.getShipmentTypeByName(shipmentTypeName);
+        var shipmentTypeName = form.getShipmentTypeName();
+        var shipmentType = shipmentControl.getShipmentTypeByName(shipmentTypeName);
 
         if(shipmentType != null) {
-            String shipmentAliasTypeName = form.getShipmentAliasTypeName();
-            ShipmentAliasType shipmentAliasType = shipmentControl.getShipmentAliasTypeByNameForUpdate(shipmentType, shipmentAliasTypeName);
+            var shipmentAliasTypeName = form.getShipmentAliasTypeName();
+            var shipmentAliasType = shipmentControl.getShipmentAliasTypeByNameForUpdate(shipmentType, shipmentAliasTypeName);
 
             if(shipmentAliasType != null) {
                 shipmentControl.deleteShipmentAliasType(shipmentAliasType, getPartyPK());

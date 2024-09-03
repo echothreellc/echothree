@@ -35,11 +35,11 @@ public class OrderAliasTypeDescriptionTransferCache
     }
     
     public OrderAliasTypeDescriptionTransfer getOrderAliasTypeDescriptionTransfer(OrderAliasTypeDescription orderAliasTypeDescription) {
-        OrderAliasTypeDescriptionTransfer orderAliasTypeDescriptionTransfer = get(orderAliasTypeDescription);
+        var orderAliasTypeDescriptionTransfer = get(orderAliasTypeDescription);
         
         if(orderAliasTypeDescriptionTransfer == null) {
-            OrderAliasTypeTransfer orderAliasTypeTransfer = orderAliasControl.getOrderAliasTypeTransfer(userVisit, orderAliasTypeDescription.getOrderAliasType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, orderAliasTypeDescription.getLanguage());
+            var orderAliasTypeTransfer = orderAliasControl.getOrderAliasTypeTransfer(userVisit, orderAliasTypeDescription.getOrderAliasType());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, orderAliasTypeDescription.getLanguage());
             
             orderAliasTypeDescriptionTransfer = new OrderAliasTypeDescriptionTransfer(languageTransfer, orderAliasTypeTransfer, orderAliasTypeDescription.getDescription());
             put(orderAliasTypeDescription, orderAliasTypeDescriptionTransfer);

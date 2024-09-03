@@ -39,12 +39,12 @@ public class ForumPartyTypeRoleTransferCache
     }
     
     public ForumPartyTypeRoleTransfer getForumPartyTypeRoleTransfer(ForumPartyTypeRole forumPartyTypeRole) {
-        ForumPartyTypeRoleTransfer forumPartyTypeRoleTransfer = get(forumPartyTypeRole);
+        var forumPartyTypeRoleTransfer = get(forumPartyTypeRole);
         
         if(forumPartyTypeRoleTransfer == null) {
-            ForumTransfer forum = forumControl.getForumTransfer(userVisit, forumPartyTypeRole.getForum());
-            PartyTypeTransfer partyType = partyControl.getPartyTypeTransfer(userVisit, forumPartyTypeRole.getPartyType());
-            ForumRoleTypeTransfer forumRoleType = forumControl.getForumRoleTypeTransfer(userVisit, forumPartyTypeRole.getForumRoleType());
+            var forum = forumControl.getForumTransfer(userVisit, forumPartyTypeRole.getForum());
+            var partyType = partyControl.getPartyTypeTransfer(userVisit, forumPartyTypeRole.getPartyType());
+            var forumRoleType = forumControl.getForumRoleTypeTransfer(userVisit, forumPartyTypeRole.getForumRoleType());
             
             forumPartyTypeRoleTransfer = new ForumPartyTypeRoleTransfer(forum, partyType, forumRoleType);
             put(forumPartyTypeRole, forumPartyTypeRoleTransfer);

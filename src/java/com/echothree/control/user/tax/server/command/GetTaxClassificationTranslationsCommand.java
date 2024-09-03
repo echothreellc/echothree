@@ -68,14 +68,14 @@ public class GetTaxClassificationTranslationsCommand
     @Override
     protected BaseResult execute() {
         var geoControl = Session.getModelController(GeoControl.class);
-        GetTaxClassificationTranslationsResult result = TaxResultFactory.getGetTaxClassificationTranslationsResult();
-        String countryName = form.getCountryName();
-        GeoCode geoCode = geoControl.getCountryByAlias(countryName);
+        var result = TaxResultFactory.getGetTaxClassificationTranslationsResult();
+        var countryName = form.getCountryName();
+        var geoCode = geoControl.getCountryByAlias(countryName);
         
         if(geoCode != null) {
             var taxControl = Session.getModelController(TaxControl.class);
-            String taxClassificationName = form.getTaxClassificationName();
-            TaxClassification taxClassification = taxControl.getTaxClassificationByName(geoCode, taxClassificationName);
+            var taxClassificationName = form.getTaxClassificationName();
+            var taxClassification = taxControl.getTaxClassificationByName(geoCode, taxClassificationName);
             
             if(taxClassification != null) {
                 result.setTaxClassification(taxControl.getTaxClassificationTransfer(getUserVisit(), taxClassification));

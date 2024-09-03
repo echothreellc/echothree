@@ -321,7 +321,7 @@ public class EditCustomerCommand
 
         if(name != null) {
             if(partyGroup != null) {
-                PartyGroupValue partyGroupValue = partyControl.getPartyGroupValue(partyGroup);
+                var partyGroupValue = partyControl.getPartyGroupValue(partyGroup);
 
                 partyGroupValue.setName(name);
                 partyControl.updatePartyGroupFromValue(partyGroupValue, updatedBy);
@@ -336,7 +336,7 @@ public class EditCustomerCommand
 
         if(personalTitle != null || firstName != null || middleName != null || lastName != null || nameSuffix != null) {
             if(person != null) {
-                PersonValue personValue = partyControl.getPersonValue(person);
+                var personValue = partyControl.getPersonValue(person);
 
                 personValue.setPersonalTitlePK(personalTitle == null ? null : personalTitle.getPrimaryKey());
                 personValue.setFirstName(firstName);

@@ -40,7 +40,7 @@ public class ValidateCommand
 
     @Override
     protected BaseResult execute() {
-        ValidateResult result = CoreResultFactory.getValidateResult();
+        var result = CoreResultFactory.getValidateResult();
 
         result.setBaseForm(form.getBaseForm());
 

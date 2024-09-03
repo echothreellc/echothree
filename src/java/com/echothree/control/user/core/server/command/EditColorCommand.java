@@ -92,7 +92,7 @@ public class EditColorCommand
     public Color getEntity(EditColorResult result) {
         var coreControl = getCoreControl();
         Color color;
-        String colorName = spec.getColorName();
+        var colorName = spec.getColorName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
             color = coreControl.getColorByName(colorName);
@@ -122,8 +122,8 @@ public class EditColorCommand
     @Override
     public void doLock(ColorEdit edit, Color color) {
         var coreControl = getCoreControl();
-        ColorDescription colorDescription = coreControl.getColorDescription(color, getPreferredLanguage());
-        ColorDetail colorDetail = color.getLastDetail();
+        var colorDescription = coreControl.getColorDescription(color, getPreferredLanguage());
+        var colorDetail = color.getLastDetail();
 
         edit.setColorName(colorDetail.getColorName());
         edit.setRed(colorDetail.getRed().toString());
@@ -140,8 +140,8 @@ public class EditColorCommand
     @Override
     public void canUpdate(Color color) {
         var coreControl = getCoreControl();
-        String colorName = edit.getColorName();
-        Color duplicateColor = coreControl.getColorByName(colorName);
+        var colorName = edit.getColorName();
+        var duplicateColor = coreControl.getColorByName(colorName);
 
         if(duplicateColor != null && !color.equals(duplicateColor)) {
             addExecutionError(ExecutionErrors.DuplicateColorName.name(), colorName);
@@ -152,9 +152,9 @@ public class EditColorCommand
     public void doUpdate(Color color) {
         var coreControl = getCoreControl();
         var partyPK = getPartyPK();
-        ColorDetailValue colorDetailValue = coreControl.getColorDetailValueForUpdate(color);
-        ColorDescription colorDescription = coreControl.getColorDescriptionForUpdate(color, getPreferredLanguage());
-        String description = edit.getDescription();
+        var colorDetailValue = coreControl.getColorDetailValueForUpdate(color);
+        var colorDescription = coreControl.getColorDescriptionForUpdate(color, getPreferredLanguage());
+        var description = edit.getDescription();
 
         colorDetailValue.setColorName(edit.getColorName());
         colorDetailValue.setRed(Integer.valueOf(edit.getRed()));
@@ -172,7 +172,7 @@ public class EditColorCommand
                 coreControl.deleteColorDescription(colorDescription, partyPK);
             } else {
                 if(colorDescription != null && description != null) {
-                    ColorDescriptionValue colorDescriptionValue = coreControl.getColorDescriptionValue(colorDescription);
+                    var colorDescriptionValue = coreControl.getColorDescriptionValue(colorDescription);
 
                     colorDescriptionValue.setDescription(description);
                     coreControl.updateColorDescriptionFromValue(colorDescriptionValue, partyPK);

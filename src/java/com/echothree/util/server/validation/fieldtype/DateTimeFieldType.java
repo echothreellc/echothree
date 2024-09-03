@@ -43,9 +43,9 @@ public class DateTimeFieldType
         if(fieldValue.equalsIgnoreCase("NOW")) {
             result = getSession().START_TIME_LONG.toString();
         } else {
-            DateTimeFormatDetail dateTimeFormatDetail = getPreferredDateTimeFormat().getLastDetail();
-            ZoneId zoneId = ZoneId.of(getPreferredTimeZone().getLastDetail().getJavaTimeZoneName());
-            DateTimeFormatter dtf = DateTimeFormatter.ofPattern(dateTimeFormatDetail.getJavaShortDateFormat() + " " + dateTimeFormatDetail.getJavaTimeFormatSeconds()).withZone(zoneId);
+            var dateTimeFormatDetail = getPreferredDateTimeFormat().getLastDetail();
+            var zoneId = ZoneId.of(getPreferredTimeZone().getLastDetail().getJavaTimeZoneName());
+            var dtf = DateTimeFormatter.ofPattern(dateTimeFormatDetail.getJavaShortDateFormat() + " " + dateTimeFormatDetail.getJavaTimeFormatSeconds()).withZone(zoneId);
             ZonedDateTime zdt = null;
             
             try {

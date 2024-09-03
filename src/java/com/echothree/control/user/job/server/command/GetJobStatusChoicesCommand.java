@@ -66,13 +66,13 @@ public class GetJobStatusChoicesCommand
     @Override
     protected BaseResult execute() {
         var jobControl = Session.getModelController(JobControl.class);
-        GetJobStatusChoicesResult result = JobResultFactory.getGetJobStatusChoicesResult();
-        String jobName = form.getJobName();
-        Job job = jobControl.getJobByName(jobName);
+        var result = JobResultFactory.getGetJobStatusChoicesResult();
+        var jobName = form.getJobName();
+        var job = jobControl.getJobByName(jobName);
         
         if(jobName == null || job != null) {
-            String defaultJobStatusChoice = form.getDefaultJobStatusChoice();
-            boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+            var defaultJobStatusChoice = form.getDefaultJobStatusChoice();
+            var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
             
             result.setJobStatusChoices(jobControl.getJobStatusChoices(defaultJobStatusChoice, getPreferredLanguage(),
                     allowNullChoice, job, getPartyPK()));

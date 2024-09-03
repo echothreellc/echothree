@@ -82,10 +82,10 @@ public class CreateFilterAdjustmentAmountCommand
     @Override
     protected ValidationResult validate() {
         Validator validator = new Validator(this);
-        ValidationResult validationResult = validator.validate(form, FORM_FIELD_DEFINITIONS);
+        var validationResult = validator.validate(form, FORM_FIELD_DEFINITIONS);
         
         if(!validationResult.getHasErrors()) {
-            String filterKindName = form.getFilterKindName();
+            var filterKindName = form.getFilterKindName();
             
             if(filterKindName.equals(FilterKinds.COST.name())) {
                 validationResult = validator.validate(form, costFormFieldDefinitions);
@@ -107,9 +107,9 @@ public class CreateFilterAdjustmentAmountCommand
 
         if(!hasExecutionErrors()) {
             if(filterAdjustment.getLastDetail().getFilterAdjustmentType().getFilterAdjustmentTypeName().equals(FilterAdjustmentTypes.AMOUNT.name())) {
-                String unitOfMeasureName = form.getUnitOfMeasureName();
-                String unitOfMeasureKindName = form.getUnitOfMeasureKindName();
-                String unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
+                var unitOfMeasureName = form.getUnitOfMeasureName();
+                var unitOfMeasureKindName = form.getUnitOfMeasureKindName();
+                var unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
 
                 var unitOfMeasureType = UnitOfMeasureTypeLogic.getInstance().getUnitOfMeasureTypeByName(this,
                         unitOfMeasureName, unitOfMeasureKindName, unitOfMeasureTypeName);

@@ -69,17 +69,17 @@ public class GetWorkflowDescriptionCommand
     @Override
     protected BaseResult execute() {
         var workflowControl = Session.getModelController(WorkflowControl.class);
-        GetWorkflowDescriptionResult result = WorkflowResultFactory.getGetWorkflowDescriptionResult();
-        String workflowName = form.getWorkflowName();
+        var result = WorkflowResultFactory.getGetWorkflowDescriptionResult();
+        var workflowName = form.getWorkflowName();
         var workflow = workflowControl.getWorkflowByName(workflowName);
         
         if(workflow != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                WorkflowDescription workflowDescription = workflowControl.getWorkflowDescription(workflow, language);
+                var workflowDescription = workflowControl.getWorkflowDescription(workflow, language);
                 
                 if(workflowDescription != null) {
                     result.setWorkflowDescription(workflowControl.getWorkflowDescriptionTransfer(getUserVisit(), workflowDescription));

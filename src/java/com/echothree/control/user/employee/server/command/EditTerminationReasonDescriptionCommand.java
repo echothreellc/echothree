@@ -79,24 +79,24 @@ public class EditTerminationReasonDescriptionCommand
     @Override
     protected BaseResult execute() {
         var employeeControl = Session.getModelController(EmployeeControl.class);
-        EditTerminationReasonDescriptionResult result = EmployeeResultFactory.getEditTerminationReasonDescriptionResult();
-        String terminationReasonName = spec.getTerminationReasonName();
-        TerminationReason terminationReason = employeeControl.getTerminationReasonByName(terminationReasonName);
+        var result = EmployeeResultFactory.getEditTerminationReasonDescriptionResult();
+        var terminationReasonName = spec.getTerminationReasonName();
+        var terminationReason = employeeControl.getTerminationReasonByName(terminationReasonName);
         
         if(terminationReason != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK)) {
-                    TerminationReasonDescription terminationReasonDescription = employeeControl.getTerminationReasonDescription(terminationReason, language);
+                    var terminationReasonDescription = employeeControl.getTerminationReasonDescription(terminationReason, language);
                     
                     if(terminationReasonDescription != null) {
                         result.setTerminationReasonDescription(employeeControl.getTerminationReasonDescriptionTransfer(getUserVisit(), terminationReasonDescription));
                         
                         if(lockEntity(terminationReason)) {
-                            TerminationReasonDescriptionEdit edit = EmployeeEditFactory.getTerminationReasonDescriptionEdit();
+                            var edit = EmployeeEditFactory.getTerminationReasonDescriptionEdit();
                             
                             result.setEdit(edit);
                             edit.setDescription(terminationReasonDescription.getDescription());
@@ -109,12 +109,12 @@ public class EditTerminationReasonDescriptionCommand
                         addExecutionError(ExecutionErrors.UnknownTerminationReasonDescription.name());
                     }
                 } else if(editMode.equals(EditMode.UPDATE)) {
-                    TerminationReasonDescriptionValue terminationReasonDescriptionValue = employeeControl.getTerminationReasonDescriptionValueForUpdate(terminationReason, language);
+                    var terminationReasonDescriptionValue = employeeControl.getTerminationReasonDescriptionValueForUpdate(terminationReason, language);
                     
                     if(terminationReasonDescriptionValue != null) {
                         if(lockEntityForUpdate(terminationReason)) {
                             try {
-                                String description = edit.getDescription();
+                                var description = edit.getDescription();
                                 
                                 terminationReasonDescriptionValue.setDescription(description);
                                 

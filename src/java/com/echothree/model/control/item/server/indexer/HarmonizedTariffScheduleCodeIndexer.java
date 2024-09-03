@@ -59,8 +59,8 @@ public class HarmonizedTariffScheduleCodeIndexer
     
     @Override
     protected Document convertToDocument(final EntityInstance entityInstance, final HarmonizedTariffScheduleCode harmonizedTariffScheduleCode) {
-        HarmonizedTariffScheduleCodeDetail harmonizedTariffScheduleCodeDetail = harmonizedTariffScheduleCode.getLastDetail();
-        HarmonizedTariffScheduleCodeTranslation harmonizedTariffScheduleCodeTranslation = itemControl.getBestHarmonizedTariffScheduleCodeTranslation(harmonizedTariffScheduleCode, language);
+        var harmonizedTariffScheduleCodeDetail = harmonizedTariffScheduleCode.getLastDetail();
+        var harmonizedTariffScheduleCodeTranslation = itemControl.getBestHarmonizedTariffScheduleCodeTranslation(harmonizedTariffScheduleCode, language);
 
         var document = newDocumentWithEntityInstanceFields(entityInstance, harmonizedTariffScheduleCode.getPrimaryKey());
 
@@ -71,8 +71,8 @@ public class HarmonizedTariffScheduleCodeIndexer
                 new BytesRef(harmonizedTariffScheduleCodeDetail.getHarmonizedTariffScheduleCodeName())));
 
         if(harmonizedTariffScheduleCodeTranslation != null) {
-            String description = harmonizedTariffScheduleCodeTranslation.getDescription();
-            String overview = harmonizedTariffScheduleCodeTranslation.getOverview();
+            var description = harmonizedTariffScheduleCodeTranslation.getDescription();
+            var overview = harmonizedTariffScheduleCodeTranslation.getOverview();
             
             document.add(new Field(IndexFields.description.name(), description, FieldTypes.NOT_STORED_TOKENIZED));
             document.add(new SortedDocValuesField(IndexFields.description.name() + IndexConstants.INDEX_FIELD_VARIATION_SEPARATOR + IndexFieldVariations.sortable.name(),

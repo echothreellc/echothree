@@ -89,13 +89,13 @@ public class EditPaymentMethodDescriptionCommand
     public PaymentMethodDescription getEntity(EditPaymentMethodDescriptionResult result) {
         var paymentMethodControl = Session.getModelController(PaymentMethodControl.class);
         PaymentMethodDescription paymentMethodDescription = null;
-        String paymentMethodName = spec.getPaymentMethodName();
-        PaymentMethod paymentMethod = paymentMethodControl.getPaymentMethodByName(paymentMethodName);
+        var paymentMethodName = spec.getPaymentMethodName();
+        var paymentMethod = paymentMethodControl.getPaymentMethodByName(paymentMethodName);
 
         if(paymentMethod != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -137,7 +137,7 @@ public class EditPaymentMethodDescriptionCommand
     @Override
     public void doUpdate(PaymentMethodDescription paymentMethodDescription) {
         var paymentMethodControl = Session.getModelController(PaymentMethodControl.class);
-        PaymentMethodDescriptionValue paymentMethodDescriptionValue = paymentMethodControl.getPaymentMethodDescriptionValue(paymentMethodDescription);
+        var paymentMethodDescriptionValue = paymentMethodControl.getPaymentMethodDescriptionValue(paymentMethodDescription);
         paymentMethodDescriptionValue.setDescription(edit.getDescription());
 
         paymentMethodControl.updatePaymentMethodDescriptionFromValue(paymentMethodDescriptionValue, getPartyPK());

@@ -51,9 +51,9 @@ public class GetSkillTypeDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var employeeControl = Session.getModelController(EmployeeControl.class);
-        GetSkillTypeDescriptionsResult result = EmployeeResultFactory.getGetSkillTypeDescriptionsResult();
-        String skillTypeName = form.getSkillTypeName();
-        SkillType skillType = employeeControl.getSkillTypeByName(skillTypeName);
+        var result = EmployeeResultFactory.getGetSkillTypeDescriptionsResult();
+        var skillTypeName = form.getSkillTypeName();
+        var skillType = employeeControl.getSkillTypeByName(skillTypeName);
         
         if(skillType != null) {
             result.setSkillType(employeeControl.getSkillTypeTransfer(getUserVisit(), skillType));

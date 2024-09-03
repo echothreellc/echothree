@@ -61,8 +61,8 @@ public class GetContentPageCommand
     
     @Override
     protected ContentPage getEntity() {
-        String contentWebAddressName = form.getContentWebAddressName();
-        String contentCollectionName = form.getContentCollectionName();
+        var contentWebAddressName = form.getContentWebAddressName();
+        var contentCollectionName = form.getContentCollectionName();
         var parameterCount = (contentWebAddressName == null ? 0 : 1) + (contentCollectionName == null ? 0 : 1);
         ContentPage contentPage = null;
 
@@ -71,7 +71,7 @@ public class GetContentPageCommand
             ContentCollection contentCollection = null;
 
             if(contentWebAddressName != null) {
-                ContentWebAddress contentWebAddress = contentControl.getContentWebAddressByName(contentWebAddressName);
+                var contentWebAddress = contentControl.getContentWebAddressByName(contentWebAddressName);
 
                 if(contentWebAddress != null) {
                     contentCollection = contentWebAddress.getLastDetail().getContentCollection();
@@ -87,11 +87,11 @@ public class GetContentPageCommand
             }
 
             if(!hasExecutionErrors()) {
-                String contentSectionName = form.getContentSectionName();
-                String contentPageName = form.getContentPageName();
+                var contentSectionName = form.getContentSectionName();
+                var contentPageName = form.getContentPageName();
                 var partyPK = getPartyPK();
 
-                ContentSection contentSection = contentSectionName == null ? contentControl.getDefaultContentSection(contentCollection)
+                var contentSection = contentSectionName == null ? contentControl.getDefaultContentSection(contentCollection)
                         : contentControl.getContentSectionByName(contentCollection, contentSectionName);
 
                 if(contentSection != null) {
@@ -123,7 +123,7 @@ public class GetContentPageCommand
     
     @Override
     protected BaseResult getResult(ContentPage contentPage) {
-        GetContentPageResult result = ContentResultFactory.getGetContentPageResult();
+        var result = ContentResultFactory.getGetContentPageResult();
 
         if (contentPage != null) {
             var contentControl = Session.getModelController(ContentControl.class);

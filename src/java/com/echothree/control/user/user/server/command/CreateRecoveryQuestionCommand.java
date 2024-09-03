@@ -50,9 +50,9 @@ public class CreateRecoveryQuestionCommand
     
     @Override
     protected BaseResult execute() {
-        UserControl userControl = getUserControl();
-        String recoveryQuestionName = form.getRecoveryQuestionName();
-        RecoveryQuestion recoveryQuestion = userControl.getRecoveryQuestionByName(recoveryQuestionName);
+        var userControl = getUserControl();
+        var recoveryQuestionName = form.getRecoveryQuestionName();
+        var recoveryQuestion = userControl.getRecoveryQuestionByName(recoveryQuestionName);
         
         if(recoveryQuestion == null) {
             var partyPK = getPartyPK();

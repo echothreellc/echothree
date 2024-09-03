@@ -92,15 +92,15 @@ public class ContactListGroupTag
     public int doStartTag()
             throws JspException {
         try {
-            GetContactListGroupForm commandForm = ContactListUtil.getHome().getGetContactListGroupForm();
+            var commandForm = ContactListUtil.getHome().getGetContactListGroupForm();
             
             commandForm.setContactListGroupName(contactListGroupName);
             
             setOptions(options, null, commandForm);
 
             commandForm.setTransferProperties(transferProperties);
-            
-            CommandResult commandResult = ContactListUtil.getHome().getContactListGroup(getUserVisitPK(), commandForm);
+
+            var commandResult = ContactListUtil.getHome().getContactListGroup(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -108,8 +108,8 @@ public class ContactListGroupTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetContactListGroupResult result = (GetContactListGroupResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetContactListGroupResult)executionResult.getResult();
 
                 pageContext.setAttribute(var, result.getContactListGroup(), scope);
             }

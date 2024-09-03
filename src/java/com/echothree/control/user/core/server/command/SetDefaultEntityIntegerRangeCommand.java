@@ -68,24 +68,24 @@ public class SetDefaultEntityIntegerRangeCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String componentVendorName = form.getComponentVendorName();
-        ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+        var componentVendorName = form.getComponentVendorName();
+        var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
         
         if(componentVendor != null) {
-            String entityTypeName = form.getEntityTypeName();
-            EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+            var entityTypeName = form.getEntityTypeName();
+            var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
             
             if(entityType != null) {
-                String entityAttributeName = form.getEntityAttributeName();
-                EntityAttribute entityAttribute = coreControl.getEntityAttributeByName(entityType, entityAttributeName);
+                var entityAttributeName = form.getEntityAttributeName();
+                var entityAttribute = coreControl.getEntityAttributeByName(entityType, entityAttributeName);
                 
                 if(entityAttribute != null) {
-                    EntityAttributeType entityAttributeType = entityAttribute.getLastDetail().getEntityAttributeType();
-                    String entityAttributeTypeName = entityAttributeType.getEntityAttributeTypeName();
+                    var entityAttributeType = entityAttribute.getLastDetail().getEntityAttributeType();
+                    var entityAttributeTypeName = entityAttributeType.getEntityAttributeTypeName();
                     
                     if(entityAttributeTypeName.equals(EntityAttributeTypes.INTEGER.name())) {
-                        String entityIntegerRangeName = form.getEntityIntegerRangeName();
-                        EntityIntegerRangeDetailValue entityIntegerRangeDetailValue = coreControl.getEntityIntegerRangeDetailValueByNameForUpdate(entityAttribute, entityIntegerRangeName);
+                        var entityIntegerRangeName = form.getEntityIntegerRangeName();
+                        var entityIntegerRangeDetailValue = coreControl.getEntityIntegerRangeDetailValueByNameForUpdate(entityAttribute, entityIntegerRangeName);
 
                         if(entityIntegerRangeDetailValue != null) {
                             entityIntegerRangeDetailValue.setIsDefault(Boolean.TRUE);

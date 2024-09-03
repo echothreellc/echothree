@@ -55,7 +55,7 @@ public abstract class BaseValue<PK extends BasePK> {
     
     protected void checkForNull(Object o)
             throws PersistenceNotNullException {
-        boolean isNull = false;
+        var isNull = false;
         
         if(o == null) {
             isNull = true;

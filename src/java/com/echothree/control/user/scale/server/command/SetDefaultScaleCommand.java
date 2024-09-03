@@ -49,8 +49,8 @@ public class SetDefaultScaleCommand
    @Override
     protected BaseResult execute() {
         var scaleControl = Session.getModelController(ScaleControl.class);
-        String scaleName = form.getScaleName();
-        ScaleDetailValue scaleDetailValue = scaleControl.getScaleDetailValueByNameForUpdate(scaleName);
+       var scaleName = form.getScaleName();
+       var scaleDetailValue = scaleControl.getScaleDetailValueByNameForUpdate(scaleName);
         
         if(scaleDetailValue != null) {
             scaleDetailValue.setIsDefault(Boolean.TRUE);

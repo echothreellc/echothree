@@ -68,16 +68,16 @@ public class DeletePartyContactListCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        String partyName = form.getPartyName();
-        Party party = partyControl.getPartyByName(partyName);
+        var partyName = form.getPartyName();
+        var party = partyControl.getPartyByName(partyName);
         
         if(party != null) {
             var contactListControl = Session.getModelController(ContactListControl.class);
-            String contactListName = form.getContactListName();
-            ContactList contactList = contactListControl.getContactListByName(contactListName);
+            var contactListName = form.getContactListName();
+            var contactList = contactListControl.getContactListByName(contactListName);
             
             if(contactList != null) {
-                PartyContactList partyContactList = contactListControl.getPartyContactListForUpdate(party, contactList);
+                var partyContactList = contactListControl.getPartyContactListForUpdate(party, contactList);
                 
                 if(partyContactList != null) {
                     // ExecutionErrorAccumulator is passed in as null so that an Exception will be thrown if there is an error.

@@ -67,16 +67,16 @@ public class DeleteChainKindDescriptionCommand
     @Override
     protected BaseResult execute() {
         var chainControl = Session.getModelController(ChainControl.class);
-        String chainKindName = form.getChainKindName();
-        ChainKind chainKind = chainControl.getChainKindByName(chainKindName);
+        var chainKindName = form.getChainKindName();
+        var chainKind = chainControl.getChainKindByName(chainKindName);
         
         if(chainKind != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                ChainKindDescription chainKindDescription = chainControl.getChainKindDescriptionForUpdate(chainKind, language);
+                var chainKindDescription = chainControl.getChainKindDescriptionForUpdate(chainKind, language);
                 
                 if(chainKindDescription != null) {
                     chainControl.deleteChainKindDescription(chainKindDescription, getPartyPK());

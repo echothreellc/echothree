@@ -84,10 +84,10 @@ public class MarkupUtils {
     }
     
     public String filter(final String originalContent) {
-        String intermediateContent = HtmlEscapers.htmlEscaper().escape(originalContent);
-        StringBuilder finalContent = new StringBuilder(intermediateContent.length());
+        var intermediateContent = HtmlEscapers.htmlEscaper().escape(originalContent);
+        var finalContent = new StringBuilder(intermediateContent.length());
         StringBuilder markupBuilder = null;
-        boolean endMarkup = false;
+        var endMarkup = false;
         Deque<MarkupTransformation> activeMarkup = new ArrayDeque<>();
         
         for(int ch : StringUtils.getInstance().codePoints(intermediateContent)) {
@@ -97,7 +97,7 @@ public class MarkupUtils {
                     endMarkup = false;
                     break;
                 case ']':
-                    MarkupTransformation mt = transformations.get(markupBuilder.toString());
+                    var mt = transformations.get(markupBuilder.toString());
                     
                     if(mt != null) {
                         if(endMarkup) {
@@ -106,17 +106,17 @@ public class MarkupUtils {
                                 finalContent.append(mt.endHtml);
                             }
                         } else {
-                            boolean pushIt = true;
+                            var pushIt = true;
                             
                             if(mt.requiredIn != null) {
-                                MarkupTransformation lastMt = activeMarkup.peek();
+                                var lastMt = activeMarkup.peek();
                                 
                                 pushIt = false;
                                 
                                 if(lastMt != null) {
-                                    String []endingMarkup = Splitter.on(':').trimResults().omitEmptyStrings().splitToList(mt.requiredIn).toArray(new String[0]);
+                                    var endingMarkup = Splitter.on(':').trimResults().omitEmptyStrings().splitToList(mt.requiredIn).toArray(new String[0]);
                                     
-                                    for(int i = 0; i < endingMarkup.length; i++) {
+                                    for(var i = 0; i < endingMarkup.length; i++) {
                                         if(endingMarkup[i].equals(lastMt.markup)) {
                                             pushIt = true;
                                             break;

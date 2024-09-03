@@ -67,8 +67,8 @@ public class GetContentCategoriesCommand
     
     @Override
     protected Collection<ContentCategory> getEntities() {
-        String contentWebAddressName = form.getContentWebAddressName();
-        String contentCollectionName = form.getContentCollectionName();
+        var contentWebAddressName = form.getContentWebAddressName();
+        var contentCollectionName = form.getContentCollectionName();
         var parameterCount = (contentWebAddressName == null ? 0 : 1) + (contentCollectionName == null ? 0 : 1);
         Collection<ContentCategory> contentCategories = null;
 
@@ -77,7 +77,7 @@ public class GetContentCategoriesCommand
             ContentCollection contentCollection = null;
 
             if(contentWebAddressName != null) {
-                ContentWebAddress contentWebAddress = contentControl.getContentWebAddressByName(contentWebAddressName);
+                var contentWebAddress = contentControl.getContentWebAddressByName(contentWebAddressName);
 
                 if(contentWebAddress != null) {
                     contentCollection = contentWebAddress.getLastDetail().getContentCollection();
@@ -94,8 +94,8 @@ public class GetContentCategoriesCommand
 
             if(!hasExecutionErrors()) {
                 var partyPK = getPartyPK();
-                UserVisit userVisit = getUserVisitForUpdate();
-                String contentCatalogName = form.getContentCatalogName();
+                var userVisit = getUserVisitForUpdate();
+                var contentCatalogName = form.getContentCatalogName();
 
                 contentCatalog = contentControl.getContentCatalogByName(contentCollection, contentCatalogName);
 
@@ -105,7 +105,7 @@ public class GetContentCategoriesCommand
                     }
 
                     if(contentCatalog != null) {
-                        String parentContentCategoryName = form.getParentContentCategoryName();
+                        var parentContentCategoryName = form.getParentContentCategoryName();
                         
                         parentContentCategory = parentContentCategoryName == null ? null : contentControl.getContentCategoryByName(contentCatalog, parentContentCategoryName);
 
@@ -141,11 +141,11 @@ public class GetContentCategoriesCommand
     
     @Override
     protected BaseResult getResult(Collection<ContentCategory> entities) {
-        GetContentCategoriesResult result = ContentResultFactory.getGetContentCategoriesResult();
+        var result = ContentResultFactory.getGetContentCategoriesResult();
 
         if(entities != null) {
             var contentControl = Session.getModelController(ContentControl.class);
-            UserVisit userVisit = getUserVisit();
+            var userVisit = getUserVisit();
 
             result.setContentCatalog(contentControl.getContentCatalogTransfer(userVisit, contentCatalog));
 

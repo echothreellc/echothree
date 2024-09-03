@@ -66,12 +66,12 @@ public class DeletePartyTrainingClassSessionCommand
     @Override
     protected BaseResult execute() {
         var trainingControl = Session.getModelController(TrainingControl.class);
-        String partyTrainingClassName = form.getPartyTrainingClassName();
-        PartyTrainingClass partyTrainingClass = trainingControl.getPartyTrainingClassByNameForUpdate(partyTrainingClassName);
+        var partyTrainingClassName = form.getPartyTrainingClassName();
+        var partyTrainingClass = trainingControl.getPartyTrainingClassByNameForUpdate(partyTrainingClassName);
 
         if(partyTrainingClass != null) {
-            Integer partyTrainingClassSessionSequence = Integer.valueOf(form.getPartyTrainingClassSessionSequence());
-            PartyTrainingClassSession partyTrainingClassSession = trainingControl.getPartyTrainingClassSessionBySequenceForUpdate(partyTrainingClass, partyTrainingClassSessionSequence);
+            var partyTrainingClassSessionSequence = Integer.valueOf(form.getPartyTrainingClassSessionSequence());
+            var partyTrainingClassSession = trainingControl.getPartyTrainingClassSessionBySequenceForUpdate(partyTrainingClass, partyTrainingClassSessionSequence);
 
             if(partyTrainingClassSession != null) {
                 PartyTrainingClassSessionLogic.getInstance().deletePartyTrainingClassSession(partyTrainingClassSession, getPartyPK());

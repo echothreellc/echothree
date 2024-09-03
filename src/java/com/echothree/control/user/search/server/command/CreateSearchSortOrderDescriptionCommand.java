@@ -70,20 +70,20 @@ public class CreateSearchSortOrderDescriptionCommand
     @Override
     protected BaseResult execute() {
         var searchControl = Session.getModelController(SearchControl.class);
-        String searchKindName = form.getSearchKindName();
-        SearchKind searchKind = searchControl.getSearchKindByName(searchKindName);
+        var searchKindName = form.getSearchKindName();
+        var searchKind = searchControl.getSearchKindByName(searchKindName);
         
         if(searchKind != null) {
-            String searchSortOrderName = form.getSearchSortOrderName();
-            SearchSortOrder searchSortOrder = searchControl.getSearchSortOrderByName(searchKind, searchSortOrderName);
+            var searchSortOrderName = form.getSearchSortOrderName();
+            var searchSortOrder = searchControl.getSearchSortOrderByName(searchKind, searchSortOrderName);
             
             if(searchSortOrder != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = form.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = form.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
                 
                 if(language != null) {
-                    SearchSortOrderDescription searchSortOrderDescription = searchControl.getSearchSortOrderDescription(searchSortOrder, language);
+                    var searchSortOrderDescription = searchControl.getSearchSortOrderDescription(searchSortOrder, language);
                     
                     if(searchSortOrderDescription == null) {
                         var description = form.getDescription();

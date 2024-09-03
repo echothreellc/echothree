@@ -61,7 +61,7 @@ public class GetColorCommand
     protected Color getEntity() {
         var coreControl = getCoreControl();
         Color color = null;
-        String colorName = form.getColorName();
+        var colorName = form.getColorName();
         var parameterCount = (colorName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {
@@ -89,7 +89,7 @@ public class GetColorCommand
     @Override
     protected BaseResult getResult(Color color) {
         var coreControl = getCoreControl();
-        GetColorResult result = CoreResultFactory.getGetColorResult();
+        var result = CoreResultFactory.getGetColorResult();
 
         if(color != null) {
             result.setColor(coreControl.getColorTransfer(getUserVisit(), color));

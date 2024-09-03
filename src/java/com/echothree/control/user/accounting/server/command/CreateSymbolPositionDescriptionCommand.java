@@ -68,16 +68,16 @@ public class CreateSymbolPositionDescriptionCommand
     @Override
     protected BaseResult execute() {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        String symbolPositionName = form.getSymbolPositionName();
-        SymbolPosition symbolPosition = accountingControl.getSymbolPositionByName(symbolPositionName);
+        var symbolPositionName = form.getSymbolPositionName();
+        var symbolPosition = accountingControl.getSymbolPositionByName(symbolPositionName);
         
         if(symbolPosition != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                SymbolPositionDescription symbolPositionDescription = accountingControl.getSymbolPositionDescription(symbolPosition, language);
+                var symbolPositionDescription = accountingControl.getSymbolPositionDescription(symbolPosition, language);
                 
                 if(symbolPositionDescription == null) {
                     var description = form.getDescription();

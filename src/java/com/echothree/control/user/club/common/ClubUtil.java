@@ -30,7 +30,7 @@ public class ClubUtil {
     public static ClubLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
 
             cachedLocal = (ClubLocal)ctx.lookup("ejb:echothree/echothree-server/ClubBean!com.echothree.control.user.club.server.ClubLocal");
         }
@@ -42,7 +42,7 @@ public class ClubUtil {
     public static ClubRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
             
             cachedRemote = (ClubRemote)ctx.lookup("ejb:echothree/echothree-server/ClubBean!com.echothree.control.user.club.common.ClubRemote");
         }

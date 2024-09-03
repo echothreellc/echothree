@@ -81,29 +81,29 @@ public class EditWorkflowEntranceDescriptionCommand
     @Override
     protected BaseResult execute() {
         var workflowControl = Session.getModelController(WorkflowControl.class);
-        EditWorkflowEntranceDescriptionResult result = WorkflowResultFactory.getEditWorkflowEntranceDescriptionResult();
-        String workflowName = spec.getWorkflowName();
+        var result = WorkflowResultFactory.getEditWorkflowEntranceDescriptionResult();
+        var workflowName = spec.getWorkflowName();
         var workflow = workflowControl.getWorkflowByName(workflowName);
         
         if(workflow != null) {
-            String workflowEntranceName = spec.getWorkflowEntranceName();
-            WorkflowEntrance workflowEntrance = workflowControl.getWorkflowEntranceByName(workflow, workflowEntranceName);
+            var workflowEntranceName = spec.getWorkflowEntranceName();
+            var workflowEntrance = workflowControl.getWorkflowEntranceByName(workflow, workflowEntranceName);
             
             if(workflowEntrance != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = spec.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = spec.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
                 
                 if(language != null) {
                     if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                        WorkflowEntranceDescription workflowEntranceDescription = workflowControl.getWorkflowEntranceDescription(workflowEntrance, language);
+                        var workflowEntranceDescription = workflowControl.getWorkflowEntranceDescription(workflowEntrance, language);
                         
                         if(workflowEntranceDescription != null) {
                             if(editMode.equals(EditMode.LOCK)) {
                                 result.setWorkflowEntranceDescription(workflowControl.getWorkflowEntranceDescriptionTransfer(getUserVisit(), workflowEntranceDescription));
 
                                 if(lockEntity(workflowEntrance)) {
-                                    WorkflowEntranceDescriptionEdit edit = WorkflowEditFactory.getWorkflowEntranceDescriptionEdit();
+                                    var edit = WorkflowEditFactory.getWorkflowEntranceDescriptionEdit();
 
                                     result.setEdit(edit);
                                     edit.setDescription(workflowEntranceDescription.getDescription());
@@ -119,12 +119,12 @@ public class EditWorkflowEntranceDescriptionCommand
                             addExecutionError(ExecutionErrors.UnknownWorkflowEntranceDescription.name());
                         }
                     } else if(editMode.equals(EditMode.UPDATE)) {
-                        WorkflowEntranceDescriptionValue workflowEntranceDescriptionValue = workflowControl.getWorkflowEntranceDescriptionValueForUpdate(workflowEntrance, language);
+                        var workflowEntranceDescriptionValue = workflowControl.getWorkflowEntranceDescriptionValueForUpdate(workflowEntrance, language);
                         
                         if(workflowEntranceDescriptionValue != null) {
                             if(lockEntityForUpdate(workflowEntrance)) {
                                 try {
-                                    String description = edit.getDescription();
+                                    var description = edit.getDescription();
                                     
                                     workflowEntranceDescriptionValue.setDescription(description);
                                     

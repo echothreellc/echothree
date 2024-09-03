@@ -68,20 +68,20 @@ public class DeleteTagScopeEntityTypeCommand
     @Override
     protected BaseResult execute() {
         var tagControl = Session.getModelController(TagControl.class);
-        String tagScopeName = form.getTagScopeName();
-        TagScope tagScope = tagControl.getTagScopeByName(tagScopeName);
+        var tagScopeName = form.getTagScopeName();
+        var tagScope = tagControl.getTagScopeByName(tagScopeName);
         
         if(tagScope != null) {
             var coreControl = getCoreControl();
-            String componentVendorName = form.getComponentVendorName();
-            ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+            var componentVendorName = form.getComponentVendorName();
+            var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
             
             if(componentVendor != null) {
-                String entityTypeName = form.getEntityTypeName();
-                EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+                var entityTypeName = form.getEntityTypeName();
+                var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
                 
                 if(entityType != null) {
-                    TagScopeEntityType tagScopeEntityType = tagControl.getTagScopeEntityTypeForUpdate(tagScope, entityType);
+                    var tagScopeEntityType = tagControl.getTagScopeEntityTypeForUpdate(tagScope, entityType);
                     
                     if(tagScopeEntityType != null) {
                         tagControl.deleteTagScopeEntityType(tagScopeEntityType, getPartyPK());

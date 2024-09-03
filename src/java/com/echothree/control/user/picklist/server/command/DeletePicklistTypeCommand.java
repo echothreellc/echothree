@@ -63,8 +63,8 @@ public class DeletePicklistTypeCommand
     @Override
     protected BaseResult execute() {
         var picklistControl = Session.getModelController(PicklistControl.class);
-        String picklistTypeName = form.getPicklistTypeName();
-        PicklistType picklistType = picklistControl.getPicklistTypeByNameForUpdate(picklistTypeName);
+        var picklistTypeName = form.getPicklistTypeName();
+        var picklistType = picklistControl.getPicklistTypeByNameForUpdate(picklistTypeName);
         
         if(picklistType != null) {
             picklistControl.deletePicklistType(picklistType, getPartyPK());

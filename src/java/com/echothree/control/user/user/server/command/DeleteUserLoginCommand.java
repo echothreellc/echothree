@@ -79,7 +79,7 @@ public class DeleteUserLoginCommand
     
     @Override
     protected BaseResult execute() {
-        String partyName = form.getPartyName();
+        var partyName = form.getPartyName();
         var parameterCount = (partyName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {
@@ -105,8 +105,8 @@ public class DeleteUserLoginCommand
                         && SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, getParty(), securityRoleGroupName, UserLogin.name())) {
                     if(!hasExecutionErrors()) {
                         if(partyType.getAllowUserLogins()) {
-                            UserControl userControl = getUserControl();
-                            UserLogin userLogin = userControl.getUserLoginForUpdate(party);
+                            var userControl = getUserControl();
+                            var userLogin = userControl.getUserLoginForUpdate(party);
 
                             if(userLogin != null) {
                                 UserKeyLogic.getInstance().clearUserKeysByParty(party);

@@ -69,17 +69,17 @@ public class GetPaymentProcessorDescriptionCommand
     @Override
     protected BaseResult execute() {
         var paymentProcessorControl = Session.getModelController(PaymentProcessorControl.class);
-        GetPaymentProcessorDescriptionResult result = PaymentResultFactory.getGetPaymentProcessorDescriptionResult();
-        String paymentProcessorName = form.getPaymentProcessorName();
-        PaymentProcessor paymentProcessor = paymentProcessorControl.getPaymentProcessorByName(paymentProcessorName);
+        var result = PaymentResultFactory.getGetPaymentProcessorDescriptionResult();
+        var paymentProcessorName = form.getPaymentProcessorName();
+        var paymentProcessor = paymentProcessorControl.getPaymentProcessorByName(paymentProcessorName);
         
         if(paymentProcessor != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                PaymentProcessorDescription paymentProcessorDescription = paymentProcessorControl.getPaymentProcessorDescription(paymentProcessor, language);
+                var paymentProcessorDescription = paymentProcessorControl.getPaymentProcessorDescription(paymentProcessor, language);
                 
                 if(paymentProcessorDescription != null) {
                     result.setPaymentProcessorDescription(paymentProcessorControl.getPaymentProcessorDescriptionTransfer(getUserVisit(), paymentProcessorDescription));

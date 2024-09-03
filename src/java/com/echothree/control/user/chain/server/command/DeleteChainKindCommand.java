@@ -63,8 +63,8 @@ public class DeleteChainKindCommand
     @Override
     protected BaseResult execute() {
         var chainControl = Session.getModelController(ChainControl.class);
-        String chainKindName = form.getChainKindName();
-        ChainKind chainKind = chainControl.getChainKindByNameForUpdate(chainKindName);
+        var chainKindName = form.getChainKindName();
+        var chainKind = chainControl.getChainKindByNameForUpdate(chainKindName);
         
         if(chainKind != null) {
             chainControl.deleteChainKind(chainKind, getPartyPK());

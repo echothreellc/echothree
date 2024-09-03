@@ -64,12 +64,12 @@ public class GetBaseEncryptionKeyCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        GetBaseEncryptionKeyResult result = CoreResultFactory.getGetBaseEncryptionKeyResult();
-        String baseEncryptionKeyName = form.getBaseEncryptionKeyName();
-        BaseEncryptionKey baseEncryptionKey = baseEncryptionKeyName == null? null: coreControl.getBaseEncryptionKeyByName(baseEncryptionKeyName);
+        var result = CoreResultFactory.getGetBaseEncryptionKeyResult();
+        var baseEncryptionKeyName = form.getBaseEncryptionKeyName();
+        var baseEncryptionKey = baseEncryptionKeyName == null? null: coreControl.getBaseEncryptionKeyByName(baseEncryptionKeyName);
         
         if(baseEncryptionKeyName == null || baseEncryptionKey != null) {
-            UserVisit userVisit = getUserVisit();
+            var userVisit = getUserVisit();
             
             if(baseEncryptionKey == null) {
                 result.setBaseEncryptionKey(coreControl.getActiveBaseEncryptionKeyTransfer(userVisit));

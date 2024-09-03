@@ -63,7 +63,7 @@ public class GetSymbolPositionCommand
     protected SymbolPosition getEntity() {
         var accountingControl = Session.getModelController(AccountingControl.class);
         SymbolPosition symbolPosition = null;
-        String symbolPositionName = form.getSymbolPositionName();
+        var symbolPositionName = form.getSymbolPositionName();
         var parameterCount = (symbolPositionName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         switch(parameterCount) {
@@ -97,7 +97,7 @@ public class GetSymbolPositionCommand
     @Override
     protected BaseResult getResult(SymbolPosition symbolPosition) {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        GetSymbolPositionResult result = AccountingResultFactory.getGetSymbolPositionResult();
+        var result = AccountingResultFactory.getGetSymbolPositionResult();
 
         if(symbolPosition != null) {
             result.setSymbolPosition(accountingControl.getSymbolPositionTransfer(getUserVisit(), symbolPosition));

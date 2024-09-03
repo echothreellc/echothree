@@ -49,7 +49,7 @@ public class TrainingClassLogic
     
     private TrainingClass getTrainingClassByName(final ExecutionErrorAccumulator eea, final String trainingClassName, EntityPermission entityPermission) {
         var trainingControl = Session.getModelController(TrainingControl.class);
-        TrainingClass trainingClass = trainingControl.getTrainingClassByName(trainingClassName, entityPermission);
+        var trainingClass = trainingControl.getTrainingClassByName(trainingClassName, entityPermission);
 
         if(trainingClass == null) {
             handleExecutionError(UnknownTrainingClassNameException.class, eea, ExecutionErrors.UnknownTrainingClassName.name(), trainingClassName);
@@ -69,10 +69,10 @@ public class TrainingClassLogic
     private TrainingClassSection getTrainingClassSectionByName(final ExecutionErrorAccumulator eea, final TrainingClass trainingClass,
             final String trainingClassSectionName, EntityPermission entityPermission) {
         var trainingControl = Session.getModelController(TrainingControl.class);
-        TrainingClassSection trainingClassSection = trainingControl.getTrainingClassSectionByName(trainingClass, trainingClassSectionName, entityPermission);
+        var trainingClassSection = trainingControl.getTrainingClassSectionByName(trainingClass, trainingClassSectionName, entityPermission);
 
         if(trainingClassSection == null) {
-            TrainingClassDetail trainingClassDetail = trainingClass.getLastDetail();
+            var trainingClassDetail = trainingClass.getLastDetail();
             
             handleExecutionError(UnknownTrainingClassNameException.class, eea, ExecutionErrors.UnknownTrainingClassSectionName.name(),
                     trainingClassDetail.getTrainingClassName(), trainingClassSectionName);
@@ -94,11 +94,11 @@ public class TrainingClassLogic
     private TrainingClassPage getTrainingClassPageByName(final ExecutionErrorAccumulator eea, final TrainingClassSection trainingClassSection,
             final String trainingClassPageName, EntityPermission entityPermission) {
         var trainingControl = Session.getModelController(TrainingControl.class);
-        TrainingClassPage trainingClassPage = trainingControl.getTrainingClassPageByName(trainingClassSection, trainingClassPageName, entityPermission);
+        var trainingClassPage = trainingControl.getTrainingClassPageByName(trainingClassSection, trainingClassPageName, entityPermission);
 
         if(trainingClassPage == null) {
-            TrainingClassSectionDetail trainingClassSectionDetail = trainingClassSection.getLastDetail();
-            TrainingClassDetail trainingClassDetail = trainingClassSectionDetail.getTrainingClass().getLastDetail();
+            var trainingClassSectionDetail = trainingClassSection.getLastDetail();
+            var trainingClassDetail = trainingClassSectionDetail.getTrainingClass().getLastDetail();
             
             handleExecutionError(UnknownTrainingClassNameException.class, eea, ExecutionErrors.UnknownTrainingClassPageName.name(),
                     trainingClassDetail.getTrainingClassName(), trainingClassSectionDetail.getTrainingClassSectionName(), trainingClassPageName);
@@ -120,11 +120,11 @@ public class TrainingClassLogic
     private TrainingClassQuestion getTrainingClassQuestionByName(final ExecutionErrorAccumulator eea, final TrainingClassSection trainingClassSection,
             final String trainingClassQuestionName, EntityPermission entityPermission) {
         var trainingControl = Session.getModelController(TrainingControl.class);
-        TrainingClassQuestion trainingClassQuestion = trainingControl.getTrainingClassQuestionByName(trainingClassSection, trainingClassQuestionName, entityPermission);
+        var trainingClassQuestion = trainingControl.getTrainingClassQuestionByName(trainingClassSection, trainingClassQuestionName, entityPermission);
 
         if(trainingClassQuestion == null) {
-            TrainingClassSectionDetail trainingClassSectionDetail = trainingClassSection.getLastDetail();
-            TrainingClassDetail trainingClassDetail = trainingClassSectionDetail.getTrainingClass().getLastDetail();
+            var trainingClassSectionDetail = trainingClassSection.getLastDetail();
+            var trainingClassDetail = trainingClassSectionDetail.getTrainingClass().getLastDetail();
             
             handleExecutionError(UnknownTrainingClassNameException.class, eea, ExecutionErrors.UnknownTrainingClassQuestionName.name(),
                     trainingClassDetail.getTrainingClassName(), trainingClassSectionDetail.getTrainingClassSectionName(), trainingClassQuestionName);
@@ -146,12 +146,12 @@ public class TrainingClassLogic
     private TrainingClassAnswer getTrainingClassAnswerByName(final ExecutionErrorAccumulator eea, final TrainingClassQuestion trainingClassQuestion,
             final String trainingClassAnswerName, EntityPermission entityPermission) {
         var trainingControl = Session.getModelController(TrainingControl.class);
-        TrainingClassAnswer trainingClassAnswer = trainingControl.getTrainingClassAnswerByName(trainingClassQuestion, trainingClassAnswerName, entityPermission);
+        var trainingClassAnswer = trainingControl.getTrainingClassAnswerByName(trainingClassQuestion, trainingClassAnswerName, entityPermission);
 
         if(trainingClassAnswer == null) {
-            TrainingClassQuestionDetail trainingClassQuestionDetail = trainingClassQuestion.getLastDetail();
-            TrainingClassSectionDetail trainingClassSectionDetail = trainingClassQuestionDetail.getTrainingClassSection().getLastDetail();
-            TrainingClassDetail trainingClassDetail = trainingClassSectionDetail.getTrainingClass().getLastDetail();
+            var trainingClassQuestionDetail = trainingClassQuestion.getLastDetail();
+            var trainingClassSectionDetail = trainingClassQuestionDetail.getTrainingClassSection().getLastDetail();
+            var trainingClassDetail = trainingClassSectionDetail.getTrainingClass().getLastDetail();
             
             handleExecutionError(UnknownTrainingClassNameException.class, eea, ExecutionErrors.UnknownTrainingClassAnswerName.name(),
                     trainingClassDetail.getTrainingClassName(), trainingClassSectionDetail.getTrainingClassSectionName(),

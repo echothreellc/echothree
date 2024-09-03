@@ -63,16 +63,16 @@ public class DeleteSourceCommand
     @Override
     protected BaseResult execute() {
         var sourceControl = Session.getModelController(SourceControl.class);
-        String sourceName = form.getSourceName();
-        Source source = sourceControl.getSourceByNameForUpdate(sourceName);
+        var sourceName = form.getSourceName();
+        var source = sourceControl.getSourceByNameForUpdate(sourceName);
 
         if(source != null) {
-            OfferUse offerUse = source.getLastDetail().getOfferUse();
+            var offerUse = source.getLastDetail().getOfferUse();
 
             if(sourceControl.countSourcesByOfferUse(offerUse) > 1) {
                 sourceControl.deleteSource(source, getPartyPK());
             } else {
-                OfferUseDetail offerUseDetail = offerUse.getLastDetail();
+                var offerUseDetail = offerUse.getLastDetail();
                 
                 addExecutionError(ExecutionErrors.CannotDeleteLastSource.name(), offerUseDetail.getOffer().getLastDetail().getOfferName(),
                         offerUseDetail.getUse().getLastDetail().getUseName(), sourceName);

@@ -51,12 +51,12 @@ public class SetDefaultSubscriptionTypeCommand
     @Override
     protected BaseResult execute() {
         var subscriptionControl = Session.getModelController(SubscriptionControl.class);
-        String subscriptionKindName = form.getSubscriptionKindName();
-        SubscriptionKind subscriptionKind = subscriptionControl.getSubscriptionKindByName(subscriptionKindName);
+        var subscriptionKindName = form.getSubscriptionKindName();
+        var subscriptionKind = subscriptionControl.getSubscriptionKindByName(subscriptionKindName);
         
         if(subscriptionKind != null) {
-            String subscriptionTypeName = form.getSubscriptionTypeName();
-            SubscriptionTypeDetailValue subscriptionTypeDetailValue = subscriptionControl.getSubscriptionTypeDetailValueByNameForUpdate(subscriptionKind,
+            var subscriptionTypeName = form.getSubscriptionTypeName();
+            var subscriptionTypeDetailValue = subscriptionControl.getSubscriptionTypeDetailValueByNameForUpdate(subscriptionKind,
                     subscriptionTypeName);
             
             if(subscriptionTypeDetailValue != null) {

@@ -62,9 +62,9 @@ public class GetAppearanceTextTransformationsCommand
     
     @Override
     protected BaseResult execute() {
-        GetAppearanceTextTransformationsResult result = CoreResultFactory.getGetAppearanceTextTransformationsResult();
-        String appearanceName = form.getAppearanceName();
-        Appearance appearance = AppearanceLogic.getInstance().getAppearanceByName(this, appearanceName);
+        var result = CoreResultFactory.getGetAppearanceTextTransformationsResult();
+        var appearanceName = form.getAppearanceName();
+        var appearance = AppearanceLogic.getInstance().getAppearanceByName(this, appearanceName);
         
         if(!hasExecutionErrors()) {
             var coreControl = getCoreControl();

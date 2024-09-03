@@ -33,14 +33,14 @@ public class LeaveReasonTransferCache
     }
     
     public LeaveReasonTransfer getLeaveReasonTransfer(LeaveReason leaveReason) {
-        LeaveReasonTransfer leaveReasonTransfer = get(leaveReason);
+        var leaveReasonTransfer = get(leaveReason);
         
         if(leaveReasonTransfer == null) {
-            LeaveReasonDetail leaveReasonDetail = leaveReason.getLastDetail();
-            String leaveReasonName = leaveReasonDetail.getLeaveReasonName();
-            Boolean isDefault = leaveReasonDetail.getIsDefault();
-            Integer sortOrder = leaveReasonDetail.getSortOrder();
-            String description = employeeControl.getBestLeaveReasonDescription(leaveReason, getLanguage());
+            var leaveReasonDetail = leaveReason.getLastDetail();
+            var leaveReasonName = leaveReasonDetail.getLeaveReasonName();
+            var isDefault = leaveReasonDetail.getIsDefault();
+            var sortOrder = leaveReasonDetail.getSortOrder();
+            var description = employeeControl.getBestLeaveReasonDescription(leaveReason, getLanguage());
             
             leaveReasonTransfer = new LeaveReasonTransfer(leaveReasonName, isDefault, sortOrder, description);
             put(leaveReason, leaveReasonTransfer);

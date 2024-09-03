@@ -32,12 +32,12 @@ public class ForumMessageAttachmentDescriptionTransferCache
     }
     
     public ForumMessageAttachmentDescriptionTransfer getForumMessageAttachmentDescriptionTransfer(ForumMessageAttachmentDescription forumMessageAttachmentDescription) {
-        ForumMessageAttachmentDescriptionTransfer forumMessageAttachmentDescriptionTransfer = get(forumMessageAttachmentDescription);
+        var forumMessageAttachmentDescriptionTransfer = get(forumMessageAttachmentDescription);
         
         if(forumMessageAttachmentDescriptionTransfer == null) {
-            ForumMessageAttachmentTransferCache forumMessageAttachmentTransferCache = forumControl.getForumTransferCaches(userVisit).getForumMessageAttachmentTransferCache();
-            ForumMessageAttachmentTransfer forumMessageAttachmentTransfer = forumMessageAttachmentTransferCache.getForumMessageAttachmentTransfer(forumMessageAttachmentDescription.getForumMessageAttachment());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, forumMessageAttachmentDescription.getLanguage());
+            var forumMessageAttachmentTransferCache = forumControl.getForumTransferCaches(userVisit).getForumMessageAttachmentTransferCache();
+            var forumMessageAttachmentTransfer = forumMessageAttachmentTransferCache.getForumMessageAttachmentTransfer(forumMessageAttachmentDescription.getForumMessageAttachment());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, forumMessageAttachmentDescription.getLanguage());
             
             forumMessageAttachmentDescriptionTransfer = new ForumMessageAttachmentDescriptionTransfer(languageTransfer, forumMessageAttachmentTransfer, forumMessageAttachmentDescription.getDescription());
             put(forumMessageAttachmentDescription, forumMessageAttachmentDescriptionTransfer);

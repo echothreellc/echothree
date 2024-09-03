@@ -65,13 +65,13 @@ public class GetPartySecurityRoleTemplateTrainingClassesCommand
     
     @Override
     protected BaseResult execute() {
-        GetPartySecurityRoleTemplateTrainingClassesResult result = SecurityResultFactory.getGetPartySecurityRoleTemplateTrainingClassesResult();
+        var result = SecurityResultFactory.getGetPartySecurityRoleTemplateTrainingClassesResult();
         var securityControl = Session.getModelController(SecurityControl.class);
-        String partySecurityRoleTemplateName = form.getPartySecurityRoleTemplateName();
-        PartySecurityRoleTemplate partySecurityRoleTemplate = securityControl.getPartySecurityRoleTemplateByName(partySecurityRoleTemplateName);
+        var partySecurityRoleTemplateName = form.getPartySecurityRoleTemplateName();
+        var partySecurityRoleTemplate = securityControl.getPartySecurityRoleTemplateByName(partySecurityRoleTemplateName);
         
         if(partySecurityRoleTemplate != null) {
-            UserVisit userVisit = getUserVisit();
+            var userVisit = getUserVisit();
             
             result.setPartySecurityRoleTemplate(securityControl.getPartySecurityRoleTemplateTransfer(userVisit, partySecurityRoleTemplate));
             result.setPartySecurityRoleTemplateTrainingClasses(securityControl.getPartySecurityRoleTemplateTrainingClassTransfers(userVisit, partySecurityRoleTemplate));

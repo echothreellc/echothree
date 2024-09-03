@@ -65,13 +65,13 @@ public class GetFilterAdjustmentDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var filterControl = Session.getModelController(FilterControl.class);
-        GetFilterAdjustmentDescriptionsResult result = FilterResultFactory.getGetFilterAdjustmentDescriptionsResult();
-        String filterKindName = form.getFilterKindName();
-        FilterKind filterKind = filterControl.getFilterKindByName(filterKindName);
+        var result = FilterResultFactory.getGetFilterAdjustmentDescriptionsResult();
+        var filterKindName = form.getFilterKindName();
+        var filterKind = filterControl.getFilterKindByName(filterKindName);
         
         if(filterKind != null) {
-            String filterAdjustmentName = form.getFilterAdjustmentName();
-            FilterAdjustment filterAdjustment = filterControl.getFilterAdjustmentByName(filterKind, filterAdjustmentName);
+            var filterAdjustmentName = form.getFilterAdjustmentName();
+            var filterAdjustment = filterControl.getFilterAdjustmentByName(filterKind, filterAdjustmentName);
             
             result.setFilterKind(filterControl.getFilterKindTransfer(getUserVisit(), filterKind));
             

@@ -65,9 +65,9 @@ public class GetItemDescriptionTypeUseTypeDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var itemControl = Session.getModelController(ItemControl.class);
-        GetItemDescriptionTypeUseTypeDescriptionsResult result = ItemResultFactory.getGetItemDescriptionTypeUseTypeDescriptionsResult();
-        String itemDescriptionTypeUseTypeName = form.getItemDescriptionTypeUseTypeName();
-        ItemDescriptionTypeUseType itemDescriptionTypeUseType = itemControl.getItemDescriptionTypeUseTypeByName(itemDescriptionTypeUseTypeName);
+        var result = ItemResultFactory.getGetItemDescriptionTypeUseTypeDescriptionsResult();
+        var itemDescriptionTypeUseTypeName = form.getItemDescriptionTypeUseTypeName();
+        var itemDescriptionTypeUseType = itemControl.getItemDescriptionTypeUseTypeByName(itemDescriptionTypeUseTypeName);
         
         if(itemDescriptionTypeUseType != null) {
             result.setItemDescriptionTypeUseType(itemControl.getItemDescriptionTypeUseTypeTransfer(getUserVisit(), itemDescriptionTypeUseType));

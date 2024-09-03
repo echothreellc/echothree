@@ -43,14 +43,14 @@ public class PersonalTitlesHelper {
     public PersonalTitleChoicesBean getPersonalTitleChoices(final UserVisitPK userVisitPK, final Boolean allowNullChoice)
             throws NamingException {
         PersonalTitleChoicesBean personalTitleChoices = null;
-        GetPersonalTitleChoicesForm commandForm = PartyFormFactory.getGetPersonalTitleChoicesForm();
+        var commandForm = PartyFormFactory.getGetPersonalTitleChoicesForm();
 
         commandForm.setAllowNullChoice(allowNullChoice.toString());
 
-        CommandResult commandResult = PartyUtil.getHome().getPersonalTitleChoices(userVisitPK, commandForm);
+        var commandResult = PartyUtil.getHome().getPersonalTitleChoices(userVisitPK, commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetPersonalTitleChoicesResult result = (GetPersonalTitleChoicesResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetPersonalTitleChoicesResult)executionResult.getResult();
 
             personalTitleChoices = result.getPersonalTitleChoices();
         }

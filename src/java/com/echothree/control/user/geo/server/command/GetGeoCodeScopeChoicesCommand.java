@@ -63,9 +63,9 @@ public class GetGeoCodeScopeChoicesCommand
     @Override
     protected BaseResult execute() {
         var geoControl = Session.getModelController(GeoControl.class);
-        GetGeoCodeScopeChoicesResult result = GeoResultFactory.getGetGeoCodeScopeChoicesResult();
-        String defaultGeoCodeScopeChoice = form.getDefaultGeoCodeScopeChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = GeoResultFactory.getGetGeoCodeScopeChoicesResult();
+        var defaultGeoCodeScopeChoice = form.getDefaultGeoCodeScopeChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setGeoCodeScopeChoices(geoControl.getGeoCodeScopeChoices(defaultGeoCodeScopeChoice,
                 getPreferredLanguage(), allowNullChoice));

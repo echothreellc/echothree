@@ -66,9 +66,9 @@ public class GetContactListTypeCommand
     @Override
     protected BaseResult execute() {
         var contactListControl = Session.getModelController(ContactListControl.class);
-        GetContactListTypeResult result = ContactListResultFactory.getGetContactListTypeResult();
-        String contactListTypeName = form.getContactListTypeName();
-        ContactListType contactListType = contactListControl.getContactListTypeByName(contactListTypeName);
+        var result = ContactListResultFactory.getGetContactListTypeResult();
+        var contactListTypeName = form.getContactListTypeName();
+        var contactListType = contactListControl.getContactListTypeByName(contactListTypeName);
         
         if(contactListType != null) {
             result.setContactListType(contactListControl.getContactListTypeTransfer(getUserVisit(), contactListType));

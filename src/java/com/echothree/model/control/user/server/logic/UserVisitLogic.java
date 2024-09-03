@@ -61,7 +61,7 @@ public class UserVisitLogic
     public void invalidateUserVisit(UserVisit userVisit, PartyPK invalidatedBy) {
         if(userVisit != null) {
             var userControl = Session.getModelController(UserControl.class);
-            UserSession userSession = UserSessionLogic.getInstance().deleteUserSessionByUserVisit(userVisit);
+            var userSession = UserSessionLogic.getInstance().deleteUserSessionByUserVisit(userVisit);
             
             cleanupUserVisitDependencies(userVisit, null, invalidatedBy);
             
@@ -86,7 +86,7 @@ public class UserVisitLogic
     public void invalidateAbandonedUserVisits(Long abandonedTime, PartyPK invalidatedBy) {
         var userControl = Session.getModelController(UserControl.class);
         
-        for(UserVisit userVisit: userControl.getAbandonedUserVisits(abandonedTime)) {
+        for(var userVisit: userControl.getAbandonedUserVisits(abandonedTime)) {
             userVisit = UserVisitFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, userVisit.getPrimaryKey());
             
             invalidateUserVisit(userVisit, invalidatedBy);
@@ -96,7 +96,7 @@ public class UserVisitLogic
     public void removeInvalidatedUserVisits() {
         var userControl = Session.getModelController(UserControl.class);
         
-        for(UserVisit userVisit: userControl.getInvalidatedUserVisits()) {
+        for(var userVisit: userControl.getInvalidatedUserVisits()) {
             userVisit = UserVisitFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, userVisit.getPrimaryKey());
             
             userControl.removeUserVisit(userVisit);
@@ -107,7 +107,7 @@ public class UserVisitLogic
      */
     public void disassociatePartyFromUserVisit(final UserVisit userVisit, final Long endTime, final PartyPK disassociatedBy) {
         var userControl = Session.getModelController(UserControl.class);
-        UserSession userSession = userControl.getUserSessionByUserVisitForUpdate(userVisit);
+        var userSession = userControl.getUserSessionByUserVisitForUpdate(userVisit);
         
         if(userSession != null) {
             // If there wasn't a specific UserSession and Party assocaited with the UserVisit,
@@ -123,9 +123,9 @@ public class UserVisitLogic
      */
     public void logout(final UserVisitPK userVisitPK, final Long endTime, final PartyPK loggedOutBy) {
         var userControl = Session.getModelController(UserControl.class);
-        UserVisit userVisit = userControl.getUserVisitByPK(userVisitPK);
-        UserKey userKey = userVisit.getUserKey();
-        UserKeyDetailValue userKeyDetailValue = userControl.getUserKeyDetailValueByPKForUpdate(userKey.getLastDetail().getPrimaryKey());
+        var userVisit = userControl.getUserVisitByPK(userVisitPK);
+        var userKey = userVisit.getUserKey();
+        var userKeyDetailValue = userControl.getUserKeyDetailValueByPKForUpdate(userKey.getLastDetail().getPrimaryKey());
 
         if(userKeyDetailValue.getPartyPK() != null || userKeyDetailValue.getPartyRelationshipPK() != null) {
             userKeyDetailValue.setPartyPK(null);

@@ -65,8 +65,8 @@ public class CreateSequenceEncoderTypeCommand
     @Override
     protected BaseResult execute() {
         var sequenceControl = Session.getModelController(SequenceControl.class);
-        String sequenceEncoderTypeName = form.getSequenceEncoderTypeName();
-        SequenceEncoderType sequenceEncoderType = sequenceControl.getSequenceEncoderTypeByName(sequenceEncoderTypeName);
+        var sequenceEncoderTypeName = form.getSequenceEncoderTypeName();
+        var sequenceEncoderType = sequenceControl.getSequenceEncoderTypeByName(sequenceEncoderTypeName);
         
         if(sequenceEncoderType == null) {
             var isDefault = Boolean.valueOf(form.getIsDefault());

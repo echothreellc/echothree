@@ -36,17 +36,17 @@ public class ColorTransferCache
     }
 
     public ColorTransfer getColorTransfer(Color color) {
-        ColorTransfer colorTransfer = get(color);
+        var colorTransfer = get(color);
 
         if(colorTransfer == null) {
-            ColorDetail colorDetail = color.getLastDetail();
-            String colorName = colorDetail.getColorName();
-            Integer red = colorDetail.getRed();
-            Integer green = colorDetail.getGreen();
-            Integer blue = colorDetail.getBlue();
-            Boolean isDefault = colorDetail.getIsDefault();
-            Integer sortOrder = colorDetail.getSortOrder();
-            String description = coreControl.getBestColorDescription(color, getLanguage());
+            var colorDetail = color.getLastDetail();
+            var colorName = colorDetail.getColorName();
+            var red = colorDetail.getRed();
+            var green = colorDetail.getGreen();
+            var blue = colorDetail.getBlue();
+            var isDefault = colorDetail.getIsDefault();
+            var sortOrder = colorDetail.getSortOrder();
+            var description = coreControl.getBestColorDescription(color, getLanguage());
 
             colorTransfer = new ColorTransfer(colorName, red, green, blue, isDefault, sortOrder, description);
             put(color, colorTransfer);

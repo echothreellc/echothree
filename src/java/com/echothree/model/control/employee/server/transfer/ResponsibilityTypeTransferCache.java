@@ -33,14 +33,14 @@ public class ResponsibilityTypeTransferCache
     }
     
     public ResponsibilityTypeTransfer getResponsibilityTypeTransfer(ResponsibilityType responsibilityType) {
-        ResponsibilityTypeTransfer responsibilityTypeTransfer = get(responsibilityType);
+        var responsibilityTypeTransfer = get(responsibilityType);
         
         if(responsibilityTypeTransfer == null) {
-            ResponsibilityTypeDetail responsibilityTypeDetail = responsibilityType.getLastDetail();
-            String responsibilityTypeName = responsibilityTypeDetail.getResponsibilityTypeName();
-            Boolean isDefault = responsibilityTypeDetail.getIsDefault();
-            Integer sortOrder = responsibilityTypeDetail.getSortOrder();
-            String description = employeeControl.getBestResponsibilityTypeDescription(responsibilityType, getLanguage());
+            var responsibilityTypeDetail = responsibilityType.getLastDetail();
+            var responsibilityTypeName = responsibilityTypeDetail.getResponsibilityTypeName();
+            var isDefault = responsibilityTypeDetail.getIsDefault();
+            var sortOrder = responsibilityTypeDetail.getSortOrder();
+            var description = employeeControl.getBestResponsibilityTypeDescription(responsibilityType, getLanguage());
             
             responsibilityTypeTransfer = new ResponsibilityTypeTransfer(responsibilityTypeName, isDefault, sortOrder, description);
             put(responsibilityType, responsibilityTypeTransfer);

@@ -64,16 +64,16 @@ public class SetDefaultApplicationEditorCommand
     
     @Override
     protected BaseResult execute() {
-        String applicationName = form.getApplicationName();
-        Application application = ApplicationLogic.getInstance().getApplicationByName(this, applicationName);
+        var applicationName = form.getApplicationName();
+        var application = ApplicationLogic.getInstance().getApplicationByName(this, applicationName);
         
         if(!hasExecutionErrors()) {
-            String editorName = form.getEditorName();
-            Editor editor = ApplicationLogic.getInstance().getEditorByName(this, editorName);
+            var editorName = form.getEditorName();
+            var editor = ApplicationLogic.getInstance().getEditorByName(this, editorName);
             
             if(!hasExecutionErrors()) {
                 var coreControl = getCoreControl();
-                ApplicationEditorDetailValue applicationEditorDetailValue = coreControl.getApplicationEditorDetailValueForUpdate(application, editor);
+                var applicationEditorDetailValue = coreControl.getApplicationEditorDetailValueForUpdate(application, editor);
                 
                 if(applicationEditorDetailValue != null) {
                     applicationEditorDetailValue.setIsDefault(Boolean.TRUE);

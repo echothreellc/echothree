@@ -56,21 +56,21 @@ public class GetBatchTypeEntityTypeCommand
     @Override
     protected BaseResult execute() {
         var batchControl = Session.getModelController(BatchControl.class);
-        GetBatchTypeEntityTypeResult result = BatchResultFactory.getGetBatchTypeEntityTypeResult();
-        String batchTypeName = form.getBatchTypeName();
-        BatchType batchType = batchControl.getBatchTypeByName(batchTypeName);
+        var result = BatchResultFactory.getGetBatchTypeEntityTypeResult();
+        var batchTypeName = form.getBatchTypeName();
+        var batchType = batchControl.getBatchTypeByName(batchTypeName);
         
         if(batchType != null) {
             var coreControl = getCoreControl();
-            String componentVendorName = form.getComponentVendorName();
-            ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+            var componentVendorName = form.getComponentVendorName();
+            var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
 
             if(componentVendor != null) {
-                String entityTypeName = form.getEntityTypeName();
-                EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+                var entityTypeName = form.getEntityTypeName();
+                var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
 
                 if(entityType != null) {
-                    BatchTypeEntityType batchTypeEntityType = batchControl.getBatchTypeEntityType(batchType, entityType);
+                    var batchTypeEntityType = batchControl.getBatchTypeEntityType(batchType, entityType);
 
                     if(batchTypeEntityType != null) {
                         result.setBatchTypeEntityType(batchControl.getBatchTypeEntityTypeTransfer(getUserVisit(), batchTypeEntityType));

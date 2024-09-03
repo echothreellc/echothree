@@ -34,9 +34,9 @@ public class NumbersFieldType
     
     @Override
     public String validate() {
-        boolean hadErrors = false;
-        
-        Matcher m = Patterns.Numbers.matcher(fieldValue);
+        var hadErrors = false;
+
+        var m = Patterns.Numbers.matcher(fieldValue);
         if(!m.matches()) {
             validationMessages.add(fieldName, new Message(Validator.ERROR_INVALID_FORMAT));
             hadErrors = true;

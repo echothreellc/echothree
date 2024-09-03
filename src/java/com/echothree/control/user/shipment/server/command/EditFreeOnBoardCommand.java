@@ -112,8 +112,8 @@ public class EditFreeOnBoardCommand
     @Override
     public void doLock(FreeOnBoardEdit edit, FreeOnBoard freeOnBoard) {
         var freeOnBoardControl = Session.getModelController(FreeOnBoardControl.class);
-        FreeOnBoardDescription freeOnBoardDescription = freeOnBoardControl.getFreeOnBoardDescription(freeOnBoard, getPreferredLanguage());
-        FreeOnBoardDetail freeOnBoardDetail = freeOnBoard.getLastDetail();
+        var freeOnBoardDescription = freeOnBoardControl.getFreeOnBoardDescription(freeOnBoard, getPreferredLanguage());
+        var freeOnBoardDetail = freeOnBoard.getLastDetail();
         
         edit.setFreeOnBoardName(freeOnBoardDetail.getFreeOnBoardName());
         edit.setIsDefault(freeOnBoardDetail.getIsDefault().toString());
@@ -127,8 +127,8 @@ public class EditFreeOnBoardCommand
     @Override
     public void canUpdate(FreeOnBoard freeOnBoard) {
         var freeOnBoardControl = Session.getModelController(FreeOnBoardControl.class);
-        String freeOnBoardName = edit.getFreeOnBoardName();
-        FreeOnBoard duplicateFreeOnBoard = freeOnBoardControl.getFreeOnBoardByName(freeOnBoardName);
+        var freeOnBoardName = edit.getFreeOnBoardName();
+        var duplicateFreeOnBoard = freeOnBoardControl.getFreeOnBoardByName(freeOnBoardName);
 
         if(duplicateFreeOnBoard != null && !freeOnBoard.equals(duplicateFreeOnBoard)) {
             addExecutionError(ExecutionErrors.DuplicateFreeOnBoardName.name(), freeOnBoardName);
@@ -139,9 +139,9 @@ public class EditFreeOnBoardCommand
     public void doUpdate(FreeOnBoard freeOnBoard) {
         var freeOnBoardControl = Session.getModelController(FreeOnBoardControl.class);
         var partyPK = getPartyPK();
-        FreeOnBoardDetailValue freeOnBoardDetailValue = freeOnBoardControl.getFreeOnBoardDetailValueForUpdate(freeOnBoard);
-        FreeOnBoardDescription freeOnBoardDescription = freeOnBoardControl.getFreeOnBoardDescriptionForUpdate(freeOnBoard, getPreferredLanguage());
-        String description = edit.getDescription();
+        var freeOnBoardDetailValue = freeOnBoardControl.getFreeOnBoardDetailValueForUpdate(freeOnBoard);
+        var freeOnBoardDescription = freeOnBoardControl.getFreeOnBoardDescriptionForUpdate(freeOnBoard, getPreferredLanguage());
+        var description = edit.getDescription();
 
         freeOnBoardDetailValue.setFreeOnBoardName(edit.getFreeOnBoardName());
         freeOnBoardDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
@@ -154,7 +154,7 @@ public class EditFreeOnBoardCommand
         } else if(freeOnBoardDescription != null && description == null) {
             freeOnBoardControl.deleteFreeOnBoardDescription(freeOnBoardDescription, partyPK);
         } else if(freeOnBoardDescription != null && description != null) {
-            FreeOnBoardDescriptionValue freeOnBoardDescriptionValue = freeOnBoardControl.getFreeOnBoardDescriptionValue(freeOnBoardDescription);
+            var freeOnBoardDescriptionValue = freeOnBoardControl.getFreeOnBoardDescriptionValue(freeOnBoardDescription);
 
             freeOnBoardDescriptionValue.setDescription(description);
             freeOnBoardControl.updateFreeOnBoardDescriptionFromValue(freeOnBoardDescriptionValue, partyPK);

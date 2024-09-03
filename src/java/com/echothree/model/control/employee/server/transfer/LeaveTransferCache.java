@@ -61,26 +61,26 @@ public class LeaveTransferCache
     }
     
     public LeaveTransfer getLeaveTransfer(Leave leave) {
-        LeaveTransfer leaveTransfer = get(leave);
+        var leaveTransfer = get(leave);
         
         if(leaveTransfer == null) {
-            LeaveDetail leaveDetail = leave.getLastDetail();
-            String leaveName = leaveDetail.getLeaveName();
-            PartyTransfer partyTransfer = partyControl.getPartyTransfer(userVisit, leaveDetail.getParty());
-            CompanyTransfer companyTransfer = partyControl.getCompanyTransfer(userVisit, leaveDetail.getCompanyParty());
-            LeaveType leaveType = leaveDetail.getLeaveType();
-            LeaveTypeTransfer leaveTypeTransfer = leaveType == null ? null : employeeControl.getLeaveTypeTransfer(userVisit, leaveType);
-            LeaveReason leaveReason = leaveDetail.getLeaveReason();
-            LeaveReasonTransfer leaveReasonTransfer = leaveReason == null ? null : employeeControl.getLeaveReasonTransfer(userVisit, leaveReason);
-            Long unformattedStartTime = leaveDetail.getStartTime();
-            String startTime = formatTypicalDateTime(unformattedStartTime);
-            Long unformattedEndTime = leaveDetail.getEndTime();
-            String endTime = formatTypicalDateTime(unformattedEndTime);
-            Long unformattedTotalTime = leaveDetail.getTotalTime();
-            String totalTime = unformattedTotalTime == null ? null : unitOfMeasureUtils.formatUnitOfMeasure(userVisit, timeUnitOfMeasureKind, unformattedTotalTime);
-            
-            EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(leave.getPrimaryKey());
-            WorkflowEntityStatusTransfer leaveStatus = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
+            var leaveDetail = leave.getLastDetail();
+            var leaveName = leaveDetail.getLeaveName();
+            var partyTransfer = partyControl.getPartyTransfer(userVisit, leaveDetail.getParty());
+            var companyTransfer = partyControl.getCompanyTransfer(userVisit, leaveDetail.getCompanyParty());
+            var leaveType = leaveDetail.getLeaveType();
+            var leaveTypeTransfer = leaveType == null ? null : employeeControl.getLeaveTypeTransfer(userVisit, leaveType);
+            var leaveReason = leaveDetail.getLeaveReason();
+            var leaveReasonTransfer = leaveReason == null ? null : employeeControl.getLeaveReasonTransfer(userVisit, leaveReason);
+            var unformattedStartTime = leaveDetail.getStartTime();
+            var startTime = formatTypicalDateTime(unformattedStartTime);
+            var unformattedEndTime = leaveDetail.getEndTime();
+            var endTime = formatTypicalDateTime(unformattedEndTime);
+            var unformattedTotalTime = leaveDetail.getTotalTime();
+            var totalTime = unformattedTotalTime == null ? null : unitOfMeasureUtils.formatUnitOfMeasure(userVisit, timeUnitOfMeasureKind, unformattedTotalTime);
+
+            var entityInstance = coreControl.getEntityInstanceByBasePK(leave.getPrimaryKey());
+            var leaveStatus = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
                     LeaveStatusConstants.Workflow_LEAVE_STATUS, entityInstance);
 
             leaveTransfer = new LeaveTransfer(leaveName, partyTransfer, companyTransfer, leaveTypeTransfer, leaveReasonTransfer, unformattedStartTime,

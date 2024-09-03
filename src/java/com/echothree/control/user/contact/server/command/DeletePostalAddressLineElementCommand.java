@@ -53,16 +53,16 @@ public class DeletePostalAddressLineElementCommand
     @Override
     protected BaseResult execute() {
         var contactControl = Session.getModelController(ContactControl.class);
-        String postalAddressFormatName = form.getPostalAddressFormatName();
-        PostalAddressFormat postalAddressFormat = contactControl.getPostalAddressFormatByName(postalAddressFormatName);
+        var postalAddressFormatName = form.getPostalAddressFormatName();
+        var postalAddressFormat = contactControl.getPostalAddressFormatByName(postalAddressFormatName);
         
         if(postalAddressFormat != null) {
-            Integer postalAddressLineSortOrder = Integer.valueOf(form.getPostalAddressLineSortOrder());
-            PostalAddressLine postalAddressLine = contactControl.getPostalAddressLine(postalAddressFormat, postalAddressLineSortOrder);
+            var postalAddressLineSortOrder = Integer.valueOf(form.getPostalAddressLineSortOrder());
+            var postalAddressLine = contactControl.getPostalAddressLine(postalAddressFormat, postalAddressLineSortOrder);
             
             if(postalAddressLine != null) {
-                Integer postalAddressLineElementSortOrder = Integer.valueOf(form.getPostalAddressLineElementSortOrder());
-                PostalAddressLineElement postalAddressLineElement = contactControl.getPostalAddressLineElementForUpdate(postalAddressLine, postalAddressLineElementSortOrder);
+                var postalAddressLineElementSortOrder = Integer.valueOf(form.getPostalAddressLineElementSortOrder());
+                var postalAddressLineElement = contactControl.getPostalAddressLineElementForUpdate(postalAddressLine, postalAddressLineElementSortOrder);
                 
                 if(postalAddressLineElement != null) {
                     contactControl.deletePostalAddressLineElement(postalAddressLineElement, getPartyPK());

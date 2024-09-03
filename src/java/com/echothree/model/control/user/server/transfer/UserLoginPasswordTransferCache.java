@@ -38,21 +38,21 @@ public class UserLoginPasswordTransferCache
     }
     
     public UserLoginPasswordTransfer getUserLoginPasswordTransfer(UserLoginPassword userLoginPassword) {
-        UserLoginPasswordTransfer userLoginPasswordTransfer = get(userLoginPassword);
+        var userLoginPasswordTransfer = get(userLoginPassword);
         
         if(userLoginPasswordTransfer == null) {
-            PartyTransfer party = partyControl.getPartyTransfer(userVisit, userLoginPassword.getParty());
-            UserLoginPasswordTypeTransfer userLoginPasswordType = userControl.getUserLoginPasswordTypeTransfer(userVisit, userLoginPassword.getUserLoginPasswordType());
+            var party = partyControl.getPartyTransfer(userVisit, userLoginPassword.getParty());
+            var userLoginPasswordType = userControl.getUserLoginPasswordTypeTransfer(userVisit, userLoginPassword.getUserLoginPasswordType());
             String password = null;
             Long unformattedChangedTime = null;
             String changedTime = null;
             Boolean wasReset = null;
 
-            String userLoginPasswordTypeName = userLoginPasswordType.getUserLoginPasswordTypeName();
+            var userLoginPasswordTypeName = userLoginPasswordType.getUserLoginPasswordTypeName();
             if(userLoginPasswordTypeName.equals(UserConstants.UserLoginPasswordType_STRING) ||
                     userLoginPasswordTypeName.equals(UserConstants.UserLoginPasswordType_RECOVERED_STRING)) {
-                UserLoginPasswordString userLoginPasswordString = userControl.getUserLoginPasswordString(userLoginPassword);
-                String userLoginPasswordEncoderTypeName = userLoginPasswordType.getUserLoginPasswordEncoderType().getUserLoginPasswordEncoderTypeName();
+                var userLoginPasswordString = userControl.getUserLoginPasswordString(userLoginPassword);
+                var userLoginPasswordEncoderTypeName = userLoginPasswordType.getUserLoginPasswordEncoderType().getUserLoginPasswordEncoderTypeName();
 
                 // Allow only one very carefully checked case where the password will be returned in the TO. Only recovered passwords, and only if they are
                 // plain text. Hashed passwords will never be returned.

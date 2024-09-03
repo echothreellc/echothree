@@ -147,7 +147,7 @@ public class ContentCatalogsTag
     public int doStartTag()
             throws JspException {
         try {
-            GetContentCatalogsForm commandForm = ContentUtil.getHome().getGetContentCatalogsForm();
+            var commandForm = ContentUtil.getHome().getGetContentCatalogsForm();
             Map<String, Limit> limits = new HashMap<>();
 
             commandForm.setContentWebAddressName(contentWebAddressName);
@@ -165,7 +165,7 @@ public class ContentCatalogsTag
             }
             commandForm.setLimits(limits);
 
-            CommandResult commandResult = ContentUtil.getHome().getContentCatalogs(getUserVisitPK(), commandForm);
+            var commandResult = ContentUtil.getHome().getContentCatalogs(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -173,8 +173,8 @@ public class ContentCatalogsTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetContentCatalogsResult result = (GetContentCatalogsResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetContentCatalogsResult)executionResult.getResult();
 
                 pageContext.setAttribute(var, new ListWrapper<>(result.getContentCatalogs()), scope);
                 

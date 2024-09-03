@@ -46,25 +46,25 @@ public class PeriodTransferCache
     }
     
     public PeriodTransfer getPeriodTransfer(Period period) {
-        PeriodTransfer periodTransfer = get(period);
+        var periodTransfer = get(period);
         
         if(periodTransfer == null) {
-            PeriodDetail periodDetail = period.getLastDetail();
-            PeriodKindTransfer periodKindTransfer = periodControl.getPeriodKindTransfer(userVisit, periodDetail.getPeriodKind());
-            String periodName = periodDetail.getPeriodName();
-            Period parentPeriod = periodDetail.getParentPeriod();
-            PeriodTransfer parentPeriodTransfer = parentPeriod == null? null: periodControl.getPeriodTransfer(userVisit, parentPeriod);
-            PeriodType periodType = periodDetail.getPeriodType();
-            PeriodTypeTransfer periodTypeTransfer = periodType == null? null: periodControl.getPeriodTypeTransfer(userVisit, periodType);
-            Long unformattedStartTime = periodDetail.getStartTime();
-            String startTime = formatTypicalDateTime(unformattedStartTime);
-            Long unformattedEndTime = periodDetail.getEndTime();
-            String endTime = formatTypicalDateTime(unformattedEndTime);
-            String description = periodControl.getBestPeriodDescription(period, getLanguage());
+            var periodDetail = period.getLastDetail();
+            var periodKindTransfer = periodControl.getPeriodKindTransfer(userVisit, periodDetail.getPeriodKind());
+            var periodName = periodDetail.getPeriodName();
+            var parentPeriod = periodDetail.getParentPeriod();
+            var parentPeriodTransfer = parentPeriod == null? null: periodControl.getPeriodTransfer(userVisit, parentPeriod);
+            var periodType = periodDetail.getPeriodType();
+            var periodTypeTransfer = periodType == null? null: periodControl.getPeriodTypeTransfer(userVisit, periodType);
+            var unformattedStartTime = periodDetail.getStartTime();
+            var startTime = formatTypicalDateTime(unformattedStartTime);
+            var unformattedEndTime = periodDetail.getEndTime();
+            var endTime = formatTypicalDateTime(unformattedEndTime);
+            var description = periodControl.getBestPeriodDescription(period, getLanguage());
             WorkflowEntityStatusTransfer status = null;
-            
-            EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(period.getPrimaryKey());
-            String periodKindName = periodTypeTransfer.getPeriodKind().getPeriodKindName();
+
+            var entityInstance = coreControl.getEntityInstanceByBasePK(period.getPrimaryKey());
+            var periodKindName = periodTypeTransfer.getPeriodKind().getPeriodKindName();
             if(periodKindName.equals(PeriodConstants.PeriodKind_FISCAL)) {
                 status = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
                         FiscalPeriodStatusConstants.Workflow_FISCAL_PERIOD_STATUS, entityInstance);

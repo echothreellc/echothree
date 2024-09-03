@@ -243,7 +243,7 @@ public class GeoControl
         var stateRelationships = getGeoCodeRelationshipsByFromGeoCode(stateGeoCode);
         GeoCode countryGeoCode = null;
         for(var geoCodeRelationship : stateRelationships) {
-            GeoCode toGeoCode = geoCodeRelationship.getToGeoCode();
+            var toGeoCode = geoCodeRelationship.getToGeoCode();
             
             if(toGeoCode.getLastDetail().getGeoCodeType().equals(countryGeoCodeType)) {
                 countryGeoCode = toGeoCode;
@@ -292,7 +292,7 @@ public class GeoControl
         var stateRelationships = getGeoCodeRelationshipsByFromGeoCode(stateGeoCode);
         GeoCode countryGeoCode = null;
         for(var geoCodeRelationship : stateRelationships) {
-            GeoCode toGeoCode = geoCodeRelationship.getToGeoCode();
+            var toGeoCode = geoCodeRelationship.getToGeoCode();
             
             if(toGeoCode.getLastDetail().getGeoCodeType().equals(countryGeoCodeType)) {
                 countryGeoCode = toGeoCode;
@@ -354,10 +354,10 @@ public class GeoControl
     // --------------------------------------------------------------------------------
     
     public CountryChoicesBean getCountryChoices(String defaultCountryChoice, Language language, boolean allowNullChoice) {
-        GeoCodeType geoCodeType = getGeoCodeTypeByName(GeoConstants.GeoCodeType_COUNTRY);
-        GeoCodeAliasType geoCodeAliasType = getDefaultGeoCodeAliasType(geoCodeType);
-        GeoCodeScope geoCodeScope = getGeoCodeScopeByName(GeoConstants.GeoCodeScope_COUNTRIES);
-        List<GeoCode> geoCodes = getGeoCodesByGeoCodeScope(geoCodeScope);
+        var geoCodeType = getGeoCodeTypeByName(GeoConstants.GeoCodeType_COUNTRY);
+        var geoCodeAliasType = getDefaultGeoCodeAliasType(geoCodeType);
+        var geoCodeScope = getGeoCodeScopeByName(GeoConstants.GeoCodeScope_COUNTRIES);
+        var geoCodes = getGeoCodesByGeoCodeScope(geoCodeScope);
         var size = geoCodes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -394,20 +394,20 @@ public class GeoControl
     
     public GeoCodeType createGeoCodeType(String geoCodeTypeName, GeoCodeType parentGeoCodeType, Boolean isDefault,
             Integer sortOrder, BasePK createdBy) {
-        GeoCodeType defaultGeoCodeType = getDefaultGeoCodeType();
-        boolean defaultFound = defaultGeoCodeType != null;
+        var defaultGeoCodeType = getDefaultGeoCodeType();
+        var defaultFound = defaultGeoCodeType != null;
         
         if(defaultFound && isDefault) {
-            GeoCodeTypeDetailValue defaultGeoCodeTypeDetailValue = getDefaultGeoCodeTypeDetailValueForUpdate();
+            var defaultGeoCodeTypeDetailValue = getDefaultGeoCodeTypeDetailValueForUpdate();
             
             defaultGeoCodeTypeDetailValue.setIsDefault(Boolean.FALSE);
             updateGeoCodeTypeFromValue(defaultGeoCodeTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        GeoCodeType geoCodeType = GeoCodeTypeFactory.getInstance().create();
-        GeoCodeTypeDetail geoCodeTypeDetail = GeoCodeTypeDetailFactory.getInstance().create(geoCodeType, geoCodeTypeName,
+
+        var geoCodeType = GeoCodeTypeFactory.getInstance().create();
+        var geoCodeTypeDetail = GeoCodeTypeDetailFactory.getInstance().create(geoCodeType, geoCodeTypeName,
                 parentGeoCodeType, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -594,7 +594,7 @@ public class GeoControl
 
     public List<GeoCodeTypeTransfer> getGeoCodeTypeTransfers(UserVisit userVisit, Collection<GeoCodeType> geoCodeTypes) {
         List<GeoCodeTypeTransfer> geoCodeTypeTransfers = new ArrayList<>(geoCodeTypes.size());
-        GeoCodeTypeTransferCache geoCodeTypeTransferCache = getGeoTransferCaches(userVisit).getGeoCodeTypeTransferCache();
+        var geoCodeTypeTransferCache = getGeoTransferCaches(userVisit).getGeoCodeTypeTransferCache();
 
         geoCodeTypes.forEach((geoCodeType) ->
                 geoCodeTypeTransfers.add(geoCodeTypeTransferCache.getGeoCodeTypeTransfer(geoCodeType))
@@ -609,7 +609,7 @@ public class GeoControl
 
     public GeoCodeTypeChoicesBean getGeoCodeTypeChoices(String defaultGeoCodeTypeChoice, Language language,
             boolean allowNullChoice) {
-        List<GeoCodeType> geoCodeTypes = getGeoCodeTypes();
+        var geoCodeTypes = getGeoCodeTypes();
         var size = geoCodeTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -625,7 +625,7 @@ public class GeoControl
         }
         
         for(var geoCodeType : geoCodeTypes) {
-            GeoCodeTypeDetail geoCodeTypeDetail = geoCodeType.getLastDetail();
+            var geoCodeTypeDetail = geoCodeType.getLastDetail();
             
             var label = getBestGeoCodeTypeDescription(geoCodeType, language);
             var value = geoCodeTypeDetail.getGeoCodeTypeName();
@@ -643,7 +643,7 @@ public class GeoControl
     }
     
     public boolean isParentGeoCodeTypeSafe(GeoCodeType geoCodeType, GeoCodeType parentGeoCodeType) {
-        boolean safe = true;
+        var safe = true;
 
         if(parentGeoCodeType != null) {
             Set<GeoCodeType> parentGeoCodeTypes = new HashSet<>();
@@ -666,26 +666,26 @@ public class GeoControl
     private void updateGeoCodeTypeFromValue(GeoCodeTypeDetailValue geoCodeTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(geoCodeTypeDetailValue.hasBeenModified()) {
-            GeoCodeType geoCodeType = GeoCodeTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var geoCodeType = GeoCodeTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      geoCodeTypeDetailValue.getGeoCodeTypePK());
-            GeoCodeTypeDetail geoCodeTypeDetail = geoCodeType.getActiveDetailForUpdate();
+            var geoCodeTypeDetail = geoCodeType.getActiveDetailForUpdate();
             
             geoCodeTypeDetail.setThruTime(session.START_TIME_LONG);
             geoCodeTypeDetail.store();
-            
-            GeoCodeTypePK geoCodeTypePK = geoCodeTypeDetail.getGeoCodeTypePK();
-            String geoCodeTypeName = geoCodeTypeDetailValue.getGeoCodeTypeName();
-            GeoCodeTypePK parentGeoCodeTypePK = geoCodeTypeDetailValue.getParentGeoCodeTypePK();
-            Boolean isDefault = geoCodeTypeDetailValue.getIsDefault();
-            Integer sortOrder = geoCodeTypeDetailValue.getSortOrder();
+
+            var geoCodeTypePK = geoCodeTypeDetail.getGeoCodeTypePK();
+            var geoCodeTypeName = geoCodeTypeDetailValue.getGeoCodeTypeName();
+            var parentGeoCodeTypePK = geoCodeTypeDetailValue.getParentGeoCodeTypePK();
+            var isDefault = geoCodeTypeDetailValue.getIsDefault();
+            var sortOrder = geoCodeTypeDetailValue.getSortOrder();
             
             if(checkDefault) {
-                GeoCodeType defaultGeoCodeType = getDefaultGeoCodeType();
-                boolean defaultFound = defaultGeoCodeType != null && !defaultGeoCodeType.equals(geoCodeType);
+                var defaultGeoCodeType = getDefaultGeoCodeType();
+                var defaultFound = defaultGeoCodeType != null && !defaultGeoCodeType.equals(geoCodeType);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    GeoCodeTypeDetailValue defaultGeoCodeTypeDetailValue = getDefaultGeoCodeTypeDetailValueForUpdate();
+                    var defaultGeoCodeTypeDetailValue = getDefaultGeoCodeTypeDetailValueForUpdate();
                     
                     defaultGeoCodeTypeDetailValue.setIsDefault(Boolean.FALSE);
                     updateGeoCodeTypeFromValue(defaultGeoCodeTypeDetailValue, false, updatedBy);
@@ -710,7 +710,7 @@ public class GeoControl
     }
     
     private void deleteGeoCodeType(GeoCodeType geoCodeType, boolean checkDefault, BasePK deletedBy) {
-        GeoCodeTypeDetail geoCodeTypeDetail = geoCodeType.getLastDetailForUpdate();
+        var geoCodeTypeDetail = geoCodeType.getLastDetailForUpdate();
 
         deleteGeoCodeTypesByParentGeoCodeType(geoCodeType, deletedBy);
         // deleteGeoCodesByGeoCodeType(geoCodeType, deletedBy);
@@ -723,17 +723,17 @@ public class GeoControl
 
         if(checkDefault) {
             // Check for default, and pick one if necessary
-            GeoCodeType defaultGeoCodeType = getDefaultGeoCodeType();
+            var defaultGeoCodeType = getDefaultGeoCodeType();
 
             if(defaultGeoCodeType == null) {
-                List<GeoCodeType> geoCodeTypes = getGeoCodeTypesForUpdate();
+                var geoCodeTypes = getGeoCodeTypesForUpdate();
 
                 if(!geoCodeTypes.isEmpty()) {
-                    Iterator<GeoCodeType> iter = geoCodeTypes.iterator();
+                    var iter = geoCodeTypes.iterator();
                     if(iter.hasNext()) {
                         defaultGeoCodeType = iter.next();
                     }
-                    GeoCodeTypeDetailValue geoCodeTypeDetailValue = Objects.requireNonNull(defaultGeoCodeType).getLastDetailForUpdate().getGeoCodeTypeDetailValue().clone();
+                    var geoCodeTypeDetailValue = Objects.requireNonNull(defaultGeoCodeType).getLastDetailForUpdate().getGeoCodeTypeDetailValue().clone();
 
                     geoCodeTypeDetailValue.setIsDefault(Boolean.TRUE);
                     updateGeoCodeTypeFromValue(geoCodeTypeDetailValue, false, deletedBy);
@@ -765,7 +765,7 @@ public class GeoControl
     // --------------------------------------------------------------------------------
     
     public GeoCodeTypeDescription createGeoCodeTypeDescription(GeoCodeType geoCodeType, Language language, String description, BasePK createdBy) {
-        GeoCodeTypeDescription geoCodeTypeDescription = GeoCodeTypeDescriptionFactory.getInstance().create(geoCodeType,
+        var geoCodeTypeDescription = GeoCodeTypeDescriptionFactory.getInstance().create(geoCodeType,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(geoCodeType.getPrimaryKey(), EventTypes.MODIFY, geoCodeTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -789,8 +789,8 @@ public class GeoControl
                         "WHERE geotd_geot_geocodetypeid = ? AND geotd_lang_languageid = ? AND geotd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = GeoCodeTypeDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = GeoCodeTypeDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, geoCodeType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -838,8 +838,8 @@ public class GeoControl
                         "WHERE geotd_geot_geocodetypeid = ? AND geotd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = GeoCodeTypeDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = GeoCodeTypeDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, geoCodeType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -862,7 +862,7 @@ public class GeoControl
     
     public String getBestGeoCodeTypeDescription(GeoCodeType geoCodeType, Language language) {
         String description;
-        GeoCodeTypeDescription geoCodeTypeDescription = getGeoCodeTypeDescription(geoCodeType, language);
+        var geoCodeTypeDescription = getGeoCodeTypeDescription(geoCodeType, language);
         
         if(geoCodeTypeDescription == null && !language.getIsDefault()) {
             geoCodeTypeDescription = getGeoCodeTypeDescription(geoCodeType, getPartyControl().getDefaultLanguage());
@@ -882,7 +882,7 @@ public class GeoControl
     }
     
     public List<GeoCodeTypeDescriptionTransfer> getGeoCodeTypeDescriptionTransfers(UserVisit userVisit, GeoCodeType geoCodeType) {
-        List<GeoCodeTypeDescription> geoCodeTypeDescriptions = getGeoCodeTypeDescriptionsByGeoCodeType(geoCodeType);
+        var geoCodeTypeDescriptions = getGeoCodeTypeDescriptionsByGeoCodeType(geoCodeType);
         List<GeoCodeTypeDescriptionTransfer> geoCodeTypeDescriptionTransfers = new ArrayList<>(geoCodeTypeDescriptions.size());
 
         geoCodeTypeDescriptions.forEach((geoCodeTypeDescription) -> {
@@ -894,14 +894,14 @@ public class GeoControl
     
     public void updateGeoCodeTypeDescriptionFromValue(GeoCodeTypeDescriptionValue geoCodeTypeDescriptionValue, BasePK updatedBy) {
         if(geoCodeTypeDescriptionValue.hasBeenModified()) {
-            GeoCodeTypeDescription geoCodeTypeDescription = GeoCodeTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, geoCodeTypeDescriptionValue.getPrimaryKey());
+            var geoCodeTypeDescription = GeoCodeTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, geoCodeTypeDescriptionValue.getPrimaryKey());
             
             geoCodeTypeDescription.setThruTime(session.START_TIME_LONG);
             geoCodeTypeDescription.store();
-            
-            GeoCodeType geoCodeType = geoCodeTypeDescription.getGeoCodeType();
-            Language language = geoCodeTypeDescription.getLanguage();
-            String description = geoCodeTypeDescriptionValue.getDescription();
+
+            var geoCodeType = geoCodeTypeDescription.getGeoCodeType();
+            var language = geoCodeTypeDescription.getLanguage();
+            var description = geoCodeTypeDescriptionValue.getDescription();
             
             geoCodeTypeDescription = GeoCodeTypeDescriptionFactory.getInstance().create(geoCodeType, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
@@ -917,7 +917,7 @@ public class GeoControl
     }
     
     public void deleteGeoCodeTypeDescriptionsByGeoCodeType(GeoCodeType geoCodeType, BasePK deletedBy) {
-        List<GeoCodeTypeDescription> geoCodeTypeDescriptions = getGeoCodeTypeDescriptionsByGeoCodeTypeForUpdate(geoCodeType);
+        var geoCodeTypeDescriptions = getGeoCodeTypeDescriptionsByGeoCodeTypeForUpdate(geoCodeType);
         
         geoCodeTypeDescriptions.forEach((geoCodeTypeDescription) -> 
                 deleteGeoCodeTypeDescription(geoCodeTypeDescription, deletedBy)
@@ -929,20 +929,20 @@ public class GeoControl
     // --------------------------------------------------------------------------------
     
     public GeoCodeScope createGeoCodeScope(String geoCodeScopeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        GeoCodeScope defaultGeoCodeScope = getDefaultGeoCodeScope();
-        boolean defaultFound = defaultGeoCodeScope != null;
+        var defaultGeoCodeScope = getDefaultGeoCodeScope();
+        var defaultFound = defaultGeoCodeScope != null;
         
         if(defaultFound && isDefault) {
-            GeoCodeScopeDetailValue defaultGeoCodeScopeDetailValue = getDefaultGeoCodeScopeDetailValueForUpdate();
+            var defaultGeoCodeScopeDetailValue = getDefaultGeoCodeScopeDetailValueForUpdate();
             
             defaultGeoCodeScopeDetailValue.setIsDefault(Boolean.FALSE);
             updateGeoCodeScopeFromValue(defaultGeoCodeScopeDetailValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        GeoCodeScope geoCodeScope = GeoCodeScopeFactory.getInstance().create();
-        GeoCodeScopeDetail geoCodeScopeDetail = GeoCodeScopeDetailFactory.getInstance().create(session,
+
+        var geoCodeScope = GeoCodeScopeFactory.getInstance().create();
+        var geoCodeScopeDetail = GeoCodeScopeDetailFactory.getInstance().create(session,
                 geoCodeScope, geoCodeScopeName, isDefault, sortOrder, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
@@ -993,8 +993,8 @@ public class GeoControl
                         "WHERE geos_activedetailid = geosdt_geocodescopedetailid AND geosdt_geocodescopename = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = GeoCodeScopeFactory.getInstance().prepareStatement(query);
+
+            var ps = GeoCodeScopeFactory.getInstance().prepareStatement(query);
             
             ps.setString(1, geoCodeScopeName);
             
@@ -1035,8 +1035,8 @@ public class GeoControl
                     "WHERE geos_activedetailid = geosdt_geocodescopedetailid AND geosdt_isdefault = 1 " +
                     "FOR UPDATE";
         }
-        
-        PreparedStatement ps = GeoCodeScopeFactory.getInstance().prepareStatement(query);
+
+        var ps = GeoCodeScopeFactory.getInstance().prepareStatement(query);
         
         return GeoCodeScopeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
     }
@@ -1067,8 +1067,8 @@ public class GeoControl
                     "WHERE geos_activedetailid = geosdt_geocodescopedetailid " +
                     "FOR UPDATE";
         }
-        
-        PreparedStatement ps = GeoCodeScopeFactory.getInstance().prepareStatement(query);
+
+        var ps = GeoCodeScopeFactory.getInstance().prepareStatement(query);
         
         return GeoCodeScopeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
     }
@@ -1087,7 +1087,7 @@ public class GeoControl
 
     public List<GeoCodeScopeTransfer> getGeoCodeScopeTransfers(UserVisit userVisit, Collection<GeoCodeScope> geoCodeScopes) {
         List<GeoCodeScopeTransfer> geoCodeScopeTransfers = new ArrayList<>(geoCodeScopes.size());
-        GeoCodeScopeTransferCache geoCodeScopeTransferCache = getGeoTransferCaches(userVisit).getGeoCodeScopeTransferCache();
+        var geoCodeScopeTransferCache = getGeoTransferCaches(userVisit).getGeoCodeScopeTransferCache();
 
         geoCodeScopes.forEach((geoCodeScope) ->
                 geoCodeScopeTransfers.add(geoCodeScopeTransferCache.getGeoCodeScopeTransfer(geoCodeScope))
@@ -1102,7 +1102,7 @@ public class GeoControl
 
     public GeoCodeScopeChoicesBean getGeoCodeScopeChoices(String defaultGeoCodeScopeChoice, Language language,
             boolean allowNullChoice) {
-        List<GeoCodeScope> geoCodeScopes = getGeoCodeScopes();
+        var geoCodeScopes = getGeoCodeScopes();
         var size = geoCodeScopes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -1118,7 +1118,7 @@ public class GeoControl
         }
         
         for(var geoCodeScope : geoCodeScopes) {
-            GeoCodeScopeDetail geoCodeScopeDetail = geoCodeScope.getLastDetail();
+            var geoCodeScopeDetail = geoCodeScope.getLastDetail();
             
             var label = getBestGeoCodeScopeDescription(geoCodeScope, language);
             var value = geoCodeScopeDetail.getGeoCodeScopeName();
@@ -1138,25 +1138,25 @@ public class GeoControl
     private void updateGeoCodeScopeFromValue(GeoCodeScopeDetailValue geoCodeScopeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(geoCodeScopeDetailValue.hasBeenModified()) {
-            GeoCodeScope geoCodeScope = GeoCodeScopeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var geoCodeScope = GeoCodeScopeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      geoCodeScopeDetailValue.getGeoCodeScopePK());
-            GeoCodeScopeDetail geoCodeScopeDetail = geoCodeScope.getActiveDetailForUpdate();
+            var geoCodeScopeDetail = geoCodeScope.getActiveDetailForUpdate();
             
             geoCodeScopeDetail.setThruTime(session.START_TIME_LONG);
             geoCodeScopeDetail.store();
-            
-            GeoCodeScopePK geoCodeScopePK = geoCodeScopeDetail.getGeoCodeScopePK();
-            String geoCodeScopeName = geoCodeScopeDetailValue.getGeoCodeScopeName();
-            Boolean isDefault = geoCodeScopeDetailValue.getIsDefault();
-            Integer sortOrder = geoCodeScopeDetailValue.getSortOrder();
+
+            var geoCodeScopePK = geoCodeScopeDetail.getGeoCodeScopePK();
+            var geoCodeScopeName = geoCodeScopeDetailValue.getGeoCodeScopeName();
+            var isDefault = geoCodeScopeDetailValue.getIsDefault();
+            var sortOrder = geoCodeScopeDetailValue.getSortOrder();
             
             if(checkDefault) {
-                GeoCodeScope defaultGeoCodeScope = getDefaultGeoCodeScope();
-                boolean defaultFound = defaultGeoCodeScope != null && !defaultGeoCodeScope.equals(geoCodeScope);
+                var defaultGeoCodeScope = getDefaultGeoCodeScope();
+                var defaultFound = defaultGeoCodeScope != null && !defaultGeoCodeScope.equals(geoCodeScope);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    GeoCodeScopeDetailValue defaultGeoCodeScopeDetailValue = getDefaultGeoCodeScopeDetailValueForUpdate();
+                    var defaultGeoCodeScopeDetailValue = getDefaultGeoCodeScopeDetailValueForUpdate();
                     
                     defaultGeoCodeScopeDetailValue.setIsDefault(Boolean.FALSE);
                     updateGeoCodeScopeFromValue(defaultGeoCodeScopeDetailValue, false, updatedBy);
@@ -1184,23 +1184,23 @@ public class GeoControl
         // TODO: deleteGeoCodesByGeoCodeScope(geoCodeScope, deletedBy);
         deleteGeoCodeAliasesByGeoCodeScope(geoCodeScope, deletedBy);
         deleteGeoCodeScopeDescriptionsByGeoCodeScope(geoCodeScope, deletedBy);
-        
-        GeoCodeScopeDetail geoCodeScopeDetail = geoCodeScope.getLastDetailForUpdate();
+
+        var geoCodeScopeDetail = geoCodeScope.getLastDetailForUpdate();
         geoCodeScopeDetail.setThruTime(session.START_TIME_LONG);
         geoCodeScope.setActiveDetail(null);
         geoCodeScope.store();
         
         // Check for default, and pick one if necessary
-        GeoCodeScope defaultGeoCodeScope = getDefaultGeoCodeScope();
+        var defaultGeoCodeScope = getDefaultGeoCodeScope();
         if(defaultGeoCodeScope == null) {
-            List<GeoCodeScope> geoCodeScopes = getGeoCodeScopesForUpdate();
+            var geoCodeScopes = getGeoCodeScopesForUpdate();
             
             if(!geoCodeScopes.isEmpty()) {
-                Iterator<GeoCodeScope> iter = geoCodeScopes.iterator();
+                var iter = geoCodeScopes.iterator();
                 if(iter.hasNext()) {
                     defaultGeoCodeScope = iter.next();
                 }
-                GeoCodeScopeDetailValue geoCodeScopeDetailValue = Objects.requireNonNull(defaultGeoCodeScope).getLastDetailForUpdate().getGeoCodeScopeDetailValue().clone();
+                var geoCodeScopeDetailValue = Objects.requireNonNull(defaultGeoCodeScope).getLastDetailForUpdate().getGeoCodeScopeDetailValue().clone();
                 
                 geoCodeScopeDetailValue.setIsDefault(Boolean.TRUE);
                 updateGeoCodeScopeFromValue(geoCodeScopeDetailValue, false, deletedBy);
@@ -1215,7 +1215,7 @@ public class GeoControl
     // --------------------------------------------------------------------------------
     
     public GeoCodeScopeDescription createGeoCodeScopeDescription(GeoCodeScope geoCodeScope, Language language, String description, BasePK createdBy) {
-        GeoCodeScopeDescription geoCodeScopeDescription = GeoCodeScopeDescriptionFactory.getInstance().create(geoCodeScope, language, description, session.START_TIME_LONG,
+        var geoCodeScopeDescription = GeoCodeScopeDescriptionFactory.getInstance().create(geoCodeScope, language, description, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
         sendEvent(geoCodeScope.getPrimaryKey(), EventTypes.MODIFY, geoCodeScopeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1239,8 +1239,8 @@ public class GeoControl
                         "WHERE geosd_geos_geocodescopeid = ? AND geosd_lang_languageid = ? AND geosd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = GeoCodeScopeDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = GeoCodeScopeDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, geoCodeScope.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -1288,8 +1288,8 @@ public class GeoControl
                         "WHERE geosd_geos_geocodescopeid = ? AND geosd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = GeoCodeScopeDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = GeoCodeScopeDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, geoCodeScope.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1312,7 +1312,7 @@ public class GeoControl
     
     public String getBestGeoCodeScopeDescription(GeoCodeScope geoCodeScope, Language language) {
         String description;
-        GeoCodeScopeDescription geoCodeScopeDescription = getGeoCodeScopeDescription(geoCodeScope, language);
+        var geoCodeScopeDescription = getGeoCodeScopeDescription(geoCodeScope, language);
         
         if(geoCodeScopeDescription == null && !language.getIsDefault()) {
             geoCodeScopeDescription = getGeoCodeScopeDescription(geoCodeScope, getPartyControl().getDefaultLanguage());
@@ -1332,7 +1332,7 @@ public class GeoControl
     }
     
     public List<GeoCodeScopeDescriptionTransfer> getGeoCodeScopeDescriptionTransfers(UserVisit userVisit, GeoCodeScope geoCodeScope) {
-        List<GeoCodeScopeDescription> geoCodeScopeDescriptions = getGeoCodeScopeDescriptionsByGeoCodeScope(geoCodeScope);
+        var geoCodeScopeDescriptions = getGeoCodeScopeDescriptionsByGeoCodeScope(geoCodeScope);
         List<GeoCodeScopeDescriptionTransfer> geoCodeScopeDescriptionTransfers = new ArrayList<>(geoCodeScopeDescriptions.size());
 
         geoCodeScopeDescriptions.forEach((geoCodeScopeDescription) -> {
@@ -1344,14 +1344,14 @@ public class GeoControl
     
     public void updateGeoCodeScopeDescriptionFromValue(GeoCodeScopeDescriptionValue geoCodeScopeDescriptionValue, BasePK updatedBy) {
         if(geoCodeScopeDescriptionValue.hasBeenModified()) {
-            GeoCodeScopeDescription geoCodeScopeDescription = GeoCodeScopeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, geoCodeScopeDescriptionValue.getPrimaryKey());
+            var geoCodeScopeDescription = GeoCodeScopeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, geoCodeScopeDescriptionValue.getPrimaryKey());
             
             geoCodeScopeDescription.setThruTime(session.START_TIME_LONG);
             geoCodeScopeDescription.store();
-            
-            GeoCodeScope geoCodeScope = geoCodeScopeDescription.getGeoCodeScope();
-            Language language = geoCodeScopeDescription.getLanguage();
-            String description = geoCodeScopeDescriptionValue.getDescription();
+
+            var geoCodeScope = geoCodeScopeDescription.getGeoCodeScope();
+            var language = geoCodeScopeDescription.getLanguage();
+            var description = geoCodeScopeDescriptionValue.getDescription();
             
             geoCodeScopeDescription = GeoCodeScopeDescriptionFactory.getInstance().create(geoCodeScope, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
@@ -1367,7 +1367,7 @@ public class GeoControl
     }
     
     public void deleteGeoCodeScopeDescriptionsByGeoCodeScope(GeoCodeScope geoCodeScope, BasePK deletedBy) {
-        List<GeoCodeScopeDescription> geoCodeScopeDescriptions = getGeoCodeScopeDescriptionsByGeoCodeScopeForUpdate(geoCodeScope);
+        var geoCodeScopeDescriptions = getGeoCodeScopeDescriptionsByGeoCodeScopeForUpdate(geoCodeScope);
         
         geoCodeScopeDescriptions.forEach((geoCodeScopeDescription) -> 
                 deleteGeoCodeScopeDescription(geoCodeScopeDescription, deletedBy)
@@ -1380,20 +1380,20 @@ public class GeoControl
     
     public GeoCodeAliasType createGeoCodeAliasType(GeoCodeType geoCodeType, String geoCodeAliasTypeName, String validationPattern, Boolean isRequired,
             Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        GeoCodeAliasType defaultGeoCodeAliasType = getDefaultGeoCodeAliasType(geoCodeType);
-        boolean defaultFound = defaultGeoCodeAliasType != null;
+        var defaultGeoCodeAliasType = getDefaultGeoCodeAliasType(geoCodeType);
+        var defaultFound = defaultGeoCodeAliasType != null;
         
         if(defaultFound && isDefault) {
-            GeoCodeAliasTypeDetailValue defaultGeoCodeAliasTypeDetailValue = getDefaultGeoCodeAliasTypeDetailValueForUpdate(geoCodeType);
+            var defaultGeoCodeAliasTypeDetailValue = getDefaultGeoCodeAliasTypeDetailValueForUpdate(geoCodeType);
             
             defaultGeoCodeAliasTypeDetailValue.setIsDefault(Boolean.FALSE);
             updateGeoCodeAliasTypeFromValue(defaultGeoCodeAliasTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        GeoCodeAliasType geoCodeAliasType = GeoCodeAliasTypeFactory.getInstance().create();
-        GeoCodeAliasTypeDetail geoCodeAliasTypeDetail = GeoCodeAliasTypeDetailFactory.getInstance().create(session, geoCodeAliasType, geoCodeType,
+
+        var geoCodeAliasType = GeoCodeAliasTypeFactory.getInstance().create();
+        var geoCodeAliasTypeDetail = GeoCodeAliasTypeDetailFactory.getInstance().create(session, geoCodeAliasType, geoCodeType,
                 geoCodeAliasTypeName, validationPattern, isRequired, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -1426,8 +1426,8 @@ public class GeoControl
                         "AND geoatdt_geocodealiastypename = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = GeoCodeAliasTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = GeoCodeAliasTypeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, geoCodeType.getPrimaryKey().getEntityId());
             ps.setString(2, geoCodeAliasTypeName);
@@ -1475,8 +1475,8 @@ public class GeoControl
                         "AND geoatdt_isdefault = 1 " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = GeoCodeAliasTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = GeoCodeAliasTypeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, geoCodeType.getPrimaryKey().getEntityId());
             
@@ -1517,8 +1517,8 @@ public class GeoControl
                         "WHERE geoat_activedetailid = geoatdt_geocodealiastypedetailid AND geoatdt_geot_geocodetypeid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = GeoCodeAliasTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = GeoCodeAliasTypeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, geoCodeType.getPrimaryKey().getEntityId());
             
@@ -1557,8 +1557,8 @@ public class GeoControl
                         "AND geoatdt_isdefault = 0 " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = GeoCodeAliasTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = GeoCodeAliasTypeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, geoCodeType.getPrimaryKey().getEntityId());
             
@@ -1583,9 +1583,9 @@ public class GeoControl
     }
     
     public List<GeoCodeAliasTypeTransfer> getGeoCodeAliasTypeTransfers(UserVisit userVisit, GeoCodeType geoCodeType) {
-        List<GeoCodeAliasType> geoCodeAliasTypes = getGeoCodeAliasTypes(geoCodeType);
+        var geoCodeAliasTypes = getGeoCodeAliasTypes(geoCodeType);
         List<GeoCodeAliasTypeTransfer> geoCodeAliasTypeTransfers = new ArrayList<>(geoCodeAliasTypes.size());
-        GeoCodeAliasTypeTransferCache geoCodeAliasTypeTransferCache = getGeoTransferCaches(userVisit).getGeoCodeAliasTypeTransferCache();
+        var geoCodeAliasTypeTransferCache = getGeoTransferCaches(userVisit).getGeoCodeAliasTypeTransferCache();
         
         geoCodeAliasTypes.forEach((geoCodeAliasType) ->
                 geoCodeAliasTypeTransfers.add(geoCodeAliasTypeTransferCache.getGeoCodeAliasTypeTransfer(geoCodeAliasType))
@@ -1596,7 +1596,7 @@ public class GeoControl
     
     public GeoCodeAliasTypeChoicesBean getGeoCodeAliasTypeChoices(String defaultGeoCodeAliasTypeChoice, Language language,
             boolean allowNullChoice, GeoCodeType geoCodeType) {
-        List<GeoCodeAliasType> geoCodeAliasTypes = getGeoCodeAliasTypes(geoCodeType);
+        var geoCodeAliasTypes = getGeoCodeAliasTypes(geoCodeType);
         var size = geoCodeAliasTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -1612,7 +1612,7 @@ public class GeoControl
         }
         
         for(var geoCodeAliasType : geoCodeAliasTypes) {
-            GeoCodeAliasTypeDetail geoCodeAliasTypeDetail = geoCodeAliasType.getLastDetail();
+            var geoCodeAliasTypeDetail = geoCodeAliasType.getLastDetail();
             
             var label = getBestGeoCodeAliasTypeDescription(geoCodeAliasType, language);
             var value = geoCodeAliasTypeDetail.getGeoCodeAliasTypeName();
@@ -1632,29 +1632,29 @@ public class GeoControl
     private void updateGeoCodeAliasTypeFromValue(GeoCodeAliasTypeDetailValue geoCodeAliasTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(geoCodeAliasTypeDetailValue.hasBeenModified()) {
-            GeoCodeAliasType geoCodeAliasType = GeoCodeAliasTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var geoCodeAliasType = GeoCodeAliasTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      geoCodeAliasTypeDetailValue.getGeoCodeAliasTypePK());
-            GeoCodeAliasTypeDetail geoCodeAliasTypeDetail = geoCodeAliasType.getActiveDetailForUpdate();
+            var geoCodeAliasTypeDetail = geoCodeAliasType.getActiveDetailForUpdate();
             
             geoCodeAliasTypeDetail.setThruTime(session.START_TIME_LONG);
             geoCodeAliasTypeDetail.store();
-            
-            GeoCodeAliasTypePK geoCodeAliasTypePK = geoCodeAliasTypeDetail.getGeoCodeAliasTypePK();
-            GeoCodeType geoCodeType = geoCodeAliasTypeDetail.getGeoCodeType();
-            GeoCodeTypePK geoCodeTypePK = geoCodeType.getPrimaryKey();
-            String geoCodeAliasTypeName = geoCodeAliasTypeDetailValue.getGeoCodeAliasTypeName();
-            String validationPattern = geoCodeAliasTypeDetailValue.getValidationPattern();
-            Boolean isRequired = geoCodeAliasTypeDetailValue.getIsRequired();
-            Boolean isDefault = geoCodeAliasTypeDetailValue.getIsDefault();
-            Integer sortOrder = geoCodeAliasTypeDetailValue.getSortOrder();
+
+            var geoCodeAliasTypePK = geoCodeAliasTypeDetail.getGeoCodeAliasTypePK();
+            var geoCodeType = geoCodeAliasTypeDetail.getGeoCodeType();
+            var geoCodeTypePK = geoCodeType.getPrimaryKey();
+            var geoCodeAliasTypeName = geoCodeAliasTypeDetailValue.getGeoCodeAliasTypeName();
+            var validationPattern = geoCodeAliasTypeDetailValue.getValidationPattern();
+            var isRequired = geoCodeAliasTypeDetailValue.getIsRequired();
+            var isDefault = geoCodeAliasTypeDetailValue.getIsDefault();
+            var sortOrder = geoCodeAliasTypeDetailValue.getSortOrder();
             
             if(checkDefault) {
-                GeoCodeAliasType defaultGeoCodeAliasType = getDefaultGeoCodeAliasType(geoCodeType);
-                boolean defaultFound = defaultGeoCodeAliasType != null && !defaultGeoCodeAliasType.equals(geoCodeAliasType);
+                var defaultGeoCodeAliasType = getDefaultGeoCodeAliasType(geoCodeType);
+                var defaultFound = defaultGeoCodeAliasType != null && !defaultGeoCodeAliasType.equals(geoCodeAliasType);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    GeoCodeAliasTypeDetailValue defaultGeoCodeAliasTypeDetailValue = getDefaultGeoCodeAliasTypeDetailValueForUpdate(geoCodeType);
+                    var defaultGeoCodeAliasTypeDetailValue = getDefaultGeoCodeAliasTypeDetailValueForUpdate(geoCodeType);
                     
                     defaultGeoCodeAliasTypeDetailValue.setIsDefault(Boolean.FALSE);
                     updateGeoCodeAliasTypeFromValue(defaultGeoCodeAliasTypeDetailValue, false, updatedBy);
@@ -1681,24 +1681,24 @@ public class GeoControl
     public void deleteGeoCodeAliasType(GeoCodeAliasType geoCodeAliasType, BasePK deletedBy) {
         deleteGeoCodeAliasesByGeoCodeAliasType(geoCodeAliasType, deletedBy);
         deleteGeoCodeAliasTypeDescriptionsByGeoCodeAliasType(geoCodeAliasType, deletedBy);
-        
-        GeoCodeAliasTypeDetail geoCodeAliasTypeDetail = geoCodeAliasType.getLastDetailForUpdate();
+
+        var geoCodeAliasTypeDetail = geoCodeAliasType.getLastDetailForUpdate();
         geoCodeAliasTypeDetail.setThruTime(session.START_TIME_LONG);
         geoCodeAliasType.setActiveDetail(null);
         geoCodeAliasType.store();
         
         // Check for default, and pick one if necessary
-        GeoCodeType geoCodeType = geoCodeAliasTypeDetail.getGeoCodeType();
-        GeoCodeAliasType defaultGeoCodeAliasType = getDefaultGeoCodeAliasType(geoCodeType);
+        var geoCodeType = geoCodeAliasTypeDetail.getGeoCodeType();
+        var defaultGeoCodeAliasType = getDefaultGeoCodeAliasType(geoCodeType);
         if(defaultGeoCodeAliasType == null) {
-            List<GeoCodeAliasType> geoCodeAliasTypes = getGeoCodeAliasTypesForUpdate(geoCodeType);
+            var geoCodeAliasTypes = getGeoCodeAliasTypesForUpdate(geoCodeType);
             
             if(!geoCodeAliasTypes.isEmpty()) {
-                Iterator<GeoCodeAliasType> iter = geoCodeAliasTypes.iterator();
+                var iter = geoCodeAliasTypes.iterator();
                 if(iter.hasNext()) {
                     defaultGeoCodeAliasType = iter.next();
                 }
-                GeoCodeAliasTypeDetailValue geoCodeAliasTypeDetailValue = Objects.requireNonNull(defaultGeoCodeAliasType).getLastDetailForUpdate().getGeoCodeAliasTypeDetailValue().clone();
+                var geoCodeAliasTypeDetailValue = Objects.requireNonNull(defaultGeoCodeAliasType).getLastDetailForUpdate().getGeoCodeAliasTypeDetailValue().clone();
                 
                 geoCodeAliasTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateGeoCodeAliasTypeFromValue(geoCodeAliasTypeDetailValue, false, deletedBy);
@@ -1713,7 +1713,7 @@ public class GeoControl
     // --------------------------------------------------------------------------------
     
     public GeoCodeAliasTypeDescription createGeoCodeAliasTypeDescription(GeoCodeAliasType geoCodeAliasType, Language language, String description, BasePK createdBy) {
-        GeoCodeAliasTypeDescription geoCodeAliasTypeDescription = GeoCodeAliasTypeDescriptionFactory.getInstance().create(geoCodeAliasType, language, description,
+        var geoCodeAliasTypeDescription = GeoCodeAliasTypeDescriptionFactory.getInstance().create(geoCodeAliasType, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(geoCodeAliasType.getPrimaryKey(), EventTypes.MODIFY, geoCodeAliasTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1737,8 +1737,8 @@ public class GeoControl
                         "WHERE geoatd_geoat_geocodealiastypeid = ? AND geoatd_lang_languageid = ? AND geoatd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = GeoCodeAliasTypeDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = GeoCodeAliasTypeDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, geoCodeAliasType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -1785,8 +1785,8 @@ public class GeoControl
                         "WHERE geoatd_geoat_geocodealiastypeid = ? AND geoatd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = GeoCodeAliasTypeDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = GeoCodeAliasTypeDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, geoCodeAliasType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1809,7 +1809,7 @@ public class GeoControl
     
     public String getBestGeoCodeAliasTypeDescription(GeoCodeAliasType geoCodeAliasType, Language language) {
         String description;
-        GeoCodeAliasTypeDescription geoCodeAliasTypeDescription = getGeoCodeAliasTypeDescription(geoCodeAliasType, language);
+        var geoCodeAliasTypeDescription = getGeoCodeAliasTypeDescription(geoCodeAliasType, language);
         
         if(geoCodeAliasTypeDescription == null && !language.getIsDefault()) {
             geoCodeAliasTypeDescription = getGeoCodeAliasTypeDescription(geoCodeAliasType, getPartyControl().getDefaultLanguage());
@@ -1829,7 +1829,7 @@ public class GeoControl
     }
     
     public List<GeoCodeAliasTypeDescriptionTransfer> getGeoCodeAliasTypeDescriptionTransfers(UserVisit userVisit, GeoCodeAliasType geoCodeAliasType) {
-        List<GeoCodeAliasTypeDescription> geoCodeAliasTypeDescriptions = getGeoCodeAliasTypeDescriptionsByGeoCodeAliasType(geoCodeAliasType);
+        var geoCodeAliasTypeDescriptions = getGeoCodeAliasTypeDescriptionsByGeoCodeAliasType(geoCodeAliasType);
         List<GeoCodeAliasTypeDescriptionTransfer> geoCodeAliasTypeDescriptionTransfers = new ArrayList<>(geoCodeAliasTypeDescriptions.size());
 
         geoCodeAliasTypeDescriptions.forEach((geoCodeAliasTypeDescription) -> {
@@ -1841,14 +1841,14 @@ public class GeoControl
     
     public void updateGeoCodeAliasTypeDescriptionFromValue(GeoCodeAliasTypeDescriptionValue geoCodeAliasTypeDescriptionValue, BasePK updatedBy) {
         if(geoCodeAliasTypeDescriptionValue.hasBeenModified()) {
-            GeoCodeAliasTypeDescription geoCodeAliasTypeDescription = GeoCodeAliasTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, geoCodeAliasTypeDescriptionValue.getPrimaryKey());
+            var geoCodeAliasTypeDescription = GeoCodeAliasTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, geoCodeAliasTypeDescriptionValue.getPrimaryKey());
             
             geoCodeAliasTypeDescription.setThruTime(session.START_TIME_LONG);
             geoCodeAliasTypeDescription.store();
-            
-            GeoCodeAliasType geoCodeAliasType = geoCodeAliasTypeDescription.getGeoCodeAliasType();
-            Language language = geoCodeAliasTypeDescription.getLanguage();
-            String description = geoCodeAliasTypeDescriptionValue.getDescription();
+
+            var geoCodeAliasType = geoCodeAliasTypeDescription.getGeoCodeAliasType();
+            var language = geoCodeAliasTypeDescription.getLanguage();
+            var description = geoCodeAliasTypeDescriptionValue.getDescription();
             
             geoCodeAliasTypeDescription = GeoCodeAliasTypeDescriptionFactory.getInstance().create(geoCodeAliasType, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
@@ -1864,7 +1864,7 @@ public class GeoControl
     }
     
     public void deleteGeoCodeAliasTypeDescriptionsByGeoCodeAliasType(GeoCodeAliasType geoCodeAliasType, BasePK deletedBy) {
-        List<GeoCodeAliasTypeDescription> geoCodeAliasTypeDescriptions = getGeoCodeAliasTypeDescriptionsByGeoCodeAliasTypeForUpdate(geoCodeAliasType);
+        var geoCodeAliasTypeDescriptions = getGeoCodeAliasTypeDescriptionsByGeoCodeAliasTypeForUpdate(geoCodeAliasType);
         
         geoCodeAliasTypeDescriptions.forEach((geoCodeAliasTypeDescription) -> 
                 deleteGeoCodeAliasTypeDescription(geoCodeAliasTypeDescription, deletedBy)
@@ -1877,20 +1877,20 @@ public class GeoControl
     
     public GeoCode createGeoCode(String geoCodeName, GeoCodeType geoCodeType, GeoCodeScope geoCodeScope, Boolean isDefault,
             Integer sortOrder, BasePK createdBy) {
-        GeoCode defaultGeoCode = getDefaultGeoCode(geoCodeScope);
-        boolean defaultFound = defaultGeoCode != null;
+        var defaultGeoCode = getDefaultGeoCode(geoCodeScope);
+        var defaultFound = defaultGeoCode != null;
         
         if(defaultFound && isDefault) {
-            GeoCodeDetailValue defaultGeoCodeDetailValue = getDefaultGeoCodeDetailValueForUpdate(geoCodeScope);
+            var defaultGeoCodeDetailValue = getDefaultGeoCodeDetailValueForUpdate(geoCodeScope);
             
             defaultGeoCodeDetailValue.setIsDefault(Boolean.FALSE);
             updateGeoCodeFromValue(defaultGeoCodeDetailValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        GeoCode geoCode = GeoCodeFactory.getInstance().create();
-        GeoCodeDetail geoCodeDetail = GeoCodeDetailFactory.getInstance().create(geoCode, geoCodeName, geoCodeType,
+
+        var geoCode = GeoCodeFactory.getInstance().create();
+        var geoCodeDetail = GeoCodeDetailFactory.getInstance().create(geoCode, geoCodeName, geoCodeType,
                 geoCodeScope, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -1961,8 +1961,8 @@ public class GeoControl
                         "WHERE geo_activedetailid = geodt_geocodedetailid AND geodt_geos_geocodescopeid = ? AND geodt_isdefault = 1 " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = GeoCodeFactory.getInstance().prepareStatement(query);
+
+            var ps = GeoCodeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, geoCodeScope.getPrimaryKey().getEntityId());
             
@@ -2002,8 +2002,8 @@ public class GeoControl
                         "WHERE geo_activedetailid = geodt_geocodedetailid AND geodt_geocodename = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = GeoCodeFactory.getInstance().prepareStatement(query);
+
+            var ps = GeoCodeFactory.getInstance().prepareStatement(query);
             
             ps.setString(1, geoCodeName);
             
@@ -2044,8 +2044,8 @@ public class GeoControl
                         "WHERE geo_activedetailid = geodt_geocodedetailid AND geodt_geos_geocodescopeid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = GeoCodeFactory.getInstance().prepareStatement(query);
+
+            var ps = GeoCodeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, geoCodeScope.getPrimaryKey().getEntityId());
             
@@ -2071,7 +2071,7 @@ public class GeoControl
     
     public List<GeoCodeTransfer> getGeoCodeTransfers(UserVisit userVisit, Collection<GeoCode> geoCodes) {
         List<GeoCodeTransfer> geoCodeTransfers = new ArrayList<>(geoCodes.size());
-        GeoCodeTransferCache geoCodeTransferCache = getGeoTransferCaches(userVisit).getGeoCodeTransferCache();
+        var geoCodeTransferCache = getGeoTransferCaches(userVisit).getGeoCodeTransferCache();
         
         geoCodes.forEach((geoCode) ->
                 geoCodeTransfers.add(geoCodeTransferCache.getGeoCodeTransfer(geoCode))
@@ -2087,27 +2087,27 @@ public class GeoControl
     private void updateGeoCodeFromValue(GeoCodeDetailValue geoCodeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(geoCodeDetailValue.hasBeenModified()) {
-            GeoCode geoCode = GeoCodeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var geoCode = GeoCodeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      geoCodeDetailValue.getGeoCodePK());
-            GeoCodeDetail geoCodeDetail = geoCode.getActiveDetailForUpdate();
+            var geoCodeDetail = geoCode.getActiveDetailForUpdate();
             
             geoCodeDetail.setThruTime(session.START_TIME_LONG);
             geoCodeDetail.store();
-            
-            GeoCodePK geoCodePK = geoCodeDetail.getGeoCodePK(); // Not updated
-            String geoCodeName = geoCodeDetail.getGeoCodeName(); // Not updated
-            GeoCodeTypePK geoCodeTypePK = geoCodeDetail.getGeoCodeTypePK(); // Not updated
-            GeoCodeScope geoCodeScope = geoCodeDetail.getGeoCodeScope(); // Not updated
-            Boolean isDefault = geoCodeDetailValue.getIsDefault();
-            Integer sortOrder = geoCodeDetailValue.getSortOrder();
+
+            var geoCodePK = geoCodeDetail.getGeoCodePK(); // Not updated
+            var geoCodeName = geoCodeDetail.getGeoCodeName(); // Not updated
+            var geoCodeTypePK = geoCodeDetail.getGeoCodeTypePK(); // Not updated
+            var geoCodeScope = geoCodeDetail.getGeoCodeScope(); // Not updated
+            var isDefault = geoCodeDetailValue.getIsDefault();
+            var sortOrder = geoCodeDetailValue.getSortOrder();
             
             if(checkDefault) {
-                GeoCode defaultGeoCode = getDefaultGeoCode(geoCodeScope);
-                boolean defaultFound = defaultGeoCode != null && !defaultGeoCode.equals(geoCode);
+                var defaultGeoCode = getDefaultGeoCode(geoCodeScope);
+                var defaultFound = defaultGeoCode != null && !defaultGeoCode.equals(geoCode);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    GeoCodeDetailValue defaultGeoCodeDetailValue = getDefaultGeoCodeDetailValueForUpdate(geoCodeScope);
+                    var defaultGeoCodeDetailValue = getDefaultGeoCodeDetailValueForUpdate(geoCodeScope);
                     
                     defaultGeoCodeDetailValue.setIsDefault(Boolean.FALSE);
                     updateGeoCodeFromValue(defaultGeoCodeDetailValue, false, updatedBy);
@@ -2132,7 +2132,7 @@ public class GeoControl
     }
 
     public void deleteGeoCode(GeoCode geoCode, BasePK deletedBy) {
-        GeoCodeDetail geoCodeDetail = geoCode.getLastDetailForUpdate();
+        var geoCodeDetail = geoCode.getLastDetailForUpdate();
 
         deleteGeoCodeDescriptionsByGeoCode(geoCode, deletedBy);
         deleteGeoCodeAliasesByGeoCode(geoCode, deletedBy);
@@ -2156,17 +2156,17 @@ public class GeoControl
         geoCode.store();
 
         // Check for default, and pick one if necessary
-        GeoCodeScope geoCodeScope = geoCodeDetail.getGeoCodeScope();
-        GeoCode defaultGeoCode = getDefaultGeoCode(geoCodeScope);
+        var geoCodeScope = geoCodeDetail.getGeoCodeScope();
+        var defaultGeoCode = getDefaultGeoCode(geoCodeScope);
         if(defaultGeoCode == null) {
-            List<GeoCode> geoCodes = getGeoCodesByGeoCodeScopeForUpdate(geoCodeScope);
+            var geoCodes = getGeoCodesByGeoCodeScopeForUpdate(geoCodeScope);
 
             if(!geoCodes.isEmpty()) {
-                Iterator<GeoCode> iter = geoCodes.iterator();
+                var iter = geoCodes.iterator();
                 if(iter.hasNext()) {
                     defaultGeoCode = iter.next();
                 }
-                GeoCodeDetailValue geoCodeDetailValue = Objects.requireNonNull(defaultGeoCode).getLastDetailForUpdate().getGeoCodeDetailValue().clone();
+                var geoCodeDetailValue = Objects.requireNonNull(defaultGeoCode).getLastDetailForUpdate().getGeoCodeDetailValue().clone();
 
                 geoCodeDetailValue.setIsDefault(Boolean.TRUE);
                 updateGeoCodeFromValue(geoCodeDetailValue, false, deletedBy);
@@ -2181,7 +2181,7 @@ public class GeoControl
     // --------------------------------------------------------------------------------
     
     public GeoCodeDescription createGeoCodeDescription(GeoCode geoCode, Language language, String description, BasePK createdBy) {
-        GeoCodeDescription geoCodeDescription = GeoCodeDescriptionFactory.getInstance().create(geoCode, language, description, session.START_TIME_LONG,
+        var geoCodeDescription = GeoCodeDescriptionFactory.getInstance().create(geoCode, language, description, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
         sendEvent(geoCode.getPrimaryKey(), EventTypes.MODIFY, geoCodeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2205,8 +2205,8 @@ public class GeoControl
                         "WHERE geod_geo_geocodeid = ? AND geod_lang_languageid = ? AND geod_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = GeoCodeDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = GeoCodeDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, geoCode.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -2254,8 +2254,8 @@ public class GeoControl
                         "WHERE geod_geo_geocodeid = ? AND geod_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = GeoCodeDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = GeoCodeDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, geoCode.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -2278,7 +2278,7 @@ public class GeoControl
     
     public String getBestGeoCodeDescription(GeoCode geoCode, Language language) {
         String description;
-        GeoCodeDescription geoCodeDescription = getGeoCodeDescription(geoCode, language);
+        var geoCodeDescription = getGeoCodeDescription(geoCode, language);
         
         if(geoCodeDescription == null && !language.getIsDefault()) {
             geoCodeDescription = getGeoCodeDescription(geoCode, getPartyControl().getDefaultLanguage());
@@ -2298,7 +2298,7 @@ public class GeoControl
     }
     
     public List<GeoCodeDescriptionTransfer> getGeoCodeDescriptionTransfers(UserVisit userVisit, GeoCode geoCode) {
-        List<GeoCodeDescription> geoCodeDescriptions = getGeoCodeDescriptionsByGeoCode(geoCode);
+        var geoCodeDescriptions = getGeoCodeDescriptionsByGeoCode(geoCode);
         List<GeoCodeDescriptionTransfer> geoCodeDescriptionTransfers = new ArrayList<>(geoCodeDescriptions.size());
 
         geoCodeDescriptions.forEach((geoCodeDescription) -> {
@@ -2310,14 +2310,14 @@ public class GeoControl
     
     public void updateGeoCodeDescriptionFromValue(GeoCodeDescriptionValue geoCodeDescriptionValue, BasePK updatedBy) {
         if(geoCodeDescriptionValue.hasBeenModified()) {
-            GeoCodeDescription geoCodeDescription = GeoCodeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, geoCodeDescriptionValue.getPrimaryKey());
+            var geoCodeDescription = GeoCodeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, geoCodeDescriptionValue.getPrimaryKey());
             
             geoCodeDescription.setThruTime(session.START_TIME_LONG);
             geoCodeDescription.store();
-            
-            GeoCode geoCode = geoCodeDescription.getGeoCode();
-            Language language = geoCodeDescription.getLanguage();
-            String description = geoCodeDescriptionValue.getDescription();
+
+            var geoCode = geoCodeDescription.getGeoCode();
+            var language = geoCodeDescription.getLanguage();
+            var description = geoCodeDescriptionValue.getDescription();
             
             geoCodeDescription = GeoCodeDescriptionFactory.getInstance().create(geoCode, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
@@ -2333,7 +2333,7 @@ public class GeoControl
     }
     
     public void deleteGeoCodeDescriptionsByGeoCode(GeoCode geoCode, BasePK deletedBy) {
-        List<GeoCodeDescription> geoCodeDescriptions = getGeoCodeDescriptionsByGeoCodeForUpdate(geoCode);
+        var geoCodeDescriptions = getGeoCodeDescriptionsByGeoCodeForUpdate(geoCode);
         
         geoCodeDescriptions.forEach((geoCodeDescription) -> 
                 deleteGeoCodeDescription(geoCodeDescription, deletedBy)
@@ -2345,7 +2345,7 @@ public class GeoControl
     // --------------------------------------------------------------------------------
     
     public GeoCodeAlias createGeoCodeAlias(GeoCode geoCode, GeoCodeAliasType geoCodeAliasType, String alias, BasePK createdBy) {
-        GeoCodeAlias geoCodeAlias = GeoCodeAliasFactory.getInstance().create(geoCode, geoCode.getLastDetail().getGeoCodeScope(), geoCodeAliasType, alias,
+        var geoCodeAlias = GeoCodeAliasFactory.getInstance().create(geoCode, geoCode.getLastDetail().getGeoCodeScope(), geoCodeAliasType, alias,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(geoCode.getPrimaryKey(), EventTypes.MODIFY, geoCodeAlias.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2523,7 +2523,7 @@ public class GeoControl
     
     public List<GeoCodeAliasTransfer> getGeoCodeAliasTransfers(UserVisit userVisit, Collection<GeoCodeAlias> geoCodeAliases) {
         List<GeoCodeAliasTransfer> geoCodeAliasTransfers = new ArrayList<>(geoCodeAliases.size());
-        GeoCodeAliasTransferCache geoCodeAliasTransferCache = getGeoTransferCaches(userVisit).getGeoCodeAliasTransferCache();
+        var geoCodeAliasTransferCache = getGeoTransferCaches(userVisit).getGeoCodeAliasTransferCache();
         
         geoCodeAliases.forEach((geoCodeAlias) ->
                 geoCodeAliasTransfers.add(geoCodeAliasTransferCache.getGeoCodeAliasTransfer(geoCodeAlias))
@@ -2538,16 +2538,16 @@ public class GeoControl
 
     public void updateGeoCodeAliasFromValue(GeoCodeAliasValue geoCodeAliasValue, BasePK updatedBy) {
         if(geoCodeAliasValue.hasBeenModified()) {
-            GeoCodeAlias geoCodeAlias = GeoCodeAliasFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var geoCodeAlias = GeoCodeAliasFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     geoCodeAliasValue.getPrimaryKey());
 
             geoCodeAlias.setThruTime(session.START_TIME_LONG);
             geoCodeAlias.store();
 
-            GeoCodePK geoCodePK = geoCodeAlias.getGeoCodePK(); // Not updated
-            GeoCodeScopePK geoCodeScopePK = geoCodeAlias.getGeoCodeScopePK(); // Not updated
-            GeoCodeAliasTypePK geoCodeAliasTypePK = geoCodeAlias.getGeoCodeAliasTypePK(); // Not updated
-            String alias = geoCodeAliasValue.getAlias();
+            var geoCodePK = geoCodeAlias.getGeoCodePK(); // Not updated
+            var geoCodeScopePK = geoCodeAlias.getGeoCodeScopePK(); // Not updated
+            var geoCodeAliasTypePK = geoCodeAlias.getGeoCodeAliasTypePK(); // Not updated
+            var alias = geoCodeAliasValue.getAlias();
 
             geoCodeAlias = GeoCodeAliasFactory.getInstance().create(geoCodePK, geoCodeScopePK, geoCodeAliasTypePK, alias, session.START_TIME_LONG,
                     Session.MAX_TIME_LONG);
@@ -2585,7 +2585,7 @@ public class GeoControl
     // --------------------------------------------------------------------------------
     
     public GeoCodeRelationship createGeoCodeRelationship(GeoCode fromGeoCode, GeoCode toGeoCode, BasePK createdBy) {
-        GeoCodeRelationship geoCodeRelationship = GeoCodeRelationshipFactory.getInstance().create(fromGeoCode, toGeoCode,
+        var geoCodeRelationship = GeoCodeRelationshipFactory.getInstance().create(fromGeoCode, toGeoCode,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(fromGeoCode.getPrimaryKey(), EventTypes.MODIFY, geoCodeRelationship.getPrimaryKey(), null, createdBy);
@@ -2613,7 +2613,7 @@ public class GeoControl
         GeoCodeRelationship geoCodeRelationship;
         
         try {
-            PreparedStatement ps = GeoCodeRelationshipFactory.getInstance().prepareStatement(
+            var ps = GeoCodeRelationshipFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM geocoderelationships " +
                     "WHERE geor_fromgeocodeid = ? AND geor_togeocodeid = ? AND geor_thrutime = ?");
@@ -2664,7 +2664,7 @@ public class GeoControl
         List<GeoCodeRelationship> geoCodeRelationships;
         
         try {
-            PreparedStatement ps = GeoCodeRelationshipFactory.getInstance().prepareStatement(
+            var ps = GeoCodeRelationshipFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM geocoderelationships, geocodes, geocodedetails " +
                     "WHERE geor_fromgeocodeid = ? AND geor_thrutime = ? " +
@@ -2747,19 +2747,19 @@ public class GeoControl
     // --------------------------------------------------------------------------------
     
     public GeoCodeLanguage createGeoCodeLanguage(GeoCode geoCode, Language language, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        GeoCodeLanguage defaultGeoCodeLanguage = getDefaultGeoCodeLanguage(geoCode);
-        boolean defaultFound = defaultGeoCodeLanguage != null;
+        var defaultGeoCodeLanguage = getDefaultGeoCodeLanguage(geoCode);
+        var defaultFound = defaultGeoCodeLanguage != null;
         
         if(defaultFound && isDefault) {
-            GeoCodeLanguageValue defaultGeoCodeLanguageValue = getDefaultGeoCodeLanguageValueForUpdate(geoCode);
+            var defaultGeoCodeLanguageValue = getDefaultGeoCodeLanguageValueForUpdate(geoCode);
             
             defaultGeoCodeLanguageValue.setIsDefault(Boolean.FALSE);
             updateGeoCodeLanguageFromValue(defaultGeoCodeLanguageValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        GeoCodeLanguage geoCodeLanguage = GeoCodeLanguageFactory.getInstance().create(geoCode, language, isDefault,
+
+        var geoCodeLanguage = GeoCodeLanguageFactory.getInstance().create(geoCode, language, isDefault,
                 sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(geoCode.getPrimaryKey(), EventTypes.MODIFY, geoCodeLanguage.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2783,8 +2783,8 @@ public class GeoControl
                         "WHERE geol_geo_geocodeid = ? AND geol_lang_languageid = ? AND geol_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = GeoCodeLanguageFactory.getInstance().prepareStatement(query);
+
+            var ps = GeoCodeLanguageFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, geoCode.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -2830,8 +2830,8 @@ public class GeoControl
                         "WHERE geol_geo_geocodeid = ? AND geol_isdefault = 1 AND geol_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = GeoCodeLanguageFactory.getInstance().prepareStatement(query);
+
+            var ps = GeoCodeLanguageFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, geoCode.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -2853,7 +2853,7 @@ public class GeoControl
     }
     
     public GeoCodeLanguageValue getDefaultGeoCodeLanguageValueForUpdate(GeoCode geoCode) {
-        GeoCodeLanguage geoCodeLanguage = getDefaultGeoCodeLanguageForUpdate(geoCode);
+        var geoCodeLanguage = getDefaultGeoCodeLanguageForUpdate(geoCode);
         
         return geoCodeLanguage == null? null: geoCodeLanguage.getGeoCodeLanguageValue().clone();
     }
@@ -2876,8 +2876,8 @@ public class GeoControl
                         "WHERE geol_geo_geocodeid = ? AND geol_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = GeoCodeLanguageFactory.getInstance().prepareStatement(query);
+
+            var ps = GeoCodeLanguageFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, geoCode.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -2916,8 +2916,8 @@ public class GeoControl
                         "WHERE geol_lang_languageid = ? AND geol_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = GeoCodeLanguageFactory.getInstance().prepareStatement(query);
+
+            var ps = GeoCodeLanguageFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, language.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -2940,7 +2940,7 @@ public class GeoControl
     
     public List<GeoCodeLanguageTransfer> getGeoCodeLanguageTransfers(UserVisit userVisit, Collection<GeoCodeLanguage> geoCodeLanguages) {
         List<GeoCodeLanguageTransfer> geoCodeLanguageTransfers = new ArrayList<>(geoCodeLanguages.size());
-        GeoCodeLanguageTransferCache geoCodeLanguageTransferCache = getGeoTransferCaches(userVisit).getGeoCodeLanguageTransferCache();
+        var geoCodeLanguageTransferCache = getGeoTransferCaches(userVisit).getGeoCodeLanguageTransferCache();
         
         geoCodeLanguages.forEach((geoCodeLanguage) ->
                 geoCodeLanguageTransfers.add(geoCodeLanguageTransferCache.getGeoCodeLanguageTransfer(geoCodeLanguage))
@@ -2963,25 +2963,25 @@ public class GeoControl
     
     private void updateGeoCodeLanguageFromValue(GeoCodeLanguageValue geoCodeLanguageValue, boolean checkDefault, BasePK updatedBy) {
         if(geoCodeLanguageValue.hasBeenModified()) {
-            GeoCodeLanguage geoCodeLanguage = GeoCodeLanguageFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var geoCodeLanguage = GeoCodeLanguageFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      geoCodeLanguageValue.getPrimaryKey());
             
             geoCodeLanguage.setThruTime(session.START_TIME_LONG);
             geoCodeLanguage.store();
-            
-            GeoCode geoCode = geoCodeLanguage.getGeoCode(); // Not Updated
-            GeoCodePK geoCodePK = geoCode.getPrimaryKey(); // Not Updated
-            LanguagePK languagePK = geoCodeLanguage.getLanguagePK(); // Not Updated
-            Boolean isDefault = geoCodeLanguageValue.getIsDefault();
-            Integer sortOrder = geoCodeLanguageValue.getSortOrder();
+
+            var geoCode = geoCodeLanguage.getGeoCode(); // Not Updated
+            var geoCodePK = geoCode.getPrimaryKey(); // Not Updated
+            var languagePK = geoCodeLanguage.getLanguagePK(); // Not Updated
+            var isDefault = geoCodeLanguageValue.getIsDefault();
+            var sortOrder = geoCodeLanguageValue.getSortOrder();
             
             if(checkDefault) {
-                GeoCodeLanguage defaultGeoCodeLanguage = getDefaultGeoCodeLanguage(geoCode);
-                boolean defaultFound = defaultGeoCodeLanguage != null && !defaultGeoCodeLanguage.equals(geoCodeLanguage);
+                var defaultGeoCodeLanguage = getDefaultGeoCodeLanguage(geoCode);
+                var defaultFound = defaultGeoCodeLanguage != null && !defaultGeoCodeLanguage.equals(geoCodeLanguage);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    GeoCodeLanguageValue defaultGeoCodeLanguageValue = getDefaultGeoCodeLanguageValueForUpdate(geoCode);
+                    var defaultGeoCodeLanguageValue = getDefaultGeoCodeLanguageValueForUpdate(geoCode);
                     
                     defaultGeoCodeLanguageValue.setIsDefault(Boolean.FALSE);
                     updateGeoCodeLanguageFromValue(defaultGeoCodeLanguageValue, false, updatedBy);
@@ -3007,17 +3007,17 @@ public class GeoControl
         geoCodeLanguage.store();
         
         // Check for default, and pick one if necessary
-        GeoCode geoCode = geoCodeLanguage.getGeoCode();
-        GeoCodeLanguage defaultGeoCodeLanguage = getDefaultGeoCodeLanguage(geoCode);
+        var geoCode = geoCodeLanguage.getGeoCode();
+        var defaultGeoCodeLanguage = getDefaultGeoCodeLanguage(geoCode);
         if(defaultGeoCodeLanguage == null) {
-            List<GeoCodeLanguage> geoCodeLanguages = getGeoCodeLanguagesByGeoCodeForUpdate(geoCode);
+            var geoCodeLanguages = getGeoCodeLanguagesByGeoCodeForUpdate(geoCode);
             
             if(!geoCodeLanguages.isEmpty()) {
-                Iterator<GeoCodeLanguage> iter = geoCodeLanguages.iterator();
+                var iter = geoCodeLanguages.iterator();
                 if(iter.hasNext()) {
                     defaultGeoCodeLanguage = iter.next();
                 }
-                GeoCodeLanguageValue geoCodeLanguageValue = defaultGeoCodeLanguage.getGeoCodeLanguageValue().clone();
+                var geoCodeLanguageValue = defaultGeoCodeLanguage.getGeoCodeLanguageValue().clone();
                 
                 geoCodeLanguageValue.setIsDefault(Boolean.TRUE);
                 updateGeoCodeLanguageFromValue(geoCodeLanguageValue, false, deletedBy);
@@ -3047,19 +3047,19 @@ public class GeoControl
     
     public GeoCodeCurrency createGeoCodeCurrency(GeoCode geoCode, Currency currency, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
-        GeoCodeCurrency defaultGeoCodeCurrency = getDefaultGeoCodeCurrency(geoCode);
-        boolean defaultFound = defaultGeoCodeCurrency != null;
+        var defaultGeoCodeCurrency = getDefaultGeoCodeCurrency(geoCode);
+        var defaultFound = defaultGeoCodeCurrency != null;
         
         if(defaultFound && isDefault) {
-            GeoCodeCurrencyValue defaultGeoCodeCurrencyValue = getDefaultGeoCodeCurrencyValueForUpdate(geoCode);
+            var defaultGeoCodeCurrencyValue = getDefaultGeoCodeCurrencyValueForUpdate(geoCode);
             
             defaultGeoCodeCurrencyValue.setIsDefault(Boolean.FALSE);
             updateGeoCodeCurrencyFromValue(defaultGeoCodeCurrencyValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        GeoCodeCurrency geoCodeCurrency = GeoCodeCurrencyFactory.getInstance().create(geoCode, currency, isDefault,
+
+        var geoCodeCurrency = GeoCodeCurrencyFactory.getInstance().create(geoCode, currency, isDefault,
                 sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(geoCode.getPrimaryKey(), EventTypes.MODIFY, geoCodeCurrency.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -3083,8 +3083,8 @@ public class GeoControl
                         "WHERE geocur_geo_geocodeid = ? AND geocur_cur_currencyid = ? AND geocur_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = GeoCodeCurrencyFactory.getInstance().prepareStatement(query);
+
+            var ps = GeoCodeCurrencyFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, geoCode.getPrimaryKey().getEntityId());
             ps.setLong(2, currency.getPrimaryKey().getEntityId());
@@ -3130,8 +3130,8 @@ public class GeoControl
                         "WHERE geocur_geo_geocodeid = ? AND geocur_isdefault = 1 AND geocur_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = GeoCodeCurrencyFactory.getInstance().prepareStatement(query);
+
+            var ps = GeoCodeCurrencyFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, geoCode.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -3153,7 +3153,7 @@ public class GeoControl
     }
     
     public GeoCodeCurrencyValue getDefaultGeoCodeCurrencyValueForUpdate(GeoCode geoCode) {
-        GeoCodeCurrency geoCodeCurrency = getDefaultGeoCodeCurrencyForUpdate(geoCode);
+        var geoCodeCurrency = getDefaultGeoCodeCurrencyForUpdate(geoCode);
         
         return geoCodeCurrency == null? null: geoCodeCurrency.getGeoCodeCurrencyValue().clone();
     }
@@ -3176,8 +3176,8 @@ public class GeoControl
                         "WHERE geocur_geo_geocodeid = ? AND geocur_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = GeoCodeCurrencyFactory.getInstance().prepareStatement(query);
+
+            var ps = GeoCodeCurrencyFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, geoCode.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -3216,8 +3216,8 @@ public class GeoControl
                         "WHERE geocur_cur_currencyid = ? AND geocur_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = GeoCodeCurrencyFactory.getInstance().prepareStatement(query);
+
+            var ps = GeoCodeCurrencyFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, currency.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -3240,7 +3240,7 @@ public class GeoControl
     
     public List<GeoCodeCurrencyTransfer> getGeoCodeCurrencyTransfers(UserVisit userVisit, Collection<GeoCodeCurrency> geoCodeCurrencies) {
         List<GeoCodeCurrencyTransfer> geoCodeCurrencyTransfers = new ArrayList<>(geoCodeCurrencies.size());
-        GeoCodeCurrencyTransferCache geoCodeCurrencyTransferCache = getGeoTransferCaches(userVisit).getGeoCodeCurrencyTransferCache();
+        var geoCodeCurrencyTransferCache = getGeoTransferCaches(userVisit).getGeoCodeCurrencyTransferCache();
         
         geoCodeCurrencies.forEach((geoCodeCurrency) ->
                 geoCodeCurrencyTransfers.add(geoCodeCurrencyTransferCache.getGeoCodeCurrencyTransfer(geoCodeCurrency))
@@ -3263,25 +3263,25 @@ public class GeoControl
     
     private void updateGeoCodeCurrencyFromValue(GeoCodeCurrencyValue geoCodeCurrencyValue, boolean checkDefault, BasePK updatedBy) {
         if(geoCodeCurrencyValue.hasBeenModified()) {
-            GeoCodeCurrency geoCodeCurrency = GeoCodeCurrencyFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var geoCodeCurrency = GeoCodeCurrencyFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      geoCodeCurrencyValue.getPrimaryKey());
             
             geoCodeCurrency.setThruTime(session.START_TIME_LONG);
             geoCodeCurrency.store();
-            
-            GeoCode geoCode = geoCodeCurrency.getGeoCode(); // Not Updated
-            GeoCodePK geoCodePK = geoCode.getPrimaryKey(); // Not Updated
-            CurrencyPK currencyPK = geoCodeCurrency.getCurrencyPK(); // Not Updated
-            Boolean isDefault = geoCodeCurrencyValue.getIsDefault();
-            Integer sortOrder = geoCodeCurrencyValue.getSortOrder();
+
+            var geoCode = geoCodeCurrency.getGeoCode(); // Not Updated
+            var geoCodePK = geoCode.getPrimaryKey(); // Not Updated
+            var currencyPK = geoCodeCurrency.getCurrencyPK(); // Not Updated
+            var isDefault = geoCodeCurrencyValue.getIsDefault();
+            var sortOrder = geoCodeCurrencyValue.getSortOrder();
             
             if(checkDefault) {
-                GeoCodeCurrency defaultGeoCodeCurrency = getDefaultGeoCodeCurrency(geoCode);
-                boolean defaultFound = defaultGeoCodeCurrency != null && !defaultGeoCodeCurrency.equals(geoCodeCurrency);
+                var defaultGeoCodeCurrency = getDefaultGeoCodeCurrency(geoCode);
+                var defaultFound = defaultGeoCodeCurrency != null && !defaultGeoCodeCurrency.equals(geoCodeCurrency);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    GeoCodeCurrencyValue defaultGeoCodeCurrencyValue = getDefaultGeoCodeCurrencyValueForUpdate(geoCode);
+                    var defaultGeoCodeCurrencyValue = getDefaultGeoCodeCurrencyValueForUpdate(geoCode);
                     
                     defaultGeoCodeCurrencyValue.setIsDefault(Boolean.FALSE);
                     updateGeoCodeCurrencyFromValue(defaultGeoCodeCurrencyValue, false, updatedBy);
@@ -3307,17 +3307,17 @@ public class GeoControl
         geoCodeCurrency.store();
         
         // Check for default, and pick one if necessary
-        GeoCode geoCode = geoCodeCurrency.getGeoCode();
-        GeoCodeCurrency defaultGeoCodeCurrency = getDefaultGeoCodeCurrency(geoCode);
+        var geoCode = geoCodeCurrency.getGeoCode();
+        var defaultGeoCodeCurrency = getDefaultGeoCodeCurrency(geoCode);
         if(defaultGeoCodeCurrency == null) {
-            List<GeoCodeCurrency> geoCodeCurrencies = getGeoCodeCurrenciesByGeoCodeForUpdate(geoCode);
+            var geoCodeCurrencies = getGeoCodeCurrenciesByGeoCodeForUpdate(geoCode);
             
             if(!geoCodeCurrencies.isEmpty()) {
-                Iterator<GeoCodeCurrency> iter = geoCodeCurrencies.iterator();
+                var iter = geoCodeCurrencies.iterator();
                 if(iter.hasNext()) {
                     defaultGeoCodeCurrency = iter.next();
                 }
-                GeoCodeCurrencyValue geoCodeCurrencyValue = defaultGeoCodeCurrency.getGeoCodeCurrencyValue().clone();
+                var geoCodeCurrencyValue = defaultGeoCodeCurrency.getGeoCodeCurrencyValue().clone();
                 
                 geoCodeCurrencyValue.setIsDefault(Boolean.TRUE);
                 updateGeoCodeCurrencyFromValue(geoCodeCurrencyValue, false, deletedBy);
@@ -3347,19 +3347,19 @@ public class GeoControl
     
     public GeoCodeTimeZone createGeoCodeTimeZone(GeoCode geoCode, TimeZone timeZone, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
-        GeoCodeTimeZone defaultGeoCodeTimeZone = getDefaultGeoCodeTimeZone(geoCode);
-        boolean defaultFound = defaultGeoCodeTimeZone != null;
+        var defaultGeoCodeTimeZone = getDefaultGeoCodeTimeZone(geoCode);
+        var defaultFound = defaultGeoCodeTimeZone != null;
         
         if(defaultFound && isDefault) {
-            GeoCodeTimeZoneValue defaultGeoCodeTimeZoneValue = getDefaultGeoCodeTimeZoneValueForUpdate(geoCode);
+            var defaultGeoCodeTimeZoneValue = getDefaultGeoCodeTimeZoneValueForUpdate(geoCode);
             
             defaultGeoCodeTimeZoneValue.setIsDefault(Boolean.FALSE);
             updateGeoCodeTimeZoneFromValue(defaultGeoCodeTimeZoneValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        GeoCodeTimeZone geoCodeTimeZone = GeoCodeTimeZoneFactory.getInstance().create(geoCode, timeZone, isDefault,
+
+        var geoCodeTimeZone = GeoCodeTimeZoneFactory.getInstance().create(geoCode, timeZone, isDefault,
                 sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(geoCode.getPrimaryKey(), EventTypes.MODIFY, geoCodeTimeZone.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -3383,8 +3383,8 @@ public class GeoControl
                         "WHERE geotz_geo_geocodeid = ? AND geotz_tz_timeZoneid = ? AND geotz_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = GeoCodeTimeZoneFactory.getInstance().prepareStatement(query);
+
+            var ps = GeoCodeTimeZoneFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, geoCode.getPrimaryKey().getEntityId());
             ps.setLong(2, timeZone.getPrimaryKey().getEntityId());
@@ -3430,8 +3430,8 @@ public class GeoControl
                         "WHERE geotz_geo_geocodeid = ? AND geotz_isdefault = 1 AND geotz_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = GeoCodeTimeZoneFactory.getInstance().prepareStatement(query);
+
+            var ps = GeoCodeTimeZoneFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, geoCode.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -3453,7 +3453,7 @@ public class GeoControl
     }
     
     public GeoCodeTimeZoneValue getDefaultGeoCodeTimeZoneValueForUpdate(GeoCode geoCode) {
-        GeoCodeTimeZone geoCodeTimeZone = getDefaultGeoCodeTimeZoneForUpdate(geoCode);
+        var geoCodeTimeZone = getDefaultGeoCodeTimeZoneForUpdate(geoCode);
         
         return geoCodeTimeZone == null? null: geoCodeTimeZone.getGeoCodeTimeZoneValue().clone();
     }
@@ -3476,8 +3476,8 @@ public class GeoControl
                         "WHERE geotz_geo_geocodeid = ? AND geotz_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = GeoCodeTimeZoneFactory.getInstance().prepareStatement(query);
+
+            var ps = GeoCodeTimeZoneFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, geoCode.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -3516,8 +3516,8 @@ public class GeoControl
                         "WHERE geotz_tz_timeZoneid = ? AND geotz_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = GeoCodeTimeZoneFactory.getInstance().prepareStatement(query);
+
+            var ps = GeoCodeTimeZoneFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, timeZone.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -3540,7 +3540,7 @@ public class GeoControl
     
     public List<GeoCodeTimeZoneTransfer> getGeoCodeTimeZoneTransfers(UserVisit userVisit, Collection<GeoCodeTimeZone> geoCodeTimeZones) {
         List<GeoCodeTimeZoneTransfer> geoCodeTimeZoneTransfers = new ArrayList<>(geoCodeTimeZones.size());
-        GeoCodeTimeZoneTransferCache geoCodeTimeZoneTransferCache = getGeoTransferCaches(userVisit).getGeoCodeTimeZoneTransferCache();
+        var geoCodeTimeZoneTransferCache = getGeoTransferCaches(userVisit).getGeoCodeTimeZoneTransferCache();
         
         geoCodeTimeZones.forEach((geoCodeTimeZone) ->
                 geoCodeTimeZoneTransfers.add(geoCodeTimeZoneTransferCache.getGeoCodeTimeZoneTransfer(geoCodeTimeZone))
@@ -3563,25 +3563,25 @@ public class GeoControl
     
     private void updateGeoCodeTimeZoneFromValue(GeoCodeTimeZoneValue geoCodeTimeZoneValue, boolean checkDefault, BasePK updatedBy) {
         if(geoCodeTimeZoneValue.hasBeenModified()) {
-            GeoCodeTimeZone geoCodeTimeZone = GeoCodeTimeZoneFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var geoCodeTimeZone = GeoCodeTimeZoneFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      geoCodeTimeZoneValue.getPrimaryKey());
             
             geoCodeTimeZone.setThruTime(session.START_TIME_LONG);
             geoCodeTimeZone.store();
-            
-            GeoCode geoCode = geoCodeTimeZone.getGeoCode(); // Not Updated
-            GeoCodePK geoCodePK = geoCode.getPrimaryKey(); // Not Updated
-            TimeZonePK timeZonePK = geoCodeTimeZone.getTimeZonePK(); // Not Updated
-            Boolean isDefault = geoCodeTimeZoneValue.getIsDefault();
-            Integer sortOrder = geoCodeTimeZoneValue.getSortOrder();
+
+            var geoCode = geoCodeTimeZone.getGeoCode(); // Not Updated
+            var geoCodePK = geoCode.getPrimaryKey(); // Not Updated
+            var timeZonePK = geoCodeTimeZone.getTimeZonePK(); // Not Updated
+            var isDefault = geoCodeTimeZoneValue.getIsDefault();
+            var sortOrder = geoCodeTimeZoneValue.getSortOrder();
             
             if(checkDefault) {
-                GeoCodeTimeZone defaultGeoCodeTimeZone = getDefaultGeoCodeTimeZone(geoCode);
-                boolean defaultFound = defaultGeoCodeTimeZone != null && !defaultGeoCodeTimeZone.equals(geoCodeTimeZone);
+                var defaultGeoCodeTimeZone = getDefaultGeoCodeTimeZone(geoCode);
+                var defaultFound = defaultGeoCodeTimeZone != null && !defaultGeoCodeTimeZone.equals(geoCodeTimeZone);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    GeoCodeTimeZoneValue defaultGeoCodeTimeZoneValue = getDefaultGeoCodeTimeZoneValueForUpdate(geoCode);
+                    var defaultGeoCodeTimeZoneValue = getDefaultGeoCodeTimeZoneValueForUpdate(geoCode);
                     
                     defaultGeoCodeTimeZoneValue.setIsDefault(Boolean.FALSE);
                     updateGeoCodeTimeZoneFromValue(defaultGeoCodeTimeZoneValue, false, updatedBy);
@@ -3607,17 +3607,17 @@ public class GeoControl
         geoCodeTimeZone.store();
         
         // Check for default, and pick one if necessary
-        GeoCode geoCode = geoCodeTimeZone.getGeoCode();
-        GeoCodeTimeZone defaultGeoCodeTimeZone = getDefaultGeoCodeTimeZone(geoCode);
+        var geoCode = geoCodeTimeZone.getGeoCode();
+        var defaultGeoCodeTimeZone = getDefaultGeoCodeTimeZone(geoCode);
         if(defaultGeoCodeTimeZone == null) {
-            List<GeoCodeTimeZone> geoCodeTimeZones = getGeoCodeTimeZonesByGeoCodeForUpdate(geoCode);
+            var geoCodeTimeZones = getGeoCodeTimeZonesByGeoCodeForUpdate(geoCode);
             
             if(!geoCodeTimeZones.isEmpty()) {
-                Iterator<GeoCodeTimeZone> iter = geoCodeTimeZones.iterator();
+                var iter = geoCodeTimeZones.iterator();
                 if(iter.hasNext()) {
                     defaultGeoCodeTimeZone = iter.next();
                 }
-                GeoCodeTimeZoneValue geoCodeTimeZoneValue = defaultGeoCodeTimeZone.getGeoCodeTimeZoneValue().clone();
+                var geoCodeTimeZoneValue = defaultGeoCodeTimeZone.getGeoCodeTimeZoneValue().clone();
                 
                 geoCodeTimeZoneValue.setIsDefault(Boolean.TRUE);
                 updateGeoCodeTimeZoneFromValue(geoCodeTimeZoneValue, false, deletedBy);
@@ -3647,19 +3647,19 @@ public class GeoControl
     
     public GeoCodeDateTimeFormat createGeoCodeDateTimeFormat(GeoCode geoCode, DateTimeFormat dateTimeFormat, Boolean isDefault,
             Integer sortOrder, BasePK createdBy) {
-        GeoCodeDateTimeFormat defaultGeoCodeDateTimeFormat = getDefaultGeoCodeDateTimeFormat(geoCode);
-        boolean defaultFound = defaultGeoCodeDateTimeFormat != null;
+        var defaultGeoCodeDateTimeFormat = getDefaultGeoCodeDateTimeFormat(geoCode);
+        var defaultFound = defaultGeoCodeDateTimeFormat != null;
         
         if(defaultFound && isDefault) {
-            GeoCodeDateTimeFormatValue defaultGeoCodeDateTimeFormatValue = getDefaultGeoCodeDateTimeFormatValueForUpdate(geoCode);
+            var defaultGeoCodeDateTimeFormatValue = getDefaultGeoCodeDateTimeFormatValueForUpdate(geoCode);
             
             defaultGeoCodeDateTimeFormatValue.setIsDefault(Boolean.FALSE);
             updateGeoCodeDateTimeFormatFromValue(defaultGeoCodeDateTimeFormatValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        GeoCodeDateTimeFormat geoCodeDateTimeFormat = GeoCodeDateTimeFormatFactory.getInstance().create(geoCode,
+
+        var geoCodeDateTimeFormat = GeoCodeDateTimeFormatFactory.getInstance().create(geoCode,
                 dateTimeFormat, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(geoCode.getPrimaryKey(), EventTypes.MODIFY, geoCodeDateTimeFormat.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -3683,8 +3683,8 @@ public class GeoControl
                         "WHERE geodtf_geo_geocodeid = ? AND geodtf_dtf_datetimeformatid = ? AND geodtf_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = GeoCodeDateTimeFormatFactory.getInstance().prepareStatement(query);
+
+            var ps = GeoCodeDateTimeFormatFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, geoCode.getPrimaryKey().getEntityId());
             ps.setLong(2, dateTimeFormat.getPrimaryKey().getEntityId());
@@ -3730,8 +3730,8 @@ public class GeoControl
                         "WHERE geodtf_geo_geocodeid = ? AND geodtf_isdefault = 1 AND geodtf_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = GeoCodeDateTimeFormatFactory.getInstance().prepareStatement(query);
+
+            var ps = GeoCodeDateTimeFormatFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, geoCode.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -3753,7 +3753,7 @@ public class GeoControl
     }
     
     public GeoCodeDateTimeFormatValue getDefaultGeoCodeDateTimeFormatValueForUpdate(GeoCode geoCode) {
-        GeoCodeDateTimeFormat geoCodeDateTimeFormat = getDefaultGeoCodeDateTimeFormatForUpdate(geoCode);
+        var geoCodeDateTimeFormat = getDefaultGeoCodeDateTimeFormatForUpdate(geoCode);
         
         return geoCodeDateTimeFormat == null? null: geoCodeDateTimeFormat.getGeoCodeDateTimeFormatValue().clone();
     }
@@ -3776,8 +3776,8 @@ public class GeoControl
                         "WHERE geodtf_geo_geocodeid = ? AND geodtf_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = GeoCodeDateTimeFormatFactory.getInstance().prepareStatement(query);
+
+            var ps = GeoCodeDateTimeFormatFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, geoCode.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -3816,8 +3816,8 @@ public class GeoControl
                         "WHERE geodtf_dtf_datetimeformatid = ? AND geodtf_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = GeoCodeDateTimeFormatFactory.getInstance().prepareStatement(query);
+
+            var ps = GeoCodeDateTimeFormatFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, dateTimeFormat.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -3840,7 +3840,7 @@ public class GeoControl
     
     public List<GeoCodeDateTimeFormatTransfer> getGeoCodeDateTimeFormatTransfers(UserVisit userVisit, Collection<GeoCodeDateTimeFormat> geoCodeDateTimeFormats) {
         List<GeoCodeDateTimeFormatTransfer> geoCodeDateTimeFormatTransfers = new ArrayList<>(geoCodeDateTimeFormats.size());
-        GeoCodeDateTimeFormatTransferCache geoCodeDateTimeFormatTransferCache = getGeoTransferCaches(userVisit).getGeoCodeDateTimeFormatTransferCache();
+        var geoCodeDateTimeFormatTransferCache = getGeoTransferCaches(userVisit).getGeoCodeDateTimeFormatTransferCache();
         
         geoCodeDateTimeFormats.forEach((geoCodeDateTimeFormat) ->
                 geoCodeDateTimeFormatTransfers.add(geoCodeDateTimeFormatTransferCache.getGeoCodeDateTimeFormatTransfer(geoCodeDateTimeFormat))
@@ -3866,25 +3866,25 @@ public class GeoControl
     private void updateGeoCodeDateTimeFormatFromValue(GeoCodeDateTimeFormatValue geoCodeDateTimeFormatValue, boolean checkDefault,
             BasePK updatedBy) {
         if(geoCodeDateTimeFormatValue.hasBeenModified()) {
-            GeoCodeDateTimeFormat geoCodeDateTimeFormat = GeoCodeDateTimeFormatFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var geoCodeDateTimeFormat = GeoCodeDateTimeFormatFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      geoCodeDateTimeFormatValue.getPrimaryKey());
             
             geoCodeDateTimeFormat.setThruTime(session.START_TIME_LONG);
             geoCodeDateTimeFormat.store();
-            
-            GeoCode geoCode = geoCodeDateTimeFormat.getGeoCode(); // Not Updated
-            GeoCodePK geoCodePK = geoCode.getPrimaryKey(); // Not Updated
-            DateTimeFormatPK dateTimeFormatPK = geoCodeDateTimeFormat.getDateTimeFormatPK(); // Not Updated
-            Boolean isDefault = geoCodeDateTimeFormatValue.getIsDefault();
-            Integer sortOrder = geoCodeDateTimeFormatValue.getSortOrder();
+
+            var geoCode = geoCodeDateTimeFormat.getGeoCode(); // Not Updated
+            var geoCodePK = geoCode.getPrimaryKey(); // Not Updated
+            var dateTimeFormatPK = geoCodeDateTimeFormat.getDateTimeFormatPK(); // Not Updated
+            var isDefault = geoCodeDateTimeFormatValue.getIsDefault();
+            var sortOrder = geoCodeDateTimeFormatValue.getSortOrder();
             
             if(checkDefault) {
-                GeoCodeDateTimeFormat defaultGeoCodeDateTimeFormat = getDefaultGeoCodeDateTimeFormat(geoCode);
-                boolean defaultFound = defaultGeoCodeDateTimeFormat != null && !defaultGeoCodeDateTimeFormat.equals(geoCodeDateTimeFormat);
+                var defaultGeoCodeDateTimeFormat = getDefaultGeoCodeDateTimeFormat(geoCode);
+                var defaultFound = defaultGeoCodeDateTimeFormat != null && !defaultGeoCodeDateTimeFormat.equals(geoCodeDateTimeFormat);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    GeoCodeDateTimeFormatValue defaultGeoCodeDateTimeFormatValue = getDefaultGeoCodeDateTimeFormatValueForUpdate(geoCode);
+                    var defaultGeoCodeDateTimeFormatValue = getDefaultGeoCodeDateTimeFormatValueForUpdate(geoCode);
                     
                     defaultGeoCodeDateTimeFormatValue.setIsDefault(Boolean.FALSE);
                     updateGeoCodeDateTimeFormatFromValue(defaultGeoCodeDateTimeFormatValue, false, updatedBy);
@@ -3910,17 +3910,17 @@ public class GeoControl
         geoCodeDateTimeFormat.store();
         
         // Check for default, and pick one if necessary
-        GeoCode geoCode = geoCodeDateTimeFormat.getGeoCode();
-        GeoCodeDateTimeFormat defaultGeoCodeDateTimeFormat = getDefaultGeoCodeDateTimeFormat(geoCode);
+        var geoCode = geoCodeDateTimeFormat.getGeoCode();
+        var defaultGeoCodeDateTimeFormat = getDefaultGeoCodeDateTimeFormat(geoCode);
         if(defaultGeoCodeDateTimeFormat == null) {
-            List<GeoCodeDateTimeFormat> geoCodeDateTimeFormats = getGeoCodeDateTimeFormatsByGeoCodeForUpdate(geoCode);
+            var geoCodeDateTimeFormats = getGeoCodeDateTimeFormatsByGeoCodeForUpdate(geoCode);
             
             if(!geoCodeDateTimeFormats.isEmpty()) {
-                Iterator<GeoCodeDateTimeFormat> iter = geoCodeDateTimeFormats.iterator();
+                var iter = geoCodeDateTimeFormats.iterator();
                 if(iter.hasNext()) {
                     defaultGeoCodeDateTimeFormat = iter.next();
                 }
-                GeoCodeDateTimeFormatValue geoCodeDateTimeFormatValue = defaultGeoCodeDateTimeFormat.getGeoCodeDateTimeFormatValue().clone();
+                var geoCodeDateTimeFormatValue = defaultGeoCodeDateTimeFormat.getGeoCodeDateTimeFormatValue().clone();
                 
                 geoCodeDateTimeFormatValue.setIsDefault(Boolean.TRUE);
                 updateGeoCodeDateTimeFormatFromValue(geoCodeDateTimeFormatValue, false, deletedBy);
@@ -3953,8 +3953,8 @@ public class GeoControl
             PostalAddressFormat postalAddressFormat, Boolean cityRequired, Boolean cityGeoCodeRequired, Boolean stateRequired,
             Boolean stateGeoCodeRequired, String postalCodePattern, Boolean postalCodeRequired, Boolean postalCodeGeoCodeRequired,
             Integer postalCodeLength, Integer postalCodeGeoCodeLength, String postalCodeExample, BasePK createdBy) {
-        
-        GeoCodeCountry geoCodeCountry = GeoCodeCountryFactory.getInstance().create(geoCode, telephoneCode, areaCodePattern,
+
+        var geoCodeCountry = GeoCodeCountryFactory.getInstance().create(geoCode, telephoneCode, areaCodePattern,
                 areaCodeRequired, areaCodeExample, telephoneNumberPattern, telephoneNumberExample, postalAddressFormat,
                 cityRequired, cityGeoCodeRequired, stateRequired, stateGeoCodeRequired, postalCodePattern, postalCodeRequired,
                 postalCodeGeoCodeRequired, postalCodeLength, postalCodeGeoCodeLength, postalCodeExample, session.START_TIME_LONG,
@@ -3981,8 +3981,8 @@ public class GeoControl
                         "WHERE geoc_geo_geocodeid = ? AND geoc_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = GeoCodeCountryFactory.getInstance().prepareStatement(query);
+
+            var ps = GeoCodeCountryFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, geoCode.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -4013,30 +4013,30 @@ public class GeoControl
     
     public void updateGeoCodeCountryFromValue(GeoCodeCountryValue geoCodeCountryValue, BasePK updatedBy) {
         if(geoCodeCountryValue.hasBeenModified()) {
-            GeoCodeCountry geoCodeCountry = GeoCodeCountryFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var geoCodeCountry = GeoCodeCountryFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      geoCodeCountryValue.getPrimaryKey());
             
             geoCodeCountry.setThruTime(session.START_TIME_LONG);
             geoCodeCountry.store();
-            
-            GeoCodePK geoCodePK = geoCodeCountry.getGeoCodePK(); // Not Updated
-            String telephoneCode = geoCodeCountryValue.getTelephoneCode();
-            String areaCodePattern = geoCodeCountryValue.getAreaCodePattern();
-            Boolean areaCodeRequired = geoCodeCountryValue.getAreaCodeRequired();
-            String areaCodeExample = geoCodeCountryValue.getAreaCodeExample();
-            String telephoneNumberPattern = geoCodeCountryValue.getTelephoneNumberPattern();
-            String telephoneNumberExample = geoCodeCountryValue.getTelephoneNumberExample();
-            PostalAddressFormatPK postalAddressFormatPK = geoCodeCountryValue.getPostalAddressFormatPK();
-            Boolean cityRequired = geoCodeCountryValue.getCityGeoCodeRequired();
-            Boolean cityGeoCodeRequired = geoCodeCountryValue.getCityGeoCodeRequired();
-            Boolean stateRequired = geoCodeCountryValue.getStateRequired();
-            Boolean stateGeoCodeRequired = geoCodeCountryValue.getStateGeoCodeRequired();
-            String postalCodePattern = geoCodeCountryValue.getPostalCodePattern();
-            Boolean postalCodeRequired = geoCodeCountryValue.getPostalCodeRequired();
-            Boolean postalCodeGeoCodeRequired = geoCodeCountryValue.getPostalCodeGeoCodeRequired();
-            Integer postalCodeLength = geoCodeCountryValue.getPostalCodeLength();
-            Integer postalCodeGeoCodeLength = geoCodeCountryValue.getPostalCodeGeoCodeLength();
-            String postalCodeExample = geoCodeCountryValue.getPostalCodeExample();
+
+            var geoCodePK = geoCodeCountry.getGeoCodePK(); // Not Updated
+            var telephoneCode = geoCodeCountryValue.getTelephoneCode();
+            var areaCodePattern = geoCodeCountryValue.getAreaCodePattern();
+            var areaCodeRequired = geoCodeCountryValue.getAreaCodeRequired();
+            var areaCodeExample = geoCodeCountryValue.getAreaCodeExample();
+            var telephoneNumberPattern = geoCodeCountryValue.getTelephoneNumberPattern();
+            var telephoneNumberExample = geoCodeCountryValue.getTelephoneNumberExample();
+            var postalAddressFormatPK = geoCodeCountryValue.getPostalAddressFormatPK();
+            var cityRequired = geoCodeCountryValue.getCityGeoCodeRequired();
+            var cityGeoCodeRequired = geoCodeCountryValue.getCityGeoCodeRequired();
+            var stateRequired = geoCodeCountryValue.getStateRequired();
+            var stateGeoCodeRequired = geoCodeCountryValue.getStateGeoCodeRequired();
+            var postalCodePattern = geoCodeCountryValue.getPostalCodePattern();
+            var postalCodeRequired = geoCodeCountryValue.getPostalCodeRequired();
+            var postalCodeGeoCodeRequired = geoCodeCountryValue.getPostalCodeGeoCodeRequired();
+            var postalCodeLength = geoCodeCountryValue.getPostalCodeLength();
+            var postalCodeGeoCodeLength = geoCodeCountryValue.getPostalCodeGeoCodeLength();
+            var postalCodeExample = geoCodeCountryValue.getPostalCodeExample();
             
             geoCodeCountry = GeoCodeCountryFactory.getInstance().create(geoCodePK, telephoneCode, areaCodePattern,
                     areaCodeRequired, areaCodeExample, telephoneNumberPattern, telephoneNumberExample, postalAddressFormatPK,
@@ -4065,10 +4065,10 @@ public class GeoControl
     
     private GeoCode getGeoCodeByTypeScopeAndAlias(String geoCodeTypeName, String geoCodeScopeName, String alias) {
         GeoCode geoCode = null;
-        GeoCodeType geoCodeType = getGeoCodeTypeByName(geoCodeTypeName);
+        var geoCodeType = getGeoCodeTypeByName(geoCodeTypeName);
         
         if(geoCodeType != null) {
-            GeoCodeScope geoCodeScope = getGeoCodeScopeByName(geoCodeScopeName);
+            var geoCodeScope = getGeoCodeScopeByName(geoCodeScopeName);
             
             if(geoCodeScope != null) {
                 geoCode = getGeoCodeByName(alias);
@@ -4076,7 +4076,7 @@ public class GeoControl
                 // If we were passed a geoCodeName for the alias, check to see if its valid for the Type and Scope that
                 // we're looking for. If its not, clear it, and search using aliases.
                 if(geoCode != null) {
-                    GeoCodeDetail geoCodeDetail = geoCode.getLastDetail();
+                    var geoCodeDetail = geoCode.getLastDetail();
                     
                     if(!geoCodeDetail.getGeoCodeType().equals(geoCodeType) || !geoCodeDetail.getGeoCodeScope().equals(geoCodeScope)) {
                         geoCode = null;
@@ -4084,26 +4084,26 @@ public class GeoControl
                 }
                 
                 if(geoCode == null) {
-                    GeoCodeAliasType geoCodeAliasType = getDefaultGeoCodeAliasType(geoCodeType);
+                    var geoCodeAliasType = getDefaultGeoCodeAliasType(geoCodeType);
                     GeoCodeAlias geoCodeAlias = null;
                     
                     if(geoCodeAliasType != null)
                         geoCodeAlias = getGeoCodeAliasByAliasWithinScope(geoCodeScope, geoCodeAliasType, alias);
                     
                     if(geoCodeAlias == null) {
-                        List<GeoCodeAliasType> geoCodeAliasTypes = getGeoCodeAliasTypesExceptDefault(geoCodeType);
-                        Iterator<GeoCodeAliasType> iter = geoCodeAliasTypes.iterator();
+                        var geoCodeAliasTypes = getGeoCodeAliasTypesExceptDefault(geoCodeType);
+                        var iter = geoCodeAliasTypes.iterator();
                         
                         while(geoCodeAlias == null && iter.hasNext()) {
                             geoCodeAliasType = iter.next();
-                            
-                            GeoCodeAliasTypeDetail getoCodeAliasTypeDetail = geoCodeAliasType.getLastDetail();
-                            String validationPattern = getoCodeAliasTypeDetail.getValidationPattern();
-                            boolean patternMatches = false;
+
+                            var getoCodeAliasTypeDetail = geoCodeAliasType.getLastDetail();
+                            var validationPattern = getoCodeAliasTypeDetail.getValidationPattern();
+                            var patternMatches = false;
                             
                             if(validationPattern != null) {
-                                Pattern pattern = Pattern.compile(validationPattern);
-                                Matcher m = pattern.matcher(alias);
+                                var pattern = Pattern.compile(validationPattern);
+                                var m = pattern.matcher(alias);
                                 
                                 if(m.matches()) {
                                     patternMatches = true;
@@ -4141,11 +4141,11 @@ public class GeoControl
     }
     
     private String getAliasForCountry(GeoCode countryGeoCode, GeoCodeType geoCodeType, GeoCodeAliasType geoCodeAliasType) {
-        GeoCodeAlias geoCodeAlias = getGeoCodeAlias(countryGeoCode, geoCodeAliasType);
-        String countryAlias = geoCodeAlias == null? null: geoCodeAlias.getAlias();
+        var geoCodeAlias = getGeoCodeAlias(countryGeoCode, geoCodeAliasType);
+        var countryAlias = geoCodeAlias == null? null: geoCodeAlias.getAlias();
         
         if(countryAlias == null) {
-            List<GeoCodeAliasType> geoCodeAliasTypes = getGeoCodeAliasTypesExceptDefault(geoCodeType);
+            var geoCodeAliasTypes = getGeoCodeAliasTypesExceptDefault(geoCodeType);
             
             for(var loopGeoCodeAliasType : geoCodeAliasTypes) {
                 geoCodeAlias = getGeoCodeAlias(countryGeoCode, loopGeoCodeAliasType);
@@ -4161,30 +4161,30 @@ public class GeoControl
     }
     
     public String getAliasForCountry(GeoCode countryGeoCode) {
-        GeoCodeType geoCodeType = countryGeoCode.getLastDetail().getGeoCodeType();
-        GeoCodeAliasType geoCodeAliasType = getDefaultGeoCodeAliasType(geoCodeType);
+        var geoCodeType = countryGeoCode.getLastDetail().getGeoCodeType();
+        var geoCodeAliasType = getDefaultGeoCodeAliasType(geoCodeType);
         
         return getAliasForCountry(countryGeoCode, geoCodeType, geoCodeAliasType);
     }
     
     public GeoCode getPostalCodeByAlias(GeoCode countryGeoCode, String postalCodeAlias) {
-        GeoCodeAliasType countryGeoCodeAliasType = getGeoCodeAliasTypeByName(countryGeoCode.getLastDetail().getGeoCodeType(),
+        var countryGeoCodeAliasType = getGeoCodeAliasTypeByName(countryGeoCode.getLastDetail().getGeoCodeType(),
                 GeoConstants.GeoCodeAliasType_ISO_2_LETTER);
-        GeoCodeAlias countryGeoCodeAlias = getGeoCodeAlias(countryGeoCode, countryGeoCodeAliasType);
-        String countryIso2Letter = countryGeoCodeAlias.getAlias();
-        String geoCodeScopeName = countryIso2Letter + "_ZIP_CODES";
+        var countryGeoCodeAlias = getGeoCodeAlias(countryGeoCode, countryGeoCodeAliasType);
+        var countryIso2Letter = countryGeoCodeAlias.getAlias();
+        var geoCodeScopeName = countryIso2Letter + "_ZIP_CODES";
         
         return getGeoCodeByTypeScopeAndAlias(GeoConstants.GeoCodeType_ZIP_CODE, geoCodeScopeName, postalCodeAlias);
     }
     
     public String getAliasForPostalCode(GeoCode postalCodeGeoCode) {
-        GeoCodeType geoCodeType = postalCodeGeoCode.getLastDetail().getGeoCodeType();
-        GeoCodeAliasType geoCodeAliasType = getDefaultGeoCodeAliasType(geoCodeType);
-        GeoCodeAlias geoCodeAlias = getGeoCodeAlias(postalCodeGeoCode, geoCodeAliasType);
-        String postalCodeAlias = geoCodeAlias == null? null: geoCodeAlias.getAlias();
+        var geoCodeType = postalCodeGeoCode.getLastDetail().getGeoCodeType();
+        var geoCodeAliasType = getDefaultGeoCodeAliasType(geoCodeType);
+        var geoCodeAlias = getGeoCodeAlias(postalCodeGeoCode, geoCodeAliasType);
+        var postalCodeAlias = geoCodeAlias == null? null: geoCodeAlias.getAlias();
         
         if(postalCodeAlias == null) {
-            List<GeoCodeAliasType> geoCodeAliasTypes = getGeoCodeAliasTypesExceptDefault(geoCodeType);
+            var geoCodeAliasTypes = getGeoCodeAliasTypesExceptDefault(geoCodeType);
             
             for(var loopGeoCodeAliasType : geoCodeAliasTypes) {
                 geoCodeAlias = getGeoCodeAlias(postalCodeGeoCode, loopGeoCodeAliasType);
@@ -4200,23 +4200,23 @@ public class GeoControl
     }
     
     public GeoCode getStateByAlias(GeoCode countryGeoCode, String stateAlias) {
-        GeoCodeAliasType countryGeoCodeAliasType = getGeoCodeAliasTypeByName(countryGeoCode.getLastDetail().getGeoCodeType(),
+        var countryGeoCodeAliasType = getGeoCodeAliasTypeByName(countryGeoCode.getLastDetail().getGeoCodeType(),
                 GeoConstants.GeoCodeAliasType_ISO_2_LETTER);
-        GeoCodeAlias countryGeoCodeAlias = getGeoCodeAlias(countryGeoCode, countryGeoCodeAliasType);
-        String countryIso2Letter = countryGeoCodeAlias.getAlias();
-        String geoCodeScopeName = countryIso2Letter + "_STATES";
+        var countryGeoCodeAlias = getGeoCodeAlias(countryGeoCode, countryGeoCodeAliasType);
+        var countryIso2Letter = countryGeoCodeAlias.getAlias();
+        var geoCodeScopeName = countryIso2Letter + "_STATES";
         
         return getGeoCodeByTypeScopeAndAlias(GeoConstants.GeoCodeType_STATE, geoCodeScopeName, stateAlias);
     }
     
     public String getAliasForState(GeoCode stateGeoCode) {
-        GeoCodeType geoCodeType = stateGeoCode.getLastDetail().getGeoCodeType();
-        GeoCodeAliasType geoCodeAliasType = getDefaultGeoCodeAliasType(geoCodeType);
-        GeoCodeAlias geoCodeAlias = getGeoCodeAlias(stateGeoCode, geoCodeAliasType);
-        String stateAlias = geoCodeAlias == null? null: geoCodeAlias.getAlias();
+        var geoCodeType = stateGeoCode.getLastDetail().getGeoCodeType();
+        var geoCodeAliasType = getDefaultGeoCodeAliasType(geoCodeType);
+        var geoCodeAlias = getGeoCodeAlias(stateGeoCode, geoCodeAliasType);
+        var stateAlias = geoCodeAlias == null? null: geoCodeAlias.getAlias();
         
         if(stateAlias == null) {
-            List<GeoCodeAliasType> geoCodeAliasTypes = getGeoCodeAliasTypesExceptDefault(geoCodeType);
+            var geoCodeAliasTypes = getGeoCodeAliasTypesExceptDefault(geoCodeType);
             
             for(var loopGeoCodeAliasType : geoCodeAliasTypes) {
                 geoCodeAlias = getGeoCodeAlias(stateGeoCode, loopGeoCodeAliasType);
@@ -4232,36 +4232,36 @@ public class GeoControl
     }
     
     public GeoCode getCityByAlias(GeoCode stateGeoCode, String cityAlias) {
-        GeoCodeAliasType stateGeoCodeAliasType = getGeoCodeAliasTypeByName(stateGeoCode.getLastDetail().getGeoCodeType(),
+        var stateGeoCodeAliasType = getGeoCodeAliasTypeByName(stateGeoCode.getLastDetail().getGeoCodeType(),
                 GeoConstants.GeoCodeAliasType_POSTAL_2_LETTER);
-        GeoCodeAlias stateGeoCodeAlias = getGeoCodeAlias(stateGeoCode, stateGeoCodeAliasType);
-        String statePostal2Letter = stateGeoCodeAlias.getAlias();
-        
-        GeoCodeType countryGeoCodeType = getGeoCodeTypeByName(GeoConstants.GeoCodeType_COUNTRY);
-        List<GeoCodeRelationship> stateRelationships = getGeoCodeRelationshipsByFromGeoCodeAndGeoCodeType(stateGeoCode, countryGeoCodeType);
+        var stateGeoCodeAlias = getGeoCodeAlias(stateGeoCode, stateGeoCodeAliasType);
+        var statePostal2Letter = stateGeoCodeAlias.getAlias();
+
+        var countryGeoCodeType = getGeoCodeTypeByName(GeoConstants.GeoCodeType_COUNTRY);
+        var stateRelationships = getGeoCodeRelationshipsByFromGeoCodeAndGeoCodeType(stateGeoCode, countryGeoCodeType);
         if(stateRelationships.size() != 1) {
             getLog().error("non-1 stateRelationships.size()");
         }
-        GeoCode countryGeoCode = stateRelationships.iterator().next().getToGeoCode();
-        
-        GeoCodeAliasType countryGeoCodeAliasType = getGeoCodeAliasTypeByName(countryGeoCode.getLastDetail().getGeoCodeType(),
+        var countryGeoCode = stateRelationships.iterator().next().getToGeoCode();
+
+        var countryGeoCodeAliasType = getGeoCodeAliasTypeByName(countryGeoCode.getLastDetail().getGeoCodeType(),
                 GeoConstants.GeoCodeAliasType_ISO_2_LETTER);
-        GeoCodeAlias countryGeoCodeAlias = getGeoCodeAlias(countryGeoCode, countryGeoCodeAliasType);
-        String countryIso2Letter = countryGeoCodeAlias.getAlias();
-        
-        String geoCodeScopeName = countryIso2Letter + "_" + statePostal2Letter + "_CITIES";
+        var countryGeoCodeAlias = getGeoCodeAlias(countryGeoCode, countryGeoCodeAliasType);
+        var countryIso2Letter = countryGeoCodeAlias.getAlias();
+
+        var geoCodeScopeName = countryIso2Letter + "_" + statePostal2Letter + "_CITIES";
         
         return getGeoCodeByTypeScopeAndAlias(GeoConstants.GeoCodeType_CITY, geoCodeScopeName, cityAlias);
     }
     
     public String getAliasForCity(GeoCode cityGeoCode) {
-        GeoCodeType geoCodeType = cityGeoCode.getLastDetail().getGeoCodeType();
-        GeoCodeAliasType geoCodeAliasType = getDefaultGeoCodeAliasType(geoCodeType);
-        GeoCodeAlias geoCodeAlias = getGeoCodeAlias(cityGeoCode, geoCodeAliasType);
-        String cityAlias = geoCodeAlias == null? null: geoCodeAlias.getAlias();
+        var geoCodeType = cityGeoCode.getLastDetail().getGeoCodeType();
+        var geoCodeAliasType = getDefaultGeoCodeAliasType(geoCodeType);
+        var geoCodeAlias = getGeoCodeAlias(cityGeoCode, geoCodeAliasType);
+        var cityAlias = geoCodeAlias == null? null: geoCodeAlias.getAlias();
         
         if(cityAlias == null) {
-            List<GeoCodeAliasType> geoCodeAliasTypes = getGeoCodeAliasTypesExceptDefault(geoCodeType);
+            var geoCodeAliasTypes = getGeoCodeAliasTypesExceptDefault(geoCodeType);
             
             for(var loopGeoCodeAliasType : geoCodeAliasTypes) {
                 geoCodeAlias = getGeoCodeAlias(cityGeoCode, loopGeoCodeAliasType);

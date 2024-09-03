@@ -33,11 +33,11 @@ public class ItemImageTypeDescriptionTransferCache
     
     @Override
     public ItemImageTypeDescriptionTransfer getTransfer(ItemImageTypeDescription itemImageTypeDescription) {
-        ItemImageTypeDescriptionTransfer itemImageTypeDescriptionTransfer = get(itemImageTypeDescription);
+        var itemImageTypeDescriptionTransfer = get(itemImageTypeDescription);
         
         if(itemImageTypeDescriptionTransfer == null) {
-            ItemImageTypeTransfer itemImageTypeTransfer = itemControl.getItemImageTypeTransfer(userVisit, itemImageTypeDescription.getItemImageType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, itemImageTypeDescription.getLanguage());
+            var itemImageTypeTransfer = itemControl.getItemImageTypeTransfer(userVisit, itemImageTypeDescription.getItemImageType());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, itemImageTypeDescription.getLanguage());
             
             itemImageTypeDescriptionTransfer = new ItemImageTypeDescriptionTransfer(languageTransfer, itemImageTypeTransfer, itemImageTypeDescription.getDescription());
             put(itemImageTypeDescription, itemImageTypeDescriptionTransfer);

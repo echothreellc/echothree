@@ -96,18 +96,18 @@ public class EditTaxClassificationTranslationCommand
     public TaxClassificationTranslation getEntity(EditTaxClassificationTranslationResult result) {
         var geoControl = Session.getModelController(GeoControl.class);
         TaxClassificationTranslation taxClassificationTranslation = null;
-        String countryName = spec.getCountryName();
-        GeoCode countryGeoCode = geoControl.getCountryByAlias(countryName);
+        var countryName = spec.getCountryName();
+        var countryGeoCode = geoControl.getCountryByAlias(countryName);
 
         if(countryGeoCode != null) {
             var taxControl = Session.getModelController(TaxControl.class);
-            String taxClassificationName = spec.getTaxClassificationName();
-            TaxClassification taxClassification = taxControl.getTaxClassificationByName(countryGeoCode, taxClassificationName);
+            var taxClassificationName = spec.getTaxClassificationName();
+            var taxClassification = taxControl.getTaxClassificationByName(countryGeoCode, taxClassificationName);
 
             if(taxClassification != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = spec.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = spec.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                 if(language != null) {
                     if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -157,8 +157,8 @@ public class EditTaxClassificationTranslationCommand
 
     @Override
     protected void canUpdate(TaxClassificationTranslation taxClassificationTranslation) {
-        String overviewMimeTypeName = edit.getOverviewMimeTypeName();
-        String overview = edit.getOverview();
+        var overviewMimeTypeName = edit.getOverviewMimeTypeName();
+        var overview = edit.getOverview();
         
         overviewMimeType = MimeTypeLogic.getInstance().checkMimeType(this, overviewMimeTypeName, overview, MimeTypeUsageTypes.TEXT.name(),
                 ExecutionErrors.MissingRequiredOverviewMimeTypeName.name(), ExecutionErrors.MissingRequiredOverview.name(),
@@ -168,7 +168,7 @@ public class EditTaxClassificationTranslationCommand
     @Override
     public void doUpdate(TaxClassificationTranslation taxClassificationTranslation) {
         var taxControl = Session.getModelController(TaxControl.class);
-        TaxClassificationTranslationValue taxClassificationTranslationValue = taxControl.getTaxClassificationTranslationValue(taxClassificationTranslation);
+        var taxClassificationTranslationValue = taxControl.getTaxClassificationTranslationValue(taxClassificationTranslation);
 
         taxClassificationTranslationValue.setDescription(edit.getDescription());
         taxClassificationTranslationValue.setOverviewMimeTypePK(overviewMimeType == null ? null : overviewMimeType.getPrimaryKey());

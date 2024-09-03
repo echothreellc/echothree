@@ -63,8 +63,8 @@ public class DeleteSelectorKindCommand
     @Override
     protected BaseResult execute() {
         var selectorControl = Session.getModelController(SelectorControl.class);
-        String selectorKindName = form.getSelectorKindName();
-        SelectorKind selectorKind = selectorControl.getSelectorKindByNameForUpdate(selectorKindName);
+        var selectorKindName = form.getSelectorKindName();
+        var selectorKind = selectorControl.getSelectorKindByNameForUpdate(selectorKindName);
         
         if(selectorKind != null) {
             selectorControl.deleteSelectorKind(selectorKind, getPartyPK());

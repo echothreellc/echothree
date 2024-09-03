@@ -32,11 +32,11 @@ public class ContactListFrequencyDescriptionTransferCache
     }
     
     public ContactListFrequencyDescriptionTransfer getContactListFrequencyDescriptionTransfer(ContactListFrequencyDescription contactListFrequencyDescription) {
-        ContactListFrequencyDescriptionTransfer contactListFrequencyDescriptionTransfer = get(contactListFrequencyDescription);
+        var contactListFrequencyDescriptionTransfer = get(contactListFrequencyDescription);
         
         if(contactListFrequencyDescriptionTransfer == null) {
-            ContactListFrequencyTransfer contactListFrequencyTransfer = contactListControl.getContactListFrequencyTransfer(userVisit, contactListFrequencyDescription.getContactListFrequency());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, contactListFrequencyDescription.getLanguage());
+            var contactListFrequencyTransfer = contactListControl.getContactListFrequencyTransfer(userVisit, contactListFrequencyDescription.getContactListFrequency());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, contactListFrequencyDescription.getLanguage());
             
             contactListFrequencyDescriptionTransfer = new ContactListFrequencyDescriptionTransfer(languageTransfer, contactListFrequencyTransfer, contactListFrequencyDescription.getDescription());
             put(contactListFrequencyDescription, contactListFrequencyDescriptionTransfer);

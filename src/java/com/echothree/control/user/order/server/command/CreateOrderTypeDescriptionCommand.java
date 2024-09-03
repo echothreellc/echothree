@@ -72,11 +72,11 @@ public class CreateOrderTypeDescriptionCommand
         
         if(orderType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                OrderTypeDescription orderTypeDescription = orderTypeControl.getOrderTypeDescription(orderType, language);
+                var orderTypeDescription = orderTypeControl.getOrderTypeDescription(orderType, language);
                 
                 if(orderTypeDescription == null) {
                     var description = form.getDescription();

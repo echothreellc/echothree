@@ -58,10 +58,10 @@ public class ContentCategoryIndexer
     
     @Override
     protected Document convertToDocument(final EntityInstance entityInstance, final ContentCategory contentCategory) {
-        ContentCategoryDetail contentCategoryDetail = contentCategory.getLastDetail();
-        ContentCatalogDetail contentCatalogDetail = contentCategoryDetail.getContentCatalog().getLastDetail();
-        ContentCategory parentContentCategory = contentCategoryDetail.getParentContentCategory();
-        String description = contentControl.getBestContentCategoryDescription(contentCategory, language);
+        var contentCategoryDetail = contentCategory.getLastDetail();
+        var contentCatalogDetail = contentCategoryDetail.getContentCatalog().getLastDetail();
+        var parentContentCategory = contentCategoryDetail.getParentContentCategory();
+        var description = contentControl.getBestContentCategoryDescription(contentCategory, language);
 
         var document = newDocumentWithEntityInstanceFields(entityInstance, contentCategory.getPrimaryKey());
 

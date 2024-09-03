@@ -62,28 +62,28 @@ public class GetItemUnitPriceLimitCommand
     @Override
     protected BaseResult execute() {
         var itemControl = Session.getModelController(ItemControl.class);
-        GetItemUnitPriceLimitResult result = ItemResultFactory.getGetItemUnitPriceLimitResult();
-        String itemName = form.getItemName();
-        Item item = itemControl.getItemByName(itemName);
+        var result = ItemResultFactory.getGetItemUnitPriceLimitResult();
+        var itemName = form.getItemName();
+        var item = itemControl.getItemByName(itemName);
         
         if(item != null) {
             var inventoryControl = Session.getModelController(InventoryControl.class);
-            String inventoryConditionName = form.getInventoryConditionName();
-            InventoryCondition inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
+            var inventoryConditionName = form.getInventoryConditionName();
+            var inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
             
             if(inventoryCondition != null) {
                 var uomControl = Session.getModelController(UomControl.class);
-                String unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
-                UnitOfMeasureKind unitOfMeasureKind = item.getLastDetail().getUnitOfMeasureKind();
-                UnitOfMeasureType unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
+                var unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
+                var unitOfMeasureKind = item.getLastDetail().getUnitOfMeasureKind();
+                var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
                 
                 if(unitOfMeasureType != null) {
                     var accountingControl = Session.getModelController(AccountingControl.class);
-                    String currencyIsoName = form.getCurrencyIsoName();
-                    Currency currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
+                    var currencyIsoName = form.getCurrencyIsoName();
+                    var currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
                     
                     if(currency != null) {
-                        ItemUnitPriceLimit itemUnitPriceLimit = itemControl.getItemUnitPriceLimit(item, inventoryCondition, unitOfMeasureType, currency);
+                        var itemUnitPriceLimit = itemControl.getItemUnitPriceLimit(item, inventoryCondition, unitOfMeasureType, currency);
                         
                         if(itemUnitPriceLimit != null) {
                             result.setItemUnitPriceLimit(itemControl.getItemUnitPriceLimitTransfer(getUserVisit(), itemUnitPriceLimit));

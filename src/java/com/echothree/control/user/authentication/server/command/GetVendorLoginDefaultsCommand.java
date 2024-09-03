@@ -51,24 +51,24 @@ public class GetVendorLoginDefaultsCommand
     
     @Override
     protected BaseResult execute() {
-        GetVendorLoginDefaultsResult result = AuthenticationResultFactory.getGetVendorLoginDefaultsResult();
-        UserControl userControl = getUserControl();
-        UserSession userSession = userControl.getUserSessionByUserVisit(getUserVisit());
+        var result = AuthenticationResultFactory.getGetVendorLoginDefaultsResult();
+        var userControl = getUserControl();
+        var userSession = userControl.getUserSessionByUserVisit(getUserVisit());
         String username = null;
         
         if(userSession != null) {
-            Party party = userSession.getParty();
+            var party = userSession.getParty();
             
             if(party != null) {
                 if(party.getLastDetail().getPartyType().getPartyTypeName().equals(PartyTypes.VENDOR.name())) {
-                    UserLogin userLogin = userControl.getUserLogin(party);
+                    var userLogin = userControl.getUserLogin(party);
                     
                     username = userLogin.getUsername();
                 }
             }
         }
-        
-        VendorLoginForm vendorLoginForm = AuthenticationFormFactory.getVendorLoginForm();
+
+        var vendorLoginForm = AuthenticationFormFactory.getVendorLoginForm();
         vendorLoginForm.setUsername(username);
         result.setVendorLoginForm(vendorLoginForm);
         

@@ -52,15 +52,15 @@ public class DeleteTimeZoneDescriptionCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        String javaTimeZoneName = form.getJavaTimeZoneName();
-        TimeZone timeZone = partyControl.getTimeZoneByJavaName(javaTimeZoneName);
+        var javaTimeZoneName = form.getJavaTimeZoneName();
+        var timeZone = partyControl.getTimeZoneByJavaName(javaTimeZoneName);
         
         if(timeZone != null) {
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                TimeZoneDescription timeZoneDescription = partyControl.getTimeZoneDescriptionForUpdate(timeZone, language);
+                var timeZoneDescription = partyControl.getTimeZoneDescriptionForUpdate(timeZone, language);
                 
                 if(timeZoneDescription != null) {
                     partyControl.deleteTimeZoneDescription(timeZoneDescription, getPartyPK());

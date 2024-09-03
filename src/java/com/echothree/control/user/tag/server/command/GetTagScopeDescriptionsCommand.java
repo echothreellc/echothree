@@ -66,9 +66,9 @@ public class GetTagScopeDescriptionsCommand
     protected BaseResult execute() {
         var tagControl = Session.getModelController(TagControl.class);
 
-        GetTagScopeDescriptionsResult result = TagResultFactory.getGetTagScopeDescriptionsResult();
-        String tagScopeName = form.getTagScopeName();
-        TagScope tagScope = tagControl.getTagScopeByName(tagScopeName);
+        var result = TagResultFactory.getGetTagScopeDescriptionsResult();
+        var tagScopeName = form.getTagScopeName();
+        var tagScope = tagControl.getTagScopeByName(tagScopeName);
         
         if(tagScope != null) {
             result.setTagScope(tagControl.getTagScopeTransfer(getUserVisit(), tagScope));

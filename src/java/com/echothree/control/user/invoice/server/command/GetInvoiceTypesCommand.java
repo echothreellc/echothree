@@ -61,7 +61,7 @@ public class GetInvoiceTypesCommand
     @Override
     protected BaseResult execute() {
         var invoiceControl = Session.getModelController(InvoiceControl.class);
-        GetInvoiceTypesResult result = InvoiceResultFactory.getGetInvoiceTypesResult();
+        var result = InvoiceResultFactory.getGetInvoiceTypesResult();
         
         result.setInvoiceTypes(invoiceControl.getInvoiceTypeTransfers(getUserVisit()));
         

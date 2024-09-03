@@ -64,9 +64,9 @@ public class GetSourceChoicesCommand
     @Override
     protected BaseResult execute() {
         var sourceControl = Session.getModelController(SourceControl.class);
-        GetSourceChoicesResult result = OfferResultFactory.getGetSourceChoicesResult();
-        String defaultSourceChoice = form.getDefaultSourceChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = OfferResultFactory.getGetSourceChoicesResult();
+        var defaultSourceChoice = form.getDefaultSourceChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setSourceChoices(sourceControl.getSourceChoices(defaultSourceChoice, getPreferredLanguage(), allowNullChoice));
         

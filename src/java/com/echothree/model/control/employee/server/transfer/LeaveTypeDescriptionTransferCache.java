@@ -32,12 +32,12 @@ public class LeaveTypeDescriptionTransferCache
     }
     
     public LeaveTypeDescriptionTransfer getLeaveTypeDescriptionTransfer(LeaveTypeDescription leaveTypeDescription) {
-        LeaveTypeDescriptionTransfer leaveTypeDescriptionTransfer = get(leaveTypeDescription);
+        var leaveTypeDescriptionTransfer = get(leaveTypeDescription);
         
         if(leaveTypeDescriptionTransfer == null) {
-            LeaveTypeTransfer leaveTypeTransfer = employeeControl.getLeaveTypeTransfer(userVisit,
+            var leaveTypeTransfer = employeeControl.getLeaveTypeTransfer(userVisit,
                     leaveTypeDescription.getLeaveType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, leaveTypeDescription.getLanguage());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, leaveTypeDescription.getLanguage());
             
             leaveTypeDescriptionTransfer = new LeaveTypeDescriptionTransfer(languageTransfer, leaveTypeTransfer, leaveTypeDescription.getDescription());
             put(leaveTypeDescription, leaveTypeDescriptionTransfer);

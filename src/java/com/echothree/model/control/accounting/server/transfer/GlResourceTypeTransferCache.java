@@ -34,14 +34,14 @@ public class GlResourceTypeTransferCache
     
     @Override
     public GlResourceTypeTransfer getTransfer(GlResourceType glResourceType) {
-        GlResourceTypeTransfer glResourceTypeTransfer = get(glResourceType);
+        var glResourceTypeTransfer = get(glResourceType);
         
         if(glResourceTypeTransfer == null) {
-            GlResourceTypeDetail glResourceTypeDetail = glResourceType.getLastDetail();
-            String glResourceTypeName = glResourceTypeDetail.getGlResourceTypeName();
-            Boolean isDefault = glResourceTypeDetail.getIsDefault();
-            Integer sortOrder = glResourceTypeDetail.getSortOrder();
-            String description = accountingControl.getBestGlResourceTypeDescription(glResourceType, getLanguage());
+            var glResourceTypeDetail = glResourceType.getLastDetail();
+            var glResourceTypeName = glResourceTypeDetail.getGlResourceTypeName();
+            var isDefault = glResourceTypeDetail.getIsDefault();
+            var sortOrder = glResourceTypeDetail.getSortOrder();
+            var description = accountingControl.getBestGlResourceTypeDescription(glResourceType, getLanguage());
             
             glResourceTypeTransfer = new GlResourceTypeTransfer(glResourceTypeName, isDefault, sortOrder, description);
             put(glResourceType, glResourceTypeTransfer);

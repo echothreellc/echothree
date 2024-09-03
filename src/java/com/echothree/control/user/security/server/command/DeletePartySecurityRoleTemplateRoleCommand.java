@@ -69,19 +69,19 @@ public class DeletePartySecurityRoleTemplateRoleCommand
     @Override
     protected BaseResult execute() {
         var securityControl = Session.getModelController(SecurityControl.class);
-        String partySecurityRoleTemplateName = form.getPartySecurityRoleTemplateName();
-        PartySecurityRoleTemplate partySecurityRoleTemplate = securityControl.getPartySecurityRoleTemplateByName(partySecurityRoleTemplateName);
+        var partySecurityRoleTemplateName = form.getPartySecurityRoleTemplateName();
+        var partySecurityRoleTemplate = securityControl.getPartySecurityRoleTemplateByName(partySecurityRoleTemplateName);
         
         if(partySecurityRoleTemplate != null) {
-            String securityRoleGroupName = form.getSecurityRoleGroupName();
-            SecurityRoleGroup securityRoleGroup = securityControl.getSecurityRoleGroupByName(securityRoleGroupName);
+            var securityRoleGroupName = form.getSecurityRoleGroupName();
+            var securityRoleGroup = securityControl.getSecurityRoleGroupByName(securityRoleGroupName);
             
             if(securityRoleGroup != null) {
-                String securityRoleName = form.getSecurityRoleName();
-                SecurityRole securityRole = securityControl.getSecurityRoleByName(securityRoleGroup, securityRoleName);
+                var securityRoleName = form.getSecurityRoleName();
+                var securityRole = securityControl.getSecurityRoleByName(securityRoleGroup, securityRoleName);
                 
                 if(securityRole != null) {
-                    PartySecurityRoleTemplateRole partySecurityRoleTemplateRole = securityControl.getPartySecurityRoleTemplateRoleForUpdate(partySecurityRoleTemplate, securityRole);
+                    var partySecurityRoleTemplateRole = securityControl.getPartySecurityRoleTemplateRoleForUpdate(partySecurityRoleTemplate, securityRole);
                     
                     if(partySecurityRoleTemplateRole != null) {
                         PartySecurityRoleTemplateLogic.getInstance().deletePartySecurityRoleTemplateRole(partySecurityRoleTemplateRole, getPartyPK());

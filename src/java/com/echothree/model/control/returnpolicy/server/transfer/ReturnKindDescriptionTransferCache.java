@@ -32,11 +32,11 @@ public class ReturnKindDescriptionTransferCache
     }
     
     public ReturnKindDescriptionTransfer getReturnKindDescriptionTransfer(ReturnKindDescription returnKindDescription) {
-        ReturnKindDescriptionTransfer returnKindDescriptionTransfer = get(returnKindDescription);
+        var returnKindDescriptionTransfer = get(returnKindDescription);
         
         if(returnKindDescriptionTransfer == null) {
-            ReturnKindTransfer returnKindTransfer = returnPolicyControl.getReturnKindTransfer(userVisit, returnKindDescription.getReturnKind());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, returnKindDescription.getLanguage());
+            var returnKindTransfer = returnPolicyControl.getReturnKindTransfer(userVisit, returnKindDescription.getReturnKind());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, returnKindDescription.getLanguage());
             
             returnKindDescriptionTransfer = new ReturnKindDescriptionTransfer(languageTransfer, returnKindTransfer, returnKindDescription.getDescription());
             put(returnKindDescription, returnKindDescriptionTransfer);

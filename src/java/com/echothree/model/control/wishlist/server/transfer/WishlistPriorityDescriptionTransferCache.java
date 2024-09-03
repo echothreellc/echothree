@@ -32,11 +32,11 @@ public class WishlistPriorityDescriptionTransferCache
     }
     
     public WishlistPriorityDescriptionTransfer getWishlistPriorityDescriptionTransfer(WishlistPriorityDescription wishlistPriorityDescription) {
-        WishlistPriorityDescriptionTransfer wishlistPriorityDescriptionTransfer = get(wishlistPriorityDescription);
+        var wishlistPriorityDescriptionTransfer = get(wishlistPriorityDescription);
         
         if(wishlistPriorityDescriptionTransfer == null) {
-            WishlistPriorityTransfer wishlistPriorityTransfer = wishlistControl.getWishlistPriorityTransfer(userVisit, wishlistPriorityDescription.getWishlistPriority());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, wishlistPriorityDescription.getLanguage());
+            var wishlistPriorityTransfer = wishlistControl.getWishlistPriorityTransfer(userVisit, wishlistPriorityDescription.getWishlistPriority());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, wishlistPriorityDescription.getLanguage());
             
             wishlistPriorityDescriptionTransfer = new WishlistPriorityDescriptionTransfer(languageTransfer, wishlistPriorityTransfer, wishlistPriorityDescription.getDescription());
             put(wishlistPriorityDescription, wishlistPriorityDescriptionTransfer);

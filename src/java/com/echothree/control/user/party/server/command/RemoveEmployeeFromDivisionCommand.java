@@ -54,21 +54,21 @@ public class RemoveEmployeeFromDivisionCommand
     
     @Override
     protected BaseResult execute() {
-        String employeeName = form.getEmployeeName();
-        String partyName = form.getPartyName();
-        PartyEmployee partyEmployee = EmployeeLogic.getInstance().getPartyEmployeeByName(this, employeeName, partyName);
+        var employeeName = form.getEmployeeName();
+        var partyName = form.getPartyName();
+        var partyEmployee = EmployeeLogic.getInstance().getPartyEmployeeByName(this, employeeName, partyName);
 
         if(!hasExecutionErrors()) {
-            String companyName = form.getCompanyName();
-            PartyCompany partyCompany = CompanyLogic.getInstance().getPartyCompanyByName(this, companyName, null, null, false);
+            var companyName = form.getCompanyName();
+            var partyCompany = CompanyLogic.getInstance().getPartyCompanyByName(this, companyName, null, null, false);
 
             if(!hasExecutionErrors()) {
-                String divisionName = form.getDivisionName();
-                PartyDivision partyDivision = DivisionLogic.getInstance().getPartyDivisionByName(this, partyCompany == null ? null : partyCompany.getParty(), divisionName, null, null, true);
+                var divisionName = form.getDivisionName();
+                var partyDivision = DivisionLogic.getInstance().getPartyDivisionByName(this, partyCompany == null ? null : partyCompany.getParty(), divisionName, null, null, true);
 
                 if(!hasExecutionErrors()) {
-                    Party division = partyDivision.getParty();
-                    Party employee = partyEmployee.getParty();
+                    var division = partyDivision.getParty();
+                    var employee = partyEmployee.getParty();
 
                     PartyRelationshipLogic.getInstance().removeEmployeeFromDivision(this, division, employee, getPartyPK());
                 }

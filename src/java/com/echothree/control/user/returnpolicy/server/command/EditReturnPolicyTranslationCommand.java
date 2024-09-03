@@ -98,18 +98,18 @@ public class EditReturnPolicyTranslationCommand
     public ReturnPolicyTranslation getEntity(EditReturnPolicyTranslationResult result) {
         var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
         ReturnPolicyTranslation returnPolicyTranslation = null;
-        String returnKindName = spec.getReturnKindName();
+        var returnKindName = spec.getReturnKindName();
         
         returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
 
         if(returnKind != null) {
-            String returnPolicyName = spec.getReturnPolicyName();
-            ReturnPolicy returnPolicy = returnPolicyControl.getReturnPolicyByName(returnKind, returnPolicyName);
+            var returnPolicyName = spec.getReturnPolicyName();
+            var returnPolicy = returnPolicyControl.getReturnPolicyByName(returnKind, returnPolicyName);
 
             if(returnPolicy != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = spec.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = spec.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                 if(language != null) {
                     if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -160,9 +160,9 @@ public class EditReturnPolicyTranslationCommand
 
     @Override
     protected void canUpdate(ReturnPolicyTranslation returnPolicyTranslation) {
-        MimeTypeLogic mimeTypeLogic = MimeTypeLogic.getInstance();
-        String policyMimeTypeName = edit.getPolicyMimeTypeName();
-        String policy = edit.getPolicy();
+        var mimeTypeLogic = MimeTypeLogic.getInstance();
+        var policyMimeTypeName = edit.getPolicyMimeTypeName();
+        var policy = edit.getPolicy();
         
         policyMimeType = mimeTypeLogic.checkMimeType(this, policyMimeTypeName, policy, MimeTypeUsageTypes.TEXT.name(),
                 ExecutionErrors.MissingRequiredPolicyMimeTypeName.name(), ExecutionErrors.MissingRequiredPolicy.name(),
@@ -172,7 +172,7 @@ public class EditReturnPolicyTranslationCommand
     @Override
     public void doUpdate(ReturnPolicyTranslation returnPolicyTranslation) {
         var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
-        ReturnPolicyTranslationValue returnPolicyTranslationValue = returnPolicyControl.getReturnPolicyTranslationValue(returnPolicyTranslation);
+        var returnPolicyTranslationValue = returnPolicyControl.getReturnPolicyTranslationValue(returnPolicyTranslation);
         
         returnPolicyTranslationValue.setDescription(edit.getDescription());
         returnPolicyTranslationValue.setPolicyMimeTypePK(policyMimeType == null? null: policyMimeType.getPrimaryKey());

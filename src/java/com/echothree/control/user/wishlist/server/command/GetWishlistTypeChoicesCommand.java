@@ -57,9 +57,9 @@ public class GetWishlistTypeChoicesCommand
     @Override
     protected BaseResult execute() {
         var wishlistControl = Session.getModelController(WishlistControl.class);
-        GetWishlistTypeChoicesResult result = WishlistResultFactory.getGetWishlistTypeChoicesResult();
-        String defaultWishlistTypeChoice = form.getDefaultWishlistTypeChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = WishlistResultFactory.getGetWishlistTypeChoicesResult();
+        var defaultWishlistTypeChoice = form.getDefaultWishlistTypeChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setWishlistTypeChoices(wishlistControl.getWishlistTypeChoices(defaultWishlistTypeChoice,
                 getPreferredLanguage(), allowNullChoice));

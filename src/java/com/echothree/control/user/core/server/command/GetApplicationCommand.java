@@ -57,8 +57,8 @@ public class GetApplicationCommand
     
     @Override
     protected BaseResult execute() {
-        GetApplicationResult result = CoreResultFactory.getGetApplicationResult();
-        String applicationName = form.getApplicationName();
+        var result = CoreResultFactory.getGetApplicationResult();
+        var applicationName = form.getApplicationName();
         var parameterCount = (applicationName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {

@@ -107,7 +107,7 @@ public class GetOfferUsesCommand
         
         if(entities != null) {
             var offerUseControl = Session.getModelController(OfferUseControl.class);
-            UserVisit userVisit = getUserVisit();
+            var userVisit = getUserVisit();
 
             if(offer != null) {
                 var offerControl = Session.getModelController(OfferControl.class);

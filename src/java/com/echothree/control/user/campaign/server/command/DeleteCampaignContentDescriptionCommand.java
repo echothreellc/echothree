@@ -67,16 +67,16 @@ public class DeleteCampaignContentDescriptionCommand
     @Override
     protected BaseResult execute() {
         var campaignControl = Session.getModelController(CampaignControl.class);
-        String campaignContentName = form.getCampaignContentName();
-        CampaignContent campaignContent = campaignControl.getCampaignContentByName(campaignContentName);
+        var campaignContentName = form.getCampaignContentName();
+        var campaignContent = campaignControl.getCampaignContentByName(campaignContentName);
         
         if(campaignContent != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                CampaignContentDescription campaignContentDescription = campaignControl.getCampaignContentDescriptionForUpdate(campaignContent, language);
+                var campaignContentDescription = campaignControl.getCampaignContentDescriptionForUpdate(campaignContent, language);
                 
                 if(campaignContentDescription != null) {
                     campaignControl.deleteCampaignContentDescription(campaignContentDescription, getPartyPK());

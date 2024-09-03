@@ -32,12 +32,12 @@ public class TerminationTypeDescriptionTransferCache
     }
     
     public TerminationTypeDescriptionTransfer getTerminationTypeDescriptionTransfer(TerminationTypeDescription terminationTypeDescription) {
-        TerminationTypeDescriptionTransfer terminationTypeDescriptionTransfer = get(terminationTypeDescription);
+        var terminationTypeDescriptionTransfer = get(terminationTypeDescription);
         
         if(terminationTypeDescriptionTransfer == null) {
-            TerminationTypeTransfer terminationTypeTransfer = employeeControl.getTerminationTypeTransfer(userVisit,
+            var terminationTypeTransfer = employeeControl.getTerminationTypeTransfer(userVisit,
                     terminationTypeDescription.getTerminationType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, terminationTypeDescription.getLanguage());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, terminationTypeDescription.getLanguage());
             
             terminationTypeDescriptionTransfer = new TerminationTypeDescriptionTransfer(languageTransfer, terminationTypeTransfer, terminationTypeDescription.getDescription());
             put(terminationTypeDescription, terminationTypeDescriptionTransfer);

@@ -91,7 +91,7 @@ public class EditSearchSortDirectionCommand
     public SearchSortDirection getEntity(EditSearchSortDirectionResult result) {
         var searchControl = Session.getModelController(SearchControl.class);
         SearchSortDirection searchSortDirection;
-        String searchSortDirectionName = spec.getSearchSortDirectionName();
+        var searchSortDirectionName = spec.getSearchSortDirectionName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
             searchSortDirection = searchControl.getSearchSortDirectionByName(searchSortDirectionName);
@@ -121,8 +121,8 @@ public class EditSearchSortDirectionCommand
     @Override
     public void doLock(SearchSortDirectionEdit edit, SearchSortDirection searchSortDirection) {
         var searchControl = Session.getModelController(SearchControl.class);
-        SearchSortDirectionDescription searchSortDirectionDescription = searchControl.getSearchSortDirectionDescription(searchSortDirection, getPreferredLanguage());
-        SearchSortDirectionDetail searchSortDirectionDetail = searchSortDirection.getLastDetail();
+        var searchSortDirectionDescription = searchControl.getSearchSortDirectionDescription(searchSortDirection, getPreferredLanguage());
+        var searchSortDirectionDetail = searchSortDirection.getLastDetail();
 
         edit.setSearchSortDirectionName(searchSortDirectionDetail.getSearchSortDirectionName());
         edit.setIsDefault(searchSortDirectionDetail.getIsDefault().toString());
@@ -136,8 +136,8 @@ public class EditSearchSortDirectionCommand
     @Override
     public void canUpdate(SearchSortDirection searchSortDirection) {
         var searchControl = Session.getModelController(SearchControl.class);
-        String searchSortDirectionName = edit.getSearchSortDirectionName();
-        SearchSortDirection duplicateSearchSortDirection = searchControl.getSearchSortDirectionByName(searchSortDirectionName);
+        var searchSortDirectionName = edit.getSearchSortDirectionName();
+        var duplicateSearchSortDirection = searchControl.getSearchSortDirectionByName(searchSortDirectionName);
 
         if(duplicateSearchSortDirection != null && !searchSortDirection.equals(duplicateSearchSortDirection)) {
             addExecutionError(ExecutionErrors.DuplicateSearchSortDirectionName.name(), searchSortDirectionName);
@@ -148,9 +148,9 @@ public class EditSearchSortDirectionCommand
     public void doUpdate(SearchSortDirection searchSortDirection) {
         var searchControl = Session.getModelController(SearchControl.class);
         var partyPK = getPartyPK();
-        SearchSortDirectionDetailValue searchSortDirectionDetailValue = searchControl.getSearchSortDirectionDetailValueForUpdate(searchSortDirection);
-        SearchSortDirectionDescription searchSortDirectionDescription = searchControl.getSearchSortDirectionDescriptionForUpdate(searchSortDirection, getPreferredLanguage());
-        String description = edit.getDescription();
+        var searchSortDirectionDetailValue = searchControl.getSearchSortDirectionDetailValueForUpdate(searchSortDirection);
+        var searchSortDirectionDescription = searchControl.getSearchSortDirectionDescriptionForUpdate(searchSortDirection, getPreferredLanguage());
+        var description = edit.getDescription();
 
         searchSortDirectionDetailValue.setSearchSortDirectionName(edit.getSearchSortDirectionName());
         searchSortDirectionDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
@@ -165,7 +165,7 @@ public class EditSearchSortDirectionCommand
                 searchControl.deleteSearchSortDirectionDescription(searchSortDirectionDescription, partyPK);
             } else {
                 if(searchSortDirectionDescription != null && description != null) {
-                    SearchSortDirectionDescriptionValue searchSortDirectionDescriptionValue = searchControl.getSearchSortDirectionDescriptionValue(searchSortDirectionDescription);
+                    var searchSortDirectionDescriptionValue = searchControl.getSearchSortDirectionDescriptionValue(searchSortDirectionDescription);
 
                     searchSortDirectionDescriptionValue.setDescription(description);
                     searchControl.updateSearchSortDirectionDescriptionFromValue(searchSortDirectionDescriptionValue, partyPK);

@@ -93,19 +93,19 @@ public class EditLetterSourceCommand
     @Override
     protected BaseResult execute() {
         var letterControl = Session.getModelController(LetterControl.class);
-        EditLetterSourceResult result = LetterResultFactory.getEditLetterSourceResult();
+        var result = LetterResultFactory.getEditLetterSourceResult();
         
         if(editMode.equals(EditMode.LOCK)) {
-            String letterSourceName = spec.getLetterSourceName();
-            LetterSource letterSource = letterControl.getLetterSourceByName(letterSourceName);
+            var letterSourceName = spec.getLetterSourceName();
+            var letterSource = letterControl.getLetterSourceByName(letterSourceName);
             
             if(letterSource != null) {
                 result.setLetterSource(letterControl.getLetterSourceTransfer(getUserVisit(), letterSource));
                 
                 if(lockEntity(letterSource)) {
-                    LetterSourceDescription letterSourceDescription = letterControl.getLetterSourceDescription(letterSource, getPreferredLanguage());
-                    LetterSourceEdit edit = LetterEditFactory.getLetterSourceEdit();
-                    LetterSourceDetail letterSourceDetail = letterSource.getLastDetail();
+                    var letterSourceDescription = letterControl.getLetterSourceDescription(letterSource, getPreferredLanguage());
+                    var edit = LetterEditFactory.getLetterSourceEdit();
+                    var letterSourceDetail = letterSource.getLastDetail();
                     
                     result.setEdit(edit);
                     edit.setLetterSourceName(letterSourceDetail.getLetterSourceName());
@@ -126,35 +126,35 @@ public class EditLetterSourceCommand
                 addExecutionError(ExecutionErrors.UnknownLetterSourceName.name(), letterSourceName);
             }
         } else if(editMode.equals(EditMode.UPDATE)) {
-            String letterSourceName = spec.getLetterSourceName();
-            LetterSource letterSource = letterControl.getLetterSourceByNameForUpdate(letterSourceName);
+            var letterSourceName = spec.getLetterSourceName();
+            var letterSource = letterControl.getLetterSourceByNameForUpdate(letterSourceName);
             
             if(letterSource != null) {
                 letterSourceName = edit.getLetterSourceName();
-                LetterSource duplicateLetterSource = letterControl.getLetterSourceByName(letterSourceName);
+                var duplicateLetterSource = letterControl.getLetterSourceByName(letterSourceName);
                 
                 if(duplicateLetterSource == null || letterSource.equals(duplicateLetterSource)) {
                     var contactControl = Session.getModelController(ContactControl.class);
-                    Party companyParty = letterSource.getLastDetail().getCompanyParty();
-                    LetterSourceCommandUtil letterSourceCommandUtil = LetterSourceCommandUtil.getInstance();
-                    PartyContactMechanism emailAddressPartyContactMechanism = letterSourceCommandUtil.getEmailAddressContactMechanism(this, edit, contactControl,
+                    var companyParty = letterSource.getLastDetail().getCompanyParty();
+                    var letterSourceCommandUtil = LetterSourceCommandUtil.getInstance();
+                    var emailAddressPartyContactMechanism = letterSourceCommandUtil.getEmailAddressContactMechanism(this, edit, contactControl,
                             companyParty);
                     
                     if(!hasExecutionErrors()) {
-                        PartyContactMechanism postalAddressPartyContactMechanism = letterSourceCommandUtil.getPostalAddressContactMechanism(this, edit,
+                        var postalAddressPartyContactMechanism = letterSourceCommandUtil.getPostalAddressContactMechanism(this, edit,
                                 contactControl, companyParty);
                         
                         if(!hasExecutionErrors()) {
-                            PartyContactMechanism letterSourcePartyContactMechanism = letterSourceCommandUtil.getLetterSourceContactMechanism(this, edit,
+                            var letterSourcePartyContactMechanism = letterSourceCommandUtil.getLetterSourceContactMechanism(this, edit,
                                     contactControl, companyParty);
                             
                             if(!hasExecutionErrors()) {
                                 if(lockEntityForUpdate(letterSource)) {
                                     try {
                                         var partyPK = getPartyPK();
-                                        LetterSourceDetailValue letterSourceDetailValue = letterControl.getLetterSourceDetailValueForUpdate(letterSource);
-                                        LetterSourceDescription letterSourceDescription = letterControl.getLetterSourceDescriptionForUpdate(letterSource, getPreferredLanguage());
-                                        String description = edit.getDescription();
+                                        var letterSourceDetailValue = letterControl.getLetterSourceDetailValueForUpdate(letterSource);
+                                        var letterSourceDescription = letterControl.getLetterSourceDescriptionForUpdate(letterSource, getPreferredLanguage());
+                                        var description = edit.getDescription();
                                         
                                         letterSourceDetailValue.setLetterSourceName(edit.getLetterSourceName());
                                         letterSourceDetailValue.setEmailAddressPartyContactMechanismPK(emailAddressPartyContactMechanism.getPrimaryKey());
@@ -170,7 +170,7 @@ public class EditLetterSourceCommand
                                         } else if(letterSourceDescription != null && description == null) {
                                             letterControl.deleteLetterSourceDescription(letterSourceDescription, partyPK);
                                         } else if(letterSourceDescription != null && description != null) {
-                                            LetterSourceDescriptionValue letterSourceDescriptionValue = letterControl.getLetterSourceDescriptionValue(letterSourceDescription);
+                                            var letterSourceDescriptionValue = letterControl.getLetterSourceDescriptionValue(letterSourceDescription);
                                             
                                             letterSourceDescriptionValue.setDescription(description);
                                             letterControl.updateLetterSourceDescriptionFromValue(letterSourceDescriptionValue, partyPK);

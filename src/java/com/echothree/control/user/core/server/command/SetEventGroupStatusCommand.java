@@ -48,11 +48,11 @@ public class SetEventGroupStatusCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String eventGroupName = form.getEventGroupName();
-        EventGroup eventGroup = coreControl.getEventGroupByName(eventGroupName);
+        var eventGroupName = form.getEventGroupName();
+        var eventGroup = coreControl.getEventGroupByName(eventGroupName);
         
         if(eventGroup != null) {
-            String eventGroupStatusChoice = form.getEventGroupStatusChoice();
+            var eventGroupStatusChoice = form.getEventGroupStatusChoice();
             
             coreControl.setEventGroupStatus(this, eventGroup, eventGroupStatusChoice, getPartyPK());
         } else {

@@ -69,11 +69,11 @@ public class OrderNameTranslator
     }
     
     private EntityNames getNames(final Map<String, String> targetMap, final String key, final OrderDetail orderDetail) {
-        String target = targetMap.get(key);
+        var target = targetMap.get(key);
         EntityNames result = null;
 
         if(target != null) {
-            MapWrapper<String> names = new MapWrapper<>(1);
+            var names = new MapWrapper<String>(1);
 
             names.put(Names.OrderName.name(), orderDetail.getOrderName());
 
@@ -105,7 +105,7 @@ public class OrderNameTranslator
 
             if(order != null) {
                 var coreControl = Session.getModelController(CoreControl.class);
-                EntityNames entityNames = getNames(sequenceTypesToTargets, sequenceTypeName, order.getLastDetail());
+                var entityNames = getNames(sequenceTypesToTargets, sequenceTypeName, order.getLastDetail());
             
                 result = entityNames == null ? null : new EntityInstanceAndNames(includeEntityInstance ? coreControl.getEntityInstanceByBasePK(order.getPrimaryKey()) : null, entityNames);
             }

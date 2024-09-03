@@ -75,13 +75,13 @@ public class EditForumMimeTypeCommand
     public ForumMimeType getEntity(EditForumMimeTypeResult result) {
         var forumControl = Session.getModelController(ForumControl.class);
         ForumMimeType forumMimeType = null;
-        String forumName = spec.getForumName();
-        Forum forum = forumControl.getForumByName(forumName);
+        var forumName = spec.getForumName();
+        var forum = forumControl.getForumByName(forumName);
 
         if(forum != null) {
             var coreControl = getCoreControl();
-            String mimeTypeName = spec.getMimeTypeName();
-            MimeType mimeType = coreControl.getMimeTypeByName(mimeTypeName);
+            var mimeTypeName = spec.getMimeTypeName();
+            var mimeType = coreControl.getMimeTypeByName(mimeTypeName);
 
             if(mimeType != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -124,7 +124,7 @@ public class EditForumMimeTypeCommand
     @Override
     public void doUpdate(ForumMimeType forumMimeType) {
         var forumControl = Session.getModelController(ForumControl.class);
-        ForumMimeTypeValue forumMimeTypeValue = forumControl.getForumMimeTypeValue(forumMimeType);
+        var forumMimeTypeValue = forumControl.getForumMimeTypeValue(forumMimeType);
 
         forumMimeTypeValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
         forumMimeTypeValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));

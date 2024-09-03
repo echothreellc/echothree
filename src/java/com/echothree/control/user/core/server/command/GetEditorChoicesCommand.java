@@ -61,9 +61,9 @@ public class GetEditorChoicesCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        GetEditorChoicesResult result = CoreResultFactory.getGetEditorChoicesResult();
-        String defaultEditorChoice = form.getDefaultEditorChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = CoreResultFactory.getGetEditorChoicesResult();
+        var defaultEditorChoice = form.getDefaultEditorChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setEditorChoices(coreControl.getEditorChoices(defaultEditorChoice, getPreferredLanguage(), allowNullChoice));
         

@@ -35,11 +35,11 @@ public class ColorDescriptionTransferCache
     }
     
     public ColorDescriptionTransfer getColorDescriptionTransfer(ColorDescription colorDescription) {
-        ColorDescriptionTransfer colorDescriptionTransfer = get(colorDescription);
+        var colorDescriptionTransfer = get(colorDescription);
         
         if(colorDescriptionTransfer == null) {
-            ColorTransfer colorTransfer = coreControl.getColorTransfer(userVisit, colorDescription.getColor());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, colorDescription.getLanguage());
+            var colorTransfer = coreControl.getColorTransfer(userVisit, colorDescription.getColor());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, colorDescription.getLanguage());
             
             colorDescriptionTransfer = new ColorDescriptionTransfer(languageTransfer, colorTransfer, colorDescription.getDescription());
             put(colorDescription, colorDescriptionTransfer);

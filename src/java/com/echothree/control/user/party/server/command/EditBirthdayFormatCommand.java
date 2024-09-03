@@ -91,7 +91,7 @@ public class EditBirthdayFormatCommand
     public BirthdayFormat getEntity(EditBirthdayFormatResult result) {
         var partyControl = Session.getModelController(PartyControl.class);
         BirthdayFormat birthdayFormat = null;
-        String birthdayFormatName = spec.getBirthdayFormatName();
+        var birthdayFormatName = spec.getBirthdayFormatName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
             birthdayFormat = partyControl.getBirthdayFormatByName(birthdayFormatName);
@@ -123,8 +123,8 @@ public class EditBirthdayFormatCommand
     @Override
     public void doLock(BirthdayFormatEdit edit, BirthdayFormat birthdayFormat) {
         var partyControl = Session.getModelController(PartyControl.class);
-        BirthdayFormatDescription birthdayFormatDescription = partyControl.getBirthdayFormatDescription(birthdayFormat, getPreferredLanguage());
-        BirthdayFormatDetail birthdayFormatDetail = birthdayFormat.getLastDetail();
+        var birthdayFormatDescription = partyControl.getBirthdayFormatDescription(birthdayFormat, getPreferredLanguage());
+        var birthdayFormatDetail = birthdayFormat.getLastDetail();
 
         edit.setBirthdayFormatName(birthdayFormatDetail.getBirthdayFormatName());
         edit.setIsDefault(birthdayFormatDetail.getIsDefault().toString());
@@ -138,8 +138,8 @@ public class EditBirthdayFormatCommand
     @Override
     public void canUpdate(BirthdayFormat birthdayFormat) {
         var partyControl = Session.getModelController(PartyControl.class);
-        String birthdayFormatName = edit.getBirthdayFormatName();
-        BirthdayFormat duplicateBirthdayFormat = partyControl.getBirthdayFormatByName(birthdayFormatName);
+        var birthdayFormatName = edit.getBirthdayFormatName();
+        var duplicateBirthdayFormat = partyControl.getBirthdayFormatByName(birthdayFormatName);
 
         if(duplicateBirthdayFormat != null && !birthdayFormat.equals(duplicateBirthdayFormat)) {
             addExecutionError(ExecutionErrors.DuplicateBirthdayFormatName.name(), birthdayFormatName);
@@ -150,9 +150,9 @@ public class EditBirthdayFormatCommand
     public void doUpdate(BirthdayFormat birthdayFormat) {
         var partyControl = Session.getModelController(PartyControl.class);
         var partyPK = getPartyPK();
-        BirthdayFormatDetailValue birthdayFormatDetailValue = partyControl.getBirthdayFormatDetailValueForUpdate(birthdayFormat);
-        BirthdayFormatDescription birthdayFormatDescription = partyControl.getBirthdayFormatDescriptionForUpdate(birthdayFormat, getPreferredLanguage());
-        String description = edit.getDescription();
+        var birthdayFormatDetailValue = partyControl.getBirthdayFormatDetailValueForUpdate(birthdayFormat);
+        var birthdayFormatDescription = partyControl.getBirthdayFormatDescriptionForUpdate(birthdayFormat, getPreferredLanguage());
+        var description = edit.getDescription();
 
         birthdayFormatDetailValue.setBirthdayFormatName(edit.getBirthdayFormatName());
         birthdayFormatDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
@@ -165,7 +165,7 @@ public class EditBirthdayFormatCommand
         } else if(birthdayFormatDescription != null && description == null) {
             partyControl.deleteBirthdayFormatDescription(birthdayFormatDescription, partyPK);
         } else if(birthdayFormatDescription != null && description != null) {
-            BirthdayFormatDescriptionValue birthdayFormatDescriptionValue = partyControl.getBirthdayFormatDescriptionValue(birthdayFormatDescription);
+            var birthdayFormatDescriptionValue = partyControl.getBirthdayFormatDescriptionValue(birthdayFormatDescription);
 
             birthdayFormatDescriptionValue.setDescription(description);
             partyControl.updateBirthdayFormatDescriptionFromValue(birthdayFormatDescriptionValue, partyPK);

@@ -70,28 +70,28 @@ public class GetEntityAttributeEntityTypeCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        GetEntityAttributeEntityTypeResult result = CoreResultFactory.getGetEntityAttributeEntityTypeResult();
-        String componentVendorName = form.getComponentVendorName();
-        ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+        var result = CoreResultFactory.getGetEntityAttributeEntityTypeResult();
+        var componentVendorName = form.getComponentVendorName();
+        var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
 
         if(componentVendor != null) {
-            String entityTypeName = form.getEntityTypeName();
-            EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+            var entityTypeName = form.getEntityTypeName();
+            var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
 
             if(entityType != null) {
-                String entityAttributeName = form.getEntityAttributeName();
-                EntityAttribute entityAttribute = coreControl.getEntityAttributeByName(entityType, entityAttributeName);
+                var entityAttributeName = form.getEntityAttributeName();
+                var entityAttribute = coreControl.getEntityAttributeByName(entityType, entityAttributeName);
 
                 if(entityAttribute != null) {
-                    String allowedComponentVendorName = form.getAllowedComponentVendorName();
-                    ComponentVendor allowedComponentVendor = coreControl.getComponentVendorByName(allowedComponentVendorName);
+                    var allowedComponentVendorName = form.getAllowedComponentVendorName();
+                    var allowedComponentVendor = coreControl.getComponentVendorByName(allowedComponentVendorName);
 
                     if(allowedComponentVendor != null) {
-                        String allowedEntityTypeName = form.getAllowedEntityTypeName();
-                        EntityType allowedEntityType = coreControl.getEntityTypeByName(allowedComponentVendor, allowedEntityTypeName);
+                        var allowedEntityTypeName = form.getAllowedEntityTypeName();
+                        var allowedEntityType = coreControl.getEntityTypeByName(allowedComponentVendor, allowedEntityTypeName);
 
                         if(allowedEntityType != null) {
-                            EntityAttributeEntityType entityAttributeEntityType = coreControl.getEntityAttributeEntityType(entityAttribute, allowedEntityType);
+                            var entityAttributeEntityType = coreControl.getEntityAttributeEntityType(entityAttribute, allowedEntityType);
 
                             if(entityAttributeEntityType != null) {
                                 result.setEntityAttributeEntityType(coreControl.getEntityAttributeEntityTypeTransfer(getUserVisit(), entityAttributeEntityType, null));

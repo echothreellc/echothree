@@ -34,7 +34,7 @@ public class UrlFieldType
     
     @Override
     public String validate() {
-        boolean hadErrors = false;
+        var hadErrors = false;
         
         try {
             new URL(fieldValue);

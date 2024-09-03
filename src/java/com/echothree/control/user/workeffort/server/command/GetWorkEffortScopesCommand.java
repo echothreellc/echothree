@@ -52,12 +52,12 @@ public class GetWorkEffortScopesCommand
     @Override
     protected BaseResult execute() {
         var workEffortControl = Session.getModelController(WorkEffortControl.class);
-        GetWorkEffortScopesResult result = WorkEffortResultFactory.getGetWorkEffortScopesResult();
-        String workEffortTypeName = form.getWorkEffortTypeName();
-        WorkEffortType workEffortType = workEffortControl.getWorkEffortTypeByName(workEffortTypeName);
+        var result = WorkEffortResultFactory.getGetWorkEffortScopesResult();
+        var workEffortTypeName = form.getWorkEffortTypeName();
+        var workEffortType = workEffortControl.getWorkEffortTypeByName(workEffortTypeName);
         
         if(workEffortType != null) {
-            UserVisit userVisit = getUserVisit();
+            var userVisit = getUserVisit();
             
             result.setWorkEffortType(workEffortControl.getWorkEffortTypeTransfer(userVisit, workEffortType));
             result.setWorkEffortScopes(workEffortControl.getWorkEffortScopeTransfers(userVisit, workEffortType));

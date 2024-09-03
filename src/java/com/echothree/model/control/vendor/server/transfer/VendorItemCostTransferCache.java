@@ -47,15 +47,15 @@ public class VendorItemCostTransferCache
     }
     
     public VendorItemCostTransfer getVendorItemCostTransfer(VendorItemCost vendorItemCost) {
-        VendorItemCostTransfer vendorItemCostTransfer = get(vendorItemCost);
+        var vendorItemCostTransfer = get(vendorItemCost);
         
         if(vendorItemCostTransfer == null) {
-            VendorItem vendorItem = vendorItemCost.getVendorItem();
-            VendorItemTransfer vendorItemTransfer = vendorControl.getVendorItemTransfer(userVisit, vendorItem);
-            InventoryConditionTransfer inventoryConditionTransfer = inventoryControl.getInventoryConditionTransfer(userVisit, vendorItemCost.getInventoryCondition());
-            UnitOfMeasureTypeTransfer unitOfMeasureTypeTransfer = uomControl.getUnitOfMeasureTypeTransfer(userVisit, vendorItemCost.getUnitOfMeasureType());
-            Long unformattedUnitCost = vendorItemCost.getUnitCost();
-            String unitCost = AmountUtils.getInstance().formatCostUnit(partyControl.getPreferredCurrency(vendorItem.getLastDetail().getVendorParty()),
+            var vendorItem = vendorItemCost.getVendorItem();
+            var vendorItemTransfer = vendorControl.getVendorItemTransfer(userVisit, vendorItem);
+            var inventoryConditionTransfer = inventoryControl.getInventoryConditionTransfer(userVisit, vendorItemCost.getInventoryCondition());
+            var unitOfMeasureTypeTransfer = uomControl.getUnitOfMeasureTypeTransfer(userVisit, vendorItemCost.getUnitOfMeasureType());
+            var unformattedUnitCost = vendorItemCost.getUnitCost();
+            var unitCost = AmountUtils.getInstance().formatCostUnit(partyControl.getPreferredCurrency(vendorItem.getLastDetail().getVendorParty()),
                     unformattedUnitCost);
             
             vendorItemCostTransfer = new VendorItemCostTransfer(vendorItemTransfer, inventoryConditionTransfer, unitOfMeasureTypeTransfer, unformattedUnitCost,

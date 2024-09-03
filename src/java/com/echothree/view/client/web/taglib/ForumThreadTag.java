@@ -124,7 +124,7 @@ public class ForumThreadTag
     @Override
     public int doStartTag() throws JspException {
         try {
-            GetForumThreadForm commandForm = ForumUtil.getHome().getGetForumThreadForm();
+            var commandForm = ForumUtil.getHome().getGetForumThreadForm();
             Map<String, Limit> limits = new HashMap<>();
             
             commandForm.setForumThreadName(forumThreadName);
@@ -137,8 +137,8 @@ public class ForumThreadTag
                 limits.put(ForumMessageConstants.ENTITY_TYPE_NAME, new Limit(forumMessageCount, forumMessageOffset));
             }
             commandForm.setLimits(limits);
-            
-            CommandResult commandResult = ForumUtil.getHome().getForumThread(getUserVisitPK(), commandForm);
+
+            var commandResult = ForumUtil.getHome().getForumThread(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -146,8 +146,8 @@ public class ForumThreadTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetForumThreadResult result = (GetForumThreadResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetForumThreadResult)executionResult.getResult();
 
                 pageContext.setAttribute(var, result.getForumThread(), scope);
             }

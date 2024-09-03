@@ -76,7 +76,7 @@ public class GetItemCategoryCommand
     protected ItemCategory getEntity() {
         var itemControl = Session.getModelController(ItemControl.class);
         ItemCategory itemCategory = null;
-        String itemCategoryName = form.getItemCategoryName();
+        var itemCategoryName = form.getItemCategoryName();
         var parameterCount = (itemCategoryName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {
@@ -104,7 +104,7 @@ public class GetItemCategoryCommand
     @Override
     protected BaseResult getResult(ItemCategory itemCategory) {
         var itemControl = Session.getModelController(ItemControl.class);
-        GetItemCategoryResult result = ItemResultFactory.getGetItemCategoryResult();
+        var result = ItemResultFactory.getGetItemCategoryResult();
 
         if(itemCategory != null) {
             result.setItemCategory(itemControl.getItemCategoryTransfer(getUserVisit(), itemCategory));

@@ -57,12 +57,12 @@ public class SetPurchaseInvoiceStatusCommand
     
     @Override
     protected BaseResult execute() {
-        PurchaseInvoiceLogic purchaseInvoiceLogic = PurchaseInvoiceLogic.getInstance();
-        String invoiceName = form.getInvoiceName();
-        Invoice invoice = purchaseInvoiceLogic.getInvoiceByName(invoiceName);
+        var purchaseInvoiceLogic = PurchaseInvoiceLogic.getInstance();
+        var invoiceName = form.getInvoiceName();
+        var invoice = purchaseInvoiceLogic.getInvoiceByName(invoiceName);
         
         if(invoice != null) {
-            String invoiceStatusChoice = form.getInvoiceStatusChoice();
+            var invoiceStatusChoice = form.getInvoiceStatusChoice();
             
             purchaseInvoiceLogic.setPurchaseInvoiceStatus(this, invoice, invoiceStatusChoice, getPartyPK());
         } else {

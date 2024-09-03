@@ -53,13 +53,13 @@ public class GetSubscriptionTypeChainsCommand
     @Override
     protected BaseResult execute() {
         var subscriptionControl = Session.getModelController(SubscriptionControl.class);
-        GetSubscriptionTypeChainsResult result = SubscriptionResultFactory.getGetSubscriptionTypeChainsResult();
-        String subscriptionKindName = form.getSubscriptionKindName();
-        SubscriptionKind subscriptionKind = subscriptionControl.getSubscriptionKindByName(subscriptionKindName);
+        var result = SubscriptionResultFactory.getGetSubscriptionTypeChainsResult();
+        var subscriptionKindName = form.getSubscriptionKindName();
+        var subscriptionKind = subscriptionControl.getSubscriptionKindByName(subscriptionKindName);
         
         if(subscriptionKind != null) {
-            String subscriptionTypeName = form.getSubscriptionTypeName();
-            SubscriptionType subscriptionType = subscriptionControl.getSubscriptionTypeByName(subscriptionKind, subscriptionTypeName);
+            var subscriptionTypeName = form.getSubscriptionTypeName();
+            var subscriptionType = subscriptionControl.getSubscriptionTypeByName(subscriptionKind, subscriptionTypeName);
             
             result.setSubscriptionKind(subscriptionControl.getSubscriptionKindTransfer(getUserVisit(), subscriptionKind));
             

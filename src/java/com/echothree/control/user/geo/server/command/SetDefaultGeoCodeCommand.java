@@ -63,8 +63,8 @@ public class SetDefaultGeoCodeCommand
     @Override
     protected BaseResult execute() {
         var geoControl = Session.getModelController(GeoControl.class);
-        String geoCodeName = form.getGeoCodeName();
-        GeoCodeDetailValue geoCodeDetailValue = geoControl.getGeoCodeDetailValueByNameForUpdate(geoCodeName);
+        var geoCodeName = form.getGeoCodeName();
+        var geoCodeDetailValue = geoControl.getGeoCodeDetailValueByNameForUpdate(geoCodeName);
         
         if(geoCodeDetailValue != null) {
             geoCodeDetailValue.setIsDefault(Boolean.TRUE);

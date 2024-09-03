@@ -69,17 +69,17 @@ public class GetTransactionTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        GetTransactionTypeDescriptionResult result = AccountingResultFactory.getGetTransactionTypeDescriptionResult();
-        String transactionTypeName = form.getTransactionTypeName();
-        TransactionType transactionType = accountingControl.getTransactionTypeByName(transactionTypeName);
+        var result = AccountingResultFactory.getGetTransactionTypeDescriptionResult();
+        var transactionTypeName = form.getTransactionTypeName();
+        var transactionType = accountingControl.getTransactionTypeByName(transactionTypeName);
         
         if(transactionType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                TransactionTypeDescription transactionTypeDescription = accountingControl.getTransactionTypeDescription(transactionType, language);
+                var transactionTypeDescription = accountingControl.getTransactionTypeDescription(transactionType, language);
                 
                 if(transactionTypeDescription != null) {
                     result.setTransactionTypeDescription(accountingControl.getTransactionTypeDescriptionTransfer(getUserVisit(), transactionTypeDescription));

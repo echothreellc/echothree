@@ -60,8 +60,8 @@ public class DeletePaymentProcessorActionTypeCommand
     
     @Override
     protected BaseResult execute() {
-        String paymentProcessorActionTypeName = form.getPaymentProcessorActionTypeName();
-        PaymentProcessorActionType paymentProcessorActionType = PaymentProcessorActionTypeLogic.getInstance().getPaymentProcessorActionTypeByNameForUpdate(this, paymentProcessorActionTypeName);
+        var paymentProcessorActionTypeName = form.getPaymentProcessorActionTypeName();
+        var paymentProcessorActionType = PaymentProcessorActionTypeLogic.getInstance().getPaymentProcessorActionTypeByNameForUpdate(this, paymentProcessorActionTypeName);
         
         if(!hasExecutionErrors()) {
             PaymentProcessorActionTypeLogic.getInstance().deletePaymentProcessorActionType(this, paymentProcessorActionType, getPartyPK());

@@ -72,10 +72,10 @@ public class CreateTermCommand
     @Override
     protected ValidationResult validate() {
         Validator validator = new Validator(this);
-        ValidationResult validationResult = validator.validate(form, FORM_FIELD_DEFINITIONS);
+        var validationResult = validator.validate(form, FORM_FIELD_DEFINITIONS);
         
         if(!validationResult.getHasErrors()) {
-            String termTypeName = form.getTermTypeName();
+            var termTypeName = form.getTermTypeName();
             
             if(termTypeName.equals(TermTypes.STANDARD.name())) {
                 validationResult = validator.validate(form, standardFieldDefinitions);
@@ -91,12 +91,12 @@ public class CreateTermCommand
     protected BaseResult execute() {
         var result = TermResultFactory.getCreateTermResult();
         var termControl = Session.getModelController(TermControl.class);
-        String termName = form.getTermName();
-        Term term = termControl.getTermByName(termName);
+        var termName = form.getTermName();
+        var term = termControl.getTermByName(termName);
         
         if(term == null) {
-            String termTypeName = form.getTermTypeName();
-            TermType termType = termControl.getTermTypeByName(termTypeName);
+            var termTypeName = form.getTermTypeName();
+            var termType = termControl.getTermTypeByName(termTypeName);
             
             if(termType != null) {
                 var partyPK = getPartyPK();
@@ -108,16 +108,16 @@ public class CreateTermCommand
                 term = termControl.createTerm(termName, termType, isDefault, sortOrder, partyPK);
                 
                 if(termTypeName.equals(TermTypes.STANDARD.name())) {
-                    Integer netDueDays = Integer.valueOf(form.getNetDueDays());
-                    Integer discountPercentage = Integer.valueOf(form.getDiscountPercentage());
-                    Integer discountDays = Integer.valueOf(form.getDiscountDays());
+                    var netDueDays = Integer.valueOf(form.getNetDueDays());
+                    var discountPercentage = Integer.valueOf(form.getDiscountPercentage());
+                    var discountDays = Integer.valueOf(form.getDiscountDays());
                     
                     termControl.createStandardTerm(term, netDueDays, discountPercentage, discountDays, partyPK);
                 } else if(termTypeName.equals(TermTypes.DATE_DRIVEN.name())) {
-                    Integer netDueDayOfMonth = Integer.valueOf(form.getNetDueDayOfMonth());
-                    Integer dueNextMonthDays = Integer.valueOf(form.getDueNextMonthDays());
-                    Integer discountPercentage = Integer.valueOf(form.getDiscountPercentage());
-                    Integer discountBeforeDayOfMonth = Integer.valueOf(form.getDiscountBeforeDayOfMonth());
+                    var netDueDayOfMonth = Integer.valueOf(form.getNetDueDayOfMonth());
+                    var dueNextMonthDays = Integer.valueOf(form.getDueNextMonthDays());
+                    var discountPercentage = Integer.valueOf(form.getDiscountPercentage());
+                    var discountBeforeDayOfMonth = Integer.valueOf(form.getDiscountBeforeDayOfMonth());
                     
                     termControl.createDateDrivenTerm(term, netDueDayOfMonth, dueNextMonthDays, discountPercentage,
                             discountBeforeDayOfMonth, partyPK);

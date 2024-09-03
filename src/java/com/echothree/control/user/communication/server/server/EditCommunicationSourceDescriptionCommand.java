@@ -65,24 +65,24 @@ public class EditCommunicationSourceDescriptionCommand
     @Override
     protected BaseResult execute() {
         var communicationControl = Session.getModelController(CommunicationControl.class);
-        EditCommunicationSourceDescriptionResult result = CommunicationResultFactory.getEditCommunicationSourceDescriptionResult();
-        String communicationSourceName = spec.getCommunicationSourceName();
-        CommunicationSource communicationSource = communicationControl.getCommunicationSourceByName(communicationSourceName);
+        var result = CommunicationResultFactory.getEditCommunicationSourceDescriptionResult();
+        var communicationSourceName = spec.getCommunicationSourceName();
+        var communicationSource = communicationControl.getCommunicationSourceByName(communicationSourceName);
         
         if(communicationSource != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK)) {
-                    CommunicationSourceDescription communicationSourceDescription = communicationControl.getCommunicationSourceDescription(communicationSource, language);
+                    var communicationSourceDescription = communicationControl.getCommunicationSourceDescription(communicationSource, language);
                     
                     if(communicationSourceDescription != null) {
                         result.setCommunicationSourceDescription(communicationControl.getCommunicationSourceDescriptionTransfer(getUserVisit(), communicationSourceDescription));
                         
                         if(lockEntity(communicationSource)) {
-                            CommunicationSourceDescriptionEdit edit = CommunicationEditFactory.getCommunicationSourceDescriptionEdit();
+                            var edit = CommunicationEditFactory.getCommunicationSourceDescriptionEdit();
                             
                             result.setEdit(edit);
                             edit.setDescription(communicationSourceDescription.getDescription());
@@ -95,12 +95,12 @@ public class EditCommunicationSourceDescriptionCommand
                         addExecutionError(ExecutionErrors.UnknownCommunicationSourceDescription.name());
                     }
                 } else if(editMode.equals(EditMode.UPDATE)) {
-                    CommunicationSourceDescriptionValue communicationSourceDescriptionValue = communicationControl.getCommunicationSourceDescriptionValueForUpdate(communicationSource, language);
+                    var communicationSourceDescriptionValue = communicationControl.getCommunicationSourceDescriptionValueForUpdate(communicationSource, language);
                     
                     if(communicationSourceDescriptionValue != null) {
                         if(lockEntityForUpdate(communicationSource)) {
                             try {
-                                String description = edit.getDescription();
+                                var description = edit.getDescription();
                                 
                                 communicationSourceDescriptionValue.setDescription(description);
                                 

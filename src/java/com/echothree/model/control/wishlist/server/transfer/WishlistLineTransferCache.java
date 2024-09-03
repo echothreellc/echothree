@@ -53,25 +53,25 @@ public class WishlistLineTransferCache
     }
     
     public WishlistLineTransfer getWishlistLineTransfer(OrderLine orderLine) {
-        WishlistLineTransfer wishlistLineTransfer = get(orderLine);
+        var wishlistLineTransfer = get(orderLine);
         
         if(wishlistLineTransfer == null) {
-            OrderLineDetail orderLineDetail = orderLine.getLastDetail();
-            WishlistLine wishlistLine = wishlistControl.getWishlistLine(orderLine);
-            Order order = orderLineDetail.getOrder();
-            WishlistTransfer wishlist = wishlistControl.getWishlistTransfer(userVisit, order);
-            Integer orderLineSequence = orderLineDetail.getOrderLineSequence();
-            ItemTransfer item = itemControl.getItemTransfer(userVisit, orderLineDetail.getItem());
-            InventoryConditionTransfer inventoryCondition = inventoryControl.getInventoryConditionTransfer(userVisit, orderLineDetail.getInventoryCondition());
-            UnitOfMeasureTypeTransfer unitOfMeasureType = uomControl.getUnitOfMeasureTypeTransfer(userVisit, orderLineDetail.getUnitOfMeasureType());
-            Long quantity = orderLineDetail.getQuantity();
-            Long unformattedUnitAmount = orderLineDetail.getUnitAmount();
-            String unitAmount = AmountUtils.getInstance().formatPriceLine(order.getLastDetail().getCurrency(), unformattedUnitAmount);
-            String description = orderLineDetail.getDescription();
-            OfferUseTransfer offerUse = offerUseControl.getOfferUseTransfer(userVisit, wishlistLine.getOfferUse());
-            WishlistPriorityTransfer wishlistPriority = wishlistControl.getWishlistPriorityTransfer(userVisit, wishlistLine.getWishlistPriority());
+            var orderLineDetail = orderLine.getLastDetail();
+            var wishlistLine = wishlistControl.getWishlistLine(orderLine);
+            var order = orderLineDetail.getOrder();
+            var wishlist = wishlistControl.getWishlistTransfer(userVisit, order);
+            var orderLineSequence = orderLineDetail.getOrderLineSequence();
+            var item = itemControl.getItemTransfer(userVisit, orderLineDetail.getItem());
+            var inventoryCondition = inventoryControl.getInventoryConditionTransfer(userVisit, orderLineDetail.getInventoryCondition());
+            var unitOfMeasureType = uomControl.getUnitOfMeasureTypeTransfer(userVisit, orderLineDetail.getUnitOfMeasureType());
+            var quantity = orderLineDetail.getQuantity();
+            var unformattedUnitAmount = orderLineDetail.getUnitAmount();
+            var unitAmount = AmountUtils.getInstance().formatPriceLine(order.getLastDetail().getCurrency(), unformattedUnitAmount);
+            var description = orderLineDetail.getDescription();
+            var offerUse = offerUseControl.getOfferUseTransfer(userVisit, wishlistLine.getOfferUse());
+            var wishlistPriority = wishlistControl.getWishlistPriorityTransfer(userVisit, wishlistLine.getWishlistPriority());
             AssociateReferralTransfer associateReferral = null; // TODO
-            String comment = wishlistLine.getComment();
+            var comment = wishlistLine.getComment();
             
             wishlistLineTransfer = new WishlistLineTransfer(wishlist, orderLineSequence, item, inventoryCondition, unitOfMeasureType, quantity,
                     unformattedUnitAmount, unitAmount, description, offerUse, wishlistPriority, associateReferral, comment);

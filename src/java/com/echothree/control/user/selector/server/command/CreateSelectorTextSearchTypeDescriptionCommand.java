@@ -54,16 +54,16 @@ public class CreateSelectorTextSearchTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var selectorControl = Session.getModelController(SelectorControl.class);
-        String selectorTextSearchTypeName = form.getSelectorTextSearchTypeName();
-        SelectorTextSearchType selectorTextSearchType = selectorControl.getSelectorTextSearchTypeByName(selectorTextSearchTypeName);
+        var selectorTextSearchTypeName = form.getSelectorTextSearchTypeName();
+        var selectorTextSearchType = selectorControl.getSelectorTextSearchTypeByName(selectorTextSearchTypeName);
         
         if(selectorTextSearchType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                SelectorTextSearchTypeDescription selectorTextSearchTypeDescription = selectorControl.getSelectorTextSearchTypeDescription(selectorTextSearchType, language);
+                var selectorTextSearchTypeDescription = selectorControl.getSelectorTextSearchTypeDescription(selectorTextSearchType, language);
                 
                 if(selectorTextSearchTypeDescription == null) {
                     var description = form.getDescription();

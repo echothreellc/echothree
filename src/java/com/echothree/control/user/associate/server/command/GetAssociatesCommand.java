@@ -51,9 +51,9 @@ public class GetAssociatesCommand
     @Override
     protected BaseResult execute() {
         var associateControl = Session.getModelController(AssociateControl.class);
-        GetAssociatesResult result = AssociateResultFactory.getGetAssociatesResult();
-        String associateProgramName = form.getAssociateProgramName();
-        AssociateProgram associateProgram = associateControl.getAssociateProgramByName(associateProgramName);
+        var result = AssociateResultFactory.getGetAssociatesResult();
+        var associateProgramName = form.getAssociateProgramName();
+        var associateProgram = associateControl.getAssociateProgramByName(associateProgramName);
         
         if(associateProgram != null) {
             result.setAssociateProgram(associateControl.getAssociateProgramTransfer(getUserVisit(), associateProgram));

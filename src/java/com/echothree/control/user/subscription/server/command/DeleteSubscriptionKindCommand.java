@@ -63,8 +63,8 @@ public class DeleteSubscriptionKindCommand
     @Override
     protected BaseResult execute() {
         var subscriptionControl = Session.getModelController(SubscriptionControl.class);
-        String subscriptionKindName = form.getSubscriptionKindName();
-        SubscriptionKind subscriptionKind = subscriptionControl.getSubscriptionKindByNameForUpdate(subscriptionKindName);
+        var subscriptionKindName = form.getSubscriptionKindName();
+        var subscriptionKind = subscriptionControl.getSubscriptionKindByNameForUpdate(subscriptionKindName);
         
         if(subscriptionKind != null) {
             subscriptionControl.deleteSubscriptionKind(subscriptionKind, getPartyPK());

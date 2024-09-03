@@ -75,13 +75,13 @@ public class EditForumGroupDescriptionCommand
     public ForumGroupDescription getEntity(EditForumGroupDescriptionResult result) {
         var forumControl = Session.getModelController(ForumControl.class);
         ForumGroupDescription forumGroupDescription = null;
-        String forumGroupName = spec.getForumGroupName();
-        ForumGroup forumGroup = forumControl.getForumGroupByName(forumGroupName);
+        var forumGroupName = spec.getForumGroupName();
+        var forumGroup = forumControl.getForumGroupByName(forumGroupName);
 
         if(forumGroup != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -123,7 +123,7 @@ public class EditForumGroupDescriptionCommand
     @Override
     public void doUpdate(ForumGroupDescription forumGroupDescription) {
         var forumControl = Session.getModelController(ForumControl.class);
-        ForumGroupDescriptionValue forumGroupDescriptionValue = forumControl.getForumGroupDescriptionValue(forumGroupDescription);
+        var forumGroupDescriptionValue = forumControl.getForumGroupDescriptionValue(forumGroupDescription);
 
         forumGroupDescriptionValue.setDescription(edit.getDescription());
 

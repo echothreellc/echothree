@@ -66,16 +66,16 @@ public class SetDefaultContentCategoryCommand
     @Override
     protected BaseResult execute() {
         var contentControl = Session.getModelController(ContentControl.class);
-        String contentCollectionName = form.getContentCollectionName();
-        ContentCollection contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
+        var contentCollectionName = form.getContentCollectionName();
+        var contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
         
         if(contentCollection != null) {
-            String contentCatalogName = form.getContentCatalogName();
-            ContentCatalog contentCatalog = contentControl.getContentCatalogByName(contentCollection, contentCatalogName);
+            var contentCatalogName = form.getContentCatalogName();
+            var contentCatalog = contentControl.getContentCatalogByName(contentCollection, contentCatalogName);
             
             if(contentCatalog != null) {
-                String contentCategoryName = form.getContentCategoryName();
-                ContentCategoryDetailValue contentCategoryDetailValue = contentControl.getContentCategoryDetailValueByNameForUpdate(contentCatalog, contentCategoryName);
+                var contentCategoryName = form.getContentCategoryName();
+                var contentCategoryDetailValue = contentControl.getContentCategoryDetailValueByNameForUpdate(contentCatalog, contentCategoryName);
                 
                 if(contentCategoryDetailValue != null) {
                     if(!contentCategoryDetailValue.getIsDefault()) {

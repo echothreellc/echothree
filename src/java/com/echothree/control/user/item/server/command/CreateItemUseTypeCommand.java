@@ -59,8 +59,8 @@ public class CreateItemUseTypeCommand
     @Override
     protected BaseResult execute() {
         var itemControl = Session.getModelController(ItemControl.class);
-        String itemUseTypeName = form.getItemUseTypeName();
-        ItemUseType itemUseType = itemControl.getItemUseTypeByName(itemUseTypeName);
+        var itemUseTypeName = form.getItemUseTypeName();
+        var itemUseType = itemControl.getItemUseTypeByName(itemUseTypeName);
         
         if(itemUseType == null) {
             var isDefault = Boolean.valueOf(form.getIsDefault());

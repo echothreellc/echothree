@@ -50,9 +50,9 @@ public class CreateSelectorComparisonTypeCommand
     
     @Override
     protected BaseResult execute() {
-        String selectorComparisonTypeName = form.getSelectorComparisonTypeName();
+        var selectorComparisonTypeName = form.getSelectorComparisonTypeName();
         var selectorControl = Session.getModelController(SelectorControl.class);
-        SelectorComparisonType selectorComparisonType = selectorControl.getSelectorComparisonTypeByName(selectorComparisonTypeName);
+        var selectorComparisonType = selectorControl.getSelectorComparisonTypeByName(selectorComparisonTypeName);
         
         if(selectorComparisonType == null) {
             var isDefault = Boolean.valueOf(form.getIsDefault());

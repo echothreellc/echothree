@@ -47,9 +47,9 @@ public class DeleteRecoveryQuestionCommand
     
     @Override
     protected BaseResult execute() {
-        UserControl userControl = getUserControl();
-        String recoveryQuestionName = form.getRecoveryQuestionName();
-        RecoveryQuestion recoveryQuestion = userControl.getRecoveryQuestionByNameForUpdate(recoveryQuestionName);
+        var userControl = getUserControl();
+        var recoveryQuestionName = form.getRecoveryQuestionName();
+        var recoveryQuestion = userControl.getRecoveryQuestionByNameForUpdate(recoveryQuestionName);
         
         if(recoveryQuestion != null) {
             userControl.deleteRecoveryQuestion(recoveryQuestion, getPartyPK());

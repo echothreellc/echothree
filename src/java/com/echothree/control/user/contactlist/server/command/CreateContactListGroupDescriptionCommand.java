@@ -68,16 +68,16 @@ public class CreateContactListGroupDescriptionCommand
     @Override
     protected BaseResult execute() {
         var contactListControl = Session.getModelController(ContactListControl.class);
-        String contactListGroupName = form.getContactListGroupName();
-        ContactListGroup contactListGroup = contactListControl.getContactListGroupByName(contactListGroupName);
+        var contactListGroupName = form.getContactListGroupName();
+        var contactListGroup = contactListControl.getContactListGroupByName(contactListGroupName);
         
         if(contactListGroup != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                ContactListGroupDescription contactListGroupDescription = contactListControl.getContactListGroupDescription(contactListGroup, language);
+                var contactListGroupDescription = contactListControl.getContactListGroupDescription(contactListGroup, language);
                 
                 if(contactListGroupDescription == null) {
                     var description = form.getDescription();

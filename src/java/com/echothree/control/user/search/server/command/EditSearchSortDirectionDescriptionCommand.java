@@ -89,13 +89,13 @@ public class EditSearchSortDirectionDescriptionCommand
     public SearchSortDirectionDescription getEntity(EditSearchSortDirectionDescriptionResult result) {
         var searchControl = Session.getModelController(SearchControl.class);
         SearchSortDirectionDescription searchSortDirectionDescription = null;
-        String searchSortDirectionName = spec.getSearchSortDirectionName();
-        SearchSortDirection searchSortDirection = searchControl.getSearchSortDirectionByName(searchSortDirectionName);
+        var searchSortDirectionName = spec.getSearchSortDirectionName();
+        var searchSortDirection = searchControl.getSearchSortDirectionByName(searchSortDirectionName);
 
         if(searchSortDirection != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -137,7 +137,7 @@ public class EditSearchSortDirectionDescriptionCommand
     @Override
     public void doUpdate(SearchSortDirectionDescription searchSortDirectionDescription) {
         var searchControl = Session.getModelController(SearchControl.class);
-        SearchSortDirectionDescriptionValue searchSortDirectionDescriptionValue = searchControl.getSearchSortDirectionDescriptionValue(searchSortDirectionDescription);
+        var searchSortDirectionDescriptionValue = searchControl.getSearchSortDirectionDescriptionValue(searchSortDirectionDescription);
         searchSortDirectionDescriptionValue.setDescription(edit.getDescription());
 
         searchControl.updateSearchSortDirectionDescriptionFromValue(searchSortDirectionDescriptionValue, getPartyPK());

@@ -96,28 +96,28 @@ public class CreateContactTelephoneCommand
 
     @Override
     protected BaseResult execute() {
-        CreateContactTelephoneResult result = ContactResultFactory.getCreateContactTelephoneResult();
+        var result = ContactResultFactory.getCreateContactTelephoneResult();
         var partyControl = Session.getModelController(PartyControl.class);
-        String partyName = form.getPartyName();
-        Party party = partyName == null ? getParty() : partyControl.getPartyByName(partyName);
+        var partyName = form.getPartyName();
+        var party = partyName == null ? getParty() : partyControl.getPartyByName(partyName);
         
         if(party != null) {
             var geoControl = Session.getModelController(GeoControl.class);
-            String countryName = form.getCountryName();
-            String countryAlias = StringUtils.getInstance().cleanStringToName(countryName).toUpperCase(Locale.getDefault());
-            GeoCode countryGeoCode = geoControl.getCountryByAlias(countryAlias);
+            var countryName = form.getCountryName();
+            var countryAlias = StringUtils.getInstance().cleanStringToName(countryName).toUpperCase(Locale.getDefault());
+            var countryGeoCode = geoControl.getCountryByAlias(countryAlias);
             
             if(countryGeoCode != null) {
-                GeoCodeCountry geoCodeCountry = geoControl.getGeoCodeCountry(countryGeoCode);
-                String areaCode = form.getAreaCode();
+                var geoCodeCountry = geoControl.getGeoCodeCountry(countryGeoCode);
+                var areaCode = form.getAreaCode();
                 
                 if(!geoCodeCountry.getAreaCodeRequired() || areaCode != null) {
-                    String areaCodePattern = geoCodeCountry.getAreaCodePattern();
-                    Pattern pattern = areaCodePattern == null? null: Pattern.compile(areaCodePattern);
+                    var areaCodePattern = geoCodeCountry.getAreaCodePattern();
+                    var pattern = areaCodePattern == null? null: Pattern.compile(areaCodePattern);
                     
                     if(pattern == null || pattern.matcher(areaCode).matches()) {
-                        String telephoneNumberPattern = geoCodeCountry.getTelephoneNumberPattern();
-                        String telephoneNumber = form.getTelephoneNumber();
+                        var telephoneNumberPattern = geoCodeCountry.getTelephoneNumberPattern();
+                        var telephoneNumber = form.getTelephoneNumber();
                         
                         pattern = telephoneNumberPattern == null? null: Pattern.compile(telephoneNumberPattern);
                         
@@ -126,13 +126,13 @@ public class CreateContactTelephoneCommand
                             var coreControl = getCoreControl();
                             var workflowControl = Session.getModelController(WorkflowControl.class);
                             BasePK createdBy = getPartyPK();
-                            String telephoneExtension = form.getTelephoneExtension();
-                            Boolean allowSolicitation = Boolean.valueOf(form.getAllowSolicitation());
+                            var telephoneExtension = form.getTelephoneExtension();
+                            var allowSolicitation = Boolean.valueOf(form.getAllowSolicitation());
                             var description = form.getDescription();
-                            String contactMechanismName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(null, SequenceTypes.CONTACT_MECHANISM.name());
-                            
-                            ContactMechanismType contactMechanismType = contactControl.getContactMechanismTypeByName(ContactMechanismTypes.TELECOM_ADDRESS.name());
-                            ContactMechanism contactMechanism = contactControl.createContactMechanism(contactMechanismName,
+                            var contactMechanismName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(null, SequenceTypes.CONTACT_MECHANISM.name());
+
+                            var contactMechanismType = contactControl.getContactMechanismTypeByName(ContactMechanismTypes.TELECOM_ADDRESS.name());
+                            var contactMechanism = contactControl.createContactMechanism(contactMechanismName,
                                     contactMechanismType, allowSolicitation, createdBy);
                             
                             contactControl.createContactTelephone(contactMechanism, countryGeoCode, areaCode, telephoneNumber,
@@ -140,7 +140,7 @@ public class CreateContactTelephoneCommand
                             
                             contactControl.createPartyContactMechanism(party, contactMechanism, description, Boolean.FALSE, 1, createdBy);
 
-                            EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(contactMechanism.getPrimaryKey());
+                            var entityInstance = coreControl.getEntityInstanceByBasePK(contactMechanism.getPrimaryKey());
                             workflowControl.addEntityToWorkflowUsingNames(null, TelephoneStatusConstants.Workflow_TELEPHONE_STATUS,
                                     TelephoneStatusConstants.WorkflowEntrance_NEW_TELEPHONE, entityInstance, null, null, createdBy);
                             

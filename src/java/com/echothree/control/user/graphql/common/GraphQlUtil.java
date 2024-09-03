@@ -30,7 +30,7 @@ public class GraphQlUtil {
     public static GraphQlLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
 
             cachedLocal = (GraphQlLocal)ctx.lookup("ejb:echothree/echothree-server/GraphQlBean!com.echothree.control.user.graphql.server.GraphQlLocal");
         }
@@ -42,7 +42,7 @@ public class GraphQlUtil {
     public static GraphQlRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
             
             cachedRemote = (GraphQlRemote)ctx.lookup("ejb:echothree/echothree-server/GraphQlBean!com.echothree.control.user.graphql.common.GraphQlRemote");
         }

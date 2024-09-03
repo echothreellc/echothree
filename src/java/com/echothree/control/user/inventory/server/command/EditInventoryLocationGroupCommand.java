@@ -71,25 +71,25 @@ public class EditInventoryLocationGroupCommand
     @Override
     protected BaseResult execute() {
         var warehouseControl = Session.getModelController(WarehouseControl.class);
-        EditInventoryLocationGroupResult result = InventoryResultFactory.getEditInventoryLocationGroupResult();
-        String warehouseName = spec.getWarehouseName();
-        Warehouse warehouse = warehouseControl.getWarehouseByName(warehouseName);
+        var result = InventoryResultFactory.getEditInventoryLocationGroupResult();
+        var warehouseName = spec.getWarehouseName();
+        var warehouse = warehouseControl.getWarehouseByName(warehouseName);
         
         if(warehouse != null) {
             var inventoryControl = Session.getModelController(InventoryControl.class);
-            Party warehouseParty = warehouse.getParty();
+            var warehouseParty = warehouse.getParty();
             
             if(editMode.equals(EditMode.LOCK)) {
-                String inventoryLocationGroupName = spec.getInventoryLocationGroupName();
-                InventoryLocationGroup inventoryLocationGroup = inventoryControl.getInventoryLocationGroupByName(warehouseParty, inventoryLocationGroupName);
+                var inventoryLocationGroupName = spec.getInventoryLocationGroupName();
+                var inventoryLocationGroup = inventoryControl.getInventoryLocationGroupByName(warehouseParty, inventoryLocationGroupName);
                 
                 if(inventoryLocationGroup != null) {
                     result.setInventoryLocationGroup(inventoryControl.getInventoryLocationGroupTransfer(getUserVisit(), inventoryLocationGroup));
                     
                     if(lockEntity(inventoryLocationGroup)) {
-                        InventoryLocationGroupDescription inventoryLocationGroupDescription = inventoryControl.getInventoryLocationGroupDescription(inventoryLocationGroup, getPreferredLanguage());
-                        InventoryLocationGroupEdit edit = InventoryEditFactory.getInventoryLocationGroupEdit();
-                        InventoryLocationGroupDetail inventoryLocationGroupDetail = inventoryLocationGroup.getLastDetail();
+                        var inventoryLocationGroupDescription = inventoryControl.getInventoryLocationGroupDescription(inventoryLocationGroup, getPreferredLanguage());
+                        var edit = InventoryEditFactory.getInventoryLocationGroupEdit();
+                        var inventoryLocationGroupDetail = inventoryLocationGroup.getLastDetail();
                         
                         result.setEdit(edit);
                         edit.setInventoryLocationGroupName(inventoryLocationGroupDetail.getInventoryLocationGroupName());
@@ -108,20 +108,20 @@ public class EditInventoryLocationGroupCommand
                     addExecutionError(ExecutionErrors.UnknownInventoryLocationGroupName.name(), inventoryLocationGroupName);
                 }
             } else if(editMode.equals(EditMode.UPDATE)) {
-                String inventoryLocationGroupName = spec.getInventoryLocationGroupName();
-                InventoryLocationGroup inventoryLocationGroup = inventoryControl.getInventoryLocationGroupByNameForUpdate(warehouseParty, inventoryLocationGroupName);
+                var inventoryLocationGroupName = spec.getInventoryLocationGroupName();
+                var inventoryLocationGroup = inventoryControl.getInventoryLocationGroupByNameForUpdate(warehouseParty, inventoryLocationGroupName);
                 
                 if(inventoryLocationGroup != null) {
                     inventoryLocationGroupName = edit.getInventoryLocationGroupName();
-                    InventoryLocationGroup duplicateInventoryLocationGroup = inventoryControl.getInventoryLocationGroupByName(warehouseParty, inventoryLocationGroupName);
+                    var duplicateInventoryLocationGroup = inventoryControl.getInventoryLocationGroupByName(warehouseParty, inventoryLocationGroupName);
                     
                     if(duplicateInventoryLocationGroup == null || inventoryLocationGroup.equals(duplicateInventoryLocationGroup)) {
                         if(lockEntityForUpdate(inventoryLocationGroup)) {
                             try {
                                 var partyPK = getPartyPK();
-                                InventoryLocationGroupDetailValue inventoryLocationGroupDetailValue = inventoryControl.getInventoryLocationGroupDetailValueForUpdate(inventoryLocationGroup);
-                                InventoryLocationGroupDescription inventoryLocationGroupDescription = inventoryControl.getInventoryLocationGroupDescriptionForUpdate(inventoryLocationGroup, getPreferredLanguage());
-                                String description = edit.getDescription();
+                                var inventoryLocationGroupDetailValue = inventoryControl.getInventoryLocationGroupDetailValueForUpdate(inventoryLocationGroup);
+                                var inventoryLocationGroupDescription = inventoryControl.getInventoryLocationGroupDescriptionForUpdate(inventoryLocationGroup, getPreferredLanguage());
+                                var description = edit.getDescription();
                                 
                                 inventoryLocationGroupDetailValue.setInventoryLocationGroupName(edit.getInventoryLocationGroupName());
                                 inventoryLocationGroupDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
@@ -134,7 +134,7 @@ public class EditInventoryLocationGroupCommand
                                 } else if(inventoryLocationGroupDescription != null && description == null) {
                                     inventoryControl.deleteInventoryLocationGroupDescription(inventoryLocationGroupDescription, partyPK);
                                 } else if(inventoryLocationGroupDescription != null && description != null) {
-                                    InventoryLocationGroupDescriptionValue inventoryLocationGroupDescriptionValue = inventoryControl.getInventoryLocationGroupDescriptionValue(inventoryLocationGroupDescription);
+                                    var inventoryLocationGroupDescriptionValue = inventoryControl.getInventoryLocationGroupDescriptionValue(inventoryLocationGroupDescription);
                                     
                                     inventoryLocationGroupDescriptionValue.setDescription(description);
                                     inventoryControl.updateInventoryLocationGroupDescriptionFromValue(inventoryLocationGroupDescriptionValue, partyPK);

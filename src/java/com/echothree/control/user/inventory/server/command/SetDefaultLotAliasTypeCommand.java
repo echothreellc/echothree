@@ -62,8 +62,8 @@ public class SetDefaultLotAliasTypeCommand
     @Override
     protected BaseResult execute() {
         var lotAliasControl = Session.getModelController(LotAliasControl.class);
-        String lotAliasTypeName = form.getLotAliasTypeName();
-        LotAliasTypeDetailValue lotAliasTypeDetailValue = lotAliasControl.getLotAliasTypeDetailValueByNameForUpdate(lotAliasTypeName);
+        var lotAliasTypeName = form.getLotAliasTypeName();
+        var lotAliasTypeDetailValue = lotAliasControl.getLotAliasTypeDetailValueByNameForUpdate(lotAliasTypeName);
 
         if(lotAliasTypeDetailValue != null) {
             lotAliasTypeDetailValue.setIsDefault(Boolean.TRUE);

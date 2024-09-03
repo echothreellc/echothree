@@ -83,34 +83,34 @@ public class EditDepartmentCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        EditDepartmentResult result = PartyResultFactory.getEditDepartmentResult();
-        String companyName = spec.getCompanyName();
-        PartyCompany partyCompany = partyControl.getPartyCompanyByName(companyName);
+        var result = PartyResultFactory.getEditDepartmentResult();
+        var companyName = spec.getCompanyName();
+        var partyCompany = partyControl.getPartyCompanyByName(companyName);
         
         if(partyCompany != null) {
-            String divisionName = spec.getDivisionName();
-            Party partyCompanyParty = partyCompany.getParty();
-            PartyDivision partyDivision = partyControl.getPartyDivisionByName(partyCompanyParty, divisionName);
+            var divisionName = spec.getDivisionName();
+            var partyCompanyParty = partyCompany.getParty();
+            var partyDivision = partyControl.getPartyDivisionByName(partyCompanyParty, divisionName);
             
             if(partyDivision != null) {
-                String originalDepartmentName = spec.getDepartmentName();
-                Party partyDivisionParty = partyDivision.getParty();
-                PartyDepartment partyDepartment = partyControl.getPartyDepartmentByNameForUpdate(partyDivisionParty, originalDepartmentName);
+                var originalDepartmentName = spec.getDepartmentName();
+                var partyDivisionParty = partyDivision.getParty();
+                var partyDepartment = partyControl.getPartyDepartmentByNameForUpdate(partyDivisionParty, originalDepartmentName);
                 
                 if(partyDepartment != null) {
-                    Party party = partyDepartment.getParty();
+                    var party = partyDepartment.getParty();
                     
                     if(editMode.equals(EditMode.LOCK)) {
                         result.setDepartment(partyControl.getDepartmentTransfer(getUserVisit(), partyDepartment));
                         
                         if(lockEntity(party)) {
-                            DepartmentEdit edit = PartyEditFactory.getDepartmentEdit();
-                            PartyDetail partyDetail = party.getLastDetail();
-                            PartyGroup partyGroup = partyControl.getPartyGroup(party);
-                            Language preferredLanguage = partyDetail.getPreferredLanguage();
-                            Currency preferredCurrency = partyDetail.getPreferredCurrency();
-                            TimeZone preferredTimeZone = partyDetail.getPreferredTimeZone();
-                            DateTimeFormat preferredDateTimeFormat = partyDetail.getPreferredDateTimeFormat();
+                            var edit = PartyEditFactory.getDepartmentEdit();
+                            var partyDetail = party.getLastDetail();
+                            var partyGroup = partyControl.getPartyGroup(party);
+                            var preferredLanguage = partyDetail.getPreferredLanguage();
+                            var preferredCurrency = partyDetail.getPreferredCurrency();
+                            var preferredTimeZone = partyDetail.getPreferredTimeZone();
+                            var preferredDateTimeFormat = partyDetail.getPreferredDateTimeFormat();
                             
                             result.setEdit(edit);
                             edit.setDepartmentName(partyDepartment.getPartyDepartmentName());
@@ -129,24 +129,24 @@ public class EditDepartmentCommand
                     } else if(editMode.equals(EditMode.ABANDON)) {
                         unlockEntity(party);
                     } else if(editMode.equals(EditMode.UPDATE)) {
-                        PartyDepartmentValue partyDepartmentValue = partyControl.getPartyDepartmentValueForUpdate(partyDepartment);
-                        String departmentName = edit.getDepartmentName();
-                        PartyDepartment duplicatePartyDepartment = partyControl.getPartyDepartmentByName(partyDivisionParty, departmentName);
+                        var partyDepartmentValue = partyControl.getPartyDepartmentValueForUpdate(partyDepartment);
+                        var departmentName = edit.getDepartmentName();
+                        var duplicatePartyDepartment = partyControl.getPartyDepartmentByName(partyDivisionParty, departmentName);
                         
                         if(duplicatePartyDepartment == null || duplicatePartyDepartment.getPrimaryKey().equals(partyDepartmentValue.getPrimaryKey())) {
-                            String preferredLanguageIsoName = edit.getPreferredLanguageIsoName();
-                            Language preferredLanguage = preferredLanguageIsoName == null? null: partyControl.getLanguageByIsoName(preferredLanguageIsoName);
+                            var preferredLanguageIsoName = edit.getPreferredLanguageIsoName();
+                            var preferredLanguage = preferredLanguageIsoName == null? null: partyControl.getLanguageByIsoName(preferredLanguageIsoName);
                             
                             if(preferredLanguageIsoName == null || (preferredLanguage != null)) {
-                                String preferredJavaTimeZoneName = edit.getPreferredJavaTimeZoneName();
-                                TimeZone preferredTimeZone = preferredJavaTimeZoneName == null? null: partyControl.getTimeZoneByJavaName(preferredJavaTimeZoneName);
+                                var preferredJavaTimeZoneName = edit.getPreferredJavaTimeZoneName();
+                                var preferredTimeZone = preferredJavaTimeZoneName == null? null: partyControl.getTimeZoneByJavaName(preferredJavaTimeZoneName);
                                 
                                 if(preferredJavaTimeZoneName == null || (preferredTimeZone != null)) {
-                                    String preferredDateTimeFormatName = edit.getPreferredDateTimeFormatName();
-                                    DateTimeFormat preferredDateTimeFormat = preferredDateTimeFormatName == null? null: partyControl.getDateTimeFormatByName(preferredDateTimeFormatName);
+                                    var preferredDateTimeFormatName = edit.getPreferredDateTimeFormatName();
+                                    var preferredDateTimeFormat = preferredDateTimeFormatName == null? null: partyControl.getDateTimeFormatByName(preferredDateTimeFormatName);
                                     
                                     if(preferredDateTimeFormatName == null || (preferredDateTimeFormat != null)) {
-                                        String preferredCurrencyIsoName = edit.getPreferredCurrencyIsoName();
+                                        var preferredCurrencyIsoName = edit.getPreferredCurrencyIsoName();
                                         Currency preferredCurrency;
                                         
                                         if(preferredCurrencyIsoName == null)
@@ -159,9 +159,9 @@ public class EditDepartmentCommand
                                         if(preferredCurrencyIsoName == null || (preferredCurrency != null)) {
                                             if(lockEntityForUpdate(party)) {
                                                 try {
-                                                    PartyPK updatedBy = getPartyPK();
-                                                    PartyDetailValue partyDetailValue = partyControl.getPartyDetailValueForUpdate(party);
-                                                    PartyGroupValue partyGroupValue = partyControl.getPartyGroupValueForUpdate(party);
+                                                    var updatedBy = getPartyPK();
+                                                    var partyDetailValue = partyControl.getPartyDetailValueForUpdate(party);
+                                                    var partyGroupValue = partyControl.getPartyGroupValueForUpdate(party);
                                                     
                                                     partyDepartmentValue.setPartyDepartmentName(departmentName);
                                                     partyGroupValue.setName(edit.getName());

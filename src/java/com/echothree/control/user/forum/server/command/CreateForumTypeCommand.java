@@ -51,8 +51,8 @@ public class CreateForumTypeCommand
     @Override
     protected BaseResult execute() {
         var forumControl = Session.getModelController(ForumControl.class);
-        String forumTypeName = form.getForumTypeName();
-        ForumType forumType = forumControl.getForumTypeByName(forumTypeName);
+        var forumTypeName = form.getForumTypeName();
+        var forumType = forumControl.getForumTypeByName(forumTypeName);
         
         if(forumType == null) {
             var isDefault = Boolean.valueOf(form.getIsDefault());

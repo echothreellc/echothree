@@ -51,14 +51,14 @@ public class GetUserVisitGroupStatusChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        UserControl userControl = getUserControl();
-        GetUserVisitGroupStatusChoicesResult result = UserResultFactory.getGetUserVisitGroupStatusChoicesResult();
-        String userVisitGroupName = form.getUserVisitGroupName();
-        UserVisitGroup userVisitGroup = userControl.getUserVisitGroupByName(userVisitGroupName);
+        var userControl = getUserControl();
+        var result = UserResultFactory.getGetUserVisitGroupStatusChoicesResult();
+        var userVisitGroupName = form.getUserVisitGroupName();
+        var userVisitGroup = userControl.getUserVisitGroupByName(userVisitGroupName);
         
         if(userVisitGroupName == null || userVisitGroup != null) {
-            String defaultUserVisitGroupStatusChoice = form.getDefaultUserVisitGroupStatusChoice();
-            boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+            var defaultUserVisitGroupStatusChoice = form.getDefaultUserVisitGroupStatusChoice();
+            var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
             
             result.setUserVisitGroupStatusChoices(userControl.getUserVisitGroupStatusChoices(defaultUserVisitGroupStatusChoice,
                     getPreferredLanguage(), allowNullChoice, userVisitGroup, getPartyPK()));

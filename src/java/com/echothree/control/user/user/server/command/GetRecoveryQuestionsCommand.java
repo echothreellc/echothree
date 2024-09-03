@@ -48,15 +48,15 @@ public class GetRecoveryQuestionsCommand
     
     @Override
     protected Collection<RecoveryQuestion> getEntities() {
-        UserControl userControl = getUserControl();
+        var userControl = getUserControl();
         
         return userControl.getRecoveryQuestions();
     }
     
     @Override
     protected BaseResult getResult(Collection<RecoveryQuestion> entities) {
-        GetRecoveryQuestionsResult result = UserResultFactory.getGetRecoveryQuestionsResult();
-        UserControl userControl = getUserControl();
+        var result = UserResultFactory.getGetRecoveryQuestionsResult();
+        var userControl = getUserControl();
         
         result.setRecoveryQuestions(userControl.getRecoveryQuestionTransfers(getUserVisit(), entities));
         

@@ -68,12 +68,12 @@ public class CreateTagCommand
     protected BaseResult execute() {
         var result = TagResultFactory.getCreateTagResult();
         var tagControl = Session.getModelController(TagControl.class);
-        String tagScopeName = form.getTagScopeName();
-        TagScope tagScope = tagControl.getTagScopeByName(tagScopeName);
+        var tagScopeName = form.getTagScopeName();
+        var tagScope = tagControl.getTagScopeByName(tagScopeName);
         Tag tag = null;
         
         if(tagScope != null) {
-            String tagName = form.getTagName();
+            var tagName = form.getTagName();
             tag = tagControl.getTagByName(tagScope, tagName);
             
             if(tag == null) {

@@ -67,14 +67,14 @@ public class GetHarmonizedTariffScheduleCodeChoicesCommand
     @Override
     protected BaseResult execute() {
         var geoControl = Session.getModelController(GeoControl.class);
-        GetHarmonizedTariffScheduleCodeChoicesResult result = ItemResultFactory.getGetHarmonizedTariffScheduleCodeChoicesResult();
-        String countryName = form.getCountryName();
-        GeoCode geoCode = geoControl.getCountryByAlias(countryName);
+        var result = ItemResultFactory.getGetHarmonizedTariffScheduleCodeChoicesResult();
+        var countryName = form.getCountryName();
+        var geoCode = geoControl.getCountryByAlias(countryName);
         
         if(geoCode != null) {
             var itemControl = Session.getModelController(ItemControl.class);
-            String defaultHarmonizedTariffScheduleCodeChoice = form.getDefaultHarmonizedTariffScheduleCodeChoice();
-            boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+            var defaultHarmonizedTariffScheduleCodeChoice = form.getDefaultHarmonizedTariffScheduleCodeChoice();
+            var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
             
             result.setHarmonizedTariffScheduleCodeChoices(itemControl.getHarmonizedTariffScheduleCodeChoices(defaultHarmonizedTariffScheduleCodeChoice, getPreferredLanguage(),
                     allowNullChoice, geoCode));

@@ -40,15 +40,15 @@ public class ContactEmailAddressTransferCache
     }
     
     public ContactEmailAddressTransfer getContactEmailAddressTransfer(ContactEmailAddress contactEmailAddress) {
-        ContactEmailAddressTransfer contactEmailAddressTransfer = get(contactEmailAddress);
+        var contactEmailAddressTransfer = get(contactEmailAddress);
         
         if(contactEmailAddressTransfer == null) {
-            String emailAddress = contactEmailAddress.getEmailAddress();
-            
-            EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(contactEmailAddress.getContactMechanismPK());
-            WorkflowEntityStatusTransfer emailAddressStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
+            var emailAddress = contactEmailAddress.getEmailAddress();
+
+            var entityInstance = coreControl.getEntityInstanceByBasePK(contactEmailAddress.getContactMechanismPK());
+            var emailAddressStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
                     EmailAddressStatusConstants.Workflow_EMAIL_ADDRESS_STATUS, entityInstance);
-            WorkflowEntityStatusTransfer emailAddressVerificationTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
+            var emailAddressVerificationTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
                     EmailAddressVerificationConstants.Workflow_EMAIL_ADDRESS_VERIFICATION, entityInstance);
             
             contactEmailAddressTransfer = new ContactEmailAddressTransfer(emailAddress, emailAddressStatusTransfer, emailAddressVerificationTransfer);

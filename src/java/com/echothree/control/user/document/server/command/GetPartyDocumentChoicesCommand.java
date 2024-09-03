@@ -69,18 +69,18 @@ public class GetPartyDocumentChoicesCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        GetPartyDocumentChoicesResult result = DocumentResultFactory.getGetPartyDocumentChoicesResult();
-        String partyName = form.getPartyName();
-        Party party = partyControl.getPartyByName(partyName);
+        var result = DocumentResultFactory.getGetPartyDocumentChoicesResult();
+        var partyName = form.getPartyName();
+        var party = partyControl.getPartyByName(partyName);
 
         if(party != null) {
             var documentControl = Session.getModelController(DocumentControl.class);
-            String documentTypeName = form.getDocumentTypeName();
-            DocumentType documentType = documentControl.getDocumentTypeByName(documentTypeName);
+            var documentTypeName = form.getDocumentTypeName();
+            var documentType = documentControl.getDocumentTypeByName(documentTypeName);
 
             if(documentType != null) {
-                String defaultDocumentChoice = form.getDefaultDocumentChoice();
-                boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+                var defaultDocumentChoice = form.getDefaultDocumentChoice();
+                var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 
                 result.setDocumentChoices(documentControl.getPartyDocumentChoices(defaultDocumentChoice, getPreferredLanguage(), allowNullChoice, party,
                         documentType));

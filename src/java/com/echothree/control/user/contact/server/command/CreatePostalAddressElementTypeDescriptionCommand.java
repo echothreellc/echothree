@@ -54,16 +54,16 @@ public class CreatePostalAddressElementTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var contactControl = Session.getModelController(ContactControl.class);
-        String postalAddressElementTypeName = form.getPostalAddressElementTypeName();
-        PostalAddressElementType postalAddressElementType = contactControl.getPostalAddressElementTypeByName(postalAddressElementTypeName);
+        var postalAddressElementTypeName = form.getPostalAddressElementTypeName();
+        var postalAddressElementType = contactControl.getPostalAddressElementTypeByName(postalAddressElementTypeName);
         
         if(postalAddressElementType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                PostalAddressElementTypeDescription postalAddressElementTypeDescription = contactControl.getPostalAddressElementTypeDescription(postalAddressElementType, language);
+                var postalAddressElementTypeDescription = contactControl.getPostalAddressElementTypeDescription(postalAddressElementType, language);
                 
                 if(postalAddressElementTypeDescription == null) {
                     var description = form.getDescription();

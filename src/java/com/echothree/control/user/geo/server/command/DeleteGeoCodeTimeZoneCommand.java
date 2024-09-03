@@ -67,16 +67,16 @@ public class DeleteGeoCodeTimeZoneCommand
     @Override
     protected BaseResult execute() {
         var geoControl = Session.getModelController(GeoControl.class);
-        String geoCodeName = form.getGeoCodeName();
-        GeoCode geoCode = geoControl.getGeoCodeByName(geoCodeName);
+        var geoCodeName = form.getGeoCodeName();
+        var geoCode = geoControl.getGeoCodeByName(geoCodeName);
         
         if(geoCode != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String javaTimeZoneName = form.getJavaTimeZoneName();
-            TimeZone timeZone = partyControl.getTimeZoneByJavaName(javaTimeZoneName);
+            var javaTimeZoneName = form.getJavaTimeZoneName();
+            var timeZone = partyControl.getTimeZoneByJavaName(javaTimeZoneName);
             
             if(timeZone != null) {
-                GeoCodeTimeZone geoCodeTimeZone = geoControl.getGeoCodeTimeZoneForUpdate(geoCode, timeZone);
+                var geoCodeTimeZone = geoControl.getGeoCodeTimeZoneForUpdate(geoCode, timeZone);
                 
                 if(geoCodeTimeZone != null) {
                     geoControl.deleteGeoCodeTimeZone(geoCodeTimeZone, getPartyPK());

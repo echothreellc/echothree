@@ -68,10 +68,10 @@ public class OrderBatchSearchEvaluator
 
     @Override
     protected EntityInstancePKHolder executeSearch(final ExecutionErrorAccumulator eea) {
-        EntityInstancePKHolder resultSet = super.executeSearch(eea);
+        var resultSet = super.executeSearch(eea);
             
         if(currency != null && (resultSet == null || resultSet.size() > 0)) {
-            EntityInstancePKHolder entityInstancePKHolder = getEntityInstancePKHolderByCurrency(currency);
+            var entityInstancePKHolder = getEntityInstancePKHolderByCurrency(currency);
 
             if(resultSet == null) {
                 resultSet = entityInstancePKHolder;

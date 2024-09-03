@@ -55,17 +55,17 @@ public class GetAssociatePartyContactMechanismChoicesCommand
     @Override
     protected BaseResult execute() {
         var associateControl = Session.getModelController(AssociateControl.class);
-        GetAssociatePartyContactMechanismChoicesResult result = AssociateResultFactory.getGetAssociatePartyContactMechanismChoicesResult();
-        String associateProgramName = form.getAssociateProgramName();
-        AssociateProgram associateProgram = associateControl.getAssociateProgramByName(associateProgramName);
+        var result = AssociateResultFactory.getGetAssociatePartyContactMechanismChoicesResult();
+        var associateProgramName = form.getAssociateProgramName();
+        var associateProgram = associateControl.getAssociateProgramByName(associateProgramName);
         
         if(associateProgram != null) {
-            String associateName = form.getAssociateName();
-            Associate associate = associateControl.getAssociateByName(associateProgram, associateName);
+            var associateName = form.getAssociateName();
+            var associate = associateControl.getAssociateByName(associateProgram, associateName);
             
             if(associate != null) {
-                String defaultAssociatePartyContactMechanismChoice = form.getDefaultAssociatePartyContactMechanismChoice();
-                boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+                var defaultAssociatePartyContactMechanismChoice = form.getDefaultAssociatePartyContactMechanismChoice();
+                var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
                 
                 result.setAssociatePartyContactMechanismChoices(associateControl.getAssociatePartyContactMechanismChoices(associate,
                         defaultAssociatePartyContactMechanismChoice, getPreferredLanguage(), allowNullChoice));

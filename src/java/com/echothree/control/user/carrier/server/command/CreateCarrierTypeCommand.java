@@ -66,8 +66,8 @@ public class CreateCarrierTypeCommand
     @Override
     protected BaseResult execute() {
         var carrierControl = Session.getModelController(CarrierControl.class);
-        String carrierTypeName = form.getCarrierTypeName();
-        CarrierType carrierType = carrierControl.getCarrierTypeByName(carrierTypeName);
+        var carrierTypeName = form.getCarrierTypeName();
+        var carrierType = carrierControl.getCarrierTypeByName(carrierTypeName);
         
         if(carrierType == null) {
             var partyPK = getPartyPK();

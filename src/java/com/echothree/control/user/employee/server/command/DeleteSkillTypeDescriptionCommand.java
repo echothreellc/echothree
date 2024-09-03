@@ -53,16 +53,16 @@ public class DeleteSkillTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var employeeControl = Session.getModelController(EmployeeControl.class);
-        String skillTypeName = form.getSkillTypeName();
-        SkillType skillType = employeeControl.getSkillTypeByName(skillTypeName);
+        var skillTypeName = form.getSkillTypeName();
+        var skillType = employeeControl.getSkillTypeByName(skillTypeName);
         
         if(skillType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                SkillTypeDescription skillTypeDescription = employeeControl.getSkillTypeDescriptionForUpdate(skillType, language);
+                var skillTypeDescription = employeeControl.getSkillTypeDescriptionForUpdate(skillType, language);
                 
                 if(skillTypeDescription != null) {
                     employeeControl.deleteSkillTypeDescription(skillTypeDescription, getPartyPK());

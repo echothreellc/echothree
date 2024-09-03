@@ -69,17 +69,17 @@ public class GetItemDescriptionTypeUseTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var itemControl = Session.getModelController(ItemControl.class);
-        GetItemDescriptionTypeUseTypeDescriptionResult result = ItemResultFactory.getGetItemDescriptionTypeUseTypeDescriptionResult();
-        String itemDescriptionTypeUseTypeName = form.getItemDescriptionTypeUseTypeName();
-        ItemDescriptionTypeUseType itemDescriptionTypeUseType = itemControl.getItemDescriptionTypeUseTypeByName(itemDescriptionTypeUseTypeName);
+        var result = ItemResultFactory.getGetItemDescriptionTypeUseTypeDescriptionResult();
+        var itemDescriptionTypeUseTypeName = form.getItemDescriptionTypeUseTypeName();
+        var itemDescriptionTypeUseType = itemControl.getItemDescriptionTypeUseTypeByName(itemDescriptionTypeUseTypeName);
         
         if(itemDescriptionTypeUseType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                ItemDescriptionTypeUseTypeDescription itemDescriptionTypeUseTypeDescription = itemControl.getItemDescriptionTypeUseTypeDescription(itemDescriptionTypeUseType, language);
+                var itemDescriptionTypeUseTypeDescription = itemControl.getItemDescriptionTypeUseTypeDescription(itemDescriptionTypeUseType, language);
                 
                 if(itemDescriptionTypeUseTypeDescription != null) {
                     result.setItemDescriptionTypeUseTypeDescription(itemControl.getItemDescriptionTypeUseTypeDescriptionTransfer(getUserVisit(), itemDescriptionTypeUseTypeDescription));

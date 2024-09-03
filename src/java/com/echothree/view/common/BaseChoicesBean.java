@@ -69,7 +69,7 @@ public class BaseChoicesBean implements Serializable {
     @Override
     public String toString() {
         StringBuilder result = new StringBuilder();
-        Iterator<String> valueIter = values.iterator();
+        var valueIter = values.iterator();
 
         labels.stream().map((label) -> {
             result.append('"').append(label).append(",\" \"").append(valueIter.next()).append('"');

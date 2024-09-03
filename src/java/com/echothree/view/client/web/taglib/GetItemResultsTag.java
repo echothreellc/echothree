@@ -114,7 +114,7 @@ public class GetItemResultsTag
     @Override
     public int doStartTag() throws JspException {
         try {
-            GetItemResultsForm commandForm = SearchUtil.getHome().getGetItemResultsForm();
+            var commandForm = SearchUtil.getHome().getGetItemResultsForm();
             Map<String, Limit> limits = new HashMap<>();
             
             commandForm.setSearchTypeName(searchTypeName);
@@ -127,8 +127,8 @@ public class GetItemResultsTag
                 limits.put(SearchResultConstants.ENTITY_TYPE_NAME, new Limit(itemResultCount, itemResultOffset));
             }
             commandForm.setLimits(limits);
-            
-            CommandResult commandResult = SearchUtil.getHome().getItemResults(getUserVisitPK(), commandForm);
+
+            var commandResult = SearchUtil.getHome().getItemResults(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -136,8 +136,8 @@ public class GetItemResultsTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetItemResultsResult result = (GetItemResultsResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetItemResultsResult)executionResult.getResult();
 
                 pageContext.setAttribute(var, new ListWrapper<>(result.getItemResults()), scope);
 

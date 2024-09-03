@@ -80,7 +80,7 @@ public class UserSessionLogic {
 
     public UserSession deleteUserSessionByUserVisit(UserVisit userVisit) {
         var userControl = Session.getModelController(UserControl.class);
-        UserSession userSession = userControl.getUserSessionByUserVisitForUpdate(userVisit);
+        var userSession = userControl.getUserSessionByUserVisitForUpdate(userVisit);
 
         if(userSession != null) {
             userControl.deleteUserSession(userSession);

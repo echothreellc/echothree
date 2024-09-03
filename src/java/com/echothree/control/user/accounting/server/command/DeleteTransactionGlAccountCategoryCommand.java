@@ -65,12 +65,12 @@ public class DeleteTransactionGlAccountCategoryCommand
     @Override
     protected BaseResult execute() {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        String transactionTypeName = form.getTransactionTypeName();
-        TransactionType transactionType = accountingControl.getTransactionTypeByName(transactionTypeName);
+        var transactionTypeName = form.getTransactionTypeName();
+        var transactionType = accountingControl.getTransactionTypeByName(transactionTypeName);
         
         if(transactionType != null) {
-            String transactionGlAccountCategoryName = form.getTransactionGlAccountCategoryName();
-            TransactionGlAccountCategory transactionGlAccountCategory = accountingControl.getTransactionGlAccountCategoryByNameForUpdate(transactionType, transactionGlAccountCategoryName);
+            var transactionGlAccountCategoryName = form.getTransactionGlAccountCategoryName();
+            var transactionGlAccountCategory = accountingControl.getTransactionGlAccountCategoryByNameForUpdate(transactionType, transactionGlAccountCategoryName);
             
             if(transactionGlAccountCategory != null) {
                 accountingControl.deleteTransactionGlAccountCategory(transactionGlAccountCategory, getPartyPK());

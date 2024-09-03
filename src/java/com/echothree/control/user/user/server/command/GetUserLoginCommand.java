@@ -77,8 +77,8 @@ public class GetUserLoginCommand
     @Override
     protected UserLogin getEntity() {
         UserLogin userLogin = null;
-        String username = form.getUsername();
-        String partyName = form.getPartyName();
+        var username = form.getUsername();
+        var partyName = form.getPartyName();
         var parameterCount = (username == null ? 0 : 1) + (partyName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {
@@ -103,7 +103,7 @@ public class GetUserLoginCommand
             }
             
             if(!hasExecutionErrors()) {
-                PartyType partyType = party.getLastDetail().getPartyType();
+                var partyType = party.getLastDetail().getPartyType();
                 String securityRoleGroupName = null;
                 var partyTypeName = partyType.getPartyTypeName();
 
@@ -119,7 +119,7 @@ public class GetUserLoginCommand
                         && SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, getParty(), securityRoleGroupName, UserLogin.name())) {
                     if(!hasExecutionErrors()) {
                         if(partyType.getAllowUserLogins()) {
-                            UserControl userControl = getUserControl();
+                            var userControl = getUserControl();
                             
                             userLogin = userControl.getUserLogin(party);
 
@@ -143,8 +143,8 @@ public class GetUserLoginCommand
     
     @Override
     protected BaseResult getResult(UserLogin userLogin) {
-        UserControl userControl = getUserControl();
-        GetUserLoginResult result = UserResultFactory.getGetUserLoginResult();
+        var userControl = getUserControl();
+        var result = UserResultFactory.getGetUserLoginResult();
 
         if(userLogin != null) {
             result.setUserLogin(userControl.getUserLoginTransfer(getUserVisit(), userLogin));

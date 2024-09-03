@@ -89,13 +89,13 @@ public class EditGeoCodeScopeDescriptionCommand
     public GeoCodeScopeDescription getEntity(EditGeoCodeScopeDescriptionResult result) {
         var geoControl = Session.getModelController(GeoControl.class);
         GeoCodeScopeDescription geoCodeScopeDescription = null;
-        String geoCodeScopeName = spec.getGeoCodeScopeName();
-        GeoCodeScope geoCodeScope = geoControl.getGeoCodeScopeByName(geoCodeScopeName);
+        var geoCodeScopeName = spec.getGeoCodeScopeName();
+        var geoCodeScope = geoControl.getGeoCodeScopeByName(geoCodeScopeName);
 
         if(geoCodeScope != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -137,7 +137,7 @@ public class EditGeoCodeScopeDescriptionCommand
     @Override
     public void doUpdate(GeoCodeScopeDescription geoCodeScopeDescription) {
         var geoControl = Session.getModelController(GeoControl.class);
-        GeoCodeScopeDescriptionValue geoCodeScopeDescriptionValue = geoControl.getGeoCodeScopeDescriptionValue(geoCodeScopeDescription);
+        var geoCodeScopeDescriptionValue = geoControl.getGeoCodeScopeDescriptionValue(geoCodeScopeDescription);
         geoCodeScopeDescriptionValue.setDescription(edit.getDescription());
 
         geoControl.updateGeoCodeScopeDescriptionFromValue(geoCodeScopeDescriptionValue, getPartyPK());

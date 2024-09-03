@@ -51,14 +51,14 @@ public class QueueTypeTransferCache
     }
 
     public QueueTypeTransfer getQueueTypeTransfer(QueueType queueType) {
-        QueueTypeTransfer queueTypeTransfer = get(queueType);
+        var queueTypeTransfer = get(queueType);
 
         if(queueTypeTransfer == null) {
-            QueueTypeDetail queueTypeDetail = queueType.getLastDetail();
-            String queueTypeName = queueTypeDetail.getQueueTypeName();
-            Boolean isDefault = queueTypeDetail.getIsDefault();
-            Integer sortOrder = queueTypeDetail.getSortOrder();
-            String description = queueControl.getBestQueueTypeDescription(queueType, getLanguage());
+            var queueTypeDetail = queueType.getLastDetail();
+            var queueTypeName = queueTypeDetail.getQueueTypeName();
+            var isDefault = queueTypeDetail.getIsDefault();
+            var sortOrder = queueTypeDetail.getSortOrder();
+            var description = queueControl.getBestQueueTypeDescription(queueType, getLanguage());
 
             queueTypeTransfer = new QueueTypeTransfer(queueTypeName, isDefault, sortOrder, description);
             put(queueType, queueTypeTransfer);
@@ -68,7 +68,7 @@ public class QueueTypeTransferCache
             }
             
             if(includeOldestQueuedEntityTime) {
-                Long unformattedOldestQueuedEntityTime = queueControl.oldestQueuedEntityTimeByQueueType(queueType);
+                var unformattedOldestQueuedEntityTime = queueControl.oldestQueuedEntityTimeByQueueType(queueType);
                 
                 if(unformattedOldestQueuedEntityTime != null) {
                     queueTypeTransfer.setUnformattedOldestQueuedEntityTime(unformattedOldestQueuedEntityTime);
@@ -77,7 +77,7 @@ public class QueueTypeTransferCache
             }
 
             if(includeLatestQueuedEntityTime) {
-                Long unformattedLatestQueuedEntityTime = queueControl.latestQueuedEntityTimeByQueueType(queueType);
+                var unformattedLatestQueuedEntityTime = queueControl.latestQueuedEntityTimeByQueueType(queueType);
                 
                 if(unformattedLatestQueuedEntityTime != null) {
                     queueTypeTransfer.setUnformattedLatestQueuedEntityTime(unformattedLatestQueuedEntityTime);

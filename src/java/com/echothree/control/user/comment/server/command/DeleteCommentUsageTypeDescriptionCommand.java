@@ -59,29 +59,29 @@ public class DeleteCommentUsageTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String componentVendorName = form.getComponentVendorName();
-        ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+        var componentVendorName = form.getComponentVendorName();
+        var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
         
         if(componentVendor != null) {
-            String entityTypeName = form.getEntityTypeName();
-            EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+            var entityTypeName = form.getEntityTypeName();
+            var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
             
             if(entityType != null) {
                 var commentControl = Session.getModelController(CommentControl.class);
-                String commentTypeName = form.getCommentTypeName();
-                CommentType commentType = commentControl.getCommentTypeByName(entityType, commentTypeName);
+                var commentTypeName = form.getCommentTypeName();
+                var commentType = commentControl.getCommentTypeByName(entityType, commentTypeName);
                 
                 if(commentType != null) {
-                    String commentUsageTypeName = form.getCommentUsageTypeName();
-                    CommentUsageType commentUsageType = commentControl.getCommentUsageTypeByName(commentType, commentUsageTypeName);
+                    var commentUsageTypeName = form.getCommentUsageTypeName();
+                    var commentUsageType = commentControl.getCommentUsageTypeByName(commentType, commentUsageTypeName);
                     
                     if(commentUsageType != null) {
                         var partyControl = Session.getModelController(PartyControl.class);
-                        String languageIsoName = form.getLanguageIsoName();
-                        Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                        var languageIsoName = form.getLanguageIsoName();
+                        var language = partyControl.getLanguageByIsoName(languageIsoName);
                         
                         if(language != null) {
-                            CommentUsageTypeDescription commentUsageTypeDescription = commentControl.getCommentUsageTypeDescriptionForUpdate(commentUsageType, language);
+                            var commentUsageTypeDescription = commentControl.getCommentUsageTypeDescriptionForUpdate(commentUsageType, language);
                             
                             if(commentUsageTypeDescription != null) {
                                 commentControl.deleteCommentUsageTypeDescription(commentUsageTypeDescription, getPartyPK());

@@ -35,11 +35,11 @@ public class ProtocolDescriptionTransferCache
     }
     
     public ProtocolDescriptionTransfer getProtocolDescriptionTransfer(ProtocolDescription protocolDescription) {
-        ProtocolDescriptionTransfer protocolDescriptionTransfer = get(protocolDescription);
+        var protocolDescriptionTransfer = get(protocolDescription);
         
         if(protocolDescriptionTransfer == null) {
-            ProtocolTransfer protocolTransfer = coreControl.getProtocolTransfer(userVisit, protocolDescription.getProtocol());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, protocolDescription.getLanguage());
+            var protocolTransfer = coreControl.getProtocolTransfer(userVisit, protocolDescription.getProtocol());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, protocolDescription.getLanguage());
             
             protocolDescriptionTransfer = new ProtocolDescriptionTransfer(languageTransfer, protocolTransfer,
                     protocolDescription.getDescription());

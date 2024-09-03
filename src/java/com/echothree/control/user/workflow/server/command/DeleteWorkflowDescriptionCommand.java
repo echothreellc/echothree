@@ -67,16 +67,16 @@ public class DeleteWorkflowDescriptionCommand
     @Override
     protected BaseResult execute() {
         var workflowControl = Session.getModelController(WorkflowControl.class);
-        String workflowName = form.getWorkflowName();
+        var workflowName = form.getWorkflowName();
         var workflow = workflowControl.getWorkflowByName(workflowName);
         
         if(workflow != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                WorkflowDescription workflowDescription = workflowControl.getWorkflowDescriptionForUpdate(workflow, language);
+                var workflowDescription = workflowControl.getWorkflowDescriptionForUpdate(workflow, language);
                 
                 if(workflowDescription != null) {
                     workflowControl.deleteWorkflowDescription(workflowDescription, getPartyPK());

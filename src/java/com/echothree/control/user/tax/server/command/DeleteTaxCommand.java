@@ -49,8 +49,8 @@ public class DeleteTaxCommand
     @Override
     protected BaseResult execute() {
         var taxControl = Session.getModelController(TaxControl.class);
-        String taxName = form.getTaxName();
-        Tax tax = taxControl.getTaxByNameForUpdate(taxName);
+        var taxName = form.getTaxName();
+        var tax = taxControl.getTaxByNameForUpdate(taxName);
         
         if(tax != null) {
             taxControl.deleteTax(tax, getPartyPK());

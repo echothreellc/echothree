@@ -63,8 +63,8 @@ public class DeleteEmployeeTypeCommand
     @Override
     protected BaseResult execute() {
         var employeeControl = Session.getModelController(EmployeeControl.class);
-        String employeeTypeName = form.getEmployeeTypeName();
-        EmployeeType employeeType = employeeControl.getEmployeeTypeByNameForUpdate(employeeTypeName);
+        var employeeTypeName = form.getEmployeeTypeName();
+        var employeeType = employeeControl.getEmployeeTypeByNameForUpdate(employeeTypeName);
         
         if(employeeType != null) {
             employeeControl.deleteEmployeeType(employeeType, getPartyPK());

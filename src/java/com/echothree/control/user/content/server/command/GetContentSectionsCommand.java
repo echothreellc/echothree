@@ -64,8 +64,8 @@ public class GetContentSectionsCommand
     
     @Override
     protected Collection<ContentSection> getEntities() {
-        String contentWebAddressName = form.getContentWebAddressName();
-        String contentCollectionName = form.getContentCollectionName();
+        var contentWebAddressName = form.getContentWebAddressName();
+        var contentCollectionName = form.getContentCollectionName();
         var parameterCount = (contentWebAddressName == null ? 0 : 1) + (contentCollectionName == null ? 0 : 1);
         Collection<ContentSection> contentSections = null;
 
@@ -73,7 +73,7 @@ public class GetContentSectionsCommand
             var contentControl = Session.getModelController(ContentControl.class);
 
             if(contentWebAddressName != null) {
-                ContentWebAddress contentWebAddress = contentControl.getContentWebAddressByName(contentWebAddressName);
+                var contentWebAddress = contentControl.getContentWebAddressByName(contentWebAddressName);
 
                 if(contentWebAddress != null) {
                     contentCollection = contentWebAddress.getLastDetail().getContentCollection();
@@ -89,7 +89,7 @@ public class GetContentSectionsCommand
             }
 
             if(!hasExecutionErrors()) {
-                String parentContentSectionName = form.getParentContentSectionName();
+                var parentContentSectionName = form.getParentContentSectionName();
                 var partyPK = getPartyPK();
 
                 parentContentSection = parentContentSectionName == null ? null : contentControl.getContentSectionByName(contentCollection, parentContentSectionName);
@@ -117,11 +117,11 @@ public class GetContentSectionsCommand
     
     @Override
     protected BaseResult getResult(Collection<ContentSection> entities) {
-        GetContentSectionsResult result = ContentResultFactory.getGetContentSectionsResult();
+        var result = ContentResultFactory.getGetContentSectionsResult();
         
         if(entities != null) {
             var contentControl = Session.getModelController(ContentControl.class);
-            UserVisit userVisit = getUserVisit();
+            var userVisit = getUserVisit();
 
             result.setContentCollection(contentControl.getContentCollectionTransfer(userVisit, contentCollection));
             result.setContentSections(contentControl.getContentSectionTransfers(userVisit, entities));

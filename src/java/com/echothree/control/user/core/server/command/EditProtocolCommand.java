@@ -89,7 +89,7 @@ public class EditProtocolCommand
     public Protocol getEntity(EditProtocolResult result) {
         var coreControl = getCoreControl();
         Protocol protocol = null;
-        String protocolName = spec.getProtocolName();
+        var protocolName = spec.getProtocolName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
             protocol = coreControl.getProtocolByName(protocolName);
@@ -121,8 +121,8 @@ public class EditProtocolCommand
     @Override
     public void doLock(ProtocolEdit edit, Protocol protocol) {
         var coreControl = getCoreControl();
-        ProtocolDescription protocolDescription = coreControl.getProtocolDescription(protocol, getPreferredLanguage());
-        ProtocolDetail protocolDetail = protocol.getLastDetail();
+        var protocolDescription = coreControl.getProtocolDescription(protocol, getPreferredLanguage());
+        var protocolDetail = protocol.getLastDetail();
 
         edit.setProtocolName(protocolDetail.getProtocolName());
         edit.setIsDefault(protocolDetail.getIsDefault().toString());
@@ -136,8 +136,8 @@ public class EditProtocolCommand
     @Override
     public void canUpdate(Protocol protocol) {
         var coreControl = getCoreControl();
-        String protocolName = edit.getProtocolName();
-        Protocol duplicateProtocol = coreControl.getProtocolByName(protocolName);
+        var protocolName = edit.getProtocolName();
+        var duplicateProtocol = coreControl.getProtocolByName(protocolName);
 
         if(duplicateProtocol != null && !protocol.equals(duplicateProtocol)) {
             addExecutionError(ExecutionErrors.DuplicateProtocolName.name(), protocolName);
@@ -148,9 +148,9 @@ public class EditProtocolCommand
     public void doUpdate(Protocol protocol) {
         var coreControl = getCoreControl();
         var partyPK = getPartyPK();
-        ProtocolDetailValue protocolDetailValue = coreControl.getProtocolDetailValueForUpdate(protocol);
-        ProtocolDescription protocolDescription = coreControl.getProtocolDescriptionForUpdate(protocol, getPreferredLanguage());
-        String description = edit.getDescription();
+        var protocolDetailValue = coreControl.getProtocolDetailValueForUpdate(protocol);
+        var protocolDescription = coreControl.getProtocolDescriptionForUpdate(protocol, getPreferredLanguage());
+        var description = edit.getDescription();
 
         protocolDetailValue.setProtocolName(edit.getProtocolName());
         protocolDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
@@ -165,7 +165,7 @@ public class EditProtocolCommand
                 coreControl.deleteProtocolDescription(protocolDescription, partyPK);
             } else {
                 if(protocolDescription != null && description != null) {
-                    ProtocolDescriptionValue protocolDescriptionValue = coreControl.getProtocolDescriptionValue(protocolDescription);
+                    var protocolDescriptionValue = coreControl.getProtocolDescriptionValue(protocolDescription);
 
                     protocolDescriptionValue.setDescription(description);
                     coreControl.updateProtocolDescriptionFromValue(protocolDescriptionValue, partyPK);

@@ -59,7 +59,7 @@ public class GetServicesCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        GetServicesResult result = CoreResultFactory.getGetServicesResult();
+        var result = CoreResultFactory.getGetServicesResult();
         
         result.setServices(coreControl.getServiceTransfers(getUserVisit()));
         

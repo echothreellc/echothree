@@ -71,21 +71,21 @@ public class GetReturnPolicyTranslationCommand
     @Override
     protected BaseResult execute() {
         var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
-        GetReturnPolicyTranslationResult result = ReturnPolicyResultFactory.getGetReturnPolicyTranslationResult();
-        String returnKindName = form.getReturnKindName();
-        ReturnKind returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
+        var result = ReturnPolicyResultFactory.getGetReturnPolicyTranslationResult();
+        var returnKindName = form.getReturnKindName();
+        var returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
 
         if(returnKind != null) {
-            String returnPolicyName = form.getReturnPolicyName();
-            ReturnPolicy returnPolicy = returnPolicyControl.getReturnPolicyByName(returnKind, returnPolicyName);
+            var returnPolicyName = form.getReturnPolicyName();
+            var returnPolicy = returnPolicyControl.getReturnPolicyByName(returnKind, returnPolicyName);
 
             if(returnPolicy != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = form.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = form.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                 if(language != null) {
-                    ReturnPolicyTranslation returnPolicyTranslation = returnPolicyControl.getReturnPolicyTranslation(returnPolicy, language);
+                    var returnPolicyTranslation = returnPolicyControl.getReturnPolicyTranslation(returnPolicy, language);
 
                     if(returnPolicyTranslation != null) {
                         result.setReturnPolicyTranslation(returnPolicyControl.getReturnPolicyTranslationTransfer(getUserVisit(), returnPolicyTranslation));

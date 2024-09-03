@@ -91,17 +91,17 @@ public class EditShipmentAliasTypeDescriptionCommand
     public ShipmentAliasTypeDescription getEntity(EditShipmentAliasTypeDescriptionResult result) {
         var shipmentControl = Session.getModelController(ShipmentControl.class);
         ShipmentAliasTypeDescription shipmentAliasTypeDescription = null;
-        String shipmentTypeName = spec.getShipmentTypeName();
-        ShipmentType shipmentType = shipmentControl.getShipmentTypeByName(shipmentTypeName);
+        var shipmentTypeName = spec.getShipmentTypeName();
+        var shipmentType = shipmentControl.getShipmentTypeByName(shipmentTypeName);
 
         if(shipmentType != null) {
-            String shipmentAliasTypeName = spec.getShipmentAliasTypeName();
-            ShipmentAliasType shipmentAliasType = shipmentControl.getShipmentAliasTypeByName(shipmentType, shipmentAliasTypeName);
+            var shipmentAliasTypeName = spec.getShipmentAliasTypeName();
+            var shipmentAliasType = shipmentControl.getShipmentAliasTypeByName(shipmentType, shipmentAliasTypeName);
 
             if(shipmentAliasType != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = spec.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = spec.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                 if(language != null) {
                     if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -146,7 +146,7 @@ public class EditShipmentAliasTypeDescriptionCommand
     @Override
     public void doUpdate(ShipmentAliasTypeDescription shipmentAliasTypeDescription) {
         var shipmentControl = Session.getModelController(ShipmentControl.class);
-        ShipmentAliasTypeDescriptionValue shipmentAliasTypeDescriptionValue = shipmentControl.getShipmentAliasTypeDescriptionValue(shipmentAliasTypeDescription);
+        var shipmentAliasTypeDescriptionValue = shipmentControl.getShipmentAliasTypeDescriptionValue(shipmentAliasTypeDescription);
 
         shipmentAliasTypeDescriptionValue.setDescription(edit.getDescription());
 

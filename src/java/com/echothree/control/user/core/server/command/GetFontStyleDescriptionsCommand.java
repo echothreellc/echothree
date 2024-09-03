@@ -63,9 +63,9 @@ public class GetFontStyleDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        GetFontStyleDescriptionsResult result = CoreResultFactory.getGetFontStyleDescriptionsResult();
-        String fontStyleName = form.getFontStyleName();
-        FontStyle fontStyle = coreControl.getFontStyleByName(fontStyleName);
+        var result = CoreResultFactory.getGetFontStyleDescriptionsResult();
+        var fontStyleName = form.getFontStyleName();
+        var fontStyle = coreControl.getFontStyleByName(fontStyleName);
         
         if(fontStyle != null) {
             result.setFontStyle(coreControl.getFontStyleTransfer(getUserVisit(), fontStyle));

@@ -77,23 +77,23 @@ public class CacheEntryTransferCache
     }
     
     public CacheEntryTransfer getCacheEntryTransfer(CacheEntry cacheEntry) {
-        CacheEntryTransfer cacheEntryTransfer = get(cacheEntry);
+        var cacheEntryTransfer = get(cacheEntry);
         
         if(cacheEntryTransfer == null) {
-            String cacheEntryKey = filterCacheEntryKey ? null : cacheEntry.getCacheEntryKey();
-            MimeType mimeType = cacheEntry.getMimeType();
-            MimeTypeTransfer mimeTypeTransfer = filterMimeType ? null : coreControl.getMimeTypeTransfer(userVisit, mimeType);
-            Long unformattedCreatedTime = cacheEntry.getCreatedTime();
-            String createdTime = filterCreatedTime ? null : formatTypicalDateTime(unformattedCreatedTime);
-            Long unformattedValidUntilTime = cacheEntry.getValidUntilTime();
-            String validUntilTime = filterValidUntilTime ? null : formatTypicalDateTime(unformattedValidUntilTime);
+            var cacheEntryKey = filterCacheEntryKey ? null : cacheEntry.getCacheEntryKey();
+            var mimeType = cacheEntry.getMimeType();
+            var mimeTypeTransfer = filterMimeType ? null : coreControl.getMimeTypeTransfer(userVisit, mimeType);
+            var unformattedCreatedTime = cacheEntry.getCreatedTime();
+            var createdTime = filterCreatedTime ? null : formatTypicalDateTime(unformattedCreatedTime);
+            var unformattedValidUntilTime = cacheEntry.getValidUntilTime();
+            var validUntilTime = filterValidUntilTime ? null : formatTypicalDateTime(unformattedValidUntilTime);
             String clob = null;
             ByteArray blob = null;
 
-            String entityAttributeTypeName = mimeType.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
+            var entityAttributeTypeName = mimeType.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
             if(entityAttributeTypeName.equals(EntityAttributeTypes.CLOB.name())) {
                 if(includeClob) {
-                    CacheClobEntry cacheClobEntry = coreControl.getCacheClobEntryByCacheEntry(cacheEntry);
+                    var cacheClobEntry = coreControl.getCacheClobEntryByCacheEntry(cacheEntry);
 
                     if(cacheClobEntry != null) {
                         clob = cacheClobEntry.getClob();
@@ -101,7 +101,7 @@ public class CacheEntryTransferCache
                 }
             } else if(entityAttributeTypeName.equals(EntityAttributeTypes.BLOB.name())) {
                 if(includeBlob) {
-                    CacheBlobEntry cacheBlobEntry = coreControl.getCacheBlobEntryByCacheEntry(cacheEntry);
+                    var cacheBlobEntry = coreControl.getCacheBlobEntryByCacheEntry(cacheEntry);
 
                     if(cacheBlobEntry != null) {
                         blob = cacheBlobEntry.getBlob();

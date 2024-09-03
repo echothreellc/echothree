@@ -39,16 +39,16 @@ public class CancellationKindTransferCache
     }
     
     public CancellationKindTransfer getCancellationKindTransfer(CancellationKind cancellationKind) {
-        CancellationKindTransfer cancellationKindTransfer = get(cancellationKind);
+        var cancellationKindTransfer = get(cancellationKind);
         
         if(cancellationKindTransfer == null) {
-            CancellationKindDetail cancellationKindDetail = cancellationKind.getLastDetail();
-            String cancellationKindName = cancellationKindDetail.getCancellationKindName();
-            SequenceType cancellationSequenceType = cancellationKindDetail.getCancellationSequenceType();
-            SequenceTypeTransfer cancellationSequenceTypeTransfer = cancellationSequenceType == null? null: sequenceControl.getSequenceTypeTransfer(userVisit, cancellationSequenceType);
-            Boolean isDefault = cancellationKindDetail.getIsDefault();
-            Integer sortOrder = cancellationKindDetail.getSortOrder();
-            String description = cancellationPolicyControl.getBestCancellationKindDescription(cancellationKind, getLanguage());
+            var cancellationKindDetail = cancellationKind.getLastDetail();
+            var cancellationKindName = cancellationKindDetail.getCancellationKindName();
+            var cancellationSequenceType = cancellationKindDetail.getCancellationSequenceType();
+            var cancellationSequenceTypeTransfer = cancellationSequenceType == null? null: sequenceControl.getSequenceTypeTransfer(userVisit, cancellationSequenceType);
+            var isDefault = cancellationKindDetail.getIsDefault();
+            var sortOrder = cancellationKindDetail.getSortOrder();
+            var description = cancellationPolicyControl.getBestCancellationKindDescription(cancellationKind, getLanguage());
             
             cancellationKindTransfer = new CancellationKindTransfer(cancellationKindName, cancellationSequenceTypeTransfer, isDefault, sortOrder, description);
             put(cancellationKind, cancellationKindTransfer);

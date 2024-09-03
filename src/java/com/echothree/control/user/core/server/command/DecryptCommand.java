@@ -48,9 +48,9 @@ public class DecryptCommand
     
     @Override
     protected BaseResult execute() {
-        DecryptResult result = CoreResultFactory.getDecryptResult();
-        String externalEntityTypeName = form.getExternalEntityTypeName();
-        String value = form.getValue();
+        var result = CoreResultFactory.getDecryptResult();
+        var externalEntityTypeName = form.getExternalEntityTypeName();
+        var value = form.getValue();
 
         result.setValue(EncryptionUtils.getInstance().decrypt(externalEntityTypeName, null, Boolean.TRUE, value));
 

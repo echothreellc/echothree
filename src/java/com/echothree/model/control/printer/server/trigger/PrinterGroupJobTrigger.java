@@ -33,8 +33,8 @@ public class PrinterGroupJobTrigger
     @Override
     public void handleTrigger(final Session session, final ExecutionErrorAccumulator eea, final WorkflowEntityStatus workflowEntityStatus, final PartyPK triggeredBy) {
         var printerControl = Session.getModelController(PrinterControl.class);
-        PrinterGroupJob printerGroupJob = printerControl.convertEntityInstanceToPrinterGroupJobForUpdate(getEntityInstance(workflowEntityStatus));
-        String workflowStepName = getWorkflowStepName(workflowEntityStatus);
+        var printerGroupJob = printerControl.convertEntityInstanceToPrinterGroupJobForUpdate(getEntityInstance(workflowEntityStatus));
+        var workflowStepName = getWorkflowStepName(workflowEntityStatus);
         
         if(workflowStepName.equals(PrinterGroupJobStatusConstants.WorkflowStep_PRINTED)
                 || workflowStepName.equals(PrinterGroupJobStatusConstants.WorkflowStep_DELETED)) {

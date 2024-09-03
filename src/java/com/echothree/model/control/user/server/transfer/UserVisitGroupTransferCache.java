@@ -42,14 +42,14 @@ public class UserVisitGroupTransferCache
     }
 
     public UserVisitGroupTransfer getUserVisitGroupTransfer(UserVisitGroup userVisitGroup) {
-        UserVisitGroupTransfer userVisitGroupTransfer = get(userVisitGroup);
+        var userVisitGroupTransfer = get(userVisitGroup);
 
         if(userVisitGroupTransfer == null) {
-            UserVisitGroupDetail userVisitGroupDetail = userVisitGroup.getLastDetail();
-            String userVisitGroupName = userVisitGroupDetail.getUserVisitGroupName();
+            var userVisitGroupDetail = userVisitGroup.getLastDetail();
+            var userVisitGroupName = userVisitGroupDetail.getUserVisitGroupName();
 
-            EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(userVisitGroup.getPrimaryKey());
-            WorkflowEntityStatusTransfer userVisitGroupStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
+            var entityInstance = coreControl.getEntityInstanceByBasePK(userVisitGroup.getPrimaryKey());
+            var userVisitGroupStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
                     UserVisitGroupStatusConstants.Workflow_USER_VISIT_GROUP_STATUS, entityInstance);
 
             userVisitGroupTransfer = new UserVisitGroupTransfer(userVisitGroupName, userVisitGroupStatusTransfer);

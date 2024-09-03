@@ -92,20 +92,20 @@ public class OfferControl
     /** Use the function in OfferLogic instead. */
     public Offer createOffer(String offerName, Sequence salesOrderSequence, Party departmentParty, Selector offerItemSelector,
             Filter offerItemPriceFilter, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        Offer defaultOffer = getDefaultOffer();
-        boolean defaultFound = defaultOffer != null;
+        var defaultOffer = getDefaultOffer();
+        var defaultFound = defaultOffer != null;
         
         if(defaultFound && isDefault) {
-            OfferDetailValue defaultOfferDetailValue = getDefaultOfferDetailValueForUpdate();
+            var defaultOfferDetailValue = getDefaultOfferDetailValueForUpdate();
             
             defaultOfferDetailValue.setIsDefault(Boolean.FALSE);
             updateOfferFromValue(defaultOfferDetailValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        Offer offer = OfferFactory.getInstance().create();
-        OfferDetail offerDetail = OfferDetailFactory.getInstance().create(offer, offerName, salesOrderSequence, departmentParty, offerItemSelector,
+
+        var offer = OfferFactory.getInstance().create();
+        var offerDetail = OfferDetailFactory.getInstance().create(offer, offerName, salesOrderSequence, departmentParty, offerItemSelector,
                 offerItemPriceFilter, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -187,8 +187,8 @@ public class OfferControl
                     "WHERE ofr_activedetailid = ofrdt_offerdetailid AND ofrdt_isdefault = 1 " +
                     "FOR UPDATE";
         }
-        
-        PreparedStatement ps = OfferFactory.getInstance().prepareStatement(query);
+
+        var ps = OfferFactory.getInstance().prepareStatement(query);
         
         return OfferFactory.getInstance().getEntityFromQuery(entityPermission, ps);
     }
@@ -221,8 +221,8 @@ public class OfferControl
                         "WHERE ofr_activedetailid = ofrdt_offerdetailid AND ofrdt_offername = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = OfferFactory.getInstance().prepareStatement(query);
+
+            var ps = OfferFactory.getInstance().prepareStatement(query);
             
             ps.setString(1, offerName);
             
@@ -254,7 +254,7 @@ public class OfferControl
         List<Offer> offers;
 
         try {
-            PreparedStatement ps = OfferFactory.getInstance().prepareStatement(
+            var ps = OfferFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM offers, offerdetails " +
                     "WHERE ofr_activedetailid = ofrdt_offerdetailid AND ofrdt_departmentpartyid = ? " +
@@ -275,7 +275,7 @@ public class OfferControl
         List<Offer> offers;
 
         try {
-            PreparedStatement ps = OfferFactory.getInstance().prepareStatement(
+            var ps = OfferFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM offers, offerdetails " +
                     "WHERE ofr_activedetailid = ofrdt_offerdetailid AND ofrdt_offeritemselectorid = ? " +
@@ -292,7 +292,7 @@ public class OfferControl
     }
 
     private List<Offer> getOffers(EntityPermission entityPermission) {
-        PreparedStatement ps = OfferFactory.getInstance().prepareStatement(
+        var ps = OfferFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ "
                 + "FROM offers, offerdetails "
                 + "WHERE ofr_activedetailid = ofrdt_offerdetailid "
@@ -312,7 +312,7 @@ public class OfferControl
     
     /** Gets a List that contains all the Selectors used by Offers. */
     public List<Selector> getDistinctOfferItemSelectors() {
-        PreparedStatement ps = SelectorFactory.getInstance().prepareStatement(
+        var ps = SelectorFactory.getInstance().prepareStatement(
                 "SELECT DISTINCT _ALL_ " +
                 "FROM offers, offerdetails, selectors " +
                 "WHERE ofr_activedetailid = ofrdt_offerdetailid AND ofrdt_offeritemselectorid = sl_selectorid");
@@ -339,7 +339,7 @@ public class OfferControl
     }
     
     public OfferChoicesBean getOfferChoices(String defaultOfferChoice, Language language, boolean allowNullChoice) {
-        List<Offer> offers = getOffers();
+        var offers = getOffers();
         var size = offers.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -355,7 +355,7 @@ public class OfferControl
         }
 
         for(var offer : offers) {
-            OfferDetail offerDetail = offer.getLastDetail();
+            var offerDetail = offer.getLastDetail();
 
             var label = getBestOfferDescription(offer, language);
             var value = offerDetail.getOfferName();
@@ -375,29 +375,29 @@ public class OfferControl
     private void updateOfferFromValue(OfferDetailValue offerDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(offerDetailValue.hasBeenModified()) {
-            Offer offer = OfferFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var offer = OfferFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      offerDetailValue.getOfferPK());
-            OfferDetail offerDetail = offer.getActiveDetailForUpdate();
+            var offerDetail = offer.getActiveDetailForUpdate();
             
             offerDetail.setThruTime(session.START_TIME_LONG);
             offerDetail.store();
-            
-            OfferPK offerPK = offerDetail.getOfferPK();
-            String offerName = offerDetailValue.getOfferName();
-            SequencePK salesOrderSequencePK = offerDetailValue.getSalesOrderSequencePK();
-            PartyPK departmentPartyPK = offerDetail.getDepartmentPartyPK(); // Not updated
-            SelectorPK offerItemSelectorPK = offerDetailValue.getOfferItemSelectorPK();
-            FilterPK offerItemPriceFilterPK = offerDetailValue.getOfferItemPriceFilterPK();
-            Boolean isDefault = offerDetailValue.getIsDefault();
-            Integer sortOrder = offerDetailValue.getSortOrder();
+
+            var offerPK = offerDetail.getOfferPK();
+            var offerName = offerDetailValue.getOfferName();
+            var salesOrderSequencePK = offerDetailValue.getSalesOrderSequencePK();
+            var departmentPartyPK = offerDetail.getDepartmentPartyPK(); // Not updated
+            var offerItemSelectorPK = offerDetailValue.getOfferItemSelectorPK();
+            var offerItemPriceFilterPK = offerDetailValue.getOfferItemPriceFilterPK();
+            var isDefault = offerDetailValue.getIsDefault();
+            var sortOrder = offerDetailValue.getSortOrder();
             
             if(checkDefault) {
-                Offer defaultOffer = getDefaultOffer();
-                boolean defaultFound = defaultOffer != null && !defaultOffer.equals(offer);
+                var defaultOffer = getDefaultOffer();
+                var defaultFound = defaultOffer != null && !defaultOffer.equals(offer);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    OfferDetailValue defaultOfferDetailValue = getDefaultOfferDetailValueForUpdate();
+                    var defaultOfferDetailValue = getDefaultOfferDetailValueForUpdate();
                     
                     defaultOfferDetailValue.setIsDefault(Boolean.FALSE);
                     updateOfferFromValue(defaultOfferDetailValue, false, updatedBy);
@@ -433,23 +433,23 @@ public class OfferControl
         deleteOfferDescriptionsByOffer(offer, deletedBy);
 
         removeOfferTimeByOffer(offer);
-        
-        OfferDetail offerDetail = offer.getLastDetailForUpdate();
+
+        var offerDetail = offer.getLastDetailForUpdate();
         offerDetail.setThruTime(session.START_TIME_LONG);
         offer.setActiveDetail(null);
         offer.store();
         
         // Check for default, and pick one if necessary
-        Offer defaultOffer = getDefaultOffer();
+        var defaultOffer = getDefaultOffer();
         if(defaultOffer == null) {
-            List<Offer> offers = getOffersForUpdate();
+            var offers = getOffersForUpdate();
             
             if(!offers.isEmpty()) {
-                Iterator<Offer> iter = offers.iterator();
+                var iter = offers.iterator();
                 if(iter.hasNext()) {
                     defaultOffer = iter.next();
                 }
-                OfferDetailValue offerDetailValue = Objects.requireNonNull(defaultOffer).getLastDetailForUpdate().getOfferDetailValue().clone();
+                var offerDetailValue = Objects.requireNonNull(defaultOffer).getLastDetailForUpdate().getOfferDetailValue().clone();
                 
                 offerDetailValue.setIsDefault(Boolean.TRUE);
                 updateOfferFromValue(offerDetailValue, false, deletedBy);
@@ -464,7 +464,7 @@ public class OfferControl
     // --------------------------------------------------------------------------------
     
     public OfferDescription createOfferDescription(Offer offer, Language language, String description, BasePK createdBy) {
-        OfferDescription offerDescription = OfferDescriptionFactory.getInstance().create(offer, language, description,
+        var offerDescription = OfferDescriptionFactory.getInstance().create(offer, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(offer.getPrimaryKey(), EventTypes.MODIFY, offerDescription.getPrimaryKey(),
@@ -489,8 +489,8 @@ public class OfferControl
                         "WHERE ofrd_ofr_offerid = ? AND ofrd_lang_languageid = ? AND ofrd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = OfferDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = OfferDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, offer.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -537,8 +537,8 @@ public class OfferControl
                         "WHERE ofrd_ofr_offerid = ? AND ofrd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = OfferDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = OfferDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, offer.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -561,7 +561,7 @@ public class OfferControl
     
     public String getBestOfferDescription(Offer offer, Language language) {
         String description;
-        OfferDescription offerDescription = getOfferDescription(offer, language);
+        var offerDescription = getOfferDescription(offer, language);
         
         if(offerDescription == null && !language.getIsDefault()) {
             offerDescription = getOfferDescription(offer, getPartyControl().getDefaultLanguage());
@@ -581,7 +581,7 @@ public class OfferControl
     }
     
     public List<OfferDescriptionTransfer> getOfferDescriptionTransfers(UserVisit userVisit, Offer offer) {
-        List<OfferDescription> offerDescriptions = getOfferDescriptionsByOffer(offer);
+        var offerDescriptions = getOfferDescriptionsByOffer(offer);
         List<OfferDescriptionTransfer> offerDescriptionTransfers = new ArrayList<>(offerDescriptions.size());
         
         offerDescriptions.forEach((offerDescription) -> {
@@ -593,15 +593,15 @@ public class OfferControl
     
     public void updateOfferDescriptionFromValue(OfferDescriptionValue offerDescriptionValue, BasePK updatedBy) {
         if(offerDescriptionValue.hasBeenModified()) {
-            OfferDescription offerDescription = OfferDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var offerDescription = OfferDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      offerDescriptionValue.getPrimaryKey());
             
             offerDescription.setThruTime(session.START_TIME_LONG);
             offerDescription.store();
-            
-            Offer offer = offerDescription.getOffer();
-            Language language = offerDescription.getLanguage();
-            String description = offerDescriptionValue.getDescription();
+
+            var offer = offerDescription.getOffer();
+            var language = offerDescription.getLanguage();
+            var description = offerDescriptionValue.getDescription();
             
             offerDescription = OfferDescriptionFactory.getInstance().create(offer, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -619,7 +619,7 @@ public class OfferControl
     }
     
     public void deleteOfferDescriptionsByOffer(Offer offer, BasePK deletedBy) {
-        List<OfferDescription> offerDescriptions = getOfferDescriptionsByOfferForUpdate(offer);
+        var offerDescriptions = getOfferDescriptionsByOfferForUpdate(offer);
         
         offerDescriptions.forEach((offerDescription) -> 
                 deleteOfferDescription(offerDescription, deletedBy)
@@ -659,7 +659,7 @@ public class OfferControl
     }
 
     public void removeOfferTimeByOffer(Offer offer) {
-        OfferTime offerTime = getOfferTimeForUpdate(offer);
+        var offerTime = getOfferTimeForUpdate(offer);
 
         if(offerTime != null) {
             offerTime.remove();
@@ -672,11 +672,11 @@ public class OfferControl
 
     public OfferCustomerType createOfferCustomerType(Offer offer, CustomerType customerType, Boolean isDefault,
             Integer sortOrder, BasePK createdBy) {
-        OfferCustomerType defaultOfferCustomerType = getDefaultOfferCustomerType(offer);
-        boolean defaultFound = defaultOfferCustomerType != null;
+        var defaultOfferCustomerType = getDefaultOfferCustomerType(offer);
+        var defaultFound = defaultOfferCustomerType != null;
 
         if(defaultFound && isDefault) {
-            OfferCustomerTypeValue defaultOfferCustomerTypeValue = getDefaultOfferCustomerTypeValueForUpdate(offer);
+            var defaultOfferCustomerTypeValue = getDefaultOfferCustomerTypeValueForUpdate(offer);
 
             defaultOfferCustomerTypeValue.setIsDefault(Boolean.FALSE);
             updateOfferCustomerTypeFromValue(defaultOfferCustomerTypeValue, false, createdBy);
@@ -684,7 +684,7 @@ public class OfferControl
             isDefault = Boolean.TRUE;
         }
 
-        OfferCustomerType offerCustomerType = OfferCustomerTypeFactory.getInstance().create(offer, customerType,
+        var offerCustomerType = OfferCustomerTypeFactory.getInstance().create(offer, customerType,
                 isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(offer.getPrimaryKey(), EventTypes.MODIFY, offerCustomerType.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -709,7 +709,7 @@ public class OfferControl
                         "FOR UPDATE";
             }
 
-            PreparedStatement ps = OfferCustomerTypeFactory.getInstance().prepareStatement(query);
+            var ps = OfferCustomerTypeFactory.getInstance().prepareStatement(query);
 
             ps.setLong(1, offer.getPrimaryKey().getEntityId());
             ps.setLong(2, customerType.getPrimaryKey().getEntityId());
@@ -732,7 +732,7 @@ public class OfferControl
     }
 
     public OfferCustomerTypeValue getOfferCustomerTypeValueForUpdate(Offer offer, CustomerType customerType) {
-        OfferCustomerType offerCustomerType = getOfferCustomerTypeForUpdate(offer, customerType);
+        var offerCustomerType = getOfferCustomerTypeForUpdate(offer, customerType);
 
         return offerCustomerType == null? null: offerCustomerType.getOfferCustomerTypeValue().clone();
     }
@@ -754,7 +754,7 @@ public class OfferControl
                         "FOR UPDATE";
             }
 
-            PreparedStatement ps = OfferCustomerTypeFactory.getInstance().prepareStatement(query);
+            var ps = OfferCustomerTypeFactory.getInstance().prepareStatement(query);
 
             ps.setLong(1, offer.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -776,7 +776,7 @@ public class OfferControl
     }
 
     public OfferCustomerTypeValue getDefaultOfferCustomerTypeValueForUpdate(Offer offer) {
-        OfferCustomerType offerCustomerType = getDefaultOfferCustomerTypeForUpdate(offer);
+        var offerCustomerType = getDefaultOfferCustomerTypeForUpdate(offer);
 
         return offerCustomerType == null? null: offerCustomerType.getOfferCustomerTypeValue().clone();
     }
@@ -800,7 +800,7 @@ public class OfferControl
                         "FOR UPDATE";
             }
 
-            PreparedStatement ps = OfferCustomerTypeFactory.getInstance().prepareStatement(query);
+            var ps = OfferCustomerTypeFactory.getInstance().prepareStatement(query);
 
             ps.setLong(1, offer.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -840,7 +840,7 @@ public class OfferControl
                         "FOR UPDATE";
             }
 
-            PreparedStatement ps = OfferCustomerTypeFactory.getInstance().prepareStatement(query);
+            var ps = OfferCustomerTypeFactory.getInstance().prepareStatement(query);
 
             ps.setLong(1, customerType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -863,7 +863,7 @@ public class OfferControl
 
     public List<OfferCustomerTypeTransfer> getOfferCustomerTypeTransfers(UserVisit userVisit, Collection<OfferCustomerType> offerCustomerTypes) {
         List<OfferCustomerTypeTransfer> offerCustomerTypeTransfers = new ArrayList<>(offerCustomerTypes.size());
-        OfferCustomerTypeTransferCache offerCustomerTypeTransferCache = getOfferTransferCaches(userVisit).getOfferCustomerTypeTransferCache();
+        var offerCustomerTypeTransferCache = getOfferTransferCaches(userVisit).getOfferCustomerTypeTransferCache();
 
         offerCustomerTypes.forEach((offerCustomerType) ->
                 offerCustomerTypeTransfers.add(offerCustomerTypeTransferCache.getOfferCustomerTypeTransfer(offerCustomerType))
@@ -886,25 +886,25 @@ public class OfferControl
 
     private void updateOfferCustomerTypeFromValue(OfferCustomerTypeValue offerCustomerTypeValue, boolean checkDefault, BasePK updatedBy) {
         if(offerCustomerTypeValue.hasBeenModified()) {
-            OfferCustomerType offerCustomerType = OfferCustomerTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var offerCustomerType = OfferCustomerTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      offerCustomerTypeValue.getPrimaryKey());
 
             offerCustomerType.setThruTime(session.START_TIME_LONG);
             offerCustomerType.store();
 
-            Offer offer = offerCustomerType.getOffer(); // Not Updated
-            OfferPK offerPK = offer.getPrimaryKey(); // Not Updated
-            CustomerTypePK customerTypePK = offerCustomerType.getCustomerTypePK(); // Not Updated
-            Boolean isDefault = offerCustomerTypeValue.getIsDefault();
-            Integer sortOrder = offerCustomerTypeValue.getSortOrder();
+            var offer = offerCustomerType.getOffer(); // Not Updated
+            var offerPK = offer.getPrimaryKey(); // Not Updated
+            var customerTypePK = offerCustomerType.getCustomerTypePK(); // Not Updated
+            var isDefault = offerCustomerTypeValue.getIsDefault();
+            var sortOrder = offerCustomerTypeValue.getSortOrder();
 
             if(checkDefault) {
-                OfferCustomerType defaultOfferCustomerType = getDefaultOfferCustomerType(offer);
-                boolean defaultFound = defaultOfferCustomerType != null && !defaultOfferCustomerType.equals(offerCustomerType);
+                var defaultOfferCustomerType = getDefaultOfferCustomerType(offer);
+                var defaultFound = defaultOfferCustomerType != null && !defaultOfferCustomerType.equals(offerCustomerType);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    OfferCustomerTypeValue defaultOfferCustomerTypeValue = getDefaultOfferCustomerTypeValueForUpdate(offer);
+                    var defaultOfferCustomerTypeValue = getDefaultOfferCustomerTypeValueForUpdate(offer);
 
                     defaultOfferCustomerTypeValue.setIsDefault(Boolean.FALSE);
                     updateOfferCustomerTypeFromValue(defaultOfferCustomerTypeValue, false, updatedBy);
@@ -930,17 +930,17 @@ public class OfferControl
         offerCustomerType.store();
 
         // Check for default, and pick one if necessary
-        Offer offer = offerCustomerType.getOffer();
-        OfferCustomerType defaultOfferCustomerType = getDefaultOfferCustomerType(offer);
+        var offer = offerCustomerType.getOffer();
+        var defaultOfferCustomerType = getDefaultOfferCustomerType(offer);
         if(defaultOfferCustomerType == null) {
-            List<OfferCustomerType> offerCustomerTypes = getOfferCustomerTypesByOfferForUpdate(offer);
+            var offerCustomerTypes = getOfferCustomerTypesByOfferForUpdate(offer);
 
             if(!offerCustomerTypes.isEmpty()) {
-                Iterator<OfferCustomerType> iter = offerCustomerTypes.iterator();
+                var iter = offerCustomerTypes.iterator();
                 if(iter.hasNext()) {
                     defaultOfferCustomerType = iter.next();
                 }
-                OfferCustomerTypeValue offerCustomerTypeValue = defaultOfferCustomerType.getOfferCustomerTypeValue().clone();
+                var offerCustomerTypeValue = defaultOfferCustomerType.getOfferCustomerTypeValue().clone();
 
                 offerCustomerTypeValue.setIsDefault(Boolean.TRUE);
                 updateOfferCustomerTypeFromValue(offerCustomerTypeValue, false, deletedBy);
@@ -969,7 +969,7 @@ public class OfferControl
     // --------------------------------------------------------------------------------
     
     public OfferChainType createOfferChainType(Offer offer, ChainType chainType, Chain chain, BasePK createdBy) {
-        OfferChainType offerChainType = OfferChainTypeFactory.getInstance().create(offer, chainType, chain,
+        var offerChainType = OfferChainTypeFactory.getInstance().create(offer, chainType, chain,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(offer.getPrimaryKey(), EventTypes.MODIFY, offerChainType.getPrimaryKey(),
@@ -994,8 +994,8 @@ public class OfferControl
                         "WHERE ofrchntyp_ofr_offerid = ? AND ofrchntyp_chntyp_chaintypeid = ? AND ofrchntyp_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = OfferChainTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = OfferChainTypeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, offer.getPrimaryKey().getEntityId());
             ps.setLong(2, chainType.getPrimaryKey().getEntityId());
@@ -1044,8 +1044,8 @@ public class OfferControl
                         + "WHERE ofrchntyp_ofr_offerid = ? AND ofrchntyp_thrutime = ? "
                         + "FOR UPDATE";
             }
-            
-            PreparedStatement ps = OfferChainTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = OfferChainTypeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, offer.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1084,8 +1084,8 @@ public class OfferControl
                         "WHERE ofrchntyp_chntyp_chaintypeid = ? AND ofrchntyp_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = OfferChainTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = OfferChainTypeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, chainType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1124,8 +1124,8 @@ public class OfferControl
                         "WHERE ofrchntyp_chntyp_chaintypeid = ? AND ofrchntyp_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = OfferChainTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = OfferChainTypeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, chain.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1152,7 +1152,7 @@ public class OfferControl
     
     public List<OfferChainTypeTransfer> getOfferChainTypeTransfers(UserVisit userVisit, Collection<OfferChainType> offerChainTypes) {
         List<OfferChainTypeTransfer> offerChainTypeTransfers = new ArrayList<>(offerChainTypes.size());
-        OfferChainTypeTransferCache offerChainTypeTransferCache = getOfferTransferCaches(userVisit).getOfferChainTypeTransferCache();
+        var offerChainTypeTransferCache = getOfferTransferCaches(userVisit).getOfferChainTypeTransferCache();
         
         offerChainTypes.forEach((offerChainType) ->
                 offerChainTypeTransfers.add(offerChainTypeTransferCache.getOfferChainTypeTransfer(offerChainType))
@@ -1171,16 +1171,16 @@ public class OfferControl
     
     public void updateOfferChainTypeFromValue(OfferChainTypeValue offerChainTypeValue, BasePK updatedBy) {
         if(offerChainTypeValue.hasBeenModified()) {
-            OfferChainType offerChainType = OfferChainTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var offerChainType = OfferChainTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      offerChainTypeValue.getPrimaryKey());
             
             offerChainType.setThruTime(session.START_TIME_LONG);
             offerChainType.store();
-            
-            Offer offer = offerChainType.getOffer(); // Not Updated
-            OfferPK offerPK = offer.getPrimaryKey(); // Not Updated
-            ChainTypePK chainTypePK = offerChainType.getChainTypePK(); // Not Updated
-            ChainPK chainPK = offerChainTypeValue.getChainPK();
+
+            var offer = offerChainType.getOffer(); // Not Updated
+            var offerPK = offer.getPrimaryKey(); // Not Updated
+            var chainTypePK = offerChainType.getChainTypePK(); // Not Updated
+            var chainPK = offerChainTypeValue.getChainPK();
             
             offerChainType = OfferChainTypeFactory.getInstance().create(offerPK, chainTypePK, chainPK,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);

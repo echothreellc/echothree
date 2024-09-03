@@ -65,11 +65,11 @@ public class LotAliasControl
 
     public LotAliasType createLotAliasType(String lotAliasTypeName, String validationPattern, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
-        LotAliasType defaultLotAliasType = getDefaultLotAliasType();
-        boolean defaultFound = defaultLotAliasType != null;
+        var defaultLotAliasType = getDefaultLotAliasType();
+        var defaultFound = defaultLotAliasType != null;
 
         if(defaultFound && isDefault) {
-            LotAliasTypeDetailValue defaultLotAliasTypeDetailValue = getDefaultLotAliasTypeDetailValueForUpdate();
+            var defaultLotAliasTypeDetailValue = getDefaultLotAliasTypeDetailValueForUpdate();
 
             defaultLotAliasTypeDetailValue.setIsDefault(Boolean.FALSE);
             updateLotAliasTypeFromValue(defaultLotAliasTypeDetailValue, false, createdBy);
@@ -77,8 +77,8 @@ public class LotAliasControl
             isDefault = Boolean.TRUE;
         }
 
-        LotAliasType lotAliasType = LotAliasTypeFactory.getInstance().create();
-        LotAliasTypeDetail lotAliasTypeDetail = LotAliasTypeDetailFactory.getInstance().create(lotAliasType, lotAliasTypeName,
+        var lotAliasType = LotAliasTypeFactory.getInstance().create();
+        var lotAliasTypeDetail = LotAliasTypeDetailFactory.getInstance().create(lotAliasType, lotAliasTypeName,
                 validationPattern, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -202,9 +202,9 @@ public class LotAliasControl
     }
 
     public List<LotAliasTypeTransfer> getLotAliasTypeTransfers(UserVisit userVisit) {
-        List<LotAliasType> lotAliasTypes = getLotAliasTypes();
+        var lotAliasTypes = getLotAliasTypes();
         List<LotAliasTypeTransfer> lotAliasTypeTransfers = new ArrayList<>(lotAliasTypes.size());
-        LotAliasTypeTransferCache lotAliasTypeTransferCache = getInventoryTransferCaches(userVisit).getLotAliasTypeTransferCache();
+        var lotAliasTypeTransferCache = getInventoryTransferCaches(userVisit).getLotAliasTypeTransferCache();
 
         lotAliasTypes.forEach((lotAliasType) ->
                 lotAliasTypeTransfers.add(lotAliasTypeTransferCache.getTransfer(lotAliasType))
@@ -215,7 +215,7 @@ public class LotAliasControl
 
     public LotAliasTypeChoicesBean getLotAliasTypeChoices(String defaultLotAliasTypeChoice, Language language,
             boolean allowNullChoice) {
-        List<LotAliasType> lotAliasTypes = getLotAliasTypes();
+        var lotAliasTypes = getLotAliasTypes();
         var size = lotAliasTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -231,7 +231,7 @@ public class LotAliasControl
         }
 
         for(var lotAliasType : lotAliasTypes) {
-            LotAliasTypeDetail lotAliasTypeDetail = lotAliasType.getLastDetail();
+            var lotAliasTypeDetail = lotAliasType.getLastDetail();
 
             var label = getBestLotAliasTypeDescription(lotAliasType, language);
             var value = lotAliasTypeDetail.getLotAliasTypeName();
@@ -251,26 +251,26 @@ public class LotAliasControl
     private void updateLotAliasTypeFromValue(LotAliasTypeDetailValue lotAliasTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(lotAliasTypeDetailValue.hasBeenModified()) {
-            LotAliasType lotAliasType = LotAliasTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var lotAliasType = LotAliasTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     lotAliasTypeDetailValue.getLotAliasTypePK());
-            LotAliasTypeDetail lotAliasTypeDetail = lotAliasType.getActiveDetailForUpdate();
+            var lotAliasTypeDetail = lotAliasType.getActiveDetailForUpdate();
 
             lotAliasTypeDetail.setThruTime(session.START_TIME_LONG);
             lotAliasTypeDetail.store();
 
-            LotAliasTypePK lotAliasTypePK = lotAliasTypeDetail.getLotAliasTypePK();
-            String lotAliasTypeName = lotAliasTypeDetailValue.getLotAliasTypeName();
-            String validationPattern = lotAliasTypeDetailValue.getValidationPattern();
-            Boolean isDefault = lotAliasTypeDetailValue.getIsDefault();
-            Integer sortOrder = lotAliasTypeDetailValue.getSortOrder();
+            var lotAliasTypePK = lotAliasTypeDetail.getLotAliasTypePK();
+            var lotAliasTypeName = lotAliasTypeDetailValue.getLotAliasTypeName();
+            var validationPattern = lotAliasTypeDetailValue.getValidationPattern();
+            var isDefault = lotAliasTypeDetailValue.getIsDefault();
+            var sortOrder = lotAliasTypeDetailValue.getSortOrder();
 
             if(checkDefault) {
-                LotAliasType defaultLotAliasType = getDefaultLotAliasType();
-                boolean defaultFound = defaultLotAliasType != null && !defaultLotAliasType.equals(lotAliasType);
+                var defaultLotAliasType = getDefaultLotAliasType();
+                var defaultFound = defaultLotAliasType != null && !defaultLotAliasType.equals(lotAliasType);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    LotAliasTypeDetailValue defaultLotAliasTypeDetailValue = getDefaultLotAliasTypeDetailValueForUpdate();
+                    var defaultLotAliasTypeDetailValue = getDefaultLotAliasTypeDetailValueForUpdate();
 
                     defaultLotAliasTypeDetailValue.setIsDefault(Boolean.FALSE);
                     updateLotAliasTypeFromValue(defaultLotAliasTypeDetailValue, false, updatedBy);
@@ -298,22 +298,22 @@ public class LotAliasControl
         deleteLotAliasesByLotAliasType(lotAliasType, deletedBy);
         deleteLotAliasTypeDescriptionsByLotAliasType(lotAliasType, deletedBy);
 
-        LotAliasTypeDetail lotAliasTypeDetail = lotAliasType.getLastDetailForUpdate();
+        var lotAliasTypeDetail = lotAliasType.getLastDetailForUpdate();
         lotAliasTypeDetail.setThruTime(session.START_TIME_LONG);
         lotAliasType.setActiveDetail(null);
         lotAliasType.store();
 
         // Check for default, and pick one if necessary
-        LotAliasType defaultLotAliasType = getDefaultLotAliasType();
+        var defaultLotAliasType = getDefaultLotAliasType();
         if(defaultLotAliasType == null) {
-            List<LotAliasType> lotAliasTypes = getLotAliasTypesForUpdate();
+            var lotAliasTypes = getLotAliasTypesForUpdate();
 
             if(!lotAliasTypes.isEmpty()) {
-                Iterator<LotAliasType> iter = lotAliasTypes.iterator();
+                var iter = lotAliasTypes.iterator();
                 if(iter.hasNext()) {
                     defaultLotAliasType = iter.next();
                 }
-                LotAliasTypeDetailValue lotAliasTypeDetailValue = Objects.requireNonNull(defaultLotAliasType).getLastDetailForUpdate().getLotAliasTypeDetailValue().clone();
+                var lotAliasTypeDetailValue = Objects.requireNonNull(defaultLotAliasType).getLastDetailForUpdate().getLotAliasTypeDetailValue().clone();
 
                 lotAliasTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateLotAliasTypeFromValue(lotAliasTypeDetailValue, false, deletedBy);
@@ -334,7 +334,7 @@ public class LotAliasControl
     // --------------------------------------------------------------------------------
 
     public LotAliasTypeDescription createLotAliasTypeDescription(LotAliasType lotAliasType, Language language, String description, BasePK createdBy) {
-        LotAliasTypeDescription lotAliasTypeDescription = LotAliasTypeDescriptionFactory.getInstance().create(lotAliasType, language,
+        var lotAliasTypeDescription = LotAliasTypeDescriptionFactory.getInstance().create(lotAliasType, language,
                 description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(lotAliasType.getPrimaryKey(), EventTypes.MODIFY, lotAliasTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -413,7 +413,7 @@ public class LotAliasControl
 
     public String getBestLotAliasTypeDescription(LotAliasType lotAliasType, Language language) {
         String description;
-        LotAliasTypeDescription lotAliasTypeDescription = getLotAliasTypeDescription(lotAliasType, language);
+        var lotAliasTypeDescription = getLotAliasTypeDescription(lotAliasType, language);
 
         if(lotAliasTypeDescription == null && !language.getIsDefault()) {
             lotAliasTypeDescription = getLotAliasTypeDescription(lotAliasType, getPartyControl().getDefaultLanguage());
@@ -433,9 +433,9 @@ public class LotAliasControl
     }
 
     public List<LotAliasTypeDescriptionTransfer> getLotAliasTypeDescriptionTransfersByLotAliasType(UserVisit userVisit, LotAliasType lotAliasType) {
-        List<LotAliasTypeDescription> lotAliasTypeDescriptions = getLotAliasTypeDescriptionsByLotAliasType(lotAliasType);
+        var lotAliasTypeDescriptions = getLotAliasTypeDescriptionsByLotAliasType(lotAliasType);
         List<LotAliasTypeDescriptionTransfer> lotAliasTypeDescriptionTransfers = new ArrayList<>(lotAliasTypeDescriptions.size());
-        LotAliasTypeDescriptionTransferCache lotAliasTypeDescriptionTransferCache = getInventoryTransferCaches(userVisit).getLotAliasTypeDescriptionTransferCache();
+        var lotAliasTypeDescriptionTransferCache = getInventoryTransferCaches(userVisit).getLotAliasTypeDescriptionTransferCache();
 
         lotAliasTypeDescriptions.forEach((lotAliasTypeDescription) ->
                 lotAliasTypeDescriptionTransfers.add(lotAliasTypeDescriptionTransferCache.getTransfer(lotAliasTypeDescription))
@@ -446,15 +446,15 @@ public class LotAliasControl
 
     public void updateLotAliasTypeDescriptionFromValue(LotAliasTypeDescriptionValue lotAliasTypeDescriptionValue, BasePK updatedBy) {
         if(lotAliasTypeDescriptionValue.hasBeenModified()) {
-            LotAliasTypeDescription lotAliasTypeDescription = LotAliasTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var lotAliasTypeDescription = LotAliasTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      lotAliasTypeDescriptionValue.getPrimaryKey());
 
             lotAliasTypeDescription.setThruTime(session.START_TIME_LONG);
             lotAliasTypeDescription.store();
 
-            LotAliasType lotAliasType = lotAliasTypeDescription.getLotAliasType();
-            Language language = lotAliasTypeDescription.getLanguage();
-            String description = lotAliasTypeDescriptionValue.getDescription();
+            var lotAliasType = lotAliasTypeDescription.getLotAliasType();
+            var language = lotAliasTypeDescription.getLanguage();
+            var description = lotAliasTypeDescriptionValue.getDescription();
 
             lotAliasTypeDescription = LotAliasTypeDescriptionFactory.getInstance().create(lotAliasType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -471,7 +471,7 @@ public class LotAliasControl
     }
 
     public void deleteLotAliasTypeDescriptionsByLotAliasType(LotAliasType lotAliasType, BasePK deletedBy) {
-        List<LotAliasTypeDescription> lotAliasTypeDescriptions = getLotAliasTypeDescriptionsByLotAliasTypeForUpdate(lotAliasType);
+        var lotAliasTypeDescriptions = getLotAliasTypeDescriptionsByLotAliasTypeForUpdate(lotAliasType);
 
         lotAliasTypeDescriptions.forEach((lotAliasTypeDescription) -> 
                 deleteLotAliasTypeDescription(lotAliasTypeDescription, deletedBy)
@@ -483,7 +483,7 @@ public class LotAliasControl
     // --------------------------------------------------------------------------------
 
     public LotAlias createLotAlias(Lot lot, LotAliasType lotAliasType, String alias, BasePK createdBy) {
-        LotAlias lotAlias = LotAliasFactory.getInstance().create(lot, lotAliasType, alias, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        var lotAlias = LotAliasFactory.getInstance().create(lot, lotAliasType, alias, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(lot.getPrimaryKey(), EventTypes.MODIFY, lotAlias.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -626,9 +626,9 @@ public class LotAliasControl
     }
 
     public List<LotAliasTransfer> getLotAliasTransfersByLot(UserVisit userVisit, Lot lot) {
-        List<LotAlias> lotaliases = getLotAliasesByLot(lot);
+        var lotaliases = getLotAliasesByLot(lot);
         List<LotAliasTransfer> lotAliasTransfers = new ArrayList<>(lotaliases.size());
-        LotAliasTransferCache lotAliasTransferCache = getInventoryTransferCaches(userVisit).getLotAliasTransferCache();
+        var lotAliasTransferCache = getInventoryTransferCaches(userVisit).getLotAliasTransferCache();
 
         lotaliases.forEach((lotAlias) ->
                 lotAliasTransfers.add(lotAliasTransferCache.getTransfer(lotAlias))
@@ -639,14 +639,14 @@ public class LotAliasControl
 
     public void updateLotAliasFromValue(LotAliasValue lotAliasValue, BasePK updatedBy) {
         if(lotAliasValue.hasBeenModified()) {
-            LotAlias lotAlias = LotAliasFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, lotAliasValue.getPrimaryKey());
+            var lotAlias = LotAliasFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, lotAliasValue.getPrimaryKey());
 
             lotAlias.setThruTime(session.START_TIME_LONG);
             lotAlias.store();
 
-            LotPK lotPK = lotAlias.getLotPK();
-            LotAliasTypePK lotAliasTypePK = lotAlias.getLotAliasTypePK();
-            String alias  = lotAliasValue.getAlias();
+            var lotPK = lotAlias.getLotPK();
+            var lotAliasTypePK = lotAlias.getLotAliasTypePK();
+            var alias  = lotAliasValue.getAlias();
 
             lotAlias = LotAliasFactory.getInstance().create(lotPK, lotAliasTypePK, alias, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
@@ -662,7 +662,7 @@ public class LotAliasControl
     }
 
     public void deleteLotAliasesByLotAliasType(LotAliasType lotAliasType, BasePK deletedBy) {
-        List<LotAlias> lotaliases = getLotAliasesByLotAliasTypeForUpdate(lotAliasType);
+        var lotaliases = getLotAliasesByLotAliasTypeForUpdate(lotAliasType);
 
         lotaliases.forEach((lotAlias) -> 
                 deleteLotAlias(lotAlias, deletedBy)
@@ -670,7 +670,7 @@ public class LotAliasControl
     }
 
     public void deleteLotAliasesByLot(Lot lot, BasePK deletedBy) {
-        List<LotAlias> lotaliases = getLotAliasesByLotForUpdate(lot);
+        var lotaliases = getLotAliasesByLotForUpdate(lot);
 
         lotaliases.forEach((lotAlias) -> 
                 deleteLotAlias(lotAlias, deletedBy)

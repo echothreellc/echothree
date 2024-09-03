@@ -33,12 +33,12 @@ public class InventoryConditionDescriptionTransferCache
     
     @Override
     public InventoryConditionDescriptionTransfer getTransfer(InventoryConditionDescription inventoryConditionDescription) {
-        InventoryConditionDescriptionTransfer inventoryConditionDescriptionTransfer = get(inventoryConditionDescription);
+        var inventoryConditionDescriptionTransfer = get(inventoryConditionDescription);
         
         if(inventoryConditionDescriptionTransfer == null) {
-            InventoryConditionTransferCache inventoryConditionTransferCache = inventoryControl.getInventoryTransferCaches(userVisit).getInventoryConditionTransferCache();
-            InventoryConditionTransfer inventoryConditionTransfer = inventoryConditionTransferCache.getTransfer(inventoryConditionDescription.getInventoryCondition());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, inventoryConditionDescription.getLanguage());
+            var inventoryConditionTransferCache = inventoryControl.getInventoryTransferCaches(userVisit).getInventoryConditionTransferCache();
+            var inventoryConditionTransfer = inventoryConditionTransferCache.getTransfer(inventoryConditionDescription.getInventoryCondition());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, inventoryConditionDescription.getLanguage());
             
             inventoryConditionDescriptionTransfer = new InventoryConditionDescriptionTransfer(languageTransfer, inventoryConditionTransfer, inventoryConditionDescription.getDescription());
             put(inventoryConditionDescription, inventoryConditionDescriptionTransfer);

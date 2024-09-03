@@ -67,16 +67,16 @@ public class DeleteItemPurchasingCategoryDescriptionCommand
     @Override
     protected BaseResult execute() {
         var vendorControl = Session.getModelController(VendorControl.class);
-        String itemPurchasingCategoryName = form.getItemPurchasingCategoryName();
-        ItemPurchasingCategory itemPurchasingCategory = vendorControl.getItemPurchasingCategoryByName(itemPurchasingCategoryName);
+        var itemPurchasingCategoryName = form.getItemPurchasingCategoryName();
+        var itemPurchasingCategory = vendorControl.getItemPurchasingCategoryByName(itemPurchasingCategoryName);
         
         if(itemPurchasingCategory != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                ItemPurchasingCategoryDescription itemPurchasingCategoryDescription = vendorControl.getItemPurchasingCategoryDescriptionForUpdate(itemPurchasingCategory, language);
+                var itemPurchasingCategoryDescription = vendorControl.getItemPurchasingCategoryDescriptionForUpdate(itemPurchasingCategory, language);
                 
                 if(itemPurchasingCategoryDescription != null) {
                     vendorControl.deleteItemPurchasingCategoryDescription(itemPurchasingCategoryDescription, getPartyPK());

@@ -92,17 +92,17 @@ public class EditOrderAliasCommand
     public OrderAlias getEntity(EditOrderAliasResult result) {
         var orderTypeControl = Session.getModelController(OrderTypeControl.class);
         OrderAlias orderAlias = null;
-        String orderTypeName = spec.getOrderTypeName();
+        var orderTypeName = spec.getOrderTypeName();
         var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
             var orderControl = Session.getModelController(OrderControl.class);
-            String orderName = spec.getOrderName();
-            Order order = orderControl.getOrderByName(orderType, orderName);
+            var orderName = spec.getOrderName();
+            var order = orderControl.getOrderByName(orderType, orderName);
 
             if(order != null) {
                 var orderAliasControl = Session.getModelController(OrderAliasControl.class);
-                String orderAliasTypeName = spec.getOrderAliasTypeName();
+                var orderAliasTypeName = spec.getOrderAliasTypeName();
 
                 orderAliasType = orderAliasControl.getOrderAliasTypeByName(orderType, orderAliasTypeName);
 
@@ -151,11 +151,11 @@ public class EditOrderAliasCommand
     @Override
     public void canUpdate(OrderAlias orderAlias) {
         var orderAliasControl = Session.getModelController(OrderAliasControl.class);
-        String alias = edit.getAlias();
-        OrderAlias duplicateOrderAlias = orderAliasControl.getOrderAliasByAlias(orderAliasType, alias);
+        var alias = edit.getAlias();
+        var duplicateOrderAlias = orderAliasControl.getOrderAliasByAlias(orderAliasType, alias);
 
         if(duplicateOrderAlias != null && !orderAlias.equals(duplicateOrderAlias)) {
-            OrderAliasTypeDetail orderAliasTypeDetail = orderAlias.getOrderAliasType().getLastDetail();
+            var orderAliasTypeDetail = orderAlias.getOrderAliasType().getLastDetail();
 
             addExecutionError(ExecutionErrors.DuplicateOrderAlias.name(), orderAliasTypeDetail.getOrderType().getLastDetail().getOrderTypeName(),
                     orderAliasTypeDetail.getOrderAliasTypeName(), alias);
@@ -165,7 +165,7 @@ public class EditOrderAliasCommand
     @Override
     public void doUpdate(OrderAlias orderAlias) {
         var orderAliasControl = Session.getModelController(OrderAliasControl.class);
-        OrderAliasValue orderAliasValue = orderAliasControl.getOrderAliasValue(orderAlias);
+        var orderAliasValue = orderAliasControl.getOrderAliasValue(orderAlias);
 
         orderAliasValue.setAlias(edit.getAlias());
 

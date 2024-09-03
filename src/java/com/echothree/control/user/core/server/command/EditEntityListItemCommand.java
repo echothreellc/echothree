@@ -122,8 +122,8 @@ public class EditEntityListItemCommand
     @Override
     public void doLock(EntityListItemEdit edit, EntityListItem entityListItem) {
         var coreControl = getCoreControl();
-        EntityListItemDescription entityListItemDescription = coreControl.getEntityListItemDescription(entityListItem, getPreferredLanguage());
-        EntityListItemDetail entityListItemDetail = entityListItem.getLastDetail();
+        var entityListItemDescription = coreControl.getEntityListItemDescription(entityListItem, getPreferredLanguage());
+        var entityListItemDetail = entityListItem.getLastDetail();
 
         edit.setEntityListItemName(entityListItemDetail.getEntityListItemName());
         edit.setIsDefault(entityListItemDetail.getIsDefault().toString());
@@ -150,9 +150,9 @@ public class EditEntityListItemCommand
     public void doUpdate(EntityListItem entityListItem) {
         var coreControl = getCoreControl();
         var partyPK = getPartyPK();
-        EntityListItemDetailValue entityListItemDetailValue = coreControl.getEntityListItemDetailValueForUpdate(entityListItem);
-        EntityListItemDescription entityListItemDescription = coreControl.getEntityListItemDescriptionForUpdate(entityListItem, getPreferredLanguage());
-        String description = edit.getDescription();
+        var entityListItemDetailValue = coreControl.getEntityListItemDetailValueForUpdate(entityListItem);
+        var entityListItemDescription = coreControl.getEntityListItemDescriptionForUpdate(entityListItem, getPreferredLanguage());
+        var description = edit.getDescription();
 
         entityListItemDetailValue.setEntityListItemName(edit.getEntityListItemName());
         entityListItemDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
@@ -167,7 +167,7 @@ public class EditEntityListItemCommand
                 coreControl.deleteEntityListItemDescription(entityListItemDescription, partyPK);
             } else {
                 if(entityListItemDescription != null && description != null) {
-                    EntityListItemDescriptionValue entityListItemDescriptionValue = coreControl.getEntityListItemDescriptionValue(entityListItemDescription);
+                    var entityListItemDescriptionValue = coreControl.getEntityListItemDescriptionValue(entityListItemDescription);
 
                     entityListItemDescriptionValue.setDescription(description);
                     coreControl.updateEntityListItemDescriptionFromValue(entityListItemDescriptionValue, partyPK);

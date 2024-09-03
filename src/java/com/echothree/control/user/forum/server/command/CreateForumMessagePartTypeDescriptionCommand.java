@@ -54,16 +54,16 @@ public class CreateForumMessagePartTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var forumControl = Session.getModelController(ForumControl.class);
-        String forumMessagePartTypeName = form.getForumMessagePartTypeName();
-        ForumMessagePartType forumMessagePartType = forumControl.getForumMessagePartTypeByName(forumMessagePartTypeName);
+        var forumMessagePartTypeName = form.getForumMessagePartTypeName();
+        var forumMessagePartType = forumControl.getForumMessagePartTypeByName(forumMessagePartTypeName);
         
         if(forumMessagePartType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                ForumMessagePartTypeDescription forumMessagePartTypeDescription = forumControl.getForumMessagePartTypeDescription(forumMessagePartType, language);
+                var forumMessagePartTypeDescription = forumControl.getForumMessagePartTypeDescription(forumMessagePartType, language);
                 
                 if(forumMessagePartTypeDescription == null) {
                     var description = form.getDescription();

@@ -63,8 +63,8 @@ public class SetDefaultSearchCheckSpellingActionTypeCommand
     @Override
     protected BaseResult execute() {
         var searchControl = Session.getModelController(SearchControl.class);
-        String searchCheckSpellingActionTypeName = form.getSearchCheckSpellingActionTypeName();
-        SearchCheckSpellingActionTypeDetailValue searchCheckSpellingActionTypeDetailValue = searchControl.getSearchCheckSpellingActionTypeDetailValueByNameForUpdate(searchCheckSpellingActionTypeName);
+        var searchCheckSpellingActionTypeName = form.getSearchCheckSpellingActionTypeName();
+        var searchCheckSpellingActionTypeDetailValue = searchControl.getSearchCheckSpellingActionTypeDetailValueByNameForUpdate(searchCheckSpellingActionTypeName);
         
         if(searchCheckSpellingActionTypeDetailValue != null) {
             searchCheckSpellingActionTypeDetailValue.setIsDefault(Boolean.TRUE);

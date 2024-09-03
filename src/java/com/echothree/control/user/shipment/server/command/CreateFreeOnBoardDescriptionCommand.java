@@ -68,16 +68,16 @@ public class CreateFreeOnBoardDescriptionCommand
     @Override
     protected BaseResult execute() {
         var freeOnBoardControl = Session.getModelController(FreeOnBoardControl.class);
-        String freeOnBoardName = form.getFreeOnBoardName();
-        FreeOnBoard freeOnBoard = freeOnBoardControl.getFreeOnBoardByName(freeOnBoardName);
+        var freeOnBoardName = form.getFreeOnBoardName();
+        var freeOnBoard = freeOnBoardControl.getFreeOnBoardByName(freeOnBoardName);
         
         if(freeOnBoard != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                FreeOnBoardDescription freeOnBoardDescription = freeOnBoardControl.getFreeOnBoardDescription(freeOnBoard, language);
+                var freeOnBoardDescription = freeOnBoardControl.getFreeOnBoardDescription(freeOnBoard, language);
                 
                 if(freeOnBoardDescription == null) {
                     var description = form.getDescription();

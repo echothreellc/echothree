@@ -69,17 +69,17 @@ public class GetLotTimeTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var lotTimeControl = Session.getModelController(LotTimeControl.class);
-        GetLotTimeTypeDescriptionResult result = InventoryResultFactory.getGetLotTimeTypeDescriptionResult();
-        String lotTimeTypeName = form.getLotTimeTypeName();
-        LotTimeType lotTimeType = lotTimeControl.getLotTimeTypeByName(lotTimeTypeName);
+        var result = InventoryResultFactory.getGetLotTimeTypeDescriptionResult();
+        var lotTimeTypeName = form.getLotTimeTypeName();
+        var lotTimeType = lotTimeControl.getLotTimeTypeByName(lotTimeTypeName);
 
         if(lotTimeType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
-                LotTimeTypeDescription lotTimeTypeDescription = lotTimeControl.getLotTimeTypeDescription(lotTimeType, language);
+                var lotTimeTypeDescription = lotTimeControl.getLotTimeTypeDescription(lotTimeType, language);
 
                 if(lotTimeTypeDescription != null) {
                     result.setLotTimeTypeDescription(lotTimeControl.getLotTimeTypeDescriptionTransfer(getUserVisit(), lotTimeTypeDescription));

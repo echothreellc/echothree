@@ -33,14 +33,14 @@ public class RecoveryQuestionTransferCache
     }
     
     public RecoveryQuestionTransfer getRecoveryQuestionTransfer(RecoveryQuestion recoveryQuestion) {
-        RecoveryQuestionTransfer recoveryQuestionTransfer = get(recoveryQuestion);
+        var recoveryQuestionTransfer = get(recoveryQuestion);
         
         if(recoveryQuestionTransfer == null) {
-            RecoveryQuestionDetail recoveryQuestionDetail = recoveryQuestion.getLastDetail();
-            String recoveryQuestionName = recoveryQuestionDetail.getRecoveryQuestionName();
-            Boolean isDefault = recoveryQuestionDetail.getIsDefault();
-            Integer sortOrder = recoveryQuestionDetail.getSortOrder();
-            String description = userControl.getBestRecoveryQuestionDescription(recoveryQuestion, getLanguage());
+            var recoveryQuestionDetail = recoveryQuestion.getLastDetail();
+            var recoveryQuestionName = recoveryQuestionDetail.getRecoveryQuestionName();
+            var isDefault = recoveryQuestionDetail.getIsDefault();
+            var sortOrder = recoveryQuestionDetail.getSortOrder();
+            var description = userControl.getBestRecoveryQuestionDescription(recoveryQuestion, getLanguage());
             
             recoveryQuestionTransfer = new RecoveryQuestionTransfer(recoveryQuestionName, isDefault, sortOrder, description);
             put(recoveryQuestion, recoveryQuestionTransfer);

@@ -60,23 +60,23 @@ public class GetPartyInventoryLevelsCommand
     
     @Override
     protected BaseResult execute() {
-        GetPartyInventoryLevelsResult result = InventoryResultFactory.getGetPartyInventoryLevelsResult();
-        String partyName = form.getPartyName();
-        String companyName = form.getCompanyName();
-        String warehouseName = form.getWarehouseName();
-        String itemName = form.getItemName();
-                String inventoryConditionName = form.getInventoryConditionName();
+        var result = InventoryResultFactory.getGetPartyInventoryLevelsResult();
+        var partyName = form.getPartyName();
+        var companyName = form.getCompanyName();
+        var warehouseName = form.getWarehouseName();
+        var itemName = form.getItemName();
+        var inventoryConditionName = form.getInventoryConditionName();
         var parameterCount = (partyName == null ? 0 : 1) + (companyName == null ? 0 : 1) + (warehouseName == null ? 0 : 1) +
                 (itemName == null ? 0 : 1) + (inventoryConditionName == null ? 0 : 1);
         
         if(parameterCount == 1) {
             var inventoryControl = Session.getModelController(InventoryControl.class);
-            UserVisit userVisit = getUserVisit();
+            var userVisit = getUserVisit();
             List<PartyInventoryLevelTransfer> partyInventoryLevels = null;
             
             if(itemName != null) {
                 var itemControl = Session.getModelController(ItemControl.class);
-                Item item = itemControl.getItemByName(itemName);
+                var item = itemControl.getItemByName(itemName);
                 
                 if(item != null) {
                     partyInventoryLevels = inventoryControl.getPartyInventoryLevelTransfersByItem(userVisit, item);
@@ -85,7 +85,7 @@ public class GetPartyInventoryLevelsCommand
                     addExecutionError(ExecutionErrors.UnknownItemName.name(), itemName);
                 }
             } if(inventoryConditionName != null) {
-                InventoryCondition inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
+                var inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
                 
                 if(inventoryCondition != null) {
                     partyInventoryLevels = inventoryControl.getPartyInventoryLevelTransfersByInventoryCondition(userVisit, inventoryCondition);
@@ -94,7 +94,7 @@ public class GetPartyInventoryLevelsCommand
                     addExecutionError(ExecutionErrors.UnknownInventoryConditionName.name(), inventoryConditionName);
                 }
             }else {
-                Party party = getParty(partyName, companyName, warehouseName);
+                var party = getParty(partyName, companyName, warehouseName);
                 
                 if(party != null) {
                     var partyControl = Session.getModelController(PartyControl.class);

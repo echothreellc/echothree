@@ -61,8 +61,8 @@ public class DeleteApplicationCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String applicationName = form.getApplicationName();
-        Application application = coreControl.getApplicationByNameForUpdate(applicationName);
+        var applicationName = form.getApplicationName();
+        var application = coreControl.getApplicationByNameForUpdate(applicationName);
         
         if(application != null) {
             coreControl.deleteApplication(application, getPartyPK());

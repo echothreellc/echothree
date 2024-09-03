@@ -45,10 +45,10 @@ public class PartyScaleUseLogic
     public PartyScaleUse getPartyScaleUse(final ExecutionErrorAccumulator ema, final Party party, final ScaleUseType scaleUseType,
             final BasePK createdBy) {
         var scaleControl = Session.getModelController(ScaleControl.class);
-        PartyScaleUse partyScaleUse = scaleControl.getPartyScaleUse(party, scaleUseType);
+        var partyScaleUse = scaleControl.getPartyScaleUse(party, scaleUseType);
 
         if(partyScaleUse == null) {
-            Scale scale = scaleControl.getDefaultScale();
+            var scale = scaleControl.getDefaultScale();
 
             if(scale == null) {
                 addExecutionError(ema, ExecutionErrors.MissingDefaultPartyScale.name());
@@ -63,7 +63,7 @@ public class PartyScaleUseLogic
     public PartyScaleUse getPartyScaleUseUsingNames(final ExecutionErrorAccumulator ema, final Party party, final String scaleUseTypeName,
             final BasePK createdBy) {
         var scaleControl = Session.getModelController(ScaleControl.class);
-        ScaleUseType scaleUseType = scaleControl.getScaleUseTypeByName(scaleUseTypeName);
+        var scaleUseType = scaleControl.getScaleUseTypeByName(scaleUseTypeName);
         PartyScaleUse partyScaleUse = null;
 
         if(scaleUseType == null) {

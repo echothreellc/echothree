@@ -60,11 +60,11 @@ public class OrderShipmentGroupControl
     
     public OrderShipmentGroup createOrderShipmentGroup(Order order, Integer orderShipmentGroupSequence, ItemDeliveryType itemDeliveryType, Boolean isDefault,
             PartyContactMechanism partyContactMechanism, ShippingMethod shippingMethod, Boolean holdUntilComplete, BasePK createdBy) {
-        OrderShipmentGroup defaultOrderShipmentGroup = getDefaultOrderShipmentGroup(order, itemDeliveryType);
-        boolean defaultFound = defaultOrderShipmentGroup != null;
+        var defaultOrderShipmentGroup = getDefaultOrderShipmentGroup(order, itemDeliveryType);
+        var defaultFound = defaultOrderShipmentGroup != null;
 
         if(defaultFound && isDefault) {
-            OrderShipmentGroupDetailValue defaultOrderShipmentGroupDetailValue = getDefaultOrderShipmentGroupDetailValueForUpdate(order, itemDeliveryType);
+            var defaultOrderShipmentGroupDetailValue = getDefaultOrderShipmentGroupDetailValueForUpdate(order, itemDeliveryType);
 
             defaultOrderShipmentGroupDetailValue.setIsDefault(Boolean.FALSE);
             updateOrderShipmentGroupFromValue(defaultOrderShipmentGroupDetailValue, false, createdBy);
@@ -72,8 +72,8 @@ public class OrderShipmentGroupControl
             isDefault = Boolean.TRUE;
         }
 
-        OrderShipmentGroup orderShipmentGroup = OrderShipmentGroupFactory.getInstance().create();
-        OrderShipmentGroupDetail orderShipmentGroupDetail = OrderShipmentGroupDetailFactory.getInstance().create(orderShipmentGroup, order,
+        var orderShipmentGroup = OrderShipmentGroupFactory.getInstance().create();
+        var orderShipmentGroupDetail = OrderShipmentGroupDetailFactory.getInstance().create(orderShipmentGroup, order,
                 orderShipmentGroupSequence, itemDeliveryType, isDefault, partyContactMechanism, shippingMethod, holdUntilComplete, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
@@ -236,7 +236,7 @@ public class OrderShipmentGroupControl
 
     public List<OrderShipmentGroupTransfer> getOrderShipmentGroupTransfers(UserVisit userVisit, Collection<OrderShipmentGroup> orderShipmentGroups) {
         List<OrderShipmentGroupTransfer> orderShipmentGroupTransfers = new ArrayList<>(orderShipmentGroups.size());
-        OrderShipmentGroupTransferCache orderShipmentGroupTransferCache = getOrderTransferCaches(userVisit).getOrderShipmentGroupTransferCache();
+        var orderShipmentGroupTransferCache = getOrderTransferCaches(userVisit).getOrderShipmentGroupTransferCache();
 
         orderShipmentGroups.forEach((orderShipmentGroup) ->
                 orderShipmentGroupTransfers.add(orderShipmentGroupTransferCache.getOrderShipmentGroupTransfer(orderShipmentGroup))
@@ -252,31 +252,31 @@ public class OrderShipmentGroupControl
     private void updateOrderShipmentGroupFromValue(OrderShipmentGroupDetailValue orderShipmentGroupDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(orderShipmentGroupDetailValue.hasBeenModified()) {
-            OrderShipmentGroup orderShipmentGroup = OrderShipmentGroupFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var orderShipmentGroup = OrderShipmentGroupFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      orderShipmentGroupDetailValue.getOrderShipmentGroupPK());
-            OrderShipmentGroupDetail orderShipmentGroupDetail = orderShipmentGroup.getActiveDetailForUpdate();
+            var orderShipmentGroupDetail = orderShipmentGroup.getActiveDetailForUpdate();
 
             orderShipmentGroupDetail.setThruTime(session.START_TIME_LONG);
             orderShipmentGroupDetail.store();
 
-            OrderShipmentGroupPK orderShipmentGroupPK = orderShipmentGroupDetail.getOrderShipmentGroupPK(); // Not updated
-            Order order = orderShipmentGroupDetail.getOrder(); // Not updated
-            OrderPK orderPK = order.getPrimaryKey(); // Not updated
-            Integer orderShipmentGroupSequence = orderShipmentGroupDetail.getOrderShipmentGroupSequence(); // Not updated
-            ItemDeliveryType itemDeliveryType = orderShipmentGroupDetail.getItemDeliveryType(); // Not updated
-            ItemDeliveryTypePK itemDeliveryTypePK = itemDeliveryType.getPrimaryKey(); // Not updated
-            Boolean isDefault = orderShipmentGroupDetailValue.getIsDefault();
-            PartyContactMechanismPK partyContactMechanismPK = orderShipmentGroupDetailValue.getPartyContactMechanismPK();
-            ShippingMethodPK shippingMethodPK = orderShipmentGroupDetailValue.getShippingMethodPK();
-            Boolean holdUntilComplete = orderShipmentGroupDetailValue.getHoldUntilComplete();
+            var orderShipmentGroupPK = orderShipmentGroupDetail.getOrderShipmentGroupPK(); // Not updated
+            var order = orderShipmentGroupDetail.getOrder(); // Not updated
+            var orderPK = order.getPrimaryKey(); // Not updated
+            var orderShipmentGroupSequence = orderShipmentGroupDetail.getOrderShipmentGroupSequence(); // Not updated
+            var itemDeliveryType = orderShipmentGroupDetail.getItemDeliveryType(); // Not updated
+            var itemDeliveryTypePK = itemDeliveryType.getPrimaryKey(); // Not updated
+            var isDefault = orderShipmentGroupDetailValue.getIsDefault();
+            var partyContactMechanismPK = orderShipmentGroupDetailValue.getPartyContactMechanismPK();
+            var shippingMethodPK = orderShipmentGroupDetailValue.getShippingMethodPK();
+            var holdUntilComplete = orderShipmentGroupDetailValue.getHoldUntilComplete();
 
             if(checkDefault) {
-                OrderShipmentGroup defaultOrderShipmentGroup = getDefaultOrderShipmentGroup(order, itemDeliveryType);
-                boolean defaultFound = defaultOrderShipmentGroup != null && !defaultOrderShipmentGroup.equals(orderShipmentGroup);
+                var defaultOrderShipmentGroup = getDefaultOrderShipmentGroup(order, itemDeliveryType);
+                var defaultFound = defaultOrderShipmentGroup != null && !defaultOrderShipmentGroup.equals(orderShipmentGroup);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    OrderShipmentGroupDetailValue defaultOrderShipmentGroupDetailValue = getDefaultOrderShipmentGroupDetailValueForUpdate(order, itemDeliveryType);
+                    var defaultOrderShipmentGroupDetailValue = getDefaultOrderShipmentGroupDetailValueForUpdate(order, itemDeliveryType);
 
                     defaultOrderShipmentGroupDetailValue.setIsDefault(Boolean.FALSE);
                     updateOrderShipmentGroupFromValue(defaultOrderShipmentGroupDetailValue, false, updatedBy);
@@ -305,24 +305,24 @@ public class OrderShipmentGroupControl
 
         orderLineControl.deleteOrderLinesByOrderShipmentGroup(orderShipmentGroup, deletedBy);
 
-        OrderShipmentGroupDetail orderShipmentGroupDetail = orderShipmentGroup.getLastDetailForUpdate();
+        var orderShipmentGroupDetail = orderShipmentGroup.getLastDetailForUpdate();
         orderShipmentGroupDetail.setThruTime(session.START_TIME_LONG);
         orderShipmentGroup.setActiveDetail(null);
         orderShipmentGroup.store();
 
         // Check for default, and pick one if necessary
-        Order order = orderShipmentGroupDetail.getOrder();
-        ItemDeliveryType itemDeliveryType = orderShipmentGroupDetail.getItemDeliveryType();
-        OrderShipmentGroup defaultOrderShipmentGroup = getDefaultOrderShipmentGroup(order, itemDeliveryType);
+        var order = orderShipmentGroupDetail.getOrder();
+        var itemDeliveryType = orderShipmentGroupDetail.getItemDeliveryType();
+        var defaultOrderShipmentGroup = getDefaultOrderShipmentGroup(order, itemDeliveryType);
         if(defaultOrderShipmentGroup == null) {
-            List<OrderShipmentGroup> orderShipmentGroups = getOrderShipmentGroupsForUpdate(order, itemDeliveryType);
+            var orderShipmentGroups = getOrderShipmentGroupsForUpdate(order, itemDeliveryType);
 
             if(!orderShipmentGroups.isEmpty()) {
-                Iterator<OrderShipmentGroup> iter = orderShipmentGroups.iterator();
+                var iter = orderShipmentGroups.iterator();
                 if(iter.hasNext()) {
                     defaultOrderShipmentGroup = iter.next();
                 }
-                OrderShipmentGroupDetailValue orderShipmentGroupDetailValue = Objects.requireNonNull(defaultOrderShipmentGroup).getLastDetailForUpdate().getOrderShipmentGroupDetailValue().clone();
+                var orderShipmentGroupDetailValue = Objects.requireNonNull(defaultOrderShipmentGroup).getLastDetailForUpdate().getOrderShipmentGroupDetailValue().clone();
 
                 orderShipmentGroupDetailValue.setIsDefault(Boolean.TRUE);
                 updateOrderShipmentGroupFromValue(orderShipmentGroupDetailValue, false, deletedBy);

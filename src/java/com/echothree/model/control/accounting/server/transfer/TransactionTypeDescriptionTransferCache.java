@@ -33,12 +33,12 @@ public class TransactionTypeDescriptionTransferCache
     
     @Override
     public TransactionTypeDescriptionTransfer getTransfer(TransactionTypeDescription transactionTypeDescription) {
-        TransactionTypeDescriptionTransfer transactionTypeDescriptionTransfer = get(transactionTypeDescription);
+        var transactionTypeDescriptionTransfer = get(transactionTypeDescription);
         
         if(transactionTypeDescriptionTransfer == null) {
-            TransactionTypeTransferCache transactionTypeTransferCache = accountingControl.getAccountingTransferCaches(userVisit).getTransactionTypeTransferCache();
-            TransactionTypeTransfer transactionTypeTransfer = transactionTypeTransferCache.getTransfer(transactionTypeDescription.getTransactionType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, transactionTypeDescription.getLanguage());
+            var transactionTypeTransferCache = accountingControl.getAccountingTransferCaches(userVisit).getTransactionTypeTransferCache();
+            var transactionTypeTransfer = transactionTypeTransferCache.getTransfer(transactionTypeDescription.getTransactionType());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, transactionTypeDescription.getLanguage());
             
             transactionTypeDescriptionTransfer = new TransactionTypeDescriptionTransfer(languageTransfer, transactionTypeTransfer, transactionTypeDescription.getDescription());
             put(transactionTypeDescription, transactionTypeDescriptionTransfer);

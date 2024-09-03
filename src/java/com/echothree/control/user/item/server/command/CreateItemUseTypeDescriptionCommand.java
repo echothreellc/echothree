@@ -62,16 +62,16 @@ public class CreateItemUseTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var itemControl = Session.getModelController(ItemControl.class);
-        String itemUseTypeName = form.getItemUseTypeName();
-        ItemUseType itemUseType = itemControl.getItemUseTypeByName(itemUseTypeName);
+        var itemUseTypeName = form.getItemUseTypeName();
+        var itemUseType = itemControl.getItemUseTypeByName(itemUseTypeName);
         
         if(itemUseType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                ItemUseTypeDescription itemUseTypeDescription = itemControl.getItemUseTypeDescription(itemUseType, language);
+                var itemUseTypeDescription = itemControl.getItemUseTypeDescription(itemUseType, language);
                 
                 if(itemUseTypeDescription == null) {
                     var description = form.getDescription();

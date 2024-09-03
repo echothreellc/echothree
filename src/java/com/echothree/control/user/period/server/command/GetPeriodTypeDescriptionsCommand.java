@@ -67,13 +67,13 @@ public class GetPeriodTypeDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var periodControl = Session.getModelController(PeriodControl.class);
-        GetPeriodTypeDescriptionsResult result = PeriodResultFactory.getGetPeriodTypeDescriptionsResult();
-        String periodKindName = form.getPeriodKindName();
-        PeriodKind periodKind = periodControl.getPeriodKindByName(periodKindName);
+        var result = PeriodResultFactory.getGetPeriodTypeDescriptionsResult();
+        var periodKindName = form.getPeriodKindName();
+        var periodKind = periodControl.getPeriodKindByName(periodKindName);
         
         if(periodKind != null) {
-            String periodTypeName = form.getPeriodTypeName();
-            PeriodType periodType = periodControl.getPeriodTypeByName(periodKind, periodTypeName);
+            var periodTypeName = form.getPeriodTypeName();
+            var periodType = periodControl.getPeriodTypeByName(periodKind, periodTypeName);
             
             if(periodType != null) {
                 result.setPeriodType(periodControl.getPeriodTypeTransfer(getUserVisit(), periodType));

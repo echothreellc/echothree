@@ -133,7 +133,7 @@ public class EntityListItemsTag
     public int doStartTag()
             throws JspException {
         try {
-            GetEntityListItemsForm commandForm = CoreUtil.getHome().getGetEntityListItemsForm();
+            var commandForm = CoreUtil.getHome().getGetEntityListItemsForm();
             Map<String, Limit> limits = new HashMap<>();
             
             commandForm.setComponentVendorName(componentVendorName);
@@ -149,7 +149,7 @@ public class EntityListItemsTag
             }
             commandForm.setLimits(limits);
 
-            CommandResult commandResult = CoreUtil.getHome().getEntityListItems(getUserVisitPK(), commandForm);
+            var commandResult = CoreUtil.getHome().getEntityListItems(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -157,8 +157,8 @@ public class EntityListItemsTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetEntityListItemsResult result = (GetEntityListItemsResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetEntityListItemsResult)executionResult.getResult();
 
                 pageContext.setAttribute(var, new ListWrapper<>(result.getEntityListItems()), scope);
 

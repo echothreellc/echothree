@@ -64,23 +64,23 @@ public class EditGenderDescriptionCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        EditGenderDescriptionResult result = PartyResultFactory.getEditGenderDescriptionResult();
-        String genderName = spec.getGenderName();
-        Gender gender = partyControl.getGenderByName(genderName);
+        var result = PartyResultFactory.getEditGenderDescriptionResult();
+        var genderName = spec.getGenderName();
+        var gender = partyControl.getGenderByName(genderName);
         
         if(gender != null) {
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK)) {
-                    GenderDescription genderDescription = partyControl.getGenderDescription(gender, language);
+                    var genderDescription = partyControl.getGenderDescription(gender, language);
                     
                     if(genderDescription != null) {
                         result.setGenderDescription(partyControl.getGenderDescriptionTransfer(getUserVisit(), genderDescription));
                         
                         if(lockEntity(gender)) {
-                            GenderDescriptionEdit edit = PartyEditFactory.getGenderDescriptionEdit();
+                            var edit = PartyEditFactory.getGenderDescriptionEdit();
                             
                             result.setEdit(edit);
                             edit.setDescription(genderDescription.getDescription());
@@ -93,12 +93,12 @@ public class EditGenderDescriptionCommand
                         addExecutionError(ExecutionErrors.UnknownGenderDescription.name());
                     }
                 } else if(editMode.equals(EditMode.UPDATE)) {
-                    GenderDescriptionValue genderDescriptionValue = partyControl.getGenderDescriptionValueForUpdate(gender, language);
+                    var genderDescriptionValue = partyControl.getGenderDescriptionValueForUpdate(gender, language);
                     
                     if(genderDescriptionValue != null) {
                         if(lockEntityForUpdate(gender)) {
                             try {
-                                String description = edit.getDescription();
+                                var description = edit.getDescription();
                                 
                                 genderDescriptionValue.setDescription(description);
                                 

@@ -49,8 +49,8 @@ public class DeleteAssociateProgramCommand
     @Override
     protected BaseResult execute() {
         var associateControl = Session.getModelController(AssociateControl.class);
-        String associateProgramName = form.getAssociateProgramName();
-        AssociateProgram associateProgram = associateControl.getAssociateProgramByNameForUpdate(associateProgramName);
+        var associateProgramName = form.getAssociateProgramName();
+        var associateProgram = associateControl.getAssociateProgramByNameForUpdate(associateProgramName);
         
         if(associateProgram != null) {
             associateControl.deleteAssociateProgram(associateProgram, getPartyPK());

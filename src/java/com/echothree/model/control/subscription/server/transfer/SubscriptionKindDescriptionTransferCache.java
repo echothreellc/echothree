@@ -32,11 +32,11 @@ public class SubscriptionKindDescriptionTransferCache
     }
     
     public SubscriptionKindDescriptionTransfer getSubscriptionKindDescriptionTransfer(SubscriptionKindDescription subscriptionKindDescription) {
-        SubscriptionKindDescriptionTransfer subscriptionKindDescriptionTransfer = get(subscriptionKindDescription);
+        var subscriptionKindDescriptionTransfer = get(subscriptionKindDescription);
         
         if(subscriptionKindDescriptionTransfer == null) {
-            SubscriptionKindTransfer subscriptionKindTransfer = subscriptionControl.getSubscriptionKindTransfer(userVisit, subscriptionKindDescription.getSubscriptionKind());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, subscriptionKindDescription.getLanguage());
+            var subscriptionKindTransfer = subscriptionControl.getSubscriptionKindTransfer(userVisit, subscriptionKindDescription.getSubscriptionKind());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, subscriptionKindDescription.getLanguage());
             
             subscriptionKindDescriptionTransfer = new SubscriptionKindDescriptionTransfer(languageTransfer, subscriptionKindTransfer, subscriptionKindDescription.getDescription());
             put(subscriptionKindDescription, subscriptionKindDescriptionTransfer);

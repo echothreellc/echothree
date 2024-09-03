@@ -61,7 +61,7 @@ public class GetCampaignContentsCommand
     @Override
     protected BaseResult execute() {
         var campaignControl = Session.getModelController(CampaignControl.class);
-        GetCampaignContentsResult result = CampaignResultFactory.getGetCampaignContentsResult();
+        var result = CampaignResultFactory.getGetCampaignContentsResult();
         
         result.setCampaignContents(campaignControl.getCampaignContentTransfers(getUserVisit()));
         

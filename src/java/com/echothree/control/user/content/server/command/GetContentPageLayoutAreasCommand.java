@@ -58,17 +58,17 @@ public class GetContentPageLayoutAreasCommand
     @Override
     protected Collection<ContentPageLayoutArea> getEntities() {
         var contentControl = Session.getModelController(ContentControl.class);
-        String contentCollectionName = form.getContentCollectionName();
-        ContentCollection contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
+        var contentCollectionName = form.getContentCollectionName();
+        var contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
         Collection<ContentPageLayoutArea> contentPageLayoutAreas = null;
         
         if(contentCollection != null) {
-            String contentSectionName = form.getContentSectionName();
-            ContentSection contentSection = contentControl.getContentSectionByName(contentCollection, contentSectionName);
+            var contentSectionName = form.getContentSectionName();
+            var contentSection = contentControl.getContentSectionByName(contentCollection, contentSectionName);
             
             if(contentSection != null) {
-                String contentPageName = form.getContentPageName();
-                ContentPage contentPage = contentControl.getContentPageByName(contentSection, contentPageName);
+                var contentPageName = form.getContentPageName();
+                var contentPage = contentControl.getContentPageByName(contentSection, contentPageName);
                 
                 if(contentPage != null) {
                     contentPageLayoutAreas = contentControl.getContentPageLayoutAreasByContentPageLayout(contentPage.getLastDetail().getContentPageLayout());
@@ -87,7 +87,7 @@ public class GetContentPageLayoutAreasCommand
     
     @Override
     protected BaseResult getResult(Collection<ContentPageLayoutArea> entities) {
-        GetContentPageLayoutAreasResult result = ContentResultFactory.getGetContentPageLayoutAreasResult();
+        var result = ContentResultFactory.getGetContentPageLayoutAreasResult();
         
         if(entities != null) {
             var contentControl = Session.getModelController(ContentControl.class);

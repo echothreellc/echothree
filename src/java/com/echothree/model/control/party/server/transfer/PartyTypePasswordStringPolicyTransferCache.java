@@ -41,30 +41,30 @@ public class PartyTypePasswordStringPolicyTransferCache
     }
     
     public PartyTypePasswordStringPolicyTransfer getPartyTypePasswordStringPolicyTransfer(PartyTypePasswordStringPolicy partyTypePasswordStringPolicy) {
-        PartyTypePasswordStringPolicyTransfer partyTypePasswordStringPolicyTransfer = get(partyTypePasswordStringPolicy);
+        var partyTypePasswordStringPolicyTransfer = get(partyTypePasswordStringPolicy);
         
         if(partyTypePasswordStringPolicyTransfer == null) {
-            PartyTypePasswordStringPolicyDetail partyTypePasswordStringPolicyDetail = partyTypePasswordStringPolicy.getLastDetail();
-            PartyTypeTransfer partyTypeTransfer = partyControl.getPartyTypeTransfer(userVisit, partyTypePasswordStringPolicyDetail.getPartyType());
-            Boolean forceChangeAfterCreate = partyTypePasswordStringPolicyDetail.getForceChangeAfterCreate();
-            Boolean forceChangeAfterReset = partyTypePasswordStringPolicyDetail.getForceChangeAfterReset();
-            Boolean allowChange = partyTypePasswordStringPolicyDetail.getAllowChange();
-            Integer passwordHistory = partyTypePasswordStringPolicyDetail.getPasswordHistory();
-            Long unformattedMinimumPasswordLifetime = partyTypePasswordStringPolicyDetail.getMinimumPasswordLifetime();
-            String minimumPasswordLifetime = formatUnitOfMeasure(timeUnitOfMeasureKind, unformattedMinimumPasswordLifetime);
-            Long unformattedMaximumPasswordLifetime = partyTypePasswordStringPolicyDetail.getMaximumPasswordLifetime();
-            String maximumPasswordLifetime = formatUnitOfMeasure(timeUnitOfMeasureKind, unformattedMaximumPasswordLifetime);
-            Long unformattedExpirationWarningTime = partyTypePasswordStringPolicyDetail.getExpirationWarningTime();
-            String expirationWarningTime = formatUnitOfMeasure(timeUnitOfMeasureKind, unformattedExpirationWarningTime);
-            Integer expiredLoginsPermitted = partyTypePasswordStringPolicyDetail.getExpiredLoginsPermitted();
-            Integer minimumLength = partyTypePasswordStringPolicyDetail.getMinimumLength();
-            Integer maximumLength = partyTypePasswordStringPolicyDetail.getMaximumLength();
-            Integer requiredDigitCount = partyTypePasswordStringPolicyDetail.getRequiredDigitCount();
-            Integer requiredLetterCount = partyTypePasswordStringPolicyDetail.getRequiredLetterCount();
-            Integer requiredUpperCaseCount = partyTypePasswordStringPolicyDetail.getRequiredUpperCaseCount();
-            Integer requiredLowerCaseCount = partyTypePasswordStringPolicyDetail.getRequiredLowerCaseCount();
-            Integer maximumRepeated = partyTypePasswordStringPolicyDetail.getMaximumRepeated();
-            Integer minimumCharacterTypes = partyTypePasswordStringPolicyDetail.getMinimumCharacterTypes();
+            var partyTypePasswordStringPolicyDetail = partyTypePasswordStringPolicy.getLastDetail();
+            var partyTypeTransfer = partyControl.getPartyTypeTransfer(userVisit, partyTypePasswordStringPolicyDetail.getPartyType());
+            var forceChangeAfterCreate = partyTypePasswordStringPolicyDetail.getForceChangeAfterCreate();
+            var forceChangeAfterReset = partyTypePasswordStringPolicyDetail.getForceChangeAfterReset();
+            var allowChange = partyTypePasswordStringPolicyDetail.getAllowChange();
+            var passwordHistory = partyTypePasswordStringPolicyDetail.getPasswordHistory();
+            var unformattedMinimumPasswordLifetime = partyTypePasswordStringPolicyDetail.getMinimumPasswordLifetime();
+            var minimumPasswordLifetime = formatUnitOfMeasure(timeUnitOfMeasureKind, unformattedMinimumPasswordLifetime);
+            var unformattedMaximumPasswordLifetime = partyTypePasswordStringPolicyDetail.getMaximumPasswordLifetime();
+            var maximumPasswordLifetime = formatUnitOfMeasure(timeUnitOfMeasureKind, unformattedMaximumPasswordLifetime);
+            var unformattedExpirationWarningTime = partyTypePasswordStringPolicyDetail.getExpirationWarningTime();
+            var expirationWarningTime = formatUnitOfMeasure(timeUnitOfMeasureKind, unformattedExpirationWarningTime);
+            var expiredLoginsPermitted = partyTypePasswordStringPolicyDetail.getExpiredLoginsPermitted();
+            var minimumLength = partyTypePasswordStringPolicyDetail.getMinimumLength();
+            var maximumLength = partyTypePasswordStringPolicyDetail.getMaximumLength();
+            var requiredDigitCount = partyTypePasswordStringPolicyDetail.getRequiredDigitCount();
+            var requiredLetterCount = partyTypePasswordStringPolicyDetail.getRequiredLetterCount();
+            var requiredUpperCaseCount = partyTypePasswordStringPolicyDetail.getRequiredUpperCaseCount();
+            var requiredLowerCaseCount = partyTypePasswordStringPolicyDetail.getRequiredLowerCaseCount();
+            var maximumRepeated = partyTypePasswordStringPolicyDetail.getMaximumRepeated();
+            var minimumCharacterTypes = partyTypePasswordStringPolicyDetail.getMinimumCharacterTypes();
             
             partyTypePasswordStringPolicyTransfer = new PartyTypePasswordStringPolicyTransfer(partyTypeTransfer, forceChangeAfterCreate,
                     forceChangeAfterReset, allowChange, passwordHistory, unformattedMinimumPasswordLifetime, minimumPasswordLifetime,

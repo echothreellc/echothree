@@ -71,11 +71,11 @@ public class OrderTypeControl
 
     public OrderType createOrderType(String orderTypeName, OrderType parentOrderType, SequenceType orderSequenceType, Workflow orderWorkflow,
             WorkflowEntrance orderWorkflowEntrance, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        OrderType defaultOrderType = getDefaultOrderType();
-        boolean defaultFound = defaultOrderType != null;
+        var defaultOrderType = getDefaultOrderType();
+        var defaultFound = defaultOrderType != null;
 
         if(defaultFound && isDefault) {
-            OrderTypeDetailValue defaultOrderTypeDetailValue = getDefaultOrderTypeDetailValueForUpdate();
+            var defaultOrderTypeDetailValue = getDefaultOrderTypeDetailValueForUpdate();
 
             defaultOrderTypeDetailValue.setIsDefault(Boolean.FALSE);
             updateOrderTypeFromValue(defaultOrderTypeDetailValue, false, createdBy);
@@ -83,8 +83,8 @@ public class OrderTypeControl
             isDefault = Boolean.TRUE;
         }
 
-        OrderType orderType = OrderTypeFactory.getInstance().create();
-        OrderTypeDetail orderTypeDetail = OrderTypeDetailFactory.getInstance().create(orderType, orderTypeName, parentOrderType, orderSequenceType,
+        var orderType = OrderTypeFactory.getInstance().create();
+        var orderTypeDetail = OrderTypeDetailFactory.getInstance().create(orderType, orderTypeName, parentOrderType, orderSequenceType,
                 orderWorkflow, orderWorkflowEntrance, isDefault, sortOrder, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
 
@@ -271,7 +271,7 @@ public class OrderTypeControl
 
     public List<OrderTypeTransfer> getOrderTypeTransfers(UserVisit userVisit, Collection<OrderType> orderTypes) {
         List<OrderTypeTransfer> orderTypeTransfers = new ArrayList<>(orderTypes.size());
-        OrderTypeTransferCache orderTypeTransferCache = getOrderTransferCaches(userVisit).getOrderTypeTransferCache();
+        var orderTypeTransferCache = getOrderTransferCaches(userVisit).getOrderTypeTransferCache();
 
         orderTypes.forEach((orderType) ->
                 orderTypeTransfers.add(orderTypeTransferCache.getOrderTypeTransfer(orderType))
@@ -286,7 +286,7 @@ public class OrderTypeControl
 
     public OrderTypeChoicesBean getOrderTypeChoices(String defaultOrderTypeChoice,
             Language language, boolean allowNullChoice) {
-        List<OrderType> orderTypes = getOrderTypes();
+        var orderTypes = getOrderTypes();
         var size = orderTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -302,7 +302,7 @@ public class OrderTypeControl
         }
 
         for(var orderType : orderTypes) {
-            OrderTypeDetail orderTypeDetail = orderType.getLastDetail();
+            var orderTypeDetail = orderType.getLastDetail();
 
             var label = getBestOrderTypeDescription(orderType, language);
             var value = orderTypeDetail.getOrderTypeName();
@@ -321,7 +321,7 @@ public class OrderTypeControl
 
     public boolean isParentOrderTypeSafe(OrderType orderType,
             OrderType parentOrderType) {
-        boolean safe = true;
+        var safe = true;
 
         if(parentOrderType != null) {
             Set<OrderType> parentOrderTypes = new HashSet<>();
@@ -344,29 +344,29 @@ public class OrderTypeControl
     private void updateOrderTypeFromValue(OrderTypeDetailValue orderTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(orderTypeDetailValue.hasBeenModified()) {
-            OrderType orderType = OrderTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var orderType = OrderTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      orderTypeDetailValue.getOrderTypePK());
-            OrderTypeDetail orderTypeDetail = orderType.getActiveDetailForUpdate();
+            var orderTypeDetail = orderType.getActiveDetailForUpdate();
 
             orderTypeDetail.setThruTime(session.START_TIME_LONG);
             orderTypeDetail.store();
 
-            OrderTypePK orderTypePK = orderTypeDetail.getOrderTypePK(); // Not updated
-            String orderTypeName = orderTypeDetailValue.getOrderTypeName();
-            OrderTypePK parentOrderTypePK = orderTypeDetailValue.getParentOrderTypePK();
-            SequenceTypePK orderSequenceTypePK = orderTypeDetailValue.getOrderSequenceTypePK();
-            WorkflowPK orderWorkflowPK = orderTypeDetailValue.getOrderWorkflowPK();
-            WorkflowEntrancePK orderWorkflowEntrancePK = orderTypeDetailValue.getOrderWorkflowEntrancePK();
-            Boolean isDefault = orderTypeDetailValue.getIsDefault();
-            Integer sortOrder = orderTypeDetailValue.getSortOrder();
+            var orderTypePK = orderTypeDetail.getOrderTypePK(); // Not updated
+            var orderTypeName = orderTypeDetailValue.getOrderTypeName();
+            var parentOrderTypePK = orderTypeDetailValue.getParentOrderTypePK();
+            var orderSequenceTypePK = orderTypeDetailValue.getOrderSequenceTypePK();
+            var orderWorkflowPK = orderTypeDetailValue.getOrderWorkflowPK();
+            var orderWorkflowEntrancePK = orderTypeDetailValue.getOrderWorkflowEntrancePK();
+            var isDefault = orderTypeDetailValue.getIsDefault();
+            var sortOrder = orderTypeDetailValue.getSortOrder();
 
             if(checkDefault) {
-                OrderType defaultOrderType = getDefaultOrderType();
-                boolean defaultFound = defaultOrderType != null && !defaultOrderType.equals(orderType);
+                var defaultOrderType = getDefaultOrderType();
+                var defaultFound = defaultOrderType != null && !defaultOrderType.equals(orderType);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    OrderTypeDetailValue defaultOrderTypeDetailValue = getDefaultOrderTypeDetailValueForUpdate();
+                    var defaultOrderTypeDetailValue = getDefaultOrderTypeDetailValueForUpdate();
 
                     defaultOrderTypeDetailValue.setIsDefault(Boolean.FALSE);
                     updateOrderTypeFromValue(defaultOrderTypeDetailValue, false, updatedBy);
@@ -392,7 +392,7 @@ public class OrderTypeControl
 
     private void deleteOrderType(OrderType orderType, boolean checkDefault, BasePK deletedBy) {
         var orderAliasControl = Session.getModelController(OrderAliasControl.class);
-        OrderTypeDetail orderTypeDetail = orderType.getLastDetailForUpdate();
+        var orderTypeDetail = orderType.getLastDetailForUpdate();
 
         deleteOrderTypesByParentOrderType(orderType, deletedBy);
         deleteOrderTypeDescriptionsByOrderType(orderType, deletedBy);
@@ -405,16 +405,16 @@ public class OrderTypeControl
 
         if(checkDefault) {
         // Check for default, and pick one if necessary
-        OrderType defaultOrderType = getDefaultOrderType();
+            var defaultOrderType = getDefaultOrderType();
             if(defaultOrderType == null) {
-                List<OrderType> orderTypes = getOrderTypesForUpdate();
+                var orderTypes = getOrderTypesForUpdate();
 
                 if(!orderTypes.isEmpty()) {
-                    Iterator<OrderType> iter = orderTypes.iterator();
+                    var iter = orderTypes.iterator();
                     if(iter.hasNext()) {
                         defaultOrderType = iter.next();
                     }
-                    OrderTypeDetailValue orderTypeDetailValue = Objects.requireNonNull(defaultOrderType).getLastDetailForUpdate().getOrderTypeDetailValue().clone();
+                    var orderTypeDetailValue = Objects.requireNonNull(defaultOrderType).getLastDetailForUpdate().getOrderTypeDetailValue().clone();
 
                     orderTypeDetailValue.setIsDefault(Boolean.TRUE);
                     updateOrderTypeFromValue(orderTypeDetailValue, false, deletedBy);
@@ -446,7 +446,7 @@ public class OrderTypeControl
     // --------------------------------------------------------------------------------
 
     public OrderTypeDescription createOrderTypeDescription(OrderType orderType, Language language, String description, BasePK createdBy) {
-        OrderTypeDescription orderTypeDescription = OrderTypeDescriptionFactory.getInstance().create(orderType, language, description,
+        var orderTypeDescription = OrderTypeDescriptionFactory.getInstance().create(orderType, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(orderType.getPrimaryKey(), EventTypes.MODIFY, orderTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -525,7 +525,7 @@ public class OrderTypeControl
 
     public String getBestOrderTypeDescription(OrderType orderType, Language language) {
         String description;
-        OrderTypeDescription orderTypeDescription = getOrderTypeDescription(orderType, language);
+        var orderTypeDescription = getOrderTypeDescription(orderType, language);
 
         if(orderTypeDescription == null && !language.getIsDefault()) {
             orderTypeDescription = getOrderTypeDescription(orderType, getPartyControl().getDefaultLanguage());
@@ -545,9 +545,9 @@ public class OrderTypeControl
     }
 
     public List<OrderTypeDescriptionTransfer> getOrderTypeDescriptionTransfersByOrderType(UserVisit userVisit, OrderType orderType) {
-        List<OrderTypeDescription> orderTypeDescriptions = getOrderTypeDescriptionsByOrderType(orderType);
+        var orderTypeDescriptions = getOrderTypeDescriptionsByOrderType(orderType);
         List<OrderTypeDescriptionTransfer> orderTypeDescriptionTransfers = new ArrayList<>(orderTypeDescriptions.size());
-        OrderTypeDescriptionTransferCache orderTypeDescriptionTransferCache = getOrderTransferCaches(userVisit).getOrderTypeDescriptionTransferCache();
+        var orderTypeDescriptionTransferCache = getOrderTransferCaches(userVisit).getOrderTypeDescriptionTransferCache();
 
         orderTypeDescriptions.forEach((orderTypeDescription) ->
                 orderTypeDescriptionTransfers.add(orderTypeDescriptionTransferCache.getOrderTypeDescriptionTransfer(orderTypeDescription))
@@ -558,15 +558,15 @@ public class OrderTypeControl
 
     public void updateOrderTypeDescriptionFromValue(OrderTypeDescriptionValue orderTypeDescriptionValue, BasePK updatedBy) {
         if(orderTypeDescriptionValue.hasBeenModified()) {
-            OrderTypeDescription orderTypeDescription = OrderTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var orderTypeDescription = OrderTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     orderTypeDescriptionValue.getPrimaryKey());
 
             orderTypeDescription.setThruTime(session.START_TIME_LONG);
             orderTypeDescription.store();
 
-            OrderType orderType = orderTypeDescription.getOrderType();
-            Language language = orderTypeDescription.getLanguage();
-            String description = orderTypeDescriptionValue.getDescription();
+            var orderType = orderTypeDescription.getOrderType();
+            var language = orderTypeDescription.getLanguage();
+            var description = orderTypeDescriptionValue.getDescription();
 
             orderTypeDescription = OrderTypeDescriptionFactory.getInstance().create(orderType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -583,7 +583,7 @@ public class OrderTypeControl
     }
 
     public void deleteOrderTypeDescriptionsByOrderType(OrderType orderType, BasePK deletedBy) {
-        List<OrderTypeDescription> orderTypeDescriptions = getOrderTypeDescriptionsByOrderTypeForUpdate(orderType);
+        var orderTypeDescriptions = getOrderTypeDescriptionsByOrderTypeForUpdate(orderType);
 
         orderTypeDescriptions.forEach((orderTypeDescription) -> 
                 deleteOrderTypeDescription(orderTypeDescription, deletedBy)

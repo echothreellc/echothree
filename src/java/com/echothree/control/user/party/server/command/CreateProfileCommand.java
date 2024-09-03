@@ -92,29 +92,29 @@ public class CreateProfileCommand
     
     @Override
     protected List<FieldDefinition> getFormFieldDefinitions() {
-        String partyTypeName = getPartyTypeName();
+        var partyTypeName = getPartyTypeName();
 
         return partyTypeName == null || partyTypeName.equals(PartyTypes.CUSTOMER.name()) ? customerFormFieldDefinitions : otherFormFieldDefinitions;
     }
     
     @Override
     protected BaseResult execute() {
-        String bioMimeTypeName = form.getBioMimeTypeName();
-        String bio = form.getBio();
-        int bioParameterCount = (bioMimeTypeName == null ? 0 : 1) + (bio == null ? 0 : 1);
-        String signatureMimeTypeName = form.getSignatureMimeTypeName();
-        String signature = form.getSignature();
-        int signatureParameterCount = (signatureMimeTypeName == null ? 0 : 1) + (signature == null ? 0 : 1);
+        var bioMimeTypeName = form.getBioMimeTypeName();
+        var bio = form.getBio();
+        var bioParameterCount = (bioMimeTypeName == null ? 0 : 1) + (bio == null ? 0 : 1);
+        var signatureMimeTypeName = form.getSignatureMimeTypeName();
+        var signature = form.getSignature();
+        var signatureParameterCount = (signatureMimeTypeName == null ? 0 : 1) + (signature == null ? 0 : 1);
         
         if((bioParameterCount == 0 || bioParameterCount == 2) && (signatureParameterCount == 0 || signatureParameterCount == 2)) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String partyTypeName = getPartyTypeName();
-            String partyName = partyTypeName.equals(PartyTypes.CUSTOMER.name())? null: form.getPartyName();
-            Party party = partyName == null? null: partyControl.getPartyByName(partyName);
+            var partyTypeName = getPartyTypeName();
+            var partyName = partyTypeName.equals(PartyTypes.CUSTOMER.name())? null: form.getPartyName();
+            var party = partyName == null? null: partyControl.getPartyByName(partyName);
             
             if(partyName == null || party != null) {
-                String nickname = form.getNickname();
-                Profile profile = nickname == null? null: partyControl.getProfileByNickname(nickname);
+                var nickname = form.getNickname();
+                var profile = nickname == null? null: partyControl.getProfileByNickname(nickname);
                 
                 if(party == null) {
                     party = getParty();
@@ -122,13 +122,13 @@ public class CreateProfileCommand
                 
                 if(profile == null) {
                     var iconControl = Session.getModelController(IconControl.class);
-                    String iconName = form.getIconName();
-                    Icon icon = iconName == null? null: iconControl.getIconByName(iconName);
+                    var iconName = form.getIconName();
+                    var icon = iconName == null? null: iconControl.getIconByName(iconName);
                     
                     if(iconName == null || icon != null) {
                         if(icon != null) {
-                            IconUsageType iconUsageType = iconControl.getIconUsageTypeByName(IconConstants.IconUsageType_PROFILE);
-                            IconUsage iconUsage = iconControl.getIconUsage(iconUsageType, icon);
+                            var iconUsageType = iconControl.getIconUsageTypeByName(IconConstants.IconUsageType_PROFILE);
+                            var iconUsage = iconControl.getIconUsage(iconUsageType, icon);
                             
                             if(iconUsage == null) {
                                 addExecutionError(ExecutionErrors.UnknownIconUsage.name());
@@ -136,28 +136,28 @@ public class CreateProfileCommand
                         }
                         
                         if(!hasExecutionErrors()) {
-                            String genderName = form.getGenderName();
-                            Gender gender = genderName == null? null: partyControl.getGenderByName(genderName);
+                            var genderName = form.getGenderName();
+                            var gender = genderName == null? null: partyControl.getGenderByName(genderName);
                             
                             if(genderName == null || gender != null) {
-                                String birthdayFormatName = form.getBirthdayFormatName();
-                                BirthdayFormat birthdayFormat = birthdayFormatName == null? null: partyControl.getBirthdayFormatByName(birthdayFormatName);
+                                var birthdayFormatName = form.getBirthdayFormatName();
+                                var birthdayFormat = birthdayFormatName == null? null: partyControl.getBirthdayFormatByName(birthdayFormatName);
 
                                 if(birthdayFormat != null) {
                                     var coreControl = getCoreControl();
-                                    MimeType bioMimeType = bioMimeTypeName == null? null: coreControl.getMimeTypeByName(bioMimeTypeName);
+                                    var bioMimeType = bioMimeTypeName == null? null: coreControl.getMimeTypeByName(bioMimeTypeName);
 
                                     if(bioMimeTypeName == null || bioMimeType != null) {
-                                        MimeType signatureMimeType = signatureMimeTypeName == null? null: coreControl.getMimeTypeByName(signatureMimeTypeName);
+                                        var signatureMimeType = signatureMimeTypeName == null? null: coreControl.getMimeTypeByName(signatureMimeTypeName);
 
                                         if(signatureMimeTypeName == null || signatureMimeType != null) {
-                                            String pronunciation = form.getPronunciation();
-                                            String pronouns = form.getPronouns();
-                                            String occupation = form.getOccupation();
-                                            String hobbies = form.getHobbies();
-                                            String location = form.getLocation();
-                                            String rawBirthday = form.getBirthday();
-                                            Integer birthday = rawBirthday == null? null: Integer.valueOf(rawBirthday);
+                                            var pronunciation = form.getPronunciation();
+                                            var pronouns = form.getPronouns();
+                                            var occupation = form.getOccupation();
+                                            var hobbies = form.getHobbies();
+                                            var location = form.getLocation();
+                                            var rawBirthday = form.getBirthday();
+                                            var birthday = rawBirthday == null? null: Integer.valueOf(rawBirthday);
 
                                             partyControl.createProfile(party, nickname, icon, pronunciation, gender, pronouns,
                                                     birthday, birthdayFormat, occupation, hobbies, location, bioMimeType, bio,

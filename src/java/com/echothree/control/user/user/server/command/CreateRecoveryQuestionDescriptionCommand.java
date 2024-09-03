@@ -53,17 +53,17 @@ public class CreateRecoveryQuestionDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        UserControl userControl = getUserControl();
-        String recoveryQuestionName = form.getRecoveryQuestionName();
-        RecoveryQuestion recoveryQuestion = userControl.getRecoveryQuestionByName(recoveryQuestionName);
+        var userControl = getUserControl();
+        var recoveryQuestionName = form.getRecoveryQuestionName();
+        var recoveryQuestion = userControl.getRecoveryQuestionByName(recoveryQuestionName);
         
         if(recoveryQuestion != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                RecoveryQuestionDescription recoveryQuestionDescription = userControl.getRecoveryQuestionDescription(recoveryQuestion, language);
+                var recoveryQuestionDescription = userControl.getRecoveryQuestionDescription(recoveryQuestion, language);
                 
                 if(recoveryQuestionDescription == null) {
                     var description = form.getDescription();

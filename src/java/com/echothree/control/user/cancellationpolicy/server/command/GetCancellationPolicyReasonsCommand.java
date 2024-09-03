@@ -69,18 +69,18 @@ public class GetCancellationPolicyReasonsCommand
     @Override
     protected BaseResult execute() {
         var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
-        GetCancellationPolicyReasonsResult result = CancellationPolicyResultFactory.getGetCancellationPolicyReasonsResult();
-        String cancellationPolicyName = form.getCancellationPolicyName();
-        String cancellationReasonName = form.getCancellationReasonName();
+        var result = CancellationPolicyResultFactory.getGetCancellationPolicyReasonsResult();
+        var cancellationPolicyName = form.getCancellationPolicyName();
+        var cancellationReasonName = form.getCancellationReasonName();
         var parameterCount = (cancellationReasonName != null? 1: 0) + (cancellationPolicyName != null? 1: 0);
         
         if(parameterCount == 1) {
-            String cancellationKindName = form.getCancellationKindName();
-            CancellationKind cancellationKind = cancellationPolicyControl.getCancellationKindByName(cancellationKindName);
+            var cancellationKindName = form.getCancellationKindName();
+            var cancellationKind = cancellationPolicyControl.getCancellationKindByName(cancellationKindName);
             
             if(cancellationKind != null) {
                 if(cancellationPolicyName != null) {
-                    CancellationPolicy cancellationPolicy = cancellationPolicyControl.getCancellationPolicyByName(cancellationKind, cancellationPolicyName);
+                    var cancellationPolicy = cancellationPolicyControl.getCancellationPolicyByName(cancellationKind, cancellationPolicyName);
                     
                     if(cancellationPolicy != null) {
                         result.setCancellationPolicy(cancellationPolicyControl.getCancellationPolicyTransfer(getUserVisit(), cancellationPolicy));
@@ -89,7 +89,7 @@ public class GetCancellationPolicyReasonsCommand
                         addExecutionError(ExecutionErrors.UnknownCancellationPolicyName.name(), cancellationPolicyName);
                     }
                 } else if(cancellationKindName != null && cancellationReasonName != null) {
-                    CancellationReason cancellationReason = cancellationPolicyControl.getCancellationReasonByName(cancellationKind, cancellationReasonName);
+                    var cancellationReason = cancellationPolicyControl.getCancellationReasonByName(cancellationKind, cancellationReasonName);
                     
                     if(cancellationReason != null) {
                         result.setCancellationReason(cancellationPolicyControl.getCancellationReasonTransfer(getUserVisit(), cancellationReason));

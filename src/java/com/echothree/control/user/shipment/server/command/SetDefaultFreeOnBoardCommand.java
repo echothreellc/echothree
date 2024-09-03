@@ -62,8 +62,8 @@ public class SetDefaultFreeOnBoardCommand
     @Override
     protected BaseResult execute() {
         var freeOnBoardControl = Session.getModelController(FreeOnBoardControl.class);
-        String freeOnBoardName = form.getFreeOnBoardName();
-        FreeOnBoardDetailValue freeOnBoardDetailValue = freeOnBoardControl.getFreeOnBoardDetailValueByNameForUpdate(freeOnBoardName);
+        var freeOnBoardName = form.getFreeOnBoardName();
+        var freeOnBoardDetailValue = freeOnBoardControl.getFreeOnBoardDetailValueByNameForUpdate(freeOnBoardName);
         
         if(freeOnBoardDetailValue != null) {
             freeOnBoardDetailValue.setIsDefault(Boolean.TRUE);

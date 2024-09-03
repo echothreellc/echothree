@@ -85,39 +85,39 @@ public class EditEntityStringAttributeCommand
     
     @Override
     protected BaseResult execute() {
-        EditEntityStringAttributeResult result = CoreResultFactory.getEditEntityStringAttributeResult();
+        var result = CoreResultFactory.getEditEntityStringAttributeResult();
         var parameterCount = EntityInstanceLogic.getInstance().countPossibleEntitySpecs(spec);
 
         if(parameterCount == 1) {
             var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, spec);
 
             if(!hasExecutionErrors()) {
-                String entityAttributeName = spec.getEntityAttributeName();
-                String entityAttributeUlid = spec.getEntityAttributeUlid();
+                var entityAttributeName = spec.getEntityAttributeName();
+                var entityAttributeUlid = spec.getEntityAttributeUlid();
                 
                 parameterCount = (entityAttributeName == null ? 0 : 1) + (entityAttributeUlid == null ? 0 : 1);
                 
                 if(parameterCount == 1) {
-                    EntityAttribute entityAttribute = entityAttributeName == null ?
+                    var entityAttribute = entityAttributeName == null ?
                             EntityAttributeLogic.getInstance().getEntityAttributeByUlid(this, entityAttributeUlid) :
                             EntityAttributeLogic.getInstance().getEntityAttributeByName(this, entityInstance.getEntityType(), entityAttributeName);
 
                     if(!hasExecutionErrors()) {
                         if(entityInstance.getEntityType().equals(entityAttribute.getLastDetail().getEntityType())) {
-                            String languageIsoName = spec.getLanguageIsoName();
-                            String languageUlid = spec.getLanguageUlid();
+                            var languageIsoName = spec.getLanguageIsoName();
+                            var languageUlid = spec.getLanguageUlid();
                             
                             parameterCount = (languageIsoName == null ? 0 : 1) + (languageUlid == null ? 0 : 1);
 
                             if(parameterCount == 1) {
-                                Language language = languageIsoName == null ?
+                                var language = languageIsoName == null ?
                                         LanguageLogic.getInstance().getLanguageByUlid(this, languageUlid) :
                                         LanguageLogic.getInstance().getLanguageByName(this, languageIsoName);
 
                                 if(!hasExecutionErrors()) {
                                     var coreControl = getCoreControl();
                                     EntityStringAttribute entityStringAttribute = null;
-                                    BasePK basePK = PersistenceUtils.getInstance().getBasePKFromEntityInstance(entityInstance);
+                                    var basePK = PersistenceUtils.getInstance().getBasePKFromEntityInstance(entityInstance);
 
                                     if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
                                         entityStringAttribute = coreControl.getEntityStringAttribute(entityAttribute, entityInstance, language);
@@ -128,7 +128,7 @@ public class EditEntityStringAttributeCommand
                                                         entityStringAttribute, entityInstance));
 
                                                 if(lockEntity(basePK)) {
-                                                    EntityStringAttributeEdit edit = CoreEditFactory.getEntityStringAttributeEdit();
+                                                    var edit = CoreEditFactory.getEntityStringAttributeEdit();
 
                                                     result.setEdit(edit);
                                                     edit.setStringAttribute(entityStringAttribute.getStringAttribute());
@@ -144,13 +144,13 @@ public class EditEntityStringAttributeCommand
                                                     EntityInstanceLogic.getInstance().getEntityRefFromEntityInstance(entityInstance), entityAttributeName);
                                         }
                                     } else if(editMode.equals(EditMode.UPDATE)) {
-                                        EntityAttributeString entityAttributeString = coreControl.getEntityAttributeString(entityAttribute);
-                                        String validationPattern = entityAttributeString == null ? null : entityAttributeString.getValidationPattern();
-                                        String stringAttribute = edit.getStringAttribute();
+                                        var entityAttributeString = coreControl.getEntityAttributeString(entityAttribute);
+                                        var validationPattern = entityAttributeString == null ? null : entityAttributeString.getValidationPattern();
+                                        var stringAttribute = edit.getStringAttribute();
 
                                         if(validationPattern != null) {
-                                            Pattern pattern = Pattern.compile(validationPattern);
-                                            Matcher m = pattern.matcher(stringAttribute);
+                                            var pattern = Pattern.compile(validationPattern);
+                                            var m = pattern.matcher(stringAttribute);
 
                                             if(!m.matches()) {
                                                 addExecutionError(ExecutionErrors.InvalidStringAttribute.name(), stringAttribute);
@@ -163,7 +163,7 @@ public class EditEntityStringAttributeCommand
                                             if(entityStringAttribute != null) {
                                                 if(lockEntityForUpdate(basePK)) {
                                                     try {
-                                                        EntityStringAttributeValue entityStringAttributeValue = coreControl.getEntityStringAttributeValueForUpdate(entityStringAttribute);
+                                                        var entityStringAttributeValue = coreControl.getEntityStringAttributeValueForUpdate(entityStringAttribute);
 
                                                         entityStringAttributeValue.setStringAttribute(stringAttribute);
 

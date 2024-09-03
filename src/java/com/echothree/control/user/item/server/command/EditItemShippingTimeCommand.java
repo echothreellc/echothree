@@ -79,13 +79,13 @@ public class EditItemShippingTimeCommand
     public ItemShippingTime getEntity(EditItemShippingTimeResult result) {
         var itemControl = Session.getModelController(ItemControl.class);
         ItemShippingTime itemShippingTime = null;
-        String itemName = spec.getItemName();
-        Item item = itemControl.getItemByName(itemName);
+        var itemName = spec.getItemName();
+        var item = itemControl.getItemByName(itemName);
 
         if(item != null) {
             var customerControl = Session.getModelController(CustomerControl.class);
-            String customerTypeName = spec.getCustomerTypeName();
-            CustomerType customerType = customerControl.getCustomerTypeByName(customerTypeName);
+            var customerTypeName = spec.getCustomerTypeName();
+            var customerType = customerControl.getCustomerTypeByName(customerTypeName);
 
             if(customerType != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -121,10 +121,10 @@ public class EditItemShippingTimeCommand
 
     @Override
     public void doLock(ItemShippingTimeEdit edit, ItemShippingTime itemShippingTime) {
-        DateUtils dateUtils = DateUtils.getInstance();
-        Long shippingEndTime = itemShippingTime.getShippingEndTime();
-        DateTimeFormat preferredDateTimeFormat = getPreferredDateTimeFormat();
-        UserVisit userVisit = getUserVisit();
+        var dateUtils = DateUtils.getInstance();
+        var shippingEndTime = itemShippingTime.getShippingEndTime();
+        var preferredDateTimeFormat = getPreferredDateTimeFormat();
+        var userVisit = getUserVisit();
 
         edit.setShippingStartTime(dateUtils.formatTypicalDateTime(userVisit, preferredDateTimeFormat, itemShippingTime.getShippingStartTime()));
         edit.setShippingEndTime(shippingEndTime == null? null: dateUtils.formatTypicalDateTime(userVisit, preferredDateTimeFormat, shippingEndTime));
@@ -133,9 +133,9 @@ public class EditItemShippingTimeCommand
     @Override
     public void doUpdate(ItemShippingTime itemShippingTime) {
         var itemControl = Session.getModelController(ItemControl.class);
-        ItemShippingTimeValue itemShippingTimeValue = itemControl.getItemShippingTimeValue(itemShippingTime);
-        String strShippingEndTime = edit.getShippingEndTime();
-        Long shippingEndTime = strShippingEndTime == null? null: Long.valueOf(strShippingEndTime);
+        var itemShippingTimeValue = itemControl.getItemShippingTimeValue(itemShippingTime);
+        var strShippingEndTime = edit.getShippingEndTime();
+        var shippingEndTime = strShippingEndTime == null? null: Long.valueOf(strShippingEndTime);
 
         itemShippingTimeValue.setShippingStartTime(Long.valueOf(edit.getShippingStartTime()));
         itemShippingTimeValue.setShippingEndTime(shippingEndTime);

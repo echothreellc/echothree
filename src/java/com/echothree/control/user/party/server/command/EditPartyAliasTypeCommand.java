@@ -114,8 +114,8 @@ public class EditPartyAliasTypeCommand
     @Override
     public void doLock(PartyAliasTypeEdit edit, PartyAliasType partyAliasType) {
         var partyControl = Session.getModelController(PartyControl.class);
-        PartyAliasTypeDescription partyAliasTypeDescription = partyControl.getPartyAliasTypeDescription(partyAliasType, getPreferredLanguage());
-        PartyAliasTypeDetail partyAliasTypeDetail = partyAliasType.getLastDetail();
+        var partyAliasTypeDescription = partyControl.getPartyAliasTypeDescription(partyAliasType, getPreferredLanguage());
+        var partyAliasTypeDetail = partyAliasType.getLastDetail();
         
         edit.setPartyAliasTypeName(partyAliasTypeDetail.getPartyAliasTypeName());
         edit.setValidationPattern(partyAliasTypeDetail.getValidationPattern());
@@ -142,9 +142,9 @@ public class EditPartyAliasTypeCommand
     public void doUpdate(PartyAliasType partyAliasType) {
         var partyControl = Session.getModelController(PartyControl.class);
         var partyPK = getPartyPK();
-        PartyAliasTypeDetailValue partyAliasTypeDetailValue = partyControl.getPartyAliasTypeDetailValueForUpdate(partyAliasType);
-        PartyAliasTypeDescription partyAliasTypeDescription = partyControl.getPartyAliasTypeDescriptionForUpdate(partyAliasType, getPreferredLanguage());
-        String description = edit.getDescription();
+        var partyAliasTypeDetailValue = partyControl.getPartyAliasTypeDetailValueForUpdate(partyAliasType);
+        var partyAliasTypeDescription = partyControl.getPartyAliasTypeDescriptionForUpdate(partyAliasType, getPreferredLanguage());
+        var description = edit.getDescription();
 
         partyAliasTypeDetailValue.setPartyAliasTypeName(edit.getPartyAliasTypeName());
         partyAliasTypeDetailValue.setValidationPattern(edit.getValidationPattern());
@@ -158,7 +158,7 @@ public class EditPartyAliasTypeCommand
         } else if(partyAliasTypeDescription != null && description == null) {
             partyControl.deletePartyAliasTypeDescription(partyAliasTypeDescription, partyPK);
         } else if(partyAliasTypeDescription != null && description != null) {
-            PartyAliasTypeDescriptionValue partyAliasTypeDescriptionValue = partyControl.getPartyAliasTypeDescriptionValue(partyAliasTypeDescription);
+            var partyAliasTypeDescriptionValue = partyControl.getPartyAliasTypeDescriptionValue(partyAliasTypeDescription);
 
             partyAliasTypeDescriptionValue.setDescription(description);
             partyControl.updatePartyAliasTypeDescriptionFromValue(partyAliasTypeDescriptionValue, partyPK);

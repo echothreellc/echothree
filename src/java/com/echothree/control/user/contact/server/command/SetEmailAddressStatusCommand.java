@@ -50,14 +50,14 @@ public class SetEmailAddressStatusCommand
     @Override
     protected BaseResult execute() {
         var contactControl = Session.getModelController(ContactControl.class);
-        String contactMechanismName = form.getContactMechanismName();
-        ContactMechanism contactMechanism = contactControl.getContactMechanismByName(contactMechanismName);
+        var contactMechanismName = form.getContactMechanismName();
+        var contactMechanism = contactControl.getContactMechanismByName(contactMechanismName);
 
         if(contactMechanism != null) {
-            String contactMechanismTypeName = contactMechanism.getLastDetail().getContactMechanismType().getContactMechanismTypeName();
+            var contactMechanismTypeName = contactMechanism.getLastDetail().getContactMechanismType().getContactMechanismTypeName();
 
             if(contactMechanismTypeName.equals(ContactMechanismTypes.EMAIL_ADDRESS.name())) {
-                String contactMechanismStatusChoice = form.getEmailAddressStatusChoice();
+                var contactMechanismStatusChoice = form.getEmailAddressStatusChoice();
 
                 contactControl.setEmailAddressStatus(this, contactMechanism, contactMechanismStatusChoice, getPartyPK());
             } else {

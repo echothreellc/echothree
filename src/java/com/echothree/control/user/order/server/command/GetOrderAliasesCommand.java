@@ -67,18 +67,18 @@ public class GetOrderAliasesCommand
     @Override
     protected BaseResult execute() {
         var orderTypeControl = Session.getModelController(OrderTypeControl.class);
-        GetOrderAliasesResult result = OrderResultFactory.getGetOrderAliasesResult();
+        var result = OrderResultFactory.getGetOrderAliasesResult();
         var orderTypeName = form.getOrderTypeName();
         var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
             var orderControl = Session.getModelController(OrderControl.class);
-            String orderName = form.getOrderName();
-            Order order = orderControl.getOrderByName(orderType, orderName);
+            var orderName = form.getOrderName();
+            var order = orderControl.getOrderByName(orderType, orderName);
 
             if(order != null) {
                 var orderAliasControl = Session.getModelController(OrderAliasControl.class);
-                UserVisit userVisit = getUserVisit();
+                var userVisit = getUserVisit();
 
                 result.setOrder(orderControl.getOrderTransfer(userVisit, order));
                 result.setOrderAliases(orderAliasControl.getOrderAliasTransfersByOrder(userVisit, order));

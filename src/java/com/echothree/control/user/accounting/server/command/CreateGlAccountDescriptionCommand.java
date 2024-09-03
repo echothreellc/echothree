@@ -68,16 +68,16 @@ public class CreateGlAccountDescriptionCommand
     @Override
     protected BaseResult execute() {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        String glAccountName = form.getGlAccountName();
-        GlAccount glAccount = accountingControl.getGlAccountByName(glAccountName);
+        var glAccountName = form.getGlAccountName();
+        var glAccount = accountingControl.getGlAccountByName(glAccountName);
         
         if(glAccount != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                GlAccountDescription glAccountDescription = accountingControl.getGlAccountDescription(glAccount, language);
+                var glAccountDescription = accountingControl.getGlAccountDescription(glAccount, language);
                 
                 if(glAccountDescription == null) {
                     var description = form.getDescription();

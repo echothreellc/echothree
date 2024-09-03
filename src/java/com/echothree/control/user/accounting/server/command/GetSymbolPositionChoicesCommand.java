@@ -63,9 +63,9 @@ public class GetSymbolPositionChoicesCommand
     @Override
     protected BaseResult execute() {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        GetSymbolPositionChoicesResult result = AccountingResultFactory.getGetSymbolPositionChoicesResult();
-        String defaultSymbolPositionChoice = form.getDefaultSymbolPositionChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = AccountingResultFactory.getGetSymbolPositionChoicesResult();
+        var defaultSymbolPositionChoice = form.getDefaultSymbolPositionChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setSymbolPositionChoices(accountingControl.getSymbolPositionChoices(defaultSymbolPositionChoice,
                 getPreferredLanguage(), allowNullChoice));

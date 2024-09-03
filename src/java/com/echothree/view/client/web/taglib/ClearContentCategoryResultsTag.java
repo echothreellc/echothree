@@ -71,11 +71,11 @@ public class ClearContentCategoryResultsTag
     public int doStartTag()
             throws JspException {
         try {
-            ClearContentCategoryResultsForm commandForm = SearchUtil.getHome().getClearContentCategoryResultsForm();
+            var commandForm = SearchUtil.getHome().getClearContentCategoryResultsForm();
 
             commandForm.setSearchTypeName(searchTypeName);
-            
-            CommandResult commandResult = SearchUtil.getHome().clearContentCategoryResults(getUserVisitPK(), commandForm);
+
+            var commandResult = SearchUtil.getHome().clearContentCategoryResults(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {

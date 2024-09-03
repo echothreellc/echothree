@@ -112,8 +112,8 @@ public class EditPaymentProcessorTypeCommand
     @Override
     public void doLock(PaymentProcessorTypeEdit edit, PaymentProcessorType paymentProcessorType) {
         var paymentProcessorTypeControl = Session.getModelController(PaymentProcessorTypeControl.class);
-        PaymentProcessorTypeDescription paymentProcessorTypeDescription = paymentProcessorTypeControl.getPaymentProcessorTypeDescription(paymentProcessorType, getPreferredLanguage());
-        PaymentProcessorTypeDetail paymentProcessorTypeDetail = paymentProcessorType.getLastDetail();
+        var paymentProcessorTypeDescription = paymentProcessorTypeControl.getPaymentProcessorTypeDescription(paymentProcessorType, getPreferredLanguage());
+        var paymentProcessorTypeDetail = paymentProcessorType.getLastDetail();
         
         edit.setPaymentProcessorTypeName(paymentProcessorTypeDetail.getPaymentProcessorTypeName());
         edit.setIsDefault(paymentProcessorTypeDetail.getIsDefault().toString());
@@ -127,8 +127,8 @@ public class EditPaymentProcessorTypeCommand
     @Override
     public void canUpdate(PaymentProcessorType paymentProcessorType) {
         var paymentProcessorTypeControl = Session.getModelController(PaymentProcessorTypeControl.class);
-        String paymentProcessorTypeName = edit.getPaymentProcessorTypeName();
-        PaymentProcessorType duplicatePaymentProcessorType = paymentProcessorTypeControl.getPaymentProcessorTypeByName(paymentProcessorTypeName);
+        var paymentProcessorTypeName = edit.getPaymentProcessorTypeName();
+        var duplicatePaymentProcessorType = paymentProcessorTypeControl.getPaymentProcessorTypeByName(paymentProcessorTypeName);
 
         if(duplicatePaymentProcessorType != null && !paymentProcessorType.equals(duplicatePaymentProcessorType)) {
             addExecutionError(ExecutionErrors.DuplicatePaymentProcessorTypeName.name(), paymentProcessorTypeName);
@@ -139,9 +139,9 @@ public class EditPaymentProcessorTypeCommand
     public void doUpdate(PaymentProcessorType paymentProcessorType) {
         var paymentProcessorTypeControl = Session.getModelController(PaymentProcessorTypeControl.class);
         var partyPK = getPartyPK();
-        PaymentProcessorTypeDetailValue paymentProcessorTypeDetailValue = paymentProcessorTypeControl.getPaymentProcessorTypeDetailValueForUpdate(paymentProcessorType);
-        PaymentProcessorTypeDescription paymentProcessorTypeDescription = paymentProcessorTypeControl.getPaymentProcessorTypeDescriptionForUpdate(paymentProcessorType, getPreferredLanguage());
-        String description = edit.getDescription();
+        var paymentProcessorTypeDetailValue = paymentProcessorTypeControl.getPaymentProcessorTypeDetailValueForUpdate(paymentProcessorType);
+        var paymentProcessorTypeDescription = paymentProcessorTypeControl.getPaymentProcessorTypeDescriptionForUpdate(paymentProcessorType, getPreferredLanguage());
+        var description = edit.getDescription();
 
         paymentProcessorTypeDetailValue.setPaymentProcessorTypeName(edit.getPaymentProcessorTypeName());
         paymentProcessorTypeDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
@@ -154,7 +154,7 @@ public class EditPaymentProcessorTypeCommand
         } else if(paymentProcessorTypeDescription != null && description == null) {
             paymentProcessorTypeControl.deletePaymentProcessorTypeDescription(paymentProcessorTypeDescription, partyPK);
         } else if(paymentProcessorTypeDescription != null && description != null) {
-            PaymentProcessorTypeDescriptionValue paymentProcessorTypeDescriptionValue = paymentProcessorTypeControl.getPaymentProcessorTypeDescriptionValue(paymentProcessorTypeDescription);
+            var paymentProcessorTypeDescriptionValue = paymentProcessorTypeControl.getPaymentProcessorTypeDescriptionValue(paymentProcessorTypeDescription);
 
             paymentProcessorTypeDescriptionValue.setDescription(description);
             paymentProcessorTypeControl.updatePaymentProcessorTypeDescriptionFromValue(paymentProcessorTypeDescriptionValue, partyPK);

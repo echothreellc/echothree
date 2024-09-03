@@ -98,18 +98,18 @@ public class EditCancellationPolicyTranslationCommand
     public CancellationPolicyTranslation getEntity(EditCancellationPolicyTranslationResult result) {
         var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
         CancellationPolicyTranslation cancellationPolicyTranslation = null;
-        String cancellationKindName = spec.getCancellationKindName();
+        var cancellationKindName = spec.getCancellationKindName();
         
         cancellationKind = cancellationPolicyControl.getCancellationKindByName(cancellationKindName);
 
         if(cancellationKind != null) {
-            String cancellationPolicyName = spec.getCancellationPolicyName();
-            CancellationPolicy cancellationPolicy = cancellationPolicyControl.getCancellationPolicyByName(cancellationKind, cancellationPolicyName);
+            var cancellationPolicyName = spec.getCancellationPolicyName();
+            var cancellationPolicy = cancellationPolicyControl.getCancellationPolicyByName(cancellationKind, cancellationPolicyName);
 
             if(cancellationPolicy != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = spec.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = spec.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                 if(language != null) {
                     if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -160,9 +160,9 @@ public class EditCancellationPolicyTranslationCommand
 
     @Override
     protected void canUpdate(CancellationPolicyTranslation cancellationPolicyTranslation) {
-        MimeTypeLogic mimeTypeLogic = MimeTypeLogic.getInstance();
-        String policyMimeTypeName = edit.getPolicyMimeTypeName();
-        String policy = edit.getPolicy();
+        var mimeTypeLogic = MimeTypeLogic.getInstance();
+        var policyMimeTypeName = edit.getPolicyMimeTypeName();
+        var policy = edit.getPolicy();
         
         policyMimeType = mimeTypeLogic.checkMimeType(this, policyMimeTypeName, policy, MimeTypeUsageTypes.TEXT.name(),
                 ExecutionErrors.MissingRequiredPolicyMimeTypeName.name(), ExecutionErrors.MissingRequiredPolicy.name(),
@@ -172,7 +172,7 @@ public class EditCancellationPolicyTranslationCommand
     @Override
     public void doUpdate(CancellationPolicyTranslation cancellationPolicyTranslation) {
         var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
-        CancellationPolicyTranslationValue cancellationPolicyTranslationValue = cancellationPolicyControl.getCancellationPolicyTranslationValue(cancellationPolicyTranslation);
+        var cancellationPolicyTranslationValue = cancellationPolicyControl.getCancellationPolicyTranslationValue(cancellationPolicyTranslation);
         
         cancellationPolicyTranslationValue.setDescription(edit.getDescription());
         cancellationPolicyTranslationValue.setPolicyMimeTypePK(policyMimeType == null? null: policyMimeType.getPrimaryKey());

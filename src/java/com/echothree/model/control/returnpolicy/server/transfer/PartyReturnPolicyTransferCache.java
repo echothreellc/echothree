@@ -42,15 +42,15 @@ public class PartyReturnPolicyTransferCache
     }
 
     public PartyReturnPolicyTransfer getPartyReturnPolicyTransfer(PartyReturnPolicy partyReturnPolicy) {
-        PartyReturnPolicyTransfer partyReturnPolicyTransfer = get(partyReturnPolicy);
+        var partyReturnPolicyTransfer = get(partyReturnPolicy);
 
         if(partyReturnPolicyTransfer == null) {
-            PartyTransfer party = partyControl.getPartyTransfer(userVisit, partyReturnPolicy.getParty());
-            ReturnPolicyTransfer returnPolicy = returnPolicyControl.getReturnPolicyTransfer(userVisit, partyReturnPolicy.getReturnPolicy());
+            var party = partyControl.getPartyTransfer(userVisit, partyReturnPolicy.getParty());
+            var returnPolicy = returnPolicyControl.getReturnPolicyTransfer(userVisit, partyReturnPolicy.getReturnPolicy());
 
-            EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(partyReturnPolicy.getPrimaryKey());
-            PartyPK createdBy = getPartyPK();
-            WorkflowEntityStatusTransfer partyReturnPolicyStatusTransfer = PartyReturnPolicyLogic.getInstance().getPartyReturnPolicyStatusTransfer(userVisit, entityInstance, createdBy);
+            var entityInstance = coreControl.getEntityInstanceByBasePK(partyReturnPolicy.getPrimaryKey());
+            var createdBy = getPartyPK();
+            var partyReturnPolicyStatusTransfer = PartyReturnPolicyLogic.getInstance().getPartyReturnPolicyStatusTransfer(userVisit, entityInstance, createdBy);
 
             partyReturnPolicyTransfer = new PartyReturnPolicyTransfer(party, returnPolicy, partyReturnPolicyStatusTransfer);
             put(partyReturnPolicy, partyReturnPolicyTransfer, entityInstance);

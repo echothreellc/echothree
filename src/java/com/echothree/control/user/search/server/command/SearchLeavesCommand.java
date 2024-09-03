@@ -88,43 +88,43 @@ public class SearchLeavesCommand
     
     @Override
     protected BaseResult execute() {
-        SearchLogic searchLogic = SearchLogic.getInstance();
-        SearchLeavesResult result = SearchResultFactory.getSearchLeavesResult();
-        SearchKind searchKind = searchLogic.getSearchKindByName(null, SearchKinds.LEAVE.name());
+        var searchLogic = SearchLogic.getInstance();
+        var result = SearchResultFactory.getSearchLeavesResult();
+        var searchKind = searchLogic.getSearchKindByName(null, SearchKinds.LEAVE.name());
 
         if(!hasExecutionErrors()) {
-            String searchTypeName = form.getSearchTypeName();
-            SearchType searchType = searchLogic.getSearchTypeByName(this, searchKind, searchTypeName);
+            var searchTypeName = form.getSearchTypeName();
+            var searchType = searchLogic.getSearchTypeByName(this, searchKind, searchTypeName);
 
             if(!hasExecutionErrors()) {
-                String partyName = form.getPartyName();
-                Party party = partyName == null ? null : PartyLogic.getInstance().getPartyByName(this, partyName);
+                var partyName = form.getPartyName();
+                var party = partyName == null ? null : PartyLogic.getInstance().getPartyByName(this, partyName);
 
                 if(!hasExecutionErrors()) {
-                    PartyCompany partyCompany = CompanyLogic.getInstance().getPartyCompanyByName(this, form.getCompanyName(), null, null, false);
+                    var partyCompany = CompanyLogic.getInstance().getPartyCompanyByName(this, form.getCompanyName(), null, null, false);
 
                     if(!hasExecutionErrors()) {
-                        String leaveTypeName = form.getLeaveTypeName();
-                        LeaveType leaveType = leaveTypeName == null ? null : LeaveLogic.getInstance().getLeaveTypeByName(this, leaveTypeName);
+                        var leaveTypeName = form.getLeaveTypeName();
+                        var leaveType = leaveTypeName == null ? null : LeaveLogic.getInstance().getLeaveTypeByName(this, leaveTypeName);
 
                         if(!hasExecutionErrors()) {
-                            String leaveReasonName = form.getLeaveReasonName();
-                            LeaveReason leaveReason = leaveReasonName == null ? null : LeaveLogic.getInstance().getLeaveReasonByName(this, leaveReasonName);
+                            var leaveReasonName = form.getLeaveReasonName();
+                            var leaveReason = leaveReasonName == null ? null : LeaveLogic.getInstance().getLeaveReasonByName(this, leaveReasonName);
 
                             if(!hasExecutionErrors()) {
                                 var workflowControl = Session.getModelController(WorkflowControl.class);
-                                String leaveStatusChoice = form.getLeaveStatusChoice();
-                                WorkflowStep leaveStatusWorkflowStep = leaveStatusChoice == null ? null
+                                var leaveStatusChoice = form.getLeaveStatusChoice();
+                                var leaveStatusWorkflowStep = leaveStatusChoice == null ? null
                                         : workflowControl.getWorkflowStepByName(workflowControl.getWorkflowByName(LeaveStatusConstants.Workflow_LEAVE_STATUS),
                                         leaveStatusChoice);
 
                                 if(leaveStatusChoice == null || leaveStatusWorkflowStep != null) {
-                                    UserVisit userVisit = getUserVisit();
-                                    String createdSince = form.getCreatedSince();
-                                    String modifiedSince = form.getModifiedSince();
-                                    String fields = form.getFields();
+                                    var userVisit = getUserVisit();
+                                    var createdSince = form.getCreatedSince();
+                                    var modifiedSince = form.getModifiedSince();
+                                    var fields = form.getFields();
 
-                                    LeaveSearchEvaluator leaveSearchEvaluator = new LeaveSearchEvaluator(userVisit, searchType,
+                                    var leaveSearchEvaluator = new LeaveSearchEvaluator(userVisit, searchType,
                                             searchLogic.getDefaultSearchDefaultOperator(null), searchLogic.getDefaultSearchSortOrder(null, searchKind),
                                             searchLogic.getDefaultSearchSortDirection(null));
 

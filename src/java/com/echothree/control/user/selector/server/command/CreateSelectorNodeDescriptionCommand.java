@@ -60,28 +60,28 @@ public class CreateSelectorNodeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var selectorControl = Session.getModelController(SelectorControl.class);
-        String selectorKindName = form.getSelectorKindName();
-        SelectorKind selectorKind = selectorControl.getSelectorKindByName(selectorKindName);
+        var selectorKindName = form.getSelectorKindName();
+        var selectorKind = selectorControl.getSelectorKindByName(selectorKindName);
         
         if(selectorKind != null) {
-            String selectorTypeName = form.getSelectorTypeName();
-            SelectorType selectorType = selectorControl.getSelectorTypeByName(selectorKind, selectorTypeName);
+            var selectorTypeName = form.getSelectorTypeName();
+            var selectorType = selectorControl.getSelectorTypeByName(selectorKind, selectorTypeName);
             
             if(selectorType != null) {
-                String selectorName = form.getSelectorName();
-                Selector selector = selectorControl.getSelectorByName(selectorType, selectorName);
+                var selectorName = form.getSelectorName();
+                var selector = selectorControl.getSelectorByName(selectorType, selectorName);
                 
                 if(selector != null) {
-                    String selectorNodeName = form.getSelectorNodeName();
-                    SelectorNode selectorNode = selectorControl.getSelectorNodeByName(selector, selectorNodeName);
+                    var selectorNodeName = form.getSelectorNodeName();
+                    var selectorNode = selectorControl.getSelectorNodeByName(selector, selectorNodeName);
                     
                     if(selectorNode != null) {
                         var partyControl = Session.getModelController(PartyControl.class);
-                        String languageIsoName = form.getLanguageIsoName();
-                        Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                        var languageIsoName = form.getLanguageIsoName();
+                        var language = partyControl.getLanguageByIsoName(languageIsoName);
                         
                         if(language != null) {
-                            SelectorNodeDescription selectorNodeDescription = selectorControl.getSelectorNodeDescription(selectorNode, language);
+                            var selectorNodeDescription = selectorControl.getSelectorNodeDescription(selectorNode, language);
                             
                             if(selectorNodeDescription == null) {
                                 var description = form.getDescription();

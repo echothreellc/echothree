@@ -62,8 +62,8 @@ public class SetDefaultInvoiceTypeCommand
     @Override
     protected BaseResult execute() {
         var invoiceControl = Session.getModelController(InvoiceControl.class);
-        String invoiceTypeName = form.getInvoiceTypeName();
-        InvoiceTypeDetailValue invoiceTypeDetailValue = invoiceControl.getInvoiceTypeDetailValueByNameForUpdate(invoiceTypeName);
+        var invoiceTypeName = form.getInvoiceTypeName();
+        var invoiceTypeDetailValue = invoiceControl.getInvoiceTypeDetailValueByNameForUpdate(invoiceTypeName);
         
         if(invoiceTypeDetailValue != null) {
             invoiceTypeDetailValue.setIsDefault(Boolean.TRUE);

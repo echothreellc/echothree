@@ -52,14 +52,14 @@ public class GetSelectorNodeTypesCommand
     @Override
     protected BaseResult execute() {
         var selectorControl = Session.getModelController(SelectorControl.class);
-        GetSelectorNodeTypesResult result = SelectorResultFactory.getGetSelectorNodeTypesResult();
-        String selectorKindName = form.getSelectorKindName();
-        UserVisit userVisit = getUserVisit();
+        var result = SelectorResultFactory.getGetSelectorNodeTypesResult();
+        var selectorKindName = form.getSelectorKindName();
+        var userVisit = getUserVisit();
         
         if(selectorKindName == null) {
             result.setSelectorNodeTypes(selectorControl.getSelectorNodeTypeTransfers(userVisit));
         } else {
-            SelectorKind selectorKind = selectorControl.getSelectorKindByName(selectorKindName);
+            var selectorKind = selectorControl.getSelectorKindByName(selectorKindName);
             
             if(selectorKind != null) {
                 result.setSelectorNodeTypes(selectorControl.getSelectorNodeTypeTransfersBySelectorKind(userVisit, selectorKind));

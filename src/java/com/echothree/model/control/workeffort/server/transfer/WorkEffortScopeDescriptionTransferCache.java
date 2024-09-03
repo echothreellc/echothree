@@ -32,12 +32,12 @@ public class WorkEffortScopeDescriptionTransferCache
     }
     
     public WorkEffortScopeDescriptionTransfer getWorkEffortScopeDescriptionTransfer(WorkEffortScopeDescription workEffortScopeDescription) {
-        WorkEffortScopeDescriptionTransfer workEffortScopeDescriptionTransfer = get(workEffortScopeDescription);
+        var workEffortScopeDescriptionTransfer = get(workEffortScopeDescription);
         
         if(workEffortScopeDescriptionTransfer == null) {
-            WorkEffortScopeTransfer workEffortScopeTransfer = workEffortControl.getWorkEffortScopeTransfer(userVisit, workEffortScopeDescription.getWorkEffortScope());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, workEffortScopeDescription.getLanguage());
-            String description = workEffortScopeDescription.getDescription();
+            var workEffortScopeTransfer = workEffortControl.getWorkEffortScopeTransfer(userVisit, workEffortScopeDescription.getWorkEffortScope());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, workEffortScopeDescription.getLanguage());
+            var description = workEffortScopeDescription.getDescription();
             
             workEffortScopeDescriptionTransfer = new WorkEffortScopeDescriptionTransfer(languageTransfer, workEffortScopeTransfer,
                     description);

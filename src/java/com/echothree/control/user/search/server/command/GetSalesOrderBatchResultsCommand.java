@@ -56,17 +56,17 @@ public class GetSalesOrderBatchResultsCommand
     
     @Override
     protected BaseResult execute() {
-        GetSalesOrderBatchResultsResult result = SearchResultFactory.getGetSalesOrderBatchResultsResult();
+        var result = SearchResultFactory.getGetSalesOrderBatchResultsResult();
         var searchControl = Session.getModelController(SearchControl.class);
-        SearchKind searchKind = searchControl.getSearchKindByName(SearchKinds.SALES_ORDER_BATCH.name());
+        var searchKind = searchControl.getSearchKindByName(SearchKinds.SALES_ORDER_BATCH.name());
         
         if(searchKind != null) {
-            String searchTypeName = form.getSearchTypeName();
-            SearchType searchType = searchControl.getSearchTypeByName(searchKind, searchTypeName);
+            var searchTypeName = form.getSearchTypeName();
+            var searchType = searchControl.getSearchTypeByName(searchKind, searchTypeName);
             
             if(searchType != null) {
-                UserVisit userVisit = getUserVisit();
-                UserVisitSearch userVisitSearch = searchControl.getUserVisitSearch(userVisit, searchType);
+                var userVisit = getUserVisit();
+                var userVisitSearch = searchControl.getUserVisitSearch(userVisit, searchType);
                 
                 if(userVisitSearch != null) {
                     var salesOrderBatchControl = Session.getModelController(SalesOrderBatchControl.class);

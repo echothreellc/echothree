@@ -39,13 +39,13 @@ public class CommunicationEventRoleTransferCache
     }
     
     public CommunicationEventRoleTransfer getCommunicationEventRoleTransfer(CommunicationEventRole communicationEventRole) {
-        CommunicationEventRoleTransfer communicationEventRoleTransfer = get(communicationEventRole);
+        var communicationEventRoleTransfer = get(communicationEventRole);
         
         if(communicationEventRoleTransfer == null) {
-            CommunicationEventTransfer communicationEvent = communicationControl.getCommunicationEventTransfer(userVisit,
+            var communicationEvent = communicationControl.getCommunicationEventTransfer(userVisit,
                     communicationEventRole.getCommunicationEvent());
-            PartyTransfer party = partyControl.getPartyTransfer(userVisit, communicationEventRole.getParty());
-            CommunicationEventRoleTypeTransfer communicationEventRoleType = communicationControl.getCommunicationEventRoleTypeTransfer(userVisit,
+            var party = partyControl.getPartyTransfer(userVisit, communicationEventRole.getParty());
+            var communicationEventRoleType = communicationControl.getCommunicationEventRoleTypeTransfer(userVisit,
                     communicationEventRole.getCommunicationEventRoleType());
             
             communicationEventRoleTransfer = new CommunicationEventRoleTransfer(communicationEvent, party,

@@ -51,8 +51,8 @@ public class CreatePostalAddressElementTypeCommand
     @Override
     protected BaseResult execute() {
         var contactControl = Session.getModelController(ContactControl.class);
-        String postalAddressElementTypeName = form.getPostalAddressElementTypeName();
-        PostalAddressElementType postalAddressElementType = contactControl.getPostalAddressElementTypeByName(postalAddressElementTypeName);
+        var postalAddressElementTypeName = form.getPostalAddressElementTypeName();
+        var postalAddressElementType = contactControl.getPostalAddressElementTypeByName(postalAddressElementTypeName);
         
         if(postalAddressElementType == null) {
             var isDefault = Boolean.valueOf(form.getIsDefault());

@@ -89,13 +89,13 @@ public class EditContactListTypeDescriptionCommand
     public ContactListTypeDescription getEntity(EditContactListTypeDescriptionResult result) {
         var contactListControl = Session.getModelController(ContactListControl.class);
         ContactListTypeDescription contactListTypeDescription = null;
-        String contactListTypeName = spec.getContactListTypeName();
-        ContactListType contactListType = contactListControl.getContactListTypeByName(contactListTypeName);
+        var contactListTypeName = spec.getContactListTypeName();
+        var contactListType = contactListControl.getContactListTypeByName(contactListTypeName);
 
         if(contactListType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -137,7 +137,7 @@ public class EditContactListTypeDescriptionCommand
     @Override
     public void doUpdate(ContactListTypeDescription contactListTypeDescription) {
         var contactListControl = Session.getModelController(ContactListControl.class);
-        ContactListTypeDescriptionValue contactListTypeDescriptionValue = contactListControl.getContactListTypeDescriptionValue(contactListTypeDescription);
+        var contactListTypeDescriptionValue = contactListControl.getContactListTypeDescriptionValue(contactListTypeDescription);
 
         contactListTypeDescriptionValue.setDescription(edit.getDescription());
 

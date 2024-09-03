@@ -60,19 +60,19 @@ public class ForumMessageTransferCache
     }
 
     public ForumMessageTransfer getForumMessageTransfer(ForumMessage forumMessage) {
-        ForumMessageTransfer forumMessageTransfer = get(forumMessage);
+        var forumMessageTransfer = get(forumMessage);
 
         if(forumMessageTransfer == null) {
-            ForumMessageDetail forumMessageDetail = forumMessage.getLastDetail();
-            String forumMessageName = forumMessageDetail.getForumMessageName();
-            ForumThreadTransfer forumThreadTransfer = forumControl.getForumThreadTransfer(userVisit, forumMessageDetail.getForumThread());
-            ForumMessageTypeTransfer forumMessageTypeTransfer = forumControl.getForumMessageTypeTransfer(userVisit, forumMessageDetail.getForumMessageType());
-            ForumMessage parentForumMessage = forumMessageDetail.getParentForumMessage();
-            ForumMessageTransfer parentForumMessageTransfer = parentForumMessage == null ? null : forumControl.getForumMessageTransfer(userVisit, parentForumMessage);
-            Icon icon = forumMessageDetail.getIcon();
-            IconTransfer iconTransfer = icon == null ? null : iconControl.getIconTransfer(userVisit, icon);
-            Long unformattedPostedTime = forumMessageDetail.getPostedTime();
-            String postedTime = formatTypicalDateTime(unformattedPostedTime);
+            var forumMessageDetail = forumMessage.getLastDetail();
+            var forumMessageName = forumMessageDetail.getForumMessageName();
+            var forumThreadTransfer = forumControl.getForumThreadTransfer(userVisit, forumMessageDetail.getForumThread());
+            var forumMessageTypeTransfer = forumControl.getForumMessageTypeTransfer(userVisit, forumMessageDetail.getForumMessageType());
+            var parentForumMessage = forumMessageDetail.getParentForumMessage();
+            var parentForumMessageTransfer = parentForumMessage == null ? null : forumControl.getForumMessageTransfer(userVisit, parentForumMessage);
+            var icon = forumMessageDetail.getIcon();
+            var iconTransfer = icon == null ? null : iconControl.getIconTransfer(userVisit, icon);
+            var unformattedPostedTime = forumMessageDetail.getPostedTime();
+            var postedTime = formatTypicalDateTime(unformattedPostedTime);
 
             forumMessageTransfer = new ForumMessageTransfer(forumMessageName, forumThreadTransfer, forumMessageTypeTransfer, parentForumMessageTransfer, iconTransfer, unformattedPostedTime, postedTime);
             put(forumMessage, forumMessageTransfer);
@@ -82,7 +82,7 @@ public class ForumMessageTransferCache
             }
 
             if(includeForumMessageParts) {
-                List<ForumMessagePartTransfer> forumMessagePartTransfers = forumControl.getForumMessagePartTransfersByForumMessageAndLanguage(userVisit, forumMessage, getLanguage());
+                var forumMessagePartTransfers = forumControl.getForumMessagePartTransfersByForumMessageAndLanguage(userVisit, forumMessage, getLanguage());
                 MapWrapper<ForumMessagePartTransfer> forumMessageParts = new MapWrapper<>(forumMessagePartTransfers.size());
 
                 forumMessagePartTransfers.forEach((forumMessagePartTransfer) -> {

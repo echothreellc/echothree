@@ -33,12 +33,12 @@ public class TransactionGlAccountTransferCache
     
     @Override
     public TransactionGlAccountTransfer getTransfer(TransactionGlAccount transactionGlAccount) {
-        TransactionGlAccountTransfer transactionGlAccountTransfer = get(transactionGlAccount);
+        var transactionGlAccountTransfer = get(transactionGlAccount);
         
         if(transactionGlAccountTransfer == null) {
-            TransactionGlAccountCategoryTransfer transactionGlAccountCategory = accountingControl.getTransactionGlAccountCategoryTransfer(userVisit,
+            var transactionGlAccountCategory = accountingControl.getTransactionGlAccountCategoryTransfer(userVisit,
                     transactionGlAccount.getTransactionGlAccountCategory());
-            GlAccountTransfer glAccount = accountingControl.getGlAccountTransfer(userVisit,
+            var glAccount = accountingControl.getGlAccountTransfer(userVisit,
                     transactionGlAccount.getGlAccount());
             
             transactionGlAccountTransfer = new TransactionGlAccountTransfer(transactionGlAccountCategory, glAccount);

@@ -70,25 +70,25 @@ public class GetSearchDefaultOperatorChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        GetSearchDefaultOperatorChoicesResult result = SearchResultFactory.getGetSearchDefaultOperatorChoicesResult();
-        String searchKindName = form.getSearchKindName();
-        String searchTypeName = form.getSearchTypeName();
+        var result = SearchResultFactory.getGetSearchDefaultOperatorChoicesResult();
+        var searchKindName = form.getSearchKindName();
+        var searchTypeName = form.getSearchTypeName();
         var parameterCount = (searchKindName == null ? 0 : 1) + (searchTypeName == null ? 0 : 1);
         
         if(parameterCount == 0 || parameterCount == 2) {
-            String defaultSearchDefaultOperatorChoice = form.getDefaultSearchDefaultOperatorChoice();
-            Party party = getParty();
-            SearchType searchType = searchTypeName != null && defaultSearchDefaultOperatorChoice == null && party != null ? SearchLogic.getInstance().getSearchTypeByName(this, searchKindName, searchTypeName) : null;
+            var defaultSearchDefaultOperatorChoice = form.getDefaultSearchDefaultOperatorChoice();
+            var party = getParty();
+            var searchType = searchTypeName != null && defaultSearchDefaultOperatorChoice == null && party != null ? SearchLogic.getInstance().getSearchTypeByName(this, searchKindName, searchTypeName) : null;
             
             if(!hasExecutionErrors()) {
                 var searchControl = Session.getModelController(SearchControl.class);
-                boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+                var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 
                 if(searchType != null) {
-                    PartySearchTypePreference partySearchTypePreference = searchControl.getPartySearchTypePreference(party, searchType);
+                    var partySearchTypePreference = searchControl.getPartySearchTypePreference(party, searchType);
                     
                     if(partySearchTypePreference != null) {
-                        SearchDefaultOperator searchDefaultOperator = partySearchTypePreference.getLastDetail().getSearchDefaultOperator();
+                        var searchDefaultOperator = partySearchTypePreference.getLastDetail().getSearchDefaultOperator();
                         
                         if(searchDefaultOperator != null) {
                             defaultSearchDefaultOperatorChoice = searchDefaultOperator.getLastDetail().getSearchDefaultOperatorName();

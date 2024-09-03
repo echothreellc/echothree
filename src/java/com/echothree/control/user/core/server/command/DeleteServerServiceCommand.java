@@ -64,15 +64,15 @@ public class DeleteServerServiceCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String serverName = form.getServerName();
-        Server server = coreControl.getServerByName(serverName);
+        var serverName = form.getServerName();
+        var server = coreControl.getServerByName(serverName);
         
         if(server != null) {
-            String serviceName = form.getServiceName();
-            Service service = coreControl.getServiceByName(serviceName);
+            var serviceName = form.getServiceName();
+            var service = coreControl.getServiceByName(serviceName);
             
             if(service != null) {
-                ServerService serverService = coreControl.getServerServiceForUpdate(server, service);
+                var serverService = coreControl.getServerServiceForUpdate(server, service);
                 
                 if(serverService != null) {
                     coreControl.deleteServerService(serverService, getPartyPK());

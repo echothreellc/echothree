@@ -49,9 +49,9 @@ public class GetCacheEntryCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        GetCacheEntryResult result = CoreResultFactory.getGetCacheEntryResult();
-        String cacheEntryKey = form.getCacheEntryKey();
-        CacheEntryTransfer cacheEntryTransfer = coreControl.getCacheEntryTransferByCacheEntryKey(getUserVisit(), cacheEntryKey);
+        var result = CoreResultFactory.getGetCacheEntryResult();
+        var cacheEntryKey = form.getCacheEntryKey();
+        var cacheEntryTransfer = coreControl.getCacheEntryTransferByCacheEntryKey(getUserVisit(), cacheEntryKey);
 
         if(cacheEntryTransfer != null) {
             result.setCacheEntry(cacheEntryTransfer);

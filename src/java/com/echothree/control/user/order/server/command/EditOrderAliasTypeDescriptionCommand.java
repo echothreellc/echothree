@@ -91,18 +91,18 @@ public class EditOrderAliasTypeDescriptionCommand
     public OrderAliasTypeDescription getEntity(EditOrderAliasTypeDescriptionResult result) {
         var orderTypeControl = Session.getModelController(OrderTypeControl.class);
         OrderAliasTypeDescription orderAliasTypeDescription = null;
-        String orderTypeName = spec.getOrderTypeName();
+        var orderTypeName = spec.getOrderTypeName();
         var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
             var orderAliasControl = Session.getModelController(OrderAliasControl.class);
-            String orderAliasTypeName = spec.getOrderAliasTypeName();
-            OrderAliasType orderAliasType = orderAliasControl.getOrderAliasTypeByName(orderType, orderAliasTypeName);
+            var orderAliasTypeName = spec.getOrderAliasTypeName();
+            var orderAliasType = orderAliasControl.getOrderAliasTypeByName(orderType, orderAliasTypeName);
 
             if(orderAliasType != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = spec.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = spec.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                 if(language != null) {
                     if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -147,7 +147,7 @@ public class EditOrderAliasTypeDescriptionCommand
     @Override
     public void doUpdate(OrderAliasTypeDescription orderAliasTypeDescription) {
         var orderAliasControl = Session.getModelController(OrderAliasControl.class);
-        OrderAliasTypeDescriptionValue orderAliasTypeDescriptionValue = orderAliasControl.getOrderAliasTypeDescriptionValue(orderAliasTypeDescription);
+        var orderAliasTypeDescriptionValue = orderAliasControl.getOrderAliasTypeDescriptionValue(orderAliasTypeDescription);
 
         orderAliasTypeDescriptionValue.setDescription(edit.getDescription());
 

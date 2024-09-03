@@ -64,15 +64,15 @@ public class CreateServerServiceCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String serverName = form.getServerName();
-        Server server = coreControl.getServerByName(serverName);
+        var serverName = form.getServerName();
+        var server = coreControl.getServerByName(serverName);
         
         if(server != null) {
-            String serviceName = form.getServiceName();
-            Service service = coreControl.getServiceByName(serviceName);
+            var serviceName = form.getServiceName();
+            var service = coreControl.getServiceByName(serviceName);
             
             if(service != null) {
-                ServerService serverService = coreControl.getServerService(server, service);
+                var serverService = coreControl.getServerService(server, service);
                 
                 if(serverService == null) {
                     coreControl.createServerService(server, service, getPartyPK());

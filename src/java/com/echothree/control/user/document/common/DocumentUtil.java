@@ -30,7 +30,7 @@ public class DocumentUtil {
     public static DocumentLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
 
             cachedLocal = (DocumentLocal)ctx.lookup("ejb:echothree/echothree-server/DocumentBean!com.echothree.control.user.document.server.DocumentLocal");
         }
@@ -42,7 +42,7 @@ public class DocumentUtil {
     public static DocumentRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
             
             cachedRemote = (DocumentRemote)ctx.lookup("ejb:echothree/echothree-server/DocumentBean!com.echothree.control.user.document.common.DocumentRemote");
         }

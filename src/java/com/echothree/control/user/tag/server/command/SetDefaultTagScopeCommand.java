@@ -62,8 +62,8 @@ public class SetDefaultTagScopeCommand
     @Override
     protected BaseResult execute() {
         var tagControl = Session.getModelController(TagControl.class);
-        String tagScopeName = form.getTagScopeName();
-        TagScopeDetailValue tagScopeDetailValue = tagControl.getTagScopeDetailValueByNameForUpdate(tagScopeName);
+        var tagScopeName = form.getTagScopeName();
+        var tagScopeDetailValue = tagControl.getTagScopeDetailValueByNameForUpdate(tagScopeName);
         
         if(tagScopeDetailValue != null) {
             tagScopeDetailValue.setIsDefault(Boolean.TRUE);

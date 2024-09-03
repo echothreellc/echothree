@@ -67,16 +67,16 @@ public class DeleteTerminationReasonDescriptionCommand
     @Override
     protected BaseResult execute() {
         var employeeControl = Session.getModelController(EmployeeControl.class);
-        String terminationReasonName = form.getTerminationReasonName();
-        TerminationReason terminationReason = employeeControl.getTerminationReasonByName(terminationReasonName);
+        var terminationReasonName = form.getTerminationReasonName();
+        var terminationReason = employeeControl.getTerminationReasonByName(terminationReasonName);
         
         if(terminationReason != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                TerminationReasonDescription terminationReasonDescription = employeeControl.getTerminationReasonDescriptionForUpdate(terminationReason, language);
+                var terminationReasonDescription = employeeControl.getTerminationReasonDescriptionForUpdate(terminationReason, language);
                 
                 if(terminationReasonDescription != null) {
                     employeeControl.deleteTerminationReasonDescription(terminationReasonDescription, getPartyPK());

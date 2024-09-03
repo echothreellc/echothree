@@ -138,38 +138,38 @@ public class CreateContactPostalAddressCommand
 
     @Override
     protected ValidationResult validate() {
-        String partyTypeName = getPartyTypeName();
-        List<FieldDefinition> FORM_FIELD_DEFINITIONS = partyTypeName.equals(PartyTypes.CUSTOMER.name())? customerFormFieldDefinitions: otherFormFieldDefinitions;
-        Validator validator = new Validator(this);
-        ValidationResult validationResult = validator.validate(form, FORM_FIELD_DEFINITIONS);
+        var partyTypeName = getPartyTypeName();
+        var FORM_FIELD_DEFINITIONS = partyTypeName.equals(PartyTypes.CUSTOMER.name())? customerFormFieldDefinitions: otherFormFieldDefinitions;
+        var validator = new Validator(this);
+        var validationResult = validator.validate(form, FORM_FIELD_DEFINITIONS);
         
         return validationResult;
     }
     
     @Override
     protected BaseResult execute() {
-        CreateContactPostalAddressResult result = ContactResultFactory.getCreateContactPostalAddressResult();
+        var result = ContactResultFactory.getCreateContactPostalAddressResult();
         var partyControl = Session.getModelController(PartyControl.class);
-        String partyName = form.getPartyName();
-        Party party = partyName == null ? getParty() : partyControl.getPartyByName(partyName);
+        var partyName = form.getPartyName();
+        var party = partyName == null ? getParty() : partyControl.getPartyByName(partyName);
         
         if(party != null) {
             var geoControl = Session.getModelController(GeoControl.class);
-            String countryName = form.getCountryName();
-            String countryAlias = StringUtils.getInstance().cleanStringToName(countryName).toUpperCase(Locale.getDefault());
-            GeoCode countryGeoCode = geoControl.getCountryByAlias(countryAlias);
+            var countryName = form.getCountryName();
+            var countryAlias = StringUtils.getInstance().cleanStringToName(countryName).toUpperCase(Locale.getDefault());
+            var countryGeoCode = geoControl.getCountryByAlias(countryAlias);
             
             if(countryGeoCode != null) {
-                GeoCodeCountry geoCodeCountry = geoControl.getGeoCodeCountry(countryGeoCode);
-                String postalCode = form.getPostalCode();
+                var geoCodeCountry = geoControl.getGeoCodeCountry(countryGeoCode);
+                var postalCode = form.getPostalCode();
 
                 if(postalCode != null) {
                     postalCode = postalCode.toUpperCase(Locale.getDefault());
                 }
 
                 if(!geoCodeCountry.getPostalCodeRequired() || postalCode != null) {
-                    String postalCodePattern = geoCodeCountry.getPostalCodePattern();
-                    Integer postalCodeLength = geoCodeCountry.getPostalCodeLength();
+                    var postalCodePattern = geoCodeCountry.getPostalCodePattern();
+                    var postalCodeLength = geoCodeCountry.getPostalCodeLength();
                     
                     if(postalCodeLength == null) {
                         postalCodeLength = Integer.MAX_VALUE;
@@ -177,11 +177,11 @@ public class CreateContactPostalAddressCommand
                     
                     if(postalCode == null || ((postalCodePattern == null || postalCode.matches(postalCodePattern)) && (postalCode.length() <= postalCodeLength))) {
                         GeoCode postalCodeGeoCode = null;
-                        String postalCodeAlias = postalCode == null? null: StringUtils.getInstance().cleanStringToLettersOrDigits(StringUtils.getInstance().cleanStringToName(postalCode));
+                        var postalCodeAlias = postalCode == null? null: StringUtils.getInstance().cleanStringToLettersOrDigits(StringUtils.getInstance().cleanStringToName(postalCode));
                         
                         if(postalCodeAlias != null) {
-                            int postalCodeAliasLength = postalCodeAlias.length();
-                            Integer postalCodeGeoCodeLength = geoCodeCountry.getPostalCodeGeoCodeLength();
+                            var postalCodeAliasLength = postalCodeAlias.length();
+                            var postalCodeGeoCodeLength = geoCodeCountry.getPostalCodeGeoCodeLength();
                             
                             if(postalCodeGeoCodeLength == null || postalCodeAliasLength >= postalCodeGeoCodeLength) {
                                 if(postalCodeGeoCodeLength != null && postalCodeAliasLength > postalCodeGeoCodeLength) {
@@ -193,22 +193,22 @@ public class CreateContactPostalAddressCommand
                         }
                         
                         if(!geoCodeCountry.getPostalCodeGeoCodeRequired() || postalCodeGeoCode != null) {
-                            String state = form.getState();
+                            var state = form.getState();
                             
                             if(!geoCodeCountry.getStateRequired() || state != null) {
                                 GeoCode stateGeoCode = null;
-                                String stateAlias = state == null? null: StringUtils.getInstance().cleanStringToName(state).toUpperCase(Locale.getDefault());
+                                var stateAlias = state == null? null: StringUtils.getInstance().cleanStringToName(state).toUpperCase(Locale.getDefault());
                                 
                                 if(stateAlias != null) {
                                     stateGeoCode = geoControl.getStateByAlias(countryGeoCode, stateAlias);
                                 }
                                 
                                 if(!geoCodeCountry.getStateGeoCodeRequired() || stateGeoCode != null) {
-                                    String city = form.getCity();
+                                    var city = form.getCity();
                                     
                                     if(!geoCodeCountry.getCityRequired() || city != null) {
                                         GeoCode cityGeoCode = null;
-                                        String cityAlias = city == null? null: StringUtils.getInstance().cleanStringToName(city).toUpperCase(Locale.getDefault());
+                                        var cityAlias = city == null? null: StringUtils.getInstance().cleanStringToName(city).toUpperCase(Locale.getDefault());
                                         
                                         if(stateGeoCode != null && cityAlias != null) {
                                             cityGeoCode = geoControl.getCityByAlias(stateGeoCode, cityAlias);
@@ -220,24 +220,24 @@ public class CreateContactPostalAddressCommand
                                             var contactControl = Session.getModelController(ContactControl.class);
                                             var coreControl = getCoreControl();
                                             var workflowControl = Session.getModelController(WorkflowControl.class);
-                                            Soundex soundex = new Soundex();
+                                            var soundex = new Soundex();
                                             BasePK createdBy = getPartyPK();
-                                            String personalTitleId = form.getPersonalTitleId();
-                                            PersonalTitle personalTitle = personalTitleId == null? null: partyControl.convertPersonalTitleIdToEntity(personalTitleId, EntityPermission.READ_ONLY);
-                                            String firstName = form.getFirstName();
-                                            String middleName = form.getMiddleName();
-                                            String lastName = form.getLastName();
-                                            String nameSuffixId = form.getNameSuffixId();
-                                            NameSuffix nameSuffix = nameSuffixId == null? null: partyControl.convertNameSuffixIdToEntity(nameSuffixId, EntityPermission.READ_ONLY);
-                                            String companyName = form.getCompanyName();
-                                            String attention = form.getAttention();
-                                            String address1 = form.getAddress1();
-                                            String address2 = form.getAddress2();
-                                            String address3 = form.getAddress3();
-                                            Boolean allowSolicitation = Boolean.valueOf(form.getAllowSolicitation());
-                                            Boolean isCommercial = Boolean.valueOf(form.getIsCommercial());
+                                            var personalTitleId = form.getPersonalTitleId();
+                                            var personalTitle = personalTitleId == null? null: partyControl.convertPersonalTitleIdToEntity(personalTitleId, EntityPermission.READ_ONLY);
+                                            var firstName = form.getFirstName();
+                                            var middleName = form.getMiddleName();
+                                            var lastName = form.getLastName();
+                                            var nameSuffixId = form.getNameSuffixId();
+                                            var nameSuffix = nameSuffixId == null? null: partyControl.convertNameSuffixIdToEntity(nameSuffixId, EntityPermission.READ_ONLY);
+                                            var companyName = form.getCompanyName();
+                                            var attention = form.getAttention();
+                                            var address1 = form.getAddress1();
+                                            var address2 = form.getAddress2();
+                                            var address3 = form.getAddress3();
+                                            var allowSolicitation = Boolean.valueOf(form.getAllowSolicitation());
+                                            var isCommercial = Boolean.valueOf(form.getIsCommercial());
                                             var description = form.getDescription();
-                                            String contactMechanismName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(null, SequenceTypes.CONTACT_MECHANISM.name());
+                                            var contactMechanismName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(null, SequenceTypes.CONTACT_MECHANISM.name());
                                             
                                             String firstNameSdx;
                                             try {
@@ -259,9 +259,9 @@ public class CreateContactPostalAddressCommand
                                             } catch (IllegalArgumentException iae) {
                                                 lastNameSdx = null;
                                             }
-                                            
-                                            ContactMechanismType contactMechanismType = contactControl.getContactMechanismTypeByName(ContactMechanismTypes.POSTAL_ADDRESS.name());
-                                            ContactMechanism contactMechanism = contactControl.createContactMechanism(contactMechanismName, contactMechanismType,
+
+                                            var contactMechanismType = contactControl.getContactMechanismTypeByName(ContactMechanismTypes.POSTAL_ADDRESS.name());
+                                            var contactMechanism = contactControl.createContactMechanism(contactMechanismName, contactMechanismType,
                                                     allowSolicitation, createdBy);
                                             
                                             contactControl.createContactPostalAddress(contactMechanism, personalTitle, firstName, firstNameSdx, middleName,
@@ -271,8 +271,8 @@ public class CreateContactPostalAddressCommand
                                             
                                             contactControl.createPartyContactMechanism(party, contactMechanism, description,
                                                     Boolean.FALSE, 1, createdBy);
-                                            
-                                            EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(contactMechanism.getPrimaryKey());
+
+                                            var entityInstance = coreControl.getEntityInstanceByBasePK(contactMechanism.getPrimaryKey());
                                             workflowControl.addEntityToWorkflowUsingNames(null, PostalAddressStatusConstants.Workflow_POSTAL_ADDRESS_STATUS,
                                                     PostalAddressStatusConstants.WorkflowEntrance_NEW_POSTAL_ADDRESS, entityInstance, null, null, createdBy);
                                             

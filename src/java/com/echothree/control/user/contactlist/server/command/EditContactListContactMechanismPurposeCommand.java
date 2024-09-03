@@ -92,12 +92,12 @@ public class EditContactListContactMechanismPurposeCommand
     @Override
     public ContactListContactMechanismPurpose getEntity(EditContactListContactMechanismPurposeResult result) {
         ContactListContactMechanismPurpose contactListContactMechanismPurpose = null;
-        String contactListName = spec.getContactListName();
-        ContactList contactList = ContactListLogic.getInstance().getContactListByName(this, contactListName);
+        var contactListName = spec.getContactListName();
+        var contactList = ContactListLogic.getInstance().getContactListByName(this, contactListName);
         
         if(!hasExecutionErrors()) {
-            String contactMechanismPurposeName = spec.getContactMechanismPurposeName();
-            ContactMechanismPurpose contactMechanismPurpose = ContactMechanismPurposeLogic.getInstance().getContactMechanismPurposeByName(this, contactMechanismPurposeName);
+            var contactMechanismPurposeName = spec.getContactMechanismPurposeName();
+            var contactMechanismPurpose = ContactMechanismPurposeLogic.getInstance().getContactMechanismPurposeByName(this, contactMechanismPurposeName);
             
             if(!hasExecutionErrors()) {
                 var contactListControl = Session.getModelController(ContactListControl.class);
@@ -132,7 +132,7 @@ public class EditContactListContactMechanismPurposeCommand
     @Override
     public void doLock(ContactListContactMechanismPurposeEdit edit, ContactListContactMechanismPurpose contactListContactMechanismPurpose) {
         var contactListControl = Session.getModelController(ContactListControl.class);
-        ContactListContactMechanismPurposeDetail contactListContactMechanismPurposeDetail = contactListContactMechanismPurpose.getLastDetail();
+        var contactListContactMechanismPurposeDetail = contactListContactMechanismPurpose.getLastDetail();
 
         edit.setIsDefault(contactListContactMechanismPurposeDetail.getIsDefault().toString());
         edit.setSortOrder(contactListContactMechanismPurposeDetail.getSortOrder().toString());
@@ -142,7 +142,7 @@ public class EditContactListContactMechanismPurposeCommand
     public void doUpdate(ContactListContactMechanismPurpose contactListContactMechanismPurpose) {
         var contactListControl = Session.getModelController(ContactListControl.class);
         var partyPK = getPartyPK();
-        ContactListContactMechanismPurposeDetailValue contactListContactMechanismPurposeDetailValue = contactListControl.getContactListContactMechanismPurposeDetailValueForUpdate(contactListContactMechanismPurpose);
+        var contactListContactMechanismPurposeDetailValue = contactListControl.getContactListContactMechanismPurposeDetailValueForUpdate(contactListContactMechanismPurpose);
 
         contactListContactMechanismPurposeDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
         contactListContactMechanismPurposeDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));

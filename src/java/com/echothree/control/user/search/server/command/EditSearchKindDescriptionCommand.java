@@ -89,13 +89,13 @@ public class EditSearchKindDescriptionCommand
     public SearchKindDescription getEntity(EditSearchKindDescriptionResult result) {
         var searchControl = Session.getModelController(SearchControl.class);
         SearchKindDescription searchKindDescription = null;
-        String searchKindName = spec.getSearchKindName();
-        SearchKind searchKind = searchControl.getSearchKindByName(searchKindName);
+        var searchKindName = spec.getSearchKindName();
+        var searchKind = searchControl.getSearchKindByName(searchKindName);
 
         if(searchKind != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -137,7 +137,7 @@ public class EditSearchKindDescriptionCommand
     @Override
     public void doUpdate(SearchKindDescription searchKindDescription) {
         var searchControl = Session.getModelController(SearchControl.class);
-        SearchKindDescriptionValue searchKindDescriptionValue = searchControl.getSearchKindDescriptionValue(searchKindDescription);
+        var searchKindDescriptionValue = searchControl.getSearchKindDescriptionValue(searchKindDescription);
 
         searchKindDescriptionValue.setDescription(edit.getDescription());
 

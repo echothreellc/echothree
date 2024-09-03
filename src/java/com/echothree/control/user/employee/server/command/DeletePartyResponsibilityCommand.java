@@ -53,16 +53,16 @@ public class DeletePartyResponsibilityCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        String partyName = form.getPartyName();
-        Party party = partyControl.getPartyByName(partyName);
+        var partyName = form.getPartyName();
+        var party = partyControl.getPartyByName(partyName);
         
         if(party != null) {
             var employeeControl = Session.getModelController(EmployeeControl.class);
-            String responsibilityTypeName = form.getResponsibilityTypeName();
-            ResponsibilityType responsibilityType = employeeControl.getResponsibilityTypeByName(responsibilityTypeName);
+            var responsibilityTypeName = form.getResponsibilityTypeName();
+            var responsibilityType = employeeControl.getResponsibilityTypeByName(responsibilityTypeName);
             
             if(responsibilityType != null) {
-                PartyResponsibility partyResponsibility = employeeControl.getPartyResponsibilityForUpdate(party, responsibilityType);
+                var partyResponsibility = employeeControl.getPartyResponsibilityForUpdate(party, responsibilityType);
                 
                 if(partyResponsibility != null) {
                     employeeControl.deletePartyResponsibility(partyResponsibility, getPartyPK());

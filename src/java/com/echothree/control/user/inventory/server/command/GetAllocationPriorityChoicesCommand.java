@@ -63,9 +63,9 @@ public class GetAllocationPriorityChoicesCommand
     @Override
     protected BaseResult execute() {
         var inventoryControl = Session.getModelController(InventoryControl.class);
-        GetAllocationPriorityChoicesResult result = InventoryResultFactory.getGetAllocationPriorityChoicesResult();
-        String defaultAllocationPriorityChoice = form.getDefaultAllocationPriorityChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = InventoryResultFactory.getGetAllocationPriorityChoicesResult();
+        var defaultAllocationPriorityChoice = form.getDefaultAllocationPriorityChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 
         result.setAllocationPriorityChoices(inventoryControl.getAllocationPriorityChoices(defaultAllocationPriorityChoice, getPreferredLanguage(), allowNullChoice));
 

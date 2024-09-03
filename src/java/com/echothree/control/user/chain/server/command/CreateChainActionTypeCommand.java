@@ -67,12 +67,12 @@ public class CreateChainActionTypeCommand
     @Override
     protected BaseResult execute() {
         var chainControl = Session.getModelController(ChainControl.class);
-        String chainActionTypeName = form.getChainActionTypeName();
-        ChainActionType chainActionType = chainControl.getChainActionTypeByName(chainActionTypeName);
+        var chainActionTypeName = form.getChainActionTypeName();
+        var chainActionType = chainControl.getChainActionTypeByName(chainActionTypeName);
         
         if(chainActionType == null) {
             var partyPK = getPartyPK();
-            Boolean allowMultiple = Boolean.valueOf(form.getAllowMultiple());
+            var allowMultiple = Boolean.valueOf(form.getAllowMultiple());
             var isDefault = Boolean.valueOf(form.getIsDefault());
             var sortOrder = Integer.valueOf(form.getSortOrder());
             var description = form.getDescription();

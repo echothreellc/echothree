@@ -50,11 +50,11 @@ public class SetTransactionGroupStatusCommand
     @Override
     protected BaseResult execute() {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        String transactionGroupName = form.getTransactionGroupName();
-        TransactionGroup transactionGroup = accountingControl.getTransactionGroupByName(transactionGroupName);
+        var transactionGroupName = form.getTransactionGroupName();
+        var transactionGroup = accountingControl.getTransactionGroupByName(transactionGroupName);
         
         if(transactionGroup != null) {
-            String transactionGroupStatusChoice = form.getTransactionGroupStatusChoice();
+            var transactionGroupStatusChoice = form.getTransactionGroupStatusChoice();
             
             accountingControl.setTransactionGroupStatus(this, transactionGroup, transactionGroupStatusChoice, getPartyPK());
         } else {

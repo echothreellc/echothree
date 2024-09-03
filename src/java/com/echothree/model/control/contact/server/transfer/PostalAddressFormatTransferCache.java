@@ -43,14 +43,14 @@ public class PostalAddressFormatTransferCache
     }
     
     public PostalAddressFormatTransfer getPostalAddressFormatTransfer(PostalAddressFormat postalAddressFormat) {
-        PostalAddressFormatTransfer postalAddressFormatTransfer = get(postalAddressFormat);
+        var postalAddressFormatTransfer = get(postalAddressFormat);
         
         if(postalAddressFormatTransfer == null) {
-            PostalAddressFormatDetail postalAddressFormatDetail = postalAddressFormat.getLastDetail();
-            String postalAddressFormatName = postalAddressFormatDetail.getPostalAddressFormatName();
-            Boolean isDefault = postalAddressFormatDetail.getIsDefault();
-            Integer sortOrder = postalAddressFormatDetail.getSortOrder();
-            String description = contactControl.getBestPostalAddressFormatDescription(postalAddressFormat, getLanguage());
+            var postalAddressFormatDetail = postalAddressFormat.getLastDetail();
+            var postalAddressFormatName = postalAddressFormatDetail.getPostalAddressFormatName();
+            var isDefault = postalAddressFormatDetail.getIsDefault();
+            var sortOrder = postalAddressFormatDetail.getSortOrder();
+            var description = contactControl.getBestPostalAddressFormatDescription(postalAddressFormat, getLanguage());
             
             postalAddressFormatTransfer = new PostalAddressFormatTransfer(postalAddressFormatName, isDefault, sortOrder, description);
             put(postalAddressFormat, postalAddressFormatTransfer);

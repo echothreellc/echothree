@@ -59,7 +59,7 @@ public class GetBaseEncryptionKeysCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        GetBaseEncryptionKeysResult result = CoreResultFactory.getGetBaseEncryptionKeysResult();
+        var result = CoreResultFactory.getGetBaseEncryptionKeysResult();
         
         result.setBaseEncryptionKeys(coreControl.getBaseEncryptionKeyTransfers(getUserVisit()));
         

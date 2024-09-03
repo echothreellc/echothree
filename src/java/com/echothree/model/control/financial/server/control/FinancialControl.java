@@ -220,7 +220,7 @@ public class FinancialControl
     
     private List<FinancialAccountRoleTypeTransfer> getFinancialAccountRoleTypeTransfers(final UserVisit userVisit, final List<FinancialAccountRoleType> financialAccountRoleTypes) {
         List<FinancialAccountRoleTypeTransfer> financialAccountRoleTypeTransfers = new ArrayList<>(financialAccountRoleTypes.size());
-        FinancialAccountRoleTypeTransferCache financialAccountRoleTypeTransferCache = getFinancialTransferCaches(userVisit).getFinancialAccountRoleTypeTransferCache();
+        var financialAccountRoleTypeTransferCache = getFinancialTransferCaches(userVisit).getFinancialAccountRoleTypeTransferCache();
         
         financialAccountRoleTypes.forEach((financialAccountRoleType) ->
                 financialAccountRoleTypeTransfers.add(financialAccountRoleTypeTransferCache.getFinancialAccountRoleTypeTransfer(financialAccountRoleType))
@@ -273,7 +273,7 @@ public class FinancialControl
     
     public String getBestFinancialAccountRoleTypeDescription(FinancialAccountRoleType financialAccountRoleType, Language language) {
         String description;
-        FinancialAccountRoleTypeDescription financialAccountRoleTypeDescription = getFinancialAccountRoleTypeDescription(financialAccountRoleType, language);
+        var financialAccountRoleTypeDescription = getFinancialAccountRoleTypeDescription(financialAccountRoleType, language);
         
         if(financialAccountRoleTypeDescription == null && !language.getIsDefault()) {
             financialAccountRoleTypeDescription = getFinancialAccountRoleTypeDescription(financialAccountRoleType, getPartyControl().getDefaultLanguage());
@@ -295,20 +295,20 @@ public class FinancialControl
     public FinancialAccountType createFinancialAccountType(String financialAccountTypeName, FinancialAccountType parentFinancialAccountType,
             GlAccount defaultGlAccount, SequenceType financialAccountSequenceType, SequenceType financialAccountTransactionSequenceType,
             Workflow financialAccountWorkflow, WorkflowEntrance financialAccountWorkflowEntrance, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        FinancialAccountType defaultFinancialAccountType = getDefaultFinancialAccountType();
-        boolean defaultFound = defaultFinancialAccountType != null;
+        var defaultFinancialAccountType = getDefaultFinancialAccountType();
+        var defaultFound = defaultFinancialAccountType != null;
         
         if(defaultFound && isDefault) {
-            FinancialAccountTypeDetailValue defaultFinancialAccountTypeDetailValue = getDefaultFinancialAccountTypeDetailValueForUpdate();
+            var defaultFinancialAccountTypeDetailValue = getDefaultFinancialAccountTypeDetailValueForUpdate();
             
             defaultFinancialAccountTypeDetailValue.setIsDefault(Boolean.FALSE);
             updateFinancialAccountTypeFromValue(defaultFinancialAccountTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        FinancialAccountType financialAccountType = FinancialAccountTypeFactory.getInstance().create();
-        FinancialAccountTypeDetail financialAccountTypeDetail = FinancialAccountTypeDetailFactory.getInstance().create(financialAccountType,
+
+        var financialAccountType = FinancialAccountTypeFactory.getInstance().create();
+        var financialAccountTypeDetail = FinancialAccountTypeDetailFactory.getInstance().create(financialAccountType,
                 financialAccountTypeName, parentFinancialAccountType, defaultGlAccount, financialAccountSequenceType, financialAccountTransactionSequenceType,
                 financialAccountWorkflow, financialAccountWorkflowEntrance, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
@@ -467,9 +467,9 @@ public class FinancialControl
     }
     
     public List<FinancialAccountTypeTransfer> getFinancialAccountTypeTransfers(UserVisit userVisit) {
-        List<FinancialAccountType> financialAccountTypes = getFinancialAccountTypes();
+        var financialAccountTypes = getFinancialAccountTypes();
         List<FinancialAccountTypeTransfer> financialAccountTypeTransfers = new ArrayList<>(financialAccountTypes.size());
-        FinancialAccountTypeTransferCache financialAccountTypeTransferCache = getFinancialTransferCaches(userVisit).getFinancialAccountTypeTransferCache();
+        var financialAccountTypeTransferCache = getFinancialTransferCaches(userVisit).getFinancialAccountTypeTransferCache();
         
         financialAccountTypes.forEach((financialAccountType) ->
                 financialAccountTypeTransfers.add(financialAccountTypeTransferCache.getFinancialAccountTypeTransfer(financialAccountType))
@@ -480,7 +480,7 @@ public class FinancialControl
     
     public FinancialAccountTypeChoicesBean getFinancialAccountTypeChoices(String defaultFinancialAccountTypeChoice,
             Language language, boolean allowNullChoice) {
-        List<FinancialAccountType> financialAccountTypes = getFinancialAccountTypes();
+        var financialAccountTypes = getFinancialAccountTypes();
         var size = financialAccountTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -496,7 +496,7 @@ public class FinancialControl
         }
         
         for(var financialAccountType : financialAccountTypes) {
-            FinancialAccountTypeDetail financialAccountTypeDetail = financialAccountType.getLastDetail();
+            var financialAccountTypeDetail = financialAccountType.getLastDetail();
             
             var label = getBestFinancialAccountTypeDescription(financialAccountType, language);
             var value = financialAccountTypeDetail.getFinancialAccountTypeName();
@@ -515,7 +515,7 @@ public class FinancialControl
     
     public boolean isParentFinancialAccountTypeSafe(FinancialAccountType financialAccountType,
             FinancialAccountType parentFinancialAccountType) {
-        boolean safe = true;
+        var safe = true;
         
         if(parentFinancialAccountType != null) {
             Set<FinancialAccountType> parentFinancialAccountTypes = new HashSet<>();
@@ -538,31 +538,31 @@ public class FinancialControl
     private void updateFinancialAccountTypeFromValue(FinancialAccountTypeDetailValue financialAccountTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(financialAccountTypeDetailValue.hasBeenModified()) {
-            FinancialAccountType financialAccountType = FinancialAccountTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var financialAccountType = FinancialAccountTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      financialAccountTypeDetailValue.getFinancialAccountTypePK());
-            FinancialAccountTypeDetail financialAccountTypeDetail = financialAccountType.getActiveDetailForUpdate();
+            var financialAccountTypeDetail = financialAccountType.getActiveDetailForUpdate();
             
             financialAccountTypeDetail.setThruTime(session.START_TIME_LONG);
             financialAccountTypeDetail.store();
-            
-            FinancialAccountTypePK financialAccountTypePK = financialAccountTypeDetail.getFinancialAccountTypePK(); // Not updated
-            String financialAccountTypeName = financialAccountTypeDetailValue.getFinancialAccountTypeName();
-            FinancialAccountTypePK parentFinancialAccountTypePK = financialAccountTypeDetailValue.getParentFinancialAccountTypePK();
-            GlAccountPK defaultGlAccountPK = financialAccountTypeDetailValue.getDefaultGlAccountPK();
-            SequenceTypePK financialAccountSequenceTypePK = financialAccountTypeDetailValue.getFinancialAccountSequenceTypePK();
-            SequenceTypePK financialAccountTransactionSequenceTypePK = financialAccountTypeDetailValue.getFinancialAccountTransactionSequenceTypePK();
-            WorkflowPK financialAccountWorkflowPK = financialAccountTypeDetailValue.getFinancialAccountWorkflowPK();
-            WorkflowEntrancePK financialAccountWorkflowEntrancePK = financialAccountTypeDetailValue.getFinancialAccountWorkflowEntrancePK();
-            Boolean isDefault = financialAccountTypeDetailValue.getIsDefault();
-            Integer sortOrder = financialAccountTypeDetailValue.getSortOrder();
+
+            var financialAccountTypePK = financialAccountTypeDetail.getFinancialAccountTypePK(); // Not updated
+            var financialAccountTypeName = financialAccountTypeDetailValue.getFinancialAccountTypeName();
+            var parentFinancialAccountTypePK = financialAccountTypeDetailValue.getParentFinancialAccountTypePK();
+            var defaultGlAccountPK = financialAccountTypeDetailValue.getDefaultGlAccountPK();
+            var financialAccountSequenceTypePK = financialAccountTypeDetailValue.getFinancialAccountSequenceTypePK();
+            var financialAccountTransactionSequenceTypePK = financialAccountTypeDetailValue.getFinancialAccountTransactionSequenceTypePK();
+            var financialAccountWorkflowPK = financialAccountTypeDetailValue.getFinancialAccountWorkflowPK();
+            var financialAccountWorkflowEntrancePK = financialAccountTypeDetailValue.getFinancialAccountWorkflowEntrancePK();
+            var isDefault = financialAccountTypeDetailValue.getIsDefault();
+            var sortOrder = financialAccountTypeDetailValue.getSortOrder();
             
             if(checkDefault) {
-                FinancialAccountType defaultFinancialAccountType = getDefaultFinancialAccountType();
-                boolean defaultFound = defaultFinancialAccountType != null && !defaultFinancialAccountType.equals(financialAccountType);
+                var defaultFinancialAccountType = getDefaultFinancialAccountType();
+                var defaultFound = defaultFinancialAccountType != null && !defaultFinancialAccountType.equals(financialAccountType);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    FinancialAccountTypeDetailValue defaultFinancialAccountTypeDetailValue = getDefaultFinancialAccountTypeDetailValueForUpdate();
+                    var defaultFinancialAccountTypeDetailValue = getDefaultFinancialAccountTypeDetailValueForUpdate();
                     
                     defaultFinancialAccountTypeDetailValue.setIsDefault(Boolean.FALSE);
                     updateFinancialAccountTypeFromValue(defaultFinancialAccountTypeDetailValue, false, updatedBy);
@@ -588,7 +588,7 @@ public class FinancialControl
     }
     
     private void deleteFinancialAccountType(FinancialAccountType financialAccountType, boolean checkDefault, BasePK deletedBy) {
-        FinancialAccountTypeDetail financialAccountTypeDetail = financialAccountType.getLastDetailForUpdate();
+        var financialAccountTypeDetail = financialAccountType.getLastDetailForUpdate();
 
         deleteFinancialAccountTypesByParentFinancialAccountType(financialAccountType, deletedBy);
         deleteFinancialAccountTypeDescriptionsByFinancialAccountType(financialAccountType, deletedBy);
@@ -601,17 +601,17 @@ public class FinancialControl
 
         if(checkDefault) {
             // Check for default, and pick one if necessary
-            FinancialAccountType defaultFinancialAccountType = getDefaultFinancialAccountType();
+            var defaultFinancialAccountType = getDefaultFinancialAccountType();
 
             if(defaultFinancialAccountType == null) {
-                List<FinancialAccountType> financialAccountTypes = getFinancialAccountTypesForUpdate();
+                var financialAccountTypes = getFinancialAccountTypesForUpdate();
 
                 if(!financialAccountTypes.isEmpty()) {
-                    Iterator<FinancialAccountType> iter = financialAccountTypes.iterator();
+                    var iter = financialAccountTypes.iterator();
                     if(iter.hasNext()) {
                         defaultFinancialAccountType = iter.next();
                     }
-                    FinancialAccountTypeDetailValue financialAccountTypeDetailValue = Objects.requireNonNull(defaultFinancialAccountType).getLastDetailForUpdate().getFinancialAccountTypeDetailValue().clone();
+                    var financialAccountTypeDetailValue = Objects.requireNonNull(defaultFinancialAccountType).getLastDetailForUpdate().getFinancialAccountTypeDetailValue().clone();
 
                     financialAccountTypeDetailValue.setIsDefault(Boolean.TRUE);
                     updateFinancialAccountTypeFromValue(financialAccountTypeDetailValue, false, deletedBy);
@@ -643,7 +643,7 @@ public class FinancialControl
     // --------------------------------------------------------------------------------
     
     public FinancialAccountTypeDescription createFinancialAccountTypeDescription(FinancialAccountType financialAccountType, Language language, String description, BasePK createdBy) {
-        FinancialAccountTypeDescription financialAccountTypeDescription = FinancialAccountTypeDescriptionFactory.getInstance().create(financialAccountType, language, description,
+        var financialAccountTypeDescription = FinancialAccountTypeDescriptionFactory.getInstance().create(financialAccountType, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(financialAccountType.getPrimaryKey(), EventTypes.MODIFY, financialAccountTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -722,7 +722,7 @@ public class FinancialControl
     
     public String getBestFinancialAccountTypeDescription(FinancialAccountType financialAccountType, Language language) {
         String description;
-        FinancialAccountTypeDescription financialAccountTypeDescription = getFinancialAccountTypeDescription(financialAccountType, language);
+        var financialAccountTypeDescription = getFinancialAccountTypeDescription(financialAccountType, language);
         
         if(financialAccountTypeDescription == null && !language.getIsDefault()) {
             financialAccountTypeDescription = getFinancialAccountTypeDescription(financialAccountType, getPartyControl().getDefaultLanguage());
@@ -742,9 +742,9 @@ public class FinancialControl
     }
     
     public List<FinancialAccountTypeDescriptionTransfer> getFinancialAccountTypeDescriptionTransfersByFinancialAccountType(UserVisit userVisit, FinancialAccountType financialAccountType) {
-        List<FinancialAccountTypeDescription> financialAccountTypeDescriptions = getFinancialAccountTypeDescriptionsByFinancialAccountType(financialAccountType);
+        var financialAccountTypeDescriptions = getFinancialAccountTypeDescriptionsByFinancialAccountType(financialAccountType);
         List<FinancialAccountTypeDescriptionTransfer> financialAccountTypeDescriptionTransfers = new ArrayList<>(financialAccountTypeDescriptions.size());
-        FinancialAccountTypeDescriptionTransferCache financialAccountTypeDescriptionTransferCache = getFinancialTransferCaches(userVisit).getFinancialAccountTypeDescriptionTransferCache();
+        var financialAccountTypeDescriptionTransferCache = getFinancialTransferCaches(userVisit).getFinancialAccountTypeDescriptionTransferCache();
         
         financialAccountTypeDescriptions.forEach((financialAccountTypeDescription) ->
                 financialAccountTypeDescriptionTransfers.add(financialAccountTypeDescriptionTransferCache.getFinancialAccountTypeDescriptionTransfer(financialAccountTypeDescription))
@@ -755,15 +755,15 @@ public class FinancialControl
     
     public void updateFinancialAccountTypeDescriptionFromValue(FinancialAccountTypeDescriptionValue financialAccountTypeDescriptionValue, BasePK updatedBy) {
         if(financialAccountTypeDescriptionValue.hasBeenModified()) {
-            FinancialAccountTypeDescription financialAccountTypeDescription = FinancialAccountTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var financialAccountTypeDescription = FinancialAccountTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     financialAccountTypeDescriptionValue.getPrimaryKey());
             
             financialAccountTypeDescription.setThruTime(session.START_TIME_LONG);
             financialAccountTypeDescription.store();
-            
-            FinancialAccountType financialAccountType = financialAccountTypeDescription.getFinancialAccountType();
-            Language language = financialAccountTypeDescription.getLanguage();
-            String description = financialAccountTypeDescriptionValue.getDescription();
+
+            var financialAccountType = financialAccountTypeDescription.getFinancialAccountType();
+            var language = financialAccountTypeDescription.getLanguage();
+            var description = financialAccountTypeDescriptionValue.getDescription();
             
             financialAccountTypeDescription = FinancialAccountTypeDescriptionFactory.getInstance().create(financialAccountType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -780,7 +780,7 @@ public class FinancialControl
     }
     
     public void deleteFinancialAccountTypeDescriptionsByFinancialAccountType(FinancialAccountType financialAccountType, BasePK deletedBy) {
-        List<FinancialAccountTypeDescription> financialAccountTypeDescriptions = getFinancialAccountTypeDescriptionsByFinancialAccountTypeForUpdate(financialAccountType);
+        var financialAccountTypeDescriptions = getFinancialAccountTypeDescriptionsByFinancialAccountTypeForUpdate(financialAccountType);
         
         financialAccountTypeDescriptions.forEach((financialAccountTypeDescription) -> 
                 deleteFinancialAccountTypeDescription(financialAccountTypeDescription, deletedBy)
@@ -794,20 +794,20 @@ public class FinancialControl
     public FinancialAccountTransactionType createFinancialAccountTransactionType(FinancialAccountType financialAccountType,
             String financialAccountTransactionTypeName, FinancialAccountTransactionType parentFinancialAccountTransactionType, GlAccount glAccount,
             Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        FinancialAccountTransactionType defaultFinancialAccountTransactionType = getDefaultFinancialAccountTransactionType(financialAccountType);
-        boolean defaultFound = defaultFinancialAccountTransactionType != null;
+        var defaultFinancialAccountTransactionType = getDefaultFinancialAccountTransactionType(financialAccountType);
+        var defaultFound = defaultFinancialAccountTransactionType != null;
         
         if(defaultFound && isDefault) {
-            FinancialAccountTransactionTypeDetailValue defaultFinancialAccountTransactionTypeDetailValue = getDefaultFinancialAccountTransactionTypeDetailValueForUpdate(financialAccountType);
+            var defaultFinancialAccountTransactionTypeDetailValue = getDefaultFinancialAccountTransactionTypeDetailValueForUpdate(financialAccountType);
             
             defaultFinancialAccountTransactionTypeDetailValue.setIsDefault(Boolean.FALSE);
             updateFinancialAccountTransactionTypeFromValue(defaultFinancialAccountTransactionTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        FinancialAccountTransactionType financialAccountTransactionType = FinancialAccountTransactionTypeFactory.getInstance().create();
-        FinancialAccountTransactionTypeDetail financialAccountTransactionTypeDetail = FinancialAccountTransactionTypeDetailFactory.getInstance().create(session,
+
+        var financialAccountTransactionType = FinancialAccountTransactionTypeFactory.getInstance().create();
+        var financialAccountTransactionTypeDetail = FinancialAccountTransactionTypeDetailFactory.getInstance().create(session,
                 financialAccountTransactionType, financialAccountType, financialAccountTransactionTypeName, parentFinancialAccountTransactionType, glAccount,
                 isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
@@ -979,9 +979,9 @@ public class FinancialControl
     
     public List<FinancialAccountTransactionTypeTransfer> getFinancialAccountTransactionTypeTransfers(UserVisit userVisit,
             FinancialAccountType financialAccountType) {
-        List<FinancialAccountTransactionType> financialAccountTransactionTypes = getFinancialAccountTransactionTypes(financialAccountType);
+        var financialAccountTransactionTypes = getFinancialAccountTransactionTypes(financialAccountType);
         List<FinancialAccountTransactionTypeTransfer> financialAccountTransactionTypeTransfers = new ArrayList<>(financialAccountTransactionTypes.size());
-        FinancialAccountTransactionTypeTransferCache financialAccountTransactionTypeTransferCache = getFinancialTransferCaches(userVisit).getFinancialAccountTransactionTypeTransferCache();
+        var financialAccountTransactionTypeTransferCache = getFinancialTransferCaches(userVisit).getFinancialAccountTransactionTypeTransferCache();
         
         financialAccountTransactionTypes.forEach((financialAccountTransactionType) ->
                 financialAccountTransactionTypeTransfers.add(financialAccountTransactionTypeTransferCache.getFinancialAccountTransactionTypeTransfer(financialAccountTransactionType))
@@ -992,7 +992,7 @@ public class FinancialControl
     
     public FinancialAccountTransactionTypeChoicesBean getFinancialAccountTransactionTypeChoices(FinancialAccountType financialAccountType,
             String defaultFinancialAccountTransactionTypeChoice, Language language, boolean allowNullChoice) {
-        List<FinancialAccountTransactionType> financialAccountTransactionTypes = getFinancialAccountTransactionTypes(financialAccountType);
+        var financialAccountTransactionTypes = getFinancialAccountTransactionTypes(financialAccountType);
         var size = financialAccountTransactionTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -1008,7 +1008,7 @@ public class FinancialControl
         }
         
         for(var financialAccountTransactionType : financialAccountTransactionTypes) {
-            FinancialAccountTransactionTypeDetail financialAccountTransactionTypeDetail = financialAccountTransactionType.getLastDetail();
+            var financialAccountTransactionTypeDetail = financialAccountTransactionType.getLastDetail();
             
             var label = getBestFinancialAccountTransactionTypeDescription(financialAccountTransactionType, language);
             var value = financialAccountTransactionTypeDetail.getFinancialAccountTransactionTypeName();
@@ -1027,7 +1027,7 @@ public class FinancialControl
     
     public boolean isParentFinancialAccountTransactionTypeSafe(FinancialAccountTransactionType financialAccountTransactionType,
             FinancialAccountTransactionType parentFinancialAccountTransactionType) {
-        boolean safe = true;
+        var safe = true;
         
         if(parentFinancialAccountTransactionType != null) {
             Set<FinancialAccountTransactionType> parentFinancialAccountTransactionTypes = new HashSet<>();
@@ -1050,29 +1050,29 @@ public class FinancialControl
     private void updateFinancialAccountTransactionTypeFromValue(FinancialAccountTransactionTypeDetailValue financialAccountTransactionTypeDetailValue,
             boolean checkDefault, BasePK updatedBy) {
         if(financialAccountTransactionTypeDetailValue.hasBeenModified()) {
-            FinancialAccountTransactionType financialAccountTransactionType = FinancialAccountTransactionTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var financialAccountTransactionType = FinancialAccountTransactionTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      financialAccountTransactionTypeDetailValue.getFinancialAccountTransactionTypePK());
-            FinancialAccountTransactionTypeDetail financialAccountTransactionTypeDetail = financialAccountTransactionType.getActiveDetailForUpdate();
+            var financialAccountTransactionTypeDetail = financialAccountTransactionType.getActiveDetailForUpdate();
             
             financialAccountTransactionTypeDetail.setThruTime(session.START_TIME_LONG);
             financialAccountTransactionTypeDetail.store();
-            
-            FinancialAccountTransactionTypePK financialAccountTransactionTypePK = financialAccountTransactionTypeDetail.getFinancialAccountTransactionTypePK(); // Not updated
-            FinancialAccountType financialAccountType = financialAccountTransactionTypeDetail.getFinancialAccountType(); // Not updated
-            FinancialAccountTypePK financialAccountTypePK = financialAccountType.getPrimaryKey(); // Not updated
-            String financialAccountTransactionTypeName = financialAccountTransactionTypeDetailValue.getFinancialAccountTransactionTypeName();
-            FinancialAccountTransactionTypePK parentFinancialAccountTransactionTypePK = financialAccountTransactionTypeDetailValue.getParentFinancialAccountTransactionTypePK();
-            GlAccountPK glAccountPK = financialAccountTransactionTypeDetailValue.getGlAccountPK();
-            Boolean isDefault = financialAccountTransactionTypeDetailValue.getIsDefault();
-            Integer sortOrder = financialAccountTransactionTypeDetailValue.getSortOrder();
+
+            var financialAccountTransactionTypePK = financialAccountTransactionTypeDetail.getFinancialAccountTransactionTypePK(); // Not updated
+            var financialAccountType = financialAccountTransactionTypeDetail.getFinancialAccountType(); // Not updated
+            var financialAccountTypePK = financialAccountType.getPrimaryKey(); // Not updated
+            var financialAccountTransactionTypeName = financialAccountTransactionTypeDetailValue.getFinancialAccountTransactionTypeName();
+            var parentFinancialAccountTransactionTypePK = financialAccountTransactionTypeDetailValue.getParentFinancialAccountTransactionTypePK();
+            var glAccountPK = financialAccountTransactionTypeDetailValue.getGlAccountPK();
+            var isDefault = financialAccountTransactionTypeDetailValue.getIsDefault();
+            var sortOrder = financialAccountTransactionTypeDetailValue.getSortOrder();
             
             if(checkDefault) {
-                FinancialAccountTransactionType defaultFinancialAccountTransactionType = getDefaultFinancialAccountTransactionType(financialAccountType);
-                boolean defaultFound = defaultFinancialAccountTransactionType != null && !defaultFinancialAccountTransactionType.equals(financialAccountTransactionType);
+                var defaultFinancialAccountTransactionType = getDefaultFinancialAccountTransactionType(financialAccountType);
+                var defaultFound = defaultFinancialAccountTransactionType != null && !defaultFinancialAccountTransactionType.equals(financialAccountTransactionType);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    FinancialAccountTransactionTypeDetailValue defaultFinancialAccountTransactionTypeDetailValue = getDefaultFinancialAccountTransactionTypeDetailValueForUpdate(financialAccountType);
+                    var defaultFinancialAccountTransactionTypeDetailValue = getDefaultFinancialAccountTransactionTypeDetailValueForUpdate(financialAccountType);
                     
                     defaultFinancialAccountTransactionTypeDetailValue.setIsDefault(Boolean.FALSE);
                     updateFinancialAccountTransactionTypeFromValue(defaultFinancialAccountTransactionTypeDetailValue, false, updatedBy);
@@ -1099,7 +1099,7 @@ public class FinancialControl
     }
     
     private void deleteFinancialAccountTransactionType(FinancialAccountTransactionType financialAccountTransactionType, boolean checkDefault, BasePK deletedBy) {
-        FinancialAccountTransactionTypeDetail financialAccountTransactionTypeDetail = financialAccountTransactionType.getLastDetailForUpdate();
+        var financialAccountTransactionTypeDetail = financialAccountTransactionType.getLastDetailForUpdate();
 
         deleteFinancialAccountTransactionTypesByParentFinancialAccountTransactionType(financialAccountTransactionType, deletedBy);
         deleteFinancialAccountTransactionTypeDescriptionsByFinancialAccountTransactionType(financialAccountTransactionType, deletedBy);
@@ -1111,18 +1111,18 @@ public class FinancialControl
 
         if(checkDefault) {
             // Check for default, and pick one if necessary
-            FinancialAccountType financialAccountType = financialAccountTransactionTypeDetail.getFinancialAccountType();
-            FinancialAccountTransactionType defaultFinancialAccountTransactionType = getDefaultFinancialAccountTransactionType(financialAccountType);
+            var financialAccountType = financialAccountTransactionTypeDetail.getFinancialAccountType();
+            var defaultFinancialAccountTransactionType = getDefaultFinancialAccountTransactionType(financialAccountType);
 
             if(defaultFinancialAccountTransactionType == null) {
-                List<FinancialAccountTransactionType> financialAccountTransactionTypes = getFinancialAccountTransactionTypesForUpdate(financialAccountType);
+                var financialAccountTransactionTypes = getFinancialAccountTransactionTypesForUpdate(financialAccountType);
 
                 if(!financialAccountTransactionTypes.isEmpty()) {
-                    Iterator<FinancialAccountTransactionType> iter = financialAccountTransactionTypes.iterator();
+                    var iter = financialAccountTransactionTypes.iterator();
                     if(iter.hasNext()) {
                         defaultFinancialAccountTransactionType = iter.next();
                     }
-                    FinancialAccountTransactionTypeDetailValue financialAccountTransactionTypeDetailValue = Objects.requireNonNull(defaultFinancialAccountTransactionType).getLastDetailForUpdate().getFinancialAccountTransactionTypeDetailValue().clone();
+                    var financialAccountTransactionTypeDetailValue = Objects.requireNonNull(defaultFinancialAccountTransactionType).getLastDetailForUpdate().getFinancialAccountTransactionTypeDetailValue().clone();
 
                     financialAccountTransactionTypeDetailValue.setIsDefault(Boolean.TRUE);
                     updateFinancialAccountTransactionTypeFromValue(financialAccountTransactionTypeDetailValue, false, deletedBy);
@@ -1155,7 +1155,7 @@ public class FinancialControl
     
     public FinancialAccountTransactionTypeDescription createFinancialAccountTransactionTypeDescription(FinancialAccountTransactionType financialAccountTransactionType,
             Language language, String description, BasePK createdBy) {
-        FinancialAccountTransactionTypeDescription financialAccountTransactionTypeDescription = FinancialAccountTransactionTypeDescriptionFactory.getInstance().create(session,
+        var financialAccountTransactionTypeDescription = FinancialAccountTransactionTypeDescriptionFactory.getInstance().create(session,
                 financialAccountTransactionType, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(financialAccountTransactionType.getPrimaryKey(), EventTypes.MODIFY, financialAccountTransactionTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1239,7 +1239,7 @@ public class FinancialControl
     
     public String getBestFinancialAccountTransactionTypeDescription(FinancialAccountTransactionType financialAccountTransactionType, Language language) {
         String description;
-        FinancialAccountTransactionTypeDescription financialAccountTransactionTypeDescription = getFinancialAccountTransactionTypeDescription(financialAccountTransactionType, language);
+        var financialAccountTransactionTypeDescription = getFinancialAccountTransactionTypeDescription(financialAccountTransactionType, language);
         
         if(financialAccountTransactionTypeDescription == null && !language.getIsDefault()) {
             financialAccountTransactionTypeDescription = getFinancialAccountTransactionTypeDescription(financialAccountTransactionType, getPartyControl().getDefaultLanguage());
@@ -1261,9 +1261,9 @@ public class FinancialControl
     
     public List<FinancialAccountTransactionTypeDescriptionTransfer> getFinancialAccountTransactionTypeDescriptionTransfersByFinancialAccountTransactionType(UserVisit userVisit,
             FinancialAccountTransactionType financialAccountTransactionType) {
-        List<FinancialAccountTransactionTypeDescription> financialAccountTransactionTypeDescriptions = getFinancialAccountTransactionTypeDescriptionsByFinancialAccountTransactionType(financialAccountTransactionType);
+        var financialAccountTransactionTypeDescriptions = getFinancialAccountTransactionTypeDescriptionsByFinancialAccountTransactionType(financialAccountTransactionType);
         List<FinancialAccountTransactionTypeDescriptionTransfer> financialAccountTransactionTypeDescriptionTransfers = new ArrayList<>(financialAccountTransactionTypeDescriptions.size());
-        FinancialAccountTransactionTypeDescriptionTransferCache financialAccountTransactionTypeDescriptionTransferCache = getFinancialTransferCaches(userVisit).getFinancialAccountTransactionTypeDescriptionTransferCache();
+        var financialAccountTransactionTypeDescriptionTransferCache = getFinancialTransferCaches(userVisit).getFinancialAccountTransactionTypeDescriptionTransferCache();
         
         financialAccountTransactionTypeDescriptions.forEach((financialAccountTransactionTypeDescription) ->
                 financialAccountTransactionTypeDescriptionTransfers.add(financialAccountTransactionTypeDescriptionTransferCache.getFinancialAccountTransactionTypeDescriptionTransfer(financialAccountTransactionTypeDescription))
@@ -1275,15 +1275,15 @@ public class FinancialControl
     public void updateFinancialAccountTransactionTypeDescriptionFromValue(FinancialAccountTransactionTypeDescriptionValue financialAccountTransactionTypeDescriptionValue,
             BasePK updatedBy) {
         if(financialAccountTransactionTypeDescriptionValue.hasBeenModified()) {
-            FinancialAccountTransactionTypeDescription financialAccountTransactionTypeDescription = FinancialAccountTransactionTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var financialAccountTransactionTypeDescription = FinancialAccountTransactionTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     financialAccountTransactionTypeDescriptionValue.getPrimaryKey());
             
             financialAccountTransactionTypeDescription.setThruTime(session.START_TIME_LONG);
             financialAccountTransactionTypeDescription.store();
-            
-            FinancialAccountTransactionType financialAccountTransactionType = financialAccountTransactionTypeDescription.getFinancialAccountTransactionType();
-            Language language = financialAccountTransactionTypeDescription.getLanguage();
-            String description = financialAccountTransactionTypeDescriptionValue.getDescription();
+
+            var financialAccountTransactionType = financialAccountTransactionTypeDescription.getFinancialAccountTransactionType();
+            var language = financialAccountTransactionTypeDescription.getLanguage();
+            var description = financialAccountTransactionTypeDescriptionValue.getDescription();
             
             financialAccountTransactionTypeDescription = FinancialAccountTransactionTypeDescriptionFactory.getInstance().create(session,
                     financialAccountTransactionType, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1299,7 +1299,7 @@ public class FinancialControl
     }
     
     public void deleteFinancialAccountTransactionTypeDescriptionsByFinancialAccountTransactionType(FinancialAccountTransactionType financialAccountTransactionType, BasePK deletedBy) {
-        List<FinancialAccountTransactionTypeDescription> financialAccountTransactionTypeDescriptions = getFinancialAccountTransactionTypeDescriptionsByFinancialAccountTransactionTypeForUpdate(financialAccountTransactionType);
+        var financialAccountTransactionTypeDescriptions = getFinancialAccountTransactionTypeDescriptionsByFinancialAccountTransactionTypeForUpdate(financialAccountTransactionType);
         
         financialAccountTransactionTypeDescriptions.forEach((financialAccountTransactionTypeDescription) -> 
                 deleteFinancialAccountTransactionTypeDescription(financialAccountTransactionTypeDescription, deletedBy)
@@ -1312,20 +1312,20 @@ public class FinancialControl
     
     public FinancialAccountAliasType createFinancialAccountAliasType(FinancialAccountType financialAccountType, String financialAccountAliasTypeName,
             String validationPattern, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        FinancialAccountAliasType defaultFinancialAccountAliasType = getDefaultFinancialAccountAliasType(financialAccountType);
-        boolean defaultFound = defaultFinancialAccountAliasType != null;
+        var defaultFinancialAccountAliasType = getDefaultFinancialAccountAliasType(financialAccountType);
+        var defaultFound = defaultFinancialAccountAliasType != null;
         
         if(defaultFound && isDefault) {
-            FinancialAccountAliasTypeDetailValue defaultFinancialAccountAliasTypeDetailValue = getDefaultFinancialAccountAliasTypeDetailValueForUpdate(financialAccountType);
+            var defaultFinancialAccountAliasTypeDetailValue = getDefaultFinancialAccountAliasTypeDetailValueForUpdate(financialAccountType);
             
             defaultFinancialAccountAliasTypeDetailValue.setIsDefault(Boolean.FALSE);
             updateFinancialAccountAliasTypeFromValue(defaultFinancialAccountAliasTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        FinancialAccountAliasType financialAccountAliasType = FinancialAccountAliasTypeFactory.getInstance().create();
-        FinancialAccountAliasTypeDetail financialAccountAliasTypeDetail = FinancialAccountAliasTypeDetailFactory.getInstance().create(session,
+
+        var financialAccountAliasType = FinancialAccountAliasTypeFactory.getInstance().create();
+        var financialAccountAliasTypeDetail = FinancialAccountAliasTypeDetailFactory.getInstance().create(session,
                 financialAccountAliasType, financialAccountType, financialAccountAliasTypeName, validationPattern, isDefault, sortOrder,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
@@ -1452,9 +1452,9 @@ public class FinancialControl
     }
     
     public List<FinancialAccountAliasTypeTransfer> getFinancialAccountAliasTypeTransfers(UserVisit userVisit, FinancialAccountType financialAccountType) {
-        List<FinancialAccountAliasType> financialAccountAliasTypes = getFinancialAccountAliasTypes(financialAccountType);
+        var financialAccountAliasTypes = getFinancialAccountAliasTypes(financialAccountType);
         List<FinancialAccountAliasTypeTransfer> financialAccountAliasTypeTransfers = new ArrayList<>(financialAccountAliasTypes.size());
-        FinancialAccountAliasTypeTransferCache financialAccountAliasTypeTransferCache = getFinancialTransferCaches(userVisit).getFinancialAccountAliasTypeTransferCache();
+        var financialAccountAliasTypeTransferCache = getFinancialTransferCaches(userVisit).getFinancialAccountAliasTypeTransferCache();
         
         financialAccountAliasTypes.forEach((financialAccountAliasType) ->
                 financialAccountAliasTypeTransfers.add(financialAccountAliasTypeTransferCache.getFinancialAccountAliasTypeTransfer(financialAccountAliasType))
@@ -1465,7 +1465,7 @@ public class FinancialControl
     
     public FinancialAccountAliasTypeChoicesBean getFinancialAccountAliasTypeChoices(String defaultFinancialAccountAliasTypeChoice, Language language,
             boolean allowNullChoice, FinancialAccountType financialAccountType) {
-        List<FinancialAccountAliasType> financialAccountAliasTypes = getFinancialAccountAliasTypes(financialAccountType);
+        var financialAccountAliasTypes = getFinancialAccountAliasTypes(financialAccountType);
         var size = financialAccountAliasTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -1481,7 +1481,7 @@ public class FinancialControl
         }
         
         for(var financialAccountAliasType : financialAccountAliasTypes) {
-            FinancialAccountAliasTypeDetail financialAccountAliasTypeDetail = financialAccountAliasType.getLastDetail();
+            var financialAccountAliasTypeDetail = financialAccountAliasType.getLastDetail();
             
             var label = getBestFinancialAccountAliasTypeDescription(financialAccountAliasType, language);
             var value = financialAccountAliasTypeDetail.getFinancialAccountAliasTypeName();
@@ -1501,28 +1501,28 @@ public class FinancialControl
     private void updateFinancialAccountAliasTypeFromValue(FinancialAccountAliasTypeDetailValue financialAccountAliasTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(financialAccountAliasTypeDetailValue.hasBeenModified()) {
-            FinancialAccountAliasType financialAccountAliasType = FinancialAccountAliasTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var financialAccountAliasType = FinancialAccountAliasTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     financialAccountAliasTypeDetailValue.getFinancialAccountAliasTypePK());
-            FinancialAccountAliasTypeDetail financialAccountAliasTypeDetail = financialAccountAliasType.getActiveDetailForUpdate();
+            var financialAccountAliasTypeDetail = financialAccountAliasType.getActiveDetailForUpdate();
             
             financialAccountAliasTypeDetail.setThruTime(session.START_TIME_LONG);
             financialAccountAliasTypeDetail.store();
-            
-            FinancialAccountAliasTypePK financialAccountAliasTypePK = financialAccountAliasTypeDetail.getFinancialAccountAliasTypePK();
-            FinancialAccountType financialAccountType = financialAccountAliasTypeDetail.getFinancialAccountType();
-            FinancialAccountTypePK financialAccountTypePK = financialAccountType.getPrimaryKey();
-            String financialAccountAliasTypeName = financialAccountAliasTypeDetailValue.getFinancialAccountAliasTypeName();
-            String validationPattern = financialAccountAliasTypeDetailValue.getValidationPattern();
-            Boolean isDefault = financialAccountAliasTypeDetailValue.getIsDefault();
-            Integer sortOrder = financialAccountAliasTypeDetailValue.getSortOrder();
+
+            var financialAccountAliasTypePK = financialAccountAliasTypeDetail.getFinancialAccountAliasTypePK();
+            var financialAccountType = financialAccountAliasTypeDetail.getFinancialAccountType();
+            var financialAccountTypePK = financialAccountType.getPrimaryKey();
+            var financialAccountAliasTypeName = financialAccountAliasTypeDetailValue.getFinancialAccountAliasTypeName();
+            var validationPattern = financialAccountAliasTypeDetailValue.getValidationPattern();
+            var isDefault = financialAccountAliasTypeDetailValue.getIsDefault();
+            var sortOrder = financialAccountAliasTypeDetailValue.getSortOrder();
             
             if(checkDefault) {
-                FinancialAccountAliasType defaultFinancialAccountAliasType = getDefaultFinancialAccountAliasType(financialAccountType);
-                boolean defaultFound = defaultFinancialAccountAliasType != null && !defaultFinancialAccountAliasType.equals(financialAccountAliasType);
+                var defaultFinancialAccountAliasType = getDefaultFinancialAccountAliasType(financialAccountType);
+                var defaultFound = defaultFinancialAccountAliasType != null && !defaultFinancialAccountAliasType.equals(financialAccountAliasType);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    FinancialAccountAliasTypeDetailValue defaultFinancialAccountAliasTypeDetailValue = getDefaultFinancialAccountAliasTypeDetailValueForUpdate(financialAccountType);
+                    var defaultFinancialAccountAliasTypeDetailValue = getDefaultFinancialAccountAliasTypeDetailValueForUpdate(financialAccountType);
                     
                     defaultFinancialAccountAliasTypeDetailValue.setIsDefault(Boolean.FALSE);
                     updateFinancialAccountAliasTypeFromValue(defaultFinancialAccountAliasTypeDetailValue, false, updatedBy);
@@ -1550,24 +1550,24 @@ public class FinancialControl
     public void deleteFinancialAccountAliasType(FinancialAccountAliasType financialAccountAliasType, BasePK deletedBy) {
         deleteFinancialAccountAliasesByFinancialAccountAliasType(financialAccountAliasType, deletedBy);
         deleteFinancialAccountAliasTypeDescriptionsByFinancialAccountAliasType(financialAccountAliasType, deletedBy);
-        
-        FinancialAccountAliasTypeDetail financialAccountAliasTypeDetail = financialAccountAliasType.getLastDetailForUpdate();
+
+        var financialAccountAliasTypeDetail = financialAccountAliasType.getLastDetailForUpdate();
         financialAccountAliasTypeDetail.setThruTime(session.START_TIME_LONG);
         financialAccountAliasType.setActiveDetail(null);
         financialAccountAliasType.store();
         
         // Check for default, and pick one if necessary
-        FinancialAccountType financialAccountType = financialAccountAliasTypeDetail.getFinancialAccountType();
-        FinancialAccountAliasType defaultFinancialAccountAliasType = getDefaultFinancialAccountAliasType(financialAccountType);
+        var financialAccountType = financialAccountAliasTypeDetail.getFinancialAccountType();
+        var defaultFinancialAccountAliasType = getDefaultFinancialAccountAliasType(financialAccountType);
         if(defaultFinancialAccountAliasType == null) {
-            List<FinancialAccountAliasType> financialAccountAliasTypes = getFinancialAccountAliasTypesForUpdate(financialAccountType);
+            var financialAccountAliasTypes = getFinancialAccountAliasTypesForUpdate(financialAccountType);
             
             if(!financialAccountAliasTypes.isEmpty()) {
-                Iterator<FinancialAccountAliasType> iter = financialAccountAliasTypes.iterator();
+                var iter = financialAccountAliasTypes.iterator();
                 if(iter.hasNext()) {
                     defaultFinancialAccountAliasType = iter.next();
                 }
-                FinancialAccountAliasTypeDetailValue financialAccountAliasTypeDetailValue = Objects.requireNonNull(defaultFinancialAccountAliasType).getLastDetailForUpdate().getFinancialAccountAliasTypeDetailValue().clone();
+                var financialAccountAliasTypeDetailValue = Objects.requireNonNull(defaultFinancialAccountAliasType).getLastDetailForUpdate().getFinancialAccountAliasTypeDetailValue().clone();
                 
                 financialAccountAliasTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateFinancialAccountAliasTypeFromValue(financialAccountAliasTypeDetailValue, false, deletedBy);
@@ -1593,7 +1593,7 @@ public class FinancialControl
     
     public FinancialAccountAliasTypeDescription createFinancialAccountAliasTypeDescription(FinancialAccountAliasType financialAccountAliasType,
             Language language, String description, BasePK createdBy) {
-        FinancialAccountAliasTypeDescription financialAccountAliasTypeDescription = FinancialAccountAliasTypeDescriptionFactory.getInstance().create(session,
+        var financialAccountAliasTypeDescription = FinancialAccountAliasTypeDescriptionFactory.getInstance().create(session,
                 financialAccountAliasType, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(financialAccountAliasType.getPrimaryKey(), EventTypes.MODIFY, financialAccountAliasTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1676,7 +1676,7 @@ public class FinancialControl
     
     public String getBestFinancialAccountAliasTypeDescription(FinancialAccountAliasType financialAccountAliasType, Language language) {
         String description;
-        FinancialAccountAliasTypeDescription financialAccountAliasTypeDescription = getFinancialAccountAliasTypeDescription(financialAccountAliasType, language);
+        var financialAccountAliasTypeDescription = getFinancialAccountAliasTypeDescription(financialAccountAliasType, language);
         
         if(financialAccountAliasTypeDescription == null && !language.getIsDefault()) {
             financialAccountAliasTypeDescription = getFinancialAccountAliasTypeDescription(financialAccountAliasType, getPartyControl().getDefaultLanguage());
@@ -1698,9 +1698,9 @@ public class FinancialControl
     
     public List<FinancialAccountAliasTypeDescriptionTransfer> getFinancialAccountAliasTypeDescriptionTransfersByFinancialAccountAliasType(UserVisit userVisit,
             FinancialAccountAliasType financialAccountAliasType) {
-        List<FinancialAccountAliasTypeDescription> financialAccountAliasTypeDescriptions = getFinancialAccountAliasTypeDescriptionsByFinancialAccountAliasType(financialAccountAliasType);
+        var financialAccountAliasTypeDescriptions = getFinancialAccountAliasTypeDescriptionsByFinancialAccountAliasType(financialAccountAliasType);
         List<FinancialAccountAliasTypeDescriptionTransfer> financialAccountAliasTypeDescriptionTransfers = new ArrayList<>(financialAccountAliasTypeDescriptions.size());
-        FinancialAccountAliasTypeDescriptionTransferCache financialAccountAliasTypeDescriptionTransferCache = getFinancialTransferCaches(userVisit).getFinancialAccountAliasTypeDescriptionTransferCache();
+        var financialAccountAliasTypeDescriptionTransferCache = getFinancialTransferCaches(userVisit).getFinancialAccountAliasTypeDescriptionTransferCache();
         
         financialAccountAliasTypeDescriptions.forEach((financialAccountAliasTypeDescription) ->
                 financialAccountAliasTypeDescriptionTransfers.add(financialAccountAliasTypeDescriptionTransferCache.getFinancialAccountAliasTypeDescriptionTransfer(financialAccountAliasTypeDescription))
@@ -1712,15 +1712,15 @@ public class FinancialControl
     public void updateFinancialAccountAliasTypeDescriptionFromValue(FinancialAccountAliasTypeDescriptionValue financialAccountAliasTypeDescriptionValue,
             BasePK updatedBy) {
         if(financialAccountAliasTypeDescriptionValue.hasBeenModified()) {
-            FinancialAccountAliasTypeDescription financialAccountAliasTypeDescription = FinancialAccountAliasTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var financialAccountAliasTypeDescription = FinancialAccountAliasTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      financialAccountAliasTypeDescriptionValue.getPrimaryKey());
             
             financialAccountAliasTypeDescription.setThruTime(session.START_TIME_LONG);
             financialAccountAliasTypeDescription.store();
-            
-            FinancialAccountAliasType financialAccountAliasType = financialAccountAliasTypeDescription.getFinancialAccountAliasType();
-            Language language = financialAccountAliasTypeDescription.getLanguage();
-            String description = financialAccountAliasTypeDescriptionValue.getDescription();
+
+            var financialAccountAliasType = financialAccountAliasTypeDescription.getFinancialAccountAliasType();
+            var language = financialAccountAliasTypeDescription.getLanguage();
+            var description = financialAccountAliasTypeDescriptionValue.getDescription();
             
             financialAccountAliasTypeDescription = FinancialAccountAliasTypeDescriptionFactory.getInstance().create(financialAccountAliasType,
                     language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1737,7 +1737,7 @@ public class FinancialControl
     }
     
     public void deleteFinancialAccountAliasTypeDescriptionsByFinancialAccountAliasType(FinancialAccountAliasType financialAccountAliasType, BasePK deletedBy) {
-        List<FinancialAccountAliasTypeDescription> financialAccountAliasTypeDescriptions = getFinancialAccountAliasTypeDescriptionsByFinancialAccountAliasTypeForUpdate(financialAccountAliasType);
+        var financialAccountAliasTypeDescriptions = getFinancialAccountAliasTypeDescriptionsByFinancialAccountAliasTypeForUpdate(financialAccountAliasType);
         
         financialAccountAliasTypeDescriptions.forEach((financialAccountAliasTypeDescription) -> 
                 deleteFinancialAccountAliasTypeDescription(financialAccountAliasTypeDescription, deletedBy)
@@ -1750,14 +1750,14 @@ public class FinancialControl
     
     public FinancialAccountRole createFinancialAccountRoleUsingNames(FinancialAccount financialAccount, Party party,
             PartyContactMechanism partyContactMechanism, String financialAccountRoleTypeName, BasePK createdBy) {
-        FinancialAccountRoleType financialAccountRoleType = getFinancialAccountRoleTypeByName(financialAccountRoleTypeName);
+        var financialAccountRoleType = getFinancialAccountRoleTypeByName(financialAccountRoleTypeName);
         
         return createFinancialAccountRole(financialAccount, party, partyContactMechanism, financialAccountRoleType, createdBy);
     }
     
     public FinancialAccountRole createFinancialAccountRole(FinancialAccount financialAccount, Party party, PartyContactMechanism partyContactMechanism,
             FinancialAccountRoleType financialAccountRoleType, BasePK createdBy) {
-        FinancialAccountRole financialAccountRole = FinancialAccountRoleFactory.getInstance().create(financialAccount, party, financialAccountRoleType,
+        var financialAccountRole = FinancialAccountRoleFactory.getInstance().create(financialAccount, party, financialAccountRoleType,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(financialAccount.getPrimaryKey(), EventTypes.MODIFY, financialAccountRole.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1793,7 +1793,7 @@ public class FinancialControl
     }
     
     public FinancialAccountRole getFinancialAccountRoleUsingNames(FinancialAccount financialAccount, String financialAccountRoleTypeName) {
-        FinancialAccountRoleType financialAccountRoleType = getFinancialAccountRoleTypeByName(financialAccountRoleTypeName);
+        var financialAccountRoleType = getFinancialAccountRoleTypeByName(financialAccountRoleTypeName);
         
         return getFinancialAccountRole(financialAccount, financialAccountRoleType);
     }
@@ -1846,7 +1846,7 @@ public class FinancialControl
     
     public List<FinancialAccountRoleTransfer> getFinancialAccountRoleTransfers(UserVisit userVisit, Collection<FinancialAccountRole> financialAccountRoles) {
         List<FinancialAccountRoleTransfer> financialAccountRoleTransfers = new ArrayList<>(financialAccountRoles.size());
-        FinancialAccountRoleTransferCache financialAccountRoleTransferCache = getFinancialTransferCaches(userVisit).getFinancialAccountRoleTransferCache();
+        var financialAccountRoleTransferCache = getFinancialTransferCaches(userVisit).getFinancialAccountRoleTransferCache();
         
         financialAccountRoles.forEach((financialAccountRole) ->
                 financialAccountRoleTransfers.add(financialAccountRoleTransferCache.getFinancialAccountRoleTransfer(financialAccountRole))
@@ -1861,15 +1861,15 @@ public class FinancialControl
     
     public void updateFinancialAccountRoleFromValue(FinancialAccountRoleValue financialAccountRoleValue, BasePK updatedBy) {
         if(financialAccountRoleValue.hasBeenModified()) {
-            FinancialAccountRole financialAccountRole = FinancialAccountRoleFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var financialAccountRole = FinancialAccountRoleFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      financialAccountRoleValue.getPrimaryKey());
             
             financialAccountRole.setThruTime(session.START_TIME_LONG);
             financialAccountRole.store();
-            
-            FinancialAccountPK financialAccountPK = financialAccountRole.getFinancialAccountPK(); // Not updated
-            PartyPK partyPK = financialAccountRole.getPartyPK(); // Not updated
-            FinancialAccountRoleTypePK financialAccountRoleTypePK = financialAccountRole.getFinancialAccountRoleTypePK(); // Not updated
+
+            var financialAccountPK = financialAccountRole.getFinancialAccountPK(); // Not updated
+            var partyPK = financialAccountRole.getPartyPK(); // Not updated
+            var financialAccountRoleTypePK = financialAccountRole.getFinancialAccountRoleTypePK(); // Not updated
             
             financialAccountRole = FinancialAccountRoleFactory.getInstance().create(financialAccountPK, partyPK, financialAccountRoleTypePK,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1896,8 +1896,8 @@ public class FinancialControl
     
     public FinancialAccount createFinancialAccount(FinancialAccountType financialAccountType, String financialAccountName, Currency currency,
             GlAccount glAccount, String reference, String description, BasePK createdBy) {
-        FinancialAccount financialAccount = FinancialAccountFactory.getInstance().create();
-        FinancialAccountDetail financialAccountDetail = FinancialAccountDetailFactory.getInstance().create(financialAccount, financialAccountType,
+        var financialAccount = FinancialAccountFactory.getInstance().create();
+        var financialAccountDetail = FinancialAccountDetailFactory.getInstance().create(financialAccount, financialAccountType,
                 financialAccountName, currency, glAccount, reference, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -2023,9 +2023,9 @@ public class FinancialControl
     }
     
     public List<FinancialAccountTransfer> getFinancialAccountTransfers(UserVisit userVisit, FinancialAccountType financialAccountType) {
-        List<FinancialAccount> financialAccounts = getFinancialAccounts(financialAccountType);
+        var financialAccounts = getFinancialAccounts(financialAccountType);
         List<FinancialAccountTransfer> financialAccountTransfers = new ArrayList<>(financialAccounts.size());
-        FinancialAccountTransferCache financialAccountTransferCache = getFinancialTransferCaches(userVisit).getFinancialAccountTransferCache();
+        var financialAccountTransferCache = getFinancialTransferCaches(userVisit).getFinancialAccountTransferCache();
         
         financialAccounts.forEach((financialAccount) ->
                 financialAccountTransfers.add(financialAccountTransferCache.getFinancialAccountTransfer(financialAccount))
@@ -2036,21 +2036,21 @@ public class FinancialControl
     
     public void updateFinancialAccountFromValue(FinancialAccountDetailValue financialAccountDetailValue, BasePK updatedBy) {
         if(financialAccountDetailValue.hasBeenModified()) {
-            FinancialAccount financialAccount = FinancialAccountFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var financialAccount = FinancialAccountFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     financialAccountDetailValue.getFinancialAccountPK());
-            FinancialAccountDetail financialAccountDetail = financialAccount.getActiveDetailForUpdate();
+            var financialAccountDetail = financialAccount.getActiveDetailForUpdate();
             
             financialAccountDetail.setThruTime(session.START_TIME_LONG);
             financialAccountDetail.store();
-            
-            FinancialAccountPK financialAccountPK = financialAccountDetail.getFinancialAccountPK();
-            FinancialAccountType financialAccountType = financialAccountDetail.getFinancialAccountType();
-            FinancialAccountTypePK financialAccountTypePK = financialAccountType.getPrimaryKey();
-            String financialAccountName = financialAccountDetailValue.getFinancialAccountName();
-            CurrencyPK currencyPK = financialAccountDetailValue.getCurrencyPK();
-            GlAccountPK glAccountPK = financialAccountDetailValue.getGlAccountPK();
-            String reference = financialAccountDetailValue.getReference();
-            String description = financialAccountDetailValue.getDescription();
+
+            var financialAccountPK = financialAccountDetail.getFinancialAccountPK();
+            var financialAccountType = financialAccountDetail.getFinancialAccountType();
+            var financialAccountTypePK = financialAccountType.getPrimaryKey();
+            var financialAccountName = financialAccountDetailValue.getFinancialAccountName();
+            var currencyPK = financialAccountDetailValue.getCurrencyPK();
+            var glAccountPK = financialAccountDetailValue.getGlAccountPK();
+            var reference = financialAccountDetailValue.getReference();
+            var description = financialAccountDetailValue.getDescription();
             
             financialAccountDetail = FinancialAccountDetailFactory.getInstance().create(financialAccountPK, financialAccountTypePK,
                     financialAccountName, currencyPK, glAccountPK, reference, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -2067,8 +2067,8 @@ public class FinancialControl
         deleteFinancialAccountAliasesByFinancialAccount(financialAccount, deletedBy);
         deleteFinancialAccountTransactionsByFinancialAccount(financialAccount, deletedBy);
         removeFinancialAccountStatusByFinancialAccount(financialAccount);
-        
-        FinancialAccountDetail financialAccountDetail = financialAccount.getLastDetailForUpdate();
+
+        var financialAccountDetail = financialAccount.getLastDetailForUpdate();
         financialAccountDetail.setThruTime(session.START_TIME_LONG);
         financialAccount.setActiveDetail(null);
         financialAccount.store();
@@ -2129,7 +2129,7 @@ public class FinancialControl
     }
     
     public void removeFinancialAccountStatusByFinancialAccount(FinancialAccount financialAccount) {
-        FinancialAccountStatus financialAccountStatus = getFinancialAccountStatusForUpdate(financialAccount);
+        var financialAccountStatus = getFinancialAccountStatusForUpdate(financialAccount);
         
         if(financialAccountStatus != null) {
             financialAccountStatus.remove();
@@ -2142,7 +2142,7 @@ public class FinancialControl
     
     public FinancialAccountAlias createFinancialAccountAlias(FinancialAccount financialAccount, FinancialAccountAliasType financialAccountAliasType,
             String alias, BasePK createdBy) {
-        FinancialAccountAlias financialAccountAlias = FinancialAccountAliasFactory.getInstance().create(financialAccount, financialAccountAliasType,
+        var financialAccountAlias = FinancialAccountAliasFactory.getInstance().create(financialAccount, financialAccountAliasType,
                 alias, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(financialAccount.getPrimaryKey(), EventTypes.MODIFY, financialAccountAlias.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2260,9 +2260,9 @@ public class FinancialControl
     }
     
     public List<FinancialAccountAliasTransfer> getFinancialAccountAliasTransfersByFinancialAccount(UserVisit userVisit, FinancialAccount financialAccount) {
-        List<FinancialAccountAlias> financialaccountaliases = getFinancialAccountAliasesByFinancialAccount(financialAccount);
+        var financialaccountaliases = getFinancialAccountAliasesByFinancialAccount(financialAccount);
         List<FinancialAccountAliasTransfer> financialAccountAliasTransfers = new ArrayList<>(financialaccountaliases.size());
-        FinancialAccountAliasTransferCache financialAccountAliasTransferCache = getFinancialTransferCaches(userVisit).getFinancialAccountAliasTransferCache();
+        var financialAccountAliasTransferCache = getFinancialTransferCaches(userVisit).getFinancialAccountAliasTransferCache();
         
         financialaccountaliases.forEach((financialAccountAlias) ->
                 financialAccountAliasTransfers.add(financialAccountAliasTransferCache.getFinancialAccountAliasTransfer(financialAccountAlias))
@@ -2273,15 +2273,15 @@ public class FinancialControl
     
     public void updateFinancialAccountAliasFromValue(FinancialAccountAliasValue financialAccountAliasValue, BasePK updatedBy) {
         if(financialAccountAliasValue.hasBeenModified()) {
-            FinancialAccountAlias financialAccountAlias = FinancialAccountAliasFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var financialAccountAlias = FinancialAccountAliasFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     financialAccountAliasValue.getPrimaryKey());
             
             financialAccountAlias.setThruTime(session.START_TIME_LONG);
             financialAccountAlias.store();
-            
-            FinancialAccountPK financialAccountPK = financialAccountAlias.getFinancialAccountPK();
-            FinancialAccountAliasTypePK financialAccountAliasTypePK = financialAccountAlias.getFinancialAccountAliasTypePK();
-            String alias  = financialAccountAliasValue.getAlias();
+
+            var financialAccountPK = financialAccountAlias.getFinancialAccountPK();
+            var financialAccountAliasTypePK = financialAccountAlias.getFinancialAccountAliasTypePK();
+            var alias  = financialAccountAliasValue.getAlias();
             
             financialAccountAlias = FinancialAccountAliasFactory.getInstance().create(financialAccountPK, financialAccountAliasTypePK, alias,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -2298,7 +2298,7 @@ public class FinancialControl
     }
     
     public void deleteFinancialAccountAliasesByFinancialAccountAliasType(FinancialAccountAliasType financialAccountAliasType, BasePK deletedBy) {
-        List<FinancialAccountAlias> financialaccountaliases = getFinancialAccountAliasesByFinancialAccountAliasTypeForUpdate(financialAccountAliasType);
+        var financialaccountaliases = getFinancialAccountAliasesByFinancialAccountAliasTypeForUpdate(financialAccountAliasType);
         
         financialaccountaliases.forEach((financialAccountAlias) -> 
                 deleteFinancialAccountAlias(financialAccountAlias, deletedBy)
@@ -2306,7 +2306,7 @@ public class FinancialControl
     }
     
     public void deleteFinancialAccountAliasesByFinancialAccount(FinancialAccount financialAccount, BasePK deletedBy) {
-        List<FinancialAccountAlias> financialaccountaliases = getFinancialAccountAliasesByFinancialAccountForUpdate(financialAccount);
+        var financialaccountaliases = getFinancialAccountAliasesByFinancialAccountForUpdate(financialAccount);
         
         financialaccountaliases.forEach((financialAccountAlias) -> 
                 deleteFinancialAccountAlias(financialAccountAlias, deletedBy)
@@ -2319,8 +2319,8 @@ public class FinancialControl
     
     public FinancialAccountTransaction createFinancialAccountTransaction(String financialAccountTransactionName, FinancialAccount financialAccount,
             FinancialAccountTransactionType financialAccountTransactionType, Long amount, String comment, BasePK createdBy) {
-        FinancialAccountTransaction financialAccountTransaction = FinancialAccountTransactionFactory.getInstance().create();
-        FinancialAccountTransactionDetail financialAccountTransactionDetail = FinancialAccountTransactionDetailFactory.getInstance().create(session,
+        var financialAccountTransaction = FinancialAccountTransactionFactory.getInstance().create();
+        var financialAccountTransactionDetail = FinancialAccountTransactionDetailFactory.getInstance().create(session,
                 financialAccountTransaction, financialAccountTransactionName, financialAccount, financialAccountTransactionType, amount, comment,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
@@ -2440,9 +2440,9 @@ public class FinancialControl
     }
     
     public List<FinancialAccountTransactionTransfer> getFinancialAccountTransactionTransfersByFinancialAccount(UserVisit userVisit, FinancialAccount financialAccount) {
-        List<FinancialAccountTransaction> financialAccountTransactions = getFinancialAccountTransactionsByFinancialAccount(financialAccount);
+        var financialAccountTransactions = getFinancialAccountTransactionsByFinancialAccount(financialAccount);
         List<FinancialAccountTransactionTransfer> financialAccountTransactionTransfers = new ArrayList<>(financialAccountTransactions.size());
-        FinancialAccountTransactionTransferCache financialAccountTransactionTransferCache = getFinancialTransferCaches(userVisit).getFinancialAccountTransactionTransferCache();
+        var financialAccountTransactionTransferCache = getFinancialTransferCaches(userVisit).getFinancialAccountTransactionTransferCache();
         
         financialAccountTransactions.forEach((financialAccountTransaction) ->
                 financialAccountTransactionTransfers.add(financialAccountTransactionTransferCache.getFinancialAccountTransactionTransfer(financialAccountTransaction))
@@ -2453,19 +2453,19 @@ public class FinancialControl
     
     public void updateFinancialAccountTransactionFromValue(FinancialAccountTransactionDetailValue financialAccountTransactionDetailValue, BasePK updatedBy) {
         if(financialAccountTransactionDetailValue.hasBeenModified()) {
-            FinancialAccountTransaction financialAccountTransaction = FinancialAccountTransactionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var financialAccountTransaction = FinancialAccountTransactionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     financialAccountTransactionDetailValue.getFinancialAccountTransactionPK());
-            FinancialAccountTransactionDetail financialAccountTransactionDetail = financialAccountTransaction.getActiveDetailForUpdate();
+            var financialAccountTransactionDetail = financialAccountTransaction.getActiveDetailForUpdate();
             
             financialAccountTransactionDetail.setThruTime(session.START_TIME_LONG);
             financialAccountTransactionDetail.store();
-            
-            FinancialAccountTransactionPK financialAccountTransactionPK = financialAccountTransactionDetail.getFinancialAccountTransactionPK();
-            String financialAccountTransactionName = financialAccountTransactionDetailValue.getFinancialAccountTransactionName();
-            FinancialAccountPK financialAccountPK = financialAccountTransactionDetailValue.getFinancialAccountPK();
-            FinancialAccountTransactionTypePK financialAccountTransactionTypePK = financialAccountTransactionDetailValue.getFinancialAccountTransactionTypePK();
-            Long amount = financialAccountTransactionDetailValue.getAmount();
-            String comment = financialAccountTransactionDetailValue.getComment();
+
+            var financialAccountTransactionPK = financialAccountTransactionDetail.getFinancialAccountTransactionPK();
+            var financialAccountTransactionName = financialAccountTransactionDetailValue.getFinancialAccountTransactionName();
+            var financialAccountPK = financialAccountTransactionDetailValue.getFinancialAccountPK();
+            var financialAccountTransactionTypePK = financialAccountTransactionDetailValue.getFinancialAccountTransactionTypePK();
+            var amount = financialAccountTransactionDetailValue.getAmount();
+            var comment = financialAccountTransactionDetailValue.getComment();
             
             financialAccountTransactionDetail = FinancialAccountTransactionDetailFactory.getInstance().create(financialAccountTransactionPK,
                     financialAccountTransactionName, financialAccountPK, financialAccountTransactionTypePK, amount, comment, session.START_TIME_LONG,
@@ -2479,7 +2479,7 @@ public class FinancialControl
     }
     
     public void deleteFinancialAccountTransaction(FinancialAccountTransaction financialAccountTransaction, BasePK deletedBy) {
-        FinancialAccountTransactionDetail financialAccountTransactionDetail = financialAccountTransaction.getLastDetailForUpdate();
+        var financialAccountTransactionDetail = financialAccountTransaction.getLastDetailForUpdate();
         financialAccountTransactionDetail.setThruTime(session.START_TIME_LONG);
         financialAccountTransaction.setActiveDetail(null);
         financialAccountTransaction.store();

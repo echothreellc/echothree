@@ -68,16 +68,16 @@ public class CreateChainActionTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var chainControl = Session.getModelController(ChainControl.class);
-        String chainActionTypeName = form.getChainActionTypeName();
-        ChainActionType chainActionType = chainControl.getChainActionTypeByName(chainActionTypeName);
+        var chainActionTypeName = form.getChainActionTypeName();
+        var chainActionType = chainControl.getChainActionTypeByName(chainActionTypeName);
         
         if(chainActionType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                ChainActionTypeDescription chainActionTypeDescription = chainControl.getChainActionTypeDescription(chainActionType, language);
+                var chainActionTypeDescription = chainControl.getChainActionTypeDescription(chainActionType, language);
                 
                 if(chainActionTypeDescription == null) {
                     var description = form.getDescription();

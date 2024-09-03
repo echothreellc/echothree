@@ -98,7 +98,7 @@ public class ItemTag
     public int doStartTag()
             throws JspException {
         try {
-            GetItemForm commandForm = ItemUtil.getHome().getGetItemForm();
+            var commandForm = ItemUtil.getHome().getGetItemForm();
             
             commandForm.setItemName(itemName);
             commandForm.setItemNameOrAlias(itemNameOrAlias);
@@ -106,8 +106,8 @@ public class ItemTag
             setOptions(options, null, commandForm);
 
             commandForm.setTransferProperties(transferProperties);
-            
-            CommandResult commandResult = ItemUtil.getHome().getItem(getUserVisitPK(), commandForm);
+
+            var commandResult = ItemUtil.getHome().getItem(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -115,8 +115,8 @@ public class ItemTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetItemResult result = (GetItemResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetItemResult)executionResult.getResult();
 
                 pageContext.setAttribute(var, result.getItem(), scope);
             }

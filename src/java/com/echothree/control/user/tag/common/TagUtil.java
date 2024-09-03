@@ -30,7 +30,7 @@ public class TagUtil {
     public static TagLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
 
             cachedLocal = (TagLocal)ctx.lookup("ejb:echothree/echothree-server/TagBean!com.echothree.control.user.tag.server.TagLocal");
         }
@@ -42,7 +42,7 @@ public class TagUtil {
     public static TagRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
             
             cachedRemote = (TagRemote)ctx.lookup("ejb:echothree/echothree-server/TagBean!com.echothree.control.user.tag.common.TagRemote");
         }

@@ -91,7 +91,7 @@ public class EditSearchCheckSpellingActionTypeCommand
     public SearchCheckSpellingActionType getEntity(EditSearchCheckSpellingActionTypeResult result) {
         var searchControl = Session.getModelController(SearchControl.class);
         SearchCheckSpellingActionType searchCheckSpellingActionType;
-        String searchCheckSpellingActionTypeName = spec.getSearchCheckSpellingActionTypeName();
+        var searchCheckSpellingActionTypeName = spec.getSearchCheckSpellingActionTypeName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
             searchCheckSpellingActionType = searchControl.getSearchCheckSpellingActionTypeByName(searchCheckSpellingActionTypeName);
@@ -121,8 +121,8 @@ public class EditSearchCheckSpellingActionTypeCommand
     @Override
     public void doLock(SearchCheckSpellingActionTypeEdit edit, SearchCheckSpellingActionType searchCheckSpellingActionType) {
         var searchControl = Session.getModelController(SearchControl.class);
-        SearchCheckSpellingActionTypeDescription searchCheckSpellingActionTypeDescription = searchControl.getSearchCheckSpellingActionTypeDescription(searchCheckSpellingActionType, getPreferredLanguage());
-        SearchCheckSpellingActionTypeDetail searchCheckSpellingActionTypeDetail = searchCheckSpellingActionType.getLastDetail();
+        var searchCheckSpellingActionTypeDescription = searchControl.getSearchCheckSpellingActionTypeDescription(searchCheckSpellingActionType, getPreferredLanguage());
+        var searchCheckSpellingActionTypeDetail = searchCheckSpellingActionType.getLastDetail();
 
         edit.setSearchCheckSpellingActionTypeName(searchCheckSpellingActionTypeDetail.getSearchCheckSpellingActionTypeName());
         edit.setIsDefault(searchCheckSpellingActionTypeDetail.getIsDefault().toString());
@@ -136,8 +136,8 @@ public class EditSearchCheckSpellingActionTypeCommand
     @Override
     public void canUpdate(SearchCheckSpellingActionType searchCheckSpellingActionType) {
         var searchControl = Session.getModelController(SearchControl.class);
-        String searchCheckSpellingActionTypeName = edit.getSearchCheckSpellingActionTypeName();
-        SearchCheckSpellingActionType duplicateSearchCheckSpellingActionType = searchControl.getSearchCheckSpellingActionTypeByName(searchCheckSpellingActionTypeName);
+        var searchCheckSpellingActionTypeName = edit.getSearchCheckSpellingActionTypeName();
+        var duplicateSearchCheckSpellingActionType = searchControl.getSearchCheckSpellingActionTypeByName(searchCheckSpellingActionTypeName);
 
         if(duplicateSearchCheckSpellingActionType != null && !searchCheckSpellingActionType.equals(duplicateSearchCheckSpellingActionType)) {
             addExecutionError(ExecutionErrors.DuplicateSearchCheckSpellingActionTypeName.name(), searchCheckSpellingActionTypeName);
@@ -148,9 +148,9 @@ public class EditSearchCheckSpellingActionTypeCommand
     public void doUpdate(SearchCheckSpellingActionType searchCheckSpellingActionType) {
         var searchControl = Session.getModelController(SearchControl.class);
         var partyPK = getPartyPK();
-        SearchCheckSpellingActionTypeDetailValue searchCheckSpellingActionTypeDetailValue = searchControl.getSearchCheckSpellingActionTypeDetailValueForUpdate(searchCheckSpellingActionType);
-        SearchCheckSpellingActionTypeDescription searchCheckSpellingActionTypeDescription = searchControl.getSearchCheckSpellingActionTypeDescriptionForUpdate(searchCheckSpellingActionType, getPreferredLanguage());
-        String description = edit.getDescription();
+        var searchCheckSpellingActionTypeDetailValue = searchControl.getSearchCheckSpellingActionTypeDetailValueForUpdate(searchCheckSpellingActionType);
+        var searchCheckSpellingActionTypeDescription = searchControl.getSearchCheckSpellingActionTypeDescriptionForUpdate(searchCheckSpellingActionType, getPreferredLanguage());
+        var description = edit.getDescription();
 
         searchCheckSpellingActionTypeDetailValue.setSearchCheckSpellingActionTypeName(edit.getSearchCheckSpellingActionTypeName());
         searchCheckSpellingActionTypeDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
@@ -165,7 +165,7 @@ public class EditSearchCheckSpellingActionTypeCommand
                 searchControl.deleteSearchCheckSpellingActionTypeDescription(searchCheckSpellingActionTypeDescription, partyPK);
             } else {
                 if(searchCheckSpellingActionTypeDescription != null && description != null) {
-                    SearchCheckSpellingActionTypeDescriptionValue searchCheckSpellingActionTypeDescriptionValue = searchControl.getSearchCheckSpellingActionTypeDescriptionValue(searchCheckSpellingActionTypeDescription);
+                    var searchCheckSpellingActionTypeDescriptionValue = searchControl.getSearchCheckSpellingActionTypeDescriptionValue(searchCheckSpellingActionTypeDescription);
 
                     searchCheckSpellingActionTypeDescriptionValue.setDescription(description);
                     searchControl.updateSearchCheckSpellingActionTypeDescriptionFromValue(searchCheckSpellingActionTypeDescriptionValue, partyPK);

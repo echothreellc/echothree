@@ -180,7 +180,7 @@ public class EditEntityAttributeCommand
                     unitOfMeasureType = entityAttributeNumeric.getUnitOfMeasureType();
 
                     if(unitOfMeasureType != null) {
-                        UnitOfMeasureTypeDetail unitOfMeasureTypeDetail = unitOfMeasureType.getLastDetail();
+                        var unitOfMeasureTypeDetail = unitOfMeasureType.getLastDetail();
 
                         edit.setUnitOfMeasureKindName(unitOfMeasureTypeDetail.getUnitOfMeasureKind().getLastDetail().getUnitOfMeasureKindName());
                         edit.setUnitOfMeasureTypeName(unitOfMeasureTypeDetail.getUnitOfMeasureTypeName());
@@ -202,7 +202,7 @@ public class EditEntityAttributeCommand
                     unitOfMeasureType = entityAttributeNumeric.getUnitOfMeasureType();
 
                     if(unitOfMeasureType != null) {
-                        UnitOfMeasureTypeDetail unitOfMeasureTypeDetail = unitOfMeasureType.getLastDetail();
+                        var unitOfMeasureTypeDetail = unitOfMeasureType.getLastDetail();
 
                         edit.setUnitOfMeasureKindName(unitOfMeasureTypeDetail.getUnitOfMeasureKind().getLastDetail().getUnitOfMeasureKindName());
                         edit.setUnitOfMeasureTypeName(unitOfMeasureTypeDetail.getUnitOfMeasureTypeName());
@@ -374,7 +374,7 @@ public class EditEntityAttributeCommand
                     if(upperRangeLongValue == null && upperLimitLongValue == null && lowerLimitLongValue == null && lowerRangeLongValue == null) {
                         coreControl.deleteEntityAttributeLong(entityAttributeLong, partyPK);
                     } else {
-                        EntityAttributeLongValue entityAttributeLongValue = coreControl.getEntityAttributeLongValue(entityAttributeLong);
+                        var entityAttributeLongValue = coreControl.getEntityAttributeLongValue(entityAttributeLong);
 
                         entityAttributeLongValue.setUpperRangeLongValue(upperRangeLongValue);
                         entityAttributeLongValue.setUpperLimitLongValue(upperLimitLongValue);

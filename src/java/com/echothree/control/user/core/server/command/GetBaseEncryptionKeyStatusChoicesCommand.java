@@ -64,13 +64,13 @@ public class GetBaseEncryptionKeyStatusChoicesCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        GetBaseEncryptionKeyStatusChoicesResult result = CoreResultFactory.getGetBaseEncryptionKeyStatusChoicesResult();
-        String baseEncryptionKeyName = form.getBaseEncryptionKeyName();
-        BaseEncryptionKey baseEncryptionKey = coreControl.getBaseEncryptionKeyByName(baseEncryptionKeyName);
+        var result = CoreResultFactory.getGetBaseEncryptionKeyStatusChoicesResult();
+        var baseEncryptionKeyName = form.getBaseEncryptionKeyName();
+        var baseEncryptionKey = coreControl.getBaseEncryptionKeyByName(baseEncryptionKeyName);
         
         if(baseEncryptionKeyName == null || baseEncryptionKey != null) {
-            String defaultBaseEncryptionKeyStatusChoice = form.getDefaultBaseEncryptionKeyStatusChoice();
-            boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+            var defaultBaseEncryptionKeyStatusChoice = form.getDefaultBaseEncryptionKeyStatusChoice();
+            var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
             
             result.setBaseEncryptionKeyStatusChoices(coreControl.getBaseEncryptionKeyStatusChoices(defaultBaseEncryptionKeyStatusChoice,
                     getPreferredLanguage(), allowNullChoice, baseEncryptionKey, getPartyPK()));

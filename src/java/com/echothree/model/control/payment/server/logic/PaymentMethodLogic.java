@@ -72,10 +72,10 @@ public class PaymentMethodLogic
     
     public void checkAcceptanceOfItem(final Session session, final ExecutionErrorAccumulator eea, final SelectorCache selectorCache,
             final PaymentMethod paymentMethod, final Item item, final BasePK evaluatedBy) {
-        Selector selector = paymentMethod.getLastDetail().getItemSelector();
+        var selector = paymentMethod.getLastDetail().getItemSelector();
         
         if(selector != null) {
-            CachedSelector cachedSelector = selectorCache.getSelector(selector);
+            var cachedSelector = selectorCache.getSelector(selector);
             
             if(!new PaymentMethodItemSelectorEvaluator(session, evaluatedBy).evaluate(cachedSelector, item)) {
                 handleExecutionError(ItemNotAcceptibleForPaymentMethodException.class, eea, ExecutionErrors.ItemNotAcceptibleForPaymentMethod.name(),
@@ -86,10 +86,10 @@ public class PaymentMethodLogic
     
     public void checkAcceptanceOfItem(final Session session, final ExecutionErrorAccumulator eea, final PaymentMethod paymentMethod, final Item item,
             final BasePK evaluatedBy) {
-        Selector selector = paymentMethod.getLastDetail().getItemSelector();
+        var selector = paymentMethod.getLastDetail().getItemSelector();
         
         if(selector != null) {
-            SelectorCache selectorCache = SelectorCacheFactory.getInstance().getSelectorCache(session, SelectorKinds.ITEM.name(),
+            var selectorCache = SelectorCacheFactory.getInstance().getSelectorCache(session, SelectorKinds.ITEM.name(),
                     SelectorTypes.PAYMENT_METHOD.name());
             
             checkAcceptanceOfItem(session, eea, selectorCache, paymentMethod, item, evaluatedBy);
@@ -98,10 +98,10 @@ public class PaymentMethodLogic
     
     public void checkAcceptanceOfItems(final Session session, final ExecutionErrorAccumulator eea, final PaymentMethod paymentMethod, final Set<Item> items,
             final BasePK evaluatedBy) {
-        Selector selector = paymentMethod.getLastDetail().getItemSelector();
+        var selector = paymentMethod.getLastDetail().getItemSelector();
         
         if(selector != null) {
-            SelectorCache selectorCache = SelectorCacheFactory.getInstance().getSelectorCache(session, SelectorKinds.ITEM.name(),
+            var selectorCache = SelectorCacheFactory.getInstance().getSelectorCache(session, SelectorKinds.ITEM.name(),
                     SelectorTypes.PAYMENT_METHOD.name());
             
             items.forEach((item) -> {

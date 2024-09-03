@@ -67,16 +67,16 @@ public class CreateFontWeightDescriptionCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String fontWeightName = form.getFontWeightName();
-        FontWeight fontWeight = coreControl.getFontWeightByName(fontWeightName);
+        var fontWeightName = form.getFontWeightName();
+        var fontWeight = coreControl.getFontWeightByName(fontWeightName);
         
         if(fontWeight != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                FontWeightDescription fontWeightDescription = coreControl.getFontWeightDescription(fontWeight, language);
+                var fontWeightDescription = coreControl.getFontWeightDescription(fontWeight, language);
                 
                 if(fontWeightDescription == null) {
                     var description = form.getDescription();

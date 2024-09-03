@@ -69,17 +69,17 @@ public class GetDocumentDescriptionCommand
     @Override
     protected BaseResult execute() {
         var documentControl = Session.getModelController(DocumentControl.class);
-        GetDocumentDescriptionResult result = DocumentResultFactory.getGetDocumentDescriptionResult();
-        String documentName = form.getDocumentName();
-        Document document = documentControl.getDocumentByName(documentName);
+        var result = DocumentResultFactory.getGetDocumentDescriptionResult();
+        var documentName = form.getDocumentName();
+        var document = documentControl.getDocumentByName(documentName);
         
         if(document != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
-                DocumentDescription documentDescription = documentControl.getDocumentDescription(document, language);
+                var documentDescription = documentControl.getDocumentDescription(document, language);
 
                 if(documentDescription != null) {
                     result.setDocumentDescription(documentControl.getDocumentDescriptionTransfer(getUserVisit(), documentDescription));

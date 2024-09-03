@@ -34,17 +34,17 @@ public class GeoCodeAliasTypeTransferCache
     }
     
     public GeoCodeAliasTypeTransfer getGeoCodeAliasTypeTransfer(GeoCodeAliasType geoCodeAliasType) {
-        GeoCodeAliasTypeTransfer geoCodeAliasTypeTransfer = get(geoCodeAliasType);
+        var geoCodeAliasTypeTransfer = get(geoCodeAliasType);
         
         if(geoCodeAliasTypeTransfer == null) {
-            GeoCodeAliasTypeDetail geoCodeAliasTypeDetail = geoCodeAliasType.getLastDetail();
-            GeoCodeTypeTransfer geoCodeType = geoControl.getGeoCodeTypeTransfer(userVisit, geoCodeAliasTypeDetail.getGeoCodeType());
-            String geoCodeAliasTypeName = geoCodeAliasTypeDetail.getGeoCodeAliasTypeName();
-            String validationPattern = geoCodeAliasTypeDetail.getValidationPattern();
-            Boolean isRequired = geoCodeAliasTypeDetail.getIsRequired();
-            Boolean isDefault = geoCodeAliasTypeDetail.getIsDefault();
-            Integer sortOrder = geoCodeAliasTypeDetail.getSortOrder();
-            String description = geoControl.getBestGeoCodeAliasTypeDescription(geoCodeAliasType, getLanguage());
+            var geoCodeAliasTypeDetail = geoCodeAliasType.getLastDetail();
+            var geoCodeType = geoControl.getGeoCodeTypeTransfer(userVisit, geoCodeAliasTypeDetail.getGeoCodeType());
+            var geoCodeAliasTypeName = geoCodeAliasTypeDetail.getGeoCodeAliasTypeName();
+            var validationPattern = geoCodeAliasTypeDetail.getValidationPattern();
+            var isRequired = geoCodeAliasTypeDetail.getIsRequired();
+            var isDefault = geoCodeAliasTypeDetail.getIsDefault();
+            var sortOrder = geoCodeAliasTypeDetail.getSortOrder();
+            var description = geoControl.getBestGeoCodeAliasTypeDescription(geoCodeAliasType, getLanguage());
             
             geoCodeAliasTypeTransfer = new GeoCodeAliasTypeTransfer(geoCodeType, geoCodeAliasTypeName, validationPattern, isRequired, isDefault, sortOrder,
                     description);

@@ -71,21 +71,21 @@ public class GetIndexFieldDescriptionCommand
     @Override
     protected BaseResult execute() {
         var indexControl = Session.getModelController(IndexControl.class);
-        GetIndexFieldDescriptionResult result = IndexResultFactory.getGetIndexFieldDescriptionResult();
-        String indexTypeName = form.getIndexTypeName();
-        IndexType indexType = indexControl.getIndexTypeByName(indexTypeName);
+        var result = IndexResultFactory.getGetIndexFieldDescriptionResult();
+        var indexTypeName = form.getIndexTypeName();
+        var indexType = indexControl.getIndexTypeByName(indexTypeName);
 
         if(indexType != null) {
-            String indexFieldName = form.getIndexFieldName();
-            IndexField indexField = indexControl.getIndexFieldByName(indexType, indexFieldName);
+            var indexFieldName = form.getIndexFieldName();
+            var indexField = indexControl.getIndexFieldByName(indexType, indexFieldName);
 
             if(indexField != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = form.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = form.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                 if(language != null) {
-                    IndexFieldDescription indexFieldDescription = indexControl.getIndexFieldDescription(indexField, language);
+                    var indexFieldDescription = indexControl.getIndexFieldDescription(indexField, language);
 
                     if(indexFieldDescription != null) {
                         result.setIndexFieldDescription(indexControl.getIndexFieldDescriptionTransfer(getUserVisit(), indexFieldDescription));

@@ -79,11 +79,11 @@ public class CountSecurityRoleResultsTag
     public int doStartTag()
             throws JspException {
         try {
-            CountSecurityRoleResultsForm commandForm = SearchUtil.getHome().getCountSecurityRoleResultsForm();
+            var commandForm = SearchUtil.getHome().getCountSecurityRoleResultsForm();
 
             commandForm.setSearchTypeName(searchTypeName);
 
-            CommandResult commandResult = SearchUtil.getHome().countSecurityRoleResults(getUserVisitPK(), commandForm);
+            var commandResult = SearchUtil.getHome().countSecurityRoleResults(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -91,8 +91,8 @@ public class CountSecurityRoleResultsTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                CountSecurityRoleResultsResult result = (CountSecurityRoleResultsResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (CountSecurityRoleResultsResult)executionResult.getResult();
 
                 pageContext.setAttribute(countVar, result.getCount(), scope);
             }

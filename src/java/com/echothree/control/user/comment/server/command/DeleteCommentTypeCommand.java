@@ -53,17 +53,17 @@ public class DeleteCommentTypeCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String componentVendorName = form.getComponentVendorName();
-        ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+        var componentVendorName = form.getComponentVendorName();
+        var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
         
         if(componentVendor != null) {
-            String entityTypeName = form.getEntityTypeName();
-            EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+            var entityTypeName = form.getEntityTypeName();
+            var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
             
             if(entityType != null) {
                 var commentControl = Session.getModelController(CommentControl.class);
-                String commentTypeName = form.getCommentTypeName();
-                CommentType commentType = commentControl.getCommentTypeByNameForUpdate(entityType, commentTypeName);
+                var commentTypeName = form.getCommentTypeName();
+                var commentType = commentControl.getCommentTypeByNameForUpdate(entityType, commentTypeName);
                 
                 if(commentType != null) {
                     commentControl.deleteCommentType(commentType, getPartyPK());

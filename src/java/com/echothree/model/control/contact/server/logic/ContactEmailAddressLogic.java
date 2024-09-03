@@ -55,24 +55,24 @@ public class ContactEmailAddressLogic
         var contactControl = Session.getModelController(ContactControl.class);
         var coreControl = Session.getModelController(CoreControl.class);
         var workflowControl = Session.getModelController(WorkflowControl.class);
-        String contactMechanismName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(null, SequenceTypes.CONTACT_MECHANISM.name());
-        ContactMechanismType contactMechanismType = contactControl.getContactMechanismTypeByName(ContactMechanismTypes.EMAIL_ADDRESS.name());
+        var contactMechanismName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(null, SequenceTypes.CONTACT_MECHANISM.name());
+        var contactMechanismType = contactControl.getContactMechanismTypeByName(ContactMechanismTypes.EMAIL_ADDRESS.name());
 
-        ContactMechanism contactMechanism = contactControl.createContactMechanism(contactMechanismName, contactMechanismType,
+        var contactMechanism = contactControl.createContactMechanism(contactMechanismName, contactMechanismType,
                 allowSolicitation, createdBy);
 
         contactControl.createContactEmailAddress(contactMechanism, emailAddress, createdBy);
 
-        PartyContactMechanism partyContactMechanism = contactControl.createPartyContactMechanism(party, contactMechanism, description, Boolean.FALSE, 1, createdBy);
+        var partyContactMechanism = contactControl.createPartyContactMechanism(party, contactMechanism, description, Boolean.FALSE, 1, createdBy);
 
-        EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(contactMechanism.getPrimaryKey());
+        var entityInstance = coreControl.getEntityInstanceByBasePK(contactMechanism.getPrimaryKey());
         workflowControl.addEntityToWorkflowUsingNames(null, EmailAddressStatusConstants.Workflow_EMAIL_ADDRESS_STATUS,
                 EmailAddressStatusConstants.WorkflowEntrance_NEW_EMAIL_ADDRESS, entityInstance, null, null, createdBy);
         workflowControl.addEntityToWorkflowUsingNames(null, EmailAddressVerificationConstants.Workflow_EMAIL_ADDRESS_VERIFICATION,
                 EmailAddressVerificationConstants.WorkflowEntrance_NEW_EMAIL_ADDRESS, entityInstance, null, null, createdBy);
 
         if(contactMechanismPurposeName != null) {
-            ContactMechanismPurpose contactMechanismPurpose = contactControl.getContactMechanismPurposeByName(ContactMechanismPurposes.PRIMARY_EMAIL.name());
+            var contactMechanismPurpose = contactControl.getContactMechanismPurposeByName(ContactMechanismPurposes.PRIMARY_EMAIL.name());
 
             contactControl.createPartyContactMechanismPurpose(partyContactMechanism, contactMechanismPurpose, Boolean.FALSE, 1, createdBy);
         }

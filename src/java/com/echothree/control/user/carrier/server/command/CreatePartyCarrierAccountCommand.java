@@ -70,21 +70,21 @@ public class CreatePartyCarrierAccountCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        String partyName = form.getPartyName();
-        Party party = partyControl.getPartyByName(partyName);
+        var partyName = form.getPartyName();
+        var party = partyControl.getPartyByName(partyName);
 
         if(party != null) {
             var carrierControl = Session.getModelController(CarrierControl.class);
-            String carrierName = form.getCarrierName();
-            Carrier carrier = carrierControl.getCarrierByName(carrierName);
+            var carrierName = form.getCarrierName();
+            var carrier = carrierControl.getCarrierByName(carrierName);
 
             if(carrier != null) {
-                String accountValidationPattern = carrier.getAccountValidationPattern();
-                String account = form.getAccount();
+                var accountValidationPattern = carrier.getAccountValidationPattern();
+                var account = form.getAccount();
 
                 if(accountValidationPattern != null) {
-                    Pattern pattern = Pattern.compile(accountValidationPattern);
-                    Matcher m = pattern.matcher(account);
+                    var pattern = Pattern.compile(accountValidationPattern);
+                    var m = pattern.matcher(account);
 
                     if(!m.matches()) {
                         addExecutionError(ExecutionErrors.InvalidAccount.name(), account);
@@ -92,10 +92,10 @@ public class CreatePartyCarrierAccountCommand
                 }
 
                 if(!hasExecutionErrors()) {
-                    Party carrierParty = carrier.getParty();
+                    var carrierParty = carrier.getParty();
 
                     if(carrierControl.getPartyCarrierAccount(party, carrierParty) == null) {
-                        Boolean alwaysUseThirdPartyBilling = Boolean.valueOf(form.getAlwaysUseThirdPartyBilling());
+                        var alwaysUseThirdPartyBilling = Boolean.valueOf(form.getAlwaysUseThirdPartyBilling());
 
                         carrierControl.createPartyCarrierAccount(party, carrierParty, account, alwaysUseThirdPartyBilling, getPartyPK());
                     } else {

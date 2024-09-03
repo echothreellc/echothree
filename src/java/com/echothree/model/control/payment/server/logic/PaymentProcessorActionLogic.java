@@ -46,8 +46,8 @@ public class PaymentProcessorActionLogic
 
     public PaymentProcessorAction createPaymentProcessorAction(final ExecutionErrorAccumulator eea, final String paymentProcessorName,
             final String paymentProcessorActionTypeName, final BasePK createdBy) {
-        PaymentProcessor paymentProcessor = PaymentProcessorLogic.getInstance().getPaymentProcessorByName(eea, paymentProcessorName);
-        PaymentProcessorActionType paymentProcessorActionType = PaymentProcessorActionTypeLogic.getInstance().getPaymentProcessorActionTypeByName(eea, paymentProcessorActionTypeName);
+        var paymentProcessor = PaymentProcessorLogic.getInstance().getPaymentProcessorByName(eea, paymentProcessorName);
+        var paymentProcessorActionType = PaymentProcessorActionTypeLogic.getInstance().getPaymentProcessorActionTypeByName(eea, paymentProcessorActionTypeName);
         PaymentProcessorAction paymentProcessorAction = null;
 
         if(!eea.hasExecutionErrors()) {
@@ -74,8 +74,8 @@ public class PaymentProcessorActionLogic
 
     public PaymentProcessorAction getPaymentProcessorActionByNames(final ExecutionErrorAccumulator eea, final String paymentProcessorName,
             final String paymentProcessorActionTypeName, final EntityPermission entityPermission) {
-        PaymentProcessor paymentProcessor = PaymentProcessorLogic.getInstance().getPaymentProcessorByName(eea, paymentProcessorName);
-        PaymentProcessorActionType paymentProcessorActionType = PaymentProcessorActionTypeLogic.getInstance().getPaymentProcessorActionTypeByName(eea, paymentProcessorActionTypeName);
+        var paymentProcessor = PaymentProcessorLogic.getInstance().getPaymentProcessorByName(eea, paymentProcessorName);
+        var paymentProcessorActionType = PaymentProcessorActionTypeLogic.getInstance().getPaymentProcessorActionTypeByName(eea, paymentProcessorActionTypeName);
         PaymentProcessorAction paymentProcessorAction = null;
 
         if(!eea.hasExecutionErrors()) {

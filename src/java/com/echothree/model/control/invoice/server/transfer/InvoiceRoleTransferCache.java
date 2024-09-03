@@ -43,13 +43,13 @@ public class InvoiceRoleTransferCache
     }
 
     public InvoiceRoleTransfer getInvoiceRoleTransfer(InvoiceRole invoiceRole) {
-        InvoiceRoleTransfer invoiceRoleTransfer = get(invoiceRole);
+        var invoiceRoleTransfer = get(invoiceRole);
 
         if(invoiceRoleTransfer == null) {
-            InvoiceTransfer invoice = invoiceControl.getInvoiceTransfer(userVisit, invoiceRole.getInvoice());
-            PartyTransfer party = partyControl.getPartyTransfer(userVisit, invoiceRole.getParty());
-            PartyContactMechanismTransfer partyContactMechanism = contactControl.getPartyContactMechanismTransfer(userVisit, invoiceRole.getPartyContactMechanism());
-            InvoiceRoleTypeTransfer invoiceRoleType = invoiceControl.getInvoiceRoleTypeTransfer(userVisit, invoiceRole.getInvoiceRoleType());
+            var invoice = invoiceControl.getInvoiceTransfer(userVisit, invoiceRole.getInvoice());
+            var party = partyControl.getPartyTransfer(userVisit, invoiceRole.getParty());
+            var partyContactMechanism = contactControl.getPartyContactMechanismTransfer(userVisit, invoiceRole.getPartyContactMechanism());
+            var invoiceRoleType = invoiceControl.getInvoiceRoleTypeTransfer(userVisit, invoiceRole.getInvoiceRoleType());
 
             invoiceRoleTransfer = new InvoiceRoleTransfer(invoice, party, partyContactMechanism, invoiceRoleType);
             put(invoiceRole, invoiceRoleTransfer);

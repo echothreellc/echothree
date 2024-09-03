@@ -67,13 +67,13 @@ public class GetContentCatalogDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var contentControl = Session.getModelController(ContentControl.class);
-        GetContentCatalogDescriptionsResult result = ContentResultFactory.getGetContentCatalogDescriptionsResult();
-        String contentCollectionName = form.getContentCollectionName();
-        ContentCollection contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
+        var result = ContentResultFactory.getGetContentCatalogDescriptionsResult();
+        var contentCollectionName = form.getContentCollectionName();
+        var contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
         
         if(contentCollection != null) {
-            String contentCatalogName = form.getContentCatalogName();
-            ContentCatalog contentCatalog = contentControl.getContentCatalogByName(contentCollection, contentCatalogName);
+            var contentCatalogName = form.getContentCatalogName();
+            var contentCatalog = contentControl.getContentCatalogByName(contentCollection, contentCatalogName);
             
             result.setContentCollection(contentControl.getContentCollectionTransfer(getUserVisit(), contentCollection));
             

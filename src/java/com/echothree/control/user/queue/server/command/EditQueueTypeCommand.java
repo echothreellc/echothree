@@ -91,7 +91,7 @@ public class EditQueueTypeCommand
     public QueueType getEntity(EditQueueTypeResult result) {
         var queueControl = Session.getModelController(QueueControl.class);
         QueueType queueType;
-        String queueTypeName = spec.getQueueTypeName();
+        var queueTypeName = spec.getQueueTypeName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
             queueType = queueControl.getQueueTypeByName(queueTypeName);
@@ -121,8 +121,8 @@ public class EditQueueTypeCommand
     @Override
     public void doLock(QueueTypeEdit edit, QueueType queueType) {
         var queueControl = Session.getModelController(QueueControl.class);
-        QueueTypeDescription queueTypeDescription = queueControl.getQueueTypeDescription(queueType, getPreferredLanguage());
-        QueueTypeDetail queueTypeDetail = queueType.getLastDetail();
+        var queueTypeDescription = queueControl.getQueueTypeDescription(queueType, getPreferredLanguage());
+        var queueTypeDetail = queueType.getLastDetail();
 
         edit.setQueueTypeName(queueTypeDetail.getQueueTypeName());
         edit.setIsDefault(queueTypeDetail.getIsDefault().toString());
@@ -136,8 +136,8 @@ public class EditQueueTypeCommand
     @Override
     public void canUpdate(QueueType queueType) {
         var queueControl = Session.getModelController(QueueControl.class);
-        String queueTypeName = edit.getQueueTypeName();
-        QueueType duplicateQueueType = queueControl.getQueueTypeByName(queueTypeName);
+        var queueTypeName = edit.getQueueTypeName();
+        var duplicateQueueType = queueControl.getQueueTypeByName(queueTypeName);
 
         if(duplicateQueueType != null && !queueType.equals(duplicateQueueType)) {
             addExecutionError(ExecutionErrors.DuplicateQueueTypeName.name(), queueTypeName);
@@ -148,9 +148,9 @@ public class EditQueueTypeCommand
     public void doUpdate(QueueType queueType) {
         var queueControl = Session.getModelController(QueueControl.class);
         var partyPK = getPartyPK();
-        QueueTypeDetailValue queueTypeDetailValue = queueControl.getQueueTypeDetailValueForUpdate(queueType);
-        QueueTypeDescription queueTypeDescription = queueControl.getQueueTypeDescriptionForUpdate(queueType, getPreferredLanguage());
-        String description = edit.getDescription();
+        var queueTypeDetailValue = queueControl.getQueueTypeDetailValueForUpdate(queueType);
+        var queueTypeDescription = queueControl.getQueueTypeDescriptionForUpdate(queueType, getPreferredLanguage());
+        var description = edit.getDescription();
 
         queueTypeDetailValue.setQueueTypeName(edit.getQueueTypeName());
         queueTypeDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
@@ -165,7 +165,7 @@ public class EditQueueTypeCommand
                 queueControl.deleteQueueTypeDescription(queueTypeDescription, partyPK);
             } else {
                 if(queueTypeDescription != null && description != null) {
-                    QueueTypeDescriptionValue queueTypeDescriptionValue = queueControl.getQueueTypeDescriptionValue(queueTypeDescription);
+                    var queueTypeDescriptionValue = queueControl.getQueueTypeDescriptionValue(queueTypeDescription);
 
                     queueTypeDescriptionValue.setDescription(description);
                     queueControl.updateQueueTypeDescriptionFromValue(queueTypeDescriptionValue, partyPK);

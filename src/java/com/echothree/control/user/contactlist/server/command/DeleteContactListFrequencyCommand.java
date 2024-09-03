@@ -63,8 +63,8 @@ public class DeleteContactListFrequencyCommand
     @Override
     protected BaseResult execute() {
         var contactListControl = Session.getModelController(ContactListControl.class);
-        String contactListFrequencyName = form.getContactListFrequencyName();
-        ContactListFrequency contactListFrequency = contactListControl.getContactListFrequencyByNameForUpdate(contactListFrequencyName);
+        var contactListFrequencyName = form.getContactListFrequencyName();
+        var contactListFrequency = contactListControl.getContactListFrequencyByNameForUpdate(contactListFrequencyName);
         
         if(contactListFrequency != null) {
             contactListControl.deleteContactListFrequency(contactListFrequency, getPartyPK());

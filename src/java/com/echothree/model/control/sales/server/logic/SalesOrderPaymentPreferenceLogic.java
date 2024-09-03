@@ -89,8 +89,8 @@ public class SalesOrderPaymentPreferenceLogic
         salesOrderLogic.checkOrderAvailableForModification(session, eea, order, createdBy);
         
         if(eea == null || !eea.hasExecutionErrors()) {
-            Party billTo = salesOrderLogic.getOrderBillToParty(order);
-            CustomerType customerType = billTo == null ? null : salesOrderLogic.getCustomerTypeFromParty(billTo);
+            var billTo = salesOrderLogic.getOrderBillToParty(order);
+            var customerType = billTo == null ? null : salesOrderLogic.getCustomerTypeFromParty(billTo);
 
             if(customerType != null) {
                 checkCustomerTypePaymentMethod(eea, customerType, paymentMethod);

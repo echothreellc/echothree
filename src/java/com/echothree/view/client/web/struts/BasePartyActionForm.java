@@ -57,14 +57,14 @@ public class BasePartyActionForm
     private void setupCurrencyChoices() {
         if(currencyChoices == null) {
             try {
-                GetCurrencyChoicesForm commandForm = AccountingUtil.getHome().getGetCurrencyChoicesForm();
+                var commandForm = AccountingUtil.getHome().getGetCurrencyChoicesForm();
                 
                 commandForm.setDefaultCurrencyChoice(currencyChoice);
                 commandForm.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = AccountingUtil.getHome().getCurrencyChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetCurrencyChoicesResult getCurrencyChoicesResult = (GetCurrencyChoicesResult)executionResult.getResult();
+
+                var commandResult = AccountingUtil.getHome().getCurrencyChoices(userVisitPK, commandForm);
+                var executionResult = commandResult.getExecutionResult();
+                var getCurrencyChoicesResult = (GetCurrencyChoicesResult)executionResult.getResult();
                 currencyChoices = getCurrencyChoicesResult.getCurrencyChoices();
                 
                 if(currencyChoice == null) {
@@ -100,14 +100,14 @@ public class BasePartyActionForm
     private void setupDateTimeFormatChoices() {
         if(dateTimeFormatChoices == null) {
             try {
-                GetDateTimeFormatChoicesForm commandForm = PartyUtil.getHome().getGetDateTimeFormatChoicesForm();
+                var commandForm = PartyUtil.getHome().getGetDateTimeFormatChoicesForm();
                 
                 commandForm.setDefaultDateTimeFormatChoice(dateTimeFormatChoice);
                 commandForm.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = PartyUtil.getHome().getDateTimeFormatChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetDateTimeFormatChoicesResult getDateTimeFormatChoicesResult = (GetDateTimeFormatChoicesResult)executionResult.getResult();
+
+                var commandResult = PartyUtil.getHome().getDateTimeFormatChoices(userVisitPK, commandForm);
+                var executionResult = commandResult.getExecutionResult();
+                var getDateTimeFormatChoicesResult = (GetDateTimeFormatChoicesResult)executionResult.getResult();
                 dateTimeFormatChoices = getDateTimeFormatChoicesResult.getDateTimeFormatChoices();
                 
                 if(dateTimeFormatChoice == null) {
@@ -143,14 +143,14 @@ public class BasePartyActionForm
     private void setupLanguageChoices() {
         if(languageChoices == null) {
             try {
-                GetLanguageChoicesForm commandForm = PartyUtil.getHome().getGetLanguageChoicesForm();
+                var commandForm = PartyUtil.getHome().getGetLanguageChoicesForm();
                 
                 commandForm.setDefaultLanguageChoice(languageChoice);
                 commandForm.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = PartyUtil.getHome().getLanguageChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetLanguageChoicesResult getLanguageChoicesResult = (GetLanguageChoicesResult)executionResult.getResult();
+
+                var commandResult = PartyUtil.getHome().getLanguageChoices(userVisitPK, commandForm);
+                var executionResult = commandResult.getExecutionResult();
+                var getLanguageChoicesResult = (GetLanguageChoicesResult)executionResult.getResult();
                 languageChoices = getLanguageChoicesResult.getLanguageChoices();
                 
                 if(languageChoice == null) {
@@ -186,14 +186,14 @@ public class BasePartyActionForm
     private void setupTimeZoneChoices() {
         if(timeZoneChoices == null) {
             try {
-                GetTimeZoneChoicesForm commandForm = PartyUtil.getHome().getGetTimeZoneChoicesForm();
+                var commandForm = PartyUtil.getHome().getGetTimeZoneChoicesForm();
                 
                 commandForm.setDefaultTimeZoneChoice(timeZoneChoice);
                 commandForm.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = PartyUtil.getHome().getTimeZoneChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetTimeZoneChoicesResult getTimeZoneChoicesResult = (GetTimeZoneChoicesResult)executionResult.getResult();
+
+                var commandResult = PartyUtil.getHome().getTimeZoneChoices(userVisitPK, commandForm);
+                var executionResult = commandResult.getExecutionResult();
+                var getTimeZoneChoicesResult = (GetTimeZoneChoicesResult)executionResult.getResult();
                 timeZoneChoices = getTimeZoneChoicesResult.getTimeZoneChoices();
                 
                 if(timeZoneChoice == null) {

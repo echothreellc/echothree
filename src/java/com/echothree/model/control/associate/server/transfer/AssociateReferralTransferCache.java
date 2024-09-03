@@ -43,18 +43,18 @@ public class AssociateReferralTransferCache
     
     @Override
     public AssociateReferralTransfer getTransfer(AssociateReferral associateReferral) {
-        AssociateReferralTransfer associateReferralTransfer = get(associateReferral);
+        var associateReferralTransfer = get(associateReferral);
         
         if(associateReferralTransfer == null) {
-            AssociateReferralDetail associateReferralDetail = associateReferral.getLastDetail();
-            String associateReferralName = associateReferralDetail.getAssociateReferralName();
-            AssociateTransfer associateTransfer = associateControl.getAssociateTransfer(userVisit, associateReferralDetail.getAssociate());
-            AssociatePartyContactMechanism associatePartyContactMechanism = associateReferralDetail.getAssociatePartyContactMechanism();
-            AssociatePartyContactMechanismTransfer associatePartyContactMechanismTransfer = associatePartyContactMechanism == null ? null : associateControl.getAssociatePartyContactMechanismTransfer(userVisit, associatePartyContactMechanism);
-            EntityInstance targetEntityInstance = associateReferralDetail.getTargetEntityInstance();
-            EntityInstanceTransfer targetEntityInstanceTransfer = targetEntityInstance == null ? null : coreControl.getEntityInstanceTransfer(userVisit, targetEntityInstance, false, false, false, false, false, false);
-            Long unformattedAssociateReferralTime = associateReferralDetail.getAssociateReferralTime();
-            String associateReferralTime = formatTypicalDateTime(unformattedAssociateReferralTime);
+            var associateReferralDetail = associateReferral.getLastDetail();
+            var associateReferralName = associateReferralDetail.getAssociateReferralName();
+            var associateTransfer = associateControl.getAssociateTransfer(userVisit, associateReferralDetail.getAssociate());
+            var associatePartyContactMechanism = associateReferralDetail.getAssociatePartyContactMechanism();
+            var associatePartyContactMechanismTransfer = associatePartyContactMechanism == null ? null : associateControl.getAssociatePartyContactMechanismTransfer(userVisit, associatePartyContactMechanism);
+            var targetEntityInstance = associateReferralDetail.getTargetEntityInstance();
+            var targetEntityInstanceTransfer = targetEntityInstance == null ? null : coreControl.getEntityInstanceTransfer(userVisit, targetEntityInstance, false, false, false, false, false, false);
+            var unformattedAssociateReferralTime = associateReferralDetail.getAssociateReferralTime();
+            var associateReferralTime = formatTypicalDateTime(unformattedAssociateReferralTime);
 
             associateReferralTransfer = new AssociateReferralTransfer(associateReferralName, associateTransfer, associatePartyContactMechanismTransfer,
                     targetEntityInstanceTransfer, unformattedAssociateReferralTime, associateReferralTime);

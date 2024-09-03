@@ -35,11 +35,11 @@ public class FontStyleDescriptionTransferCache
     }
     
     public FontStyleDescriptionTransfer getFontStyleDescriptionTransfer(FontStyleDescription fontStyleDescription) {
-        FontStyleDescriptionTransfer fontStyleDescriptionTransfer = get(fontStyleDescription);
+        var fontStyleDescriptionTransfer = get(fontStyleDescription);
         
         if(fontStyleDescriptionTransfer == null) {
-            FontStyleTransfer fontStyleTransfer = coreControl.getFontStyleTransfer(userVisit, fontStyleDescription.getFontStyle());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, fontStyleDescription.getLanguage());
+            var fontStyleTransfer = coreControl.getFontStyleTransfer(userVisit, fontStyleDescription.getFontStyle());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, fontStyleDescription.getLanguage());
             
             fontStyleDescriptionTransfer = new FontStyleDescriptionTransfer(languageTransfer, fontStyleTransfer, fontStyleDescription.getDescription());
             put(fontStyleDescription, fontStyleDescriptionTransfer);

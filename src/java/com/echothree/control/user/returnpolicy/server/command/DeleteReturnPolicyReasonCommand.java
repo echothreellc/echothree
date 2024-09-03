@@ -68,19 +68,19 @@ public class DeleteReturnPolicyReasonCommand
     @Override
     protected BaseResult execute() {
         var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
-        String returnKindName = form.getReturnKindName();
-        ReturnKind returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
+        var returnKindName = form.getReturnKindName();
+        var returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
         
         if(returnKind != null) {
-            String returnPolicyName = form.getReturnPolicyName();
-            ReturnPolicy returnPolicy = returnPolicyControl.getReturnPolicyByName(returnKind, returnPolicyName);
+            var returnPolicyName = form.getReturnPolicyName();
+            var returnPolicy = returnPolicyControl.getReturnPolicyByName(returnKind, returnPolicyName);
             
             if(returnPolicy != null) {
-                String returnReasonName = form.getReturnReasonName();
-                ReturnReason returnReason = returnPolicyControl.getReturnReasonByName(returnKind, returnReasonName);
+                var returnReasonName = form.getReturnReasonName();
+                var returnReason = returnPolicyControl.getReturnReasonByName(returnKind, returnReasonName);
                 
                 if(returnReason != null) {
-                    ReturnPolicyReason returnPolicyReason = returnPolicyControl.getReturnPolicyReasonForUpdate(returnPolicy,
+                    var returnPolicyReason = returnPolicyControl.getReturnPolicyReasonForUpdate(returnPolicy,
                             returnReason);
                     
                     if(returnPolicyReason != null) {

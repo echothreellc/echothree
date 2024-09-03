@@ -65,11 +65,11 @@ public class SetCampaignContentStatusCommand
     @Override
     protected BaseResult execute() {
         var campaignControl = Session.getModelController(CampaignControl.class);
-        String campaignContentName = form.getCampaignContentName();
-        CampaignContent campaignContent = campaignControl.getCampaignContentByName(campaignContentName);
+        var campaignContentName = form.getCampaignContentName();
+        var campaignContent = campaignControl.getCampaignContentByName(campaignContentName);
         
         if(campaignContent != null) {
-            String campaignContentStatusChoice = form.getCampaignContentStatusChoice();
+            var campaignContentStatusChoice = form.getCampaignContentStatusChoice();
             
             CampaignContentLogic.getInstance().setCampaignContentStatus(session, this, campaignContent, campaignContentStatusChoice, getPartyPK());
         } else {

@@ -68,16 +68,16 @@ public class CreateFilterAdjustmentTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var filterControl = Session.getModelController(FilterControl.class);
-        String filterAdjustmentTypeName = form.getFilterAdjustmentTypeName();
-        FilterAdjustmentType filterAdjustmentType = filterControl.getFilterAdjustmentTypeByName(filterAdjustmentTypeName);
+        var filterAdjustmentTypeName = form.getFilterAdjustmentTypeName();
+        var filterAdjustmentType = filterControl.getFilterAdjustmentTypeByName(filterAdjustmentTypeName);
         
         if(filterAdjustmentType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                FilterAdjustmentTypeDescription filterTypeDescription = filterControl.getFilterAdjustmentTypeDescription(filterAdjustmentType, language);
+                var filterTypeDescription = filterControl.getFilterAdjustmentTypeDescription(filterAdjustmentType, language);
                 
                 if(filterTypeDescription == null) {
                     var description = form.getDescription();

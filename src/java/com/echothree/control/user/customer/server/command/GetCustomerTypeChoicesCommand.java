@@ -63,9 +63,9 @@ public class GetCustomerTypeChoicesCommand
     @Override
     protected BaseResult execute() {
         var customerControl = Session.getModelController(CustomerControl.class);
-        GetCustomerTypeChoicesResult result = CustomerResultFactory.getGetCustomerTypeChoicesResult();
-        String defaultCustomerTypeChoice = form.getDefaultCustomerTypeChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = CustomerResultFactory.getGetCustomerTypeChoicesResult();
+        var defaultCustomerTypeChoice = form.getDefaultCustomerTypeChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setCustomerTypeChoices(customerControl.getCustomerTypeChoices(defaultCustomerTypeChoice,
                 getPreferredLanguage(), allowNullChoice));

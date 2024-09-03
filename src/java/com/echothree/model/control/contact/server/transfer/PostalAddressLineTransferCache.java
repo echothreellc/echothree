@@ -42,17 +42,17 @@ public class PostalAddressLineTransferCache
     }
     
     public PostalAddressLineTransfer getPostalAddressLineTransfer(PostalAddressLine postalAddressLine) {
-        PostalAddressLineTransfer postalAddressLineTransfer = get(postalAddressLine);
+        var postalAddressLineTransfer = get(postalAddressLine);
         
         if(postalAddressLineTransfer == null) {
-            PostalAddressLineDetail postalAddressLineDetail = postalAddressLine.getLastDetail();
-            PostalAddressFormatTransfer postalAddressFormat = contactControl.getPostalAddressFormatTransfer(userVisit, postalAddressLineDetail.getPostalAddressFormat());
-            Integer postalAddressLineSortOrder = postalAddressLineDetail.getPostalAddressLineSortOrder();
-            String prefix = postalAddressLineDetail.getPrefix();
-            Boolean alwaysIncludePrefix = postalAddressLineDetail.getAlwaysIncludePrefix();
-            String suffix = postalAddressLineDetail.getSuffix();
-            Boolean alwaysIncludeSuffix = postalAddressLineDetail.getAlwaysIncludeSuffix();
-            Boolean collapseIfEmpty = postalAddressLineDetail.getCollapseIfEmpty();
+            var postalAddressLineDetail = postalAddressLine.getLastDetail();
+            var postalAddressFormat = contactControl.getPostalAddressFormatTransfer(userVisit, postalAddressLineDetail.getPostalAddressFormat());
+            var postalAddressLineSortOrder = postalAddressLineDetail.getPostalAddressLineSortOrder();
+            var prefix = postalAddressLineDetail.getPrefix();
+            var alwaysIncludePrefix = postalAddressLineDetail.getAlwaysIncludePrefix();
+            var suffix = postalAddressLineDetail.getSuffix();
+            var alwaysIncludeSuffix = postalAddressLineDetail.getAlwaysIncludeSuffix();
+            var collapseIfEmpty = postalAddressLineDetail.getCollapseIfEmpty();
             
             postalAddressLineTransfer = new PostalAddressLineTransfer(postalAddressFormat, postalAddressLineSortOrder, prefix,
                     alwaysIncludePrefix, suffix, alwaysIncludeSuffix, collapseIfEmpty);

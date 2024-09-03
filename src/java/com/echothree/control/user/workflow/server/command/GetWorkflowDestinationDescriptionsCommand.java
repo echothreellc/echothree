@@ -69,19 +69,19 @@ public class GetWorkflowDestinationDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var workflowControl = Session.getModelController(WorkflowControl.class);
-        GetWorkflowDestinationDescriptionsResult result = WorkflowResultFactory.getGetWorkflowDestinationDescriptionsResult();
-        String workflowName = form.getWorkflowName();
+        var result = WorkflowResultFactory.getGetWorkflowDestinationDescriptionsResult();
+        var workflowName = form.getWorkflowName();
         var workflow = workflowControl.getWorkflowByName(workflowName);
         
         if(workflow != null) {
-            String workflowStepName = form.getWorkflowStepName();
+            var workflowStepName = form.getWorkflowStepName();
             var workflowStep = workflowControl.getWorkflowStepByName(workflow, workflowStepName);
             
             result.setWorkflow(workflowControl.getWorkflowTransfer(getUserVisit(), workflow));
             
             if(workflowStep != null) {
-                String workflowDestinationName = form.getWorkflowDestinationName();
-                WorkflowDestination workflowDestination = workflowControl.getWorkflowDestinationByName(workflowStep, workflowDestinationName);
+                var workflowDestinationName = form.getWorkflowDestinationName();
+                var workflowDestination = workflowControl.getWorkflowDestinationByName(workflowStep, workflowDestinationName);
                 
                 result.setWorkflowStep(workflowControl.getWorkflowStepTransfer(getUserVisit(), workflowStep));
                 

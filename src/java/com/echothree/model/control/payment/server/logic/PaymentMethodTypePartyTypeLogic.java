@@ -93,7 +93,7 @@ public class PaymentMethodTypePartyTypeLogic
             final PaymentMethodType paymentMethodType, final PartyType partyType,
             final EntityPermission entityPermission) {
         var paymentMethodTypePartyTypeControl = Session.getModelController(PaymentMethodTypePartyTypeControl.class);
-        PaymentMethodTypePartyType paymentMethodTypePartyType = paymentMethodTypePartyTypeControl.getPaymentMethodTypePartyType(paymentMethodType,
+        var paymentMethodTypePartyType = paymentMethodTypePartyTypeControl.getPaymentMethodTypePartyType(paymentMethodType,
                 partyType, entityPermission);
 
         if(paymentMethodTypePartyType == null) {

@@ -69,17 +69,17 @@ public class GetVendorTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var vendorControl = Session.getModelController(VendorControl.class);
-        GetVendorTypeDescriptionResult result = VendorResultFactory.getGetVendorTypeDescriptionResult();
-        String vendorTypeName = form.getVendorTypeName();
-        VendorType vendorType = vendorControl.getVendorTypeByName(vendorTypeName);
+        var result = VendorResultFactory.getGetVendorTypeDescriptionResult();
+        var vendorTypeName = form.getVendorTypeName();
+        var vendorType = vendorControl.getVendorTypeByName(vendorTypeName);
         
         if(vendorType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                VendorTypeDescription vendorTypeDescription = vendorControl.getVendorTypeDescription(vendorType, language);
+                var vendorTypeDescription = vendorControl.getVendorTypeDescription(vendorType, language);
                 
                 if(vendorTypeDescription != null) {
                     result.setVendorTypeDescription(vendorControl.getVendorTypeDescriptionTransfer(getUserVisit(), vendorTypeDescription));

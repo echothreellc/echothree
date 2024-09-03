@@ -38,12 +38,12 @@ public class TransactionEntityRoleTransferCache
     
     @Override
     public TransactionEntityRoleTransfer getTransfer(TransactionEntityRole transactionEntityRole) {
-        TransactionEntityRoleTransfer transactionEntityRoleTransfer = get(transactionEntityRole);
+        var transactionEntityRoleTransfer = get(transactionEntityRole);
         
         if(transactionEntityRoleTransfer == null) {
-            TransactionTransfer transaction = accountingControl.getTransactionTransfer(userVisit, transactionEntityRole.getTransaction());
-            TransactionEntityRoleTypeTransfer transactionEntityRoleType = accountingControl.getTransactionEntityRoleTypeTransfer(userVisit, transactionEntityRole.getTransactionEntityRoleType());
-            EntityInstanceTransfer entityInstance = coreControl.getEntityInstanceTransfer(userVisit, transactionEntityRole.getEntityInstance(), false, false, false, false, false, false);
+            var transaction = accountingControl.getTransactionTransfer(userVisit, transactionEntityRole.getTransaction());
+            var transactionEntityRoleType = accountingControl.getTransactionEntityRoleTypeTransfer(userVisit, transactionEntityRole.getTransactionEntityRoleType());
+            var entityInstance = coreControl.getEntityInstanceTransfer(userVisit, transactionEntityRole.getEntityInstance(), false, false, false, false, false, false);
             
             transactionEntityRoleTransfer = new TransactionEntityRoleTransfer(transaction, transactionEntityRoleType, entityInstance);
             put(transactionEntityRole, transactionEntityRoleTransfer);

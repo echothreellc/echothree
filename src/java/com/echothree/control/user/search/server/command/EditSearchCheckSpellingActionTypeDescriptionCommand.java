@@ -89,13 +89,13 @@ public class EditSearchCheckSpellingActionTypeDescriptionCommand
     public SearchCheckSpellingActionTypeDescription getEntity(EditSearchCheckSpellingActionTypeDescriptionResult result) {
         var searchControl = Session.getModelController(SearchControl.class);
         SearchCheckSpellingActionTypeDescription searchCheckSpellingActionTypeDescription = null;
-        String searchCheckSpellingActionTypeName = spec.getSearchCheckSpellingActionTypeName();
-        SearchCheckSpellingActionType searchCheckSpellingActionType = searchControl.getSearchCheckSpellingActionTypeByName(searchCheckSpellingActionTypeName);
+        var searchCheckSpellingActionTypeName = spec.getSearchCheckSpellingActionTypeName();
+        var searchCheckSpellingActionType = searchControl.getSearchCheckSpellingActionTypeByName(searchCheckSpellingActionTypeName);
 
         if(searchCheckSpellingActionType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -137,7 +137,7 @@ public class EditSearchCheckSpellingActionTypeDescriptionCommand
     @Override
     public void doUpdate(SearchCheckSpellingActionTypeDescription searchCheckSpellingActionTypeDescription) {
         var searchControl = Session.getModelController(SearchControl.class);
-        SearchCheckSpellingActionTypeDescriptionValue searchCheckSpellingActionTypeDescriptionValue = searchControl.getSearchCheckSpellingActionTypeDescriptionValue(searchCheckSpellingActionTypeDescription);
+        var searchCheckSpellingActionTypeDescriptionValue = searchControl.getSearchCheckSpellingActionTypeDescriptionValue(searchCheckSpellingActionTypeDescription);
         searchCheckSpellingActionTypeDescriptionValue.setDescription(edit.getDescription());
 
         searchControl.updateSearchCheckSpellingActionTypeDescriptionFromValue(searchCheckSpellingActionTypeDescriptionValue, getPartyPK());

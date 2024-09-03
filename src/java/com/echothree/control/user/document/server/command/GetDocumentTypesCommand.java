@@ -61,7 +61,7 @@ public class GetDocumentTypesCommand
     @Override
     protected BaseResult execute() {
         var documentControl = Session.getModelController(DocumentControl.class);
-        GetDocumentTypesResult result = DocumentResultFactory.getGetDocumentTypesResult();
+        var result = DocumentResultFactory.getGetDocumentTypesResult();
         
         result.setDocumentTypes(documentControl.getDocumentTypeTransfers(getUserVisit()));
         

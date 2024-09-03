@@ -63,9 +63,9 @@ public class GetTextTransformationDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        GetTextTransformationDescriptionsResult result = CoreResultFactory.getGetTextTransformationDescriptionsResult();
-        String textTransformationName = form.getTextTransformationName();
-        TextTransformation textTransformation = coreControl.getTextTransformationByName(textTransformationName);
+        var result = CoreResultFactory.getGetTextTransformationDescriptionsResult();
+        var textTransformationName = form.getTextTransformationName();
+        var textTransformation = coreControl.getTextTransformationByName(textTransformationName);
         
         if(textTransformation != null) {
             result.setTextTransformation(coreControl.getTextTransformationTransfer(getUserVisit(), textTransformation));

@@ -74,10 +74,10 @@ public class ShippingMethodLogic
     
     public void checkAcceptanceOfItem(final Session session, final ExecutionErrorAccumulator eea, final SelectorCache selectorCache,
             final ShippingMethod shippingMethod, final Item item, final BasePK evaluatedBy) {
-        Selector selector = shippingMethod.getLastDetail().getItemSelector();
+        var selector = shippingMethod.getLastDetail().getItemSelector();
         
         if(selector != null) {
-            CachedSelector cachedSelector = selectorCache.getSelector(selector);
+            var cachedSelector = selectorCache.getSelector(selector);
             
             if(!new ShippingMethodItemSelectorEvaluator(session, evaluatedBy).evaluate(cachedSelector, item)) {
                 handleExecutionError(ItemNotAcceptibleForShippingMethodException.class, eea, ExecutionErrors.ItemNotAcceptibleForShippingMethod.name(),
@@ -88,10 +88,10 @@ public class ShippingMethodLogic
     
     public void checkAcceptanceOfItem(final Session session, final ExecutionErrorAccumulator eea, final ShippingMethod shippingMethod, final Item item,
             final BasePK evaluatedBy) {
-        Selector selector = shippingMethod.getLastDetail().getItemSelector();
+        var selector = shippingMethod.getLastDetail().getItemSelector();
         
         if(selector != null) {
-            SelectorCache selectorCache = SelectorCacheFactory.getInstance().getSelectorCache(session, SelectorKinds.ITEM.name(),
+            var selectorCache = SelectorCacheFactory.getInstance().getSelectorCache(session, SelectorKinds.ITEM.name(),
                     SelectorTypes.SHIPPING_METHOD.name());
             
             checkAcceptanceOfItem(session, eea, selectorCache, shippingMethod, item, evaluatedBy);
@@ -100,10 +100,10 @@ public class ShippingMethodLogic
     
     public void checkAcceptanceOfItems(final Session session, final ExecutionErrorAccumulator eea, final ShippingMethod shippingMethod, final Set<Item> items,
             final BasePK evaluatedBy) {
-        Selector selector = shippingMethod.getLastDetail().getItemSelector();
+        var selector = shippingMethod.getLastDetail().getItemSelector();
         
         if(selector != null) {
-            SelectorCache selectorCache = SelectorCacheFactory.getInstance().getSelectorCache(session, SelectorKinds.ITEM.name(),
+            var selectorCache = SelectorCacheFactory.getInstance().getSelectorCache(session, SelectorKinds.ITEM.name(),
                     SelectorTypes.SHIPPING_METHOD.name());
             
             items.forEach((item) -> {

@@ -75,29 +75,29 @@ public class EditCommentTypeCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        EditCommentTypeResult result = CommentResultFactory.getEditCommentTypeResult();
-        String componentVendorName = spec.getComponentVendorName();
-        ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+        var result = CommentResultFactory.getEditCommentTypeResult();
+        var componentVendorName = spec.getComponentVendorName();
+        var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
         
         if(componentVendor != null) {
-            String entityTypeName = spec.getEntityTypeName();
-            EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+            var entityTypeName = spec.getEntityTypeName();
+            var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
             
             if(entityType != null) {
                 var commentControl = Session.getModelController(CommentControl.class);
                 
                 if(editMode.equals(EditMode.LOCK)) {
-                    String commentTypeName = spec.getCommentTypeName();
-                    CommentType commentType = commentControl.getCommentTypeByName(entityType, commentTypeName);
+                    var commentTypeName = spec.getCommentTypeName();
+                    var commentType = commentControl.getCommentTypeByName(entityType, commentTypeName);
                     
                     if(commentType != null) {
                         result.setCommentType(commentControl.getCommentTypeTransfer(getUserVisit(), commentType));
                         
                         if(lockEntity(commentType)) {
-                            CommentTypeDescription commentTypeDescription = commentControl.getCommentTypeDescription(commentType, getPreferredLanguage());
-                            CommentTypeEdit edit = CommentEditFactory.getCommentTypeEdit();
-                            CommentTypeDetail commentTypeDetail = commentType.getLastDetail();
-                            Sequence commentSequence = commentTypeDetail.getCommentSequence();
+                            var commentTypeDescription = commentControl.getCommentTypeDescription(commentType, getPreferredLanguage());
+                            var edit = CommentEditFactory.getCommentTypeEdit();
+                            var commentTypeDetail = commentType.getLastDetail();
+                            var commentSequence = commentTypeDetail.getCommentSequence();
                             
                             result.setEdit(edit);
                             edit.setCommentTypeName(commentTypeDetail.getCommentTypeName());
@@ -115,20 +115,20 @@ public class EditCommentTypeCommand
                         addExecutionError(ExecutionErrors.UnknownCommentTypeName.name(), commentTypeName);
                     }
                 } else if(editMode.equals(EditMode.UPDATE)) {
-                    String commentTypeName = spec.getCommentTypeName();
-                    CommentType commentType = commentControl.getCommentTypeByNameForUpdate(entityType, commentTypeName);
+                    var commentTypeName = spec.getCommentTypeName();
+                    var commentType = commentControl.getCommentTypeByNameForUpdate(entityType, commentTypeName);
                     
                     if(commentType != null) {
                         commentTypeName = edit.getCommentTypeName();
-                        CommentType duplicateCommentType = commentControl.getCommentTypeByName(entityType, commentTypeName);
+                        var duplicateCommentType = commentControl.getCommentTypeByName(entityType, commentTypeName);
                         
                         if(duplicateCommentType == null || commentType.equals(duplicateCommentType)) {
-                            String commentSequenceName = edit.getCommentSequenceName();
+                            var commentSequenceName = edit.getCommentSequenceName();
                             Sequence commentSequence = null;
                             
                             if(commentSequenceName != null) {
                                 var sequenceControl = Session.getModelController(SequenceControl.class);
-                                SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.COMMENT.name());
+                                var sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.COMMENT.name());
                                 
                                 if(sequenceType != null) {
                                     commentSequence = sequenceControl.getSequenceByName(sequenceType, commentSequenceName);
@@ -141,9 +141,9 @@ public class EditCommentTypeCommand
                                 if(lockEntityForUpdate(commentType)) {
                                     try {
                                         var partyPK = getPartyPK();
-                                        CommentTypeDetailValue commentTypeDetailValue = commentControl.getCommentTypeDetailValueForUpdate(commentType);
-                                        CommentTypeDescription commentTypeDescription = commentControl.getCommentTypeDescriptionForUpdate(commentType, getPreferredLanguage());
-                                        String description = edit.getDescription();
+                                        var commentTypeDetailValue = commentControl.getCommentTypeDetailValueForUpdate(commentType);
+                                        var commentTypeDescription = commentControl.getCommentTypeDescriptionForUpdate(commentType, getPreferredLanguage());
+                                        var description = edit.getDescription();
                                         
                                         commentTypeDetailValue.setCommentTypeName(edit.getCommentTypeName());
                                         commentTypeDetailValue.setCommentSequencePK(commentSequence == null? null: commentSequence.getPrimaryKey());
@@ -156,7 +156,7 @@ public class EditCommentTypeCommand
                                         } else if(commentTypeDescription != null && description == null) {
                                             commentControl.deleteCommentTypeDescription(commentTypeDescription, partyPK);
                                         } else if(commentTypeDescription != null && description != null) {
-                                            CommentTypeDescriptionValue commentTypeDescriptionValue = commentControl.getCommentTypeDescriptionValue(commentTypeDescription);
+                                            var commentTypeDescriptionValue = commentControl.getCommentTypeDescriptionValue(commentTypeDescription);
                                             
                                             commentTypeDescriptionValue.setDescription(description);
                                             commentControl.updateCommentTypeDescriptionFromValue(commentTypeDescriptionValue, partyPK);

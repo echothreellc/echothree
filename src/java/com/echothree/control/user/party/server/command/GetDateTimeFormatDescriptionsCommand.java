@@ -51,9 +51,9 @@ public class GetDateTimeFormatDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        GetDateTimeFormatDescriptionsResult result = PartyResultFactory.getGetDateTimeFormatDescriptionsResult();
-        String dateTimeFormatName = form.getDateTimeFormatName();
-        DateTimeFormat dateTimeFormat = partyControl.getDateTimeFormatByName(dateTimeFormatName);
+        var result = PartyResultFactory.getGetDateTimeFormatDescriptionsResult();
+        var dateTimeFormatName = form.getDateTimeFormatName();
+        var dateTimeFormat = partyControl.getDateTimeFormatByName(dateTimeFormatName);
         
         if(dateTimeFormat != null) {
             result.setDateTimeFormat(partyControl.getDateTimeFormatTransfer(getUserVisit(), dateTimeFormat));

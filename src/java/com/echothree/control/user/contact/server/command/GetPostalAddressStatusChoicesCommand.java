@@ -53,16 +53,16 @@ public class GetPostalAddressStatusChoicesCommand
     @Override
     protected BaseResult execute() {
         var contactControl = Session.getModelController(ContactControl.class);
-        GetPostalAddressStatusChoicesResult result = ContactResultFactory.getGetPostalAddressStatusChoicesResult();
-        String contactMechanismName = form.getContactMechanismName();
-        ContactMechanism contactMechanism = contactControl.getContactMechanismByName(contactMechanismName);
+        var result = ContactResultFactory.getGetPostalAddressStatusChoicesResult();
+        var contactMechanismName = form.getContactMechanismName();
+        var contactMechanism = contactControl.getContactMechanismByName(contactMechanismName);
 
         if(contactMechanism != null) {
-            String contactMechanismTypeName = contactMechanism.getLastDetail().getContactMechanismType().getContactMechanismTypeName();
+            var contactMechanismTypeName = contactMechanism.getLastDetail().getContactMechanismType().getContactMechanismTypeName();
 
             if(contactMechanismTypeName.equals(ContactMechanismTypes.POSTAL_ADDRESS.name())) {
-                String defaultPostalAddressStatusChoice = form.getDefaultPostalAddressStatusChoice();
-                boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+                var defaultPostalAddressStatusChoice = form.getDefaultPostalAddressStatusChoice();
+                var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 
                 result.setPostalAddressStatusChoices(contactControl.getPostalAddressStatusChoices(defaultPostalAddressStatusChoice, getPreferredLanguage(), allowNullChoice, contactMechanism,
                         getPartyPK()));

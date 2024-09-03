@@ -94,12 +94,12 @@ public class EditItemTaxClassificationCommand
     public ItemTaxClassification getEntity(EditItemTaxClassificationResult result) {
         var itemControl = Session.getModelController(ItemControl.class);
         ItemTaxClassification itemTaxClassification = null;
-        String itemName = spec.getItemName();
-        Item item = itemControl.getItemByName(itemName);
+        var itemName = spec.getItemName();
+        var item = itemControl.getItemByName(itemName);
         
         if(item != null) {
             var geoControl = Session.getModelController(GeoControl.class);
-            String countryName = spec.getCountryName();
+            var countryName = spec.getCountryName();
             
             countryGeoCode = geoControl.getCountryByAlias(countryName);
             
@@ -139,7 +139,7 @@ public class EditItemTaxClassificationCommand
 
     @Override
     public void doLock(ItemTaxClassificationEdit edit, ItemTaxClassification itemTaxClassification) {
-        ItemTaxClassificationDetail itemTaxClassificationDetail = itemTaxClassification.getLastDetail();
+        var itemTaxClassificationDetail = itemTaxClassification.getLastDetail();
         
         edit.setTaxClassificationName(itemTaxClassificationDetail.getTaxClassification().getLastDetail().getTaxClassificationName());
     }
@@ -149,7 +149,7 @@ public class EditItemTaxClassificationCommand
     @Override
     public void canUpdate(ItemTaxClassification itemTaxClassification) {
         var taxControl = Session.getModelController(TaxControl.class);
-        String harmonizedTariffScheduleCodeName = edit.getTaxClassificationName();
+        var harmonizedTariffScheduleCodeName = edit.getTaxClassificationName();
         
         harmonizedTariffScheduleCode = taxControl.getTaxClassificationByName(countryGeoCode, harmonizedTariffScheduleCodeName);
 
@@ -161,7 +161,7 @@ public class EditItemTaxClassificationCommand
     @Override
     public void doUpdate(ItemTaxClassification itemTaxClassification) {
         var taxControl = Session.getModelController(TaxControl.class);
-        ItemTaxClassificationDetailValue itemTaxClassificationDetailValue = taxControl.getItemTaxClassificationDetailValueForUpdate(itemTaxClassification);
+        var itemTaxClassificationDetailValue = taxControl.getItemTaxClassificationDetailValueForUpdate(itemTaxClassification);
         
         itemTaxClassificationDetailValue.setTaxClassificationPK(harmonizedTariffScheduleCode.getPrimaryKey());
         

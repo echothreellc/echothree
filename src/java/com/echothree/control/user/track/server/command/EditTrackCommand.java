@@ -91,7 +91,7 @@ public class EditTrackCommand
     public Track getEntity(EditTrackResult result) {
         var trackControl = Session.getModelController(TrackControl.class);
         Track track;
-        String trackName = spec.getTrackName();
+        var trackName = spec.getTrackName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
             track = trackControl.getTrackByName(trackName);
@@ -121,8 +121,8 @@ public class EditTrackCommand
     @Override
     public void doLock(TrackEdit edit, Track track) {
         var trackControl = Session.getModelController(TrackControl.class);
-        TrackDescription trackDescription = trackControl.getTrackDescription(track, getPreferredLanguage());
-        TrackDetail trackDetail = track.getLastDetail();
+        var trackDescription = trackControl.getTrackDescription(track, getPreferredLanguage());
+        var trackDetail = track.getLastDetail();
 
         edit.setValue(trackDetail.getValue());
         edit.setIsDefault(trackDetail.getIsDefault().toString());
@@ -136,8 +136,8 @@ public class EditTrackCommand
     @Override
     public void canUpdate(Track track) {
         var trackControl = Session.getModelController(TrackControl.class);
-        String value = edit.getValue();
-        Track duplicateTrack = trackControl.getTrackByValue(value);
+        var value = edit.getValue();
+        var duplicateTrack = trackControl.getTrackByValue(value);
 
         if(duplicateTrack != null && !track.equals(duplicateTrack)) {
             addExecutionError(ExecutionErrors.DuplicateTrackValue.name(), value);
@@ -148,9 +148,9 @@ public class EditTrackCommand
     public void doUpdate(Track track) {
         var trackControl = Session.getModelController(TrackControl.class);
         var partyPK = getPartyPK();
-        TrackDetailValue trackDetailValue = trackControl.getTrackDetailValueForUpdate(track);
-        TrackDescription trackDescription = trackControl.getTrackDescriptionForUpdate(track, getPreferredLanguage());
-        String description = edit.getDescription();
+        var trackDetailValue = trackControl.getTrackDetailValueForUpdate(track);
+        var trackDescription = trackControl.getTrackDescriptionForUpdate(track, getPreferredLanguage());
+        var description = edit.getDescription();
 
         trackDetailValue.setValue(edit.getValue());
         trackDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
@@ -165,7 +165,7 @@ public class EditTrackCommand
                 trackControl.deleteTrackDescription(trackDescription, partyPK);
             } else {
                 if(trackDescription != null && description != null) {
-                    TrackDescriptionValue trackDescriptionValue = trackControl.getTrackDescriptionValue(trackDescription);
+                    var trackDescriptionValue = trackControl.getTrackDescriptionValue(trackDescription);
 
                     trackDescriptionValue.setDescription(description);
                     trackControl.updateTrackDescriptionFromValue(trackDescriptionValue, partyPK);

@@ -70,7 +70,7 @@ public class GetContentCollectionsCommand
     @Override
     protected BaseResult getResult(Collection<ContentCollection> entities) {
         var contentControl = Session.getModelController(ContentControl.class);
-        GetContentCollectionsResult result = ContentResultFactory.getGetContentCollectionsResult();
+        var result = ContentResultFactory.getGetContentCollectionsResult();
         
         if(entities != null) {
             result.setContentCollections(contentControl.getContentCollectionTransfers(getUserVisit(), entities));

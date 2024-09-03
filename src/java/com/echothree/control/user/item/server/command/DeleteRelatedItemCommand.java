@@ -67,19 +67,19 @@ public class DeleteRelatedItemCommand
     @Override
     protected BaseResult execute() {
         var itemControl = Session.getModelController(ItemControl.class);
-        String relatedItemTypeName = form.getRelatedItemTypeName();
-        RelatedItemType relatedItemType = itemControl.getRelatedItemTypeByName(relatedItemTypeName);
+        var relatedItemTypeName = form.getRelatedItemTypeName();
+        var relatedItemType = itemControl.getRelatedItemTypeByName(relatedItemTypeName);
         
         if(relatedItemType != null) {
-            String fromItemName = form.getFromItemName();
-            Item fromItem = itemControl.getItemByName(fromItemName);
+            var fromItemName = form.getFromItemName();
+            var fromItem = itemControl.getItemByName(fromItemName);
             
             if(fromItem != null) {
-                String toItemName = form.getToItemName();
-                Item toItem = itemControl.getItemByName(toItemName);
+                var toItemName = form.getToItemName();
+                var toItem = itemControl.getItemByName(toItemName);
                 
                 if(toItem != null) {
-                    RelatedItem relatedItem = itemControl.getRelatedItemForUpdate(relatedItemType, fromItem, toItem);
+                    var relatedItem = itemControl.getRelatedItemForUpdate(relatedItemType, fromItem, toItem);
                     
                     if(relatedItem != null) {
                         itemControl.deleteRelatedItem(relatedItem, getPartyPK());

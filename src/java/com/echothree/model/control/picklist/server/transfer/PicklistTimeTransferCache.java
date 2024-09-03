@@ -31,12 +31,12 @@ public class PicklistTimeTransferCache
     }
     
     public PicklistTimeTransfer getPicklistTimeTransfer(PicklistTime picklistTime) {
-        PicklistTimeTransfer picklistTimeTransfer = get(picklistTime);
+        var picklistTimeTransfer = get(picklistTime);
         
         if(picklistTimeTransfer == null) {
-            PicklistTimeTypeTransfer picklistTimeType = picklistControl.getPicklistTimeTypeTransfer(userVisit, picklistTime.getPicklistTimeType());
-            Long unformattedTime = picklistTime.getTime();
-            String time = formatTypicalDateTime(unformattedTime);
+            var picklistTimeType = picklistControl.getPicklistTimeTypeTransfer(userVisit, picklistTime.getPicklistTimeType());
+            var unformattedTime = picklistTime.getTime();
+            var time = formatTypicalDateTime(unformattedTime);
             
             picklistTimeTransfer = new PicklistTimeTransfer(picklistTimeType, unformattedTime, time);
             put(picklistTime, picklistTimeTransfer);

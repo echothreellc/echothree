@@ -74,8 +74,8 @@ public class FilterHtmlTag
     }
     
     private QName[] toQNames(final String[] tags) {
-        final QName[] qnames = new QName[tags.length];
-        for(int i = 0; i < tags.length; ++i) {
+        final var qnames = new QName[tags.length];
+        for(var i = 0; i < tags.length; ++i) {
             qnames[i] = new QName(null, tags[i], null, null);
         }
 
@@ -86,7 +86,7 @@ public class FilterHtmlTag
             throws IOException {
         XMLParserConfiguration parser = new HTMLConfiguration();
         StringWriter stringWriter = new StringWriter();
-        org.cyberneko.html.filters.Writer writer = new org.cyberneko.html.filters.Writer(stringWriter, "UTF-8");
+        var writer = new org.cyberneko.html.filters.Writer(stringWriter, "UTF-8");
 
         XMLDocumentFilter[] filters = {
             htmlFilter,

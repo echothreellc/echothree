@@ -62,16 +62,16 @@ public class CreateItemInventoryTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var itemControl = Session.getModelController(ItemControl.class);
-        String itemInventoryTypeName = form.getItemInventoryTypeName();
-        ItemInventoryType itemInventoryType = itemControl.getItemInventoryTypeByName(itemInventoryTypeName);
+        var itemInventoryTypeName = form.getItemInventoryTypeName();
+        var itemInventoryType = itemControl.getItemInventoryTypeByName(itemInventoryTypeName);
         
         if(itemInventoryType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                ItemInventoryTypeDescription itemInventoryTypeDescription = itemControl.getItemInventoryTypeDescription(itemInventoryType, language);
+                var itemInventoryTypeDescription = itemControl.getItemInventoryTypeDescription(itemInventoryType, language);
                 
                 if(itemInventoryTypeDescription == null) {
                     var description = form.getDescription();

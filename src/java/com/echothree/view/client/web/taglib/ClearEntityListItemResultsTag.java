@@ -74,11 +74,11 @@ public class ClearEntityListItemResultsTag
     public int doStartTag()
             throws JspException {
         try {
-            ClearEntityListItemResultsForm commandForm = SearchUtil.getHome().getClearEntityListItemResultsForm();
+            var commandForm = SearchUtil.getHome().getClearEntityListItemResultsForm();
 
             commandForm.setSearchTypeName(searchTypeName);
-            
-            CommandResult commandResult = SearchUtil.getHome().clearEntityListItemResults(getUserVisitPK(), commandForm);
+
+            var commandResult = SearchUtil.getHome().clearEntityListItemResults(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {

@@ -92,7 +92,7 @@ public class EditChainActionTypeCommand
     public ChainActionType getEntity(EditChainActionTypeResult result) {
         var chainControl = Session.getModelController(ChainControl.class);
         ChainActionType chainActionType = null;
-        String chainActionTypeName = spec.getChainActionTypeName();
+        var chainActionTypeName = spec.getChainActionTypeName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
             chainActionType = chainControl.getChainActionTypeByName(chainActionTypeName);
@@ -122,8 +122,8 @@ public class EditChainActionTypeCommand
     @Override
     public void doLock(ChainActionTypeEdit edit, ChainActionType chainActionType) {
         var chainControl = Session.getModelController(ChainControl.class);
-        ChainActionTypeDescription chainActionTypeDescription = chainControl.getChainActionTypeDescription(chainActionType, getPreferredLanguage());
-        ChainActionTypeDetail chainActionTypeDetail = chainActionType.getLastDetail();
+        var chainActionTypeDescription = chainControl.getChainActionTypeDescription(chainActionType, getPreferredLanguage());
+        var chainActionTypeDetail = chainActionType.getLastDetail();
 
         edit.setChainActionTypeName(chainActionTypeDetail.getChainActionTypeName());
         edit.setAllowMultiple(chainActionTypeDetail.getAllowMultiple().toString());
@@ -138,8 +138,8 @@ public class EditChainActionTypeCommand
     @Override
     public void canUpdate(ChainActionType chainActionType) {
         var chainControl = Session.getModelController(ChainControl.class);
-        String chainActionTypeName = edit.getChainActionTypeName();
-        ChainActionType duplicateChainActionType = chainControl.getChainActionTypeByName(chainActionTypeName);
+        var chainActionTypeName = edit.getChainActionTypeName();
+        var duplicateChainActionType = chainControl.getChainActionTypeByName(chainActionTypeName);
 
         if(duplicateChainActionType != null && !chainActionType.equals(duplicateChainActionType)) {
             addExecutionError(ExecutionErrors.DuplicateChainActionTypeName.name(), chainActionTypeName);
@@ -150,9 +150,9 @@ public class EditChainActionTypeCommand
     public void doUpdate(ChainActionType chainActionType) {
         var chainControl = Session.getModelController(ChainControl.class);
         var partyPK = getPartyPK();
-        ChainActionTypeDetailValue chainActionTypeDetailValue = chainControl.getChainActionTypeDetailValueForUpdate(chainActionType);
-        ChainActionTypeDescription chainActionTypeDescription = chainControl.getChainActionTypeDescriptionForUpdate(chainActionType, getPreferredLanguage());
-        String description = edit.getDescription();
+        var chainActionTypeDetailValue = chainControl.getChainActionTypeDetailValueForUpdate(chainActionType);
+        var chainActionTypeDescription = chainControl.getChainActionTypeDescriptionForUpdate(chainActionType, getPreferredLanguage());
+        var description = edit.getDescription();
 
         chainActionTypeDetailValue.setChainActionTypeName(edit.getChainActionTypeName());
         chainActionTypeDetailValue.setAllowMultiple(Boolean.valueOf(edit.getAllowMultiple()));
@@ -166,7 +166,7 @@ public class EditChainActionTypeCommand
         } else if(chainActionTypeDescription != null && description == null) {
             chainControl.deleteChainActionTypeDescription(chainActionTypeDescription, partyPK);
         } else if(chainActionTypeDescription != null && description != null) {
-            ChainActionTypeDescriptionValue chainActionTypeDescriptionValue = chainControl.getChainActionTypeDescriptionValue(chainActionTypeDescription);
+            var chainActionTypeDescriptionValue = chainControl.getChainActionTypeDescriptionValue(chainActionTypeDescription);
 
             chainActionTypeDescriptionValue.setDescription(description);
             chainControl.updateChainActionTypeDescriptionFromValue(chainActionTypeDescriptionValue, partyPK);

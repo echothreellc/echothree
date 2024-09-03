@@ -63,8 +63,8 @@ public class SetDefaultWarehouseCommand
     @Override
     protected BaseResult execute() {
         var warehouseControl = Session.getModelController(WarehouseControl.class);
-        String warehouseName = form.getWarehouseName();
-        WarehouseValue warehouseValue = warehouseControl.getWarehouseValueByNameForUpdate(warehouseName);
+        var warehouseName = form.getWarehouseName();
+        var warehouseValue = warehouseControl.getWarehouseValueByNameForUpdate(warehouseName);
         
         if(warehouseValue != null) {
             warehouseValue.setIsDefault(Boolean.TRUE);

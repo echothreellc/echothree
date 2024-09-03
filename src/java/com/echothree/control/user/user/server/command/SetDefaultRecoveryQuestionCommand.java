@@ -47,9 +47,9 @@ public class SetDefaultRecoveryQuestionCommand
     
     @Override
     protected BaseResult execute() {
-        UserControl userControl = getUserControl();
-        String recoveryQuestionName = form.getRecoveryQuestionName();
-        RecoveryQuestionDetailValue recoveryQuestionDetailValue = userControl.getRecoveryQuestionDetailValueByNameForUpdate(recoveryQuestionName);
+        var userControl = getUserControl();
+        var recoveryQuestionName = form.getRecoveryQuestionName();
+        var recoveryQuestionDetailValue = userControl.getRecoveryQuestionDetailValueByNameForUpdate(recoveryQuestionName);
         
         if(recoveryQuestionDetailValue != null) {
             recoveryQuestionDetailValue.setIsDefault(Boolean.TRUE);

@@ -63,9 +63,9 @@ public class GetIndexChoicesCommand
     @Override
     protected BaseResult execute() {
         var indexControl = Session.getModelController(IndexControl.class);
-        GetIndexChoicesResult result = IndexResultFactory.getGetIndexChoicesResult();
-        String defaultIndexChoice = form.getDefaultIndexChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = IndexResultFactory.getGetIndexChoicesResult();
+        var defaultIndexChoice = form.getDefaultIndexChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setIndexChoices(indexControl.getIndexChoices(defaultIndexChoice, getPreferredLanguage(), allowNullChoice));
         

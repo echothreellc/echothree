@@ -54,25 +54,25 @@ public class CreateUnitOfMeasureEquivalentCommand
     @Override
     protected BaseResult execute() {
         var uomControl = Session.getModelController(UomControl.class);
-        String unitOfMeasureKindName = form.getUnitOfMeasureKindName();
-        UnitOfMeasureKind unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);
+        var unitOfMeasureKindName = form.getUnitOfMeasureKindName();
+        var unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);
         
         if(unitOfMeasureKind != null) {
-            String fromUnitOfMeasureTypeName = form.getFromUnitOfMeasureTypeName();
-            UnitOfMeasureType fromUnitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind,
+            var fromUnitOfMeasureTypeName = form.getFromUnitOfMeasureTypeName();
+            var fromUnitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind,
                     fromUnitOfMeasureTypeName);
             
             if(fromUnitOfMeasureType != null) {
-                String toUnitOfMeasureTypeName = form.getToUnitOfMeasureTypeName();
-                UnitOfMeasureType toUnitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind,
+                var toUnitOfMeasureTypeName = form.getToUnitOfMeasureTypeName();
+                var toUnitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind,
                         toUnitOfMeasureTypeName);
                 
                 if(toUnitOfMeasureType != null) {
-                    UnitOfMeasureEquivalent unitOfMeasureEquivalent = uomControl.getUnitOfMeasureEquivalent(fromUnitOfMeasureType,
+                    var unitOfMeasureEquivalent = uomControl.getUnitOfMeasureEquivalent(fromUnitOfMeasureType,
                             toUnitOfMeasureType);
                     
                     if(unitOfMeasureEquivalent == null) {
-                        Long toQuantity = Long.valueOf(form.getToQuantity());
+                        var toQuantity = Long.valueOf(form.getToQuantity());
                         
                         uomControl.createUnitOfMeasureEquivalent(fromUnitOfMeasureType, toUnitOfMeasureType, toQuantity, getPartyPK());
                     } else {

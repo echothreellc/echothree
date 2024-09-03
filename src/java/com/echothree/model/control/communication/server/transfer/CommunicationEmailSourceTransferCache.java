@@ -46,16 +46,16 @@ public class CommunicationEmailSourceTransferCache
     }
     
     public CommunicationEmailSourceTransfer getCommunicationEmailSourceTransfer(CommunicationEmailSource communicationEmailSource) {
-        CommunicationEmailSourceTransfer communicationEmailSourceTransfer = get(communicationEmailSource);
+        var communicationEmailSourceTransfer = get(communicationEmailSource);
         
         if(communicationEmailSourceTransfer == null) {
-            ServerTransfer servertTransfer = coreControl.getServerTransfer(userVisit, communicationEmailSource.getServer());
-            String username = communicationEmailSource.getUsername();
-            String password = communicationControl.decodeCommunicationEmailSourcePassword(communicationEmailSource);
-            WorkEffortScopeTransfer receiveWorkEffortScopeTransfer = workEffortControl.getWorkEffortScopeTransfer(userVisit, communicationEmailSource.getReceiveWorkEffortScope());
-            WorkEffortScopeTransfer sendWorkEffortScopeTransfer = workEffortControl.getWorkEffortScopeTransfer(userVisit, communicationEmailSource.getSendWorkEffortScope());
-            Selector reviewEmployeeSelector = communicationEmailSource.getReviewEmployeeSelector();
-            SelectorTransfer reviewEmployeeSelectorTransfer = reviewEmployeeSelector == null? null: selectorControl.getSelectorTransfer(userVisit, reviewEmployeeSelector);
+            var servertTransfer = coreControl.getServerTransfer(userVisit, communicationEmailSource.getServer());
+            var username = communicationEmailSource.getUsername();
+            var password = communicationControl.decodeCommunicationEmailSourcePassword(communicationEmailSource);
+            var receiveWorkEffortScopeTransfer = workEffortControl.getWorkEffortScopeTransfer(userVisit, communicationEmailSource.getReceiveWorkEffortScope());
+            var sendWorkEffortScopeTransfer = workEffortControl.getWorkEffortScopeTransfer(userVisit, communicationEmailSource.getSendWorkEffortScope());
+            var reviewEmployeeSelector = communicationEmailSource.getReviewEmployeeSelector();
+            var reviewEmployeeSelectorTransfer = reviewEmployeeSelector == null? null: selectorControl.getSelectorTransfer(userVisit, reviewEmployeeSelector);
             
             communicationEmailSourceTransfer = new CommunicationEmailSourceTransfer(servertTransfer, username, password,
                     receiveWorkEffortScopeTransfer, sendWorkEffortScopeTransfer, reviewEmployeeSelectorTransfer);

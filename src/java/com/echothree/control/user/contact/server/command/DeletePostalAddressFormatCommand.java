@@ -49,8 +49,8 @@ public class DeletePostalAddressFormatCommand
     @Override
     protected BaseResult execute() {
         var contactControl = Session.getModelController(ContactControl.class);
-        String postalAddressFormatName = form.getPostalAddressFormatName();
-        PostalAddressFormat postalAddressFormat = contactControl.getPostalAddressFormatByNameForUpdate(postalAddressFormatName);
+        var postalAddressFormatName = form.getPostalAddressFormatName();
+        var postalAddressFormat = contactControl.getPostalAddressFormatByNameForUpdate(postalAddressFormatName);
         
         if(postalAddressFormat != null) {
             contactControl.deletePostalAddressFormat(postalAddressFormat, getPartyPK());

@@ -34,14 +34,14 @@ public class TrainingClassAnswerTransferCache
     }
     
     public TrainingClassAnswerTransfer getTrainingClassAnswerTransfer(TrainingClassAnswer trainingClassAnswer) {
-        TrainingClassAnswerTransfer trainingClassAnswerTransfer = get(trainingClassAnswer);
+        var trainingClassAnswerTransfer = get(trainingClassAnswer);
         
         if(trainingClassAnswerTransfer == null) {
-            TrainingClassAnswerDetail trainingClassAnswerDetail = trainingClassAnswer.getLastDetail();
-            TrainingClassQuestionTransfer trainingClassQuestion = trainingControl.getTrainingClassQuestionTransfer(userVisit, trainingClassAnswerDetail.getTrainingClassQuestion());
-            String trainingClassAnswerName = trainingClassAnswerDetail.getTrainingClassAnswerName();
-            Boolean isCorrect = trainingClassAnswerDetail.getIsCorrect();
-            Integer sortOrder = trainingClassAnswerDetail.getSortOrder();
+            var trainingClassAnswerDetail = trainingClassAnswer.getLastDetail();
+            var trainingClassQuestion = trainingControl.getTrainingClassQuestionTransfer(userVisit, trainingClassAnswerDetail.getTrainingClassQuestion());
+            var trainingClassAnswerName = trainingClassAnswerDetail.getTrainingClassAnswerName();
+            var isCorrect = trainingClassAnswerDetail.getIsCorrect();
+            var sortOrder = trainingClassAnswerDetail.getSortOrder();
             
             trainingClassAnswerTransfer = new TrainingClassAnswerTransfer(trainingClassQuestion, trainingClassAnswerName, isCorrect, sortOrder);
             put(trainingClassAnswer, trainingClassAnswerTransfer);

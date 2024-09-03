@@ -64,12 +64,12 @@ public class GetCacheEntryDependenciesCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        GetCacheEntryDependenciesResult result = CoreResultFactory.getGetCacheEntryDependenciesResult();
-        String cacheEntryKey = form.getCacheEntryKey();
-        CacheEntry cacheEntry = coreControl.getCacheEntryByCacheEntryKey(cacheEntryKey);
+        var result = CoreResultFactory.getGetCacheEntryDependenciesResult();
+        var cacheEntryKey = form.getCacheEntryKey();
+        var cacheEntry = coreControl.getCacheEntryByCacheEntryKey(cacheEntryKey);
 
         if(cacheEntry != null) {
-            UserVisit userVisit = getUserVisit();
+            var userVisit = getUserVisit();
             
             result.setCacheEntry(coreControl.getCacheEntryTransfer(userVisit, cacheEntry));
             result.setCacheEntryDependencies(coreControl.getCacheEntryDependencyTransfersByCacheEntry(userVisit, cacheEntry));

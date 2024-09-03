@@ -35,11 +35,11 @@ public class OfferDescriptionTransferCache
     }
     
     public OfferDescriptionTransfer getOfferDescriptionTransfer(OfferDescription offerDescription) {
-        OfferDescriptionTransfer offerDescriptionTransfer = get(offerDescription);
+        var offerDescriptionTransfer = get(offerDescription);
         
         if(offerDescriptionTransfer == null) {
-            OfferTransfer offerTransfer = offerControl.getOfferTransfer(userVisit, offerDescription.getOffer());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, offerDescription.getLanguage());
+            var offerTransfer = offerControl.getOfferTransfer(userVisit, offerDescription.getOffer());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, offerDescription.getLanguage());
             
             offerDescriptionTransfer = new OfferDescriptionTransfer(languageTransfer, offerTransfer, offerDescription.getDescription());
             put(offerDescription, offerDescriptionTransfer);

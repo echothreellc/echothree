@@ -63,8 +63,8 @@ public class DeleteTerminationReasonCommand
     @Override
     protected BaseResult execute() {
         var employeeControl = Session.getModelController(EmployeeControl.class);
-        String terminationReasonName = form.getTerminationReasonName();
-        TerminationReason terminationReason = employeeControl.getTerminationReasonByNameForUpdate(terminationReasonName);
+        var terminationReasonName = form.getTerminationReasonName();
+        var terminationReason = employeeControl.getTerminationReasonByNameForUpdate(terminationReasonName);
         
         if(terminationReason != null) {
             employeeControl.deleteTerminationReason(terminationReason, getPartyPK());

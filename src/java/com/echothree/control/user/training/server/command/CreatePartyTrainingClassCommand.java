@@ -70,25 +70,25 @@ public class CreatePartyTrainingClassCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        String partyName = form.getPartyName();
-        Party party = partyControl.getPartyByName(partyName);
+        var partyName = form.getPartyName();
+        var party = partyControl.getPartyByName(partyName);
 
         if(party != null) {
             var trainingControl = Session.getModelController(TrainingControl.class);
-            String trainingClassName = form.getTrainingClassName();
-            TrainingClass trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
+            var trainingClassName = form.getTrainingClassName();
+            var trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
 
             if(trainingClass != null) {
-                String strCompletedTime = form.getCompletedTime();
-                Long completedTime = strCompletedTime == null ? null : Long.valueOf(strCompletedTime);
+                var strCompletedTime = form.getCompletedTime();
+                var completedTime = strCompletedTime == null ? null : Long.valueOf(strCompletedTime);
 
                 if(completedTime == null || completedTime < session.START_TIME) {
-                    String strValidUntilTime = form.getValidUntilTime();
-                    Long validUntilTime = strValidUntilTime == null ? null : Long.valueOf(strValidUntilTime);
+                    var strValidUntilTime = form.getValidUntilTime();
+                    var validUntilTime = strValidUntilTime == null ? null : Long.valueOf(strValidUntilTime);
 
                     if(validUntilTime == null || validUntilTime > session.START_TIME) {
-                        PartyTrainingClassLogic partyTrainingClassLogic = PartyTrainingClassLogic.getInstance();
-                        PreparedPartyTrainingClass preparedPartyTrainingClass = partyTrainingClassLogic.preparePartyTrainingClass(this, party, trainingClass,
+                        var partyTrainingClassLogic = PartyTrainingClassLogic.getInstance();
+                        var preparedPartyTrainingClass = partyTrainingClassLogic.preparePartyTrainingClass(this, party, trainingClass,
                                 completedTime, validUntilTime);
 
                         if(!hasExecutionErrors()) {

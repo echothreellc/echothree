@@ -71,12 +71,12 @@ public class CommentTransferCache
     }
     
     public CommentTransfer getCommentTransfer(Comment comment) {
-        CommentTransfer commentTransfer = get(comment);
+        var commentTransfer = get(comment);
         
         if(commentTransfer == null) {
-            CommentDetail commentDetail = comment.getLastDetail();
-            CommentType commentType = commentDetail.getCommentType();
-            EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(comment.getPrimaryKey());
+            var commentDetail = comment.getLastDetail();
+            var commentType = commentDetail.getCommentType();
+            var entityInstance = coreControl.getEntityInstanceByBasePK(comment.getPrimaryKey());
             
             commentTransfer = new CommentTransfer();
             put(comment, commentTransfer, entityInstance);
@@ -87,22 +87,22 @@ public class CommentTransferCache
             commentTransfer.setCommentedByEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, commentDetail.getCommentedByEntityInstance(), false, false, false, false, false, false));
             commentTransfer.setLanguage(partyControl.getLanguageTransfer(userVisit, commentDetail.getLanguage()));
             commentTransfer.setDescription(commentDetail.getDescription());
-            MimeType mimeType = commentDetail.getMimeType();
+            var mimeType = commentDetail.getMimeType();
             commentTransfer.setMimeType(mimeType == null? null: coreControl.getMimeTypeTransfer(userVisit, mimeType));
             commentTransfer.setEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, entityInstance, false, false, false, false, false, false));
             
             if(includeString) {
-                CommentString commentString = commentControl.getCommentString(comment);
+                var commentString = commentControl.getCommentString(comment);
                 commentTransfer.setString(commentString == null? null: commentString.getString());
             }
             
             if(includeBlob) {
-                CommentBlob commentBlob = commentControl.getCommentBlob(comment);
+                var commentBlob = commentControl.getCommentBlob(comment);
                 commentTransfer.setBlob(commentBlob == null? null: commentBlob.getBlob());
             }
             
             if(includeClob) {
-                CommentClob commentClob = commentControl.getCommentClob(comment);
+                var commentClob = commentControl.getCommentClob(comment);
                 commentTransfer.setClob(commentClob == null? null: commentClob.getClob());
             }
             
@@ -111,10 +111,10 @@ public class CommentTransferCache
             }
             
             if(includeWorkflowStep) {
-                WorkflowEntrance workflowEntrance = commentType.getLastDetail().getWorkflowEntrance();
+                var workflowEntrance = commentType.getLastDetail().getWorkflowEntrance();
 
                 if(workflowEntrance != null) {
-                    Workflow workflow = workflowEntrance.getLastDetail().getWorkflow();
+                    var workflow = workflowEntrance.getLastDetail().getWorkflow();
 
                     commentTransfer.setCommentStatus(workflowControl.getWorkflowEntityStatusTransferByEntityInstance(userVisit, workflow, entityInstance));
                 }

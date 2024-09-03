@@ -95,12 +95,12 @@ public class EditOrderLineAdjustmentTypeCommand
     public OrderLineAdjustmentType getEntity(EditOrderLineAdjustmentTypeResult result) {
         var orderTypeControl = Session.getModelController(OrderTypeControl.class);
         OrderLineAdjustmentType orderLineAdjustmentType = null;
-        String orderTypeName = spec.getOrderTypeName();
+        var orderTypeName = spec.getOrderTypeName();
         var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
             var orderLineAdjustmentControl = Session.getModelController(OrderLineAdjustmentControl.class);
-            String orderLineAdjustmentTypeName = spec.getOrderLineAdjustmentTypeName();
+            var orderLineAdjustmentTypeName = spec.getOrderLineAdjustmentTypeName();
 
             if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
                 orderLineAdjustmentType = orderLineAdjustmentControl.getOrderLineAdjustmentTypeByName(orderType, orderLineAdjustmentTypeName);
@@ -135,8 +135,8 @@ public class EditOrderLineAdjustmentTypeCommand
     @Override
     public void doLock(OrderLineAdjustmentTypeEdit edit, OrderLineAdjustmentType orderLineAdjustmentType) {
         var orderLineAdjustmentControl = Session.getModelController(OrderLineAdjustmentControl.class);
-        OrderLineAdjustmentTypeDescription orderLineAdjustmentTypeDescription = orderLineAdjustmentControl.getOrderLineAdjustmentTypeDescription(orderLineAdjustmentType, getPreferredLanguage());
-        OrderLineAdjustmentTypeDetail orderLineAdjustmentTypeDetail = orderLineAdjustmentType.getLastDetail();
+        var orderLineAdjustmentTypeDescription = orderLineAdjustmentControl.getOrderLineAdjustmentTypeDescription(orderLineAdjustmentType, getPreferredLanguage());
+        var orderLineAdjustmentTypeDetail = orderLineAdjustmentType.getLastDetail();
 
         edit.setOrderLineAdjustmentTypeName(orderLineAdjustmentTypeDetail.getOrderLineAdjustmentTypeName());
         edit.setIsDefault(orderLineAdjustmentTypeDetail.getIsDefault().toString());
@@ -150,13 +150,13 @@ public class EditOrderLineAdjustmentTypeCommand
     @Override
     public void canUpdate(OrderLineAdjustmentType orderLineAdjustmentType) {
         var orderTypeControl = Session.getModelController(OrderTypeControl.class);
-        String orderTypeName = spec.getOrderTypeName();
+        var orderTypeName = spec.getOrderTypeName();
         var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
             var orderLineAdjustmentControl = Session.getModelController(OrderLineAdjustmentControl.class);
-            String orderLineAdjustmentTypeName = edit.getOrderLineAdjustmentTypeName();
-            OrderLineAdjustmentType duplicateOrderLineAdjustmentType = orderLineAdjustmentControl.getOrderLineAdjustmentTypeByName(orderType, orderLineAdjustmentTypeName);
+            var orderLineAdjustmentTypeName = edit.getOrderLineAdjustmentTypeName();
+            var duplicateOrderLineAdjustmentType = orderLineAdjustmentControl.getOrderLineAdjustmentTypeByName(orderType, orderLineAdjustmentTypeName);
 
             if(duplicateOrderLineAdjustmentType != null && !orderLineAdjustmentType.equals(duplicateOrderLineAdjustmentType)) {
                 addExecutionError(ExecutionErrors.DuplicateOrderLineAdjustmentTypeName.name(), orderTypeName, orderLineAdjustmentTypeName);
@@ -170,9 +170,9 @@ public class EditOrderLineAdjustmentTypeCommand
     public void doUpdate(OrderLineAdjustmentType orderLineAdjustmentType) {
         var orderLineAdjustmentControl = Session.getModelController(OrderLineAdjustmentControl.class);
         var partyPK = getPartyPK();
-        OrderLineAdjustmentTypeDetailValue orderLineAdjustmentTypeDetailValue = orderLineAdjustmentControl.getOrderLineAdjustmentTypeDetailValueForUpdate(orderLineAdjustmentType);
-        OrderLineAdjustmentTypeDescription orderLineAdjustmentTypeDescription = orderLineAdjustmentControl.getOrderLineAdjustmentTypeDescriptionForUpdate(orderLineAdjustmentType, getPreferredLanguage());
-        String description = edit.getDescription();
+        var orderLineAdjustmentTypeDetailValue = orderLineAdjustmentControl.getOrderLineAdjustmentTypeDetailValueForUpdate(orderLineAdjustmentType);
+        var orderLineAdjustmentTypeDescription = orderLineAdjustmentControl.getOrderLineAdjustmentTypeDescriptionForUpdate(orderLineAdjustmentType, getPreferredLanguage());
+        var description = edit.getDescription();
 
         orderLineAdjustmentTypeDetailValue.setOrderLineAdjustmentTypeName(edit.getOrderLineAdjustmentTypeName());
         orderLineAdjustmentTypeDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
@@ -187,7 +187,7 @@ public class EditOrderLineAdjustmentTypeCommand
                 orderLineAdjustmentControl.deleteOrderLineAdjustmentTypeDescription(orderLineAdjustmentTypeDescription, partyPK);
             } else {
                 if(orderLineAdjustmentTypeDescription != null && description != null) {
-                    OrderLineAdjustmentTypeDescriptionValue orderLineAdjustmentTypeDescriptionValue = orderLineAdjustmentControl.getOrderLineAdjustmentTypeDescriptionValue(orderLineAdjustmentTypeDescription);
+                    var orderLineAdjustmentTypeDescriptionValue = orderLineAdjustmentControl.getOrderLineAdjustmentTypeDescriptionValue(orderLineAdjustmentTypeDescription);
 
                     orderLineAdjustmentTypeDescriptionValue.setDescription(description);
                     orderLineAdjustmentControl.updateOrderLineAdjustmentTypeDescriptionFromValue(orderLineAdjustmentTypeDescriptionValue, partyPK);

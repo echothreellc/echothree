@@ -62,8 +62,8 @@ public class GetForumThreadCommand
     
     @Override
     protected BaseResult execute() {
-        GetForumThreadResult result = ForumResultFactory.getGetForumThreadResult();
-        String forumThreadName = form.getForumThreadName();
+        var result = ForumResultFactory.getGetForumThreadResult();
+        var forumThreadName = form.getForumThreadName();
         var parameterCount = (forumThreadName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {

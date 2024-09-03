@@ -72,28 +72,28 @@ public class GetEntityLongRangeDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        GetEntityLongRangeDescriptionsResult result = CoreResultFactory.getGetEntityLongRangeDescriptionsResult();
-        String componentVendorName = form.getComponentVendorName();
-        ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+        var result = CoreResultFactory.getGetEntityLongRangeDescriptionsResult();
+        var componentVendorName = form.getComponentVendorName();
+        var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
         
         if(componentVendor != null) {
-            String entityTypeName = form.getEntityTypeName();
-            EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+            var entityTypeName = form.getEntityTypeName();
+            var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
             
             if(entityType != null) {
-                String entityAttributeName = form.getEntityAttributeName();
-                EntityAttribute entityAttribute = coreControl.getEntityAttributeByName(entityType, entityAttributeName);
+                var entityAttributeName = form.getEntityAttributeName();
+                var entityAttribute = coreControl.getEntityAttributeByName(entityType, entityAttributeName);
                 
                 if(entityAttribute != null) {
-                    EntityAttributeType entityAttributeType = entityAttribute.getLastDetail().getEntityAttributeType();
-                    String entityAttributeTypeName = entityAttributeType.getEntityAttributeTypeName();
+                    var entityAttributeType = entityAttribute.getLastDetail().getEntityAttributeType();
+                    var entityAttributeTypeName = entityAttributeType.getEntityAttributeTypeName();
                     
                     if(entityAttributeTypeName.equals(EntityAttributeTypes.LONG.name())) {
-                        String entityLongRangeName = form.getEntityLongRangeName();
-                        EntityLongRange entityLongRange = coreControl.getEntityLongRangeByName(entityAttribute, entityLongRangeName);
+                        var entityLongRangeName = form.getEntityLongRangeName();
+                        var entityLongRange = coreControl.getEntityLongRangeByName(entityAttribute, entityLongRangeName);
                         
                         if(entityLongRange != null) {
-                            UserVisit userVisit = getUserVisit();
+                            var userVisit = getUserVisit();
                             
                             result.setEntityLongRange(coreControl.getEntityLongRangeTransfer(userVisit, entityLongRange, null));
                             result.setEntityLongRangeDescriptions(coreControl.getEntityLongRangeDescriptionTransfersByEntityLongRange(userVisit, entityLongRange, null));

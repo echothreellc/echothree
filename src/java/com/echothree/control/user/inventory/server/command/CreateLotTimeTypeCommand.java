@@ -67,8 +67,8 @@ public class CreateLotTimeTypeCommand
     @Override
     protected BaseResult execute() {
         var lotTimeControl = Session.getModelController(LotTimeControl.class);
-        String lotTimeTypeName = form.getLotTimeTypeName();
-        LotTimeType lotTimeType = lotTimeControl.getLotTimeTypeByName(lotTimeTypeName);
+        var lotTimeTypeName = form.getLotTimeTypeName();
+        var lotTimeType = lotTimeControl.getLotTimeTypeByName(lotTimeTypeName);
 
         if(lotTimeType == null) {
             var partyPK = getPartyPK();

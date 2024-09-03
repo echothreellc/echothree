@@ -47,8 +47,8 @@ public class CreateEventTypeCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String eventTypeName = form.getEventTypeName();
-        EventType eventType = coreControl.getEventTypeByName(eventTypeName);
+        var eventTypeName = form.getEventTypeName();
+        var eventType = coreControl.getEventTypeByName(eventTypeName);
         
         if(eventType == null) {
             coreControl.createEventType(eventTypeName);

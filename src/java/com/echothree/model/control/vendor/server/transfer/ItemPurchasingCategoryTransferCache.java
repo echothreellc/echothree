@@ -33,16 +33,16 @@ public class ItemPurchasingCategoryTransferCache
     }
     
     public ItemPurchasingCategoryTransfer getItemPurchasingCategoryTransfer(ItemPurchasingCategory itemPurchasingCategory) {
-        ItemPurchasingCategoryTransfer itemPurchasingCategoryTransfer = get(itemPurchasingCategory);
+        var itemPurchasingCategoryTransfer = get(itemPurchasingCategory);
         
         if(itemPurchasingCategoryTransfer == null) {
-            ItemPurchasingCategoryDetail itemPurchasingCategoryDetail = itemPurchasingCategory.getLastDetail();
-            String itemPurchasingCategoryName = itemPurchasingCategoryDetail.getItemPurchasingCategoryName();
-            ItemPurchasingCategory parentItemPurchasingCategory = itemPurchasingCategoryDetail.getParentItemPurchasingCategory();
-            ItemPurchasingCategoryTransfer parentItemPurchasingCategoryTransfer = parentItemPurchasingCategory == null? null: getItemPurchasingCategoryTransfer(parentItemPurchasingCategory);
-            Boolean isDefault = itemPurchasingCategoryDetail.getIsDefault();
-            Integer sortOrder = itemPurchasingCategoryDetail.getSortOrder();
-            String description = vendorControl.getBestItemPurchasingCategoryDescription(itemPurchasingCategory, getLanguage());
+            var itemPurchasingCategoryDetail = itemPurchasingCategory.getLastDetail();
+            var itemPurchasingCategoryName = itemPurchasingCategoryDetail.getItemPurchasingCategoryName();
+            var parentItemPurchasingCategory = itemPurchasingCategoryDetail.getParentItemPurchasingCategory();
+            var parentItemPurchasingCategoryTransfer = parentItemPurchasingCategory == null? null: getItemPurchasingCategoryTransfer(parentItemPurchasingCategory);
+            var isDefault = itemPurchasingCategoryDetail.getIsDefault();
+            var sortOrder = itemPurchasingCategoryDetail.getSortOrder();
+            var description = vendorControl.getBestItemPurchasingCategoryDescription(itemPurchasingCategory, getLanguage());
             
             itemPurchasingCategoryTransfer = new ItemPurchasingCategoryTransfer(itemPurchasingCategoryName,
                     parentItemPurchasingCategoryTransfer, isDefault, sortOrder, description);

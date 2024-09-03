@@ -55,22 +55,22 @@ public class ForumMessageAttachmentTransferCache
     }
     
     public ForumMessageAttachmentTransfer getForumMessageAttachmentTransfer(ForumMessageAttachment forumMessageAttachment) {
-        ForumMessageAttachmentTransfer forumMessageAttachmentTransfer = get(forumMessageAttachment);
+        var forumMessageAttachmentTransfer = get(forumMessageAttachment);
         
         if(forumMessageAttachmentTransfer == null) {
-            ForumMessageAttachmentDetail forumMessageAttachmentDetail = forumMessageAttachment.getLastDetail();
-            ForumMessageTransfer forumMessage = forumControl.getForumMessageTransfer(userVisit, forumMessageAttachmentDetail.getForumMessage());
-            Integer forumMessageAttachmentSequence = forumMessageAttachmentDetail.getForumMessageAttachmentSequence();
-            MimeTypeTransfer mimeType = coreControl.getMimeTypeTransfer(userVisit, forumMessageAttachmentDetail.getMimeType());
-            String description = forumControl.getBestForumMessageAttachmentDescription(forumMessageAttachment, getLanguage());
+            var forumMessageAttachmentDetail = forumMessageAttachment.getLastDetail();
+            var forumMessage = forumControl.getForumMessageTransfer(userVisit, forumMessageAttachmentDetail.getForumMessage());
+            var forumMessageAttachmentSequence = forumMessageAttachmentDetail.getForumMessageAttachmentSequence();
+            var mimeType = coreControl.getMimeTypeTransfer(userVisit, forumMessageAttachmentDetail.getMimeType());
+            var description = forumControl.getBestForumMessageAttachmentDescription(forumMessageAttachment, getLanguage());
             ByteArray blob = null;
             String clob = null;
             String eTag = null;
             long eTagEntityId = 0;
-            int eTagSize = 0;
+            var eTagSize = 0;
             
             if(includeBlob) {
-                ForumMessageBlobAttachment forumMessageAttachmentBlob = forumControl.getForumMessageBlobAttachment(forumMessageAttachment);
+                var forumMessageAttachmentBlob = forumControl.getForumMessageBlobAttachment(forumMessageAttachment);
                 
                 if(forumMessageAttachmentBlob != null) {
                     blob = forumMessageAttachmentBlob.getBlob();
@@ -78,7 +78,7 @@ public class ForumMessageAttachmentTransferCache
             }
             
             if(includeClob) {
-                ForumMessageClobAttachment forumMessageAttachmentClob = forumControl.getForumMessageClobAttachment(forumMessageAttachment);
+                var forumMessageAttachmentClob = forumControl.getForumMessageClobAttachment(forumMessageAttachment);
                 
                 if(forumMessageAttachmentClob != null) {
                     clob = forumMessageAttachmentClob.getClob();
@@ -87,8 +87,8 @@ public class ForumMessageAttachmentTransferCache
             
             if(includeETag && eTagEntityId != 0) {
                 // Forum Message Attachments do not have their own EntityTime, fall back on the Item's EntityTime.
-                EntityTimeTransfer entityTimeTransfer = forumMessage.getEntityInstance().getEntityTime();
-                Long modifiedTime = entityTimeTransfer.getUnformattedModifiedTime();
+                var entityTimeTransfer = forumMessage.getEntityInstance().getEntityTime();
+                var modifiedTime = entityTimeTransfer.getUnformattedModifiedTime();
                 long maxTime = modifiedTime == null ? entityTimeTransfer.getUnformattedCreatedTime() : modifiedTime;
 
                 // EntityId-Size-ModifiedTime

@@ -37,17 +37,17 @@ public class FinancialAccountTransactionTransferCache
     }
     
     public FinancialAccountTransactionTransfer getFinancialAccountTransactionTransfer(FinancialAccountTransaction financialAccountTransaction) {
-        FinancialAccountTransactionTransfer financialAccountTransactionTransfer = get(financialAccountTransaction);
+        var financialAccountTransactionTransfer = get(financialAccountTransaction);
         
         if(financialAccountTransactionTransfer == null) {
-            FinancialAccountTransactionDetail financialAccountTransactionDetail = financialAccountTransaction.getLastDetail();
-            String financialAccountTransactionName = financialAccountTransactionDetail.getFinancialAccountTransactionName();
-            FinancialAccount financialAccount = financialAccountTransactionDetail.getFinancialAccount();
-            FinancialAccountTransfer financialAccountTransfer = financialControl.getFinancialAccountTransfer(userVisit, financialAccount);
-            FinancialAccountTransactionTypeTransfer financialAccountTransactionTypeTransfer = financialControl.getFinancialAccountTransactionTypeTransfer(userVisit, financialAccountTransactionDetail.getFinancialAccountTransactionType());
-            Long unformattedAmount = financialAccountTransactionDetail.getAmount();
-            String amount = AmountUtils.getInstance().formatPriceLine(financialAccount.getLastDetail().getCurrency(), unformattedAmount);
-            String comment = financialAccountTransactionDetail.getComment();
+            var financialAccountTransactionDetail = financialAccountTransaction.getLastDetail();
+            var financialAccountTransactionName = financialAccountTransactionDetail.getFinancialAccountTransactionName();
+            var financialAccount = financialAccountTransactionDetail.getFinancialAccount();
+            var financialAccountTransfer = financialControl.getFinancialAccountTransfer(userVisit, financialAccount);
+            var financialAccountTransactionTypeTransfer = financialControl.getFinancialAccountTransactionTypeTransfer(userVisit, financialAccountTransactionDetail.getFinancialAccountTransactionType());
+            var unformattedAmount = financialAccountTransactionDetail.getAmount();
+            var amount = AmountUtils.getInstance().formatPriceLine(financialAccount.getLastDetail().getCurrency(), unformattedAmount);
+            var comment = financialAccountTransactionDetail.getComment();
             
             financialAccountTransactionTransfer = new FinancialAccountTransactionTransfer(financialAccountTransactionName, financialAccountTransfer,
                     financialAccountTransactionTypeTransfer, unformattedAmount, amount, comment);

@@ -67,19 +67,19 @@ public class EditSkillTypeCommand
     @Override
     protected BaseResult execute() {
         var employeeControl = Session.getModelController(EmployeeControl.class);
-        EditSkillTypeResult result = EmployeeResultFactory.getEditSkillTypeResult();
+        var result = EmployeeResultFactory.getEditSkillTypeResult();
         
         if(editMode.equals(EditMode.LOCK)) {
-            String skillTypeName = spec.getSkillTypeName();
-            SkillType skillType = employeeControl.getSkillTypeByName(skillTypeName);
+            var skillTypeName = spec.getSkillTypeName();
+            var skillType = employeeControl.getSkillTypeByName(skillTypeName);
             
             if(skillType != null) {
                 result.setSkillType(employeeControl.getSkillTypeTransfer(getUserVisit(), skillType));
                 
                 if(lockEntity(skillType)) {
-                    SkillTypeDescription skillTypeDescription = employeeControl.getSkillTypeDescription(skillType, getPreferredLanguage());
-                    SkillTypeEdit edit = EmployeeEditFactory.getSkillTypeEdit();
-                    SkillTypeDetail skillTypeDetail = skillType.getLastDetail();
+                    var skillTypeDescription = employeeControl.getSkillTypeDescription(skillType, getPreferredLanguage());
+                    var edit = EmployeeEditFactory.getSkillTypeEdit();
+                    var skillTypeDetail = skillType.getLastDetail();
                     
                     result.setEdit(edit);
                     edit.setSkillTypeName(skillTypeDetail.getSkillTypeName());
@@ -97,16 +97,16 @@ public class EditSkillTypeCommand
                 addExecutionError(ExecutionErrors.UnknownSkillTypeName.name(), skillTypeName);
             }
         } else if(editMode.equals(EditMode.UPDATE)) {
-            String skillTypeName = spec.getSkillTypeName();
-            SkillType skillType = employeeControl.getSkillTypeByNameForUpdate(skillTypeName);
+            var skillTypeName = spec.getSkillTypeName();
+            var skillType = employeeControl.getSkillTypeByNameForUpdate(skillTypeName);
             
             if(skillType != null) {
                 if(lockEntityForUpdate(skillType)) {
                     try {
                         var partyPK = getPartyPK();
-                        SkillTypeDetailValue skillTypeDetailValue = employeeControl.getSkillTypeDetailValueForUpdate(skillType);
-                        SkillTypeDescription skillTypeDescription = employeeControl.getSkillTypeDescriptionForUpdate(skillType, getPreferredLanguage());
-                        String description = edit.getDescription();
+                        var skillTypeDetailValue = employeeControl.getSkillTypeDetailValueForUpdate(skillType);
+                        var skillTypeDescription = employeeControl.getSkillTypeDescriptionForUpdate(skillType, getPreferredLanguage());
+                        var description = edit.getDescription();
                         
                         skillTypeDetailValue.setSkillTypeName(edit.getSkillTypeName());
                         skillTypeDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
@@ -119,7 +119,7 @@ public class EditSkillTypeCommand
                         } else if(skillTypeDescription != null && description == null) {
                             employeeControl.deleteSkillTypeDescription(skillTypeDescription, partyPK);
                         } else if(skillTypeDescription != null && description != null) {
-                            SkillTypeDescriptionValue skillTypeDescriptionValue = employeeControl.getSkillTypeDescriptionValue(skillTypeDescription);
+                            var skillTypeDescriptionValue = employeeControl.getSkillTypeDescriptionValue(skillTypeDescription);
                             
                             skillTypeDescriptionValue.setDescription(description);
                             employeeControl.updateSkillTypeDescriptionFromValue(skillTypeDescriptionValue, partyPK);

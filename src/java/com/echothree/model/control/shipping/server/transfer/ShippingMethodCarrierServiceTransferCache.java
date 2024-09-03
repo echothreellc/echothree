@@ -38,11 +38,11 @@ public class ShippingMethodCarrierServiceTransferCache
     }
     
     public ShippingMethodCarrierServiceTransfer getShippingMethodCarrierServiceTransfer(ShippingMethodCarrierService shippingMethodCarrierService) {
-        ShippingMethodCarrierServiceTransfer shippingMethodCarrierServiceTransfer = get(shippingMethodCarrierService);
+        var shippingMethodCarrierServiceTransfer = get(shippingMethodCarrierService);
         
         if(shippingMethodCarrierServiceTransfer == null) {
-            ShippingMethodTransfer shippingMethod = shippingControl.getShippingMethodTransfer(userVisit, shippingMethodCarrierService.getShippingMethod());
-            CarrierServiceTransfer carrierService = carrierControl.getCarrierServiceTransfer(userVisit, shippingMethodCarrierService.getCarrierService());
+            var shippingMethod = shippingControl.getShippingMethodTransfer(userVisit, shippingMethodCarrierService.getShippingMethod());
+            var carrierService = carrierControl.getCarrierServiceTransfer(userVisit, shippingMethodCarrierService.getCarrierService());
             
             shippingMethodCarrierServiceTransfer = new ShippingMethodCarrierServiceTransfer(shippingMethod, carrierService);
             put(shippingMethodCarrierService, shippingMethodCarrierServiceTransfer);

@@ -68,7 +68,7 @@ public class GetSequenceTypeCommand
 
     @Override
     protected SequenceType getEntity() {
-        SequenceType sequenceType = SequenceTypeLogic.getInstance().getSequenceTypeByUniversalSpec(this, form, true);
+        var sequenceType = SequenceTypeLogic.getInstance().getSequenceTypeByUniversalSpec(this, form, true);
 
         if(sequenceType != null) {
             sendEvent(sequenceType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());

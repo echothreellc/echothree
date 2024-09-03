@@ -65,9 +65,9 @@ public class GetPaymentMethodDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var paymentMethodControl = Session.getModelController(PaymentMethodControl.class);
-        GetPaymentMethodDescriptionsResult result = PaymentResultFactory.getGetPaymentMethodDescriptionsResult();
-        String paymentMethodName = form.getPaymentMethodName();
-        PaymentMethod paymentMethod = paymentMethodControl.getPaymentMethodByName(paymentMethodName);
+        var result = PaymentResultFactory.getGetPaymentMethodDescriptionsResult();
+        var paymentMethodName = form.getPaymentMethodName();
+        var paymentMethod = paymentMethodControl.getPaymentMethodByName(paymentMethodName);
         
         if(paymentMethod != null) {
             result.setPaymentMethod(paymentMethodControl.getPaymentMethodTransfer(getUserVisit(), paymentMethod));

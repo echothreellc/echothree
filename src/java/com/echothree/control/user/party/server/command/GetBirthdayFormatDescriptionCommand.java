@@ -68,16 +68,16 @@ public class GetBirthdayFormatDescriptionCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        GetBirthdayFormatDescriptionResult result = PartyResultFactory.getGetBirthdayFormatDescriptionResult();
-        String birthdayFormatName = form.getBirthdayFormatName();
-        BirthdayFormat birthdayFormat = partyControl.getBirthdayFormatByName(birthdayFormatName);
+        var result = PartyResultFactory.getGetBirthdayFormatDescriptionResult();
+        var birthdayFormatName = form.getBirthdayFormatName();
+        var birthdayFormat = partyControl.getBirthdayFormatByName(birthdayFormatName);
         
         if(birthdayFormat != null) {
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                BirthdayFormatDescription birthdayFormatDescription = partyControl.getBirthdayFormatDescription(birthdayFormat, language);
+                var birthdayFormatDescription = partyControl.getBirthdayFormatDescription(birthdayFormat, language);
                 
                 if(birthdayFormatDescription != null) {
                     result.setBirthdayFormatDescription(partyControl.getBirthdayFormatDescriptionTransfer(getUserVisit(), birthdayFormatDescription));

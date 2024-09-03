@@ -71,16 +71,16 @@ public class CreateCancellationTypeCommand
     @Override
     protected BaseResult execute() {
         var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
-        String cancellationKindName = form.getCancellationKindName();
-        CancellationKind cancellationKind = cancellationPolicyControl.getCancellationKindByName(cancellationKindName);
+        var cancellationKindName = form.getCancellationKindName();
+        var cancellationKind = cancellationPolicyControl.getCancellationKindByName(cancellationKindName);
         
         if(cancellationKind != null) {
-            String cancellationTypeName = form.getCancellationTypeName();
-            CancellationType cancellationType = cancellationPolicyControl.getCancellationTypeByName(cancellationKind, cancellationTypeName);
+            var cancellationTypeName = form.getCancellationTypeName();
+            var cancellationType = cancellationPolicyControl.getCancellationTypeByName(cancellationKind, cancellationTypeName);
             
             if(cancellationType == null) {
                 var sequenceControl = Session.getModelController(SequenceControl.class);
-                String cancellationSequenceName = form.getCancellationSequenceName();
+                var cancellationSequenceName = form.getCancellationSequenceName();
                 Sequence cancellationSequence = null;
                 
                 if(cancellationSequenceName != null) {

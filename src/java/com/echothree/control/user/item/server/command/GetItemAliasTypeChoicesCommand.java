@@ -63,9 +63,9 @@ public class GetItemAliasTypeChoicesCommand
     @Override
     protected BaseResult execute() {
         var itemControl = Session.getModelController(ItemControl.class);
-        GetItemAliasTypeChoicesResult result = ItemResultFactory.getGetItemAliasTypeChoicesResult();
-        String defaultItemAliasTypeChoice = form.getDefaultItemAliasTypeChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = ItemResultFactory.getGetItemAliasTypeChoicesResult();
+        var defaultItemAliasTypeChoice = form.getDefaultItemAliasTypeChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setItemAliasTypeChoices(itemControl.getItemAliasTypeChoices(defaultItemAliasTypeChoice, getPreferredLanguage(), allowNullChoice));
         

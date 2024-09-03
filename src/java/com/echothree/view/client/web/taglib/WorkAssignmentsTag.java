@@ -126,7 +126,7 @@ public class WorkAssignmentsTag
     @Override
     public int doStartTag() throws JspException {
         try {
-            GetWorkAssignmentsForm commandForm = WorkRequirementUtil.getHome().getGetWorkAssignmentsForm();
+            var commandForm = WorkRequirementUtil.getHome().getGetWorkAssignmentsForm();
             Map<String, Limit> limits = new HashMap<>();
             
             commandForm.setEmployeeName(employeeName);
@@ -140,8 +140,8 @@ public class WorkAssignmentsTag
                 limits.put(WorkAssignmentConstants.ENTITY_TYPE_NAME, new Limit(workAssignmentCount, workAssignmentOffset));
             }
             commandForm.setLimits(limits);
-            
-            CommandResult commandResult = WorkRequirementUtil.getHome().getWorkAssignments(getUserVisitPK(), commandForm);
+
+            var commandResult = WorkRequirementUtil.getHome().getWorkAssignments(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -149,8 +149,8 @@ public class WorkAssignmentsTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetWorkAssignmentsResult result = (GetWorkAssignmentsResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetWorkAssignmentsResult)executionResult.getResult();
 
                 pageContext.setAttribute(var, new ListWrapper<>(result.getWorkAssignments()), scope);
 

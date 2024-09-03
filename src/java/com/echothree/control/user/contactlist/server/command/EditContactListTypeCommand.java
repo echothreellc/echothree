@@ -99,7 +99,7 @@ public class EditContactListTypeCommand
     public ContactListType getEntity(EditContactListTypeResult result) {
         var contactListControl = Session.getModelController(ContactListControl.class);
         ContactListType contactListType = null;
-        String contactListTypeName = spec.getContactListTypeName();
+        var contactListTypeName = spec.getContactListTypeName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
             contactListType = contactListControl.getContactListTypeByName(contactListTypeName);
@@ -129,11 +129,11 @@ public class EditContactListTypeCommand
     @Override
     public void doLock(ContactListTypeEdit edit, ContactListType contactListType) {
         var contactListControl = Session.getModelController(ContactListControl.class);
-        ContactListTypeDescription contactListTypeDescription = contactListControl.getContactListTypeDescription(contactListType, getPreferredLanguage());
-        ContactListTypeDetail contactListTypeDetail = contactListType.getLastDetail();
-        Chain confirmationRequestChain = contactListTypeDetail.getConfirmationRequestChain();
-        Chain subscribeChain = contactListTypeDetail.getSubscribeChain();
-        Chain unsubscribeChain = contactListTypeDetail.getUnsubscribeChain();
+        var contactListTypeDescription = contactListControl.getContactListTypeDescription(contactListType, getPreferredLanguage());
+        var contactListTypeDetail = contactListType.getLastDetail();
+        var confirmationRequestChain = contactListTypeDetail.getConfirmationRequestChain();
+        var subscribeChain = contactListTypeDetail.getSubscribeChain();
+        var unsubscribeChain = contactListTypeDetail.getUnsubscribeChain();
 
         edit.setContactListTypeName(contactListTypeDetail.getContactListTypeName());
         edit.setConfirmationRequestChainName(confirmationRequestChain == null ? null : confirmationRequestChain.getLastDetail().getChainName());
@@ -155,27 +155,27 @@ public class EditContactListTypeCommand
     @Override
     public void canUpdate(ContactListType contactListType) {
         var contactListControl = Session.getModelController(ContactListControl.class);
-        String contactListTypeName = edit.getContactListTypeName();
-        ContactListType duplicateContactListType = contactListControl.getContactListTypeByName(contactListTypeName);
+        var contactListTypeName = edit.getContactListTypeName();
+        var duplicateContactListType = contactListControl.getContactListTypeByName(contactListTypeName);
 
         if(duplicateContactListType != null && !contactListType.equals(duplicateContactListType)) {
             addExecutionError(ExecutionErrors.DuplicateContactListTypeName.name(), contactListTypeName);
         } else {
             var chainControl = Session.getModelController(ChainControl.class);
-            ChainKind chainKind = chainControl.getChainKindByName(ChainConstants.ChainKind_CONTACT_LIST);
-            String confirmationRequestChainName = edit.getConfirmationRequestChainName();
+            var chainKind = chainControl.getChainKindByName(ChainConstants.ChainKind_CONTACT_LIST);
+            var confirmationRequestChainName = edit.getConfirmationRequestChainName();
 
             confirmationRequestChain = confirmationRequestChainName == null ? null
                     : chainControl.getChainByName(chainControl.getChainTypeByName(chainKind, ChainConstants.ChainType_CONFIRMATION_REQUEST), confirmationRequestChainName);
 
             if(confirmationRequestChainName == null || confirmationRequestChain != null) {
-                String subscribeChainName = edit.getSubscribeChainName();
+                var subscribeChainName = edit.getSubscribeChainName();
 
                 subscribeChain = subscribeChainName == null ? null
                         : chainControl.getChainByName(chainControl.getChainTypeByName(chainKind, ChainConstants.ChainType_SUBSCRIBE), subscribeChainName);
 
                 if(subscribeChainName == null || subscribeChain != null) {
-                    String unsubscribeChainName = edit.getUnsubscribeChainName();
+                    var unsubscribeChainName = edit.getUnsubscribeChainName();
 
                     unsubscribeChain = unsubscribeChainName == null ? null
                             : chainControl.getChainByName(chainControl.getChainTypeByName(chainKind, ChainConstants.ChainType_UNSUBSCRIBE), unsubscribeChainName);
@@ -196,9 +196,9 @@ public class EditContactListTypeCommand
     public void doUpdate(ContactListType contactListType) {
         var contactListControl = Session.getModelController(ContactListControl.class);
         var partyPK = getPartyPK();
-        ContactListTypeDetailValue contactListTypeDetailValue = contactListControl.getContactListTypeDetailValueForUpdate(contactListType);
-        ContactListTypeDescription contactListTypeDescription = contactListControl.getContactListTypeDescriptionForUpdate(contactListType, getPreferredLanguage());
-        String description = edit.getDescription();
+        var contactListTypeDetailValue = contactListControl.getContactListTypeDetailValueForUpdate(contactListType);
+        var contactListTypeDescription = contactListControl.getContactListTypeDescriptionForUpdate(contactListType, getPreferredLanguage());
+        var description = edit.getDescription();
 
         contactListTypeDetailValue.setContactListTypeName(edit.getContactListTypeName());
         contactListTypeDetailValue.setConfirmationRequestChainPK(confirmationRequestChain == null ? null : confirmationRequestChain.getPrimaryKey());
@@ -215,7 +215,7 @@ public class EditContactListTypeCommand
         } else if(contactListTypeDescription != null && description == null) {
             contactListControl.deleteContactListTypeDescription(contactListTypeDescription, partyPK);
         } else if(contactListTypeDescription != null && description != null) {
-            ContactListTypeDescriptionValue contactListTypeDescriptionValue = contactListControl.getContactListTypeDescriptionValue(contactListTypeDescription);
+            var contactListTypeDescriptionValue = contactListControl.getContactListTypeDescriptionValue(contactListTypeDescription);
 
             contactListTypeDescriptionValue.setDescription(description);
             contactListControl.updateContactListTypeDescriptionFromValue(contactListTypeDescriptionValue, partyPK);

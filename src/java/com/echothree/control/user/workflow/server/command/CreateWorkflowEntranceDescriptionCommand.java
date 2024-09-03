@@ -70,20 +70,20 @@ public class CreateWorkflowEntranceDescriptionCommand
     @Override
     protected BaseResult execute() {
         var workflowControl = Session.getModelController(WorkflowControl.class);
-        String workflowName = form.getWorkflowName();
+        var workflowName = form.getWorkflowName();
         var workflow = workflowControl.getWorkflowByName(workflowName);
         
         if(workflow != null) {
-            String workflowEntranceName = form.getWorkflowEntranceName();
-            WorkflowEntrance workflowEntrance = workflowControl.getWorkflowEntranceByName(workflow, workflowEntranceName);
+            var workflowEntranceName = form.getWorkflowEntranceName();
+            var workflowEntrance = workflowControl.getWorkflowEntranceByName(workflow, workflowEntranceName);
             
             if(workflowEntrance != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = form.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = form.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
                 
                 if(language != null) {
-                    WorkflowEntranceDescription workflowStepDescription = workflowControl.getWorkflowEntranceDescription(workflowEntrance, language);
+                    var workflowStepDescription = workflowControl.getWorkflowEntranceDescription(workflowEntrance, language);
                     
                     if(workflowStepDescription == null) {
                         var description = form.getDescription();

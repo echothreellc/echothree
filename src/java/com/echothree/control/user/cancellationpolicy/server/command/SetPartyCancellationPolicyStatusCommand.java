@@ -71,23 +71,23 @@ public class SetPartyCancellationPolicyStatusCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        String partyName = form.getPartyName();
-        Party party = partyControl.getPartyByName(partyName);
+        var partyName = form.getPartyName();
+        var party = partyControl.getPartyByName(partyName);
 
         if(party != null) {
             var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
-            String cancellationKindName = form.getCancellationKindName();
-            CancellationKind cancellationKind = cancellationPolicyControl.getCancellationKindByName(cancellationKindName);
+            var cancellationKindName = form.getCancellationKindName();
+            var cancellationKind = cancellationPolicyControl.getCancellationKindByName(cancellationKindName);
 
             if(cancellationKind != null) {
-                String cancellationPolicyName = form.getCancellationPolicyName();
-                CancellationPolicy cancellationPolicy = cancellationPolicyControl.getCancellationPolicyByName(cancellationKind, cancellationPolicyName);
+                var cancellationPolicyName = form.getCancellationPolicyName();
+                var cancellationPolicy = cancellationPolicyControl.getCancellationPolicyByName(cancellationKind, cancellationPolicyName);
 
                 if(cancellationPolicy != null) {
-                    PartyCancellationPolicy partyCancellationPolicy = cancellationPolicyControl.createPartyCancellationPolicy(party, cancellationPolicy, getPartyPK());
+                    var partyCancellationPolicy = cancellationPolicyControl.createPartyCancellationPolicy(party, cancellationPolicy, getPartyPK());
 
                     if(partyCancellationPolicy != null) {
-                        String partyCancellationPolicyStatusChoice = form.getPartyCancellationPolicyStatusChoice();
+                        var partyCancellationPolicyStatusChoice = form.getPartyCancellationPolicyStatusChoice();
 
                         PartyCancellationPolicyLogic.getInstance().setPartyCancellationPolicyStatus(this, partyCancellationPolicy, partyCancellationPolicyStatusChoice, getPartyPK());
                     } else {

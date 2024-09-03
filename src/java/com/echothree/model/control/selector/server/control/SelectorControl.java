@@ -210,11 +210,11 @@ public class SelectorControl
     // --------------------------------------------------------------------------------
 
     public SelectorKind createSelectorKind(String selectorKindName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        SelectorKind defaultSelectorKind = getDefaultSelectorKind();
-        boolean defaultFound = defaultSelectorKind != null;
+        var defaultSelectorKind = getDefaultSelectorKind();
+        var defaultFound = defaultSelectorKind != null;
 
         if(defaultFound && isDefault) {
-            SelectorKindDetailValue defaultSelectorKindDetailValue = getDefaultSelectorKindDetailValueForUpdate();
+            var defaultSelectorKindDetailValue = getDefaultSelectorKindDetailValueForUpdate();
 
             defaultSelectorKindDetailValue.setIsDefault(Boolean.FALSE);
             updateSelectorKindFromValue(defaultSelectorKindDetailValue, false, createdBy);
@@ -222,8 +222,8 @@ public class SelectorControl
             isDefault = Boolean.TRUE;
         }
 
-        SelectorKind selectorKind = SelectorKindFactory.getInstance().create();
-        SelectorKindDetail selectorKindDetail = SelectorKindDetailFactory.getInstance().create(selectorKind, selectorKindName, isDefault, sortOrder,
+        var selectorKind = SelectorKindFactory.getInstance().create();
+        var selectorKindDetail = SelectorKindDetailFactory.getInstance().create(selectorKind, selectorKindName, isDefault, sortOrder,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -363,7 +363,7 @@ public class SelectorControl
     }
 
     public SelectorKindChoicesBean getSelectorKindChoices(String defaultSelectorKindChoice, Language language, boolean allowNullChoice) {
-        List<SelectorKind> selectorKinds = getSelectorKinds();
+        var selectorKinds = getSelectorKinds();
         var size = selectorKinds.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -379,7 +379,7 @@ public class SelectorControl
         }
 
         for(var selectorKind : selectorKinds) {
-            SelectorKindDetail selectorKindDetail = selectorKind.getLastDetail();
+            var selectorKindDetail = selectorKind.getLastDetail();
 
             var label = getBestSelectorKindDescription(selectorKind, language);
             var value = selectorKindDetail.getSelectorKindName();
@@ -402,7 +402,7 @@ public class SelectorControl
 
     public List<SelectorKindTransfer> getSelectorKindTransfers(UserVisit userVisit, Collection<SelectorKind> selectorKinds) {
         List<SelectorKindTransfer> selectorKindTransfers = new ArrayList<>(selectorKinds.size());
-        SelectorKindTransferCache selectorKindTransferCache = getSelectorTransferCaches(userVisit).getSelectorKindTransferCache();
+        var selectorKindTransferCache = getSelectorTransferCaches(userVisit).getSelectorKindTransferCache();
 
         selectorKinds.forEach((selectorKind) ->
                 selectorKindTransfers.add(selectorKindTransferCache.getSelectorKindTransfer(selectorKind))
@@ -416,25 +416,25 @@ public class SelectorControl
     }
 
     private void updateSelectorKindFromValue(SelectorKindDetailValue selectorKindDetailValue, boolean checkDefault, BasePK updatedBy) {
-        SelectorKind selectorKind = SelectorKindFactory.getInstance().getEntityFromPK(session,
+        var selectorKind = SelectorKindFactory.getInstance().getEntityFromPK(session,
                 EntityPermission.READ_WRITE, selectorKindDetailValue.getSelectorKindPK());
-        SelectorKindDetail selectorKindDetail = selectorKind.getActiveDetailForUpdate();
+        var selectorKindDetail = selectorKind.getActiveDetailForUpdate();
 
         selectorKindDetail.setThruTime(session.START_TIME_LONG);
         selectorKindDetail.store();
 
-        SelectorKindPK selectorKindPK = selectorKindDetail.getSelectorKindPK();
-        String selectorKindName = selectorKindDetailValue.getSelectorKindName();
-        Boolean isDefault = selectorKindDetailValue.getIsDefault();
-        Integer sortOrder = selectorKindDetailValue.getSortOrder();
+        var selectorKindPK = selectorKindDetail.getSelectorKindPK();
+        var selectorKindName = selectorKindDetailValue.getSelectorKindName();
+        var isDefault = selectorKindDetailValue.getIsDefault();
+        var sortOrder = selectorKindDetailValue.getSortOrder();
 
         if(checkDefault) {
-            SelectorKind defaultSelectorKind = getDefaultSelectorKind();
-            boolean defaultFound = defaultSelectorKind != null && !defaultSelectorKind.equals(selectorKind);
+            var defaultSelectorKind = getDefaultSelectorKind();
+            var defaultFound = defaultSelectorKind != null && !defaultSelectorKind.equals(selectorKind);
 
             if(isDefault && defaultFound) {
                 // If I'm the default, and a default already existed...
-                SelectorKindDetailValue defaultSelectorKindDetailValue = getDefaultSelectorKindDetailValueForUpdate();
+                var defaultSelectorKindDetailValue = getDefaultSelectorKindDetailValueForUpdate();
 
                 defaultSelectorKindDetailValue.setIsDefault(Boolean.FALSE);
                 updateSelectorKindFromValue(defaultSelectorKindDetailValue, false, updatedBy);
@@ -461,22 +461,22 @@ public class SelectorControl
     public void deleteSelectorKind(SelectorKind selectorKind, BasePK deletedBy) {
         deleteSelectorKindDescriptionsBySelectorKind(selectorKind, deletedBy);
 
-        SelectorKindDetail selectorKindDetail = selectorKind.getLastDetailForUpdate();
+        var selectorKindDetail = selectorKind.getLastDetailForUpdate();
         selectorKindDetail.setThruTime(session.START_TIME_LONG);
         selectorKind.setActiveDetail(null);
         selectorKind.store();
 
         // Check for default, and pick one if necessary
-        SelectorKind defaultSelectorKind = getDefaultSelectorKind();
+        var defaultSelectorKind = getDefaultSelectorKind();
         if(defaultSelectorKind == null) {
-            List<SelectorKind> selectorKinds = getSelectorKindsForUpdate();
+            var selectorKinds = getSelectorKindsForUpdate();
 
             if(!selectorKinds.isEmpty()) {
-                Iterator<SelectorKind> iter = selectorKinds.iterator();
+                var iter = selectorKinds.iterator();
                 if(iter.hasNext()) {
                     defaultSelectorKind = iter.next();
                 }
-                SelectorKindDetailValue selectorKindDetailValue = Objects.requireNonNull(defaultSelectorKind).getLastDetailForUpdate().getSelectorKindDetailValue().clone();
+                var selectorKindDetailValue = Objects.requireNonNull(defaultSelectorKind).getLastDetailForUpdate().getSelectorKindDetailValue().clone();
 
                 selectorKindDetailValue.setIsDefault(Boolean.TRUE);
                 updateSelectorKindFromValue(selectorKindDetailValue, false, deletedBy);
@@ -492,7 +492,7 @@ public class SelectorControl
 
     public SelectorKindDescription createSelectorKindDescription(SelectorKind selectorKind, Language language, String description,
             BasePK createdBy) {
-        SelectorKindDescription selectorKindDescription = SelectorKindDescriptionFactory.getInstance().create(selectorKind,
+        var selectorKindDescription = SelectorKindDescriptionFactory.getInstance().create(selectorKind,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(selectorKind.getPrimaryKey(), EventTypes.MODIFY, selectorKindDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -571,7 +571,7 @@ public class SelectorControl
 
     public String getBestSelectorKindDescription(SelectorKind selectorKind, Language language) {
         String description;
-        SelectorKindDescription selectorKindDescription = getSelectorKindDescription(selectorKind, language);
+        var selectorKindDescription = getSelectorKindDescription(selectorKind, language);
 
         if(selectorKindDescription == null && !language.getIsDefault()) {
             selectorKindDescription = getSelectorKindDescription(selectorKind, getPartyControl().getDefaultLanguage());
@@ -591,7 +591,7 @@ public class SelectorControl
     }
 
     public List<SelectorKindDescriptionTransfer> getSelectorKindDescriptionTransfersBySelectorKind(UserVisit userVisit, SelectorKind selectorKind) {
-        List<SelectorKindDescription> selectorKindDescriptions = getSelectorKindDescriptionsBySelectorKind(selectorKind);
+        var selectorKindDescriptions = getSelectorKindDescriptionsBySelectorKind(selectorKind);
         List<SelectorKindDescriptionTransfer> selectorKindDescriptionTransfers = new ArrayList<>(selectorKindDescriptions.size());
 
         selectorKindDescriptions.forEach((selectorKindDescription) -> {
@@ -603,15 +603,15 @@ public class SelectorControl
 
     public void updateSelectorKindDescriptionFromValue(SelectorKindDescriptionValue selectorKindDescriptionValue, BasePK updatedBy) {
         if(selectorKindDescriptionValue.hasBeenModified()) {
-            SelectorKindDescription selectorKindDescription = SelectorKindDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var selectorKindDescription = SelectorKindDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      selectorKindDescriptionValue.getPrimaryKey());
 
             selectorKindDescription.setThruTime(session.START_TIME_LONG);
             selectorKindDescription.store();
 
-            SelectorKind selectorKind = selectorKindDescription.getSelectorKind();
-            Language language = selectorKindDescription.getLanguage();
-            String description = selectorKindDescriptionValue.getDescription();
+            var selectorKind = selectorKindDescription.getSelectorKind();
+            var language = selectorKindDescription.getLanguage();
+            var description = selectorKindDescriptionValue.getDescription();
 
             selectorKindDescription = SelectorKindDescriptionFactory.getInstance().create(selectorKind, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -628,7 +628,7 @@ public class SelectorControl
     }
 
     public void deleteSelectorKindDescriptionsBySelectorKind(SelectorKind selectorKind, BasePK deletedBy) {
-        List<SelectorKindDescription> selectorKindDescriptions = getSelectorKindDescriptionsBySelectorKindForUpdate(selectorKind);
+        var selectorKindDescriptions = getSelectorKindDescriptionsBySelectorKindForUpdate(selectorKind);
 
         selectorKindDescriptions.forEach((selectorKindDescription) -> 
                 deleteSelectorKindDescription(selectorKindDescription, deletedBy)
@@ -640,11 +640,11 @@ public class SelectorControl
     // --------------------------------------------------------------------------------
 
     public SelectorType createSelectorType(SelectorKind selectorKind, String selectorTypeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        SelectorType defaultSelectorType = getDefaultSelectorType(selectorKind);
-        boolean defaultFound = defaultSelectorType != null;
+        var defaultSelectorType = getDefaultSelectorType(selectorKind);
+        var defaultFound = defaultSelectorType != null;
 
         if(defaultFound && isDefault) {
-            SelectorTypeDetailValue defaultSelectorTypeDetailValue = getDefaultSelectorTypeDetailValueForUpdate(selectorKind);
+            var defaultSelectorTypeDetailValue = getDefaultSelectorTypeDetailValueForUpdate(selectorKind);
 
             defaultSelectorTypeDetailValue.setIsDefault(Boolean.FALSE);
             updateSelectorTypeFromValue(defaultSelectorTypeDetailValue, false, createdBy);
@@ -652,8 +652,8 @@ public class SelectorControl
             isDefault = Boolean.TRUE;
         }
 
-        SelectorType selectorType = SelectorTypeFactory.getInstance().create();
-        SelectorTypeDetail selectorTypeDetail = SelectorTypeDetailFactory.getInstance().create(session, selectorType, selectorKind, selectorTypeName, isDefault, sortOrder,
+        var selectorType = SelectorTypeFactory.getInstance().create();
+        var selectorTypeDetail = SelectorTypeDetailFactory.getInstance().create(session, selectorType, selectorKind, selectorTypeName, isDefault, sortOrder,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -801,7 +801,7 @@ public class SelectorControl
 
     public SelectorTypeChoicesBean getSelectorTypeChoices(String defaultSelectorTypeChoice, Language language,
             boolean allowNullChoice, SelectorKind selectorKind) {
-        List<SelectorType> selectorTypes = getSelectorTypes(selectorKind);
+        var selectorTypes = getSelectorTypes(selectorKind);
         var size = selectorTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -817,7 +817,7 @@ public class SelectorControl
         }
 
         for(var selectorType : selectorTypes) {
-            SelectorTypeDetail selectorTypeDetail = selectorType.getLastDetail();
+            var selectorTypeDetail = selectorType.getLastDetail();
             var label = getBestSelectorTypeDescription(selectorType, language);
             var value = selectorTypeDetail.getSelectorTypeName();
 
@@ -839,7 +839,7 @@ public class SelectorControl
 
     public List<SelectorTypeTransfer> getSelectorTypeTransfers(UserVisit userVisit, Collection<SelectorType> selectorTypes) {
         List<SelectorTypeTransfer> selectorTypeTransfers = new ArrayList<>(selectorTypes.size());
-        SelectorTypeTransferCache selectorTypeTransferCache = getSelectorTransferCaches(userVisit).getSelectorTypeTransferCache();
+        var selectorTypeTransferCache = getSelectorTransferCaches(userVisit).getSelectorTypeTransferCache();
 
         selectorTypes.forEach((selectorType) ->
                 selectorTypeTransfers.add(selectorTypeTransferCache.getSelectorTypeTransfer(selectorType))
@@ -855,27 +855,27 @@ public class SelectorControl
     private void updateSelectorTypeFromValue(SelectorTypeDetailValue selectorTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(selectorTypeDetailValue.hasBeenModified()) {
-            SelectorType selectorType = SelectorTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var selectorType = SelectorTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      selectorTypeDetailValue.getSelectorTypePK());
-            SelectorTypeDetail selectorTypeDetail = selectorType.getActiveDetailForUpdate();
+            var selectorTypeDetail = selectorType.getActiveDetailForUpdate();
 
             selectorTypeDetail.setThruTime(session.START_TIME_LONG);
             selectorTypeDetail.store();
 
-            SelectorTypePK selectorTypePK = selectorTypeDetail.getSelectorTypePK();
-            SelectorKind selectorKind = selectorTypeDetail.getSelectorKind();
-            SelectorKindPK selectorKindPK = selectorKind.getPrimaryKey();
-            String selectorTypeName = selectorTypeDetailValue.getSelectorTypeName();
-            Boolean isDefault = selectorTypeDetailValue.getIsDefault();
-            Integer sortOrder = selectorTypeDetailValue.getSortOrder();
+            var selectorTypePK = selectorTypeDetail.getSelectorTypePK();
+            var selectorKind = selectorTypeDetail.getSelectorKind();
+            var selectorKindPK = selectorKind.getPrimaryKey();
+            var selectorTypeName = selectorTypeDetailValue.getSelectorTypeName();
+            var isDefault = selectorTypeDetailValue.getIsDefault();
+            var sortOrder = selectorTypeDetailValue.getSortOrder();
 
             if(checkDefault) {
-                SelectorType defaultSelectorType = getDefaultSelectorType(selectorKind);
-                boolean defaultFound = defaultSelectorType != null && !defaultSelectorType.equals(selectorType);
+                var defaultSelectorType = getDefaultSelectorType(selectorKind);
+                var defaultFound = defaultSelectorType != null && !defaultSelectorType.equals(selectorType);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    SelectorTypeDetailValue defaultSelectorTypeDetailValue = getDefaultSelectorTypeDetailValueForUpdate(selectorKind);
+                    var defaultSelectorTypeDetailValue = getDefaultSelectorTypeDetailValueForUpdate(selectorKind);
 
                     defaultSelectorTypeDetailValue.setIsDefault(Boolean.FALSE);
                     updateSelectorTypeFromValue(defaultSelectorTypeDetailValue, false, updatedBy);
@@ -903,23 +903,23 @@ public class SelectorControl
         deleteSelectorTypeDescriptionsBySelectorType(selectorType, deletedBy);
         deleteSelectorsBySelectorType(selectorType, deletedBy);
 
-        SelectorTypeDetail selectorTypeDetail = selectorType.getLastDetailForUpdate();
+        var selectorTypeDetail = selectorType.getLastDetailForUpdate();
         selectorTypeDetail.setThruTime(session.START_TIME_LONG);
         selectorType.setActiveDetail(null);
         selectorType.store();
 
         // Check for default, and pick one if necessary
-        SelectorKind selectorKind = selectorTypeDetail.getSelectorKind();
-        SelectorType defaultSelectorType = getDefaultSelectorType(selectorKind);
+        var selectorKind = selectorTypeDetail.getSelectorKind();
+        var defaultSelectorType = getDefaultSelectorType(selectorKind);
         if(defaultSelectorType == null) {
-            List<SelectorType> selectorTypes = getSelectorTypesForUpdate(selectorKind);
+            var selectorTypes = getSelectorTypesForUpdate(selectorKind);
 
             if(!selectorTypes.isEmpty()) {
-                Iterator<SelectorType> iter = selectorTypes.iterator();
+                var iter = selectorTypes.iterator();
                 if(iter.hasNext()) {
                     defaultSelectorType = iter.next();
                 }
-                SelectorTypeDetailValue selectorTypeDetailValue = Objects.requireNonNull(defaultSelectorType).getLastDetailForUpdate().getSelectorTypeDetailValue().clone();
+                var selectorTypeDetailValue = Objects.requireNonNull(defaultSelectorType).getLastDetailForUpdate().getSelectorTypeDetailValue().clone();
 
                 selectorTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateSelectorTypeFromValue(selectorTypeDetailValue, false, deletedBy);
@@ -930,7 +930,7 @@ public class SelectorControl
     }
 
     public void deleteSelectorTypesBySelectorKind(SelectorKind selectorKind, BasePK deletedBy) {
-        List<SelectorType> selectorTypes = getSelectorTypesForUpdate(selectorKind);
+        var selectorTypes = getSelectorTypesForUpdate(selectorKind);
 
         selectorTypes.forEach((selectorType) -> 
                 deleteSelectorType(selectorType, deletedBy)
@@ -943,7 +943,7 @@ public class SelectorControl
 
     public SelectorTypeDescription createSelectorTypeDescription(SelectorType selectorType, Language language, String description,
             BasePK createdBy) {
-        SelectorTypeDescription selectorTypeDescription = SelectorTypeDescriptionFactory.getInstance().create(selectorType,
+        var selectorTypeDescription = SelectorTypeDescriptionFactory.getInstance().create(selectorType,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(selectorType.getPrimaryKey(), EventTypes.MODIFY, selectorTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1022,7 +1022,7 @@ public class SelectorControl
 
     public String getBestSelectorTypeDescription(SelectorType selectorType, Language language) {
         String description;
-        SelectorTypeDescription selectorTypeDescription = getSelectorTypeDescription(selectorType, language);
+        var selectorTypeDescription = getSelectorTypeDescription(selectorType, language);
 
         if(selectorTypeDescription == null && !language.getIsDefault()) {
             selectorTypeDescription = getSelectorTypeDescription(selectorType, getPartyControl().getDefaultLanguage());
@@ -1042,7 +1042,7 @@ public class SelectorControl
     }
 
     public List<SelectorTypeDescriptionTransfer> getSelectorTypeDescriptionTransfersBySelectorType(UserVisit userVisit, SelectorType selectorType) {
-        List<SelectorTypeDescription> selectorTypeDescriptions = getSelectorTypeDescriptionsBySelectorType(selectorType);
+        var selectorTypeDescriptions = getSelectorTypeDescriptionsBySelectorType(selectorType);
         List<SelectorTypeDescriptionTransfer> selectorTypeDescriptionTransfers = new ArrayList<>(selectorTypeDescriptions.size());
 
         selectorTypeDescriptions.forEach((selectorTypeDescription) -> {
@@ -1054,15 +1054,15 @@ public class SelectorControl
 
     public void updateSelectorTypeDescriptionFromValue(SelectorTypeDescriptionValue selectorTypeDescriptionValue, BasePK updatedBy) {
         if(selectorTypeDescriptionValue.hasBeenModified()) {
-            SelectorTypeDescription selectorTypeDescription = SelectorTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var selectorTypeDescription = SelectorTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      selectorTypeDescriptionValue.getPrimaryKey());
 
             selectorTypeDescription.setThruTime(session.START_TIME_LONG);
             selectorTypeDescription.store();
 
-            SelectorType selectorType = selectorTypeDescription.getSelectorType();
-            Language language = selectorTypeDescription.getLanguage();
-            String description = selectorTypeDescriptionValue.getDescription();
+            var selectorType = selectorTypeDescription.getSelectorType();
+            var language = selectorTypeDescription.getLanguage();
+            var description = selectorTypeDescriptionValue.getDescription();
 
             selectorTypeDescription = SelectorTypeDescriptionFactory.getInstance().create(selectorType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1079,7 +1079,7 @@ public class SelectorControl
     }
 
     public void deleteSelectorTypeDescriptionsBySelectorType(SelectorType selectorType, BasePK deletedBy) {
-        List<SelectorTypeDescription> selectorTypeDescriptions = getSelectorTypeDescriptionsBySelectorTypeForUpdate(selectorType);
+        var selectorTypeDescriptions = getSelectorTypeDescriptionsBySelectorTypeForUpdate(selectorType);
 
         selectorTypeDescriptions.forEach((selectorTypeDescription) -> 
                 deleteSelectorTypeDescription(selectorTypeDescription, deletedBy)
@@ -1091,7 +1091,7 @@ public class SelectorControl
     // --------------------------------------------------------------------------------
     
     public SelectorBooleanType createSelectorBooleanType(String selectorBooleanTypeName, Boolean isDefault, Integer sortOrder) {
-        SelectorBooleanType selectorBooleanType = SelectorBooleanTypeFactory.getInstance().create(selectorBooleanTypeName,
+        var selectorBooleanType = SelectorBooleanTypeFactory.getInstance().create(selectorBooleanTypeName,
                 isDefault, sortOrder);
         
         return selectorBooleanType;
@@ -1099,7 +1099,7 @@ public class SelectorControl
     
     public List<SelectorBooleanType> getSelectorBooleanTypes() {
         List<SelectorBooleanType> selectorBooleanTypes;
-        PreparedStatement ps = SelectorBooleanTypeFactory.getInstance().prepareStatement(
+        var ps = SelectorBooleanTypeFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
                 "FROM selectorbooleantypes " +
                 "ORDER BY slbt_sortorder, slbt_selectorbooleantypename");
@@ -1113,7 +1113,7 @@ public class SelectorControl
         SelectorBooleanType selectorBooleanType;
         
         try {
-            PreparedStatement ps = SelectorBooleanTypeFactory.getInstance().prepareStatement(
+            var ps = SelectorBooleanTypeFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM selectorbooleantypes " +
                     "WHERE slbt_selectorbooleantypename = ?");
@@ -1130,7 +1130,7 @@ public class SelectorControl
     
     public SelectorBooleanTypeChoicesBean getSelectorBooleanTypeChoices(String defaultSelectorBooleanTypeChoice, Language language,
             boolean allowNullChoice) {
-        List<SelectorBooleanType> selectorBooleanTypes = getSelectorBooleanTypes();
+        var selectorBooleanTypes = getSelectorBooleanTypes();
         var size = selectorBooleanTypes.size() + (allowNullChoice? 1: 0);
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -1167,7 +1167,7 @@ public class SelectorControl
     
     public SelectorBooleanTypeDescription createSelectorBooleanTypeDescription(SelectorBooleanType selectorBooleanType,
             Language language, String description) {
-        SelectorBooleanTypeDescription selectorBooleanTypeDescription = SelectorBooleanTypeDescriptionFactory.getInstance().create(session,
+        var selectorBooleanTypeDescription = SelectorBooleanTypeDescriptionFactory.getInstance().create(session,
                 selectorBooleanType, language, description);
         
         return selectorBooleanTypeDescription;
@@ -1177,7 +1177,7 @@ public class SelectorControl
         SelectorBooleanTypeDescription selectorBooleanTypeDescription;
         
         try {
-            PreparedStatement ps = SelectorBooleanTypeDescriptionFactory.getInstance().prepareStatement(
+            var ps = SelectorBooleanTypeDescriptionFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM selectorbooleantypedescriptions " +
                     "WHERE slbtd_slbt_selectorbooleantypeid = ? AND slbtd_lang_languageid = ?");
@@ -1195,7 +1195,7 @@ public class SelectorControl
     
     public String getBestSelectorBooleanTypeDescription(SelectorBooleanType selectorBooleanType, Language language) {
         String description;
-        SelectorBooleanTypeDescription selectorBooleanTypeDescription = getSelectorBooleanTypeDescription(selectorBooleanType, language);
+        var selectorBooleanTypeDescription = getSelectorBooleanTypeDescription(selectorBooleanType, language);
         
         if(selectorBooleanTypeDescription == null && !language.getIsDefault()) {
             selectorBooleanTypeDescription = getSelectorBooleanTypeDescription(selectorBooleanType, getPartyControl().getDefaultLanguage());
@@ -1216,14 +1216,14 @@ public class SelectorControl
     
     public SelectorComparisonType createSelectorComparisonType(String selectorComparisonTypeName, Boolean isDefault,
             Integer sortOrder) {
-        SelectorComparisonType selectorComparisonType = SelectorComparisonTypeFactory.getInstance().create(session,
+        var selectorComparisonType = SelectorComparisonTypeFactory.getInstance().create(session,
                 selectorComparisonTypeName, isDefault, sortOrder);
         
         return selectorComparisonType;
     }
     
     public List<SelectorComparisonType> getSelectorComparisonTypes() {
-        PreparedStatement ps = SelectorComparisonTypeFactory.getInstance().prepareStatement(
+        var ps = SelectorComparisonTypeFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
                 "FROM selectorcomparisontypes " +
                 "ORDER BY slct_sortorder, slct_selectorcomparisontypename");
@@ -1235,7 +1235,7 @@ public class SelectorControl
         SelectorComparisonType selectorComparisonType;
         
         try {
-            PreparedStatement ps = SelectorComparisonTypeFactory.getInstance().prepareStatement(
+            var ps = SelectorComparisonTypeFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM selectorcomparisontypes " +
                     "WHERE slct_selectorcomparisontypename = ?");
@@ -1252,7 +1252,7 @@ public class SelectorControl
     
     public SelectorComparisonTypeChoicesBean getSelectorComparisonTypeChoices(String defaultSelectorComparisonTypeChoice,
             Language language, boolean allowNullChoice) {
-        List<SelectorComparisonType> selectorComparisonTypes = getSelectorComparisonTypes();
+        var selectorComparisonTypes = getSelectorComparisonTypes();
         var size = selectorComparisonTypes.size() + (allowNullChoice? 1: 0);
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -1289,7 +1289,7 @@ public class SelectorControl
     
     public SelectorComparisonTypeDescription createSelectorComparisonTypeDescription(SelectorComparisonType selectorComparisonType,
             Language language, String description) {
-        SelectorComparisonTypeDescription selectorComparisonTypeDescription = SelectorComparisonTypeDescriptionFactory.getInstance().create(selectorComparisonType, language, description);
+        var selectorComparisonTypeDescription = SelectorComparisonTypeDescriptionFactory.getInstance().create(selectorComparisonType, language, description);
         
         return selectorComparisonTypeDescription;
     }
@@ -1298,7 +1298,7 @@ public class SelectorControl
         SelectorComparisonTypeDescription selectorComparisonTypeDescription;
         
         try {
-            PreparedStatement ps = SelectorComparisonTypeDescriptionFactory.getInstance().prepareStatement(
+            var ps = SelectorComparisonTypeDescriptionFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM selectorcomparisontypedescriptions " +
                     "WHERE slctd_slct_selectorcomparisontypeid = ? AND slctd_lang_languageid = ?");
@@ -1316,7 +1316,7 @@ public class SelectorControl
     
     public String getBestSelectorComparisonTypeDescription(SelectorComparisonType selectorComparisonType, Language language) {
         String description;
-        SelectorComparisonTypeDescription selectorComparisonTypeDescription = getSelectorComparisonTypeDescription(selectorComparisonType, language);
+        var selectorComparisonTypeDescription = getSelectorComparisonTypeDescription(selectorComparisonType, language);
         
         if(selectorComparisonTypeDescription == null && !language.getIsDefault()) {
             selectorComparisonTypeDescription = getSelectorComparisonTypeDescription(selectorComparisonType, getPartyControl().getDefaultLanguage());
@@ -1358,7 +1358,7 @@ public class SelectorControl
         SelectorNodeType selectorNodeType;
         
         try {
-            PreparedStatement ps = SelectorNodeTypeFactory.getInstance().prepareStatement(
+            var ps = SelectorNodeTypeFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM selectornodetypes " +
                     "WHERE slnt_selectornodetypename = ?");
@@ -1374,7 +1374,7 @@ public class SelectorControl
     }
     
     public List<SelectorNodeType> getSelectorNodeTypes() {
-        PreparedStatement ps = SelectorNodeTypeFactory.getInstance().prepareStatement(
+        var ps = SelectorNodeTypeFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
                 "FROM selectornodetypes " +
                 "ORDER BY slnt_sortorder, slnt_selectornodetypename");
@@ -1386,7 +1386,7 @@ public class SelectorControl
         List<SelectorNodeType> selectorNodeTypes;
         
         try {
-            PreparedStatement ps = SelectorNodeTypeFactory.getInstance().prepareStatement(
+            var ps = SelectorNodeTypeFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM selectornodetypes, selectornodetypeuses " +
                     "WHERE slnt_selectornodetypeid = slntu_slnt_selectornodetypeid AND slntu_slk_selectorkindid = ? " +
@@ -1408,7 +1408,7 @@ public class SelectorControl
     
     public List<SelectorNodeTypeTransfer> getSelectorNodeTypeTransfers(UserVisit userVisit, Collection<SelectorNodeType> selectorNodeTypes) {
         List<SelectorNodeTypeTransfer> selectorNodeTypeTransfers = new ArrayList<>(selectorNodeTypes.size());
-        SelectorNodeTypeTransferCache selectorNodeTypeTransferCache = getSelectorTransferCaches(userVisit).getSelectorNodeTypeTransferCache();
+        var selectorNodeTypeTransferCache = getSelectorTransferCaches(userVisit).getSelectorNodeTypeTransferCache();
         
         selectorNodeTypes.forEach((selectorNodeType) ->
                 selectorNodeTypeTransfers.add(selectorNodeTypeTransferCache.getSelectorNodeTypeTransfer(selectorNodeType))
@@ -1438,7 +1438,7 @@ public class SelectorControl
         SelectorNodeTypeUse selectorNodeTypeUse;
         
         try {
-            PreparedStatement ps = SelectorNodeTypeUseFactory.getInstance().prepareStatement(
+            var ps = SelectorNodeTypeUseFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM selectornodetypeuses " +
                     "WHERE slntu_slk_selectorkindid = ? AND slntu_slnt_selectornodetypeid = ?");
@@ -1459,7 +1459,7 @@ public class SelectorControl
     // --------------------------------------------------------------------------------
     
     public SelectorNodeTypeDescription createSelectorNodeTypeDescription(SelectorNodeType selectorNodeType, Language language, String description) {
-        SelectorNodeTypeDescription selectorNodeTypeDescription = SelectorNodeTypeDescriptionFactory.getInstance().create(selectorNodeType, language, description);
+        var selectorNodeTypeDescription = SelectorNodeTypeDescriptionFactory.getInstance().create(selectorNodeType, language, description);
         
         return selectorNodeTypeDescription;
     }
@@ -1468,7 +1468,7 @@ public class SelectorControl
         SelectorNodeTypeDescription selectorNodeTypeDescription;
         
         try {
-            PreparedStatement ps = SelectorNodeTypeDescriptionFactory.getInstance().prepareStatement(
+            var ps = SelectorNodeTypeDescriptionFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM selectornodetypedescriptions " +
                     "WHERE slntd_slnt_selectornodetypeid = ? AND slntd_lang_languageid = ?");
@@ -1486,7 +1486,7 @@ public class SelectorControl
     
     public String getBestSelectorNodeTypeDescription(SelectorNodeType selectorNodeType, Language language) {
         String description;
-        SelectorNodeTypeDescription selectorNodeTypeDescription = getSelectorNodeTypeDescription(selectorNodeType, language);
+        var selectorNodeTypeDescription = getSelectorNodeTypeDescription(selectorNodeType, language);
         
         if(selectorNodeTypeDescription == null && !language.getIsDefault()) {
             selectorNodeTypeDescription = getSelectorNodeTypeDescription(selectorNodeType, getPartyControl().getDefaultLanguage());
@@ -1507,14 +1507,14 @@ public class SelectorControl
     
     public SelectorTextSearchType createSelectorTextSearchType(String selectorTextSearchTypeName, Boolean isDefault,
             Integer sortOrder) {
-        SelectorTextSearchType selectorTextSearchType = SelectorTextSearchTypeFactory.getInstance().create(session,
+        var selectorTextSearchType = SelectorTextSearchTypeFactory.getInstance().create(session,
                 selectorTextSearchTypeName, isDefault, sortOrder);
         
         return selectorTextSearchType;
     }
     
     public List<SelectorTextSearchType> getSelectorTextSearchTypes() {
-        PreparedStatement ps = SelectorTextSearchTypeFactory.getInstance().prepareStatement(
+        var ps = SelectorTextSearchTypeFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
                 "FROM selectortextsearchtypes " +
                 "ORDER BY sltst_sortorder, sltst_selectortextsearchtypename");
@@ -1526,7 +1526,7 @@ public class SelectorControl
         SelectorTextSearchType selectorTextSearchType;
         
         try {
-            PreparedStatement ps = SelectorTextSearchTypeFactory.getInstance().prepareStatement(
+            var ps = SelectorTextSearchTypeFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM selectortextsearchtypes " +
                     "WHERE sltst_selectortextsearchtypename = ?");
@@ -1543,7 +1543,7 @@ public class SelectorControl
     
     public SelectorTextSearchTypeChoicesBean getSelectorTextSearchTypeChoices(String defaultSelectorTextSearchTypeChoice,
             Language language, boolean allowNullChoice) {
-        List<SelectorTextSearchType> selectorTextSearchTypes = getSelectorTextSearchTypes();
+        var selectorTextSearchTypes = getSelectorTextSearchTypes();
         var size = selectorTextSearchTypes.size() + (allowNullChoice? 1: 0);
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -1579,7 +1579,7 @@ public class SelectorControl
     // --------------------------------------------------------------------------------
     
     public SelectorTextSearchTypeDescription createSelectorTextSearchTypeDescription(SelectorTextSearchType selectorTextSearchType, Language language, String description) {
-        SelectorTextSearchTypeDescription selectorTextSearchTypeDescription = SelectorTextSearchTypeDescriptionFactory.getInstance().create(selectorTextSearchType, language, description);
+        var selectorTextSearchTypeDescription = SelectorTextSearchTypeDescriptionFactory.getInstance().create(selectorTextSearchType, language, description);
         
         return selectorTextSearchTypeDescription;
     }
@@ -1588,7 +1588,7 @@ public class SelectorControl
         SelectorTextSearchTypeDescription selectorTextSearchTypeDescription;
         
         try {
-            PreparedStatement ps = SelectorTextSearchTypeDescriptionFactory.getInstance().prepareStatement(
+            var ps = SelectorTextSearchTypeDescriptionFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM selectortextsearchtypedescriptions " +
                     "WHERE sltstd_sltst_selectortextsearchtypeid = ? AND sltstd_lang_languageid = ?");
@@ -1606,7 +1606,7 @@ public class SelectorControl
     
     public String getBestSelectorTextSearchTypeDescription(SelectorTextSearchType selectorTextSearchType, Language language) {
         String description;
-        SelectorTextSearchTypeDescription selectorTextSearchTypeDescription = getSelectorTextSearchTypeDescription(selectorTextSearchType, language);
+        var selectorTextSearchTypeDescription = getSelectorTextSearchTypeDescription(selectorTextSearchType, language);
         
         if(selectorTextSearchTypeDescription == null && !language.getIsDefault()) {
             selectorTextSearchTypeDescription = getSelectorTextSearchTypeDescription(selectorTextSearchType, getPartyControl().getDefaultLanguage());
@@ -1627,20 +1627,20 @@ public class SelectorControl
     
     public Selector createSelector(SelectorType selectorType, String selectorName, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
-        Selector defaultSelector = getDefaultSelector(selectorType);
-        boolean defaultFound = defaultSelector != null;
+        var defaultSelector = getDefaultSelector(selectorType);
+        var defaultFound = defaultSelector != null;
         
         if(defaultFound && isDefault) {
-            SelectorDetailValue defaultSelectorDetailValue = getDefaultSelectorDetailValueForUpdate(selectorType);
+            var defaultSelectorDetailValue = getDefaultSelectorDetailValueForUpdate(selectorType);
             
             defaultSelectorDetailValue.setIsDefault(Boolean.FALSE);
             updateSelectorFromValue(defaultSelectorDetailValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        Selector selector = SelectorFactory.getInstance().create();
-        SelectorDetail selectorDetail = SelectorDetailFactory.getInstance().create(selector, selectorType, selectorName,
+
+        var selector = SelectorFactory.getInstance().create();
+        var selectorDetail = SelectorDetailFactory.getInstance().create(selector, selectorType, selectorName,
                 isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -1694,8 +1694,8 @@ public class SelectorControl
                         "WHERE sl_activedetailid = sldt_selectordetailid AND sldt_slt_selectortypeid = ? AND sldt_selectorname = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = SelectorFactory.getInstance().prepareStatement(query);
+
+            var ps = SelectorFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, selectorType.getPrimaryKey().getEntityId());
             ps.setString(2, selectorName);
@@ -1718,11 +1718,11 @@ public class SelectorControl
 
     public Selector getSelectorUsingNames(ExecutionErrorAccumulator eea, String selectorKindName, String selectorTypeName, String selectorName,
             String unknownSelectorNameError) {
-        SelectorKind selectorKind = getSelectorKindByName(selectorKindName);
+        var selectorKind = getSelectorKindByName(selectorKindName);
         Selector result = null;
 
         if(selectorKind != null) {
-            SelectorType selectorType = getSelectorTypeByName(selectorKind, selectorTypeName);
+            var selectorType = getSelectorTypeByName(selectorKind, selectorTypeName);
 
             if(selectorType != null) {
                 result = getSelectorByName(selectorType, selectorName);
@@ -1764,8 +1764,8 @@ public class SelectorControl
                         "WHERE sl_activedetailid = sldt_selectordetailid AND sldt_slt_selectortypeid = ? AND sldt_isdefault = 1 " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = SelectorFactory.getInstance().prepareStatement(query);
+
+            var ps = SelectorFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, selectorType.getPrimaryKey().getEntityId());
             
@@ -1806,8 +1806,8 @@ public class SelectorControl
                         "WHERE sl_activedetailid = sldt_selectordetailid AND sldt_slt_selectortypeid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = SelectorFactory.getInstance().prepareStatement(query);
+
+            var ps = SelectorFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, selectorType.getPrimaryKey().getEntityId());
             
@@ -1831,7 +1831,7 @@ public class SelectorControl
         List<Selector> selectors;
         
         try {
-            PreparedStatement ps = SelectorFactory.getInstance().prepareStatement(
+            var ps = SelectorFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ "
                     + "FROM selectors, selectordetails, selectortypes, selectortypedetails "
                     + "WHERE sl_activedetailid = sldt_selectordetailid AND sldt_slt_selectortypeid = slt_selectortypeid "
@@ -1851,7 +1851,7 @@ public class SelectorControl
     
     public SelectorChoicesBean getSelectorChoices(SelectorType selectorType, String defaultSelectorChoice, Language language,
             boolean allowNullChoice) {
-        List<Selector> selectors = getSelectorsBySelectorType(selectorType);
+        var selectors = getSelectorsBySelectorType(selectorType);
         var size = selectors.size() + (allowNullChoice? 1: 0);
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -1867,7 +1867,7 @@ public class SelectorControl
         }
         
         for(var selector : selectors) {
-            SelectorDetail selectorDetail = selector.getLastDetail();
+            var selectorDetail = selector.getLastDetail();
             
             var label = getBestSelectorDescription(selector, language);
             var value = selector.getLastDetail().getSelectorName();
@@ -1890,7 +1890,7 @@ public class SelectorControl
     
     public List<SelectorTransfer> getSelectorTransfers(UserVisit userVisit, Collection<Selector> selectors) {
         List<SelectorTransfer> selectorTransfers = new ArrayList<>(selectors.size());
-        SelectorTransferCache selectorTransferCache = getSelectorTransferCaches(userVisit).getSelectorTransferCache();
+        var selectorTransferCache = getSelectorTransferCaches(userVisit).getSelectorTransferCache();
         
         selectors.forEach((selector) ->
                 selectorTransfers.add(selectorTransferCache.getSelectorTransfer(selector))
@@ -1904,26 +1904,26 @@ public class SelectorControl
     }
     
     private void updateSelectorFromValue(SelectorDetailValue selectorDetailValue, boolean checkDefault, BasePK updatedBy) {
-        Selector selector = SelectorFactory.getInstance().getEntityFromPK(session,
+        var selector = SelectorFactory.getInstance().getEntityFromPK(session,
                 EntityPermission.READ_WRITE, selectorDetailValue.getSelectorPK());
-        SelectorDetail selectorDetail = selector.getActiveDetailForUpdate();
+        var selectorDetail = selector.getActiveDetailForUpdate();
         
         selectorDetail.setThruTime(session.START_TIME_LONG);
         selectorDetail.store();
-        
-        SelectorPK selectorPK = selectorDetail.getSelectorPK();
-        SelectorType selectorType = selectorDetail.getSelectorType(); // Not updated
-        String selectorName = selectorDetailValue.getSelectorName();
-        Boolean isDefault = selectorDetailValue.getIsDefault();
-        Integer sortOrder = selectorDetailValue.getSortOrder();
+
+        var selectorPK = selectorDetail.getSelectorPK();
+        var selectorType = selectorDetail.getSelectorType(); // Not updated
+        var selectorName = selectorDetailValue.getSelectorName();
+        var isDefault = selectorDetailValue.getIsDefault();
+        var sortOrder = selectorDetailValue.getSortOrder();
         
         if(checkDefault) {
-            Selector defaultSelector = getDefaultSelector(selectorType);
-            boolean defaultFound = defaultSelector != null && !defaultSelector.equals(selector);
+            var defaultSelector = getDefaultSelector(selectorType);
+            var defaultFound = defaultSelector != null && !defaultSelector.equals(selector);
             
             if(isDefault && defaultFound) {
                 // If I'm the default, and a default already existed...
-                SelectorDetailValue defaultSelectorDetailValue = getDefaultSelectorDetailValueForUpdate(selectorType);
+                var defaultSelectorDetailValue = getDefaultSelectorDetailValueForUpdate(selectorType);
                 
                 defaultSelectorDetailValue.setIsDefault(Boolean.FALSE);
                 updateSelectorFromValue(defaultSelectorDetailValue, false, updatedBy);
@@ -1955,24 +1955,24 @@ public class SelectorControl
         deleteSelectorDescriptionsBySelector(selector, deletedBy);
 
         removeSelectorTimeBySelector(selector);
-        
-        SelectorDetail selectorDetail = selector.getLastDetailForUpdate();
+
+        var selectorDetail = selector.getLastDetailForUpdate();
         selectorDetail.setThruTime(session.START_TIME_LONG);
         selector.setActiveDetail(null);
         selector.store();
         
         // Check for default, and pick one if necessary
-        SelectorType selectorType = selectorDetail.getSelectorType();
-        Selector defaultSelector = getDefaultSelector(selectorType);
+        var selectorType = selectorDetail.getSelectorType();
+        var defaultSelector = getDefaultSelector(selectorType);
         if(defaultSelector == null) {
-            List<Selector> Selectors = getSelectorsBySelectorTypeForUpdate(selectorType);
+            var Selectors = getSelectorsBySelectorTypeForUpdate(selectorType);
             
             if(!Selectors.isEmpty()) {
-                Iterator<Selector> iter = Selectors.iterator();
+                var iter = Selectors.iterator();
                 if(iter.hasNext()) {
                     defaultSelector = iter.next();
                 }
-                SelectorDetailValue selectorDetailValue = Objects.requireNonNull(defaultSelector).getLastDetailForUpdate().getSelectorDetailValue().clone();
+                var selectorDetailValue = Objects.requireNonNull(defaultSelector).getLastDetailForUpdate().getSelectorDetailValue().clone();
                 
                 selectorDetailValue.setIsDefault(Boolean.TRUE);
                 updateSelectorFromValue(selectorDetailValue, false, deletedBy);
@@ -1997,7 +1997,7 @@ public class SelectorControl
     // --------------------------------------------------------------------------------
     
     public SelectorDescription createSelectorDescription(Selector selector, Language language, String description, BasePK createdBy) {
-        SelectorDescription selectorDescription = SelectorDescriptionFactory.getInstance().create(selector, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        var selectorDescription = SelectorDescriptionFactory.getInstance().create(selector, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(selector.getPrimaryKey(), EventTypes.MODIFY, selectorDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -2020,8 +2020,8 @@ public class SelectorControl
                         "WHERE sld_sl_selectorid = ? AND sld_lang_languageid = ? AND sld_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = SelectorDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = SelectorDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, selector.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -2048,7 +2048,7 @@ public class SelectorControl
     }
     
     public SelectorDescriptionValue getSelectorDescriptionValueForUpdate(Selector selector, Language language) {
-        SelectorDescription selectorDescription = getSelectorDescriptionForUpdate(selector, language);
+        var selectorDescription = getSelectorDescriptionForUpdate(selector, language);
         
         return selectorDescription == null? null: selectorDescription.getSelectorDescriptionValue().clone();
     }
@@ -2070,8 +2070,8 @@ public class SelectorControl
                         "WHERE sld_sl_selectorid = ? AND sld_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = SelectorDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = SelectorDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, selector.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -2094,7 +2094,7 @@ public class SelectorControl
     
     public String getBestSelectorDescription(Selector selector, Language language) {
         String description;
-        SelectorDescription selectorDescription = getSelectorDescription(selector, language);
+        var selectorDescription = getSelectorDescription(selector, language);
         
         if(selectorDescription == null && !language.getIsDefault()) {
             selectorDescription = getSelectorDescription(selector, getPartyControl().getDefaultLanguage());
@@ -2114,7 +2114,7 @@ public class SelectorControl
     }
     
     public List<SelectorDescriptionTransfer> getSelectorDescriptionTransfers(UserVisit userVisit, Selector selector) {
-        List<SelectorDescription> selectorDescriptions = getSelectorDescriptionsBySelector(selector);
+        var selectorDescriptions = getSelectorDescriptionsBySelector(selector);
         List<SelectorDescriptionTransfer> selectorDescriptionTransfers = new ArrayList<>(selectorDescriptions.size());
         
         selectorDescriptions.forEach((selectorDescription) -> {
@@ -2126,14 +2126,14 @@ public class SelectorControl
     
     public void updateSelectorDescriptionFromValue(SelectorDescriptionValue selectorDescriptionValue, BasePK updatedBy) {
         if(selectorDescriptionValue.hasBeenModified()) {
-            SelectorDescription selectorDescription = SelectorDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, selectorDescriptionValue.getPrimaryKey());
+            var selectorDescription = SelectorDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, selectorDescriptionValue.getPrimaryKey());
             
             selectorDescription.setThruTime(session.START_TIME_LONG);
             selectorDescription.store();
-            
-            Selector selector = selectorDescription.getSelector();
-            Language language = selectorDescription.getLanguage();
-            String description = selectorDescriptionValue.getDescription();
+
+            var selector = selectorDescription.getSelector();
+            var language = selectorDescription.getLanguage();
+            var description = selectorDescriptionValue.getDescription();
             
             selectorDescription = SelectorDescriptionFactory.getInstance().create(selector, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
@@ -2149,7 +2149,7 @@ public class SelectorControl
     }
     
     public void deleteSelectorDescriptionsBySelector(Selector selector, BasePK deletedBy) {
-        List<SelectorDescription> selectorDescriptions = getSelectorDescriptionsBySelectorForUpdate(selector);
+        var selectorDescriptions = getSelectorDescriptionsBySelectorForUpdate(selector);
         
         selectorDescriptions.forEach((selectorDescription) -> 
                 deleteSelectorDescription(selectorDescription, deletedBy)
@@ -2189,7 +2189,7 @@ public class SelectorControl
     }
 
     public void removeSelectorTimeBySelector(Selector selector) {
-        SelectorTime selectorTime = getSelectorTimeForUpdate(selector);
+        var selectorTime = getSelectorTimeForUpdate(selector);
 
         if(selectorTime != null) {
             selectorTime.remove();
@@ -2202,20 +2202,20 @@ public class SelectorControl
     
     public SelectorNode createSelectorNode(Selector selector, String selectorNodeName, Boolean isRootSelectorNode,
             SelectorNodeType selectorNodeType, Boolean negate, BasePK createdBy) {
-        SelectorNode rootSelectorNode = getRootSelectorNode(selector);
-        boolean rootFound = rootSelectorNode != null;
+        var rootSelectorNode = getRootSelectorNode(selector);
+        var rootFound = rootSelectorNode != null;
         
         if(rootFound && isRootSelectorNode) {
-            SelectorNodeDetailValue rootSelectorNodeDetailValue = getRootSelectorNodeDetailValueForUpdate(selector);
+            var rootSelectorNodeDetailValue = getRootSelectorNodeDetailValueForUpdate(selector);
             
             rootSelectorNodeDetailValue.setIsRootSelectorNode(Boolean.FALSE);
             updateSelectorNodeFromValue(rootSelectorNodeDetailValue, false, createdBy);
         } else if(!rootFound) {
             isRootSelectorNode = Boolean.TRUE;
         }
-        
-        SelectorNode selectorNode = SelectorNodeFactory.getInstance().create();
-        SelectorNodeDetail selectorNodeDetail = SelectorNodeDetailFactory.getInstance().create(selectorNode, selector,
+
+        var selectorNode = SelectorNodeFactory.getInstance().create();
+        var selectorNodeDetail = SelectorNodeDetailFactory.getInstance().create(selectorNode, selector,
                 selectorNodeName, isRootSelectorNode, selectorNodeType, negate, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -2247,8 +2247,8 @@ public class SelectorControl
                         "AND slnddt_isrootselectornode = 1 " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = SelectorNodeFactory.getInstance().prepareStatement(query);
+
+            var ps = SelectorNodeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, selector.getPrimaryKey().getEntityId());
             
@@ -2290,8 +2290,8 @@ public class SelectorControl
                         "AND slnddt_sl_selectorid = ? AND slnddt_selectornodename = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = SelectorNodeFactory.getInstance().prepareStatement(query);
+
+            var ps = SelectorNodeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, selector.getPrimaryKey().getEntityId());
             ps.setString(2, selectorNodeName);
@@ -2337,8 +2337,8 @@ public class SelectorControl
                         "WHERE slnd_activedetailid = slnddt_selectornodedetailid AND slnddt_sl_selectorid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = SelectorNodeFactory.getInstance().prepareStatement(query);
+
+            var ps = SelectorNodeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, selector.getPrimaryKey().getEntityId());
             
@@ -2360,7 +2360,7 @@ public class SelectorControl
     
     public SelectorNodeChoicesBean getSelectorNodeChoices(Selector selector, String defaultSelectorNodeChoice, Language language,
             boolean allowNullChoice) {
-        List<SelectorNode> selectorNodes = getSelectorNodesBySelector(selector);
+        var selectorNodes = getSelectorNodesBySelector(selector);
         var size = selectorNodes.size() + (allowNullChoice? 1: 0);
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -2396,7 +2396,7 @@ public class SelectorControl
     }
     
     public List<SelectorNodeTransfer> getSelectorNodeTransfersBySelector(UserVisit userVisit, Selector selector) {
-        List<SelectorNode> selectorNodes = getSelectorNodesBySelector(selector);
+        var selectorNodes = getSelectorNodesBySelector(selector);
         List<SelectorNodeTransfer> selectorNodeTransfers = new ArrayList<>(selectorNodes.size());
         
         selectorNodes.forEach((selectorNode) -> {
@@ -2408,28 +2408,28 @@ public class SelectorControl
     
     private void updateSelectorNodeFromValue(SelectorNodeDetailValue selectorNodeDetailValue, boolean checkRoot, BasePK updatedBy) {
         if(selectorNodeDetailValue.hasBeenModified()) {
-            SelectorNode selectorNode = SelectorNodeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var selectorNode = SelectorNodeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      selectorNodeDetailValue.getSelectorNodePK());
-            SelectorNodeDetail selectorNodeDetail = selectorNode.getActiveDetailForUpdate();
+            var selectorNodeDetail = selectorNode.getActiveDetailForUpdate();
             
             selectorNodeDetail.setThruTime(session.START_TIME_LONG);
             selectorNodeDetail.store();
-            
-            SelectorNodePK selectorNodePK = selectorNodeDetail.getSelectorNodePK();
-            Selector selector = selectorNodeDetail.getSelector();
-            SelectorPK selectorPK = selector.getPrimaryKey();
-            String selectorNodeName = selectorNodeDetailValue.getSelectorNodeName();
-            SelectorNodeTypePK selectorNodeTypePK = selectorNodeDetailValue.getSelectorNodeTypePK(); // Not updated
-            Boolean isRootSelectorNode = selectorNodeDetailValue.getIsRootSelectorNode();
-            Boolean negate = selectorNodeDetailValue.getNegate();
+
+            var selectorNodePK = selectorNodeDetail.getSelectorNodePK();
+            var selector = selectorNodeDetail.getSelector();
+            var selectorPK = selector.getPrimaryKey();
+            var selectorNodeName = selectorNodeDetailValue.getSelectorNodeName();
+            var selectorNodeTypePK = selectorNodeDetailValue.getSelectorNodeTypePK(); // Not updated
+            var isRootSelectorNode = selectorNodeDetailValue.getIsRootSelectorNode();
+            var negate = selectorNodeDetailValue.getNegate();
             
             if(checkRoot) {
-                SelectorNode rootSelectorNode = getRootSelectorNode(selector);
-                boolean rootFound = rootSelectorNode != null && !rootSelectorNode.equals(selectorNode);
+                var rootSelectorNode = getRootSelectorNode(selector);
+                var rootFound = rootSelectorNode != null && !rootSelectorNode.equals(selectorNode);
                 
                 if(isRootSelectorNode && rootFound) {
                     // If I'm the root, and a root already existed...
-                    SelectorNodeDetailValue rootSelectorNodeDetailValue = getRootSelectorNodeDetailValueForUpdate(selector);
+                    var rootSelectorNodeDetailValue = getRootSelectorNodeDetailValueForUpdate(selector);
                     
                     rootSelectorNodeDetailValue.setIsRootSelectorNode(Boolean.FALSE);
                     updateSelectorNodeFromValue(rootSelectorNodeDetailValue, false, updatedBy);
@@ -2454,8 +2454,8 @@ public class SelectorControl
     }
     
     public void deleteSelectorNode(SelectorNode selectorNode, BasePK deletedBy) {
-        SelectorNodeDetail selectorNodeDetail = selectorNode.getLastDetailForUpdate();
-        String selectorNodeTypeName = selectorNodeDetail.getSelectorNodeType().getSelectorNodeTypeName();
+        var selectorNodeDetail = selectorNode.getLastDetailForUpdate();
+        var selectorNodeTypeName = selectorNodeDetail.getSelectorNodeType().getSelectorNodeTypeName();
         
         deleteSelectorNodeDescriptionsBySelectorNode(selectorNode, deletedBy);
         
@@ -2492,17 +2492,17 @@ public class SelectorControl
         // Check for root, and pick one if necessary
         // TODO: this should be smarter, looking for Boolean nodes and finding one that would make a
         // good root.
-        Selector selector = selectorNodeDetail.getSelector();
-        SelectorNode rootSelectorNode = getRootSelectorNode(selector);
+        var selector = selectorNodeDetail.getSelector();
+        var rootSelectorNode = getRootSelectorNode(selector);
         if(rootSelectorNode == null) {
-            List<SelectorNode> SelectorNodes = getSelectorNodesBySelectorForUpdate(selector);
+            var SelectorNodes = getSelectorNodesBySelectorForUpdate(selector);
             
             if(!SelectorNodes.isEmpty()) {
-                Iterator<SelectorNode> iter = SelectorNodes.iterator();
+                var iter = SelectorNodes.iterator();
                 if(iter.hasNext()) {
                     rootSelectorNode = iter.next();
                 }
-                SelectorNodeDetailValue selectorNodeDetailValue = Objects.requireNonNull(rootSelectorNode).getLastDetailForUpdate().getSelectorNodeDetailValue().clone();
+                var selectorNodeDetailValue = Objects.requireNonNull(rootSelectorNode).getLastDetailForUpdate().getSelectorNodeDetailValue().clone();
                 
                 selectorNodeDetailValue.setIsRootSelectorNode(Boolean.TRUE);
                 updateSelectorNodeFromValue(selectorNodeDetailValue, false, deletedBy);
@@ -2514,7 +2514,7 @@ public class SelectorControl
     }
     
     public void deleteSelectorNodesBySelector(Selector selector, BasePK deletedBy) {
-        List<SelectorNode> selectorNodes = getSelectorNodesBySelectorForUpdate(selector);
+        var selectorNodes = getSelectorNodesBySelectorForUpdate(selector);
         
         selectorNodes.forEach((selectorNode) -> 
                 deleteSelectorNode(selectorNode, deletedBy)
@@ -2527,7 +2527,7 @@ public class SelectorControl
     
     public SelectorNodeDescription createSelectorNodeDescription(SelectorNode selectorNode, Language language, String description,
             BasePK createdBy) {
-        SelectorNodeDescription selectorNodeDescription = SelectorNodeDescriptionFactory.getInstance().create(selectorNode,
+        var selectorNodeDescription = SelectorNodeDescriptionFactory.getInstance().create(selectorNode,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(selectorNode.getLastDetail().getSelectorPK(), EventTypes.MODIFY,
@@ -2553,8 +2553,8 @@ public class SelectorControl
                         "WHERE slndd_slnd_selectornodeid = ? AND slndd_lang_languageid = ? AND slndd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = SelectorNodeDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = SelectorNodeDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, selectorNode.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -2581,7 +2581,7 @@ public class SelectorControl
     }
     
     public SelectorNodeDescriptionValue getSelectorNodeDescriptionValueForUpdate(SelectorNode selectorNode, Language language) {
-        SelectorNodeDescription selectorNodeDescription = getSelectorNodeDescriptionForUpdate(selectorNode, language);
+        var selectorNodeDescription = getSelectorNodeDescriptionForUpdate(selectorNode, language);
         
         return selectorNodeDescription == null? null: selectorNodeDescription.getSelectorNodeDescriptionValue().clone();
     }
@@ -2603,8 +2603,8 @@ public class SelectorControl
                         "WHERE slndd_slnd_selectornodeid = ? AND slndd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = SelectorNodeDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = SelectorNodeDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, selectorNode.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -2627,7 +2627,7 @@ public class SelectorControl
     
     public String getBestSelectorNodeDescription(SelectorNode selectorNode, Language language) {
         String description;
-        SelectorNodeDescription selectorNodeDescription = getSelectorNodeDescription(selectorNode, language);
+        var selectorNodeDescription = getSelectorNodeDescription(selectorNode, language);
         
         if(selectorNodeDescription == null && !language.getIsDefault()) {
             selectorNodeDescription = getSelectorNodeDescription(selectorNode, getPartyControl().getDefaultLanguage());
@@ -2647,7 +2647,7 @@ public class SelectorControl
     }
     
     public List<SelectorNodeDescriptionTransfer> getSelectorNodeDescriptionTransfers(UserVisit userVisit, SelectorNode selectorNode) {
-        List<SelectorNodeDescription> selectorNodeDescriptions = getSelectorNodeDescriptionsBySelectorNode(selectorNode);
+        var selectorNodeDescriptions = getSelectorNodeDescriptionsBySelectorNode(selectorNode);
         List<SelectorNodeDescriptionTransfer> selectorNodeDescriptionTransfers = null;
         
         if(selectorNodeDescriptions != null) {
@@ -2663,14 +2663,14 @@ public class SelectorControl
     
     public void updateSelectorNodeDescriptionFromValue(SelectorNodeDescriptionValue selectorNodeDescriptionValue, BasePK updatedBy) {
         if(selectorNodeDescriptionValue.hasBeenModified()) {
-            SelectorNodeDescription selectorNodeDescription = SelectorNodeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, selectorNodeDescriptionValue.getPrimaryKey());
+            var selectorNodeDescription = SelectorNodeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, selectorNodeDescriptionValue.getPrimaryKey());
             
             selectorNodeDescription.setThruTime(session.START_TIME_LONG);
             selectorNodeDescription.store();
-            
-            SelectorNode selectorNode = selectorNodeDescription.getSelectorNode();
-            Language language = selectorNodeDescription.getLanguage();
-            String description = selectorNodeDescriptionValue.getDescription();
+
+            var selectorNode = selectorNodeDescription.getSelectorNode();
+            var language = selectorNodeDescription.getLanguage();
+            var description = selectorNodeDescriptionValue.getDescription();
             
             selectorNodeDescription = SelectorNodeDescriptionFactory.getInstance().create(selectorNode, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
@@ -2685,7 +2685,7 @@ public class SelectorControl
     }
     
     public void deleteSelectorNodeDescriptionsBySelectorNode(SelectorNode selectorNode, BasePK deletedBy) {
-        List<SelectorNodeDescription> selectorNodeDescriptions = getSelectorNodeDescriptionsBySelectorNodeForUpdate(selectorNode);
+        var selectorNodeDescriptions = getSelectorNodeDescriptionsBySelectorNodeForUpdate(selectorNode);
         
         selectorNodeDescriptions.forEach((selectorNodeDescription) -> 
                 deleteSelectorNodeDescription(selectorNodeDescription, deletedBy)
@@ -2698,7 +2698,7 @@ public class SelectorControl
     
     public SelectorNodeBoolean createSelectorNodeBoolean(SelectorNode selectorNode, SelectorBooleanType selectorBooleanType,
             SelectorNode leftSelectorNode, SelectorNode rightSelectorNode, BasePK createdBy) {
-        SelectorNodeBoolean selectorNodeBoolean = SelectorNodeBooleanFactory.getInstance().create(selectorNode,
+        var selectorNodeBoolean = SelectorNodeBooleanFactory.getInstance().create(selectorNode,
                 selectorBooleanType, leftSelectorNode, rightSelectorNode, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(selectorNode.getLastDetail().getSelectorPK(), EventTypes.MODIFY,
@@ -2723,8 +2723,8 @@ public class SelectorControl
                         "WHERE slndbln_slnd_selectornodeid = ? AND slndbln_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = SelectorNodeBooleanFactory.getInstance().prepareStatement(query);
+
+            var ps = SelectorNodeBooleanFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, selectorNode.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -2750,7 +2750,7 @@ public class SelectorControl
     }
     
     public SelectorNodeBooleanValue getSelectorNodeBooleanValueForUpdate(SelectorNode selectorNode) {
-        SelectorNodeBoolean selectorNodeBoolean = getSelectorNodeBooleanForUpdate(selectorNode);
+        var selectorNodeBoolean = getSelectorNodeBooleanForUpdate(selectorNode);
         
         return selectorNodeBoolean == null? null: selectorNodeBoolean.getSelectorNodeBooleanValue().clone();
     }
@@ -2773,8 +2773,8 @@ public class SelectorControl
                         "AND slnd_selectornodeid = slndbln_slnd_selectornodeid AND slndbln_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = SelectorNodeBooleanFactory.getInstance().prepareStatement(query);
+
+            var ps = SelectorNodeBooleanFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, selector.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -2797,16 +2797,16 @@ public class SelectorControl
     
     public void updateSelectorNodeBooleanFromValue(SelectorNodeBooleanValue selectorNodeBooleanValue, BasePK updatedBy) {
         if(selectorNodeBooleanValue.hasBeenModified()) {
-            SelectorNodeBoolean selectorNodeBoolean = SelectorNodeBooleanFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var selectorNodeBoolean = SelectorNodeBooleanFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      selectorNodeBooleanValue.getPrimaryKey());
             
             selectorNodeBoolean.setThruTime(session.START_TIME_LONG);
             selectorNodeBoolean.store();
-            
-            SelectorNode selectorNode = selectorNodeBoolean.getSelectorNode();
-            SelectorBooleanTypePK selectorBooleanTypePK = selectorNodeBooleanValue.getSelectorBooleanTypePK();
-            SelectorNodePK leftSelectorNodePK = selectorNodeBooleanValue.getLeftSelectorNodePK();
-            SelectorNodePK rightSelectorNodePK = selectorNodeBooleanValue.getRightSelectorNodePK();
+
+            var selectorNode = selectorNodeBoolean.getSelectorNode();
+            var selectorBooleanTypePK = selectorNodeBooleanValue.getSelectorBooleanTypePK();
+            var leftSelectorNodePK = selectorNodeBooleanValue.getLeftSelectorNodePK();
+            var rightSelectorNodePK = selectorNodeBooleanValue.getRightSelectorNodePK();
             
             selectorNodeBoolean = SelectorNodeBooleanFactory.getInstance().create(selectorNode.getPrimaryKey(),
                     selectorBooleanTypePK, leftSelectorNodePK, rightSelectorNodePK, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -2829,7 +2829,7 @@ public class SelectorControl
     
     public SelectorNodeWorkflowStep createSelectorNodeWorkflowStep(SelectorNode selectorNode, WorkflowStep workflowStep,
             BasePK createdBy) {
-        SelectorNodeWorkflowStep selectorNodeWorkflowStep = SelectorNodeWorkflowStepFactory.getInstance().create(session,
+        var selectorNodeWorkflowStep = SelectorNodeWorkflowStepFactory.getInstance().create(session,
                 selectorNode, workflowStep, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(selectorNode.getLastDetail().getSelectorPK(), EventTypes.MODIFY,
@@ -2854,8 +2854,8 @@ public class SelectorControl
                         "WHERE slndws_slnd_selectornodeid = ? AND slndws_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = SelectorNodeWorkflowStepFactory.getInstance().prepareStatement(query);
+
+            var ps = SelectorNodeWorkflowStepFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, selectorNode.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -2881,7 +2881,7 @@ public class SelectorControl
     }
     
     public SelectorNodeWorkflowStepValue getSelectorNodeWorkflowStepValueForUpdate(SelectorNode selectorNode) {
-        SelectorNodeWorkflowStep selectorNodeWorkflowStep = getSelectorNodeWorkflowStepForUpdate(selectorNode);
+        var selectorNodeWorkflowStep = getSelectorNodeWorkflowStepForUpdate(selectorNode);
         
         return selectorNodeWorkflowStep == null? null: selectorNodeWorkflowStep.getSelectorNodeWorkflowStepValue().clone();
     }
@@ -2904,8 +2904,8 @@ public class SelectorControl
                         "AND slnd_selectornodeid = slndws_slnd_selectornodeid AND slndws_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = SelectorNodeWorkflowStepFactory.getInstance().prepareStatement(query);
+
+            var ps = SelectorNodeWorkflowStepFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, selector.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -2928,14 +2928,14 @@ public class SelectorControl
     
     public void updateSelectorNodeWorkflowStepFromValue(SelectorNodeWorkflowStepValue selectorNodeWorkflowStepValue, BasePK updatedBy) {
         if(selectorNodeWorkflowStepValue.hasBeenModified()) {
-            SelectorNodeWorkflowStep selectorNodeWorkflowStep = SelectorNodeWorkflowStepFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var selectorNodeWorkflowStep = SelectorNodeWorkflowStepFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      selectorNodeWorkflowStepValue.getPrimaryKey());
             
             selectorNodeWorkflowStep.setThruTime(session.START_TIME_LONG);
             selectorNodeWorkflowStep.store();
-            
-            SelectorNode selectorNode = selectorNodeWorkflowStep.getSelectorNode();
-            WorkflowStepPK workflowStepPK = selectorNodeWorkflowStepValue.getWorkflowStepPK();
+
+            var selectorNode = selectorNodeWorkflowStep.getSelectorNode();
+            var workflowStepPK = selectorNodeWorkflowStepValue.getWorkflowStepPK();
             
             selectorNodeWorkflowStep = SelectorNodeWorkflowStepFactory.getInstance().create(selectorNode.getPrimaryKey(),
                     workflowStepPK, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -2958,7 +2958,7 @@ public class SelectorControl
     
     public SelectorNodeEntityListItem createSelectorNodeEntityListItem(SelectorNode selectorNode, EntityListItem entityListItem,
             BasePK createdBy) {
-        SelectorNodeEntityListItem selectorNodeEntityListItem = SelectorNodeEntityListItemFactory.getInstance().create(session,
+        var selectorNodeEntityListItem = SelectorNodeEntityListItemFactory.getInstance().create(session,
                 selectorNode, entityListItem, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(selectorNode.getLastDetail().getSelectorPK(), EventTypes.MODIFY,
@@ -2983,8 +2983,8 @@ public class SelectorControl
                         "WHERE slndeli_slnd_selectornodeid = ? AND slndeli_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = SelectorNodeEntityListItemFactory.getInstance().prepareStatement(query);
+
+            var ps = SelectorNodeEntityListItemFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, selectorNode.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -3010,7 +3010,7 @@ public class SelectorControl
     }
     
     public SelectorNodeEntityListItemValue getSelectorNodeEntityListItemValueForUpdate(SelectorNode selectorNode) {
-        SelectorNodeEntityListItem selectorNodeEntityListItem = getSelectorNodeEntityListItemForUpdate(selectorNode);
+        var selectorNodeEntityListItem = getSelectorNodeEntityListItemForUpdate(selectorNode);
         
         return selectorNodeEntityListItem == null? null: selectorNodeEntityListItem.getSelectorNodeEntityListItemValue().clone();
     }
@@ -3033,8 +3033,8 @@ public class SelectorControl
                         "AND slnd_selectornodeid = slndeli_slnd_selectornodeid AND slndeli_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = SelectorNodeEntityListItemFactory.getInstance().prepareStatement(query);
+
+            var ps = SelectorNodeEntityListItemFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, selector.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -3057,14 +3057,14 @@ public class SelectorControl
     
     public void updateSelectorNodeEntityListItemFromValue(SelectorNodeEntityListItemValue selectorNodeEntityListItemValue, BasePK updatedBy) {
         if(selectorNodeEntityListItemValue.hasBeenModified()) {
-            SelectorNodeEntityListItem selectorNodeEntityListItem = SelectorNodeEntityListItemFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var selectorNodeEntityListItem = SelectorNodeEntityListItemFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      selectorNodeEntityListItemValue.getPrimaryKey());
             
             selectorNodeEntityListItem.setThruTime(session.START_TIME_LONG);
             selectorNodeEntityListItem.store();
-            
-            SelectorNode selectorNode = selectorNodeEntityListItem.getSelectorNode();
-            EntityListItemPK entityListItemPK = selectorNodeEntityListItemValue.getEntityListItemPK();
+
+            var selectorNode = selectorNodeEntityListItem.getSelectorNode();
+            var entityListItemPK = selectorNodeEntityListItemValue.getEntityListItemPK();
             
             selectorNodeEntityListItem = SelectorNodeEntityListItemFactory.getInstance().create(selectorNode.getPrimaryKey(),
                     entityListItemPK, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -3087,7 +3087,7 @@ public class SelectorControl
     
     public SelectorNodeResponsibilityType createSelectorNodeResponsibilityType(SelectorNode selectorNode, ResponsibilityType responsibilityType,
             BasePK createdBy) {
-        SelectorNodeResponsibilityType selectorNodeResponsibilityType = SelectorNodeResponsibilityTypeFactory.getInstance().create(session,
+        var selectorNodeResponsibilityType = SelectorNodeResponsibilityTypeFactory.getInstance().create(session,
                 selectorNode, responsibilityType, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(selectorNode.getLastDetail().getSelectorPK(), EventTypes.MODIFY,
@@ -3112,8 +3112,8 @@ public class SelectorControl
                         "WHERE slndrsptyp_rsptyp_responsibilitytypeid = ? AND slndrsptyp_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = SelectorNodeResponsibilityTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = SelectorNodeResponsibilityTypeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, selectorNode.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -3139,7 +3139,7 @@ public class SelectorControl
     }
     
     public SelectorNodeResponsibilityTypeValue getSelectorNodeResponsibilityTypeValueForUpdate(SelectorNode selectorNode) {
-        SelectorNodeResponsibilityType selectorNodeResponsibilityType = getSelectorNodeResponsibilityTypeForUpdate(selectorNode);
+        var selectorNodeResponsibilityType = getSelectorNodeResponsibilityTypeForUpdate(selectorNode);
         
         return selectorNodeResponsibilityType == null? null: selectorNodeResponsibilityType.getSelectorNodeResponsibilityTypeValue().clone();
     }
@@ -3162,8 +3162,8 @@ public class SelectorControl
                         "AND slnd_selectornodeid = slndrsptyp_rsptyp_responsibilitytypeid AND slndrsptyp_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = SelectorNodeResponsibilityTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = SelectorNodeResponsibilityTypeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, selector.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -3186,14 +3186,14 @@ public class SelectorControl
     
     public void updateSelectorNodeResponsibilityTypeFromValue(SelectorNodeResponsibilityTypeValue selectorNodeResponsibilityTypeValue, BasePK updatedBy) {
         if(selectorNodeResponsibilityTypeValue.hasBeenModified()) {
-            SelectorNodeResponsibilityType selectorNodeResponsibilityType = SelectorNodeResponsibilityTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var selectorNodeResponsibilityType = SelectorNodeResponsibilityTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      selectorNodeResponsibilityTypeValue.getPrimaryKey());
             
             selectorNodeResponsibilityType.setThruTime(session.START_TIME_LONG);
             selectorNodeResponsibilityType.store();
-            
-            SelectorNode selectorNode = selectorNodeResponsibilityType.getSelectorNode();
-            ResponsibilityTypePK responsibilityTypePK = selectorNodeResponsibilityTypeValue.getResponsibilityTypePK();
+
+            var selectorNode = selectorNodeResponsibilityType.getSelectorNode();
+            var responsibilityTypePK = selectorNodeResponsibilityTypeValue.getResponsibilityTypePK();
             
             selectorNodeResponsibilityType = SelectorNodeResponsibilityTypeFactory.getInstance().create(selectorNode.getPrimaryKey(),
                     responsibilityTypePK, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -3216,7 +3216,7 @@ public class SelectorControl
     
     public SelectorNodeTrainingClass createSelectorNodeTrainingClass(SelectorNode selectorNode, TrainingClass trainingClass,
             BasePK createdBy) {
-        SelectorNodeTrainingClass selectorNodeTrainingClass = SelectorNodeTrainingClassFactory.getInstance().create(session,
+        var selectorNodeTrainingClass = SelectorNodeTrainingClassFactory.getInstance().create(session,
                 selectorNode, trainingClass, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(selectorNode.getLastDetail().getSelectorPK(), EventTypes.MODIFY,
@@ -3241,8 +3241,8 @@ public class SelectorControl
                         "WHERE slndtrncls_slnd_selectornodeid = ? AND slndtrncls_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = SelectorNodeTrainingClassFactory.getInstance().prepareStatement(query);
+
+            var ps = SelectorNodeTrainingClassFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, selectorNode.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -3268,7 +3268,7 @@ public class SelectorControl
     }
     
     public SelectorNodeTrainingClassValue getSelectorNodeTrainingClassValueForUpdate(SelectorNode selectorNode) {
-        SelectorNodeTrainingClass selectorNodeTrainingClass = getSelectorNodeTrainingClassForUpdate(selectorNode);
+        var selectorNodeTrainingClass = getSelectorNodeTrainingClassForUpdate(selectorNode);
         
         return selectorNodeTrainingClass == null? null: selectorNodeTrainingClass.getSelectorNodeTrainingClassValue().clone();
     }
@@ -3291,8 +3291,8 @@ public class SelectorControl
                         "AND slnd_selectornodeid = slndtrncls_slnd_selectornodeid AND slndtrncls_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = SelectorNodeTrainingClassFactory.getInstance().prepareStatement(query);
+
+            var ps = SelectorNodeTrainingClassFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, selector.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -3315,14 +3315,14 @@ public class SelectorControl
     
     public void updateSelectorNodeTrainingClassFromValue(SelectorNodeTrainingClassValue selectorNodeTrainingClassValue, BasePK updatedBy) {
         if(selectorNodeTrainingClassValue.hasBeenModified()) {
-            SelectorNodeTrainingClass selectorNodeTrainingClass = SelectorNodeTrainingClassFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var selectorNodeTrainingClass = SelectorNodeTrainingClassFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      selectorNodeTrainingClassValue.getPrimaryKey());
             
             selectorNodeTrainingClass.setThruTime(session.START_TIME_LONG);
             selectorNodeTrainingClass.store();
-            
-            SelectorNode selectorNode = selectorNodeTrainingClass.getSelectorNode();
-            TrainingClassPK trainingClassPK = selectorNodeTrainingClassValue.getTrainingClassPK();
+
+            var selectorNode = selectorNodeTrainingClass.getSelectorNode();
+            var trainingClassPK = selectorNodeTrainingClassValue.getTrainingClassPK();
             
             selectorNodeTrainingClass = SelectorNodeTrainingClassFactory.getInstance().create(selectorNode.getPrimaryKey(),
                     trainingClassPK, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -3345,7 +3345,7 @@ public class SelectorControl
     
     public SelectorNodeSkillType createSelectorNodeSkillType(SelectorNode selectorNode, SkillType skillType,
             BasePK createdBy) {
-        SelectorNodeSkillType selectorNodeSkillType = SelectorNodeSkillTypeFactory.getInstance().create(session,
+        var selectorNodeSkillType = SelectorNodeSkillTypeFactory.getInstance().create(session,
                 selectorNode, skillType, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(selectorNode.getLastDetail().getSelectorPK(), EventTypes.MODIFY,
@@ -3370,8 +3370,8 @@ public class SelectorControl
                         "WHERE slndskltyp_slnd_selectornodeid = ? AND slndskltyp_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = SelectorNodeSkillTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = SelectorNodeSkillTypeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, selectorNode.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -3397,7 +3397,7 @@ public class SelectorControl
     }
     
     public SelectorNodeSkillTypeValue getSelectorNodeSkillTypeValueForUpdate(SelectorNode selectorNode) {
-        SelectorNodeSkillType selectorNodeSkillType = getSelectorNodeSkillTypeForUpdate(selectorNode);
+        var selectorNodeSkillType = getSelectorNodeSkillTypeForUpdate(selectorNode);
         
         return selectorNodeSkillType == null? null: selectorNodeSkillType.getSelectorNodeSkillTypeValue().clone();
     }
@@ -3420,8 +3420,8 @@ public class SelectorControl
                         "AND slnd_selectornodeid = slndskltyp_slnd_selectornodeid AND slndskltyp_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = SelectorNodeSkillTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = SelectorNodeSkillTypeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, selector.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -3444,14 +3444,14 @@ public class SelectorControl
     
     public void updateSelectorNodeSkillTypeFromValue(SelectorNodeSkillTypeValue selectorNodeSkillTypeValue, BasePK updatedBy) {
         if(selectorNodeSkillTypeValue.hasBeenModified()) {
-            SelectorNodeSkillType selectorNodeSkillType = SelectorNodeSkillTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var selectorNodeSkillType = SelectorNodeSkillTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      selectorNodeSkillTypeValue.getPrimaryKey());
             
             selectorNodeSkillType.setThruTime(session.START_TIME_LONG);
             selectorNodeSkillType.store();
-            
-            SelectorNode selectorNode = selectorNodeSkillType.getSelectorNode();
-            SkillTypePK skillTypePK = selectorNodeSkillTypeValue.getSkillTypePK();
+
+            var selectorNode = selectorNodeSkillType.getSelectorNode();
+            var skillTypePK = selectorNodeSkillTypeValue.getSkillTypePK();
             
             selectorNodeSkillType = SelectorNodeSkillTypeFactory.getInstance().create(selectorNode.getPrimaryKey(),
                     skillTypePK, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -3474,7 +3474,7 @@ public class SelectorControl
     
     public SelectorNodeItemCategory createSelectorNodeItemCategory(SelectorNode selectorNode, ItemCategory itemCategory,
             Boolean checkParents, BasePK createdBy) {
-        SelectorNodeItemCategory selectorNodeItemCategory = SelectorNodeItemCategoryFactory.getInstance().create(session,
+        var selectorNodeItemCategory = SelectorNodeItemCategoryFactory.getInstance().create(session,
                 selectorNode, itemCategory, checkParents, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(selectorNode.getLastDetail().getSelectorPK(), EventTypes.MODIFY,
@@ -3499,8 +3499,8 @@ public class SelectorControl
                         "WHERE slndic_slnd_selectornodeid = ? AND slndic_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = SelectorNodeItemCategoryFactory.getInstance().prepareStatement(query);
+
+            var ps = SelectorNodeItemCategoryFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, selectorNode.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -3526,7 +3526,7 @@ public class SelectorControl
     }
     
     public SelectorNodeItemCategoryValue getSelectorNodeItemCategoryValueForUpdate(SelectorNode selectorNode) {
-        SelectorNodeItemCategory selectorNodeItemCategory = getSelectorNodeItemCategoryForUpdate(selectorNode);
+        var selectorNodeItemCategory = getSelectorNodeItemCategoryForUpdate(selectorNode);
         
         return selectorNodeItemCategory == null? null: selectorNodeItemCategory.getSelectorNodeItemCategoryValue().clone();
     }
@@ -3549,8 +3549,8 @@ public class SelectorControl
                         "AND slnd_selectornodeid = slndic_slnd_selectornodeid AND slndic_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = SelectorNodeItemCategoryFactory.getInstance().prepareStatement(query);
+
+            var ps = SelectorNodeItemCategoryFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, selector.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -3573,15 +3573,15 @@ public class SelectorControl
     
     public void updateSelectorNodeItemCategoryFromValue(SelectorNodeItemCategoryValue selectorNodeItemCategoryValue, BasePK updatedBy) {
         if(selectorNodeItemCategoryValue.hasBeenModified()) {
-            SelectorNodeItemCategory selectorNodeItemCategory = SelectorNodeItemCategoryFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var selectorNodeItemCategory = SelectorNodeItemCategoryFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      selectorNodeItemCategoryValue.getPrimaryKey());
             
             selectorNodeItemCategory.setThruTime(session.START_TIME_LONG);
             selectorNodeItemCategory.store();
-            
-            SelectorNode selectorNode = selectorNodeItemCategory.getSelectorNode();
-            ItemCategoryPK itemCategoryPK = selectorNodeItemCategoryValue.getItemCategoryPK();
-            Boolean checkParents = selectorNodeItemCategoryValue.getCheckParents();
+
+            var selectorNode = selectorNodeItemCategory.getSelectorNode();
+            var itemCategoryPK = selectorNodeItemCategoryValue.getItemCategoryPK();
+            var checkParents = selectorNodeItemCategoryValue.getCheckParents();
             
             selectorNodeItemCategory = SelectorNodeItemCategoryFactory.getInstance().create(selectorNode.getPrimaryKey(),
                     itemCategoryPK, checkParents, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -3604,7 +3604,7 @@ public class SelectorControl
     
     public SelectorNodeItemAccountingCategory createSelectorNodeItemAccountingCategory(SelectorNode selectorNode,
             ItemAccountingCategory itemAccountingCategory, Boolean checkParents, BasePK createdBy) {
-        SelectorNodeItemAccountingCategory selectorNodeItemAccountingCategory = SelectorNodeItemAccountingCategoryFactory.getInstance().create(session,
+        var selectorNodeItemAccountingCategory = SelectorNodeItemAccountingCategoryFactory.getInstance().create(session,
                 selectorNode, itemAccountingCategory, checkParents, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(selectorNode.getLastDetail().getSelectorPK(), EventTypes.MODIFY,
@@ -3629,8 +3629,8 @@ public class SelectorControl
                         "WHERE slndiactgc_slnd_selectornodeid = ? AND slndiactgc_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = SelectorNodeItemAccountingCategoryFactory.getInstance().prepareStatement(query);
+
+            var ps = SelectorNodeItemAccountingCategoryFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, selectorNode.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -3656,7 +3656,7 @@ public class SelectorControl
     }
     
     public SelectorNodeItemAccountingCategoryValue getSelectorNodeItemAccountingCategoryValueForUpdate(SelectorNode selectorNode) {
-        SelectorNodeItemAccountingCategory selectorNodeItemAccountingCategory = getSelectorNodeItemAccountingCategoryForUpdate(selectorNode);
+        var selectorNodeItemAccountingCategory = getSelectorNodeItemAccountingCategoryForUpdate(selectorNode);
         
         return selectorNodeItemAccountingCategory == null? null: selectorNodeItemAccountingCategory.getSelectorNodeItemAccountingCategoryValue().clone();
     }
@@ -3679,8 +3679,8 @@ public class SelectorControl
                         "AND slnd_selectornodeid = slndiactgc_slnd_selectornodeid AND slndiactgc_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = SelectorNodeItemAccountingCategoryFactory.getInstance().prepareStatement(query);
+
+            var ps = SelectorNodeItemAccountingCategoryFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, selector.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -3704,15 +3704,15 @@ public class SelectorControl
     public void updateSelectorNodeItemAccountingCategoryFromValue(SelectorNodeItemAccountingCategoryValue selectorNodeItemAccountingCategoryValue,
             BasePK updatedBy) {
         if(selectorNodeItemAccountingCategoryValue.hasBeenModified()) {
-            SelectorNodeItemAccountingCategory selectorNodeItemAccountingCategory = SelectorNodeItemAccountingCategoryFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var selectorNodeItemAccountingCategory = SelectorNodeItemAccountingCategoryFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      selectorNodeItemAccountingCategoryValue.getPrimaryKey());
             
             selectorNodeItemAccountingCategory.setThruTime(session.START_TIME_LONG);
             selectorNodeItemAccountingCategory.store();
-            
-            SelectorNode selectorNode = selectorNodeItemAccountingCategory.getSelectorNode();
-            ItemAccountingCategoryPK itemAccountingCategoryPK = selectorNodeItemAccountingCategoryValue.getItemAccountingCategoryPK();
-            Boolean checkParents = selectorNodeItemAccountingCategoryValue.getCheckParents();
+
+            var selectorNode = selectorNodeItemAccountingCategory.getSelectorNode();
+            var itemAccountingCategoryPK = selectorNodeItemAccountingCategoryValue.getItemAccountingCategoryPK();
+            var checkParents = selectorNodeItemAccountingCategoryValue.getCheckParents();
             
             selectorNodeItemAccountingCategory = SelectorNodeItemAccountingCategoryFactory.getInstance().create(selectorNode.getPrimaryKey(),
                     itemAccountingCategoryPK, checkParents, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -3736,7 +3736,7 @@ public class SelectorControl
     
     public SelectorNodeItemPurchasingCategory createSelectorNodeItemPurchasingCategory(SelectorNode selectorNode,
             ItemPurchasingCategory itemPurchasingCategory, Boolean checkParents, BasePK createdBy) {
-        SelectorNodeItemPurchasingCategory selectorNodeItemPurchasingCategory = SelectorNodeItemPurchasingCategoryFactory.getInstance().create(session,
+        var selectorNodeItemPurchasingCategory = SelectorNodeItemPurchasingCategoryFactory.getInstance().create(session,
                 selectorNode, itemPurchasingCategory, checkParents, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(selectorNode.getLastDetail().getSelectorPK(), EventTypes.MODIFY,
@@ -3761,8 +3761,8 @@ public class SelectorControl
                         "WHERE slndiprchc_slnd_selectornodeid = ? AND slndiprchc_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = SelectorNodeItemPurchasingCategoryFactory.getInstance().prepareStatement(query);
+
+            var ps = SelectorNodeItemPurchasingCategoryFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, selectorNode.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -3788,7 +3788,7 @@ public class SelectorControl
     }
     
     public SelectorNodeItemPurchasingCategoryValue getSelectorNodeItemPurchasingCategoryValueForUpdate(SelectorNode selectorNode) {
-        SelectorNodeItemPurchasingCategory selectorNodeItemPurchasingCategory = getSelectorNodeItemPurchasingCategoryForUpdate(selectorNode);
+        var selectorNodeItemPurchasingCategory = getSelectorNodeItemPurchasingCategoryForUpdate(selectorNode);
         
         return selectorNodeItemPurchasingCategory == null? null: selectorNodeItemPurchasingCategory.getSelectorNodeItemPurchasingCategoryValue().clone();
     }
@@ -3811,8 +3811,8 @@ public class SelectorControl
                         "AND slnd_selectornodeid = slndiprchc_slnd_selectornodeid AND slndiprchc_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = SelectorNodeItemPurchasingCategoryFactory.getInstance().prepareStatement(query);
+
+            var ps = SelectorNodeItemPurchasingCategoryFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, selector.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -3836,15 +3836,15 @@ public class SelectorControl
     public void updateSelectorNodeItemPurchasingCategoryFromValue(SelectorNodeItemPurchasingCategoryValue selectorNodeItemPurchasingCategoryValue,
             BasePK updatedBy) {
         if(selectorNodeItemPurchasingCategoryValue.hasBeenModified()) {
-            SelectorNodeItemPurchasingCategory selectorNodeItemPurchasingCategory = SelectorNodeItemPurchasingCategoryFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var selectorNodeItemPurchasingCategory = SelectorNodeItemPurchasingCategoryFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      selectorNodeItemPurchasingCategoryValue.getPrimaryKey());
             
             selectorNodeItemPurchasingCategory.setThruTime(session.START_TIME_LONG);
             selectorNodeItemPurchasingCategory.store();
-            
-            SelectorNode selectorNode = selectorNodeItemPurchasingCategory.getSelectorNode();
-            ItemPurchasingCategoryPK itemPurchasingCategoryPK = selectorNodeItemPurchasingCategoryValue.getItemPurchasingCategoryPK();
-            Boolean checkParents = selectorNodeItemPurchasingCategoryValue.getCheckParents();
+
+            var selectorNode = selectorNodeItemPurchasingCategory.getSelectorNode();
+            var itemPurchasingCategoryPK = selectorNodeItemPurchasingCategoryValue.getItemPurchasingCategoryPK();
+            var checkParents = selectorNodeItemPurchasingCategoryValue.getCheckParents();
             
             selectorNodeItemPurchasingCategory = SelectorNodeItemPurchasingCategoryFactory.getInstance().create(selectorNode.getPrimaryKey(),
                     itemPurchasingCategoryPK, checkParents, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -3868,7 +3868,7 @@ public class SelectorControl
     
     public SelectorNodeGeoCode createSelectorNodeGeoCode(SelectorNode selectorNode, GeoCode geoCode,
             BasePK createdBy) {
-        SelectorNodeGeoCode selectorNodeGeoCode = SelectorNodeGeoCodeFactory.getInstance().create(session,
+        var selectorNodeGeoCode = SelectorNodeGeoCodeFactory.getInstance().create(session,
                 selectorNode, geoCode, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(selectorNode.getLastDetail().getSelectorPK(), EventTypes.MODIFY,
@@ -3901,8 +3901,8 @@ public class SelectorControl
                         "WHERE slndgeo_slnd_selectornodeid = ? AND slndgeo_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = SelectorNodeGeoCodeFactory.getInstance().prepareStatement(query);
+
+            var ps = SelectorNodeGeoCodeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, selectorNode.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -3928,7 +3928,7 @@ public class SelectorControl
     }
     
     public SelectorNodeGeoCodeValue getSelectorNodeGeoCodeValueForUpdate(SelectorNode selectorNode) {
-        SelectorNodeGeoCode selectorNodeGeoCode = getSelectorNodeGeoCodeForUpdate(selectorNode);
+        var selectorNodeGeoCode = getSelectorNodeGeoCodeForUpdate(selectorNode);
         
         return selectorNodeGeoCode == null? null: selectorNodeGeoCode.getSelectorNodeGeoCodeValue().clone();
     }
@@ -3951,8 +3951,8 @@ public class SelectorControl
                         "AND slnd_selectornodeid = slndgeo_slnd_selectornodeid AND slndgeo_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = SelectorNodeGeoCodeFactory.getInstance().prepareStatement(query);
+
+            var ps = SelectorNodeGeoCodeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, selector.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -3975,14 +3975,14 @@ public class SelectorControl
     
     public void updateSelectorNodeGeoCodeFromValue(SelectorNodeGeoCodeValue selectorNodeGeoCodeValue, BasePK updatedBy) {
         if(selectorNodeGeoCodeValue.hasBeenModified()) {
-            SelectorNodeGeoCode selectorNodeGeoCode = SelectorNodeGeoCodeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var selectorNodeGeoCode = SelectorNodeGeoCodeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      selectorNodeGeoCodeValue.getPrimaryKey());
             
             selectorNodeGeoCode.setThruTime(session.START_TIME_LONG);
             selectorNodeGeoCode.store();
-            
-            SelectorNode selectorNode = selectorNodeGeoCode.getSelectorNode();
-            GeoCodePK geoCodePK = selectorNodeGeoCodeValue.getGeoCodePK();
+
+            var selectorNode = selectorNodeGeoCode.getSelectorNode();
+            var geoCodePK = selectorNodeGeoCodeValue.getGeoCodePK();
             
             selectorNodeGeoCode = SelectorNodeGeoCodeFactory.getInstance().create(selectorNode.getPrimaryKey(),
                     geoCodePK, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -4005,7 +4005,7 @@ public class SelectorControl
     
     public SelectorNodePaymentMethod createSelectorNodePaymentMethod(SelectorNode selectorNode, PaymentMethod paymentMethod,
             BasePK createdBy) {
-        SelectorNodePaymentMethod selectorNodePaymentMethod = SelectorNodePaymentMethodFactory.getInstance().create(session,
+        var selectorNodePaymentMethod = SelectorNodePaymentMethodFactory.getInstance().create(session,
                 selectorNode, paymentMethod, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(selectorNode.getLastDetail().getSelectorPK(), EventTypes.MODIFY,
@@ -4030,8 +4030,8 @@ public class SelectorControl
                         "WHERE slndpm_slnd_selectornodeid = ? AND slndpm_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = SelectorNodePaymentMethodFactory.getInstance().prepareStatement(query);
+
+            var ps = SelectorNodePaymentMethodFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, selectorNode.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -4057,7 +4057,7 @@ public class SelectorControl
     }
     
     public SelectorNodePaymentMethodValue getSelectorNodePaymentMethodValueForUpdate(SelectorNode selectorNode) {
-        SelectorNodePaymentMethod selectorNodePaymentMethod = getSelectorNodePaymentMethodForUpdate(selectorNode);
+        var selectorNodePaymentMethod = getSelectorNodePaymentMethodForUpdate(selectorNode);
         
         return selectorNodePaymentMethod == null? null: selectorNodePaymentMethod.getSelectorNodePaymentMethodValue().clone();
     }
@@ -4080,8 +4080,8 @@ public class SelectorControl
                         "AND slnd_selectornodeid = slndpm_slnd_selectornodeid AND slndpm_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = SelectorNodePaymentMethodFactory.getInstance().prepareStatement(query);
+
+            var ps = SelectorNodePaymentMethodFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, selector.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -4104,14 +4104,14 @@ public class SelectorControl
     
     public void updateSelectorNodePaymentMethodFromValue(SelectorNodePaymentMethodValue selectorNodePaymentMethodValue, BasePK updatedBy) {
         if(selectorNodePaymentMethodValue.hasBeenModified()) {
-            SelectorNodePaymentMethod selectorNodePaymentMethod = SelectorNodePaymentMethodFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var selectorNodePaymentMethod = SelectorNodePaymentMethodFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      selectorNodePaymentMethodValue.getPrimaryKey());
             
             selectorNodePaymentMethod.setThruTime(session.START_TIME_LONG);
             selectorNodePaymentMethod.store();
-            
-            SelectorNode selectorNode = selectorNodePaymentMethod.getSelectorNode();
-            PaymentMethodPK paymentMethodPK = selectorNodePaymentMethodValue.getPaymentMethodPK();
+
+            var selectorNode = selectorNodePaymentMethod.getSelectorNode();
+            var paymentMethodPK = selectorNodePaymentMethodValue.getPaymentMethodPK();
             
             selectorNodePaymentMethod = SelectorNodePaymentMethodFactory.getInstance().create(selectorNode.getPrimaryKey(),
                     paymentMethodPK, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -4134,7 +4134,7 @@ public class SelectorControl
     
     public SelectorNodePaymentProcessor createSelectorNodePaymentProcessor(SelectorNode selectorNode, PaymentProcessor paymentProcessor,
             BasePK createdBy) {
-        SelectorNodePaymentProcessor selectorNodePaymentProcessor = SelectorNodePaymentProcessorFactory.getInstance().create(session,
+        var selectorNodePaymentProcessor = SelectorNodePaymentProcessorFactory.getInstance().create(session,
                 selectorNode, paymentProcessor, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(selectorNode.getLastDetail().getSelectorPK(), EventTypes.MODIFY,
@@ -4159,8 +4159,8 @@ public class SelectorControl
                         "WHERE slndpprc_slnd_selectornodeid = ? AND slndpprc_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = SelectorNodePaymentProcessorFactory.getInstance().prepareStatement(query);
+
+            var ps = SelectorNodePaymentProcessorFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, selectorNode.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -4186,7 +4186,7 @@ public class SelectorControl
     }
     
     public SelectorNodePaymentProcessorValue getSelectorNodePaymentProcessorValueForUpdate(SelectorNode selectorNode) {
-        SelectorNodePaymentProcessor selectorNodePaymentProcessor = getSelectorNodePaymentProcessorForUpdate(selectorNode);
+        var selectorNodePaymentProcessor = getSelectorNodePaymentProcessorForUpdate(selectorNode);
         
         return selectorNodePaymentProcessor == null? null: selectorNodePaymentProcessor.getSelectorNodePaymentProcessorValue().clone();
     }
@@ -4209,8 +4209,8 @@ public class SelectorControl
                         "AND slnd_selectornodeid = slndpprc_slnd_selectornodeid AND slndpprc_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = SelectorNodePaymentProcessorFactory.getInstance().prepareStatement(query);
+
+            var ps = SelectorNodePaymentProcessorFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, selector.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -4233,14 +4233,14 @@ public class SelectorControl
     
     public void updateSelectorNodePaymentProcessorFromValue(SelectorNodePaymentProcessorValue selectorNodePaymentProcessorValue, BasePK updatedBy) {
         if(selectorNodePaymentProcessorValue.hasBeenModified()) {
-            SelectorNodePaymentProcessor selectorNodePaymentProcessor = SelectorNodePaymentProcessorFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var selectorNodePaymentProcessor = SelectorNodePaymentProcessorFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      selectorNodePaymentProcessorValue.getPrimaryKey());
             
             selectorNodePaymentProcessor.setThruTime(session.START_TIME_LONG);
             selectorNodePaymentProcessor.store();
-            
-            SelectorNode selectorNode = selectorNodePaymentProcessor.getSelectorNode();
-            PaymentProcessorPK paymentProcessorPK = selectorNodePaymentProcessorValue.getPaymentProcessorPK();
+
+            var selectorNode = selectorNodePaymentProcessor.getSelectorNode();
+            var paymentProcessorPK = selectorNodePaymentProcessorValue.getPaymentProcessorPK();
             
             selectorNodePaymentProcessor = SelectorNodePaymentProcessorFactory.getInstance().create(selectorNode.getPrimaryKey(),
                     paymentProcessorPK, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -4262,7 +4262,7 @@ public class SelectorControl
     // --------------------------------------------------------------------------------
     
     public SelectorParty createSelectorParty(Selector selector, Party party, BasePK createdBy) {
-        SelectorParty selectorParty = SelectorPartyFactory.getInstance().create(selector, party, session.START_TIME_LONG,
+        var selectorParty = SelectorPartyFactory.getInstance().create(selector, party, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
         return selectorParty;
@@ -4284,8 +4284,8 @@ public class SelectorControl
                         "WHERE slpar_sl_selectorid = ? AND slpar_par_partyid = ? AND slpar_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = SelectorPartyFactory.getInstance().prepareStatement(query);
+
+            var ps = SelectorPartyFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, selector.getPrimaryKey().getEntityId());
             ps.setLong(2, party.getPrimaryKey().getEntityId());
@@ -4308,7 +4308,7 @@ public class SelectorControl
     }
     
     public SelectorPartyValue getSelectorPartyValueForUpdate(Selector selector, Party party) {
-        SelectorParty selectorParty = getSelectorPartyForUpdate(selector, party);
+        var selectorParty = getSelectorPartyForUpdate(selector, party);
         
         return selectorParty == null? null: selectorParty.getSelectorPartyValue().clone();
     }
@@ -4331,8 +4331,8 @@ public class SelectorControl
                         "WHERE slpar_sl_selectorid = ? AND slpar_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = SelectorPartyFactory.getInstance().prepareStatement(query);
+
+            var ps = SelectorPartyFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, selector.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -4358,9 +4358,9 @@ public class SelectorControl
     }
     
     public List<SelectorPartyTransfer> getSelectorPartyTransfers(UserVisit userVisit, Selector selector) {
-        List<SelectorParty> selectorParties = getSelectorPartiesBySelector(selector);
+        var selectorParties = getSelectorPartiesBySelector(selector);
         List<SelectorPartyTransfer> selectorPartyTransfers = new ArrayList<>(selectorParties.size());
-        SelectorPartyTransferCache selectorPartyTransferCache = getSelectorTransferCaches(userVisit).getSelectorPartyTransferCache();
+        var selectorPartyTransferCache = getSelectorTransferCaches(userVisit).getSelectorPartyTransferCache();
         
         selectorParties.forEach((selectorParty) ->
                 selectorPartyTransfers.add(selectorPartyTransferCache.getSelectorPartyTransfer(selectorParty))
@@ -4374,7 +4374,7 @@ public class SelectorControl
     }
     
     public void deleteSelectorPartiesBySelector(Selector selector, BasePK deletedBy) {
-        List<SelectorParty> selectorParties = getSelectorPartiesBySelectorForUpdate(selector);
+        var selectorParties = getSelectorPartiesBySelectorForUpdate(selector);
         
         selectorParties.forEach((selectorParty) -> 
                 deleteSelectorParty(selectorParty, deletedBy)

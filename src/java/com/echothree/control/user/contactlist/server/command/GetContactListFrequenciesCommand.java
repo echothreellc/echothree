@@ -61,7 +61,7 @@ public class GetContactListFrequenciesCommand
     @Override
     protected BaseResult execute() {
         var contactListControl = Session.getModelController(ContactListControl.class);
-        GetContactListFrequenciesResult result = ContactListResultFactory.getGetContactListFrequenciesResult();
+        var result = ContactListResultFactory.getGetContactListFrequenciesResult();
         
         result.setContactListFrequencies(contactListControl.getContactListFrequencyTransfers(getUserVisit()));
         

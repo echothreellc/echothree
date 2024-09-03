@@ -35,11 +35,11 @@ public class TagScopeDescriptionTransferCache
     }
     
     public TagScopeDescriptionTransfer getTagScopeDescriptionTransfer(TagScopeDescription tagScopeDescription) {
-        TagScopeDescriptionTransfer tagScopeDescriptionTransfer = get(tagScopeDescription);
+        var tagScopeDescriptionTransfer = get(tagScopeDescription);
         
         if(tagScopeDescriptionTransfer == null) {
-            TagScopeTransfer tagScopeTransfer = tagControl.getTagScopeTransfer(userVisit, tagScopeDescription.getTagScope());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, tagScopeDescription.getLanguage());
+            var tagScopeTransfer = tagControl.getTagScopeTransfer(userVisit, tagScopeDescription.getTagScope());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, tagScopeDescription.getLanguage());
             
             tagScopeDescriptionTransfer = new TagScopeDescriptionTransfer(languageTransfer, tagScopeTransfer, tagScopeDescription.getDescription());
             put(tagScopeDescription, tagScopeDescriptionTransfer);

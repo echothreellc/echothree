@@ -54,16 +54,16 @@ public class CreateSelectorComparisonTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var selectorControl = Session.getModelController(SelectorControl.class);
-        String selectorComparisonTypeName = form.getSelectorComparisonTypeName();
-        SelectorComparisonType selectorComparisonType = selectorControl.getSelectorComparisonTypeByName(selectorComparisonTypeName);
+        var selectorComparisonTypeName = form.getSelectorComparisonTypeName();
+        var selectorComparisonType = selectorControl.getSelectorComparisonTypeByName(selectorComparisonTypeName);
         
         if(selectorComparisonType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                SelectorComparisonTypeDescription selectorComparisonTypeDescription = selectorControl.getSelectorComparisonTypeDescription(selectorComparisonType, language);
+                var selectorComparisonTypeDescription = selectorControl.getSelectorComparisonTypeDescription(selectorComparisonType, language);
                 
                 if(selectorComparisonTypeDescription == null) {
                     var description = form.getDescription();

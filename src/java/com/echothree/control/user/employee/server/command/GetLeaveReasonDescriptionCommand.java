@@ -69,17 +69,17 @@ public class GetLeaveReasonDescriptionCommand
     @Override
     protected BaseResult execute() {
         var employeeControl = Session.getModelController(EmployeeControl.class);
-        GetLeaveReasonDescriptionResult result = EmployeeResultFactory.getGetLeaveReasonDescriptionResult();
-        String leaveReasonName = form.getLeaveReasonName();
-        LeaveReason leaveReason = employeeControl.getLeaveReasonByName(leaveReasonName);
+        var result = EmployeeResultFactory.getGetLeaveReasonDescriptionResult();
+        var leaveReasonName = form.getLeaveReasonName();
+        var leaveReason = employeeControl.getLeaveReasonByName(leaveReasonName);
         
         if(leaveReason != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                LeaveReasonDescription leaveReasonDescription = employeeControl.getLeaveReasonDescription(leaveReason, language);
+                var leaveReasonDescription = employeeControl.getLeaveReasonDescription(leaveReason, language);
                 
                 if(leaveReasonDescription != null) {
                     result.setLeaveReasonDescription(employeeControl.getLeaveReasonDescriptionTransfer(getUserVisit(), leaveReasonDescription));

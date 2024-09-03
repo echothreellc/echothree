@@ -71,24 +71,24 @@ public class DeleteWorkflowDestinationPartyTypeCommand
     @Override
     protected BaseResult execute() {
         var workflowControl = Session.getModelController(WorkflowControl.class);
-        String workflowName = form.getWorkflowName();
+        var workflowName = form.getWorkflowName();
         var workflow = workflowControl.getWorkflowByName(workflowName);
         
         if(workflow != null) {
-            String workflowStepName = form.getWorkflowStepName();
+            var workflowStepName = form.getWorkflowStepName();
             var workflowStep = workflowControl.getWorkflowStepByName(workflow, workflowStepName);
             
             if(workflowStep != null) {
-                String workflowDestinationName = form.getWorkflowDestinationName();
-                WorkflowDestination workflowDestination = workflowControl.getWorkflowDestinationByName(workflowStep, workflowDestinationName);
+                var workflowDestinationName = form.getWorkflowDestinationName();
+                var workflowDestination = workflowControl.getWorkflowDestinationByName(workflowStep, workflowDestinationName);
                 
                 if(workflowDestination != null) {
                     var partyControl = Session.getModelController(PartyControl.class);
-                    String partyTypeName = form.getPartyTypeName();
-                    PartyType partyType = partyControl.getPartyTypeByName(partyTypeName);
+                    var partyTypeName = form.getPartyTypeName();
+                    var partyType = partyControl.getPartyTypeByName(partyTypeName);
                     
                     if(partyType != null) {
-                        WorkflowDestinationPartyType workflowDestinationPartyType = workflowControl.getWorkflowDestinationPartyTypeForUpdate(workflowDestination, partyType);
+                        var workflowDestinationPartyType = workflowControl.getWorkflowDestinationPartyTypeForUpdate(workflowDestination, partyType);
                         
                         if(workflowDestinationPartyType != null) {
                             workflowControl.deleteWorkflowDestinationPartyType(workflowDestinationPartyType, getPartyPK());

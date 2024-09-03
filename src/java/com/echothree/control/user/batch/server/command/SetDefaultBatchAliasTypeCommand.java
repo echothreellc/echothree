@@ -64,12 +64,12 @@ public class SetDefaultBatchAliasTypeCommand
     @Override
     protected BaseResult execute() {
         var batchControl = Session.getModelController(BatchControl.class);
-        String batchTypeName = form.getBatchTypeName();
-        BatchType batchType = batchControl.getBatchTypeByName(batchTypeName);
+        var batchTypeName = form.getBatchTypeName();
+        var batchType = batchControl.getBatchTypeByName(batchTypeName);
 
         if(batchType != null) {
-            String batchAliasTypeName = form.getBatchAliasTypeName();
-            BatchAliasTypeDetailValue batchAliasTypeDetailValue = batchControl.getBatchAliasTypeDetailValueByNameForUpdate(batchType, batchAliasTypeName);
+            var batchAliasTypeName = form.getBatchAliasTypeName();
+            var batchAliasTypeDetailValue = batchControl.getBatchAliasTypeDetailValueByNameForUpdate(batchType, batchAliasTypeName);
 
             if(batchAliasTypeDetailValue != null) {
                 batchAliasTypeDetailValue.setIsDefault(Boolean.TRUE);

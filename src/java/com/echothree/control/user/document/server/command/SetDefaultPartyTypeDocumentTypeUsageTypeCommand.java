@@ -66,16 +66,16 @@ public class SetDefaultPartyTypeDocumentTypeUsageTypeCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        String partyTypeName = form.getPartyTypeName();
-        PartyType partyType = partyControl.getPartyTypeByName(partyTypeName);
+        var partyTypeName = form.getPartyTypeName();
+        var partyType = partyControl.getPartyTypeByName(partyTypeName);
 
         if(partyType != null) {
             var documentControl = Session.getModelController(DocumentControl.class);
-            String documentTypeUsageTypeName = form.getDocumentTypeUsageTypeName();
-            DocumentTypeUsageType documentTypeUsageType = documentControl.getDocumentTypeUsageTypeByName(documentTypeUsageTypeName);
+            var documentTypeUsageTypeName = form.getDocumentTypeUsageTypeName();
+            var documentTypeUsageType = documentControl.getDocumentTypeUsageTypeByName(documentTypeUsageTypeName);
 
             if(documentTypeUsageType != null) {
-                PartyTypeDocumentTypeUsageTypeValue partyTypeDocumentTypeUsageTypeValue = documentControl.getPartyTypeDocumentTypeUsageTypeValueForUpdate(partyType, documentTypeUsageType);
+                var partyTypeDocumentTypeUsageTypeValue = documentControl.getPartyTypeDocumentTypeUsageTypeValueForUpdate(partyType, documentTypeUsageType);
 
                 if(partyTypeDocumentTypeUsageTypeValue != null) {
                     partyTypeDocumentTypeUsageTypeValue.setIsDefault(Boolean.TRUE);

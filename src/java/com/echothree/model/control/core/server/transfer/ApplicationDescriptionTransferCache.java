@@ -35,11 +35,11 @@ public class ApplicationDescriptionTransferCache
     }
     
     public ApplicationDescriptionTransfer getApplicationDescriptionTransfer(ApplicationDescription applicationDescription) {
-        ApplicationDescriptionTransfer applicationDescriptionTransfer = get(applicationDescription);
+        var applicationDescriptionTransfer = get(applicationDescription);
         
         if(applicationDescriptionTransfer == null) {
-            ApplicationTransfer applicationTransfer = coreControl.getApplicationTransfer(userVisit, applicationDescription.getApplication());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, applicationDescription.getLanguage());
+            var applicationTransfer = coreControl.getApplicationTransfer(userVisit, applicationDescription.getApplication());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, applicationDescription.getLanguage());
             
             applicationDescriptionTransfer = new ApplicationDescriptionTransfer(languageTransfer, applicationTransfer, applicationDescription.getDescription());
             put(applicationDescription, applicationDescriptionTransfer);

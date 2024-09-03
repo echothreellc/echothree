@@ -82,12 +82,12 @@ public class CreateLetterSourceCommand
     @Override
     protected BaseResult execute() {
         var letterControl = Session.getModelController(LetterControl.class);
-        String letterSourceName = form.getLetterSourceName();
-        LetterSource letterSource = letterControl.getLetterSourceByName(letterSourceName);
+        var letterSourceName = form.getLetterSourceName();
+        var letterSource = letterControl.getLetterSourceByName(letterSourceName);
         
         if(letterSource == null) {
-            String partyName = form.getPartyName();
-            String companyName = form.getCompanyName();
+            var partyName = form.getPartyName();
+            var companyName = form.getCompanyName();
             var parameterCount = (partyName != null? 1: 0) + (companyName != null? 1: 0);
             
             if(parameterCount == 1) {
@@ -100,14 +100,14 @@ public class CreateLetterSourceCommand
                     if(companyParty == null) {
                         addExecutionError(ExecutionErrors.UnknownPartyName.name(), partyName);
                     } else {
-                        String partyTypeName = companyParty.getLastDetail().getPartyType().getPartyTypeName();
+                        var partyTypeName = companyParty.getLastDetail().getPartyType().getPartyTypeName();
                         
                         if(!partyTypeName.equals(PartyTypes.COMPANY.name())) {
                             addExecutionError(ExecutionErrors.InvalidPartyType.name(), partyTypeName);
                         }
                     }
                 } else {
-                    PartyCompany partyCompany = partyControl.getPartyCompanyByName(companyName);
+                    var partyCompany = partyControl.getPartyCompanyByName(companyName);
                     
                     if(partyCompany == null) {
                         addExecutionError(ExecutionErrors.UnknownCompanyName.name(), companyName);
@@ -118,16 +118,16 @@ public class CreateLetterSourceCommand
                 
                 if(!hasExecutionErrors()) {
                     var contactControl = Session.getModelController(ContactControl.class);
-                    LetterSourceCommandUtil letterSourceCommandUtil = LetterSourceCommandUtil.getInstance();
-                    PartyContactMechanism emailAddressPartyContactMechanism = letterSourceCommandUtil.getEmailAddressContactMechanism(this, form,
+                    var letterSourceCommandUtil = LetterSourceCommandUtil.getInstance();
+                    var emailAddressPartyContactMechanism = letterSourceCommandUtil.getEmailAddressContactMechanism(this, form,
                             contactControl, companyParty);
                     
                     if(!hasExecutionErrors()) {
-                        PartyContactMechanism postalAddressPartyContactMechanism = letterSourceCommandUtil.getPostalAddressContactMechanism(this, form,
+                        var postalAddressPartyContactMechanism = letterSourceCommandUtil.getPostalAddressContactMechanism(this, form,
                                 contactControl, companyParty);
                         
                         if(!hasExecutionErrors()) {
-                            PartyContactMechanism letterSourcePartyContactMechanism = letterSourceCommandUtil.getLetterSourceContactMechanism(this, form,
+                            var letterSourcePartyContactMechanism = letterSourceCommandUtil.getLetterSourceContactMechanism(this, form,
                                     contactControl, companyParty);
                             
                             if(!hasExecutionErrors()) {

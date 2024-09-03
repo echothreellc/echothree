@@ -85,7 +85,7 @@ public class SessionEntityCache {
 
     // Removed the RO entity, and drops it into the RW cache
     private void replaceReadOnlyEntity(BaseEntity baseEntity) {
-        BasePK basePK = baseEntity.getPrimaryKey();
+        var basePK = baseEntity.getPrimaryKey();
 
         entitiesReadOnly.remove(basePK);
         entitiesReadWrite.put(basePK, baseEntity);
@@ -112,8 +112,8 @@ public class SessionEntityCache {
     }
 
     public void putReadWriteEntity(BasePK basePK, BaseEntity baseEntity) {
-        SessionEntityCache cacheToExamine = this;
-        boolean addedToCache = false;
+        var cacheToExamine = this;
+        var addedToCache = false;
 
         if(LogSessionEntityCacheActions) {
             getLog().info("putReadWriteEntity(" + baseEntity.getPrimaryKey() + ")");
@@ -206,7 +206,7 @@ public class SessionEntityCache {
         
         entitiesReadWrite.values().stream().filter((baseEntity) -> baseEntity.hasBeenModified()).forEach((baseEntity) -> {
             Class baseEntityClass = baseEntity.getClass();
-            List<BaseEntity> baseEntities = values.get(baseEntity.getClass());
+            var baseEntities = values.get(baseEntity.getClass());
             
             if(baseEntities == null) {
                 baseEntities = new ArrayList<>();
@@ -217,8 +217,8 @@ public class SessionEntityCache {
         });
 
         values.entrySet().stream().map((entry) -> entry.getValue()).forEach((baseEntities) -> {
-            BaseEntity firstBaseEntity = baseEntities.get(0);
-            BaseFactory baseFactory = firstBaseEntity.getBaseFactoryInstance();
+            var firstBaseEntity = baseEntities.get(0);
+            var baseFactory = firstBaseEntity.getBaseFactoryInstance();
             
             baseFactory.store(session, baseEntities);
         });
@@ -233,7 +233,7 @@ public class SessionEntityCache {
     }
 
     private void dumpStats() {
-        Log myLog = getLog();
+        var myLog = getLog();
 
         myLog.info("--------------------------------------------------------------------------------");
         myLog.info("this = " + this);
@@ -243,7 +243,7 @@ public class SessionEntityCache {
     }
 
     private void dumpCumulativeStats() {
-        Log myLog = getLog();
+        var myLog = getLog();
 
         myLog.info("--------------------------------------------------------------------------------");
         myLog.info("this = " + this);

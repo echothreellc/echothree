@@ -90,7 +90,7 @@ public class GetItemCommand
     @Override
     protected BaseResult getResult(Item item) {
         var itemControl = Session.getModelController(ItemControl.class);
-        GetItemResult result = ItemResultFactory.getGetItemResult();
+        var result = ItemResultFactory.getGetItemResult();
 
         if(item != null) {
             result.setItem(itemControl.getItemTransfer(getUserVisit(), item));

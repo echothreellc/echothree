@@ -36,11 +36,11 @@ public class EntityIntegerRangeDescriptionTransferCache
     }
     
     public EntityIntegerRangeDescriptionTransfer getEntityIntegerRangeDescriptionTransfer(EntityIntegerRangeDescription entityIntegerRangeDescription, EntityInstance entityInstance) {
-        EntityIntegerRangeDescriptionTransfer entityIntegerRangeDescriptionTransfer = get(entityIntegerRangeDescription);
+        var entityIntegerRangeDescriptionTransfer = get(entityIntegerRangeDescription);
         
         if(entityIntegerRangeDescriptionTransfer == null) {
-            EntityIntegerRangeTransfer entityIntegerRangeTransfer = coreControl.getEntityIntegerRangeTransfer(userVisit, entityIntegerRangeDescription.getEntityIntegerRange(), entityInstance);
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, entityIntegerRangeDescription.getLanguage());
+            var entityIntegerRangeTransfer = coreControl.getEntityIntegerRangeTransfer(userVisit, entityIntegerRangeDescription.getEntityIntegerRange(), entityInstance);
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, entityIntegerRangeDescription.getLanguage());
             
             entityIntegerRangeDescriptionTransfer = new EntityIntegerRangeDescriptionTransfer(languageTransfer, entityIntegerRangeTransfer,
                     entityIntegerRangeDescription.getDescription());

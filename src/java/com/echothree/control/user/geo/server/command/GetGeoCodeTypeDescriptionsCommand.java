@@ -65,9 +65,9 @@ public class GetGeoCodeTypeDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var geoControl = Session.getModelController(GeoControl.class);
-        GetGeoCodeTypeDescriptionsResult result = GeoResultFactory.getGetGeoCodeTypeDescriptionsResult();
-        String geoCodeTypeName = form.getGeoCodeTypeName();
-        GeoCodeType geoCodeType = geoControl.getGeoCodeTypeByName(geoCodeTypeName);
+        var result = GeoResultFactory.getGetGeoCodeTypeDescriptionsResult();
+        var geoCodeTypeName = form.getGeoCodeTypeName();
+        var geoCodeType = geoControl.getGeoCodeTypeByName(geoCodeTypeName);
         
         if(geoCodeType != null) {
             result.setGeoCodeType(geoControl.getGeoCodeTypeTransfer(getUserVisit(), geoCodeType));

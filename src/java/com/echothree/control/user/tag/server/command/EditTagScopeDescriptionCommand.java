@@ -89,13 +89,13 @@ public class EditTagScopeDescriptionCommand
     public TagScopeDescription getEntity(EditTagScopeDescriptionResult result) {
         var tagControl = Session.getModelController(TagControl.class);
         TagScopeDescription tagScopeDescription = null;
-        String tagScopeName = spec.getTagScopeName();
-        TagScope tagScope = tagControl.getTagScopeByName(tagScopeName);
+        var tagScopeName = spec.getTagScopeName();
+        var tagScope = tagControl.getTagScopeByName(tagScopeName);
 
         if(tagScope != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -137,7 +137,7 @@ public class EditTagScopeDescriptionCommand
     @Override
     public void doUpdate(TagScopeDescription tagScopeDescription) {
         var tagControl = Session.getModelController(TagControl.class);
-        TagScopeDescriptionValue tagScopeDescriptionValue = tagControl.getTagScopeDescriptionValue(tagScopeDescription);
+        var tagScopeDescriptionValue = tagControl.getTagScopeDescriptionValue(tagScopeDescription);
         tagScopeDescriptionValue.setDescription(edit.getDescription());
 
         tagControl.updateTagScopeDescriptionFromValue(tagScopeDescriptionValue, getPartyPK());

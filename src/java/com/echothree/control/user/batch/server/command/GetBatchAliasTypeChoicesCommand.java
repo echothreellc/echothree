@@ -66,13 +66,13 @@ public class GetBatchAliasTypeChoicesCommand
     @Override
     protected BaseResult execute() {
         var batchControl = Session.getModelController(BatchControl.class);
-        GetBatchAliasTypeChoicesResult result = BatchResultFactory.getGetBatchAliasTypeChoicesResult();
-        String batchTypeName = form.getBatchTypeName();
-        BatchType batchType = batchControl.getBatchTypeByName(batchTypeName);
+        var result = BatchResultFactory.getGetBatchAliasTypeChoicesResult();
+        var batchTypeName = form.getBatchTypeName();
+        var batchType = batchControl.getBatchTypeByName(batchTypeName);
 
         if(batchType != null) {
-            String defaultBatchAliasTypeChoice = form.getDefaultBatchAliasTypeChoice();
-            boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+            var defaultBatchAliasTypeChoice = form.getDefaultBatchAliasTypeChoice();
+            var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 
             result.setBatchAliasTypeChoices(batchControl.getBatchAliasTypeChoices(defaultBatchAliasTypeChoice, getPreferredLanguage(), allowNullChoice,
                     batchType));

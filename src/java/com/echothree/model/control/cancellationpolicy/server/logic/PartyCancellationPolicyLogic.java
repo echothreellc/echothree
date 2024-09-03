@@ -62,18 +62,18 @@ public class PartyCancellationPolicyLogic
 
     public WorkflowEntrance insertPartyCancellationPolicyIntoWorkflow(PartyCancellationPolicy partyCancellationPolicy, BasePK createdBy) {
         var coreControl = Session.getModelController(CoreControl.class);
-        EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(partyCancellationPolicy.getPrimaryKey());
+        var entityInstance = coreControl.getEntityInstanceByBasePK(partyCancellationPolicy.getPrimaryKey());
 
         return insertPartyCancellationPolicyIntoWorkflow(entityInstance, createdBy);
     }
 
     public WorkflowEntityStatus getPartyCancellationPolicyStatus(EntityInstance entityInstance, BasePK createdBy) {
         var workflowControl = Session.getModelController(WorkflowControl.class);
-        WorkflowEntityStatus partyCancellationPolicyStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(
+        var partyCancellationPolicyStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(
                 PartyCancellationPolicyStatusConstants.Workflow_PARTY_CANCELLATION_POLICY_STATUS, entityInstance);
 
         if(partyCancellationPolicyStatus == null) {
-            WorkflowEntrance workflowEntrance = PartyCancellationPolicyLogic.getInstance().insertPartyCancellationPolicyIntoWorkflow(entityInstance, createdBy);
+            var workflowEntrance = PartyCancellationPolicyLogic.getInstance().insertPartyCancellationPolicyIntoWorkflow(entityInstance, createdBy);
 
             if(workflowEntrance != null) {
                 partyCancellationPolicyStatus = getPartyCancellationPolicyStatus(entityInstance, null);
@@ -85,21 +85,21 @@ public class PartyCancellationPolicyLogic
 
     public WorkflowEntityStatus getPartyCancellationPolicyStatus(PartyCancellationPolicy partyCancellationPolicy, BasePK createdBy) {
         var coreControl = Session.getModelController(CoreControl.class);
-        EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(partyCancellationPolicy.getPrimaryKey());
+        var entityInstance = coreControl.getEntityInstanceByBasePK(partyCancellationPolicy.getPrimaryKey());
 
         return getPartyCancellationPolicyStatus(entityInstance, createdBy);
     }
 
     public WorkflowEntityStatusTransfer getPartyCancellationPolicyStatusTransfer(UserVisit userVisit, EntityInstance entityInstance, BasePK createdBy) {
         var workflowControl = Session.getModelController(WorkflowControl.class);
-        WorkflowEntityStatus partyCancellationPolicyStatus = getPartyCancellationPolicyStatus(entityInstance, createdBy);
+        var partyCancellationPolicyStatus = getPartyCancellationPolicyStatus(entityInstance, createdBy);
 
         return partyCancellationPolicyStatus == null ? null : workflowControl.getWorkflowEntityStatusTransfer(userVisit, partyCancellationPolicyStatus);
     }
 
     public PartyCancellationPolicy createPartyCancellationPolicy(Party party, CancellationPolicy cancellationPolicy, BasePK createdBy) {
         var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
-        PartyCancellationPolicy partyCancellationPolicy = cancellationPolicyControl.createPartyCancellationPolicy(party, cancellationPolicy, createdBy);
+        var partyCancellationPolicy = cancellationPolicyControl.createPartyCancellationPolicy(party, cancellationPolicy, createdBy);
 
         insertPartyCancellationPolicyIntoWorkflow(partyCancellationPolicy, createdBy);
 
@@ -116,8 +116,8 @@ public class PartyCancellationPolicyLogic
                     workflowControl.getWorkflowByName(PartyCancellationPolicyStatusConstants.Workflow_PARTY_CANCELLATION_POLICY_STATUS), partyPK);
         } else {
             var coreControl = Session.getModelController(CoreControl.class);
-            EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(partyCancellationPolicy.getPrimaryKey());
-            WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(PartyCancellationPolicyStatusConstants.Workflow_PARTY_CANCELLATION_POLICY_STATUS, entityInstance);
+            var entityInstance = coreControl.getEntityInstanceByBasePK(partyCancellationPolicy.getPrimaryKey());
+            var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(PartyCancellationPolicyStatusConstants.Workflow_PARTY_CANCELLATION_POLICY_STATUS, entityInstance);
 
             workflowControl.getWorkflowDestinationChoices(partyCancellationPolicyStatusChoicesBean, defaultOrderStatusChoice, language, allowNullChoice, workflowEntityStatus.getWorkflowStep(), partyPK);
         }
@@ -128,10 +128,10 @@ public class PartyCancellationPolicyLogic
     public void setPartyCancellationPolicyStatus(final ExecutionErrorAccumulator eea, final PartyCancellationPolicy partyCancellationPolicy, final String orderStatusChoice, final PartyPK modifiedBy) {
         var coreControl = Session.getModelController(CoreControl.class);
         var workflowControl = Session.getModelController(WorkflowControl.class);
-        EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(partyCancellationPolicy.getPrimaryKey());
-        WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(PartyCancellationPolicyStatusConstants.Workflow_PARTY_CANCELLATION_POLICY_STATUS,
+        var entityInstance = coreControl.getEntityInstanceByBasePK(partyCancellationPolicy.getPrimaryKey());
+        var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(PartyCancellationPolicyStatusConstants.Workflow_PARTY_CANCELLATION_POLICY_STATUS,
                 entityInstance);
-        WorkflowDestination workflowDestination = orderStatusChoice == null? null: workflowControl.getWorkflowDestinationByName(workflowEntityStatus.getWorkflowStep(), orderStatusChoice);
+        var workflowDestination = orderStatusChoice == null? null: workflowControl.getWorkflowDestinationByName(workflowEntityStatus.getWorkflowStep(), orderStatusChoice);
 
         if(workflowDestination != null || orderStatusChoice == null) {
             workflowControl.transitionEntityInWorkflow(eea, workflowEntityStatus, workflowDestination, null, modifiedBy);

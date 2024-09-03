@@ -33,14 +33,14 @@ public class ContactListFrequencyTransferCache
     }
     
     public ContactListFrequencyTransfer getContactListFrequencyTransfer(ContactListFrequency contactListFrequency) {
-        ContactListFrequencyTransfer contactListFrequencyTransfer = get(contactListFrequency);
+        var contactListFrequencyTransfer = get(contactListFrequency);
         
         if(contactListFrequencyTransfer == null) {
-            ContactListFrequencyDetail contactListFrequencyDetail = contactListFrequency.getLastDetail();
-            String contactListFrequencyName = contactListFrequencyDetail.getContactListFrequencyName();
-            Boolean isDefault = contactListFrequencyDetail.getIsDefault();
-            Integer sortOrder = contactListFrequencyDetail.getSortOrder();
-            String description = contactListControl.getBestContactListFrequencyDescription(contactListFrequency, getLanguage());
+            var contactListFrequencyDetail = contactListFrequency.getLastDetail();
+            var contactListFrequencyName = contactListFrequencyDetail.getContactListFrequencyName();
+            var isDefault = contactListFrequencyDetail.getIsDefault();
+            var sortOrder = contactListFrequencyDetail.getSortOrder();
+            var description = contactListControl.getBestContactListFrequencyDescription(contactListFrequency, getLanguage());
             
             contactListFrequencyTransfer = new ContactListFrequencyTransfer(contactListFrequencyName, isDefault, sortOrder, description);
             put(contactListFrequency, contactListFrequencyTransfer);

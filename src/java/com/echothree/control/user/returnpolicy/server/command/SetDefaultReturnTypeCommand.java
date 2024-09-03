@@ -64,12 +64,12 @@ public class SetDefaultReturnTypeCommand
     @Override
     protected BaseResult execute() {
         var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
-        String returnKindName = form.getReturnKindName();
-        ReturnKind returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
+        var returnKindName = form.getReturnKindName();
+        var returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
         
         if(returnKind != null) {
-            String returnTypeName = form.getReturnTypeName();
-            ReturnTypeDetailValue returnTypeDetailValue = returnPolicyControl.getReturnTypeDetailValueByNameForUpdate(returnKind,
+            var returnTypeName = form.getReturnTypeName();
+            var returnTypeDetailValue = returnPolicyControl.getReturnTypeDetailValueByNameForUpdate(returnKind,
                     returnTypeName);
             
             if(returnTypeDetailValue != null) {

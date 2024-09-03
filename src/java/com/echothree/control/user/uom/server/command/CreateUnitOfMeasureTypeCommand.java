@@ -61,26 +61,26 @@ public class CreateUnitOfMeasureTypeCommand
     @Override
     protected BaseResult execute() {
         var uomControl = Session.getModelController(UomControl.class);
-        String unitOfMeasureKindName = form.getUnitOfMeasureKindName();
-        UnitOfMeasureKind unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);
+        var unitOfMeasureKindName = form.getUnitOfMeasureKindName();
+        var unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);
         
         if(unitOfMeasureKind != null) {
-            String unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
-            UnitOfMeasureType unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
+            var unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
+            var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
             
             if(unitOfMeasureType == null) {
-                SymbolPosition symbolPosition = SymbolPositionLogic.getInstance().getSymbolPositionByName(this, form.getSymbolPositionName());
+                var symbolPosition = SymbolPositionLogic.getInstance().getSymbolPositionByName(this, form.getSymbolPositionName());
                 
                 if(!hasExecutionErrors()) {
-                    String singularDescription = form.getSingularDescription();
-                    String pluralDescription = form.getPluralDescription();
-                    String symbol = form.getSymbol();
-                    int descriptionCount = (singularDescription == null ? 0 : 1) + (pluralDescription == null ? 0 : 1)
+                    var singularDescription = form.getSingularDescription();
+                    var pluralDescription = form.getPluralDescription();
+                    var symbol = form.getSymbol();
+                    var descriptionCount = (singularDescription == null ? 0 : 1) + (pluralDescription == null ? 0 : 1)
                             + (symbol == null ? 0 : 1);
 
                     if(descriptionCount == 0 || descriptionCount == 3) {
                         var partyPK = getPartyPK();
-                        Boolean suppressSymbolSeparator = Boolean.valueOf(form.getSuppressSymbolSeparator());
+                        var suppressSymbolSeparator = Boolean.valueOf(form.getSuppressSymbolSeparator());
                         var isDefault = Boolean.valueOf(form.getIsDefault());
                         var sortOrder = Integer.valueOf(form.getSortOrder());
 
@@ -88,7 +88,7 @@ public class CreateUnitOfMeasureTypeCommand
                                 symbolPosition, suppressSymbolSeparator, isDefault, sortOrder, partyPK);
 
                         if(descriptionCount == 2) {
-                            Language language = getPreferredLanguage();
+                            var language = getPreferredLanguage();
 
                             uomControl.createUnitOfMeasureTypeDescription(unitOfMeasureType, language, singularDescription,
                                     pluralDescription, symbol, partyPK);

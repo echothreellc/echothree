@@ -121,26 +121,26 @@ public class PartyTransferCache
     }
     
     public PartyTransfer getTransfer(Party party) {
-        PartyTransfer partyTransfer = get(party);
+        var partyTransfer = get(party);
         
         if(partyTransfer == null) {
-            PartyDetail partyDetail = party.getLastDetail();
-            String partyName = partyDetail.getPartyName();
-            PartyTypeTransfer partyTypeTransfer = partyControl.getPartyTypeTransfer(userVisit, partyDetail.getPartyType());
-            Language preferredLanguage = partyDetail.getPreferredLanguage();
-            LanguageTransfer preferredLanguageTransfer = preferredLanguage == null? null: partyControl.getLanguageTransfer(userVisit, preferredLanguage);
-            Currency preferredCurrency = partyDetail.getPreferredCurrency();
-            CurrencyTransfer preferredCurrencyTransfer = preferredCurrency == null? null: accountingControl.getCurrencyTransfer(userVisit, preferredCurrency);
-            TimeZone preferredTimeZone = partyDetail.getPreferredTimeZone();
-            TimeZoneTransfer preferredTimeZoneTransfer = preferredTimeZone == null? null: partyControl.getTimeZoneTransfer(userVisit, preferredTimeZone);
-            DateTimeFormat preferredDateTimeFormat = partyDetail.getPreferredDateTimeFormat();
-            DateTimeFormatTransfer preferredDateTimeFormatTransfer = preferredDateTimeFormat == null? null: partyControl.getDateTimeFormatTransfer(userVisit, preferredDateTimeFormat);
-            Person person = partyControl.getPerson(party);
-            PersonTransfer personTransfer = person == null? null: partyControl.getPersonTransfer(userVisit, person);
-            PartyGroup partyGroup = partyControl.getPartyGroup(party);
-            PartyGroupTransfer partyGroupTransfer = partyGroup == null? null: partyControl.getPartyGroupTransfer(userVisit, partyGroup);
-            Profile profile = partyControl.getProfile(party);
-            ProfileTransfer profileTransfer = profile == null? null: partyControl.getProfileTransfer(userVisit, profile);
+            var partyDetail = party.getLastDetail();
+            var partyName = partyDetail.getPartyName();
+            var partyTypeTransfer = partyControl.getPartyTypeTransfer(userVisit, partyDetail.getPartyType());
+            var preferredLanguage = partyDetail.getPreferredLanguage();
+            var preferredLanguageTransfer = preferredLanguage == null? null: partyControl.getLanguageTransfer(userVisit, preferredLanguage);
+            var preferredCurrency = partyDetail.getPreferredCurrency();
+            var preferredCurrencyTransfer = preferredCurrency == null? null: accountingControl.getCurrencyTransfer(userVisit, preferredCurrency);
+            var preferredTimeZone = partyDetail.getPreferredTimeZone();
+            var preferredTimeZoneTransfer = preferredTimeZone == null? null: partyControl.getTimeZoneTransfer(userVisit, preferredTimeZone);
+            var preferredDateTimeFormat = partyDetail.getPreferredDateTimeFormat();
+            var preferredDateTimeFormatTransfer = preferredDateTimeFormat == null? null: partyControl.getDateTimeFormatTransfer(userVisit, preferredDateTimeFormat);
+            var person = partyControl.getPerson(party);
+            var personTransfer = person == null? null: partyControl.getPersonTransfer(userVisit, person);
+            var partyGroup = partyControl.getPartyGroup(party);
+            var partyGroupTransfer = partyGroup == null? null: partyControl.getPartyGroupTransfer(userVisit, partyGroup);
+            var profile = partyControl.getProfile(party);
+            var profileTransfer = profile == null? null: partyControl.getProfileTransfer(userVisit, profile);
             
             partyTransfer = new PartyTransfer(partyName, partyTypeTransfer, preferredLanguageTransfer, preferredCurrencyTransfer, preferredTimeZoneTransfer, preferredDateTimeFormatTransfer,
                     personTransfer, partyGroupTransfer, profileTransfer);

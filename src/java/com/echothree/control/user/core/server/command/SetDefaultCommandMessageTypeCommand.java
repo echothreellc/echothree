@@ -61,8 +61,8 @@ public class SetDefaultCommandMessageTypeCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String commandMessageTypeName = form.getCommandMessageTypeName();
-        CommandMessageTypeDetailValue commandMessageTypeDetailValue = coreControl.getCommandMessageTypeDetailValueByNameForUpdate(commandMessageTypeName);
+        var commandMessageTypeName = form.getCommandMessageTypeName();
+        var commandMessageTypeDetailValue = coreControl.getCommandMessageTypeDetailValueByNameForUpdate(commandMessageTypeName);
         
         if(commandMessageTypeDetailValue != null) {
             commandMessageTypeDetailValue.setIsDefault(Boolean.TRUE);

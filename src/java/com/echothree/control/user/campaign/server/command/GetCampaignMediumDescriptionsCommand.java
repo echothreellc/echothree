@@ -65,9 +65,9 @@ public class GetCampaignMediumDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var campaignControl = Session.getModelController(CampaignControl.class);
-        GetCampaignMediumDescriptionsResult result = CampaignResultFactory.getGetCampaignMediumDescriptionsResult();
-        String campaignMediumName = form.getCampaignMediumName();
-        CampaignMedium campaignMedium = campaignControl.getCampaignMediumByName(campaignMediumName);
+        var result = CampaignResultFactory.getGetCampaignMediumDescriptionsResult();
+        var campaignMediumName = form.getCampaignMediumName();
+        var campaignMedium = campaignControl.getCampaignMediumByName(campaignMediumName);
         
         if(campaignMedium != null) {
             result.setCampaignMedium(campaignControl.getCampaignMediumTransfer(getUserVisit(), campaignMedium));

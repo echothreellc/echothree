@@ -49,8 +49,8 @@ public class DeleteCommunicationEventPurposeCommand
     @Override
     protected BaseResult execute() {
         var communicationControl = Session.getModelController(CommunicationControl.class);
-        String communicationEventPurposeName = form.getCommunicationEventPurposeName();
-        CommunicationEventPurpose communicationEventPurpose = communicationControl.getCommunicationEventPurposeByNameForUpdate(communicationEventPurposeName);
+        var communicationEventPurposeName = form.getCommunicationEventPurposeName();
+        var communicationEventPurpose = communicationControl.getCommunicationEventPurposeByNameForUpdate(communicationEventPurposeName);
         
         if(communicationEventPurpose != null) {
             communicationControl.deleteCommunicationEventPurpose(communicationEventPurpose, getPartyPK());

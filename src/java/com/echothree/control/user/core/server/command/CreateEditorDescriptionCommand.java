@@ -67,16 +67,16 @@ public class CreateEditorDescriptionCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String editorName = form.getEditorName();
-        Editor editor = coreControl.getEditorByName(editorName);
+        var editorName = form.getEditorName();
+        var editor = coreControl.getEditorByName(editorName);
         
         if(editor != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                EditorDescription editorDescription = coreControl.getEditorDescription(editor, language);
+                var editorDescription = coreControl.getEditorDescription(editor, language);
                 
                 if(editorDescription == null) {
                     var description = form.getDescription();

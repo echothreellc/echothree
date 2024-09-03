@@ -67,28 +67,28 @@ public class EditUnitOfMeasureTypeWeightCommand
     @Override
     protected BaseResult execute() {
         var uomControl = Session.getModelController(UomControl.class);
-        EditUnitOfMeasureTypeWeightResult result = UomResultFactory.getEditUnitOfMeasureTypeWeightResult();
-        String unitOfMeasureKindName = spec.getUnitOfMeasureKindName();
-        UnitOfMeasureKind unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);
+        var result = UomResultFactory.getEditUnitOfMeasureTypeWeightResult();
+        var unitOfMeasureKindName = spec.getUnitOfMeasureKindName();
+        var unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);
         
         if(unitOfMeasureKind != null) {
-            String unitOfMeasureTypeName = spec.getUnitOfMeasureTypeName();
-            UnitOfMeasureType unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
+            var unitOfMeasureTypeName = spec.getUnitOfMeasureTypeName();
+            var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
             
             if(unitOfMeasureType != null) {
-                UnitOfMeasureKind volumeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_WEIGHT);
+                var volumeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_WEIGHT);
                 
                 if(volumeUnitOfMeasureKind != null) {
                     if(editMode.equals(EditMode.LOCK)) {
-                        UnitOfMeasureTypeWeight unitOfMeasureTypeWeight = uomControl.getUnitOfMeasureTypeWeight(unitOfMeasureType);
+                        var unitOfMeasureTypeWeight = uomControl.getUnitOfMeasureTypeWeight(unitOfMeasureType);
                         
                         if(unitOfMeasureTypeWeight != null) {
                             result.setUnitOfMeasureTypeWeight(uomControl.getUnitOfMeasureTypeWeightTransfer(getUserVisit(), unitOfMeasureTypeWeight));
                             
                             if(lockEntity(unitOfMeasureType)) {
-                                UnitOfMeasureTypeWeightEdit edit = UomEditFactory.getUnitOfMeasureTypeWeightEdit();
-                                Long weight = unitOfMeasureTypeWeight.getWeight();
-                                Conversion weightConversion = weight == null? null: new Conversion(uomControl, volumeUnitOfMeasureKind, weight).convertToHighestUnitOfMeasureType();
+                                var edit = UomEditFactory.getUnitOfMeasureTypeWeightEdit();
+                                var weight = unitOfMeasureTypeWeight.getWeight();
+                                var weightConversion = weight == null? null: new Conversion(uomControl, volumeUnitOfMeasureKind, weight).convertToHighestUnitOfMeasureType();
                                 
                                 result.setEdit(edit);
                                 edit.setWeight(weightConversion.getQuantity().toString());
@@ -102,20 +102,20 @@ public class EditUnitOfMeasureTypeWeightCommand
                             addExecutionError(ExecutionErrors.UnknownUnitOfMeasureTypeWeight.name());
                         }
                     } else if(editMode.equals(EditMode.UPDATE)) {
-                        UnitOfMeasureTypeWeightValue unitOfMeasureTypeWeightValue = uomControl.getUnitOfMeasureTypeWeightValueForUpdate(unitOfMeasureType);
+                        var unitOfMeasureTypeWeightValue = uomControl.getUnitOfMeasureTypeWeightValueForUpdate(unitOfMeasureType);
                         
                         if(unitOfMeasureTypeWeightValue != null) {
-                            String weightUnitOfMeasureTypeName = edit.getWeightUnitOfMeasureTypeName();
-                            UnitOfMeasureType weightUnitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(volumeUnitOfMeasureKind,
+                            var weightUnitOfMeasureTypeName = edit.getWeightUnitOfMeasureTypeName();
+                            var weightUnitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(volumeUnitOfMeasureKind,
                                     weightUnitOfMeasureTypeName);
                             
                             if(weightUnitOfMeasureType != null) {
-                                Long weight = Long.valueOf(edit.getWeight());
+                                var weight = Long.valueOf(edit.getWeight());
                                 
                                 if(weight > 0) {
                                     if(lockEntityForUpdate(unitOfMeasureType)) {
                                         try {
-                                            Conversion weightConversion = new Conversion(uomControl, weightUnitOfMeasureType, weight).convertToLowestUnitOfMeasureType();
+                                            var weightConversion = new Conversion(uomControl, weightUnitOfMeasureType, weight).convertToLowestUnitOfMeasureType();
                                             
                                             unitOfMeasureTypeWeightValue.setWeight(weightConversion.getQuantity());
                                             

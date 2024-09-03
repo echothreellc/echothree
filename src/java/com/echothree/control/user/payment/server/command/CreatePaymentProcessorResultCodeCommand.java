@@ -65,13 +65,13 @@ public class CreatePaymentProcessorResultCodeCommand
     
     @Override
     protected BaseResult execute() {
-        CreatePaymentProcessorResultCodeResult result = PaymentResultFactory.getCreatePaymentProcessorResultCodeResult();
-        String paymentProcessorResultCodeName = form.getPaymentProcessorResultCodeName();
+        var result = PaymentResultFactory.getCreatePaymentProcessorResultCodeResult();
+        var paymentProcessorResultCodeName = form.getPaymentProcessorResultCodeName();
         var isDefault = Boolean.valueOf(form.getIsDefault());
         var sortOrder = Integer.valueOf(form.getSortOrder());
         var description = form.getDescription();
 
-        PaymentProcessorResultCode paymentProcessorResultCode = PaymentProcessorResultCodeLogic.getInstance().createPaymentProcessorResultCode(this,
+        var paymentProcessorResultCode = PaymentProcessorResultCodeLogic.getInstance().createPaymentProcessorResultCode(this,
                 paymentProcessorResultCodeName, isDefault, sortOrder, getPreferredLanguage(), description, getPartyPK());
 
         if(paymentProcessorResultCode != null && !hasExecutionErrors()) {

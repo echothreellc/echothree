@@ -67,26 +67,26 @@ public class CreateClubCommand
     @Override
     protected BaseResult execute() {
         var clubControl = Session.getModelController(ClubControl.class);
-        String clubName = form.getClubName();
-        Club club = clubControl.getClubByName(clubName);
+        var clubName = form.getClubName();
+        var club = clubControl.getClubByName(clubName);
         
         if(club == null) {
             var subscriptionControl = Session.getModelController(SubscriptionControl.class);
-            SubscriptionKind subscriptionKind = subscriptionControl.getSubscriptionKindByName(SubscriptionConstants.SubscriptionKind_CLUB);
-            String subscriptionTypeName = form.getSubscriptionTypeName();
-            SubscriptionType subscriptionType = subscriptionControl.getSubscriptionTypeByName(subscriptionKind, subscriptionTypeName);
+            var subscriptionKind = subscriptionControl.getSubscriptionKindByName(SubscriptionConstants.SubscriptionKind_CLUB);
+            var subscriptionTypeName = form.getSubscriptionTypeName();
+            var subscriptionType = subscriptionControl.getSubscriptionTypeByName(subscriptionKind, subscriptionTypeName);
             
             if(subscriptionType != null) {
                 club = clubControl.getClubBySubscriptionType(subscriptionType);
                 
                 if(club == null) {
-                    String clubPriceFilterName = form.getClubPriceFilterName();
+                    var clubPriceFilterName = form.getClubPriceFilterName();
                     Filter clubPriceFilter = null;
                     
                     if(clubPriceFilterName != null) {
                         var filterControl = Session.getModelController(FilterControl.class);
-                        FilterKind filterKind = filterControl.getFilterKindByName(FilterKinds.PRICE.name());
-                        FilterType filterType = filterControl.getFilterTypeByName(filterKind, FilterTypes.CLUB.name());
+                        var filterKind = filterControl.getFilterKindByName(FilterKinds.PRICE.name());
+                        var filterType = filterControl.getFilterTypeByName(filterKind, FilterTypes.CLUB.name());
                         
                         if(filterType != null) {
                             clubPriceFilter = filterControl.getFilterByName(filterType, clubPriceFilterName);
@@ -95,8 +95,8 @@ public class CreateClubCommand
                     
                     if(clubPriceFilterName == null || clubPriceFilter != null) {
                         var accountingControl = Session.getModelController(AccountingControl.class);
-                        String currencyIsoName = form.getCurrencyIsoName();
-                        Currency currency = currencyIsoName == null? null: accountingControl.getCurrencyByIsoName(currencyIsoName);
+                        var currencyIsoName = form.getCurrencyIsoName();
+                        var currency = currencyIsoName == null? null: accountingControl.getCurrencyByIsoName(currencyIsoName);
                         
                         if(currencyIsoName == null || currency != null) {
                             var partyPK = getPartyPK();

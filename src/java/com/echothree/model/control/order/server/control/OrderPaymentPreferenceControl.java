@@ -56,8 +56,8 @@ public class OrderPaymentPreferenceControl
 
     public OrderPaymentPreference createOrderPaymentPreference(Order order, Integer orderPaymentPreferenceSequence, PaymentMethod paymentMethod,
             PartyPaymentMethod partyPaymentMethod, Boolean wasPresent, Long maximumAmount, Integer sortOrder, BasePK createdBy) {
-        OrderPaymentPreference orderPaymentPreference = OrderPaymentPreferenceFactory.getInstance().create();
-        OrderPaymentPreferenceDetail orderPaymentPreferenceDetail = OrderPaymentPreferenceDetailFactory.getInstance().create(orderPaymentPreference, order,
+        var orderPaymentPreference = OrderPaymentPreferenceFactory.getInstance().create();
+        var orderPaymentPreferenceDetail = OrderPaymentPreferenceDetailFactory.getInstance().create(orderPaymentPreference, order,
                 orderPaymentPreferenceSequence, paymentMethod, partyPaymentMethod, wasPresent, maximumAmount, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -113,7 +113,7 @@ public class OrderPaymentPreferenceControl
                         "FOR UPDATE";
             }
 
-            PreparedStatement ps = OrderPaymentPreferenceFactory.getInstance().prepareStatement(query);
+            var ps = OrderPaymentPreferenceFactory.getInstance().prepareStatement(query);
 
             ps.setLong(1, order.getPrimaryKey().getEntityId());
             ps.setInt(2, orderPaymentPreferenceSequence);
@@ -161,7 +161,7 @@ public class OrderPaymentPreferenceControl
                         "FOR UPDATE";
             }
 
-            PreparedStatement ps = OrderPaymentPreferenceFactory.getInstance().prepareStatement(query);
+            var ps = OrderPaymentPreferenceFactory.getInstance().prepareStatement(query);
 
             ps.setLong(1, order.getPrimaryKey().getEntityId());
 
@@ -199,7 +199,7 @@ public class OrderPaymentPreferenceControl
                         "FOR UPDATE";
             }
 
-            PreparedStatement ps = OrderPaymentPreferenceFactory.getInstance().prepareStatement(query);
+            var ps = OrderPaymentPreferenceFactory.getInstance().prepareStatement(query);
 
             ps.setLong(1, paymentMethod.getPrimaryKey().getEntityId());
 
@@ -237,7 +237,7 @@ public class OrderPaymentPreferenceControl
                         "FOR UPDATE";
             }
 
-            PreparedStatement ps = OrderPaymentPreferenceFactory.getInstance().prepareStatement(query);
+            var ps = OrderPaymentPreferenceFactory.getInstance().prepareStatement(query);
 
             ps.setLong(1, partyPaymentMethod.getPrimaryKey().getEntityId());
 
@@ -263,7 +263,7 @@ public class OrderPaymentPreferenceControl
 
     public List<OrderPaymentPreferenceTransfer> getOrderPaymentPreferenceTransfers(UserVisit userVisit, Collection<OrderPaymentPreference> orderPaymentPreferences) {
         List<OrderPaymentPreferenceTransfer> orderPaymentPreferenceTransfers = new ArrayList<>(orderPaymentPreferences.size());
-        OrderPaymentPreferenceTransferCache orderPaymentPreferenceTransferCache = getOrderTransferCaches(userVisit).getOrderPaymentPreferenceTransferCache();
+        var orderPaymentPreferenceTransferCache = getOrderTransferCaches(userVisit).getOrderPaymentPreferenceTransferCache();
 
         orderPaymentPreferences.forEach((orderPaymentPreference) ->
                 orderPaymentPreferenceTransfers.add(orderPaymentPreferenceTransferCache.getOrderPaymentPreferenceTransfer(orderPaymentPreference))
@@ -286,21 +286,21 @@ public class OrderPaymentPreferenceControl
 
     public void updateOrderPaymentPreferenceFromValue(OrderPaymentPreferenceDetailValue orderPaymentPreferenceDetailValue, BasePK updatedBy) {
         if(orderPaymentPreferenceDetailValue.hasBeenModified()) {
-            OrderPaymentPreference orderPaymentPreference = OrderPaymentPreferenceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var orderPaymentPreference = OrderPaymentPreferenceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     orderPaymentPreferenceDetailValue.getOrderPaymentPreferencePK());
-            OrderPaymentPreferenceDetail orderPaymentPreferenceDetail = orderPaymentPreference.getActiveDetailForUpdate();
+            var orderPaymentPreferenceDetail = orderPaymentPreference.getActiveDetailForUpdate();
 
             orderPaymentPreferenceDetail.setThruTime(session.START_TIME_LONG);
             orderPaymentPreferenceDetail.store();
 
-            OrderPaymentPreferencePK orderPaymentPreferencePK = orderPaymentPreferenceDetail.getOrderPaymentPreferencePK(); // Not updated
-            OrderPK orderPK = orderPaymentPreferenceDetail.getOrderPK(); // Not updated
-            Integer orderPaymentPreferenceSequence = orderPaymentPreferenceDetail.getOrderPaymentPreferenceSequence(); // Not updated
-            PaymentMethodPK paymentMethodPK = orderPaymentPreferenceDetailValue.getPaymentMethodPK();
-            PartyPaymentMethodPK partyPaymentMethodPK = orderPaymentPreferenceDetailValue.getPartyPaymentMethodPK();
-            Boolean wasPresent = orderPaymentPreferenceDetailValue.getWasPresent();
-            Long maximumAmount = orderPaymentPreferenceDetailValue.getMaximumAmount();
-            Integer sortOrder = orderPaymentPreferenceDetailValue.getSortOrder();
+            var orderPaymentPreferencePK = orderPaymentPreferenceDetail.getOrderPaymentPreferencePK(); // Not updated
+            var orderPK = orderPaymentPreferenceDetail.getOrderPK(); // Not updated
+            var orderPaymentPreferenceSequence = orderPaymentPreferenceDetail.getOrderPaymentPreferenceSequence(); // Not updated
+            var paymentMethodPK = orderPaymentPreferenceDetailValue.getPaymentMethodPK();
+            var partyPaymentMethodPK = orderPaymentPreferenceDetailValue.getPartyPaymentMethodPK();
+            var wasPresent = orderPaymentPreferenceDetailValue.getWasPresent();
+            var maximumAmount = orderPaymentPreferenceDetailValue.getMaximumAmount();
+            var sortOrder = orderPaymentPreferenceDetailValue.getSortOrder();
 
             orderPaymentPreferenceDetail = OrderPaymentPreferenceDetailFactory.getInstance().create(orderPaymentPreferencePK, orderPK,
                     orderPaymentPreferenceSequence, paymentMethodPK, partyPaymentMethodPK, wasPresent, maximumAmount, sortOrder, session.START_TIME_LONG,
@@ -314,7 +314,7 @@ public class OrderPaymentPreferenceControl
     }
 
     public void deleteOrderPaymentPreference(OrderPaymentPreference orderPaymentPreference, BasePK deletedBy) {
-        OrderPaymentPreferenceDetail orderPaymentPreferenceDetail = orderPaymentPreference.getLastDetailForUpdate();
+        var orderPaymentPreferenceDetail = orderPaymentPreference.getLastDetailForUpdate();
 
         orderPaymentPreferenceDetail.setThruTime(session.START_TIME_LONG);
         orderPaymentPreference.setActiveDetail(null);

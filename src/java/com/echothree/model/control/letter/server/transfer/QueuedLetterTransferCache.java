@@ -38,11 +38,11 @@ public class QueuedLetterTransferCache
     }
     
     public QueuedLetterTransfer getQueuedLetterTransfer(QueuedLetter queuedLetter) {
-        QueuedLetterTransfer queuedLetterTransfer = get(queuedLetter);
+        var queuedLetterTransfer = get(queuedLetter);
         
         if(queuedLetterTransfer == null) {
-            ChainInstanceTransfer chainInstance = chainControl.getChainInstanceTransfer(userVisit, queuedLetter.getChainInstance());
-            LetterTransfer letter = letterControl.getLetterTransfer(userVisit, queuedLetter.getLetter());
+            var chainInstance = chainControl.getChainInstanceTransfer(userVisit, queuedLetter.getChainInstance());
+            var letter = letterControl.getLetterTransfer(userVisit, queuedLetter.getLetter());
             
             queuedLetterTransfer = new QueuedLetterTransfer(chainInstance, letter);
             put(queuedLetter, queuedLetterTransfer);

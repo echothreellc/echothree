@@ -40,22 +40,22 @@ public class EntityName2FieldType
     
     @Override
     public String validate() {
-        int length = fieldValue.length();
-        boolean hadErrors = false;
-        
-        Long minimumValue = fieldDefinition.getMinimumValue();
+        var length = fieldValue.length();
+        var hadErrors = false;
+
+        var minimumValue = fieldDefinition.getMinimumValue();
         if(length < (minimumValue == null? defaultMinimumLength: minimumValue)) {
             validationMessages.add(fieldName, new Message(Validator.ERROR_MINIMUM_LENGTH, minimumValue == null? defaultMinimumLengthLong: minimumValue));
             hadErrors = true;
         }
-        
-        Long maximumValue = fieldDefinition.getMaximumValue();
+
+        var maximumValue = fieldDefinition.getMaximumValue();
         if(length > (maximumValue == null? defaultMaximumLength: maximumValue)) {
             validationMessages.add(fieldName, new Message(Validator.ERROR_MAXIMUM_LENGTH, maximumValue == null? defaultMaximumLengthLong: maximumValue));
             hadErrors = true;
         }
-        
-        Matcher m = Patterns.EntityName2.matcher(fieldValue);
+
+        var m = Patterns.EntityName2.matcher(fieldValue);
         if(!m.matches()) {
             validationMessages.add(fieldName, new Message(Validator.ERROR_INVALID_FORMAT));
             hadErrors = true;

@@ -67,28 +67,28 @@ public class EditSubscriptionTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var subscriptionControl = Session.getModelController(SubscriptionControl.class);
-        EditSubscriptionTypeDescriptionResult result = SubscriptionResultFactory.getEditSubscriptionTypeDescriptionResult();
-        String subscriptionKindName = spec.getSubscriptionKindName();
-        SubscriptionKind subscriptionKind = subscriptionControl.getSubscriptionKindByName(subscriptionKindName);
+        var result = SubscriptionResultFactory.getEditSubscriptionTypeDescriptionResult();
+        var subscriptionKindName = spec.getSubscriptionKindName();
+        var subscriptionKind = subscriptionControl.getSubscriptionKindByName(subscriptionKindName);
         
         if(subscriptionKind != null) {
-            String subscriptionTypeName = spec.getSubscriptionTypeName();
-            SubscriptionType subscriptionType = subscriptionControl.getSubscriptionTypeByName(subscriptionKind, subscriptionTypeName);
+            var subscriptionTypeName = spec.getSubscriptionTypeName();
+            var subscriptionType = subscriptionControl.getSubscriptionTypeByName(subscriptionKind, subscriptionTypeName);
             
             if(subscriptionType != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = spec.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = spec.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
                 
                 if(language != null) {
                     if(editMode.equals(EditMode.LOCK)) {
-                        SubscriptionTypeDescription subscriptionTypeDescription = subscriptionControl.getSubscriptionTypeDescription(subscriptionType, language);
+                        var subscriptionTypeDescription = subscriptionControl.getSubscriptionTypeDescription(subscriptionType, language);
                         
                         if(subscriptionTypeDescription != null) {
                             result.setSubscriptionTypeDescription(subscriptionControl.getSubscriptionTypeDescriptionTransfer(getUserVisit(), subscriptionTypeDescription));
                             
                             if(lockEntity(subscriptionType)) {
-                                SubscriptionTypeDescriptionEdit edit = SubscriptionEditFactory.getSubscriptionTypeDescriptionEdit();
+                                var edit = SubscriptionEditFactory.getSubscriptionTypeDescriptionEdit();
                                 
                                 result.setEdit(edit);
                                 edit.setDescription(subscriptionTypeDescription.getDescription());
@@ -101,12 +101,12 @@ public class EditSubscriptionTypeDescriptionCommand
                             addExecutionError(ExecutionErrors.UnknownSubscriptionTypeDescription.name());
                         }
                     } else if(editMode.equals(EditMode.UPDATE)) {
-                        SubscriptionTypeDescriptionValue subscriptionTypeDescriptionValue = subscriptionControl.getSubscriptionTypeDescriptionValueForUpdate(subscriptionType, language);
+                        var subscriptionTypeDescriptionValue = subscriptionControl.getSubscriptionTypeDescriptionValueForUpdate(subscriptionType, language);
                         
                         if(subscriptionTypeDescriptionValue != null) {
                             if(lockEntityForUpdate(subscriptionType)) {
                                 try {
-                                    String description = edit.getDescription();
+                                    var description = edit.getDescription();
                                     
                                     subscriptionTypeDescriptionValue.setDescription(description);
                                     

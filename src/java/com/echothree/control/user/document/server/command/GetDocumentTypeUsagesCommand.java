@@ -68,16 +68,16 @@ public class GetDocumentTypeUsagesCommand
     @Override
     protected BaseResult execute() {
         var documentControl = Session.getModelController(DocumentControl.class);
-        GetDocumentTypeUsagesResult result = DocumentResultFactory.getGetDocumentTypeUsagesResult();
-        String documentTypeUsageTypeName = form.getDocumentTypeUsageTypeName();
-        String documentTypeName = form.getDocumentTypeName();
+        var result = DocumentResultFactory.getGetDocumentTypeUsagesResult();
+        var documentTypeUsageTypeName = form.getDocumentTypeUsageTypeName();
+        var documentTypeName = form.getDocumentTypeName();
         var parameterCount = (documentTypeUsageTypeName == null ? 0 : 1) + (documentTypeName == null ? 0 : 1);
         
         if(parameterCount == 1) {
-            UserVisit userVisit = getUserVisit();
+            var userVisit = getUserVisit();
 
             if(documentTypeUsageTypeName != null) {
-                DocumentTypeUsageType documentTypeUsageType = documentControl.getDocumentTypeUsageTypeByName(documentTypeUsageTypeName);
+                var documentTypeUsageType = documentControl.getDocumentTypeUsageTypeByName(documentTypeUsageTypeName);
 
                 if(documentTypeUsageType != null) {
                     result.setDocumentTypeUsageType(documentControl.getDocumentTypeUsageTypeTransfer(userVisit, documentTypeUsageType));
@@ -86,7 +86,7 @@ public class GetDocumentTypeUsagesCommand
                     addExecutionError(ExecutionErrors.UnknownDocumentTypeUsageTypeName.name(), documentTypeUsageTypeName);
                 }
             } else if(documentTypeName != null) {
-                DocumentType documentType = documentControl.getDocumentTypeByName(documentTypeName);
+                var documentType = documentControl.getDocumentTypeByName(documentTypeName);
 
                 if(documentType != null) {
                     result.setDocumentType(documentControl.getDocumentTypeTransfer(userVisit, documentType));

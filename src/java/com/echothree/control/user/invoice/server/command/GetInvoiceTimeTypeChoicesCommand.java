@@ -66,13 +66,13 @@ public class GetInvoiceTimeTypeChoicesCommand
     @Override
     protected BaseResult execute() {
         var invoiceControl = Session.getModelController(InvoiceControl.class);
-        GetInvoiceTimeTypeChoicesResult result = InvoiceResultFactory.getGetInvoiceTimeTypeChoicesResult();
-        String invoiceTypeName = form.getInvoiceTypeName();
-        InvoiceType invoiceType = invoiceControl.getInvoiceTypeByName(invoiceTypeName);
+        var result = InvoiceResultFactory.getGetInvoiceTimeTypeChoicesResult();
+        var invoiceTypeName = form.getInvoiceTypeName();
+        var invoiceType = invoiceControl.getInvoiceTypeByName(invoiceTypeName);
 
         if(invoiceType != null) {
-            String defaultInvoiceTimeTypeChoice = form.getDefaultInvoiceTimeTypeChoice();
-            boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+            var defaultInvoiceTimeTypeChoice = form.getDefaultInvoiceTimeTypeChoice();
+            var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 
             result.setInvoiceTimeTypeChoices(invoiceControl.getInvoiceTimeTypeChoices(defaultInvoiceTimeTypeChoice, getPreferredLanguage(), allowNullChoice,
                     invoiceType));

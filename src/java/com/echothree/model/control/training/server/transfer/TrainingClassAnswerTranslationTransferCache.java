@@ -38,16 +38,16 @@ public class TrainingClassAnswerTranslationTransferCache
     }
     
     public TrainingClassAnswerTranslationTransfer getTrainingClassAnswerTranslationTransfer(TrainingClassAnswerTranslation trainingClassAnswerTranslation) {
-        TrainingClassAnswerTranslationTransfer trainingClassAnswerTranslationTransfer = get(trainingClassAnswerTranslation);
+        var trainingClassAnswerTranslationTransfer = get(trainingClassAnswerTranslation);
         
         if(trainingClassAnswerTranslationTransfer == null) {
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, trainingClassAnswerTranslation.getLanguage());
-            TrainingClassAnswerTransfer trainingClassAnswerTransfer = trainingControl.getTrainingClassAnswerTransfer(userVisit, trainingClassAnswerTranslation.getTrainingClassAnswer());
-            MimeTypeTransfer answerMimeTypeTransfer = coreControl.getMimeTypeTransfer(userVisit, trainingClassAnswerTranslation.getAnswerMimeType());
-            String answer = trainingClassAnswerTranslation.getAnswer();
-            MimeType selectedMimeType = trainingClassAnswerTranslation.getSelectedMimeType();
-            MimeTypeTransfer selectedMimeTypeTransfer = selectedMimeType == null? null: coreControl.getMimeTypeTransfer(userVisit, selectedMimeType);
-            String selected = trainingClassAnswerTranslation.getSelected();
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, trainingClassAnswerTranslation.getLanguage());
+            var trainingClassAnswerTransfer = trainingControl.getTrainingClassAnswerTransfer(userVisit, trainingClassAnswerTranslation.getTrainingClassAnswer());
+            var answerMimeTypeTransfer = coreControl.getMimeTypeTransfer(userVisit, trainingClassAnswerTranslation.getAnswerMimeType());
+            var answer = trainingClassAnswerTranslation.getAnswer();
+            var selectedMimeType = trainingClassAnswerTranslation.getSelectedMimeType();
+            var selectedMimeTypeTransfer = selectedMimeType == null? null: coreControl.getMimeTypeTransfer(userVisit, selectedMimeType);
+            var selected = trainingClassAnswerTranslation.getSelected();
             
             trainingClassAnswerTranslationTransfer = new TrainingClassAnswerTranslationTransfer(trainingClassAnswerTransfer, languageTransfer,
                     answerMimeTypeTransfer, answer, selectedMimeTypeTransfer, selected);

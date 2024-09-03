@@ -112,11 +112,11 @@ public class EditCarrierOptionCommand
     public CarrierOption getEntity(EditCarrierOptionResult result) {
         var carrierControl = Session.getModelController(CarrierControl.class);
         CarrierOption carrierOption = null;
-        String carrierName = spec.getCarrierName();
-        Carrier carrier = carrierControl.getCarrierByName(carrierName);
+        var carrierName = spec.getCarrierName();
+        var carrier = carrierControl.getCarrierByName(carrierName);
 
         if(carrier != null) {
-            String carrierOptionName = spec.getCarrierOptionName();
+            var carrierOptionName = spec.getCarrierOptionName();
 
             carrierParty = carrier.getParty();
 
@@ -162,8 +162,8 @@ public class EditCarrierOptionCommand
     @Override
     public void doLock(CarrierOptionEdit edit, CarrierOption carrierOption) {
         var carrierControl = Session.getModelController(CarrierControl.class);
-        CarrierOptionDescription carrierOptionDescription = carrierControl.getCarrierOptionDescription(carrierOption, getPreferredLanguage());
-        CarrierOptionDetail carrierOptionDetail = carrierOption.getLastDetail();
+        var carrierOptionDescription = carrierControl.getCarrierOptionDescription(carrierOption, getPreferredLanguage());
+        var carrierOptionDetail = carrierOption.getLastDetail();
 
         recommendedGeoCodeSelector = carrierOptionDetail.getRecommendedGeoCodeSelector();
         requiredGeoCodeSelector = carrierOptionDetail.getRequiredGeoCodeSelector();
@@ -196,25 +196,25 @@ public class EditCarrierOptionCommand
     @Override
     public void canUpdate(CarrierOption carrierOption) {
         var carrierControl = Session.getModelController(CarrierControl.class);
-        String carrierOptionName = edit.getCarrierOptionName();
-        CarrierOption duplicateCarrierOption = carrierControl.getCarrierOptionByName(carrierParty, carrierOptionName);
+        var carrierOptionName = edit.getCarrierOptionName();
+        var duplicateCarrierOption = carrierControl.getCarrierOptionByName(carrierParty, carrierOptionName);
 
         if(duplicateCarrierOption == null || carrierOption.equals(duplicateCarrierOption)) {
             var selectorControl = Session.getModelController(SelectorControl.class);
-            SelectorKind selectorKind = selectorControl.getSelectorKindByName(SelectorKinds.POSTAL_ADDRESS.name());
+            var selectorKind = selectorControl.getSelectorKindByName(SelectorKinds.POSTAL_ADDRESS.name());
 
             if(selectorKind != null) {
-                SelectorType selectorType = selectorControl.getSelectorTypeByName(selectorKind, SelectorTypes.CARRIER_OPTION.name());
+                var selectorType = selectorControl.getSelectorTypeByName(selectorKind, SelectorTypes.CARRIER_OPTION.name());
 
                 if(selectorType != null) {
-                    String recommendedGeoCodeSelectorName = edit.getRecommendedGeoCodeSelectorName();
+                    var recommendedGeoCodeSelectorName = edit.getRecommendedGeoCodeSelectorName();
 
                     if(recommendedGeoCodeSelectorName != null) {
                         recommendedGeoCodeSelector = selectorControl.getSelectorByName(selectorType, recommendedGeoCodeSelectorName);
                     }
 
                     if(recommendedGeoCodeSelectorName == null || recommendedGeoCodeSelector != null) {
-                        String requiredGeoCodeSelectorName = edit.getRequiredGeoCodeSelectorName();
+                        var requiredGeoCodeSelectorName = edit.getRequiredGeoCodeSelectorName();
 
                         if(requiredGeoCodeSelectorName != null) {
                             requiredGeoCodeSelector = selectorControl.getSelectorByName(selectorType, requiredGeoCodeSelectorName);
@@ -227,14 +227,14 @@ public class EditCarrierOptionCommand
                                 selectorType = selectorControl.getSelectorTypeByName(selectorKind, SelectorTypes.CARRIER_OPTION.name());
 
                                 if(selectorType != null) {
-                                    String recommendedItemSelectorName = edit.getRecommendedItemSelectorName();
+                                    var recommendedItemSelectorName = edit.getRecommendedItemSelectorName();
 
                                     if(recommendedItemSelectorName != null) {
                                         recommendedItemSelector = selectorControl.getSelectorByName(selectorType, recommendedItemSelectorName);
                                     }
 
                                     if(recommendedItemSelectorName == null || recommendedItemSelector != null) {
-                                        String requiredItemSelectorName = edit.getRequiredItemSelectorName();
+                                        var requiredItemSelectorName = edit.getRequiredItemSelectorName();
 
                                         if(requiredItemSelectorName != null) {
                                             requiredItemSelector = selectorControl.getSelectorByName(selectorType, requiredItemSelectorName);
@@ -247,14 +247,14 @@ public class EditCarrierOptionCommand
                                                 selectorType = selectorControl.getSelectorTypeByName(selectorKind, SelectorTypes.CARRIER_OPTION.name());
 
                                                 if(selectorType != null) {
-                                                    String recommendedOrderSelectorName = edit.getRecommendedOrderSelectorName();
+                                                    var recommendedOrderSelectorName = edit.getRecommendedOrderSelectorName();
 
                                                     if(recommendedOrderSelectorName != null) {
                                                         recommendedOrderSelector = selectorControl.getSelectorByName(selectorType, recommendedOrderSelectorName);
                                                     }
 
                                                     if(recommendedOrderSelectorName == null || recommendedOrderSelector != null) {
-                                                        String requiredOrderSelectorName = edit.getRequiredOrderSelectorName();
+                                                        var requiredOrderSelectorName = edit.getRequiredOrderSelectorName();
 
                                                         if(requiredOrderSelectorName != null) {
                                                             requiredOrderSelector = selectorControl.getSelectorByName(selectorType, requiredOrderSelectorName);
@@ -267,14 +267,14 @@ public class EditCarrierOptionCommand
                                                                 selectorType = selectorControl.getSelectorTypeByName(selectorKind, SelectorTypes.CARRIER_OPTION.name());
 
                                                                 if(selectorType != null) {
-                                                                    String recommendedShipmentSelectorName = edit.getRecommendedShipmentSelectorName();
+                                                                    var recommendedShipmentSelectorName = edit.getRecommendedShipmentSelectorName();
 
                                                                     if(recommendedShipmentSelectorName != null) {
                                                                         recommendedShipmentSelector = selectorControl.getSelectorByName(selectorType, recommendedShipmentSelectorName);
                                                                     }
 
                                                                     if(recommendedShipmentSelectorName == null || recommendedShipmentSelector != null) {
-                                                                        String requiredShipmentSelectorName = edit.getRequiredShipmentSelectorName();
+                                                                        var requiredShipmentSelectorName = edit.getRequiredShipmentSelectorName();
 
                                                                         if(requiredShipmentSelectorName != null) {
                                                                             requiredShipmentSelector = selectorControl.getSelectorByName(selectorType, requiredShipmentSelectorName);
@@ -342,9 +342,9 @@ public class EditCarrierOptionCommand
     public void doUpdate(CarrierOption carrierOption) {
         var carrierControl = Session.getModelController(CarrierControl.class);
         var partyPK = getPartyPK();
-        CarrierOptionDetailValue carrierOptionDetailValue = carrierControl.getCarrierOptionDetailValueForUpdate(carrierOption);
-        CarrierOptionDescription carrierOptionDescription = carrierControl.getCarrierOptionDescriptionForUpdate(carrierOption, getPreferredLanguage());
-        String description = edit.getDescription();
+        var carrierOptionDetailValue = carrierControl.getCarrierOptionDetailValueForUpdate(carrierOption);
+        var carrierOptionDescription = carrierControl.getCarrierOptionDescriptionForUpdate(carrierOption, getPreferredLanguage());
+        var description = edit.getDescription();
 
         carrierOptionDetailValue.setCarrierOptionName(edit.getCarrierOptionName());
         carrierOptionDetailValue.setIsRecommended(Boolean.valueOf(edit.getIsRecommended()));
@@ -369,7 +369,7 @@ public class EditCarrierOptionCommand
                 carrierControl.deleteCarrierOptionDescription(carrierOptionDescription, partyPK);
             } else {
                 if(carrierOptionDescription != null && description != null) {
-                    CarrierOptionDescriptionValue carrierOptionDescriptionValue = carrierControl.getCarrierOptionDescriptionValue(carrierOptionDescription);
+                    var carrierOptionDescriptionValue = carrierControl.getCarrierOptionDescriptionValue(carrierOptionDescription);
 
                     carrierOptionDescriptionValue.setDescription(description);
                     carrierControl.updateCarrierOptionDescriptionFromValue(carrierOptionDescriptionValue, partyPK);

@@ -71,21 +71,21 @@ public class GetLetterContactMechanismPurposesCommand
     @Override
     protected BaseResult execute() {
         var chainControl = Session.getModelController(ChainControl.class);
-        GetLetterContactMechanismPurposesResult result = LetterResultFactory.getGetLetterContactMechanismPurposesResult();
-        String chainKindName = form.getChainKindName();
-        ChainKind chainKind = chainControl.getChainKindByName(chainKindName);
+        var result = LetterResultFactory.getGetLetterContactMechanismPurposesResult();
+        var chainKindName = form.getChainKindName();
+        var chainKind = chainControl.getChainKindByName(chainKindName);
         
         if(chainKind != null) {
-            String chainTypeName = form.getChainTypeName();
-            ChainType chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
+            var chainTypeName = form.getChainTypeName();
+            var chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
             
             if(chainType != null) {
                 var letterControl = Session.getModelController(LetterControl.class);
-                String letterName = form.getLetterName();
-                Letter letter = letterControl.getLetterByName(chainType, letterName);
+                var letterName = form.getLetterName();
+                var letter = letterControl.getLetterByName(chainType, letterName);
                 
                 if(letter != null) {
-                    UserVisit userVisit = getUserVisit();
+                    var userVisit = getUserVisit();
                     
                     result.setLetter(letterControl.getLetterTransfer(userVisit, letter));
                     result.setLetterContactMechanismPurposes(letterControl.getLetterContactMechanismPurposeTransfersByLetter(userVisit, letter));

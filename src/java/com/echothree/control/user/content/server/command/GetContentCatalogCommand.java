@@ -60,8 +60,8 @@ public class GetContentCatalogCommand
     
     @Override
     protected ContentCatalog getEntity() {
-        String contentWebAddressName = form.getContentWebAddressName();
-        String contentCollectionName = form.getContentCollectionName();
+        var contentWebAddressName = form.getContentWebAddressName();
+        var contentCollectionName = form.getContentCollectionName();
         var parameterCount = (contentWebAddressName == null ? 0 : 1) + (contentCollectionName == null ? 0 : 1);
         ContentCatalog contentCatalog = null;
 
@@ -70,7 +70,7 @@ public class GetContentCatalogCommand
             ContentCollection contentCollection = null;
 
             if(contentWebAddressName != null) {
-                ContentWebAddress contentWebAddress = contentControl.getContentWebAddressByName(contentWebAddressName);
+                var contentWebAddress = contentControl.getContentWebAddressByName(contentWebAddressName);
 
                 if(contentWebAddress != null) {
                     contentCollection = contentWebAddress.getLastDetail().getContentCollection();
@@ -86,7 +86,7 @@ public class GetContentCatalogCommand
             }
 
             if(!hasExecutionErrors()) {
-                String contentCatalogName = form.getContentCatalogName();
+                var contentCatalogName = form.getContentCatalogName();
                 var partyPK = getPartyPK();
                 
                 contentCatalog = contentCatalogName == null ? contentControl.getDefaultContentCatalog(contentCollection)
@@ -113,7 +113,7 @@ public class GetContentCatalogCommand
     
     @Override
     protected BaseResult getResult(ContentCatalog contentCatalog) {
-        GetContentCatalogResult result = ContentResultFactory.getGetContentCatalogResult();
+        var result = ContentResultFactory.getGetContentCatalogResult();
 
         if(contentCatalog != null) {
             var contentControl = Session.getModelController(ContentControl.class);

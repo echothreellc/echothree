@@ -55,26 +55,26 @@ public class DeletePartyContactMechanismRelationshipCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        String partyName = form.getPartyName();
-        Party party = partyControl.getPartyByName(partyName);
+        var partyName = form.getPartyName();
+        var party = partyControl.getPartyByName(partyName);
         
         if(party != null) {
             var contactControl = Session.getModelController(ContactControl.class);
-            String fromContactMechanismName = form.getFromContactMechanismName();
-            ContactMechanism fromContactMechanism = contactControl.getContactMechanismByName(fromContactMechanismName);
+            var fromContactMechanismName = form.getFromContactMechanismName();
+            var fromContactMechanism = contactControl.getContactMechanismByName(fromContactMechanismName);
 
             if(fromContactMechanism != null) {
-                PartyContactMechanism fromPartyContactMechanism = contactControl.getPartyContactMechanism(party, fromContactMechanism);
+                var fromPartyContactMechanism = contactControl.getPartyContactMechanism(party, fromContactMechanism);
                 
                 if(fromPartyContactMechanism != null) {
-                    String toContactMechanismName = form.getToContactMechanismName();
-                    ContactMechanism toContactMechanism = contactControl.getContactMechanismByName(toContactMechanismName);
+                    var toContactMechanismName = form.getToContactMechanismName();
+                    var toContactMechanism = contactControl.getContactMechanismByName(toContactMechanismName);
 
                     if(toContactMechanism != null) {
-                        PartyContactMechanism toPartyContactMechanism = contactControl.getPartyContactMechanism(party, toContactMechanism);
+                        var toPartyContactMechanism = contactControl.getPartyContactMechanism(party, toContactMechanism);
                         
                         if(toPartyContactMechanism != null) {
-                            PartyContactMechanismRelationship partyContactMechanismRelationship = contactControl.getPartyContactMechanismRelationshipForUpdate(fromPartyContactMechanism,
+                            var partyContactMechanismRelationship = contactControl.getPartyContactMechanismRelationshipForUpdate(fromPartyContactMechanism,
                                     toPartyContactMechanism);
 
                             if(partyContactMechanismRelationship != null) {

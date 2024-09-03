@@ -73,8 +73,8 @@ public class GetCampaignContentCommand
     
     @Override
     protected BaseResult execute() {
-        GetCampaignContentResult result = CampaignResultFactory.getGetCampaignContentResult();
-        String campaignContentName = form.getCampaignContentName();
+        var result = CampaignResultFactory.getGetCampaignContentResult();
+        var campaignContentName = form.getCampaignContentName();
         var parameterCount = (campaignContentName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {

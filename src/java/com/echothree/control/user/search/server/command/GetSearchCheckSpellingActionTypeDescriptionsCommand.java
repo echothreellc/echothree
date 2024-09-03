@@ -65,9 +65,9 @@ public class GetSearchCheckSpellingActionTypeDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var searchControl = Session.getModelController(SearchControl.class);
-        GetSearchCheckSpellingActionTypeDescriptionsResult result = SearchResultFactory.getGetSearchCheckSpellingActionTypeDescriptionsResult();
-        String searchCheckSpellingActionTypeName = form.getSearchCheckSpellingActionTypeName();
-        SearchCheckSpellingActionType searchCheckSpellingActionType = searchControl.getSearchCheckSpellingActionTypeByName(searchCheckSpellingActionTypeName);
+        var result = SearchResultFactory.getGetSearchCheckSpellingActionTypeDescriptionsResult();
+        var searchCheckSpellingActionTypeName = form.getSearchCheckSpellingActionTypeName();
+        var searchCheckSpellingActionType = searchControl.getSearchCheckSpellingActionTypeByName(searchCheckSpellingActionTypeName);
         
         if(searchCheckSpellingActionType != null) {
             result.setSearchCheckSpellingActionType(searchControl.getSearchCheckSpellingActionTypeTransfer(getUserVisit(), searchCheckSpellingActionType));

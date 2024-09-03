@@ -63,17 +63,17 @@ public class ContactPostalAddressUtils {
     
     private String getCountryAlias(final String geoCodeAliasTypeName, final ContactPostalAddressTransfer contactPostalAddress) {
         String addition;
-        CountryTransfer country = contactPostalAddress.getCountryGeoCode();
+        var country = contactPostalAddress.getCountryGeoCode();
         
         if(country == null) {
             throw new IllegalArgumentException("CountryGeoCode is not available to get " + geoCodeAliasTypeName + " Alias on ContactPostalAddress TO");
         } else {
-            MapWrapper<GeoCodeAliasTransfer> geoCodeAliases = country.getGeoCodeAliases();
+            var geoCodeAliases = country.getGeoCodeAliases();
 
             if(geoCodeAliases == null) {
                 throw new IllegalArgumentException("CountryIncludeAliases is a required Option to format ContactPostalAddress TO");
             } else {
-                GeoCodeAliasTransfer geoCodeAlias = geoCodeAliases.getMap().get(geoCodeAliasTypeName);
+                var geoCodeAlias = geoCodeAliases.getMap().get(geoCodeAliasTypeName);
 
                 if(geoCodeAlias == null) {
                     throw new IllegalArgumentException(geoCodeAliasTypeName + " Alias is not available on ContactPostalAddress TO");
@@ -90,7 +90,7 @@ public class ContactPostalAddressUtils {
         String addition = null;
         
         if(postalAddressElementTypeName.equals(PostalAddressElementTypes.PERSONAL_TITLE.name())) {
-            PersonalTitleTransfer personalTitle = contactPostalAddress.getPersonalTitle();
+            var personalTitle = contactPostalAddress.getPersonalTitle();
             
             if(personalTitle != null) {
                 addition = personalTitle.getDescription();
@@ -102,7 +102,7 @@ public class ContactPostalAddressUtils {
         } else if(postalAddressElementTypeName.equals(PostalAddressElementTypes.LAST_NAME.name())) {
             addition = contactPostalAddress.getLastName();
         } else if(postalAddressElementTypeName.equals(PostalAddressElementTypes.NAME_SUFFIX.name())) {
-            NameSuffixTransfer nameSuffix = contactPostalAddress.getNameSuffix();
+            var nameSuffix = contactPostalAddress.getNameSuffix();
             
             if(nameSuffix != null) {
                 addition = nameSuffix.getDescription();
@@ -118,31 +118,31 @@ public class ContactPostalAddressUtils {
         } else if(postalAddressElementTypeName.equals(PostalAddressElementTypes.ADDRESS_3.name())) {
             addition = contactPostalAddress.getAddress3();
         } else if(postalAddressElementTypeName.equals(PostalAddressElementTypes.CITY.name())) {
-            CityTransfer city = contactPostalAddress.getCityGeoCode();
+            var city = contactPostalAddress.getCityGeoCode();
             
             addition = city == null? contactPostalAddress.getCity(): city.getDescription();
         } else if(postalAddressElementTypeName.equals(PostalAddressElementTypes.COUNTY.name())) {
-            CountyTransfer county = contactPostalAddress.getCountyGeoCode();
+            var county = contactPostalAddress.getCountyGeoCode();
             
             if(county != null) {
                 addition = county.getDescription();
             }
         } else if(postalAddressElementTypeName.equals(PostalAddressElementTypes.STATE.name())) {
-            StateTransfer state = contactPostalAddress.getStateGeoCode();
+            var state = contactPostalAddress.getStateGeoCode();
             
             addition = state == null? contactPostalAddress.getState(): state.getDescription();
         } else if(postalAddressElementTypeName.equals(PostalAddressElementTypes.STATE_POSTAL_2_LETTER.name())) {
-            StateTransfer state = contactPostalAddress.getStateGeoCode();
+            var state = contactPostalAddress.getStateGeoCode();
             
             if(state == null) {
                 throw new IllegalArgumentException("StateGeoCode is not available to get STATE_POSTAL_2_LETTER Alias on ContactPostalAddress TO");
             } else {
-                MapWrapper<GeoCodeAliasTransfer> geoCodeAliases = state.getGeoCodeAliases();
+                var geoCodeAliases = state.getGeoCodeAliases();
                 
                 if(geoCodeAliases == null) {
                     throw new IllegalArgumentException("StateIncludeAliases is a required Option to format ContactPostalAddress TO");
                 } else {
-                    GeoCodeAliasTransfer geoCodeAlias = geoCodeAliases.getMap().get(GeoConstants.GeoCodeAliasType_POSTAL_2_LETTER);
+                    var geoCodeAlias = geoCodeAliases.getMap().get(GeoConstants.GeoCodeAliasType_POSTAL_2_LETTER);
                     
                     if(geoCodeAlias == null) {
                         throw new IllegalArgumentException("STATE_POSTAL_2_LETTER Alias is not available on ContactPostalAddress TO");
@@ -152,7 +152,7 @@ public class ContactPostalAddressUtils {
                 }
             }
         } else if(postalAddressElementTypeName.equals(PostalAddressElementTypes.POSTAL_CODE.name())) {
-            PostalCodeTransfer postalCode = contactPostalAddress.getPostalCodeGeoCode();
+            var postalCode = contactPostalAddress.getPostalCodeGeoCode();
             
             addition = postalCode == null? contactPostalAddress.getPostalCode(): postalCode.getDescription();
         } else if(postalAddressElementTypeName.equals(PostalAddressElementTypes.COUNTRY.name())) {
@@ -169,18 +169,18 @@ public class ContactPostalAddressUtils {
     }
     
     private StringBuilder formatContactPostalAddressLine(final ContactPostalAddressTransfer contactPostalAddress, final PostalAddressLineTransfer postalAddressLine) {
-        ListWrapper<PostalAddressLineElementTransfer> postalAddressLineElements = postalAddressLine.getPostalAddressLineElements();
-        StringBuilder lineAddition = new StringBuilder();
+        var postalAddressLineElements = postalAddressLine.getPostalAddressLineElements();
+        var lineAddition = new StringBuilder();
         
         postalAddressLineElements.getList().stream().forEach((postalAddressLineElement) -> {
-            String lineElement = getLineElementAddition(contactPostalAddress, postalAddressLineElement.getPostalAddressElementType().getPostalAddressElementTypeName());
-            boolean lineElementHasLength = lineElement.length() != 0;
+            var lineElement = getLineElementAddition(contactPostalAddress, postalAddressLineElement.getPostalAddressElementType().getPostalAddressElementTypeName());
+            var lineElementHasLength = lineElement.length() != 0;
             boolean alwaysIncludePrefix = postalAddressLineElement.getAlwaysIncludePrefix();
             boolean alwaysIncludeSuffix = postalAddressLineElement.getAlwaysIncludeSuffix();
-            boolean addedToLine = false;
+            var addedToLine = false;
             if (lineElementHasLength || alwaysIncludePrefix || alwaysIncludeSuffix) {
-                String prefix = postalAddressLineElement.getPrefix();
-                String suffix = postalAddressLineElement.getSuffix();
+                var prefix = postalAddressLineElement.getPrefix();
+                var suffix = postalAddressLineElement.getSuffix();
                 if(prefix != null && (lineElementHasLength || alwaysIncludePrefix)) {
                     lineAddition.append(prefix);
                     addedToLine = true;
@@ -203,8 +203,8 @@ public class ContactPostalAddressUtils {
     }
     
     public List<String> formatContactPostalAddress(final ContactPostalAddressTransfer contactPostalAddress) {
-        PostalAddressFormatTransfer postalAddressFormat = contactPostalAddress.getCountryGeoCode().getPostalAddressFormat();
-        ListWrapper<PostalAddressLineTransfer> postalAddressLines = postalAddressFormat.getPostalAddressLines();
+        var postalAddressFormat = contactPostalAddress.getCountryGeoCode().getPostalAddressFormat();
+        var postalAddressLines = postalAddressFormat.getPostalAddressLines();
         List<String> result = null;
         
         if(postalAddressLines == null) {
@@ -212,23 +212,23 @@ public class ContactPostalAddressUtils {
         } else {
             result = new ArrayList<>(postalAddressLines.getSize());
             
-            for(PostalAddressLineTransfer postalAddressLine: postalAddressLines.getList()) {
-                StringBuilder resultLine = new StringBuilder();
-                ListWrapper<PostalAddressLineElementTransfer> postalAddressLineElements = postalAddressLine.getPostalAddressLineElements();
+            for(var postalAddressLine: postalAddressLines.getList()) {
+                var resultLine = new StringBuilder();
+                var postalAddressLineElements = postalAddressLine.getPostalAddressLineElements();
                 
                 if(postalAddressLineElements == null) {
                     throw new IllegalArgumentException("PostalAddressLineIncludeElements is a required Option to format ContactPostalAddress TO");
                 } else {
                     resultLine.append(formatContactPostalAddressLine(contactPostalAddress, postalAddressLine));
-                    
-                    boolean resultLineHasLength = resultLine.length() != 0;
+
+                    var resultLineHasLength = resultLine.length() != 0;
                     if(resultLineHasLength || !postalAddressLine.getCollapseIfEmpty()) {
                         boolean alwaysIncludePrefix = postalAddressLine.getAlwaysIncludePrefix();
                         boolean alwaysIncludeSuffix = postalAddressLine.getAlwaysIncludeSuffix();
 
                         if(resultLineHasLength || alwaysIncludePrefix || alwaysIncludeSuffix) {
-                            String prefix = postalAddressLine.getPrefix();
-                            String suffix = postalAddressLine.getSuffix();
+                            var prefix = postalAddressLine.getPrefix();
+                            var suffix = postalAddressLine.getSuffix();
 
                             if(prefix != null && (resultLineHasLength || alwaysIncludePrefix)) {
                                 resultLine = new StringBuilder(prefix).append(' ').append(resultLine);

@@ -71,21 +71,21 @@ public class CreateLocationDescriptionCommand
     @Override
     protected BaseResult execute() {
         var warehouseControl = Session.getModelController(WarehouseControl.class);
-        String warehouseName = form.getWarehouseName();
-        Warehouse warehouse = warehouseControl.getWarehouseByName(warehouseName);
+        var warehouseName = form.getWarehouseName();
+        var warehouse = warehouseControl.getWarehouseByName(warehouseName);
         
         if(warehouse != null) {
-            Party warehouseParty = warehouse.getParty();
-            String locationName = form.getLocationName();
-            Location location = warehouseControl.getLocationByName(warehouseParty, locationName);
+            var warehouseParty = warehouse.getParty();
+            var locationName = form.getLocationName();
+            var location = warehouseControl.getLocationByName(warehouseParty, locationName);
             
             if(location != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = form.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = form.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
                 
                 if(language != null) {
-                    LocationDescription locationDescription = warehouseControl.getLocationDescription(location, language);
+                    var locationDescription = warehouseControl.getLocationDescription(location, language);
                     
                     if(locationDescription == null) {
                         var description = form.getDescription();

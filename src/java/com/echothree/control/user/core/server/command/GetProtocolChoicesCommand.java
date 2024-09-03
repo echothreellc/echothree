@@ -61,9 +61,9 @@ public class GetProtocolChoicesCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        GetProtocolChoicesResult result = CoreResultFactory.getGetProtocolChoicesResult();
-        String defaultProtocolChoice = form.getDefaultProtocolChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = CoreResultFactory.getGetProtocolChoicesResult();
+        var defaultProtocolChoice = form.getDefaultProtocolChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setProtocolChoices(coreControl.getProtocolChoices(defaultProtocolChoice, getPreferredLanguage(),
                 allowNullChoice));

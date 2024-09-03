@@ -61,12 +61,12 @@ public class EntityAttributeGroupLogic
         
         if(entityAttributeGroupName == null) {
             var sequenceControl = Session.getModelController(SequenceControl.class);
-            Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.ENTITY_ATTRIBUTE_GROUP.name());
+            var sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.ENTITY_ATTRIBUTE_GROUP.name());
             
             entityAttributeGroupName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
         }
-        
-        EntityAttributeGroup entityAttributeGroup = coreControl.getEntityAttributeGroupByName(entityAttributeGroupName);
+
+        var entityAttributeGroup = coreControl.getEntityAttributeGroupByName(entityAttributeGroupName);
         
         if(entityAttributeGroup == null) {
             entityAttributeGroup = coreControl.createEntityAttributeGroup(entityAttributeGroupName, isDefault, sortOrder, createdBy);

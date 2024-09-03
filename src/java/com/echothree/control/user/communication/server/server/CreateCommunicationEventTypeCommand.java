@@ -51,8 +51,8 @@ public class CreateCommunicationEventTypeCommand
     @Override
     protected BaseResult execute() {
         var communicationControl = Session.getModelController(CommunicationControl.class);
-        String communicationEventTypeName = form.getCommunicationEventTypeName();
-        CommunicationEventType communicationEventType = communicationControl.getCommunicationEventTypeByName(communicationEventTypeName);
+        var communicationEventTypeName = form.getCommunicationEventTypeName();
+        var communicationEventType = communicationControl.getCommunicationEventTypeByName(communicationEventTypeName);
         
         if(communicationEventType == null) {
             var isDefault = Boolean.valueOf(form.getIsDefault());

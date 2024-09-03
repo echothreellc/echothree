@@ -67,10 +67,10 @@ public class CreateCampaignMediumCommand
     
     @Override
     protected BaseResult execute() {
-        CreateCampaignMediumResult result = CampaignResultFactory.getCreateCampaignMediumResult();
+        var result = CampaignResultFactory.getCreateCampaignMediumResult();
         var campaignControl = Session.getModelController(CampaignControl.class);
-        String value = form.getValue();
-        CampaignMedium campaignMedium = campaignControl.getCampaignMediumByValue(value);
+        var value = form.getValue();
+        var campaignMedium = campaignControl.getCampaignMediumByValue(value);
         
         if(campaignMedium == null) {
             var partyPK = getPartyPK();

@@ -49,8 +49,8 @@ public class DeleteResponsibilityTypeCommand
     @Override
     protected BaseResult execute() {
         var employeeControl = Session.getModelController(EmployeeControl.class);
-        String responsibilityTypeName = form.getResponsibilityTypeName();
-        ResponsibilityType responsibilityType = employeeControl.getResponsibilityTypeByNameForUpdate(responsibilityTypeName);
+        var responsibilityTypeName = form.getResponsibilityTypeName();
+        var responsibilityType = employeeControl.getResponsibilityTypeByNameForUpdate(responsibilityTypeName);
         
         if(responsibilityType != null) {
             employeeControl.deleteResponsibilityType(responsibilityType, getPartyPK());

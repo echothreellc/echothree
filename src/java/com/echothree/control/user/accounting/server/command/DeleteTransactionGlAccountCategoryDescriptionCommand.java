@@ -69,20 +69,20 @@ public class DeleteTransactionGlAccountCategoryDescriptionCommand
     @Override
     protected BaseResult execute() {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        String transactionTypeName = form.getTransactionTypeName();
-        TransactionType transactionType = accountingControl.getTransactionTypeByName(transactionTypeName);
+        var transactionTypeName = form.getTransactionTypeName();
+        var transactionType = accountingControl.getTransactionTypeByName(transactionTypeName);
         
         if(transactionType != null) {
-            String transactionGlAccountCategoryName = form.getTransactionGlAccountCategoryName();
-            TransactionGlAccountCategory transactionGlAccountCategory = accountingControl.getTransactionGlAccountCategoryByName(transactionType, transactionGlAccountCategoryName);
+            var transactionGlAccountCategoryName = form.getTransactionGlAccountCategoryName();
+            var transactionGlAccountCategory = accountingControl.getTransactionGlAccountCategoryByName(transactionType, transactionGlAccountCategoryName);
 
             if(transactionGlAccountCategory != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = form.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = form.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                 if(language != null) {
-                    TransactionGlAccountCategoryDescription transactionGlAccountCategoryDescription = accountingControl.getTransactionGlAccountCategoryDescriptionForUpdate(transactionGlAccountCategory, language);
+                    var transactionGlAccountCategoryDescription = accountingControl.getTransactionGlAccountCategoryDescriptionForUpdate(transactionGlAccountCategory, language);
 
                     if(transactionGlAccountCategoryDescription != null) {
                         accountingControl.deleteTransactionGlAccountCategoryDescription(transactionGlAccountCategoryDescription, getPartyPK());

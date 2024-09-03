@@ -36,11 +36,11 @@ public class FilterTypeDescriptionTransferCache
 
     @Override
     public FilterTypeDescriptionTransfer getTransfer(FilterTypeDescription filterTypeDescription) {
-        FilterTypeDescriptionTransfer filterTypeDescriptionTransfer = get(filterTypeDescription);
+        var filterTypeDescriptionTransfer = get(filterTypeDescription);
         
         if(filterTypeDescriptionTransfer == null) {
-            FilterTypeTransfer filterTypeTransfer = filterControl.getFilterTypeTransfer(userVisit, filterTypeDescription.getFilterType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, filterTypeDescription.getLanguage());
+            var filterTypeTransfer = filterControl.getFilterTypeTransfer(userVisit, filterTypeDescription.getFilterType());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, filterTypeDescription.getLanguage());
             
             filterTypeDescriptionTransfer = new FilterTypeDescriptionTransfer(languageTransfer, filterTypeTransfer, filterTypeDescription.getDescription());
             put(filterTypeDescription, filterTypeDescriptionTransfer);

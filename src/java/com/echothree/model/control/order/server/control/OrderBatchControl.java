@@ -44,7 +44,7 @@ public class OrderBatchControl
     // --------------------------------------------------------------------------------
 
     public OrderBatch createOrderBatch(Batch batch, Currency currency, Long count, Long amount, BasePK createdBy) {
-        OrderBatch orderBatch = OrderBatchFactory.getInstance().create(batch, currency, count, amount, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        var orderBatch = OrderBatchFactory.getInstance().create(batch, currency, count, amount, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(batch.getPrimaryKey(), EventTypes.MODIFY, orderBatch.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -91,16 +91,16 @@ public class OrderBatchControl
 
     public void updateOrderBatchFromValue(OrderBatchValue orderBatchValue, BasePK updatedBy) {
         if(orderBatchValue.hasBeenModified()) {
-            OrderBatch orderBatch = OrderBatchFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var orderBatch = OrderBatchFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     orderBatchValue.getPrimaryKey());
 
             orderBatch.setThruTime(session.START_TIME_LONG);
             orderBatch.store();
 
-            BatchPK batchPK = orderBatch.getBatchPK(); // Not updated
-            CurrencyPK currencyPK = orderBatchValue.getCurrencyPK();
-            Long count = orderBatchValue.getCount();
-            Long amount = orderBatchValue.getAmount();
+            var batchPK = orderBatch.getBatchPK(); // Not updated
+            var currencyPK = orderBatchValue.getCurrencyPK();
+            var count = orderBatchValue.getCount();
+            var amount = orderBatchValue.getAmount();
 
             orderBatch = OrderBatchFactory.getInstance().create(batchPK, currencyPK, count, amount, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 

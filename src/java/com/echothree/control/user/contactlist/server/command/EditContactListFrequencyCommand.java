@@ -92,7 +92,7 @@ public class EditContactListFrequencyCommand
     public ContactListFrequency getEntity(EditContactListFrequencyResult result) {
         var contactListControl = Session.getModelController(ContactListControl.class);
         ContactListFrequency contactListFrequency = null;
-        String contactListFrequencyName = spec.getContactListFrequencyName();
+        var contactListFrequencyName = spec.getContactListFrequencyName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
             contactListFrequency = contactListControl.getContactListFrequencyByName(contactListFrequencyName);
@@ -122,8 +122,8 @@ public class EditContactListFrequencyCommand
     @Override
     public void doLock(ContactListFrequencyEdit edit, ContactListFrequency contactListFrequency) {
         var contactListControl = Session.getModelController(ContactListControl.class);
-        ContactListFrequencyDescription contactListFrequencyDescription = contactListControl.getContactListFrequencyDescription(contactListFrequency, getPreferredLanguage());
-        ContactListFrequencyDetail contactListFrequencyDetail = contactListFrequency.getLastDetail();
+        var contactListFrequencyDescription = contactListControl.getContactListFrequencyDescription(contactListFrequency, getPreferredLanguage());
+        var contactListFrequencyDetail = contactListFrequency.getLastDetail();
 
         edit.setContactListFrequencyName(contactListFrequencyDetail.getContactListFrequencyName());
         edit.setIsDefault(contactListFrequencyDetail.getIsDefault().toString());
@@ -137,8 +137,8 @@ public class EditContactListFrequencyCommand
     @Override
     public void canUpdate(ContactListFrequency contactListFrequency) {
         var contactListControl = Session.getModelController(ContactListControl.class);
-        String contactListFrequencyName = edit.getContactListFrequencyName();
-        ContactListFrequency duplicateContactListFrequency = contactListControl.getContactListFrequencyByName(contactListFrequencyName);
+        var contactListFrequencyName = edit.getContactListFrequencyName();
+        var duplicateContactListFrequency = contactListControl.getContactListFrequencyByName(contactListFrequencyName);
 
         if(duplicateContactListFrequency != null && !contactListFrequency.equals(duplicateContactListFrequency)) {
             addExecutionError(ExecutionErrors.DuplicateContactListFrequencyName.name(), contactListFrequencyName);
@@ -149,9 +149,9 @@ public class EditContactListFrequencyCommand
     public void doUpdate(ContactListFrequency contactListFrequency) {
         var contactListControl = Session.getModelController(ContactListControl.class);
         var partyPK = getPartyPK();
-        ContactListFrequencyDetailValue contactListFrequencyDetailValue = contactListControl.getContactListFrequencyDetailValueForUpdate(contactListFrequency);
-        ContactListFrequencyDescription contactListFrequencyDescription = contactListControl.getContactListFrequencyDescriptionForUpdate(contactListFrequency, getPreferredLanguage());
-        String description = edit.getDescription();
+        var contactListFrequencyDetailValue = contactListControl.getContactListFrequencyDetailValueForUpdate(contactListFrequency);
+        var contactListFrequencyDescription = contactListControl.getContactListFrequencyDescriptionForUpdate(contactListFrequency, getPreferredLanguage());
+        var description = edit.getDescription();
 
         contactListFrequencyDetailValue.setContactListFrequencyName(edit.getContactListFrequencyName());
         contactListFrequencyDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
@@ -164,7 +164,7 @@ public class EditContactListFrequencyCommand
         } else if(contactListFrequencyDescription != null && description == null) {
             contactListControl.deleteContactListFrequencyDescription(contactListFrequencyDescription, partyPK);
         } else if(contactListFrequencyDescription != null && description != null) {
-            ContactListFrequencyDescriptionValue contactListFrequencyDescriptionValue = contactListControl.getContactListFrequencyDescriptionValue(contactListFrequencyDescription);
+            var contactListFrequencyDescriptionValue = contactListControl.getContactListFrequencyDescriptionValue(contactListFrequencyDescription);
 
             contactListFrequencyDescriptionValue.setDescription(description);
             contactListControl.updateContactListFrequencyDescriptionFromValue(contactListFrequencyDescriptionValue, partyPK);

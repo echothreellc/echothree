@@ -65,31 +65,31 @@ public class GetEntityListItemCommand
     @Override
     protected EntityListItem getEntity() {
         EntityListItem entityListItem = null;
-        EntityAttribute entityAttribute = EntityAttributeLogic.getInstance().getEntityAttributeByName(this,
+        var entityAttribute = EntityAttributeLogic.getInstance().getEntityAttributeByName(this,
                 form.getComponentVendorName(), form.getEntityTypeName(), form.getEntityAttributeName());
                 
         if(!hasExecutionErrors()) {
-            EntityAttributeType entityAttributeType = entityAttribute.getLastDetail().getEntityAttributeType();
-            String entityAttributeTypeName = entityAttributeType.getEntityAttributeTypeName();
+            var entityAttributeType = entityAttribute.getLastDetail().getEntityAttributeType();
+            var entityAttributeTypeName = entityAttributeType.getEntityAttributeTypeName();
 
             if(entityAttributeTypeName.equals(EntityAttributeTypes.LISTITEM.name())
                     || entityAttributeTypeName.equals(EntityAttributeTypes.MULTIPLELISTITEM.name())) {
                 var coreControl = getCoreControl();
-                String entityListItemName = form.getEntityListItemName();
+                var entityListItemName = form.getEntityListItemName();
                 
                 entityListItem = coreControl.getEntityListItemByName(entityAttribute, entityListItemName);
 
                 if(entityListItem == null) {
-                    EntityAttributeDetail entityAttributeDetail = entityAttribute.getLastDetail();
-                    EntityTypeDetail entityTypeDetail = entityAttributeDetail.getEntityType().getLastDetail();
+                    var entityAttributeDetail = entityAttribute.getLastDetail();
+                    var entityTypeDetail = entityAttributeDetail.getEntityType().getLastDetail();
                 
                     addExecutionError(ExecutionErrors.UnknownEntityListItemName.name(),
                             entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
                             entityTypeDetail.getEntityTypeName(), entityAttributeDetail.getEntityAttributeName(), entityListItemName);
                 }
             } else {
-                EntityAttributeDetail entityAttributeDetail = entityAttribute.getLastDetail();
-                EntityTypeDetail entityTypeDetail = entityAttributeDetail.getEntityType().getLastDetail();
+                var entityAttributeDetail = entityAttribute.getLastDetail();
+                var entityTypeDetail = entityAttributeDetail.getEntityType().getLastDetail();
                 
                 addExecutionError(ExecutionErrors.InvalidEntityAttributeType.name(),
                         entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
@@ -103,7 +103,7 @@ public class GetEntityListItemCommand
     
     @Override
     protected BaseResult getResult(EntityListItem entityListItem) {
-        GetEntityListItemResult result = CoreResultFactory.getGetEntityListItemResult();
+        var result = CoreResultFactory.getGetEntityListItemResult();
 
         if(entityListItem != null) {
             result.setEntityListItem(getCoreControl().getEntityListItemTransfer(getUserVisit(), entityListItem, null));

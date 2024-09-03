@@ -75,32 +75,32 @@ public class DeleteChainActionDescriptionCommand
     @Override
     protected BaseResult execute() {
         var chainControl = Session.getModelController(ChainControl.class);
-        String chainKindName = form.getChainKindName();
-        ChainKind chainKind = chainControl.getChainKindByName(chainKindName);
+        var chainKindName = form.getChainKindName();
+        var chainKind = chainControl.getChainKindByName(chainKindName);
         
         if(chainKind != null) {
-            String chainTypeName = form.getChainTypeName();
-            ChainType chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
+            var chainTypeName = form.getChainTypeName();
+            var chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
 
             if(chainType != null) {
-                String chainName = form.getChainName();
-                Chain chain = chainControl.getChainByName(chainType, chainName);
+                var chainName = form.getChainName();
+                var chain = chainControl.getChainByName(chainType, chainName);
 
                 if(chain != null) {
-                    String chainActionSetName = form.getChainActionSetName();
-                    ChainActionSet chainActionSet = chainControl.getChainActionSetByName(chain, chainActionSetName);
+                    var chainActionSetName = form.getChainActionSetName();
+                    var chainActionSet = chainControl.getChainActionSetByName(chain, chainActionSetName);
 
                     if(chainActionSet != null) {
-                        String chainActionName = form.getChainActionName();
-                        ChainAction chainAction = chainControl.getChainActionByName(chainActionSet, chainActionName);
+                        var chainActionName = form.getChainActionName();
+                        var chainAction = chainControl.getChainActionByName(chainActionSet, chainActionName);
 
                         if(chainAction != null) {
                             var partyControl = Session.getModelController(PartyControl.class);
-                            String languageIsoName = form.getLanguageIsoName();
-                            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                            var languageIsoName = form.getLanguageIsoName();
+                            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                             if(language != null) {
-                                ChainActionDescription chainActionDescription = chainControl.getChainActionDescriptionForUpdate(chainAction, language);
+                                var chainActionDescription = chainControl.getChainActionDescriptionForUpdate(chainAction, language);
 
                                 if(chainActionDescription != null) {
                                     chainControl.deleteChainActionDescription(chainActionDescription, getPartyPK());

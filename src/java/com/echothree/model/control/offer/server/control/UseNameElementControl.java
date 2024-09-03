@@ -60,8 +60,8 @@ public class UseNameElementControl
 
     public UseNameElement createUseNameElement(String useNameElementName, Integer offset,
             Integer length, String validationPattern, BasePK createdBy) {
-        UseNameElement useNameElement = UseNameElementFactory.getInstance().create();
-        UseNameElementDetail useNameElementDetail = UseNameElementDetailFactory.getInstance().create(session,
+        var useNameElement = UseNameElementFactory.getInstance().create();
+        var useNameElementDetail = UseNameElementDetailFactory.getInstance().create(session,
                 useNameElement, useNameElementName, offset, length, validationPattern, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
 
@@ -117,7 +117,7 @@ public class UseNameElementControl
                         "FOR UPDATE";
             }
 
-            PreparedStatement ps = UseNameElementFactory.getInstance().prepareStatement(query);
+            var ps = UseNameElementFactory.getInstance().prepareStatement(query);
 
             ps.setString(1, useNameElementName);
 
@@ -160,7 +160,7 @@ public class UseNameElementControl
                     "FOR UPDATE";
         }
 
-        PreparedStatement ps = UseNameElementFactory.getInstance().prepareStatement(query);
+        var ps = UseNameElementFactory.getInstance().prepareStatement(query);
 
         return UseNameElementFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
     }
@@ -179,7 +179,7 @@ public class UseNameElementControl
 
     public List<UseNameElementTransfer> getUseNameElementTransfers(UserVisit userVisit, Collection<UseNameElement> useNameElements) {
         List<UseNameElementTransfer> useNameElementTransfers = new ArrayList<>(useNameElements.size());
-        UseNameElementTransferCache useNameElementTransferCache = getOfferTransferCaches(userVisit).getUseNameElementTransferCache();
+        var useNameElementTransferCache = getOfferTransferCaches(userVisit).getUseNameElementTransferCache();
 
         useNameElements.forEach((useNameElement) ->
                 useNameElementTransfers.add(useNameElementTransferCache.getUseNameElementTransfer(useNameElement))
@@ -194,18 +194,18 @@ public class UseNameElementControl
 
     public void updateUseNameElementFromValue(UseNameElementDetailValue useNameElementDetailValue, BasePK updatedBy) {
         if(useNameElementDetailValue.hasBeenModified()) {
-            UseNameElement useNameElement = UseNameElementFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var useNameElement = UseNameElementFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     useNameElementDetailValue.getUseNameElementPK());
-            UseNameElementDetail useNameElementDetail = useNameElement.getActiveDetailForUpdate();
+            var useNameElementDetail = useNameElement.getActiveDetailForUpdate();
 
             useNameElementDetail.setThruTime(session.START_TIME_LONG);
             useNameElementDetail.store();
 
-            UseNameElementPK useNameElementPK = useNameElementDetail.getUseNameElementPK();
-            String useNameElementName = useNameElementDetailValue.getUseNameElementName();
-            Integer offset = useNameElementDetailValue.getOffset();
-            Integer length = useNameElementDetailValue.getLength();
-            String validationPattern = useNameElementDetailValue.getValidationPattern();
+            var useNameElementPK = useNameElementDetail.getUseNameElementPK();
+            var useNameElementName = useNameElementDetailValue.getUseNameElementName();
+            var offset = useNameElementDetailValue.getOffset();
+            var length = useNameElementDetailValue.getLength();
+            var validationPattern = useNameElementDetailValue.getValidationPattern();
 
             useNameElementDetail = UseNameElementDetailFactory.getInstance().create(useNameElementPK,
                     useNameElementName, offset, length, validationPattern, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -220,7 +220,7 @@ public class UseNameElementControl
     public void deleteUseNameElement(UseNameElement useNameElement, BasePK deletedBy) {
         deleteUseNameElementDescriptionsByUseNameElement(useNameElement, deletedBy);
 
-        UseNameElementDetail useNameElementDetail = useNameElement.getLastDetailForUpdate();
+        var useNameElementDetail = useNameElement.getLastDetailForUpdate();
         useNameElementDetail.setThruTime(session.START_TIME_LONG);
         useNameElement.setActiveDetail(null);
         useNameElement.store();
@@ -234,7 +234,7 @@ public class UseNameElementControl
 
     public UseNameElementDescription createUseNameElementDescription(UseNameElement useNameElement, Language language,
             String description, BasePK createdBy) {
-        UseNameElementDescription useNameElementDescription = UseNameElementDescriptionFactory.getInstance().create(session,
+        var useNameElementDescription = UseNameElementDescriptionFactory.getInstance().create(session,
                 useNameElement, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(useNameElement.getPrimaryKey(), EventTypes.MODIFY,
@@ -261,7 +261,7 @@ public class UseNameElementControl
                         "FOR UPDATE";
             }
 
-            PreparedStatement ps = UseNameElementDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = UseNameElementDescriptionFactory.getInstance().prepareStatement(query);
 
             ps.setLong(1, useNameElement.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -309,7 +309,7 @@ public class UseNameElementControl
                         "FOR UPDATE";
             }
 
-            PreparedStatement ps = UseNameElementDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = UseNameElementDescriptionFactory.getInstance().prepareStatement(query);
 
             ps.setLong(1, useNameElement.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -333,7 +333,7 @@ public class UseNameElementControl
 
     public String getBestUseNameElementDescription(UseNameElement useNameElement, Language language) {
         String description;
-        UseNameElementDescription useNameElementDescription = getUseNameElementDescription(useNameElement, language);
+        var useNameElementDescription = getUseNameElementDescription(useNameElement, language);
 
         if(useNameElementDescription == null && !language.getIsDefault()) {
             useNameElementDescription = getUseNameElementDescription(useNameElement, getPartyControl().getDefaultLanguage());
@@ -354,9 +354,9 @@ public class UseNameElementControl
     }
 
     public List<UseNameElementDescriptionTransfer> getUseNameElementDescriptionTransfersByUseNameElement(UserVisit userVisit, UseNameElement useNameElement) {
-        List<UseNameElementDescription> useNameElementDescriptions = getUseNameElementDescriptionsByUseNameElement(useNameElement);
+        var useNameElementDescriptions = getUseNameElementDescriptionsByUseNameElement(useNameElement);
         List<UseNameElementDescriptionTransfer> useNameElementDescriptionTransfers = new ArrayList<>(useNameElementDescriptions.size());
-        UseNameElementDescriptionTransferCache useNameElementDescriptionTransferCache = getOfferTransferCaches(userVisit).getUseNameElementDescriptionTransferCache();
+        var useNameElementDescriptionTransferCache = getOfferTransferCaches(userVisit).getUseNameElementDescriptionTransferCache();
 
         useNameElementDescriptions.forEach((useNameElementDescription) ->
                 useNameElementDescriptionTransfers.add(useNameElementDescriptionTransferCache.getUseNameElementDescriptionTransfer(useNameElementDescription))
@@ -368,15 +368,15 @@ public class UseNameElementControl
     public void updateUseNameElementDescriptionFromValue(UseNameElementDescriptionValue useNameElementDescriptionValue,
             BasePK updatedBy) {
         if(useNameElementDescriptionValue.hasBeenModified()) {
-            UseNameElementDescription useNameElementDescription = UseNameElementDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var useNameElementDescription = UseNameElementDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     useNameElementDescriptionValue.getPrimaryKey());
 
             useNameElementDescription.setThruTime(session.START_TIME_LONG);
             useNameElementDescription.store();
 
-            UseNameElement useNameElement = useNameElementDescription.getUseNameElement();
-            Language language = useNameElementDescription.getLanguage();
-            String description = useNameElementDescriptionValue.getDescription();
+            var useNameElement = useNameElementDescription.getUseNameElement();
+            var language = useNameElementDescription.getLanguage();
+            var description = useNameElementDescriptionValue.getDescription();
 
             useNameElementDescription = UseNameElementDescriptionFactory.getInstance().create(useNameElement,
                     language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -394,7 +394,7 @@ public class UseNameElementControl
     }
 
     public void deleteUseNameElementDescriptionsByUseNameElement(UseNameElement useNameElement, BasePK deletedBy) {
-        List<UseNameElementDescription> useNameElementDescriptions = getUseNameElementDescriptionsByUseNameElementForUpdate(useNameElement);
+        var useNameElementDescriptions = getUseNameElementDescriptionsByUseNameElementForUpdate(useNameElement);
 
         useNameElementDescriptions.forEach((useNameElementDescription) -> 
                 deleteUseNameElementDescription(useNameElementDescription, deletedBy)

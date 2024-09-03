@@ -50,8 +50,8 @@ public class CreateOrderRoleTypeCommand
     @Override
     protected BaseResult execute() {
         var orderRoleControl = Session.getModelController(OrderRoleControl.class);
-        String orderRoleTypeName = form.getOrderRoleTypeName();
-        OrderRoleType orderRoleType = orderRoleControl.getOrderRoleTypeByName(orderRoleTypeName);
+        var orderRoleTypeName = form.getOrderRoleTypeName();
+        var orderRoleType = orderRoleControl.getOrderRoleTypeByName(orderRoleTypeName);
         
         if(orderRoleType == null) {
             var sortOrder = Integer.valueOf(form.getSortOrder());

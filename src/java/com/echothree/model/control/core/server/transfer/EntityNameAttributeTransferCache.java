@@ -36,12 +36,12 @@ public class EntityNameAttributeTransferCache
     }
     
     public EntityNameAttributeTransfer getEntityNameAttributeTransfer(EntityNameAttribute entityNameAttribute, EntityInstance entityInstance) {
-        EntityNameAttributeTransfer entityNameAttributeTransfer = get(entityNameAttribute);
+        var entityNameAttributeTransfer = get(entityNameAttribute);
         
         if(entityNameAttributeTransfer == null) {
-            EntityAttributeTransfer entityAttribute = entityInstance == null ? coreControl.getEntityAttributeTransfer(userVisit, entityNameAttribute.getEntityAttribute(), entityInstance) : null;
-            String nameAttribute = entityNameAttribute.getNameAttribute();
-            EntityInstanceTransfer entityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, entityNameAttribute.getEntityInstance(), false, false, false, false, false, false);
+            var entityAttribute = entityInstance == null ? coreControl.getEntityAttributeTransfer(userVisit, entityNameAttribute.getEntityAttribute(), entityInstance) : null;
+            var nameAttribute = entityNameAttribute.getNameAttribute();
+            var entityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, entityNameAttribute.getEntityInstance(), false, false, false, false, false, false);
             
             entityNameAttributeTransfer = new EntityNameAttributeTransfer(entityAttribute, nameAttribute, entityInstanceTransfer);
             put(entityNameAttribute, entityNameAttributeTransfer);

@@ -70,18 +70,18 @@ public class GetReturnTypeShippingMethodsCommand
     @Override
     protected BaseResult execute() {
         var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
-        GetReturnTypeShippingMethodsResult result = ReturnPolicyResultFactory.getGetReturnTypeShippingMethodsResult();
-        String returnKindName = form.getReturnKindName();
-        String returnTypeName = form.getReturnTypeName();
-        String shippingMethodName = form.getShippingMethodName();
+        var result = ReturnPolicyResultFactory.getGetReturnTypeShippingMethodsResult();
+        var returnKindName = form.getReturnKindName();
+        var returnTypeName = form.getReturnTypeName();
+        var shippingMethodName = form.getShippingMethodName();
         var parameterCount = (returnKindName != null && returnTypeName != null? 1: 0) + (shippingMethodName != null? 1: 0);
         
         if(parameterCount == 1) {
             if(returnKindName != null && returnTypeName != null) {
-                ReturnKind returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
+                var returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
                 
                 if(returnKind != null) {
-                    ReturnType returnType = returnPolicyControl.getReturnTypeByName(returnKind, returnTypeName);
+                    var returnType = returnPolicyControl.getReturnTypeByName(returnKind, returnTypeName);
                     
                     if(returnType != null) {
                         result.setReturnType(returnPolicyControl.getReturnTypeTransfer(getUserVisit(), returnType));
@@ -95,7 +95,7 @@ public class GetReturnTypeShippingMethodsCommand
                 }
             } else if(shippingMethodName != null) {
                 var shippingControl = Session.getModelController(ShippingControl.class);
-                ShippingMethod shippingMethod = shippingControl.getShippingMethodByName(shippingMethodName);
+                var shippingMethod = shippingControl.getShippingMethodByName(shippingMethodName);
                 
                 if(shippingMethod != null) {
                     result.setShippingMethod(shippingControl.getShippingMethodTransfer(getUserVisit(), shippingMethod));

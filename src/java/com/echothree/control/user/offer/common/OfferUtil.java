@@ -30,7 +30,7 @@ public class OfferUtil {
     public static OfferLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
 
             cachedLocal = (OfferLocal)ctx.lookup("ejb:echothree/echothree-server/OfferBean!com.echothree.control.user.offer.server.OfferLocal");
         }
@@ -42,7 +42,7 @@ public class OfferUtil {
     public static OfferRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
             
             cachedRemote = (OfferRemote)ctx.lookup("ejb:echothree/echothree-server/OfferBean!com.echothree.control.user.offer.common.OfferRemote");
         }

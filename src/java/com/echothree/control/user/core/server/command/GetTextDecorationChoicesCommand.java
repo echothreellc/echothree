@@ -61,9 +61,9 @@ public class GetTextDecorationChoicesCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        GetTextDecorationChoicesResult result = CoreResultFactory.getGetTextDecorationChoicesResult();
-        String defaultTextDecorationChoice = form.getDefaultTextDecorationChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = CoreResultFactory.getGetTextDecorationChoicesResult();
+        var defaultTextDecorationChoice = form.getDefaultTextDecorationChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setTextDecorationChoices(coreControl.getTextDecorationChoices(defaultTextDecorationChoice, getPreferredLanguage(), allowNullChoice));
         

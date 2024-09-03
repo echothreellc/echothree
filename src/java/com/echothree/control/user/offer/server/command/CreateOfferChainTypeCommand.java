@@ -71,24 +71,24 @@ public class CreateOfferChainTypeCommand
     @Override
     protected BaseResult execute() {
         var offerControl = Session.getModelController(OfferControl.class);
-        String offerName = form.getOfferName();
-        Offer offer = offerControl.getOfferByName(offerName);
+        var offerName = form.getOfferName();
+        var offer = offerControl.getOfferByName(offerName);
         
         if(offer != null) {
             var chainControl = Session.getModelController(ChainControl.class);
-            String chainKindName = form.getChainKindName();
-            ChainKind chainKind = chainControl.getChainKindByName(chainKindName);
+            var chainKindName = form.getChainKindName();
+            var chainKind = chainControl.getChainKindByName(chainKindName);
             
             if(chainKind != null) {
-                String chainTypeName = form.getChainTypeName();
-                ChainType chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
+                var chainTypeName = form.getChainTypeName();
+                var chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
                 
                 if(chainType != null) {
-                    OfferChainType offerChainType = offerControl.getOfferChainType(offer, chainType);
+                    var offerChainType = offerControl.getOfferChainType(offer, chainType);
                     
                     if(offerChainType == null) {
-                        String chainName = form.getChainName();
-                        Chain chain = chainName == null? null: chainControl.getChainByName(chainType, chainName);
+                        var chainName = form.getChainName();
+                        var chain = chainName == null? null: chainControl.getChainByName(chainType, chainName);
                         
                         if(chainName == null || chain != null) {
                             offerControl.createOfferChainType(offer, chainType, chain, getPartyPK());

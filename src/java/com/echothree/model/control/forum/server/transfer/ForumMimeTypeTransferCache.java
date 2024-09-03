@@ -38,13 +38,13 @@ public class ForumMimeTypeTransferCache
     }
     
     public ForumMimeTypeTransfer getForumMimeTypeTransfer(ForumMimeType forumMimeType) {
-        ForumMimeTypeTransfer forumMimeTypeTransfer = get(forumMimeType);
+        var forumMimeTypeTransfer = get(forumMimeType);
         
         if(forumMimeTypeTransfer == null) {
-            ForumTransfer forum = forumControl.getForumTransfer(userVisit, forumMimeType.getForum());
-            MimeTypeTransfer mimeType = coreControl.getMimeTypeTransfer(userVisit, forumMimeType.getMimeType());
-            Boolean isDefault = forumMimeType.getIsDefault();
-            Integer sortOrder = forumMimeType.getSortOrder();
+            var forum = forumControl.getForumTransfer(userVisit, forumMimeType.getForum());
+            var mimeType = coreControl.getMimeTypeTransfer(userVisit, forumMimeType.getMimeType());
+            var isDefault = forumMimeType.getIsDefault();
+            var sortOrder = forumMimeType.getSortOrder();
             
             forumMimeTypeTransfer = new ForumMimeTypeTransfer(forum, mimeType, isDefault, sortOrder);
             put(forumMimeType, forumMimeTypeTransfer);

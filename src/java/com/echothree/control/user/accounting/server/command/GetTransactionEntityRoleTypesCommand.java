@@ -51,9 +51,9 @@ public class GetTransactionEntityRoleTypesCommand
     @Override
     protected BaseResult execute() {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        GetTransactionEntityRoleTypesResult result = AccountingResultFactory.getGetTransactionEntityRoleTypesResult();
-        String transactionTypeName = form.getTransactionTypeName();
-        TransactionType transactionType = accountingControl.getTransactionTypeByName(transactionTypeName);
+        var result = AccountingResultFactory.getGetTransactionEntityRoleTypesResult();
+        var transactionTypeName = form.getTransactionTypeName();
+        var transactionType = accountingControl.getTransactionTypeByName(transactionTypeName);
         
         if(transactionType != null) {
             result.setTransactionType(accountingControl.getTransactionTypeTransfer(getUserVisit(), transactionType));

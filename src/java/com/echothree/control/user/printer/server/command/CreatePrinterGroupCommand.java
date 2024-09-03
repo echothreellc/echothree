@@ -61,12 +61,12 @@ public class CreatePrinterGroupCommand
    @Override
     protected BaseResult execute() {
         var printerControl = Session.getModelController(PrinterControl.class);
-        String printerGroupName = form.getPrinterGroupName();
-        PrinterGroup printerGroup = printerControl.getPrinterGroupByName(printerGroupName);
+       var printerGroupName = form.getPrinterGroupName();
+       var printerGroup = printerControl.getPrinterGroupByName(printerGroupName);
         
         if(printerGroup == null) {
-            UnitOfMeasureTypeLogic unitOfMeasureTypeLogic = UnitOfMeasureTypeLogic.getInstance();
-            Long keepPrintedJobsTime = unitOfMeasureTypeLogic.checkUnitOfMeasure(this, UomConstants.UnitOfMeasureKindUseType_TIME,
+            var unitOfMeasureTypeLogic = UnitOfMeasureTypeLogic.getInstance();
+            var keepPrintedJobsTime = unitOfMeasureTypeLogic.checkUnitOfMeasure(this, UomConstants.UnitOfMeasureKindUseType_TIME,
                     form.getKeepPrintedJobsTime(), form.getKeepPrintedJobsTimeUnitOfMeasureTypeName(),
                     null, ExecutionErrors.MissingRequiredKeepPrintedJobsTime.name(), null, ExecutionErrors.MissingRequiredKeepPrintedJobsTimeUnitOfMeasureTypeName.name(),
                     null, ExecutionErrors.UnknownKeepPrintedJobsTimeUnitOfMeasureTypeName.name());
@@ -77,17 +77,17 @@ public class CreatePrinterGroupCommand
                 var isDefault = Boolean.valueOf(form.getIsDefault());
                 var sortOrder = Integer.valueOf(form.getSortOrder());
                 var description = form.getDescription();
-                PartyPK createdBy = getPartyPK();
+                var createdBy = getPartyPK();
 
                 printerGroup = printerControl.createPrinterGroup(printerGroupName, keepPrintedJobsTime, isDefault, sortOrder, createdBy);
 
                 if(description != null) {
-                    Language language = getPreferredLanguage();
+                    var language = getPreferredLanguage();
 
                     printerControl.createPrinterGroupDescription(printerGroup, language, description, createdBy);
                 }
 
-                EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(printerGroup.getPrimaryKey());
+                var entityInstance = coreControl.getEntityInstanceByBasePK(printerGroup.getPrimaryKey());
                 workflowControl.addEntityToWorkflowUsingNames(null, PrinterGroupStatusConstants.Workflow_PRINTER_GROUP_STATUS,
                         PrinterGroupStatusConstants.WorkflowEntrance_NEW_PRINTER_GROUP, entityInstance, null, null, createdBy);
             }

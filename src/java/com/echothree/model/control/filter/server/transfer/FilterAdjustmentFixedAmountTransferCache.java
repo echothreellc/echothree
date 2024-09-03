@@ -44,17 +44,17 @@ public class FilterAdjustmentFixedAmountTransferCache
 
     @Override
     public FilterAdjustmentFixedAmountTransfer getTransfer(FilterAdjustmentFixedAmount filterAdjustmentFixedAmount) {
-        FilterAdjustmentFixedAmountTransfer filterAdjustmentFixedAmountTransfer = get(filterAdjustmentFixedAmount);
+        var filterAdjustmentFixedAmountTransfer = get(filterAdjustmentFixedAmount);
         
         if(filterAdjustmentFixedAmountTransfer == null) {
-            FilterAdjustmentTransfer filterAdjustmentTransfer = filterControl.getFilterAdjustmentTransfer(userVisit, filterAdjustmentFixedAmount.getFilterAdjustment());
-            UnitOfMeasureTypeTransfer unitOfMeasureTypeTransfer = uomControl.getUnitOfMeasureTypeTransfer(userVisit, filterAdjustmentFixedAmount.getUnitOfMeasureType());
-            Currency currency = filterAdjustmentFixedAmount.getCurrency();
-            CurrencyTransfer currencyTransfer = accountingControl.getCurrencyTransfer(userVisit, currency);
-            Long unformattedUnitAmount = filterAdjustmentFixedAmount.getUnitAmount();
+            var filterAdjustmentTransfer = filterControl.getFilterAdjustmentTransfer(userVisit, filterAdjustmentFixedAmount.getFilterAdjustment());
+            var unitOfMeasureTypeTransfer = uomControl.getUnitOfMeasureTypeTransfer(userVisit, filterAdjustmentFixedAmount.getUnitOfMeasureType());
+            var currency = filterAdjustmentFixedAmount.getCurrency();
+            var currencyTransfer = accountingControl.getCurrencyTransfer(userVisit, currency);
+            var unformattedUnitAmount = filterAdjustmentFixedAmount.getUnitAmount();
             String unitAmount = null;
-            
-            String filterKindName = filterAdjustmentTransfer.getFilterKind().getFilterKindName();
+
+            var filterKindName = filterAdjustmentTransfer.getFilterKind().getFilterKindName();
             if(FilterKinds.COST.name().equals(filterKindName)) {
                 unitAmount = AmountUtils.getInstance().formatCostUnit(currency, unformattedUnitAmount);
             } else if(FilterKinds.PRICE.name().equals(filterKindName)) {

@@ -68,13 +68,13 @@ public class CreateItemCategoryCommand
     
     @Override
     protected BaseResult execute() {
-        CreateItemCategoryResult result = ItemResultFactory.getCreateItemCategoryResult();
+        var result = ItemResultFactory.getCreateItemCategoryResult();
         var itemControl = Session.getModelController(ItemControl.class);
-        String itemCategoryName = form.getItemCategoryName();
-        ItemCategory itemCategory = itemControl.getItemCategoryByName(itemCategoryName);
+        var itemCategoryName = form.getItemCategoryName();
+        var itemCategory = itemControl.getItemCategoryByName(itemCategoryName);
         
         if(itemCategory == null) {
-            String parentItemCategoryName = form.getParentItemCategoryName();
+            var parentItemCategoryName = form.getParentItemCategoryName();
             ItemCategory parentItemCategory = null;
             
             if(parentItemCategoryName != null) {

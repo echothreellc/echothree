@@ -66,13 +66,13 @@ public class DeleteHarmonizedTariffScheduleCodeCommand
     @Override
     protected BaseResult execute() {
         var geoControl = Session.getModelController(GeoControl.class);
-        String countryName = form.getCountryName();
-        GeoCode geoCode = geoControl.getCountryByAlias(countryName);
+        var countryName = form.getCountryName();
+        var geoCode = geoControl.getCountryByAlias(countryName);
         
         if(geoCode != null) {
             var itemControl = Session.getModelController(ItemControl.class);
-            String harmonizedTariffScheduleCodeName = form.getHarmonizedTariffScheduleCodeName();
-            HarmonizedTariffScheduleCode harmonizedTariffScheduleCode = itemControl.getHarmonizedTariffScheduleCodeByNameForUpdate(geoCode, harmonizedTariffScheduleCodeName);
+            var harmonizedTariffScheduleCodeName = form.getHarmonizedTariffScheduleCodeName();
+            var harmonizedTariffScheduleCode = itemControl.getHarmonizedTariffScheduleCodeByNameForUpdate(geoCode, harmonizedTariffScheduleCodeName);
             
             if(harmonizedTariffScheduleCode != null) {
                 itemControl.deleteHarmonizedTariffScheduleCode(harmonizedTariffScheduleCode, getPartyPK());

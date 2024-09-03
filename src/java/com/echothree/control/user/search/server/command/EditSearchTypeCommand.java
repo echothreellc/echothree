@@ -95,12 +95,12 @@ public class EditSearchTypeCommand
     public SearchType getEntity(EditSearchTypeResult result) {
         var searchControl = Session.getModelController(SearchControl.class);
         SearchType searchType = null;
-        String searchKindName = spec.getSearchKindName();
+        var searchKindName = spec.getSearchKindName();
 
         searchKind = searchControl.getSearchKindByName(searchKindName);
 
         if(searchKind != null) {
-            String searchTypeName = spec.getSearchTypeName();
+            var searchTypeName = spec.getSearchTypeName();
 
             if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
                 searchType = searchControl.getSearchTypeByName(searchKind, searchTypeName);
@@ -133,8 +133,8 @@ public class EditSearchTypeCommand
     @Override
     public void doLock(SearchTypeEdit edit, SearchType searchType) {
         var searchControl = Session.getModelController(SearchControl.class);
-        SearchTypeDescription searchTypeDescription = searchControl.getSearchTypeDescription(searchType, getPreferredLanguage());
-        SearchTypeDetail searchTypeDetail = searchType.getLastDetail();
+        var searchTypeDescription = searchControl.getSearchTypeDescription(searchType, getPreferredLanguage());
+        var searchTypeDetail = searchType.getLastDetail();
 
         edit.setSearchTypeName(searchTypeDetail.getSearchTypeName());
         edit.setIsDefault(searchTypeDetail.getIsDefault().toString());
@@ -148,9 +148,9 @@ public class EditSearchTypeCommand
     @Override
     public void canUpdate(SearchType searchType) {
         var searchControl = Session.getModelController(SearchControl.class);
-        SearchKindDetail searchKindDetail = searchKind.getLastDetail();
-        String searchTypeName = edit.getSearchTypeName();
-        SearchType duplicateSearchType = searchControl.getSearchTypeByName(searchKind, searchTypeName);
+        var searchKindDetail = searchKind.getLastDetail();
+        var searchTypeName = edit.getSearchTypeName();
+        var duplicateSearchType = searchControl.getSearchTypeByName(searchKind, searchTypeName);
 
         if(duplicateSearchType != null && !searchType.equals(duplicateSearchType)) {
             addExecutionError(ExecutionErrors.DuplicateSearchTypeName.name(), searchKindDetail.getSearchKindName(), searchTypeName);
@@ -161,9 +161,9 @@ public class EditSearchTypeCommand
     public void doUpdate(SearchType searchType) {
         var searchControl = Session.getModelController(SearchControl.class);
         var partyPK = getPartyPK();
-        SearchTypeDetailValue searchTypeDetailValue = searchControl.getSearchTypeDetailValueForUpdate(searchType);
-        SearchTypeDescription searchTypeDescription = searchControl.getSearchTypeDescriptionForUpdate(searchType, getPreferredLanguage());
-        String description = edit.getDescription();
+        var searchTypeDetailValue = searchControl.getSearchTypeDetailValueForUpdate(searchType);
+        var searchTypeDescription = searchControl.getSearchTypeDescriptionForUpdate(searchType, getPreferredLanguage());
+        var description = edit.getDescription();
 
         searchTypeDetailValue.setSearchTypeName(edit.getSearchTypeName());
         searchTypeDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
@@ -176,7 +176,7 @@ public class EditSearchTypeCommand
         } else if(searchTypeDescription != null && description == null) {
             searchControl.deleteSearchTypeDescription(searchTypeDescription, partyPK);
         } else if(searchTypeDescription != null && description != null) {
-            SearchTypeDescriptionValue searchTypeDescriptionValue = searchControl.getSearchTypeDescriptionValue(searchTypeDescription);
+            var searchTypeDescriptionValue = searchControl.getSearchTypeDescriptionValue(searchTypeDescription);
 
             searchTypeDescriptionValue.setDescription(description);
             searchControl.updateSearchTypeDescriptionFromValue(searchTypeDescriptionValue, partyPK);

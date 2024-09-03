@@ -68,17 +68,17 @@ public class GetCampaignMediumDescriptionCommand
     @Override
     protected BaseResult execute() {
         var campaignControl = Session.getModelController(CampaignControl.class);
-        GetCampaignMediumDescriptionResult result = CampaignResultFactory.getGetCampaignMediumDescriptionResult();
-        String campaignMediumName = form.getCampaignMediumName();
-        CampaignMedium campaignMedium = campaignControl.getCampaignMediumByName(campaignMediumName);
+        var result = CampaignResultFactory.getGetCampaignMediumDescriptionResult();
+        var campaignMediumName = form.getCampaignMediumName();
+        var campaignMedium = campaignControl.getCampaignMediumByName(campaignMediumName);
 
         if(campaignMedium != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
-                CampaignMediumDescription campaignMediumDescription = campaignControl.getCampaignMediumDescription(campaignMedium, language);
+                var campaignMediumDescription = campaignControl.getCampaignMediumDescription(campaignMedium, language);
 
                 if(campaignMediumDescription != null) {
                     result.setCampaignMediumDescription(campaignControl.getCampaignMediumDescriptionTransfer(getUserVisit(), campaignMediumDescription));

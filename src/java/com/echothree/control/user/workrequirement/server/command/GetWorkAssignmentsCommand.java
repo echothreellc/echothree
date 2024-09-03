@@ -57,9 +57,9 @@ public class GetWorkAssignmentsCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        GetWorkAssignmentsResult result = WorkRequirementResultFactory.getGetWorkAssignmentsResult();
-        String employeeName = form.getEmployeeName();
-        String partyName = form.getPartyName();
+        var result = WorkRequirementResultFactory.getGetWorkAssignmentsResult();
+        var employeeName = form.getEmployeeName();
+        var partyName = form.getPartyName();
         var parameterCount = (employeeName == null ? 0 : 1) + (partyName == null ? 0 : 1);
 
         if(parameterCount < 2) {
@@ -67,7 +67,7 @@ public class GetWorkAssignmentsCommand
 
             if(employeeName != null) {
                 var employeeControl = Session.getModelController(EmployeeControl.class);
-                PartyEmployee partyEmployee = employeeControl.getPartyEmployeeByName(employeeName);
+                var partyEmployee = employeeControl.getPartyEmployeeByName(employeeName);
 
                 if(partyEmployee != null) {
                     party = partyEmployee.getParty();
@@ -86,7 +86,7 @@ public class GetWorkAssignmentsCommand
 
             if(!hasExecutionErrors()) {
                 var workRequirementControl = Session.getModelController(WorkRequirementControl.class);
-                UserVisit userVisit = getUserVisit();
+                var userVisit = getUserVisit();
 
                 if(session.hasLimit(WorkAssignmentFactory.class)) {
                     result.setWorkAssignmentCount(workRequirementControl.countWorkAssignmentsByParty(party));

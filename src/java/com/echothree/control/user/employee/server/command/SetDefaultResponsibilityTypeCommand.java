@@ -49,8 +49,8 @@ public class SetDefaultResponsibilityTypeCommand
     @Override
     protected BaseResult execute() {
         var employeeControl = Session.getModelController(EmployeeControl.class);
-        String responsibilityTypeName = form.getResponsibilityTypeName();
-        ResponsibilityTypeDetailValue responsibilityTypeDetailValue = employeeControl.getResponsibilityTypeDetailValueByNameForUpdate(responsibilityTypeName);
+        var responsibilityTypeName = form.getResponsibilityTypeName();
+        var responsibilityTypeDetailValue = employeeControl.getResponsibilityTypeDetailValueByNameForUpdate(responsibilityTypeName);
         
         if(responsibilityTypeDetailValue != null) {
             responsibilityTypeDetailValue.setIsDefault(Boolean.TRUE);

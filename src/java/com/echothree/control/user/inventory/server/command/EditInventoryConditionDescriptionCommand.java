@@ -79,25 +79,25 @@ public class EditInventoryConditionDescriptionCommand
     @Override
     protected BaseResult execute() {
         var inventoryControl = Session.getModelController(InventoryControl.class);
-        EditInventoryConditionDescriptionResult result = InventoryResultFactory.getEditInventoryConditionDescriptionResult();
-        String inventoryConditionName = spec.getInventoryConditionName();
-        InventoryCondition inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
+        var result = InventoryResultFactory.getEditInventoryConditionDescriptionResult();
+        var inventoryConditionName = spec.getInventoryConditionName();
+        var inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
         
         if(inventoryCondition != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                    InventoryConditionDescription inventoryConditionDescription = inventoryControl.getInventoryConditionDescription(inventoryCondition, language);
+                    var inventoryConditionDescription = inventoryControl.getInventoryConditionDescription(inventoryCondition, language);
                     
                     if(inventoryConditionDescription != null) {
                         if(editMode.equals(EditMode.LOCK)) {
                             result.setInventoryConditionDescription(inventoryControl.getInventoryConditionDescriptionTransfer(getUserVisit(), inventoryConditionDescription));
 
                             if(lockEntity(inventoryCondition)) {
-                                InventoryConditionDescriptionEdit edit = InventoryEditFactory.getInventoryConditionDescriptionEdit();
+                                var edit = InventoryEditFactory.getInventoryConditionDescriptionEdit();
 
                                 result.setEdit(edit);
                                 edit.setDescription(inventoryConditionDescription.getDescription());
@@ -113,12 +113,12 @@ public class EditInventoryConditionDescriptionCommand
                         addExecutionError(ExecutionErrors.UnknownInventoryConditionDescription.name());
                     }
                 } else if(editMode.equals(EditMode.UPDATE)) {
-                    InventoryConditionDescriptionValue inventoryConditionDescriptionValue = inventoryControl.getInventoryConditionDescriptionValueForUpdate(inventoryCondition, language);
+                    var inventoryConditionDescriptionValue = inventoryControl.getInventoryConditionDescriptionValueForUpdate(inventoryCondition, language);
                     
                     if(inventoryConditionDescriptionValue != null) {
                         if(lockEntityForUpdate(inventoryCondition)) {
                             try {
-                                String description = edit.getDescription();
+                                var description = edit.getDescription();
                                 
                                 inventoryConditionDescriptionValue.setDescription(description);
                                 

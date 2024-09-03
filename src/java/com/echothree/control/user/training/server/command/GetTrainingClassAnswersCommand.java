@@ -70,20 +70,20 @@ public class GetTrainingClassAnswersCommand
     @Override
     protected BaseResult execute() {
         var trainingControl = Session.getModelController(TrainingControl.class);
-        GetTrainingClassAnswersResult result = TrainingResultFactory.getGetTrainingClassAnswersResult();
-        String trainingClassName = form.getTrainingClassName();
-        TrainingClass trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
+        var result = TrainingResultFactory.getGetTrainingClassAnswersResult();
+        var trainingClassName = form.getTrainingClassName();
+        var trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
 
         if(trainingClass != null) {
-            String trainingClassSectionName = form.getTrainingClassSectionName();
-            TrainingClassSection trainingClassSection = trainingControl.getTrainingClassSectionByName(trainingClass, trainingClassSectionName);
+            var trainingClassSectionName = form.getTrainingClassSectionName();
+            var trainingClassSection = trainingControl.getTrainingClassSectionByName(trainingClass, trainingClassSectionName);
 
             if(trainingClassSection != null) {
-                String trainingClassQuestionName = form.getTrainingClassQuestionName();
-                TrainingClassQuestion trainingClassQuestion = trainingControl.getTrainingClassQuestionByName(trainingClassSection, trainingClassQuestionName);
+                var trainingClassQuestionName = form.getTrainingClassQuestionName();
+                var trainingClassQuestion = trainingControl.getTrainingClassQuestionByName(trainingClassSection, trainingClassQuestionName);
 
                 if(trainingClassQuestion != null) {
-                    UserVisit userVisit = getUserVisit();
+                    var userVisit = getUserVisit();
                     
                     result.setTrainingClassQuestion(trainingControl.getTrainingClassQuestionTransfer(userVisit, trainingClassQuestion));
                     result.setTrainingClassAnswers(trainingControl.getTrainingClassAnswerTransfers(getUserVisit(), trainingClassQuestion));

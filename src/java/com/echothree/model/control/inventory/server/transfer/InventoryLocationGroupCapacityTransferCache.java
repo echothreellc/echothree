@@ -37,16 +37,16 @@ public class InventoryLocationGroupCapacityTransferCache
     
     @Override
     public InventoryLocationGroupCapacityTransfer getTransfer(InventoryLocationGroupCapacity inventoryLocationGroupCapacity) {
-        InventoryLocationGroupCapacityTransfer inventoryLocationGroupCapacityTransfer = get(inventoryLocationGroupCapacity);
+        var inventoryLocationGroupCapacityTransfer = get(inventoryLocationGroupCapacity);
         
         if(inventoryLocationGroupCapacityTransfer == null) {
-            UomControl partyControl = Session.getModelController(UomControl.class);
-            InventoryLocationGroupTransferCache inventoryLocationGroupTransferCache = inventoryControl.getInventoryTransferCaches(userVisit).getInventoryLocationGroupTransferCache();
-            InventoryLocationGroupTransfer inventoryLocationGroupTransfer = inventoryLocationGroupTransferCache.getTransfer(inventoryLocationGroupCapacity.getInventoryLocationGroup());
-            UnitOfMeasureTypeTransferCache unitOfMeasureTypeTransferCache = partyControl.getUomTransferCaches(userVisit).getUnitOfMeasureTypeTransferCache();
-            UnitOfMeasureType unitOfMeasureType = inventoryLocationGroupCapacity.getUnitOfMeasureType();
-            UnitOfMeasureTypeTransfer unitOfMeasureTypeTransfer = unitOfMeasureTypeTransferCache.getUnitOfMeasureTypeTransfer(unitOfMeasureType);
-            Long capacity = inventoryLocationGroupCapacity.getCapacity();
+            var partyControl = Session.getModelController(UomControl.class);
+            var inventoryLocationGroupTransferCache = inventoryControl.getInventoryTransferCaches(userVisit).getInventoryLocationGroupTransferCache();
+            var inventoryLocationGroupTransfer = inventoryLocationGroupTransferCache.getTransfer(inventoryLocationGroupCapacity.getInventoryLocationGroup());
+            var unitOfMeasureTypeTransferCache = partyControl.getUomTransferCaches(userVisit).getUnitOfMeasureTypeTransferCache();
+            var unitOfMeasureType = inventoryLocationGroupCapacity.getUnitOfMeasureType();
+            var unitOfMeasureTypeTransfer = unitOfMeasureTypeTransferCache.getUnitOfMeasureTypeTransfer(unitOfMeasureType);
+            var capacity = inventoryLocationGroupCapacity.getCapacity();
             
             inventoryLocationGroupCapacityTransfer = new InventoryLocationGroupCapacityTransfer(inventoryLocationGroupTransfer, unitOfMeasureTypeTransfer,
             capacity);

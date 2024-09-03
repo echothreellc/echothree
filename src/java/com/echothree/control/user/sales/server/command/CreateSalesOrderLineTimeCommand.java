@@ -48,10 +48,10 @@ public class CreateSalesOrderLineTimeCommand
     
     @Override
     protected BaseResult execute() {
-        String orderName = form.getOrderName();
-        String orderLineSequence = form.getOrderLineSequence();
-        String orderTimeTypeName = form.getOrderTimeTypeName();
-        Long time = Long.valueOf(form.getTime());
+        var orderName = form.getOrderName();
+        var orderLineSequence = form.getOrderLineSequence();
+        var orderTimeTypeName = form.getOrderTimeTypeName();
+        var time = Long.valueOf(form.getTime());
         
         SalesOrderLineTimeLogic.getInstance().createOrderLineTime(this, orderName, orderLineSequence, orderTimeTypeName, time, getPartyPK());
         

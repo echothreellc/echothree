@@ -67,16 +67,16 @@ public class DeleteDocumentDescriptionCommand
     @Override
     protected BaseResult execute() {
         var documentControl = Session.getModelController(DocumentControl.class);
-        String documentName = form.getDocumentName();
-        Document document = documentControl.getDocumentByName(documentName);
+        var documentName = form.getDocumentName();
+        var document = documentControl.getDocumentByName(documentName);
         
         if(document != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                DocumentDescription documentDescription = documentControl.getDocumentDescriptionForUpdate(document, language);
+                var documentDescription = documentControl.getDocumentDescriptionForUpdate(document, language);
                 
                 if(documentDescription != null) {
                     documentControl.deleteDocumentDescription(documentDescription, getPartyPK());

@@ -51,13 +51,13 @@ public class ItemTaxClassificationTransferCache
     
     @Override
     public ItemTaxClassificationTransfer getTransfer(ItemTaxClassification itemTaxClassification) {
-        ItemTaxClassificationTransfer itemTaxClassificationTransfer = get(itemTaxClassification);
+        var itemTaxClassificationTransfer = get(itemTaxClassification);
         
         if(itemTaxClassificationTransfer == null) {
-            ItemTaxClassificationDetail itemTaxClassificationDetail = itemTaxClassification.getLastDetail();
-            ItemTransfer item = itemControl.getItemTransfer(userVisit, itemTaxClassificationDetail.getItem());
-            CountryTransfer countryGeoCode = geoControl.getCountryTransfer(userVisit, itemTaxClassificationDetail.getCountryGeoCode());
-            TaxClassificationTransfer taxClassification = taxControl.getTaxClassificationTransfer(userVisit, itemTaxClassificationDetail.getTaxClassification());
+            var itemTaxClassificationDetail = itemTaxClassification.getLastDetail();
+            var item = itemControl.getItemTransfer(userVisit, itemTaxClassificationDetail.getItem());
+            var countryGeoCode = geoControl.getCountryTransfer(userVisit, itemTaxClassificationDetail.getCountryGeoCode());
+            var taxClassification = taxControl.getTaxClassificationTransfer(userVisit, itemTaxClassificationDetail.getTaxClassification());
             
             itemTaxClassificationTransfer = new ItemTaxClassificationTransfer(item, countryGeoCode, taxClassification);
             put(itemTaxClassification, itemTaxClassificationTransfer);

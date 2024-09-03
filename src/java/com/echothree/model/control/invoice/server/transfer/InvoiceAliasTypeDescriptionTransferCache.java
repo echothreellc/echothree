@@ -32,11 +32,11 @@ public class InvoiceAliasTypeDescriptionTransferCache
     }
     
     public InvoiceAliasTypeDescriptionTransfer getInvoiceAliasTypeDescriptionTransfer(InvoiceAliasTypeDescription invoiceAliasTypeDescription) {
-        InvoiceAliasTypeDescriptionTransfer invoiceAliasTypeDescriptionTransfer = get(invoiceAliasTypeDescription);
+        var invoiceAliasTypeDescriptionTransfer = get(invoiceAliasTypeDescription);
         
         if(invoiceAliasTypeDescriptionTransfer == null) {
-            InvoiceAliasTypeTransfer invoiceAliasTypeTransfer = invoiceControl.getInvoiceAliasTypeTransfer(userVisit, invoiceAliasTypeDescription.getInvoiceAliasType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, invoiceAliasTypeDescription.getLanguage());
+            var invoiceAliasTypeTransfer = invoiceControl.getInvoiceAliasTypeTransfer(userVisit, invoiceAliasTypeDescription.getInvoiceAliasType());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, invoiceAliasTypeDescription.getLanguage());
             
             invoiceAliasTypeDescriptionTransfer = new InvoiceAliasTypeDescriptionTransfer(languageTransfer, invoiceAliasTypeTransfer, invoiceAliasTypeDescription.getDescription());
             put(invoiceAliasTypeDescription, invoiceAliasTypeDescriptionTransfer);

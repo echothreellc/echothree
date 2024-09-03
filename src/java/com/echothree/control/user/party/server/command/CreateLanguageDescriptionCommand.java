@@ -52,16 +52,16 @@ public class CreateLanguageDescriptionCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        String languageIsoName = form.getLanguageIsoName();
-        Language language = partyControl.getLanguageByIsoName(languageIsoName);
+        var languageIsoName = form.getLanguageIsoName();
+        var language = partyControl.getLanguageByIsoName(languageIsoName);
         
         if(language != null) {
-            String descriptionLanguageIsoName = form.getDescriptionLanguageIsoName();
+            var descriptionLanguageIsoName = form.getDescriptionLanguageIsoName();
             var description = form.getDescription();
-            Language descriptionLanguage = partyControl.getLanguageByIsoName(descriptionLanguageIsoName);
+            var descriptionLanguage = partyControl.getLanguageByIsoName(descriptionLanguageIsoName);
 
             if(descriptionLanguageIsoName != null) {
-                LanguageDescription languageDescription = partyControl.getLanguageDescription(language, descriptionLanguage);
+                var languageDescription = partyControl.getLanguageDescription(language, descriptionLanguage);
 
                 if(languageDescription == null) {
                     partyControl.createLanguageDescription(language, descriptionLanguage, description, getPartyPK());

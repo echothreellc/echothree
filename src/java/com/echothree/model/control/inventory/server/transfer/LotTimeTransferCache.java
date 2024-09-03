@@ -36,12 +36,12 @@ public class LotTimeTransferCache
     
     @Override
     public LotTimeTransfer getTransfer(LotTime lotTime) {
-        LotTimeTransfer lotTimeTransfer = get(lotTime);
+        var lotTimeTransfer = get(lotTime);
         
         if(lotTimeTransfer == null) {
-            LotTimeTypeTransfer lotTimeType = lotTimeControl.getLotTimeTypeTransfer(userVisit, lotTime.getLotTimeType());
-            Long unformattedTime = lotTime.getTime();
-            String time = formatTypicalDateTime(unformattedTime);
+            var lotTimeType = lotTimeControl.getLotTimeTypeTransfer(userVisit, lotTime.getLotTimeType());
+            var unformattedTime = lotTime.getTime();
+            var time = formatTypicalDateTime(unformattedTime);
             
             lotTimeTransfer = new LotTimeTransfer(lotTimeType, unformattedTime, time);
             put(lotTime, lotTimeTransfer);

@@ -50,11 +50,11 @@ public class DeleteUnitOfMeasureKindCommand
     @Override
     protected BaseResult execute() {
         var uomControl = Session.getModelController(UomControl.class);
-        String unitOfMeasureKindName = form.getUnitOfMeasureKindName();
-        UnitOfMeasureKind unitOfMeasureKind = uomControl.getUnitOfMeasureKindByNameForUpdate(unitOfMeasureKindName);
+        var unitOfMeasureKindName = form.getUnitOfMeasureKindName();
+        var unitOfMeasureKind = uomControl.getUnitOfMeasureKindByNameForUpdate(unitOfMeasureKindName);
         
         if(unitOfMeasureKind != null) {
-            UnitOfMeasureKindLogic unitOfMeasureKindLogic = UnitOfMeasureKindLogic.getInstance();
+            var unitOfMeasureKindLogic = UnitOfMeasureKindLogic.getInstance();
 
             unitOfMeasureKindLogic.checkDeleteUnitOfMeasureKind(this, unitOfMeasureKind);
 

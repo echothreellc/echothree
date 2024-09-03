@@ -67,16 +67,16 @@ public class DeleteLotTimeTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var lotTimeControl = Session.getModelController(LotTimeControl.class);
-        String lotTimeTypeName = form.getLotTimeTypeName();
-        LotTimeType lotTimeType = lotTimeControl.getLotTimeTypeByName(lotTimeTypeName);
+        var lotTimeTypeName = form.getLotTimeTypeName();
+        var lotTimeType = lotTimeControl.getLotTimeTypeByName(lotTimeTypeName);
 
         if(lotTimeType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
-                LotTimeTypeDescription lotTimeTypeDescription = lotTimeControl.getLotTimeTypeDescriptionForUpdate(lotTimeType, language);
+                var lotTimeTypeDescription = lotTimeControl.getLotTimeTypeDescriptionForUpdate(lotTimeType, language);
 
                 if(lotTimeTypeDescription != null) {
                     lotTimeControl.deleteLotTimeTypeDescription(lotTimeTypeDescription, getPartyPK());

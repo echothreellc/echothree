@@ -65,23 +65,23 @@ public class EditUnitOfMeasureKindUseCommand
     @Override
     protected BaseResult execute() {
         var uomControl = Session.getModelController(UomControl.class);
-        EditUnitOfMeasureKindUseResult result = UomResultFactory.getEditUnitOfMeasureKindUseResult();
-        String unitOfMeasureKindName = spec.getUnitOfMeasureKindName();
-        UnitOfMeasureKind unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);
+        var result = UomResultFactory.getEditUnitOfMeasureKindUseResult();
+        var unitOfMeasureKindName = spec.getUnitOfMeasureKindName();
+        var unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);
         
         if(unitOfMeasureKind != null) {
-            String unitOfMeasureKindUseTypeName = spec.getUnitOfMeasureKindUseTypeName();
-            UnitOfMeasureKindUseType unitOfMeasureKindUseType = uomControl.getUnitOfMeasureKindUseTypeByName(unitOfMeasureKindUseTypeName);
+            var unitOfMeasureKindUseTypeName = spec.getUnitOfMeasureKindUseTypeName();
+            var unitOfMeasureKindUseType = uomControl.getUnitOfMeasureKindUseTypeByName(unitOfMeasureKindUseTypeName);
             
             if(unitOfMeasureKindUseType != null) {
                 if(editMode.equals(EditMode.LOCK)) {
-                    UnitOfMeasureKindUse unitOfMeasureKindUse = uomControl.getUnitOfMeasureKindUse(unitOfMeasureKindUseType, unitOfMeasureKind);
+                    var unitOfMeasureKindUse = uomControl.getUnitOfMeasureKindUse(unitOfMeasureKindUseType, unitOfMeasureKind);
                     
                     if(unitOfMeasureKindUse != null) {
                         result.setUnitOfMeasureKindUse(uomControl.getUnitOfMeasureKindUseTransfer(getUserVisit(), unitOfMeasureKindUse));
                         
                         if(lockEntity(unitOfMeasureKind)) {
-                            UnitOfMeasureKindUseEdit edit = UomEditFactory.getUnitOfMeasureKindUseEdit();
+                            var edit = UomEditFactory.getUnitOfMeasureKindUseEdit();
                             
                             result.setEdit(edit);
                             edit.setIsDefault(unitOfMeasureKindUse.getIsDefault().toString());
@@ -95,7 +95,7 @@ public class EditUnitOfMeasureKindUseCommand
                         addExecutionError(ExecutionErrors.UnknownUnitOfMeasureKindUse.name());
                     }
                 } else if(editMode.equals(EditMode.UPDATE)) {
-                    UnitOfMeasureKindUseValue unitOfMeasureKindUseValue = uomControl.getUnitOfMeasureKindUseValueForUpdate(unitOfMeasureKindUseType, unitOfMeasureKind);
+                    var unitOfMeasureKindUseValue = uomControl.getUnitOfMeasureKindUseValueForUpdate(unitOfMeasureKindUseType, unitOfMeasureKind);
                     
                     if(unitOfMeasureKindUseValue != null) {
                         if(lockEntityForUpdate(unitOfMeasureKind)) {

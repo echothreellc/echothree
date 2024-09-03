@@ -58,8 +58,8 @@ public class CreateInvoiceRoleTypeCommand
     @Override
     protected BaseResult execute() {
         var invoiceControl = Session.getModelController(InvoiceControl.class);
-        String invoiceRoleTypeName = form.getInvoiceRoleTypeName();
-        InvoiceRoleType invoiceRoleType = invoiceControl.getInvoiceRoleTypeByName(invoiceRoleTypeName);
+        var invoiceRoleTypeName = form.getInvoiceRoleTypeName();
+        var invoiceRoleType = invoiceControl.getInvoiceRoleTypeByName(invoiceRoleTypeName);
         
         if(invoiceRoleType == null) {
             var sortOrder = Integer.valueOf(form.getSortOrder());

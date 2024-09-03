@@ -38,13 +38,13 @@ public class GeoCodeDateTimeFormatTransferCache
     }
     
     public GeoCodeDateTimeFormatTransfer getGeoCodeDateTimeFormatTransfer(GeoCodeDateTimeFormat geoCodeDateTimeFormat) {
-        GeoCodeDateTimeFormatTransfer geoCodeDateTimeFormatTransfer = get(geoCodeDateTimeFormat);
+        var geoCodeDateTimeFormatTransfer = get(geoCodeDateTimeFormat);
         
         if(geoCodeDateTimeFormatTransfer == null) {
-            GeoCodeTransfer geoCode = geoControl.getGeoCodeTransfer(userVisit, geoCodeDateTimeFormat.getGeoCode());
-            DateTimeFormatTransfer dateTimeFormat = partyControl.getDateTimeFormatTransfer(userVisit, geoCodeDateTimeFormat.getDateTimeFormat());
-            Boolean isDefault = geoCodeDateTimeFormat.getIsDefault();
-            Integer sortOrder = geoCodeDateTimeFormat.getSortOrder();
+            var geoCode = geoControl.getGeoCodeTransfer(userVisit, geoCodeDateTimeFormat.getGeoCode());
+            var dateTimeFormat = partyControl.getDateTimeFormatTransfer(userVisit, geoCodeDateTimeFormat.getDateTimeFormat());
+            var isDefault = geoCodeDateTimeFormat.getIsDefault();
+            var sortOrder = geoCodeDateTimeFormat.getSortOrder();
             
             geoCodeDateTimeFormatTransfer = new GeoCodeDateTimeFormatTransfer(geoCode, dateTimeFormat, isDefault, sortOrder);
             put(geoCodeDateTimeFormat, geoCodeDateTimeFormatTransfer);

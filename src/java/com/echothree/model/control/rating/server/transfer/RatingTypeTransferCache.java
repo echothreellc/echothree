@@ -42,16 +42,16 @@ public class RatingTypeTransferCache
     }
     
     public RatingTypeTransfer getRatingTypeTransfer(RatingType ratingType) {
-        RatingTypeTransfer ratingTypeTransfer = get(ratingType);
+        var ratingTypeTransfer = get(ratingType);
         
         if(ratingTypeTransfer == null) {
-            RatingTypeDetail ratingTypeDetail = ratingType.getLastDetail();
-            EntityTypeTransfer entityTypeTransfer = coreControl.getEntityTypeTransfer(userVisit, ratingTypeDetail.getEntityType());
-            String ratingTypeName = ratingTypeDetail.getRatingTypeName();
-            Sequence ratingSequence = ratingTypeDetail.getRatingSequence();
-            SequenceTransfer ratingSequenceTransfer = ratingSequence == null? null: sequenceControl.getSequenceTransfer(userVisit, ratingSequence);
-            Integer sortOrder = ratingTypeDetail.getSortOrder();
-            String description = ratingControl.getBestRatingTypeDescription(ratingType, getLanguage());
+            var ratingTypeDetail = ratingType.getLastDetail();
+            var entityTypeTransfer = coreControl.getEntityTypeTransfer(userVisit, ratingTypeDetail.getEntityType());
+            var ratingTypeName = ratingTypeDetail.getRatingTypeName();
+            var ratingSequence = ratingTypeDetail.getRatingSequence();
+            var ratingSequenceTransfer = ratingSequence == null? null: sequenceControl.getSequenceTransfer(userVisit, ratingSequence);
+            var sortOrder = ratingTypeDetail.getSortOrder();
+            var description = ratingControl.getBestRatingTypeDescription(ratingType, getLanguage());
             
             ratingTypeTransfer = new RatingTypeTransfer(entityTypeTransfer, ratingTypeName, ratingSequenceTransfer, sortOrder, description);
             put(ratingType, ratingTypeTransfer);

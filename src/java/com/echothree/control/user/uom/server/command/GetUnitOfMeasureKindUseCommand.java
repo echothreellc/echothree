@@ -52,7 +52,7 @@ public class GetUnitOfMeasureKindUseCommand
     
     @Override
     protected UnitOfMeasureKindUse getEntity() {
-        UnitOfMeasureKindUse unitOfMeasureKindUse = UnitOfMeasureKindUseLogic.getInstance().getUnitOfMeasureKindUse(this,
+        var unitOfMeasureKindUse = UnitOfMeasureKindUseLogic.getInstance().getUnitOfMeasureKindUse(this,
                 form.getUnitOfMeasureKindUseTypeName(), form.getUnitOfMeasureKindName());
         
         if(!hasExecutionErrors()) {
@@ -65,7 +65,7 @@ public class GetUnitOfMeasureKindUseCommand
     @Override
     protected BaseResult getResult(UnitOfMeasureKindUse unitOfMeasureKindUse) {
         var uomControl = Session.getModelController(UomControl.class);
-        GetUnitOfMeasureKindUseResult result = UomResultFactory.getGetUnitOfMeasureKindUseResult();
+        var result = UomResultFactory.getGetUnitOfMeasureKindUseResult();
         
         if(unitOfMeasureKindUse != null) {
             result.setUnitOfMeasureKindUse(uomControl.getUnitOfMeasureKindUseTransfer(getUserVisit(), unitOfMeasureKindUse));

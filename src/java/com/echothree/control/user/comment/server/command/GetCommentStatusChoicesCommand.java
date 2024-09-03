@@ -58,10 +58,10 @@ public class GetCommentStatusChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        GetCommentStatusChoicesResult result = CommentResultFactory.getGetCommentStatusChoicesResult();
+        var result = CommentResultFactory.getGetCommentStatusChoicesResult();
         var commentControl = Session.getModelController(CommentControl.class);
-        String commentTypeName = form.getCommentTypeName();
-        String commentName = form.getCommentName();
+        var commentTypeName = form.getCommentTypeName();
+        var commentName = form.getCommentName();
         var parameterCount = (commentTypeName == null ? 0 : 1) + (commentName == null ? 0 : 1);
 
         if(parameterCount == 1) {
@@ -69,7 +69,7 @@ public class GetCommentStatusChoicesCommand
             Comment comment = null;
             
             if(commentTypeName != null) {
-                EntityType entityType = EntityTypeLogic.getInstance().getEntityTypeByName(this, ComponentVendors.ECHO_THREE.name(), EntityTypes.Comment.name());
+                var entityType = EntityTypeLogic.getInstance().getEntityTypeByName(this, ComponentVendors.ECHO_THREE.name(), EntityTypes.Comment.name());
                 
                 if(!hasExecutionErrors()) {
                     commentType = commentControl.getCommentTypeByName(entityType, commentTypeName);
@@ -90,8 +90,8 @@ public class GetCommentStatusChoicesCommand
             }
 
             if(!hasExecutionErrors()) {
-                String defaultCommentStatusChoice = form.getDefaultCommentStatusChoice();
-                boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+                var defaultCommentStatusChoice = form.getDefaultCommentStatusChoice();
+                var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 
                 result.setCommentStatusChoices(commentControl.getCommentStatusChoices(this, defaultCommentStatusChoice, getPreferredLanguage(),
                         allowNullChoice, commentType, comment, getPartyPK()));

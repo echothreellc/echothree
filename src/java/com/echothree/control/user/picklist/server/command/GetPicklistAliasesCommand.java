@@ -65,16 +65,16 @@ public class GetPicklistAliasesCommand
     @Override
     protected BaseResult execute() {
         var picklistControl = Session.getModelController(PicklistControl.class);
-        GetPicklistAliasesResult result = PicklistResultFactory.getGetPicklistAliasesResult();
-        String picklistTypeName = form.getPicklistTypeName();
-        PicklistType picklistType = picklistControl.getPicklistTypeByName(picklistTypeName);
+        var result = PicklistResultFactory.getGetPicklistAliasesResult();
+        var picklistTypeName = form.getPicklistTypeName();
+        var picklistType = picklistControl.getPicklistTypeByName(picklistTypeName);
 
         if(picklistType != null) {
-            String picklistName = form.getPicklistName();
-            Picklist picklist = picklistControl.getPicklistByName(picklistType, picklistName);
+            var picklistName = form.getPicklistName();
+            var picklist = picklistControl.getPicklistByName(picklistType, picklistName);
 
             if(picklist != null) {
-                UserVisit userVisit = getUserVisit();
+                var userVisit = getUserVisit();
 
                 result.setPicklist(picklistControl.getPicklistTransfer(userVisit, picklist));
                 result.setPicklistAliases(picklistControl.getPicklistAliasTransfersByPicklist(userVisit, picklist));

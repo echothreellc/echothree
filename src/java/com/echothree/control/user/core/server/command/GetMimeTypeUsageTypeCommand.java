@@ -50,8 +50,8 @@ public class GetMimeTypeUsageTypeCommand
     @Override
     protected MimeTypeUsageType getEntity() {
         var coreControl = getCoreControl();
-        String mimeTypeUsageTypeName = form.getMimeTypeUsageTypeName();
-        MimeTypeUsageType mimeTypeUsageType = coreControl.getMimeTypeUsageTypeByName(mimeTypeUsageTypeName);
+        var mimeTypeUsageTypeName = form.getMimeTypeUsageTypeName();
+        var mimeTypeUsageType = coreControl.getMimeTypeUsageTypeByName(mimeTypeUsageTypeName);
 
         if(mimeTypeUsageType == null) {
             addExecutionError(ExecutionErrors.UnknownMimeTypeUsageTypeName.name(), mimeTypeUsageTypeName);
@@ -63,10 +63,10 @@ public class GetMimeTypeUsageTypeCommand
     @Override
     protected BaseResult getResult(MimeTypeUsageType mimeTypeUsageType) {
         var coreControl = getCoreControl();
-        GetMimeTypeUsageTypeResult result = CoreResultFactory.getGetMimeTypeUsageTypeResult();
+        var result = CoreResultFactory.getGetMimeTypeUsageTypeResult();
 
         if(mimeTypeUsageType != null) {
-            UserVisit userVisit = getUserVisit();
+            var userVisit = getUserVisit();
 
             result.setMimeTypeUsageType(coreControl.getMimeTypeUsageTypeTransfer(userVisit, mimeTypeUsageType));
         }

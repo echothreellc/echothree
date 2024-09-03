@@ -52,8 +52,8 @@ public class GetContentWebAddressCommand
     @Override
     protected ContentWebAddress getEntity() {
         var contentControl = Session.getModelController(ContentControl.class);
-        String contentWebAddressName = form.getContentWebAddressName();
-        ContentWebAddress contentWebAddress = contentControl.getContentWebAddressByName(contentWebAddressName);
+        var contentWebAddressName = form.getContentWebAddressName();
+        var contentWebAddress = contentControl.getContentWebAddressByName(contentWebAddressName);
         
         if(contentWebAddress != null) {
             sendEvent(contentWebAddress.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -66,7 +66,7 @@ public class GetContentWebAddressCommand
     
     @Override
     protected BaseResult getResult(ContentWebAddress contentWebAddress) {
-        GetContentWebAddressResult result = ContentResultFactory.getGetContentWebAddressResult();
+        var result = ContentResultFactory.getGetContentWebAddressResult();
         
         if(contentWebAddress != null) {
             var contentControl = Session.getModelController(ContentControl.class);

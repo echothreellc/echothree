@@ -54,7 +54,7 @@ public class PaymentProcessorResultCodeLogic
             final Boolean isDefault, final Integer sortOrder, final Language language, final String description,
             final BasePK createdBy) {
         var paymentProcessorResultCodeControl = Session.getModelController(PaymentProcessorResultCodeControl.class);
-        PaymentProcessorResultCode paymentProcessorResultCode = paymentProcessorResultCodeControl.getPaymentProcessorResultCodeByName(paymentProcessorResultCodeName);
+        var paymentProcessorResultCode = paymentProcessorResultCodeControl.getPaymentProcessorResultCodeByName(paymentProcessorResultCodeName);
 
         if(paymentProcessorResultCode == null) {
             paymentProcessorResultCode = paymentProcessorResultCodeControl.createPaymentProcessorResultCode(paymentProcessorResultCodeName, isDefault, sortOrder, createdBy);
@@ -72,7 +72,7 @@ public class PaymentProcessorResultCodeLogic
     public PaymentProcessorResultCode getPaymentProcessorResultCodeByName(final ExecutionErrorAccumulator eea, final String paymentProcessorResultCodeName,
             final EntityPermission entityPermission) {
         var paymentProcessorResultCodeControl = Session.getModelController(PaymentProcessorResultCodeControl.class);
-        PaymentProcessorResultCode paymentProcessorResultCode = paymentProcessorResultCodeControl.getPaymentProcessorResultCodeByName(paymentProcessorResultCodeName, entityPermission);
+        var paymentProcessorResultCode = paymentProcessorResultCodeControl.getPaymentProcessorResultCodeByName(paymentProcessorResultCodeName, entityPermission);
 
         if(paymentProcessorResultCode == null) {
             handleExecutionError(UnknownPaymentProcessorResultCodeNameException.class, eea, ExecutionErrors.UnknownPaymentProcessorResultCodeName.name(), paymentProcessorResultCodeName);
@@ -93,7 +93,7 @@ public class PaymentProcessorResultCodeLogic
             final PaymentProcessorResultCodeUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
         PaymentProcessorResultCode paymentProcessorResultCode = null;
         var paymentProcessorResultCodeControl = Session.getModelController(PaymentProcessorResultCodeControl.class);
-        String paymentProcessorResultCodeName = universalSpec.getPaymentProcessorResultCodeName();
+        var paymentProcessorResultCodeName = universalSpec.getPaymentProcessorResultCodeName();
         var parameterCount = (paymentProcessorResultCodeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {

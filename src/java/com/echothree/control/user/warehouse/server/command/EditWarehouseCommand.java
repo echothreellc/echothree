@@ -262,11 +262,11 @@ public class EditWarehouseCommand
         var printerControl = Session.getModelController(PrinterControl.class);
         var warehouseControl = Session.getModelController(WarehouseControl.class);
         var warehouse = warehouseControl.getWarehouseForUpdate(party);
-        WarehouseValue warehouseValue = warehouseControl.getWarehouseValue(warehouse);
-        PartyDetailValue partyDetailValue = partyControl.getPartyDetailValueForUpdate(party);
-        PartyGroup partyGroup = partyControl.getPartyGroupForUpdate(party);
-        String name = edit.getName();
-        PartyPK updatedBy = getPartyPK();
+        var warehouseValue = warehouseControl.getWarehouseValue(warehouse);
+        var partyDetailValue = partyControl.getPartyDetailValueForUpdate(party);
+        var partyGroup = partyControl.getPartyGroupForUpdate(party);
+        var name = edit.getName();
+        var updatedBy = getPartyPK();
 
         warehouseValue.setWarehouseName(edit.getWarehouseName());
         warehouseValue.setWarehouseTypePK(warehouseType.getPrimaryKey());
@@ -278,8 +278,8 @@ public class EditWarehouseCommand
         partyDetailValue.setPreferredDateTimeFormatPK(preferredDateTimeFormat == null ? null : preferredDateTimeFormat.getPrimaryKey());
         partyDetailValue.setPreferredCurrencyPK(preferredCurrency == null ? null : preferredCurrency.getPrimaryKey());
 
-        PrinterGroupUseType printerGroupUseType = printerControl.getPrinterGroupUseTypeByName(PrinterConstants.PrinterGroupUseType_WAREHOUSE_INVENTORY_MOVE);
-        PartyPrinterGroupUseValue partyPrinterGroupUseValue = printerControl.getPartyPrinterGroupUseValueForUpdate(party, printerGroupUseType);
+        var printerGroupUseType = printerControl.getPrinterGroupUseTypeByName(PrinterConstants.PrinterGroupUseType_WAREHOUSE_INVENTORY_MOVE);
+        var partyPrinterGroupUseValue = printerControl.getPartyPrinterGroupUseValueForUpdate(party, printerGroupUseType);
         partyPrinterGroupUseValue.setPrinterGroupPK(inventoryMovePrinterGroup.getPrimaryKey());
         printerControl.updatePartyPrinterGroupUseFromValue(partyPrinterGroupUseValue, updatedBy);
 
@@ -300,7 +300,7 @@ public class EditWarehouseCommand
 
         if(name != null) {
             if(partyGroup != null) {
-                PartyGroupValue partyGroupValue = partyControl.getPartyGroupValue(partyGroup);
+                var partyGroupValue = partyControl.getPartyGroupValue(partyGroup);
 
                 partyGroupValue.setName(name);
                 partyControl.updatePartyGroupFromValue(partyGroupValue, updatedBy);

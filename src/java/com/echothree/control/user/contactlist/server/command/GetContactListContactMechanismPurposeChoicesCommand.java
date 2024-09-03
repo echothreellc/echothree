@@ -65,14 +65,14 @@ public class GetContactListContactMechanismPurposeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        GetContactListContactMechanismPurposeChoicesResult result = ContactListResultFactory.getGetContactListContactMechanismPurposeChoicesResult();
-        String contactListName = form.getContactListName();
-        ContactList contactList = ContactListLogic.getInstance().getContactListByName(this, contactListName);
+        var result = ContactListResultFactory.getGetContactListContactMechanismPurposeChoicesResult();
+        var contactListName = form.getContactListName();
+        var contactList = ContactListLogic.getInstance().getContactListByName(this, contactListName);
         
         if(!hasExecutionErrors()) {
             var contactListControl = Session.getModelController(ContactListControl.class);
-            String defaultContactMechanismPurposeChoice = form.getDefaultContactMechanismPurposeChoice();
-            boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+            var defaultContactMechanismPurposeChoice = form.getDefaultContactMechanismPurposeChoice();
+            var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 
             result.setContactListContactMechanismPurposeChoices(contactListControl.getContactListContactMechanismPurposeChoices(defaultContactMechanismPurposeChoice, getPreferredLanguage(), allowNullChoice, contactList));
         }

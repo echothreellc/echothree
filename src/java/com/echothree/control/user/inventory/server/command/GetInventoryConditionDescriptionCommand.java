@@ -69,17 +69,17 @@ public class GetInventoryConditionDescriptionCommand
     @Override
     protected BaseResult execute() {
         var inventoryControl = Session.getModelController(InventoryControl.class);
-        GetInventoryConditionDescriptionResult result = InventoryResultFactory.getGetInventoryConditionDescriptionResult();
-        String inventoryConditionName = form.getInventoryConditionName();
-        InventoryCondition inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
+        var result = InventoryResultFactory.getGetInventoryConditionDescriptionResult();
+        var inventoryConditionName = form.getInventoryConditionName();
+        var inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
         
         if(inventoryCondition != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                InventoryConditionDescription inventoryConditionDescription = inventoryControl.getInventoryConditionDescription(inventoryCondition, language);
+                var inventoryConditionDescription = inventoryControl.getInventoryConditionDescription(inventoryCondition, language);
                 
                 if(inventoryConditionDescription != null) {
                     result.setInventoryConditionDescription(inventoryControl.getInventoryConditionDescriptionTransfer(getUserVisit(), inventoryConditionDescription));

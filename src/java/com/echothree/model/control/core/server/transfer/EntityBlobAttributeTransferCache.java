@@ -53,23 +53,23 @@ public class EntityBlobAttributeTransferCache
     }
     
     public EntityBlobAttributeTransfer getEntityBlobAttributeTransfer(EntityBlobAttribute entityBlobAttribute, EntityInstance entityInstance) {
-        EntityBlobAttributeTransfer entityBlobAttributeTransfer = get(entityBlobAttribute);
+        var entityBlobAttributeTransfer = get(entityBlobAttribute);
         
         if(entityBlobAttributeTransfer == null) {
-            EntityAttributeTransfer entityAttribute = entityInstance == null ? coreControl.getEntityAttributeTransfer(userVisit, entityBlobAttribute.getEntityAttribute(), entityInstance) : null;
-            EntityInstanceTransfer entityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, entityBlobAttribute.getEntityInstance(), false, false, false, false, false, false);
-            LanguageTransfer language = partyControl.getLanguageTransfer(userVisit, entityBlobAttribute.getLanguage());
-            ByteArray blobAttribute = includeBlob ? entityBlobAttribute.getBlobAttribute() : null;
-            MimeTypeTransfer mimeType = coreControl.getMimeTypeTransfer(userVisit, entityBlobAttribute.getMimeType());
+            var entityAttribute = entityInstance == null ? coreControl.getEntityAttributeTransfer(userVisit, entityBlobAttribute.getEntityAttribute(), entityInstance) : null;
+            var entityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, entityBlobAttribute.getEntityInstance(), false, false, false, false, false, false);
+            var language = partyControl.getLanguageTransfer(userVisit, entityBlobAttribute.getLanguage());
+            var blobAttribute = includeBlob ? entityBlobAttribute.getBlobAttribute() : null;
+            var mimeType = coreControl.getMimeTypeTransfer(userVisit, entityBlobAttribute.getMimeType());
             String eTag = null;
             
             if(includeETag) {
                 // Item Descriptions do not have their own EntityTime, fall back on the Item's EntityTime.
-                EntityTimeTransfer entityTimeTransfer = entityInstanceTransfer.getEntityTime();
-                Long modifiedTime = entityTimeTransfer.getUnformattedModifiedTime();
+                var entityTimeTransfer = entityInstanceTransfer.getEntityTime();
+                var modifiedTime = entityTimeTransfer.getUnformattedModifiedTime();
                 long maxTime = modifiedTime == null ? entityTimeTransfer.getUnformattedCreatedTime() : modifiedTime;
                 long eTagEntityId = entityBlobAttribute.getPrimaryKey().getEntityId();
-                int eTagSize = entityBlobAttribute.getBlobAttribute().length();
+                var eTagSize = entityBlobAttribute.getBlobAttribute().length();
 
                 // EntityId-Size-ModifiedTime
                 eTag = Long.toHexString(eTagEntityId) + '-' + Integer.toHexString(eTagSize) + '-' + Long.toHexString(maxTime);

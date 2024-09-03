@@ -102,7 +102,7 @@ public class EditLeaveCommand
     public Leave getEntity(EditLeaveResult result) {
         var employeeControl = Session.getModelController(EmployeeControl.class);
         Leave leave;
-        String leaveName = spec.getLeaveName();
+        var leaveName = spec.getLeaveName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
             leave = employeeControl.getLeaveByName(leaveName);
@@ -134,8 +134,8 @@ public class EditLeaveCommand
     @Override
     public void doLock(LeaveEdit edit, Leave leave) {
         var partyControl = Session.getModelController(PartyControl.class);
-        UnitOfMeasureTypeLogic unitOfMeasureTypeLogic = UnitOfMeasureTypeLogic.getInstance();
-        LeaveDetail leaveDetail = leave.getLastDetail();
+        var unitOfMeasureTypeLogic = UnitOfMeasureTypeLogic.getInstance();
+        var leaveDetail = leave.getLastDetail();
         UnitOfMeasureTypeLogic.StringUnitOfMeasure stringUnitOfMeasure;
         
         endTime = leaveDetail.getEndTime();
@@ -167,12 +167,12 @@ public class EditLeaveCommand
     @Override
     public void canUpdate(Leave leave) {
         var partyControl = Session.getModelController(PartyControl.class);
-        String companyName = edit.getCompanyName();
+        var companyName = edit.getCompanyName();
 
         partyCompany = partyControl.getPartyCompanyByName(companyName);
 
         if(partyCompany != null) {
-            UnitOfMeasureTypeLogic unitOfMeasureTypeLogic = UnitOfMeasureTypeLogic.getInstance();
+            var unitOfMeasureTypeLogic = UnitOfMeasureTypeLogic.getInstance();
             
             totalTime = unitOfMeasureTypeLogic.checkUnitOfMeasure(this, UomConstants.UnitOfMeasureKindUseType_TIME,
                     edit.getTotalTime(), edit.getTotalTimeUnitOfMeasureTypeName(),
@@ -181,17 +181,17 @@ public class EditLeaveCommand
 
             if(!hasExecutionErrors()) {
                 var employeeControl = Session.getModelController(EmployeeControl.class);
-                String leaveTypeName = edit.getLeaveTypeName();
+                var leaveTypeName = edit.getLeaveTypeName();
 
                 leaveType = employeeControl.getLeaveTypeByName(leaveTypeName);
 
                 if(leaveTypeName == null || leaveType != null) {
-                    String leaveReasonName = edit.getLeaveReasonName();
+                    var leaveReasonName = edit.getLeaveReasonName();
 
                     leaveReason = employeeControl.getLeaveReasonByName(leaveReasonName);
 
                     if(leaveReasonName == null || leaveReason != null) {
-                        String strEndTime = edit.getEndTime();
+                        var strEndTime = edit.getEndTime();
 
                         startTime = Long.valueOf(edit.getStartTime());
                         endTime = strEndTime == null ? null : Long.valueOf(strEndTime);
@@ -214,7 +214,7 @@ public class EditLeaveCommand
     @Override
     public void doUpdate(Leave leave) {
         var employeeControl = Session.getModelController(EmployeeControl.class);
-        LeaveDetailValue leaveDetailValue = employeeControl.getLeaveDetailValueForUpdate(leave);
+        var leaveDetailValue = employeeControl.getLeaveDetailValueForUpdate(leave);
 
         leaveDetailValue.setCompanyPartyPK(partyCompany.getPartyPK());
         leaveDetailValue.setLeaveTypePK(leaveType.getPrimaryKey());

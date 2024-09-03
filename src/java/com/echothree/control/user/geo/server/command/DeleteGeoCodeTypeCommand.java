@@ -63,8 +63,8 @@ public class DeleteGeoCodeTypeCommand
     @Override
     protected BaseResult execute() {
         var geoControl = Session.getModelController(GeoControl.class);
-        String geoCodeTypeName = form.getGeoCodeTypeName();
-        GeoCodeType geoCodeType = geoControl.getGeoCodeTypeByNameForUpdate(geoCodeTypeName);
+        var geoCodeTypeName = form.getGeoCodeTypeName();
+        var geoCodeType = geoControl.getGeoCodeTypeByNameForUpdate(geoCodeTypeName);
         
         if(geoCodeType != null) {
             geoControl.deleteGeoCodeType(geoCodeType, getPartyPK());

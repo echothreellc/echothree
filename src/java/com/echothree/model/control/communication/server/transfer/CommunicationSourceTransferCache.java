@@ -45,19 +45,19 @@ public class CommunicationSourceTransferCache
     }
     
     public CommunicationSourceTransfer getCommunicationSourceTransfer(CommunicationSource communicationSource) {
-        CommunicationSourceTransfer communicationSourceTransfer = get(communicationSource);
+        var communicationSourceTransfer = get(communicationSource);
         
         if(communicationSourceTransfer == null) {
-            CommunicationSourceDetail communicationSourceDetail = communicationSource.getLastDetail();
-            String communicationSourceName = communicationSourceDetail.getCommunicationSourceName();
-            CommunicationSourceTypeTransfer communicationSourceTypeTransfer = communicationControl.getCommunicationSourceTypeTransfer(userVisit,
+            var communicationSourceDetail = communicationSource.getLastDetail();
+            var communicationSourceName = communicationSourceDetail.getCommunicationSourceName();
+            var communicationSourceTypeTransfer = communicationControl.getCommunicationSourceTypeTransfer(userVisit,
                     communicationSourceDetail.getCommunicationSourceType());
-            Integer sortOrder = communicationSourceDetail.getSortOrder();
-            String description = communicationControl.getBestCommunicationSourceDescription(communicationSource, getLanguage());
+            var sortOrder = communicationSourceDetail.getSortOrder();
+            var description = communicationControl.getBestCommunicationSourceDescription(communicationSource, getLanguage());
             CommunicationEmailSourceTransfer communicationEmailSourceTransfer = null;
             
             if(includeRelated) {
-                String communicationSourceTypeName = communicationSourceTypeTransfer.getCommunicationSourceTypeName();
+                var communicationSourceTypeName = communicationSourceTypeTransfer.getCommunicationSourceTypeName();
                 
                 if(communicationSourceTypeName.equals(CommunicationConstants.CommunicationSourceType_EMAIL)) {
                     communicationEmailSourceTransfer = communicationControl.getCommunicationEmailSourceTransfer(userVisit,

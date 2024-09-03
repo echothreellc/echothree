@@ -51,10 +51,10 @@ public class GetWorkRequirementCommand
     
     @Override
     protected BaseResult execute() {
-        GetWorkRequirementResult result = WorkRequirementResultFactory.getGetWorkRequirementResult();
+        var result = WorkRequirementResultFactory.getGetWorkRequirementResult();
         var workRequirementControl = Session.getModelController(WorkRequirementControl.class);
-        String workRequirementName = form.getWorkRequirementName();
-        WorkRequirement workRequirement = workRequirementControl.getWorkRequirementByName(workRequirementName);
+        var workRequirementName = form.getWorkRequirementName();
+        var workRequirement = workRequirementControl.getWorkRequirementByName(workRequirementName);
         
         if(workRequirement != null) {
             result.setWorkRequirement(workRequirementControl.getWorkRequirementTransfer(getUserVisit(), workRequirement));

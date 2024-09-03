@@ -53,15 +53,15 @@ public class GetRatingTypesCommand
     
     @Override
     protected BaseResult execute() {
-        GetRatingTypesResult result = RatingResultFactory.getGetRatingTypesResult();
+        var result = RatingResultFactory.getGetRatingTypesResult();
         var coreControl = getCoreControl();
-        String componentVendorName = form.getComponentVendorName();
-        ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+        var componentVendorName = form.getComponentVendorName();
+        var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
         
         if(componentVendor != null) {
-            UserVisit userVisit = getUserVisit();
-            String entityTypeName = form.getEntityTypeName();
-            EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+            var userVisit = getUserVisit();
+            var entityTypeName = form.getEntityTypeName();
+            var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
             
             result.setComponentVendor(coreControl.getComponentVendorTransfer(userVisit, componentVendor));
             

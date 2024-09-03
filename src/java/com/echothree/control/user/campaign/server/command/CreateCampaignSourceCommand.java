@@ -67,10 +67,10 @@ public class CreateCampaignSourceCommand
     
     @Override
     protected BaseResult execute() {
-        CreateCampaignSourceResult result = CampaignResultFactory.getCreateCampaignSourceResult();
+        var result = CampaignResultFactory.getCreateCampaignSourceResult();
         var campaignControl = Session.getModelController(CampaignControl.class);
-        String value = form.getValue();
-        CampaignSource campaignSource = campaignControl.getCampaignSourceByValue(value);
+        var value = form.getValue();
+        var campaignSource = campaignControl.getCampaignSourceByValue(value);
         
         if(campaignSource == null) {
             var partyPK = getPartyPK();

@@ -65,8 +65,8 @@ public class GetSalesOrderBatchCommand
     
     @Override
     protected BaseResult execute() {
-        GetSalesOrderBatchResult result = SalesResultFactory.getGetSalesOrderBatchResult();
-        Batch batch = SalesOrderBatchLogic.getInstance().getBatchByName(this, form.getBatchName());
+        var result = SalesResultFactory.getGetSalesOrderBatchResult();
+        var batch = SalesOrderBatchLogic.getInstance().getBatchByName(this, form.getBatchName());
 
         if(batch != null) {
             var salesOrderBatchControl = Session.getModelController(SalesOrderBatchControl.class);

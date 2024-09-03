@@ -52,12 +52,12 @@ public class GetUnitOfMeasureChoicesCommand
     @Override
     protected BaseResult execute() {
         var uomControl = Session.getModelController(UomControl.class);
-        GetUnitOfMeasureChoicesResult result = UomResultFactory.getGetUnitOfMeasureChoicesResult();
-        String unitOfMeasureKindUseTypeName = form.getUnitOfMeasureKindUseTypeName();
-        UnitOfMeasureKindUseType unitOfMeasureKindUseType = uomControl.getUnitOfMeasureKindUseTypeByName(unitOfMeasureKindUseTypeName);
+        var result = UomResultFactory.getGetUnitOfMeasureChoicesResult();
+        var unitOfMeasureKindUseTypeName = form.getUnitOfMeasureKindUseTypeName();
+        var unitOfMeasureKindUseType = uomControl.getUnitOfMeasureKindUseTypeByName(unitOfMeasureKindUseTypeName);
         
         if(unitOfMeasureKindUseType != null) {
-            String defaultUnitOfMeasureChoice = form.getDefaultUnitOfMeasureChoice();
+            var defaultUnitOfMeasureChoice = form.getDefaultUnitOfMeasureChoice();
             
             result.setUnitOfMeasureChoices(uomControl.getUnitOfMeasureChoicesByUnitOfMeasureKindUseType(defaultUnitOfMeasureChoice,
                     getPreferredLanguage(), unitOfMeasureKindUseType));

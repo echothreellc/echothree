@@ -36,11 +36,11 @@ public class EntityAttributeGroupDescriptionTransferCache
     }
     
     public EntityAttributeGroupDescriptionTransfer getEntityAttributeGroupDescriptionTransfer(EntityAttributeGroupDescription entityAttributeGroupDescription, EntityInstance entityInstance) {
-        EntityAttributeGroupDescriptionTransfer entityAttributeGroupDescriptionTransfer = get(entityAttributeGroupDescription);
+        var entityAttributeGroupDescriptionTransfer = get(entityAttributeGroupDescription);
         
         if(entityAttributeGroupDescriptionTransfer == null) {
-            EntityAttributeGroupTransfer entityAttributeGroupTransfer = entityInstance == null ? coreControl.getEntityAttributeGroupTransfer(userVisit, entityAttributeGroupDescription.getEntityAttributeGroup(), entityInstance) : null;
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, entityAttributeGroupDescription.getLanguage());
+            var entityAttributeGroupTransfer = entityInstance == null ? coreControl.getEntityAttributeGroupTransfer(userVisit, entityAttributeGroupDescription.getEntityAttributeGroup(), entityInstance) : null;
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, entityAttributeGroupDescription.getLanguage());
             
             entityAttributeGroupDescriptionTransfer = new EntityAttributeGroupDescriptionTransfer(languageTransfer, entityAttributeGroupTransfer, entityAttributeGroupDescription.getDescription());
             put(entityAttributeGroupDescription, entityAttributeGroupDescriptionTransfer);

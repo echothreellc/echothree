@@ -32,12 +32,12 @@ public class InvoiceAliasTransferCache
     }
     
     public InvoiceAliasTransfer getInvoiceAliasTransfer(InvoiceAlias invoiceAlias) {
-        InvoiceAliasTransfer invoiceAliasTransfer = get(invoiceAlias);
+        var invoiceAliasTransfer = get(invoiceAlias);
         
         if(invoiceAliasTransfer == null) {
-            InvoiceTransfer invoice = invoiceControl.getInvoiceTransfer(userVisit, invoiceAlias.getInvoice());
-            InvoiceAliasTypeTransfer invoiceAliasType = invoiceControl.getInvoiceAliasTypeTransfer(userVisit, invoiceAlias.getInvoiceAliasType());
-            String alias = invoiceAlias.getAlias();
+            var invoice = invoiceControl.getInvoiceTransfer(userVisit, invoiceAlias.getInvoice());
+            var invoiceAliasType = invoiceControl.getInvoiceAliasTypeTransfer(userVisit, invoiceAlias.getInvoiceAliasType());
+            var alias = invoiceAlias.getAlias();
             
             invoiceAliasTransfer = new InvoiceAliasTransfer(invoice, invoiceAliasType, alias);
             put(invoiceAlias, invoiceAliasTransfer);

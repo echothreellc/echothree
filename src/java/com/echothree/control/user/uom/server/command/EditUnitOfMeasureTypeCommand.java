@@ -74,23 +74,23 @@ public class EditUnitOfMeasureTypeCommand
     @Override
     protected BaseResult execute() {
         var uomControl = Session.getModelController(UomControl.class);
-        EditUnitOfMeasureTypeResult result = UomResultFactory.getEditUnitOfMeasureTypeResult();
-        String unitOfMeasureKindName = spec.getUnitOfMeasureKindName();
-        UnitOfMeasureKind unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);
+        var result = UomResultFactory.getEditUnitOfMeasureTypeResult();
+        var unitOfMeasureKindName = spec.getUnitOfMeasureKindName();
+        var unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);
         
         if(unitOfMeasureKind != null) {
             if(editMode.equals(EditMode.LOCK)) {
-                String unitOfMeasureTypeName = spec.getUnitOfMeasureTypeName();
-                UnitOfMeasureType unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
+                var unitOfMeasureTypeName = spec.getUnitOfMeasureTypeName();
+                var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
                 
                 if(unitOfMeasureType != null) {
                     result.setUnitOfMeasureType(uomControl.getUnitOfMeasureTypeTransfer(getUserVisit(), unitOfMeasureType));
                     
                     if(lockEntity(unitOfMeasureType)) {
-                        UnitOfMeasureTypeDescription unitOfMeasureTypeDescription = uomControl.getUnitOfMeasureTypeDescription(unitOfMeasureType, getPreferredLanguage());
-                        UnitOfMeasureTypeEdit edit = UomEditFactory.getUnitOfMeasureTypeEdit();
-                        UnitOfMeasureTypeDetail unitOfMeasureTypeDetail = unitOfMeasureType.getLastDetail();
-                        SymbolPositionDetail symbolPositionDetail = unitOfMeasureTypeDetail.getSymbolPosition().getLastDetail();
+                        var unitOfMeasureTypeDescription = uomControl.getUnitOfMeasureTypeDescription(unitOfMeasureType, getPreferredLanguage());
+                        var edit = UomEditFactory.getUnitOfMeasureTypeEdit();
+                        var unitOfMeasureTypeDetail = unitOfMeasureType.getLastDetail();
+                        var symbolPositionDetail = unitOfMeasureTypeDetail.getSymbolPosition().getLastDetail();
                         
                         result.setEdit(edit);
                         edit.setUnitOfMeasureTypeName(unitOfMeasureTypeDetail.getUnitOfMeasureTypeName());
@@ -113,25 +113,25 @@ public class EditUnitOfMeasureTypeCommand
                     addExecutionError(ExecutionErrors.UnknownUnitOfMeasureTypeName.name(), unitOfMeasureTypeName);
                 }
             } else if(editMode.equals(EditMode.UPDATE)) {
-                String unitOfMeasureTypeName = spec.getUnitOfMeasureTypeName();
-                UnitOfMeasureType unitOfMeasureType = uomControl.getUnitOfMeasureTypeByNameForUpdate(unitOfMeasureKind, unitOfMeasureTypeName);
+                var unitOfMeasureTypeName = spec.getUnitOfMeasureTypeName();
+                var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByNameForUpdate(unitOfMeasureKind, unitOfMeasureTypeName);
                 
                 if(unitOfMeasureType != null) {
                     unitOfMeasureTypeName = edit.getUnitOfMeasureTypeName();
-                    UnitOfMeasureType duplicateUnitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
+                    var duplicateUnitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
                     
                     if(duplicateUnitOfMeasureType == null || unitOfMeasureType.equals(duplicateUnitOfMeasureType)) {
-                        String singularDescription = edit.getSingularDescription();
-                        String pluralDescription = edit.getPluralDescription();
-                        String symbol = edit.getSymbol();
-                        int descriptionCount = (singularDescription == null ? 0 : 1) + (pluralDescription == null ? 0 : 1) + (symbol == null ? 0 : 1);
+                        var singularDescription = edit.getSingularDescription();
+                        var pluralDescription = edit.getPluralDescription();
+                        var symbol = edit.getSymbol();
+                        var descriptionCount = (singularDescription == null ? 0 : 1) + (pluralDescription == null ? 0 : 1) + (symbol == null ? 0 : 1);
                         
                         if(descriptionCount == 0 || descriptionCount == 3) {
                             if(lockEntityForUpdate(unitOfMeasureType)) {
                                 try {
                                     var partyPK = getPartyPK();
-                                    UnitOfMeasureTypeDetailValue unitOfMeasureTypeDetailValue = uomControl.getUnitOfMeasureTypeDetailValueForUpdate(unitOfMeasureType);
-                                    UnitOfMeasureTypeDescription unitOfMeasureTypeDescription = uomControl.getUnitOfMeasureTypeDescriptionForUpdate(unitOfMeasureType, getPreferredLanguage());
+                                    var unitOfMeasureTypeDetailValue = uomControl.getUnitOfMeasureTypeDetailValueForUpdate(unitOfMeasureType);
+                                    var unitOfMeasureTypeDescription = uomControl.getUnitOfMeasureTypeDescriptionForUpdate(unitOfMeasureType, getPreferredLanguage());
                                     
                                     unitOfMeasureTypeDetailValue.setUnitOfMeasureTypeName(edit.getUnitOfMeasureTypeName());
                                     unitOfMeasureTypeDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
@@ -144,7 +144,7 @@ public class EditUnitOfMeasureTypeCommand
                                     } else if(unitOfMeasureTypeDescription != null && singularDescription == null) {
                                         uomControl.deleteUnitOfMeasureTypeDescription(unitOfMeasureTypeDescription, partyPK);
                                     } else if(unitOfMeasureTypeDescription != null && singularDescription != null) {
-                                        UnitOfMeasureTypeDescriptionValue unitOfMeasureTypeDescriptionValue = uomControl.getUnitOfMeasureTypeDescriptionValue(unitOfMeasureTypeDescription);
+                                        var unitOfMeasureTypeDescriptionValue = uomControl.getUnitOfMeasureTypeDescriptionValue(unitOfMeasureTypeDescription);
                                         
                                         unitOfMeasureTypeDescriptionValue.setSingularDescription(singularDescription);
                                         unitOfMeasureTypeDescriptionValue.setPluralDescription(pluralDescription);

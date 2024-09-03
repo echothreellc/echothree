@@ -50,19 +50,19 @@ public class CampaignMediumTransferCache
     }
 
     public CampaignMediumTransfer getCampaignMediumTransfer(CampaignMedium campaignMedium) {
-        CampaignMediumTransfer campaignMediumTransfer = get(campaignMedium);
+        var campaignMediumTransfer = get(campaignMedium);
 
         if(campaignMediumTransfer == null) {
-            CampaignMediumDetail campaignMediumDetail = campaignMedium.getLastDetail();
-            String campaignMediumName = campaignMediumDetail.getCampaignMediumName();
-            String valueSha1Hash = campaignMediumDetail.getValueSha1Hash();
-            String value = campaignMediumDetail.getValue();
-            Boolean isDefault = campaignMediumDetail.getIsDefault();
-            Integer sortOrder = campaignMediumDetail.getSortOrder();
-            String description = campaignControl.getBestCampaignMediumDescription(campaignMedium, getLanguage());
+            var campaignMediumDetail = campaignMedium.getLastDetail();
+            var campaignMediumName = campaignMediumDetail.getCampaignMediumName();
+            var valueSha1Hash = campaignMediumDetail.getValueSha1Hash();
+            var value = campaignMediumDetail.getValue();
+            var isDefault = campaignMediumDetail.getIsDefault();
+            var sortOrder = campaignMediumDetail.getSortOrder();
+            var description = campaignControl.getBestCampaignMediumDescription(campaignMedium, getLanguage());
 
-            EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(campaignMedium.getPrimaryKey());
-            WorkflowEntityStatusTransfer campaignMediumStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
+            var entityInstance = coreControl.getEntityInstanceByBasePK(campaignMedium.getPrimaryKey());
+            var campaignMediumStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
                     CampaignMediumStatusConstants.Workflow_CAMPAIGN_MEDIUM_STATUS, entityInstance);
             
             campaignMediumTransfer = new CampaignMediumTransfer(campaignMediumName, valueSha1Hash, value, isDefault, sortOrder, description,

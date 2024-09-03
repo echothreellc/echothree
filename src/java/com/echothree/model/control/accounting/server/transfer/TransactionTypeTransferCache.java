@@ -34,13 +34,13 @@ public class TransactionTypeTransferCache
     
     @Override
     public TransactionTypeTransfer getTransfer(TransactionType transactionType) {
-        TransactionTypeTransfer transactionTypeTransfer = get(transactionType);
+        var transactionTypeTransfer = get(transactionType);
         
         if(transactionTypeTransfer == null) {
-            TransactionTypeDetail transactionTypeDetail = transactionType.getLastDetail();
-            String transactionTypeName = transactionTypeDetail.getTransactionTypeName();
-            Integer sortOrder = transactionTypeDetail.getSortOrder();
-            String description = accountingControl.getBestTransactionTypeDescription(transactionType, getLanguage());
+            var transactionTypeDetail = transactionType.getLastDetail();
+            var transactionTypeName = transactionTypeDetail.getTransactionTypeName();
+            var sortOrder = transactionTypeDetail.getSortOrder();
+            var description = accountingControl.getBestTransactionTypeDescription(transactionType, getLanguage());
             
             transactionTypeTransfer = new TransactionTypeTransfer(transactionTypeName, sortOrder, description);
             put(transactionType, transactionTypeTransfer);

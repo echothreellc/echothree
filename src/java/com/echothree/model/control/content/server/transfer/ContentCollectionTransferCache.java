@@ -55,13 +55,13 @@ public class ContentCollectionTransferCache
     }
 
     public ContentCollectionTransfer getContentCollectionTransfer(ContentCollection contentCollection) {
-        ContentCollectionTransfer contentCollectionTransfer = get(contentCollection);
+        var contentCollectionTransfer = get(contentCollection);
         
         if(contentCollectionTransfer == null) {
-            ContentCollectionDetail contentCollectionDetail = contentCollection.getLastDetail();
-            String contentCollectionName = contentCollectionDetail.getContentCollectionName();
-            OfferUseTransfer defaultOfferUse = offerUseControl.getOfferUseTransfer(userVisit, contentCollectionDetail.getDefaultOfferUse());
-            String description = contentControl.getBestContentCollectionDescription(contentCollection, getLanguage());
+            var contentCollectionDetail = contentCollection.getLastDetail();
+            var contentCollectionName = contentCollectionDetail.getContentCollectionName();
+            var defaultOfferUse = offerUseControl.getOfferUseTransfer(userVisit, contentCollectionDetail.getDefaultOfferUse());
+            var description = contentControl.getBestContentCollectionDescription(contentCollection, getLanguage());
             
             contentCollectionTransfer = new ContentCollectionTransfer(contentCollectionName, defaultOfferUse, description);
             put(contentCollection, contentCollectionTransfer);

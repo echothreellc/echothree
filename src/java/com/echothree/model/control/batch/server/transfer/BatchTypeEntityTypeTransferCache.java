@@ -37,11 +37,11 @@ public class BatchTypeEntityTypeTransferCache
     
     @Override
     public BatchTypeEntityTypeTransfer getTransfer(BatchTypeEntityType batchTypeEntityType) {
-        BatchTypeEntityTypeTransfer batchTypeEntityTypeTransfer = get(batchTypeEntityType);
+        var batchTypeEntityTypeTransfer = get(batchTypeEntityType);
         
         if(batchTypeEntityTypeTransfer == null) {
-            BatchTypeTransfer batchType = batchControl.getBatchTypeTransfer(userVisit, batchTypeEntityType.getBatchType());
-            EntityTypeTransfer entityType = coreControl.getEntityTypeTransfer(userVisit, batchTypeEntityType.getEntityType());
+            var batchType = batchControl.getBatchTypeTransfer(userVisit, batchTypeEntityType.getBatchType());
+            var entityType = coreControl.getEntityTypeTransfer(userVisit, batchTypeEntityType.getEntityType());
             
             batchTypeEntityTypeTransfer = new BatchTypeEntityTypeTransfer(batchType, entityType);
             put(batchTypeEntityType, batchTypeEntityTypeTransfer);

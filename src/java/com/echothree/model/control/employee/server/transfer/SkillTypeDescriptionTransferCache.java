@@ -32,12 +32,12 @@ public class SkillTypeDescriptionTransferCache
     }
     
     public SkillTypeDescriptionTransfer getSkillTypeDescriptionTransfer(SkillTypeDescription skillTypeDescription) {
-        SkillTypeDescriptionTransfer skillTypeDescriptionTransfer = get(skillTypeDescription);
+        var skillTypeDescriptionTransfer = get(skillTypeDescription);
         
         if(skillTypeDescriptionTransfer == null) {
-            SkillTypeTransfer skillTypeTransfer = employeeControl.getSkillTypeTransfer(userVisit,
+            var skillTypeTransfer = employeeControl.getSkillTypeTransfer(userVisit,
                     skillTypeDescription.getSkillType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, skillTypeDescription.getLanguage());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, skillTypeDescription.getLanguage());
             
             skillTypeDescriptionTransfer = new SkillTypeDescriptionTransfer(languageTransfer, skillTypeTransfer, skillTypeDescription.getDescription());
             put(skillTypeDescription, skillTypeDescriptionTransfer);

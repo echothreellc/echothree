@@ -33,15 +33,15 @@ public class ChainActionTypeTransferCache
     }
     
     public ChainActionTypeTransfer getChainActionTypeTransfer(ChainActionType chainActionType) {
-        ChainActionTypeTransfer chainActionTypeTransfer = get(chainActionType);
+        var chainActionTypeTransfer = get(chainActionType);
         
         if(chainActionTypeTransfer == null) {
-            ChainActionTypeDetail chainActionTypeDetail = chainActionType.getLastDetail();
-            String chainActionTypeName = chainActionTypeDetail.getChainActionTypeName();
-            Boolean allowMultiple = chainActionTypeDetail.getAllowMultiple();
-            Boolean isDefault = chainActionTypeDetail.getIsDefault();
-            Integer sortOrder = chainActionTypeDetail.getSortOrder();
-            String description = chainControl.getBestChainActionTypeDescription(chainActionType, getLanguage());
+            var chainActionTypeDetail = chainActionType.getLastDetail();
+            var chainActionTypeName = chainActionTypeDetail.getChainActionTypeName();
+            var allowMultiple = chainActionTypeDetail.getAllowMultiple();
+            var isDefault = chainActionTypeDetail.getIsDefault();
+            var sortOrder = chainActionTypeDetail.getSortOrder();
+            var description = chainControl.getBestChainActionTypeDescription(chainActionType, getLanguage());
             
             chainActionTypeTransfer = new ChainActionTypeTransfer(chainActionTypeName, allowMultiple, isDefault, sortOrder, description);
             put(chainActionType, chainActionTypeTransfer);

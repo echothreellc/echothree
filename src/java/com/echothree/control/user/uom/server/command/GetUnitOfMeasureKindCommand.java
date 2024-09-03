@@ -51,7 +51,7 @@ public class GetUnitOfMeasureKindCommand
     
     @Override
     protected UnitOfMeasureKind getEntity() {
-        UnitOfMeasureKind unitOfMeasureKind = UnitOfMeasureKindLogic.getInstance().getUnitOfMeasureKindByName(this, form.getUnitOfMeasureKindName());
+        var unitOfMeasureKind = UnitOfMeasureKindLogic.getInstance().getUnitOfMeasureKindByName(this, form.getUnitOfMeasureKindName());
         
         if(!hasExecutionErrors()) {
             sendEvent(unitOfMeasureKind.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -63,7 +63,7 @@ public class GetUnitOfMeasureKindCommand
     @Override
     protected BaseResult getResult(UnitOfMeasureKind unitOfMeasureKind) {
         var uomControl = Session.getModelController(UomControl.class);
-        GetUnitOfMeasureKindResult result = UomResultFactory.getGetUnitOfMeasureKindResult();
+        var result = UomResultFactory.getGetUnitOfMeasureKindResult();
         
         if(unitOfMeasureKind != null) {
             result.setUnitOfMeasureKind(uomControl.getUnitOfMeasureKindTransfer(getUserVisit(), unitOfMeasureKind));

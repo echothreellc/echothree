@@ -35,11 +35,11 @@ public class ServerServiceTransferCache
     }
     
     public ServerServiceTransfer getServerServiceTransfer(ServerService serverService) {
-        ServerServiceTransfer serverServiceTransfer = get(serverService);
+        var serverServiceTransfer = get(serverService);
         
         if(serverServiceTransfer == null) {
-            ServerTransfer server = coreControl.getServerTransfer(userVisit, serverService.getServer());
-            ServiceTransfer service = coreControl.getServiceTransfer(userVisit, serverService.getService());
+            var server = coreControl.getServerTransfer(userVisit, serverService.getServer());
+            var service = coreControl.getServiceTransfer(userVisit, serverService.getService());
             
             serverServiceTransfer = new ServerServiceTransfer(server, service);
             put(serverService, serverServiceTransfer);

@@ -67,8 +67,8 @@ public class CreateGeoCodeScopeCommand
     @Override
     protected BaseResult execute() {
         var geoControl = Session.getModelController(GeoControl.class);
-        String geoCodeScopeName = form.getGeoCodeScopeName();
-        GeoCodeScope geoCodeScope = geoControl.getGeoCodeScopeByName(geoCodeScopeName);
+        var geoCodeScopeName = form.getGeoCodeScopeName();
+        var geoCodeScope = geoControl.getGeoCodeScopeByName(geoCodeScopeName);
         
         if(geoCodeScope == null) {
                 var partyPK = getPartyPK();

@@ -79,11 +79,11 @@ public class CountContactMechanismResultsTag
     public int doStartTag()
             throws JspException {
         try {
-            CountContactMechanismResultsForm commandForm = SearchUtil.getHome().getCountContactMechanismResultsForm();
+            var commandForm = SearchUtil.getHome().getCountContactMechanismResultsForm();
 
             commandForm.setSearchTypeName(searchTypeName);
 
-            CommandResult commandResult = SearchUtil.getHome().countContactMechanismResults(getUserVisitPK(), commandForm);
+            var commandResult = SearchUtil.getHome().countContactMechanismResults(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -91,8 +91,8 @@ public class CountContactMechanismResultsTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                CountContactMechanismResultsResult result = (CountContactMechanismResultsResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (CountContactMechanismResultsResult)executionResult.getResult();
 
                 pageContext.setAttribute(countVar, result.getCount(), scope);
             }

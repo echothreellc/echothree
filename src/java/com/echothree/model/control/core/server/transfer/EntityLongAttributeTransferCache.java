@@ -36,12 +36,12 @@ public class EntityLongAttributeTransferCache
     }
     
     public EntityLongAttributeTransfer getEntityLongAttributeTransfer(EntityLongAttribute entityLongAttribute, EntityInstance entityInstance) {
-        EntityLongAttributeTransfer entityLongAttributeTransfer = get(entityLongAttribute);
+        var entityLongAttributeTransfer = get(entityLongAttribute);
         
         if(entityLongAttributeTransfer == null) {
-            EntityAttributeTransfer entityAttribute = entityInstance == null ? coreControl.getEntityAttributeTransfer(userVisit, entityLongAttribute.getEntityAttribute(), entityInstance) : null;
-            EntityInstanceTransfer entityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, entityLongAttribute.getEntityInstance(), false, false, false, false, false, false);
-            Long longAttribute = entityLongAttribute.getLongAttribute();
+            var entityAttribute = entityInstance == null ? coreControl.getEntityAttributeTransfer(userVisit, entityLongAttribute.getEntityAttribute(), entityInstance) : null;
+            var entityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, entityLongAttribute.getEntityInstance(), false, false, false, false, false, false);
+            var longAttribute = entityLongAttribute.getLongAttribute();
             
             entityLongAttributeTransfer = new EntityLongAttributeTransfer(entityAttribute, entityInstanceTransfer, longAttribute);
             put(entityLongAttribute, entityLongAttributeTransfer);

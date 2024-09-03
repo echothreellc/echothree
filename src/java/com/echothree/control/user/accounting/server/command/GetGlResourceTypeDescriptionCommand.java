@@ -69,17 +69,17 @@ public class GetGlResourceTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        GetGlResourceTypeDescriptionResult result = AccountingResultFactory.getGetGlResourceTypeDescriptionResult();
-        String glResourceTypeName = form.getGlResourceTypeName();
-        GlResourceType glResourceType = accountingControl.getGlResourceTypeByName(glResourceTypeName);
+        var result = AccountingResultFactory.getGetGlResourceTypeDescriptionResult();
+        var glResourceTypeName = form.getGlResourceTypeName();
+        var glResourceType = accountingControl.getGlResourceTypeByName(glResourceTypeName);
         
         if(glResourceType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                GlResourceTypeDescription glResourceTypeDescription = accountingControl.getGlResourceTypeDescription(glResourceType, language);
+                var glResourceTypeDescription = accountingControl.getGlResourceTypeDescription(glResourceType, language);
                 
                 if(glResourceTypeDescription != null) {
                     result.setGlResourceTypeDescription(accountingControl.getGlResourceTypeDescriptionTransfer(getUserVisit(), glResourceTypeDescription));

@@ -41,18 +41,18 @@ public class LetterSourceTransferCache
     }
     
     public LetterSourceTransfer getLetterSourceTransfer(LetterSource letterSource) {
-        LetterSourceTransfer letterSourceTransfer = get(letterSource);
+        var letterSourceTransfer = get(letterSource);
         
         if(letterSourceTransfer == null) {
-            LetterSourceDetail letterSourceDetail = letterSource.getLastDetail();
-            String letterSourceName = letterSourceDetail.getLetterSourceName();
-            CompanyTransfer companyTransfer = partyControl.getCompanyTransfer(userVisit, letterSourceDetail.getCompanyParty());
-            PartyContactMechanismTransfer emailAddressPartyContactMechanismTransfer = contactControl.getPartyContactMechanismTransfer(userVisit, letterSourceDetail.getEmailAddressPartyContactMechanism());
-            PartyContactMechanismTransfer postalAddressPartyContactMechanismTransfer = contactControl.getPartyContactMechanismTransfer(userVisit, letterSourceDetail.getPostalAddressPartyContactMechanism());
-            PartyContactMechanismTransfer letterSourcePartyContactMechanismTransfer = contactControl.getPartyContactMechanismTransfer(userVisit, letterSourceDetail.getLetterSourcePartyContactMechanism());
-            Boolean isDefault = letterSourceDetail.getIsDefault();
-            Integer sortOrder = letterSourceDetail.getSortOrder();
-            String description = letterControl.getBestLetterSourceDescription(letterSource, getLanguage());
+            var letterSourceDetail = letterSource.getLastDetail();
+            var letterSourceName = letterSourceDetail.getLetterSourceName();
+            var companyTransfer = partyControl.getCompanyTransfer(userVisit, letterSourceDetail.getCompanyParty());
+            var emailAddressPartyContactMechanismTransfer = contactControl.getPartyContactMechanismTransfer(userVisit, letterSourceDetail.getEmailAddressPartyContactMechanism());
+            var postalAddressPartyContactMechanismTransfer = contactControl.getPartyContactMechanismTransfer(userVisit, letterSourceDetail.getPostalAddressPartyContactMechanism());
+            var letterSourcePartyContactMechanismTransfer = contactControl.getPartyContactMechanismTransfer(userVisit, letterSourceDetail.getLetterSourcePartyContactMechanism());
+            var isDefault = letterSourceDetail.getIsDefault();
+            var sortOrder = letterSourceDetail.getSortOrder();
+            var description = letterControl.getBestLetterSourceDescription(letterSource, getLanguage());
             
             letterSourceTransfer = new LetterSourceTransfer(letterSourceName, companyTransfer,
                     emailAddressPartyContactMechanismTransfer, postalAddressPartyContactMechanismTransfer,

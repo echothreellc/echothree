@@ -70,8 +70,8 @@ public class SetDefaultOrderAdjustmentTypeCommand
 
         if(orderType != null) {
             var orderAdjustmentControl = Session.getModelController(OrderAdjustmentControl.class);
-            String orderAdjustmentTypeName = form.getOrderAdjustmentTypeName();
-            OrderAdjustmentTypeDetailValue orderAdjustmentTypeDetailValue = orderAdjustmentControl.getOrderAdjustmentTypeDetailValueByNameForUpdate(orderType, orderAdjustmentTypeName);
+            var orderAdjustmentTypeName = form.getOrderAdjustmentTypeName();
+            var orderAdjustmentTypeDetailValue = orderAdjustmentControl.getOrderAdjustmentTypeDetailValueByNameForUpdate(orderType, orderAdjustmentTypeName);
 
             if(orderAdjustmentTypeDetailValue != null) {
                 orderAdjustmentTypeDetailValue.setIsDefault(Boolean.TRUE);

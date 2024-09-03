@@ -52,13 +52,13 @@ public class SetDefaultDivisionCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        String companyName = form.getCompanyName();
-        PartyCompany partyCompany = partyControl.getPartyCompanyByName(companyName);
+        var companyName = form.getCompanyName();
+        var partyCompany = partyControl.getPartyCompanyByName(companyName);
         
         if(partyCompany != null) {
-            String divisionName = form.getDivisionName();
-            Party partyCompanyParty = partyCompany.getParty();
-            PartyDivisionValue partyDivisionValue = partyControl.getPartyDivisionValueByNameForUpdate(partyCompanyParty,
+            var divisionName = form.getDivisionName();
+            var partyCompanyParty = partyCompany.getParty();
+            var partyDivisionValue = partyControl.getPartyDivisionValueByNameForUpdate(partyCompanyParty,
                     divisionName);
             
             if(partyDivisionValue != null) {

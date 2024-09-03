@@ -37,11 +37,11 @@ public class TagScopeEntityTypeTransferCache
     }
     
     public TagScopeEntityTypeTransfer getTagScopeEntityTypeTransfer(TagScopeEntityType tagScopeEntityType) {
-        TagScopeEntityTypeTransfer tagScopeEntityTypeTransfer = get(tagScopeEntityType);
+        var tagScopeEntityTypeTransfer = get(tagScopeEntityType);
         
         if(tagScopeEntityTypeTransfer == null) {
-            TagScopeTransfer tagScope = tagControl.getTagScopeTransfer(userVisit, tagScopeEntityType.getTagScope());
-            EntityTypeTransfer entityType = coreControl.getEntityTypeTransfer(userVisit, tagScopeEntityType.getEntityType());
+            var tagScope = tagControl.getTagScopeTransfer(userVisit, tagScopeEntityType.getTagScope());
+            var entityType = coreControl.getEntityTypeTransfer(userVisit, tagScopeEntityType.getEntityType());
             
             tagScopeEntityTypeTransfer = new TagScopeEntityTypeTransfer(tagScope, entityType);
             put(tagScopeEntityType, tagScopeEntityTypeTransfer);

@@ -59,28 +59,28 @@ public class CreatePrinterCommand
     protected BaseResult execute() {
         var coreControl = getCoreControl();
         var printerControl = Session.getModelController(PrinterControl.class);
-        String printerName = form.getPrinterName();
-        Printer printer = printerControl.getPrinterByName(printerName);
+       var printerName = form.getPrinterName();
+       var printer = printerControl.getPrinterByName(printerName);
         
         if(printer == null) {
-            String printerGroupName = form.getPrinterGroupName();
-            PrinterGroup printerGroup = printerControl.getPrinterGroupByName(printerGroupName);
+            var printerGroupName = form.getPrinterGroupName();
+            var printerGroup = printerControl.getPrinterGroupByName(printerGroupName);
             
             if(printerGroup != null) {
                 var workflowControl = Session.getModelController(WorkflowControl.class);
-                Integer priority = Integer.valueOf(form.getPriority());
+                var priority = Integer.valueOf(form.getPriority());
                 var description = form.getDescription();
-                PartyPK createdBy = getPartyPK();
+                var createdBy = getPartyPK();
                 
                 printer = printerControl.createPrinter(printerName, printerGroup, priority, createdBy);
                 
                 if(description != null) {
-                    Language language = getPreferredLanguage();
+                    var language = getPreferredLanguage();
                     
                     printerControl.createPrinterDescription(printer, language, description, createdBy);
                 }
-                
-                EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(printer.getPrimaryKey());
+
+                var entityInstance = coreControl.getEntityInstanceByBasePK(printer.getPrimaryKey());
                 workflowControl.addEntityToWorkflowUsingNames(null, PrinterStatusConstants.Workflow_PRINTER_STATUS, PrinterStatusConstants.WorkflowEntrance_NEW_PRINTER, entityInstance, null, null,
                         createdBy);
             } else {

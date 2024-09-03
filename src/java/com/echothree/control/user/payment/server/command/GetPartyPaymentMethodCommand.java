@@ -68,13 +68,13 @@ public class GetPartyPaymentMethodCommand
     @Override
     protected BaseResult execute() {
         var partyPaymentMethodControl = Session.getModelController(PartyPaymentMethodControl.class);
-        GetPartyPaymentMethodResult result = PaymentResultFactory.getGetPartyPaymentMethodResult();
-        String partyPaymentMethodName = form.getPartyPaymentMethodName();
-        PartyPaymentMethod partyPaymentMethod = partyPaymentMethodControl.getPartyPaymentMethodByName(partyPaymentMethodName);
+        var result = PaymentResultFactory.getGetPartyPaymentMethodResult();
+        var partyPaymentMethodName = form.getPartyPaymentMethodName();
+        var partyPaymentMethod = partyPaymentMethodControl.getPartyPaymentMethodByName(partyPaymentMethodName);
         
         if(partyPaymentMethod != null) {
-            Party party = getParty();
-            String partyTypeName = party.getLastDetail().getPartyType().getPartyTypeName();
+            var party = getParty();
+            var partyTypeName = party.getLastDetail().getPartyType().getPartyTypeName();
 
             // If the executing Party is a CUSTOMER, and the PartyPaymentMethod isn't for the executing Party,
             // return a UnknownPartyPaymentMethodName error.

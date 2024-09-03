@@ -50,9 +50,9 @@ public class GetScaleTypeChoicesCommand
    @Override
     protected BaseResult execute() {
         var scaleControl = Session.getModelController(ScaleControl.class);
-        GetScaleTypeChoicesResult result = ScaleResultFactory.getGetScaleTypeChoicesResult();
-        String defaultScaleTypeChoice = form.getDefaultScaleTypeChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+       var result = ScaleResultFactory.getGetScaleTypeChoicesResult();
+       var defaultScaleTypeChoice = form.getDefaultScaleTypeChoice();
+       var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setScaleTypeChoices(scaleControl.getScaleTypeChoices(defaultScaleTypeChoice, getPreferredLanguage(),
                 allowNullChoice));

@@ -58,24 +58,24 @@ public class GetCommentUsageTypeCommand
 
     @Override
     protected BaseResult execute() {
-        GetCommentUsageTypeResult result = CommentResultFactory.getGetCommentUsageTypeResult();
+        var result = CommentResultFactory.getGetCommentUsageTypeResult();
         var coreControl = getCoreControl();
-        String componentVendorName = form.getComponentVendorName();
-        ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+        var componentVendorName = form.getComponentVendorName();
+        var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
 
         if(componentVendor != null) {
-            UserVisit userVisit = getUserVisit();
-            String entityTypeName = form.getEntityTypeName();
-            EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+            var userVisit = getUserVisit();
+            var entityTypeName = form.getEntityTypeName();
+            var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
 
             if(entityType != null) {
                 var commentControl = Session.getModelController(CommentControl.class);
-                String commentTypeName = form.getCommentTypeName();
-                CommentType commentType = commentControl.getCommentTypeByName(entityType, commentTypeName);
+                var commentTypeName = form.getCommentTypeName();
+                var commentType = commentControl.getCommentTypeByName(entityType, commentTypeName);
 
                 if(commentType != null) {
-                    String commentUsageTypeName = form.getCommentUsageTypeName();
-                    CommentUsageType commentUsageType = commentControl.getCommentUsageTypeByName(commentType, commentUsageTypeName);
+                    var commentUsageTypeName = form.getCommentUsageTypeName();
+                    var commentUsageType = commentControl.getCommentUsageTypeByName(commentType, commentUsageTypeName);
 
                     if(commentUsageType != null) {
                         result.setCommentUsageType(commentControl.getCommentUsageTypeTransfer(userVisit, commentUsageType));

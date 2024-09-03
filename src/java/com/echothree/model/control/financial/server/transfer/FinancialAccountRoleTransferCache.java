@@ -39,12 +39,12 @@ public class FinancialAccountRoleTransferCache
     }
 
     public FinancialAccountRoleTransfer getFinancialAccountRoleTransfer(FinancialAccountRole financialAccountRole) {
-        FinancialAccountRoleTransfer financialAccountRoleTransfer = get(financialAccountRole);
+        var financialAccountRoleTransfer = get(financialAccountRole);
 
         if(financialAccountRoleTransfer == null) {
-            FinancialAccountTransfer financialAccount = financialControl.getFinancialAccountTransfer(userVisit, financialAccountRole.getFinancialAccount());
-            PartyTransfer party = partyControl.getPartyTransfer(userVisit, financialAccountRole.getParty());
-            FinancialAccountRoleTypeTransfer financialAccountRoleType = financialControl.getFinancialAccountRoleTypeTransfer(userVisit, financialAccountRole.getFinancialAccountRoleType());
+            var financialAccount = financialControl.getFinancialAccountTransfer(userVisit, financialAccountRole.getFinancialAccount());
+            var party = partyControl.getPartyTransfer(userVisit, financialAccountRole.getParty());
+            var financialAccountRoleType = financialControl.getFinancialAccountRoleTypeTransfer(userVisit, financialAccountRole.getFinancialAccountRoleType());
 
             financialAccountRoleTransfer = new FinancialAccountRoleTransfer(financialAccount, party, financialAccountRoleType);
             put(financialAccountRole, financialAccountRoleTransfer);

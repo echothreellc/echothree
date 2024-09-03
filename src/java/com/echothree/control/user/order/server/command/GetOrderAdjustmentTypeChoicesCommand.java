@@ -67,14 +67,14 @@ public class GetOrderAdjustmentTypeChoicesCommand
     @Override
     protected BaseResult execute() {
         var orderTypeControl = Session.getModelController(OrderTypeControl.class);
-        GetOrderAdjustmentTypeChoicesResult result = OrderResultFactory.getGetOrderAdjustmentTypeChoicesResult();
+        var result = OrderResultFactory.getGetOrderAdjustmentTypeChoicesResult();
         var orderTypeName = form.getOrderTypeName();
         var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
             var orderAdjustmentControl = Session.getModelController(OrderAdjustmentControl.class);
-            String defaultOrderAdjustmentTypeChoice = form.getDefaultOrderAdjustmentTypeChoice();
-            boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+            var defaultOrderAdjustmentTypeChoice = form.getDefaultOrderAdjustmentTypeChoice();
+            var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 
             result.setOrderAdjustmentTypeChoices(orderAdjustmentControl.getOrderAdjustmentTypeChoices(defaultOrderAdjustmentTypeChoice, getPreferredLanguage(), allowNullChoice,
                     orderType));

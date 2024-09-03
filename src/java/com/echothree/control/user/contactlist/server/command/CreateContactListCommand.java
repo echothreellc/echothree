@@ -77,26 +77,26 @@ public class CreateContactListCommand
     @Override
     protected BaseResult execute() {
         var contactListControl = Session.getModelController(ContactListControl.class);
-        String contactListName = form.getContactListName();
-        ContactList contactList = contactListControl.getContactListByName(contactListName);
+        var contactListName = form.getContactListName();
+        var contactList = contactListControl.getContactListByName(contactListName);
 
         if(contactList == null) {
-            String contactListGroupName = form.getContactListGroupName();
-            ContactListGroup contactListGroup = contactListControl.getContactListGroupByName(contactListGroupName);
+            var contactListGroupName = form.getContactListGroupName();
+            var contactListGroup = contactListControl.getContactListGroupByName(contactListGroupName);
 
             if(contactListGroup != null) {
-                String contactListTypeName = form.getContactListTypeName();
-                ContactListType contactListType = contactListControl.getContactListTypeByName(contactListTypeName);
+                var contactListTypeName = form.getContactListTypeName();
+                var contactListType = contactListControl.getContactListTypeByName(contactListTypeName);
 
                 if(contactListType != null) {
-                    String contactListFrequencyName = form.getContactListFrequencyName();
-                    ContactListFrequency contactListFrequency = contactListFrequencyName == null ? null : contactListControl.getContactListFrequencyByName(contactListFrequencyName);
+                    var contactListFrequencyName = form.getContactListFrequencyName();
+                    var contactListFrequency = contactListFrequencyName == null ? null : contactListControl.getContactListFrequencyByName(contactListFrequencyName);
 
                     if(contactListFrequencyName == null || contactListFrequency != null) {
                         var workflowControl = Session.getModelController(WorkflowControl.class);
-                        String defaultPartyContactListStatusChoice = form.getDefaultPartyContactListStatusChoice();
+                        var defaultPartyContactListStatusChoice = form.getDefaultPartyContactListStatusChoice();
                         var workflow = workflowControl.getWorkflowByName(PartyContactListStatusConstants.Workflow_PARTY_CONTACT_LIST_STATUS);
-                        WorkflowEntrance defaultPartyContactListStatus = workflowControl.getWorkflowEntranceByName(workflow, defaultPartyContactListStatusChoice);
+                        var defaultPartyContactListStatus = workflowControl.getWorkflowEntranceByName(workflow, defaultPartyContactListStatusChoice);
 
                         if(defaultPartyContactListStatus != null) {
                             var partyPK = getPartyPK();

@@ -40,17 +40,17 @@ public class ItemImageTypeTransferCache
     
     @Override
     public ItemImageTypeTransfer getTransfer(ItemImageType itemImageType) {
-        ItemImageTypeTransfer itemImageTypeTransfer = get(itemImageType);
+        var itemImageTypeTransfer = get(itemImageType);
         
         if(itemImageTypeTransfer == null) {
-            ItemImageTypeDetail itemImageTypeDetail = itemImageType.getLastDetail();
-            String itemImageTypeName = itemImageTypeDetail.getItemImageTypeName();
-            MimeType preferredMimeType = itemImageTypeDetail.getPreferredMimeType();
-            MimeTypeTransfer preferredMimeTypeTransfer = preferredMimeType == null ? null : coreControl.getMimeTypeTransfer(userVisit, preferredMimeType);
-            Integer quality = itemImageTypeDetail.getQuality();
-            Boolean isDefault = itemImageTypeDetail.getIsDefault();
-            Integer sortOrder = itemImageTypeDetail.getSortOrder();
-            String description = itemControl.getBestItemImageTypeDescription(itemImageType, getLanguage());
+            var itemImageTypeDetail = itemImageType.getLastDetail();
+            var itemImageTypeName = itemImageTypeDetail.getItemImageTypeName();
+            var preferredMimeType = itemImageTypeDetail.getPreferredMimeType();
+            var preferredMimeTypeTransfer = preferredMimeType == null ? null : coreControl.getMimeTypeTransfer(userVisit, preferredMimeType);
+            var quality = itemImageTypeDetail.getQuality();
+            var isDefault = itemImageTypeDetail.getIsDefault();
+            var sortOrder = itemImageTypeDetail.getSortOrder();
+            var description = itemControl.getBestItemImageTypeDescription(itemImageType, getLanguage());
             
             itemImageTypeTransfer = new ItemImageTypeTransfer(itemImageTypeName, preferredMimeTypeTransfer, quality, isDefault, sortOrder, description);
             put(itemImageType, itemImageTypeTransfer);

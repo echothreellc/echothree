@@ -66,16 +66,16 @@ public class DeleteProtocolDescriptionCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String protocolName = form.getProtocolName();
-        Protocol protocol = coreControl.getProtocolByName(protocolName);
+        var protocolName = form.getProtocolName();
+        var protocol = coreControl.getProtocolByName(protocolName);
         
         if(protocol != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                ProtocolDescription protocolDescription = coreControl.getProtocolDescriptionForUpdate(protocol, language);
+                var protocolDescription = coreControl.getProtocolDescriptionForUpdate(protocol, language);
                 
                 if(protocolDescription != null) {
                     coreControl.deleteProtocolDescription(protocolDescription, getPartyPK());

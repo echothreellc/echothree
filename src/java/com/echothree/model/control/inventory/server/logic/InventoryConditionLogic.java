@@ -54,7 +54,7 @@ public class InventoryConditionLogic
             final Boolean isDefault, final Integer sortOrder, final Language language, final String description,
             final BasePK createdBy) {
         var inventoryControl = Session.getModelController(InventoryControl.class);
-        InventoryCondition inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
+        var inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
 
         if(inventoryCondition == null) {
             inventoryCondition = inventoryControl.createInventoryCondition(inventoryConditionName, isDefault, sortOrder, createdBy);
@@ -72,7 +72,7 @@ public class InventoryConditionLogic
     public InventoryCondition getInventoryConditionByName(final ExecutionErrorAccumulator eea, final String inventoryConditionName,
             final EntityPermission entityPermission) {
         var inventoryControl = Session.getModelController(InventoryControl.class);
-        InventoryCondition inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName, entityPermission);
+        var inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName, entityPermission);
 
         if(inventoryCondition == null) {
             handleExecutionError(UnknownInventoryConditionNameException.class, eea, ExecutionErrors.UnknownInventoryConditionName.name(), inventoryConditionName);
@@ -93,7 +93,7 @@ public class InventoryConditionLogic
             final InventoryConditionUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
         InventoryCondition inventoryCondition = null;
         var inventoryControl = Session.getModelController(InventoryControl.class);
-        String inventoryConditionName = universalSpec.getInventoryConditionName();
+        var inventoryConditionName = universalSpec.getInventoryConditionName();
         var parameterCount = (inventoryConditionName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {

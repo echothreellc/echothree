@@ -33,14 +33,14 @@ public class CarrierTypeTransferCache
     }
 
     public CarrierTypeTransfer getCarrierTypeTransfer(CarrierType carrierType) {
-        CarrierTypeTransfer carrierTypeTransfer = get(carrierType);
+        var carrierTypeTransfer = get(carrierType);
 
         if(carrierTypeTransfer == null) {
-            CarrierTypeDetail carrierTypeDetail = carrierType.getLastDetail();
-            String carrierTypeName = carrierTypeDetail.getCarrierTypeName();
-            Boolean isDefault = carrierTypeDetail.getIsDefault();
-            Integer sortOrder = carrierTypeDetail.getSortOrder();
-            String description = carrierControl.getBestCarrierTypeDescription(carrierType, getLanguage());
+            var carrierTypeDetail = carrierType.getLastDetail();
+            var carrierTypeName = carrierTypeDetail.getCarrierTypeName();
+            var isDefault = carrierTypeDetail.getIsDefault();
+            var sortOrder = carrierTypeDetail.getSortOrder();
+            var description = carrierControl.getBestCarrierTypeDescription(carrierType, getLanguage());
 
             carrierTypeTransfer = new CarrierTypeTransfer(carrierTypeName, isDefault, sortOrder, description);
             put(carrierType, carrierTypeTransfer);

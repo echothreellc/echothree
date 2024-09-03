@@ -60,7 +60,7 @@ public class GetTerminationReasonsCommand
     
     @Override
     protected BaseResult execute() {
-        GetTerminationReasonsResult result = EmployeeResultFactory.getGetTerminationReasonsResult();
+        var result = EmployeeResultFactory.getGetTerminationReasonsResult();
         var employeeControl = Session.getModelController(EmployeeControl.class);
         
         result.setTerminationReasons(employeeControl.getTerminationReasonTransfers(getUserVisit()));

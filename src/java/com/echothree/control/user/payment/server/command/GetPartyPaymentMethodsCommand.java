@@ -68,14 +68,14 @@ public class GetPartyPaymentMethodsCommand
     
     @Override
     protected BaseResult execute() {
-        GetPartyPaymentMethodsResult result = PaymentResultFactory.getGetPartyPaymentMethodsResult();
-        Party party = getParty();
-        String partyTypeName = party.getLastDetail().getPartyType().getPartyTypeName();
+        var result = PaymentResultFactory.getGetPartyPaymentMethodsResult();
+        var party = getParty();
+        var partyTypeName = party.getLastDetail().getPartyType().getPartyTypeName();
 
         // If the caller is a CUSTOMER, then they're the Party. If they're not, the PartyName parameter is
         // required, and we'll look them up.
         if(!partyTypeName.equals(PartyTypes.CUSTOMER.name())) {
-            String partyName = form.getPartyName();
+            var partyName = form.getPartyName();
 
             if(partyName == null) {
                 addExecutionError(ExecutionErrors.PartyNameRequired.name());

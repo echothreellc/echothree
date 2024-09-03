@@ -158,7 +158,7 @@ public class Messages
      * @param message   The message to be added
      */
     public Messages add(String property, Message message) {
-        MessageItem item = messages.get(property);
+        var item = messages.get(property);
         Map<String, Message> hashMap = null;
         
         if(item == null) {
@@ -194,12 +194,12 @@ public class Messages
         // loop over properties
         Iterator props = messages.properties();
         while(props.hasNext()) {
-            String property = (String) props.next();
+            var property = (String) props.next();
             
             // loop over messages for each property
             Iterator msgs = messages.get(property);
             while(msgs.hasNext()) {
-                Message msg = (Message)msgs.next();
+                var msg = (Message)msgs.next();
                 this.add(property, msg);
             }
         }
@@ -236,7 +236,7 @@ public class Messages
         List<Message> results = new ArrayList<>();
         List<MessageItem> actionItems = new ArrayList<>();
         
-        for(Iterator<MessageItem> i = messages.values().iterator(); i.hasNext();) {
+        for(var i = messages.values().iterator(); i.hasNext();) {
             actionItems.add(i.next());
         }
         
@@ -245,7 +245,7 @@ public class Messages
         Collections.sort(actionItems, (MessageItem o1, MessageItem o2) -> o1.getOrder() - o2.getOrder());
         
         actionItems.forEach((ami) -> {
-            for(Iterator<Message> messages = ami.getHashMap().values().iterator(); messages.hasNext();) {
+            for(var messages = ami.getHashMap().values().iterator(); messages.hasNext();) {
                 results.add(messages.next());
             }
         });
@@ -260,7 +260,7 @@ public class Messages
      * @param property Property name (or Messages.GLOBAL_MESSAGE)
      */
     public Iterator<Message> get(String property) {
-        MessageItem item = (MessageItem) messages.get(property);
+        var item = (MessageItem) messages.get(property);
         
         if(item == null) {
             return Collections.<Message>emptyList().iterator();
@@ -270,7 +270,7 @@ public class Messages
     }
     
     public boolean containsKey(String property, String key) {
-        MessageItem item = (MessageItem)messages.get(property);
+        var item = (MessageItem)messages.get(property);
         boolean result;
         
         if(item != null) {
@@ -283,11 +283,11 @@ public class Messages
     }
     
     public boolean containsKeys(String property, String... keys) {
-        MessageItem item = (MessageItem)messages.get(property);
-        boolean result = false;
+        var item = (MessageItem)messages.get(property);
+        var result = false;
         
         if(item != null) {
-            for(String key : Arrays.asList(keys)) {
+            for(var key : Arrays.asList(keys)) {
                 result = item.getHashMap().containsKey(key);
                 if(result) {
                     break;
@@ -316,10 +316,10 @@ public class Messages
      * any messages at all.
      */
     public int size() {
-        int total = 0;
+        var total = 0;
         
         for(Iterator i = messages.values().iterator(); i.hasNext();) {
-            MessageItem ami = (MessageItem)i.next();
+            var ami = (MessageItem)i.next();
             total += ami.getHashMap().size();
         }
         
@@ -332,7 +332,7 @@ public class Messages
      * @param property Property name (or Messages.GLOBAL_MESSAGE)
      */
     public int size(String property) {
-        MessageItem ami = (MessageItem) messages.get(property);
+        var ami = (MessageItem) messages.get(property);
         
         if(ami == null) {
             return 0;

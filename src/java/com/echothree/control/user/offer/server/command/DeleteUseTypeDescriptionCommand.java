@@ -67,16 +67,16 @@ public class DeleteUseTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var useTypeControl = Session.getModelController(UseTypeControl.class);
-        String useTypeName = form.getUseTypeName();
-        UseType useType = useTypeControl.getUseTypeByName(useTypeName);
+        var useTypeName = form.getUseTypeName();
+        var useType = useTypeControl.getUseTypeByName(useTypeName);
         
         if(useType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                UseTypeDescription useTypeDescription = useTypeControl.getUseTypeDescriptionForUpdate(useType, language);
+                var useTypeDescription = useTypeControl.getUseTypeDescriptionForUpdate(useType, language);
                 
                 if(useTypeDescription != null) {
                     useTypeControl.deleteUseTypeDescription(useTypeDescription, getPartyPK());

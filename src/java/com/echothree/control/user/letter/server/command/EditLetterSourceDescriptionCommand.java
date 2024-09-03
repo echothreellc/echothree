@@ -79,24 +79,24 @@ public class EditLetterSourceDescriptionCommand
     @Override
     protected BaseResult execute() {
         var letterControl = Session.getModelController(LetterControl.class);
-        EditLetterSourceDescriptionResult result = LetterResultFactory.getEditLetterSourceDescriptionResult();
-        String letterSourceName = spec.getLetterSourceName();
-        LetterSource letterSource = letterControl.getLetterSourceByName(letterSourceName);
+        var result = LetterResultFactory.getEditLetterSourceDescriptionResult();
+        var letterSourceName = spec.getLetterSourceName();
+        var letterSource = letterControl.getLetterSourceByName(letterSourceName);
         
         if(letterSource != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK)) {
-                    LetterSourceDescription letterSourceDescription = letterControl.getLetterSourceDescription(letterSource, language);
+                    var letterSourceDescription = letterControl.getLetterSourceDescription(letterSource, language);
                     
                     if(letterSourceDescription != null) {
                         result.setLetterSourceDescription(letterControl.getLetterSourceDescriptionTransfer(getUserVisit(), letterSourceDescription));
                         
                         if(lockEntity(letterSource)) {
-                            LetterSourceDescriptionEdit edit = LetterEditFactory.getLetterSourceDescriptionEdit();
+                            var edit = LetterEditFactory.getLetterSourceDescriptionEdit();
                             
                             result.setEdit(edit);
                             edit.setDescription(letterSourceDescription.getDescription());
@@ -109,12 +109,12 @@ public class EditLetterSourceDescriptionCommand
                         addExecutionError(ExecutionErrors.UnknownLetterSourceDescription.name());
                     }
                 } else if(editMode.equals(EditMode.UPDATE)) {
-                    LetterSourceDescriptionValue letterSourceDescriptionValue = letterControl.getLetterSourceDescriptionValueForUpdate(letterSource, language);
+                    var letterSourceDescriptionValue = letterControl.getLetterSourceDescriptionValueForUpdate(letterSource, language);
                     
                     if(letterSourceDescriptionValue != null) {
                         if(lockEntityForUpdate(letterSource)) {
                             try {
-                                String description = edit.getDescription();
+                                var description = edit.getDescription();
                                 
                                 letterSourceDescriptionValue.setDescription(description);
                                 

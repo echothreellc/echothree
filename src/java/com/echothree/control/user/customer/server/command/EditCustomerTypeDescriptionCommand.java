@@ -78,24 +78,24 @@ public class EditCustomerTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var customerControl = Session.getModelController(CustomerControl.class);
-        EditCustomerTypeDescriptionResult result = CustomerResultFactory.getEditCustomerTypeDescriptionResult();
-        String customerTypeName = spec.getCustomerTypeName();
-        CustomerType customerType = customerControl.getCustomerTypeByName(customerTypeName);
+        var result = CustomerResultFactory.getEditCustomerTypeDescriptionResult();
+        var customerTypeName = spec.getCustomerTypeName();
+        var customerType = customerControl.getCustomerTypeByName(customerTypeName);
         
         if(customerType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK)) {
-                    CustomerTypeDescription customerTypeDescription = customerControl.getCustomerTypeDescription(customerType, language);
+                    var customerTypeDescription = customerControl.getCustomerTypeDescription(customerType, language);
                     
                     if(customerTypeDescription != null) {
                         result.setCustomerTypeDescription(customerControl.getCustomerTypeDescriptionTransfer(getUserVisit(), customerTypeDescription));
                         
                         if(lockEntity(customerType)) {
-                            CustomerTypeDescriptionEdit edit = CustomerEditFactory.getCustomerTypeDescriptionEdit();
+                            var edit = CustomerEditFactory.getCustomerTypeDescriptionEdit();
                             
                             result.setEdit(edit);
                             edit.setDescription(customerTypeDescription.getDescription());
@@ -108,12 +108,12 @@ public class EditCustomerTypeDescriptionCommand
                         addExecutionError(ExecutionErrors.UnknownCustomerTypeDescription.name());
                     }
                 } else if(editMode.equals(EditMode.UPDATE)) {
-                    CustomerTypeDescriptionValue customerTypeDescriptionValue = customerControl.getCustomerTypeDescriptionValueForUpdate(customerType, language);
+                    var customerTypeDescriptionValue = customerControl.getCustomerTypeDescriptionValueForUpdate(customerType, language);
                     
                     if(customerTypeDescriptionValue != null) {
                         if(lockEntityForUpdate(customerType)) {
                             try {
-                                String description = edit.getDescription();
+                                var description = edit.getDescription();
                                 
                                 customerTypeDescriptionValue.setDescription(description);
                                 

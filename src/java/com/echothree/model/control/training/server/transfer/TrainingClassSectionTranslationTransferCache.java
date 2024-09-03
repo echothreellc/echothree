@@ -38,18 +38,18 @@ public class TrainingClassSectionTranslationTransferCache
     }
     
     public TrainingClassSectionTranslationTransfer getTrainingClassSectionTranslationTransfer(TrainingClassSectionTranslation trainingClassSectionTranslation) {
-        TrainingClassSectionTranslationTransfer trainingClassSectionTranslationTransfer = get(trainingClassSectionTranslation);
+        var trainingClassSectionTranslationTransfer = get(trainingClassSectionTranslation);
         
         if(trainingClassSectionTranslationTransfer == null) {
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, trainingClassSectionTranslation.getLanguage());
-            TrainingClassSectionTransfer trainingClassSectionTransfer = trainingControl.getTrainingClassSectionTransfer(userVisit, trainingClassSectionTranslation.getTrainingClassSection());
-            String description = trainingClassSectionTranslation.getDescription();
-            MimeType overviewMimeType = trainingClassSectionTranslation.getOverviewMimeType();
-            MimeTypeTransfer overviewMimeTypeTransfer = overviewMimeType == null? null: coreControl.getMimeTypeTransfer(userVisit, overviewMimeType);
-            String overview = trainingClassSectionTranslation.getOverview();
-            MimeType introductionMimeType = trainingClassSectionTranslation.getIntroductionMimeType();
-            MimeTypeTransfer introductionMimeTypeTransfer = introductionMimeType == null? null: coreControl.getMimeTypeTransfer(userVisit, introductionMimeType);
-            String introduction = trainingClassSectionTranslation.getIntroduction();
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, trainingClassSectionTranslation.getLanguage());
+            var trainingClassSectionTransfer = trainingControl.getTrainingClassSectionTransfer(userVisit, trainingClassSectionTranslation.getTrainingClassSection());
+            var description = trainingClassSectionTranslation.getDescription();
+            var overviewMimeType = trainingClassSectionTranslation.getOverviewMimeType();
+            var overviewMimeTypeTransfer = overviewMimeType == null? null: coreControl.getMimeTypeTransfer(userVisit, overviewMimeType);
+            var overview = trainingClassSectionTranslation.getOverview();
+            var introductionMimeType = trainingClassSectionTranslation.getIntroductionMimeType();
+            var introductionMimeTypeTransfer = introductionMimeType == null? null: coreControl.getMimeTypeTransfer(userVisit, introductionMimeType);
+            var introduction = trainingClassSectionTranslation.getIntroduction();
             
             trainingClassSectionTranslationTransfer = new TrainingClassSectionTranslationTransfer(trainingClassSectionTransfer, languageTransfer, description,
                     overviewMimeTypeTransfer, overview, introductionMimeTypeTransfer, introduction);

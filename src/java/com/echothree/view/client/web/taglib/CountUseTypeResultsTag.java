@@ -79,11 +79,11 @@ public class CountUseTypeResultsTag
     public int doStartTag()
             throws JspException {
         try {
-            CountUseTypeResultsForm commandForm = SearchUtil.getHome().getCountUseTypeResultsForm();
+            var commandForm = SearchUtil.getHome().getCountUseTypeResultsForm();
 
             commandForm.setSearchTypeName(searchTypeName);
 
-            CommandResult commandResult = SearchUtil.getHome().countUseTypeResults(getUserVisitPK(), commandForm);
+            var commandResult = SearchUtil.getHome().countUseTypeResults(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -91,8 +91,8 @@ public class CountUseTypeResultsTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                CountUseTypeResultsResult result = (CountUseTypeResultsResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (CountUseTypeResultsResult)executionResult.getResult();
 
                 pageContext.setAttribute(countVar, result.getCount(), scope);
             }

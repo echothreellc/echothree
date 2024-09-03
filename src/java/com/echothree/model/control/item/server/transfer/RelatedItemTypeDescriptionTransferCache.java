@@ -33,11 +33,11 @@ public class RelatedItemTypeDescriptionTransferCache
     
     @Override
     public RelatedItemTypeDescriptionTransfer getTransfer(RelatedItemTypeDescription relatedItemTypeDescription) {
-        RelatedItemTypeDescriptionTransfer relatedItemTypeDescriptionTransfer = get(relatedItemTypeDescription);
+        var relatedItemTypeDescriptionTransfer = get(relatedItemTypeDescription);
         
         if(relatedItemTypeDescriptionTransfer == null) {
-            RelatedItemTypeTransfer relatedItemTypeTransfer = itemControl.getRelatedItemTypeTransfer(userVisit, relatedItemTypeDescription.getRelatedItemType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, relatedItemTypeDescription.getLanguage());
+            var relatedItemTypeTransfer = itemControl.getRelatedItemTypeTransfer(userVisit, relatedItemTypeDescription.getRelatedItemType());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, relatedItemTypeDescription.getLanguage());
             
             relatedItemTypeDescriptionTransfer = new RelatedItemTypeDescriptionTransfer(languageTransfer, relatedItemTypeTransfer, relatedItemTypeDescription.getDescription());
             put(relatedItemTypeDescription, relatedItemTypeDescriptionTransfer);

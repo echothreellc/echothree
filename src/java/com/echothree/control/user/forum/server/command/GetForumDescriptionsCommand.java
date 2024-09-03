@@ -53,9 +53,9 @@ public class GetForumDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var forumControl = Session.getModelController(ForumControl.class);
-        GetForumDescriptionsResult result = ForumResultFactory.getGetForumDescriptionsResult();
-        String forumName = form.getForumName();
-        Forum forum = forumControl.getForumByName(forumName);
+        var result = ForumResultFactory.getGetForumDescriptionsResult();
+        var forumName = form.getForumName();
+        var forum = forumControl.getForumByName(forumName);
         
         if(forum != null) {
             if(ForumLogic.getInstance().isForumRoleTypePermitted(this, forum, getParty(), ForumConstants.ForumRoleType_READER)) {

@@ -84,12 +84,12 @@ public abstract class BaseAbstractEditCommand<S extends BaseSpec, E extends Base
     
     @Override
     protected final BaseResult execute() {
-        R result = getResult();
-        BE baseEntity = getEntity(result);
+        var result = getResult();
+        var baseEntity = getEntity(result);
         
         // getEntity(...) may set both SecurityMessages and ExecutionErrors.
         if(!hasSecurityMessages() && !hasExecutionErrors()) {
-            LE lockEntity = getLockEntity(baseEntity);
+            var lockEntity = getLockEntity(baseEntity);
 
             switch(editMode) {
                 case LOCK -> {
@@ -148,9 +148,9 @@ public abstract class BaseAbstractEditCommand<S extends BaseSpec, E extends Base
     @Override
     protected void saveResultAfterEditValidatorErrors() {
         errorResult = getResult();
-        
-        BE baseEntity = getEntity(errorResult);
-        LE lockEntity = getLockEntity(baseEntity);
+
+        var baseEntity = getEntity(errorResult);
+        var lockEntity = getLockEntity(baseEntity);
         
         fillInResult(errorResult, baseEntity, lockEntity);
     }

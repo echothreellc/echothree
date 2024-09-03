@@ -59,7 +59,7 @@ public class GetProtocolsCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        GetProtocolsResult result = CoreResultFactory.getGetProtocolsResult();
+        var result = CoreResultFactory.getGetProtocolsResult();
         
         result.setProtocols(coreControl.getProtocolTransfers(getUserVisit()));
         

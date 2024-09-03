@@ -95,7 +95,7 @@ public class EditEntityEntityAttributeCommand
                             result.setEntityEntityAttribute(coreControl.getEntityEntityAttributeTransfer(getUserVisit(), entityEntityAttribute, entityInstance));
 
                             if(lockEntity(basePK)) {
-                                EntityEntityAttributeEdit edit = CoreEditFactory.getEntityEntityAttributeEdit();
+                                var edit = CoreEditFactory.getEntityEntityAttributeEdit();
 
                                 result.setEdit(edit);
                                 edit.setEntityRefAttribute(EntityInstanceLogic.getInstance().getEntityRefFromEntityInstance(entityEntityAttribute.getEntityInstanceAttribute()));
@@ -123,7 +123,7 @@ public class EditEntityEntityAttributeCommand
                         if(entityEntityAttribute != null) {
                             if(lockEntityForUpdate(basePK)) {
                                 try {
-                                    EntityEntityAttributeValue entityEntityAttributeValue = coreControl.getEntityEntityAttributeValueForUpdate(entityEntityAttribute);
+                                    var entityEntityAttributeValue = coreControl.getEntityEntityAttributeValueForUpdate(entityEntityAttribute);
 
                                     entityEntityAttributeValue.setEntityInstanceAttributePK(entityInstanceAttribute.getPrimaryKey());
 

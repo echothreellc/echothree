@@ -79,11 +79,11 @@ public class CountEmployeeResultsTag
     public int doStartTag()
             throws JspException {
         try {
-            CountEmployeeResultsForm commandForm = SearchUtil.getHome().getCountEmployeeResultsForm();
+            var commandForm = SearchUtil.getHome().getCountEmployeeResultsForm();
 
             commandForm.setSearchTypeName(searchTypeName);
 
-            CommandResult commandResult = SearchUtil.getHome().countEmployeeResults(getUserVisitPK(), commandForm);
+            var commandResult = SearchUtil.getHome().countEmployeeResults(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -91,8 +91,8 @@ public class CountEmployeeResultsTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                CountEmployeeResultsResult result = (CountEmployeeResultsResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (CountEmployeeResultsResult)executionResult.getResult();
 
                 pageContext.setAttribute(countVar, result.getCount(), scope);
             }

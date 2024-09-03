@@ -60,7 +60,7 @@ public class DeleteSalesOrderBatchCommand
     
     @Override
     protected BaseResult execute() {
-        Batch batch = SalesOrderBatchLogic.getInstance().getBatchByNameForUpdate(this, form.getBatchName());
+        var batch = SalesOrderBatchLogic.getInstance().getBatchByNameForUpdate(this, form.getBatchName());
 
         if(batch != null) {
             SalesOrderBatchLogic.getInstance().deleteBatch(this, batch, getPartyPK());

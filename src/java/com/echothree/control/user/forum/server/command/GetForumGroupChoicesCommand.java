@@ -50,9 +50,9 @@ public class GetForumGroupChoicesCommand
     @Override
     protected BaseResult execute() {
         var forumControl = Session.getModelController(ForumControl.class);
-        GetForumGroupChoicesResult result = ForumResultFactory.getGetForumGroupChoicesResult();
-        String defaultForumGroupChoice = form.getDefaultForumGroupChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = ForumResultFactory.getGetForumGroupChoicesResult();
+        var defaultForumGroupChoice = form.getDefaultForumGroupChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setForumGroupChoices(forumControl.getForumGroupChoices(defaultForumGroupChoice, getPreferredLanguage(),
                 allowNullChoice));

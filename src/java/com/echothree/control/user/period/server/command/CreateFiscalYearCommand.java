@@ -53,7 +53,7 @@ public class CreateFiscalYearCommand
     
     @Override
     protected BaseResult execute() {
-        Integer year = Integer.valueOf(form.getYear());
+        var year = Integer.valueOf(form.getYear());
         
         FiscalPeriodLogic.getInstance().createFiscalYear(this, year, getPartyPK());
         

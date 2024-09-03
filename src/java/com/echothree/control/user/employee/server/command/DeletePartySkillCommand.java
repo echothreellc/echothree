@@ -53,16 +53,16 @@ public class DeletePartySkillCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        String partyName = form.getPartyName();
-        Party party = partyControl.getPartyByName(partyName);
+        var partyName = form.getPartyName();
+        var party = partyControl.getPartyByName(partyName);
         
         if(party != null) {
             var employeeControl = Session.getModelController(EmployeeControl.class);
-            String skillTypeName = form.getSkillTypeName();
-            SkillType skillType = employeeControl.getSkillTypeByName(skillTypeName);
+            var skillTypeName = form.getSkillTypeName();
+            var skillType = employeeControl.getSkillTypeByName(skillTypeName);
             
             if(skillType != null) {
-                PartySkill partySkill = employeeControl.getPartySkillForUpdate(party, skillType);
+                var partySkill = employeeControl.getPartySkillForUpdate(party, skillType);
                 
                 if(partySkill != null) {
                     employeeControl.deletePartySkill(partySkill, getPartyPK());

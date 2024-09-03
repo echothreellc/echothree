@@ -67,16 +67,16 @@ public class DeleteWishlistTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var wishlistControl = Session.getModelController(WishlistControl.class);
-        String wishlistTypeName = form.getWishlistTypeName();
-        WishlistType wishlistType = wishlistControl.getWishlistTypeByName(wishlistTypeName);
+        var wishlistTypeName = form.getWishlistTypeName();
+        var wishlistType = wishlistControl.getWishlistTypeByName(wishlistTypeName);
         
         if(wishlistType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                WishlistTypeDescription wishlistTypeDescription = wishlistControl.getWishlistTypeDescriptionForUpdate(wishlistType, language);
+                var wishlistTypeDescription = wishlistControl.getWishlistTypeDescriptionForUpdate(wishlistType, language);
                 
                 if(wishlistTypeDescription != null) {
                     wishlistControl.deleteWishlistTypeDescription(wishlistTypeDescription, getPartyPK());

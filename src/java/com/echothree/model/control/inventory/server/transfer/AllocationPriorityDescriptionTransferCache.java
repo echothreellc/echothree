@@ -33,11 +33,11 @@ public class AllocationPriorityDescriptionTransferCache
     
     @Override
     public AllocationPriorityDescriptionTransfer getTransfer(AllocationPriorityDescription allocationPriorityDescription) {
-        AllocationPriorityDescriptionTransfer allocationPriorityDescriptionTransfer = get(allocationPriorityDescription);
+        var allocationPriorityDescriptionTransfer = get(allocationPriorityDescription);
         
         if(allocationPriorityDescriptionTransfer == null) {
-            AllocationPriorityTransfer allocationPriorityTransfer = inventoryControl.getAllocationPriorityTransfer(userVisit, allocationPriorityDescription.getAllocationPriority());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, allocationPriorityDescription.getLanguage());
+            var allocationPriorityTransfer = inventoryControl.getAllocationPriorityTransfer(userVisit, allocationPriorityDescription.getAllocationPriority());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, allocationPriorityDescription.getLanguage());
             
             allocationPriorityDescriptionTransfer = new AllocationPriorityDescriptionTransfer(languageTransfer, allocationPriorityTransfer, allocationPriorityDescription.getDescription());
             put(allocationPriorityDescription, allocationPriorityDescriptionTransfer);

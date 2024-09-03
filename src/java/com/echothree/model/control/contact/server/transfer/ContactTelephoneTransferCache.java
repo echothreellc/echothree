@@ -41,17 +41,17 @@ public class ContactTelephoneTransferCache
     }
     
     public ContactTelephoneTransfer getContactTelephoneTransfer(ContactTelephone contactTelephone) {
-        ContactTelephoneTransfer contactTelephoneTransfer = get(contactTelephone);
+        var contactTelephoneTransfer = get(contactTelephone);
         
         if(contactTelephoneTransfer == null) {
-            GeoControl geoControl = Session.getModelController(GeoControl.class);
-            CountryTransfer countryGeoCode = geoControl.getCountryTransfer(userVisit, contactTelephone.getCountryGeoCode());
-            String areaCode = contactTelephone.getAreaCode();
-            String telephoneNumber = contactTelephone.getTelephoneNumber();
-            String telephoneExtension = contactTelephone.getTelephoneExtension();
-            
-            EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(contactTelephone.getContactMechanismPK());
-            WorkflowEntityStatusTransfer telephoneStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
+            var geoControl = Session.getModelController(GeoControl.class);
+            var countryGeoCode = geoControl.getCountryTransfer(userVisit, contactTelephone.getCountryGeoCode());
+            var areaCode = contactTelephone.getAreaCode();
+            var telephoneNumber = contactTelephone.getTelephoneNumber();
+            var telephoneExtension = contactTelephone.getTelephoneExtension();
+
+            var entityInstance = coreControl.getEntityInstanceByBasePK(contactTelephone.getContactMechanismPK());
+            var telephoneStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
                     TelephoneStatusConstants.Workflow_TELEPHONE_STATUS, entityInstance);
             
             contactTelephoneTransfer = new ContactTelephoneTransfer(countryGeoCode, areaCode, telephoneNumber, telephoneExtension,

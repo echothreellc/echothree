@@ -80,7 +80,7 @@ public class GetPaymentProcessorTransactionCodesCommand
     
     @Override
     protected BaseResult getResult(Collection<PaymentProcessorTransactionCode> entities) {
-        GetPaymentProcessorTransactionCodesResult result = PaymentResultFactory.getGetPaymentProcessorTransactionCodesResult();
+        var result = PaymentResultFactory.getGetPaymentProcessorTransactionCodesResult();
         var paymentProcessorTransactionCodeControl = Session.getModelController(PaymentProcessorTransactionCodeControl.class);
         
         result.setPaymentProcessorTransactionCodes(paymentProcessorTransactionCodeControl.getPaymentProcessorTransactionCodeTransfers(getUserVisit(), entities));

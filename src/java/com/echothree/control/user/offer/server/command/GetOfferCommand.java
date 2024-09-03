@@ -74,7 +74,7 @@ public class GetOfferCommand
     
     @Override
     protected Offer getEntity() {
-        Offer offer = OfferLogic.getInstance().getOfferByUniversalSpec(this, form, true);
+        var offer = OfferLogic.getInstance().getOfferByUniversalSpec(this, form, true);
 
         if(offer != null) {
             sendEvent(offer.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -90,7 +90,7 @@ public class GetOfferCommand
         if(offer != null) {
             var offerControl = Session.getModelController(OfferControl.class);
             var offerNameElementControl = Session.getModelController(OfferNameElementControl.class);
-            UserVisit userVisit = getUserVisit();
+            var userVisit = getUserVisit();
             
             result.setOffer(offerControl.getOfferTransfer(userVisit, offer));
             result.setOfferNameElements(offerNameElementControl.getOfferNameElementTransfers(userVisit));

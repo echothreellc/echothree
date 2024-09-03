@@ -52,12 +52,12 @@ public class GetPrinterStatusChoicesCommand
    @Override
     protected BaseResult execute() {
         var printerControl = Session.getModelController(PrinterControl.class);
-        GetPrinterStatusChoicesResult result = PrinterResultFactory.getGetPrinterStatusChoicesResult();
-        String printerName = form.getPrinterName();
-        Printer printer = printerControl.getPrinterByName(printerName);
+       var result = PrinterResultFactory.getGetPrinterStatusChoicesResult();
+       var printerName = form.getPrinterName();
+       var printer = printerControl.getPrinterByName(printerName);
         
         if(printer != null) {
-            String defaultPrinterStatusChoice = form.getDefaultPrinterStatusChoice();
+            var defaultPrinterStatusChoice = form.getDefaultPrinterStatusChoice();
             
             result.setPrinterStatusChoices(printerControl.getPrinterStatusChoices(defaultPrinterStatusChoice, getPreferredLanguage(), printer, getPartyPK()));
         } else {

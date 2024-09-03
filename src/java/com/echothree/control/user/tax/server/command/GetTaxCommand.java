@@ -52,9 +52,9 @@ public class GetTaxCommand
     @Override
     protected BaseResult execute() {
         var taxControl = Session.getModelController(TaxControl.class);
-        GetTaxResult result = TaxResultFactory.getGetTaxResult();
-        String taxName = form.getTaxName();
-        Tax tax = taxControl.getTaxByName(taxName);
+        var result = TaxResultFactory.getGetTaxResult();
+        var taxName = form.getTaxName();
+        var tax = taxControl.getTaxByName(taxName);
         
         if(tax != null) {
             result.setTax(taxControl.getTaxTransfer(getUserVisit(), tax));

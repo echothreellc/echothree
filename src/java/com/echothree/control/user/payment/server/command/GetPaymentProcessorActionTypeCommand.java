@@ -56,7 +56,7 @@ public class GetPaymentProcessorActionTypeCommand
     
     @Override
     protected PaymentProcessorActionType getEntity() {
-        PaymentProcessorActionType paymentProcessorActionType = PaymentProcessorActionTypeLogic.getInstance().getPaymentProcessorActionTypeByUniversalSpec(this, form, true);
+        var paymentProcessorActionType = PaymentProcessorActionTypeLogic.getInstance().getPaymentProcessorActionTypeByUniversalSpec(this, form, true);
 
         if(paymentProcessorActionType != null) {
             sendEvent(paymentProcessorActionType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -68,7 +68,7 @@ public class GetPaymentProcessorActionTypeCommand
     @Override
     protected BaseResult getResult(PaymentProcessorActionType paymentProcessorActionType) {
         var paymentProcessorActionTypeControl = Session.getModelController(PaymentProcessorActionTypeControl.class);
-        GetPaymentProcessorActionTypeResult result = PaymentResultFactory.getGetPaymentProcessorActionTypeResult();
+        var result = PaymentResultFactory.getGetPaymentProcessorActionTypeResult();
 
         if(paymentProcessorActionType != null) {
             result.setPaymentProcessorActionType(paymentProcessorActionTypeControl.getPaymentProcessorActionTypeTransfer(getUserVisit(), paymentProcessorActionType));

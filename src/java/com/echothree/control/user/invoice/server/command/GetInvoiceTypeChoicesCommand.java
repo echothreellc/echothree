@@ -63,9 +63,9 @@ public class GetInvoiceTypeChoicesCommand
     @Override
     protected BaseResult execute() {
         var invoiceControl = Session.getModelController(InvoiceControl.class);
-        GetInvoiceTypeChoicesResult result = InvoiceResultFactory.getGetInvoiceTypeChoicesResult();
-        String defaultInvoiceTypeChoice = form.getDefaultInvoiceTypeChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = InvoiceResultFactory.getGetInvoiceTypeChoicesResult();
+        var defaultInvoiceTypeChoice = form.getDefaultInvoiceTypeChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setInvoiceTypeChoices(invoiceControl.getInvoiceTypeChoices(defaultInvoiceTypeChoice, getPreferredLanguage(),
                 allowNullChoice));

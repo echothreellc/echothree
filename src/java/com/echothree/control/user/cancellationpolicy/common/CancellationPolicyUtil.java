@@ -30,7 +30,7 @@ public class CancellationPolicyUtil {
     public static CancellationPolicyLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
 
             cachedLocal = (CancellationPolicyLocal)ctx.lookup("ejb:echothree/echothree-server/CancellationPolicyBean!com.echothree.control.user.cancellationpolicy.server.CancellationPolicyLocal");
         }
@@ -42,7 +42,7 @@ public class CancellationPolicyUtil {
     public static CancellationPolicyRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
             
             cachedRemote = (CancellationPolicyRemote)ctx.lookup("ejb:echothree/echothree-server/CancellationPolicyBean!com.echothree.control.user.cancellationpolicy.common.CancellationPolicyRemote");
         }

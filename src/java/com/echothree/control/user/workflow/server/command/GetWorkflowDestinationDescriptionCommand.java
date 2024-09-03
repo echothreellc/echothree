@@ -73,25 +73,25 @@ public class GetWorkflowDestinationDescriptionCommand
     @Override
     protected BaseResult execute() {
         var workflowControl = Session.getModelController(WorkflowControl.class);
-        GetWorkflowDestinationDescriptionResult result = WorkflowResultFactory.getGetWorkflowDestinationDescriptionResult();
-        String workflowName = form.getWorkflowName();
+        var result = WorkflowResultFactory.getGetWorkflowDestinationDescriptionResult();
+        var workflowName = form.getWorkflowName();
         var workflow = workflowControl.getWorkflowByName(workflowName);
         
         if(workflow != null) {
-            String workflowStepName = form.getWorkflowStepName();
+            var workflowStepName = form.getWorkflowStepName();
             var workflowStep = workflowControl.getWorkflowStepByName(workflow, workflowStepName);
             
             if(workflowStep != null) {
-                String workflowDestinationName = form.getWorkflowDestinationName();
-                WorkflowDestination workflowDestination = workflowControl.getWorkflowDestinationByName(workflowStep, workflowDestinationName);
+                var workflowDestinationName = form.getWorkflowDestinationName();
+                var workflowDestination = workflowControl.getWorkflowDestinationByName(workflowStep, workflowDestinationName);
                 
                 if(workflowDestination != null) {
                     var partyControl = Session.getModelController(PartyControl.class);
-                    String languageIsoName = form.getLanguageIsoName();
-                    Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                    var languageIsoName = form.getLanguageIsoName();
+                    var language = partyControl.getLanguageByIsoName(languageIsoName);
                     
                     if(language != null) {
-                        WorkflowDestinationDescription workflowDestinationDescription = workflowControl.getWorkflowDestinationDescription(workflowDestination, language);
+                        var workflowDestinationDescription = workflowControl.getWorkflowDestinationDescription(workflowDestination, language);
                         
                         if(workflowDestinationDescription != null) {
                             result.setWorkflowDestinationDescription(workflowControl.getWorkflowDestinationDescriptionTransfer(getUserVisit(), workflowDestinationDescription));

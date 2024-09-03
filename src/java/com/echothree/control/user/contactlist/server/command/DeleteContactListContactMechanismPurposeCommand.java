@@ -67,16 +67,16 @@ public class DeleteContactListContactMechanismPurposeCommand
     
     @Override
     protected BaseResult execute() {
-        String contactListName = form.getContactListName();
-        ContactList contactList = ContactListLogic.getInstance().getContactListByName(this, contactListName);
+        var contactListName = form.getContactListName();
+        var contactList = ContactListLogic.getInstance().getContactListByName(this, contactListName);
         
         if(!hasExecutionErrors()) {
-            String contactMechanismPurposeName = form.getContactMechanismPurposeName();
-            ContactMechanismPurpose contactMechanismPurpose = ContactMechanismPurposeLogic.getInstance().getContactMechanismPurposeByName(this, contactMechanismPurposeName);
+            var contactMechanismPurposeName = form.getContactMechanismPurposeName();
+            var contactMechanismPurpose = ContactMechanismPurposeLogic.getInstance().getContactMechanismPurposeByName(this, contactMechanismPurposeName);
             
             if(!hasExecutionErrors()) {
                 var contactListControl = Session.getModelController(ContactListControl.class);
-                ContactListContactMechanismPurpose contactListContactMechanismPurpose = contactListControl.getContactListContactMechanismPurposeForUpdate(contactList, contactMechanismPurpose);
+                var contactListContactMechanismPurpose = contactListControl.getContactListContactMechanismPurposeForUpdate(contactList, contactMechanismPurpose);
                 
                 if(contactListContactMechanismPurpose != null) {
                     contactListControl.deleteContactListContactMechanismPurpose(contactListContactMechanismPurpose, getPartyPK());

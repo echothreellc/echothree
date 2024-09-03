@@ -88,8 +88,8 @@ public class HasSecurityRoleTag
     @Override
     public int doStartTag()
             throws JspException {
-        HashSet<String> pageSecurityRoles = (HashSet<String>)pageContext.getAttribute(WebConstants.Attribute_SECURITY_ROLES, PageContext.REQUEST_SCOPE);
-        boolean securityRoleFound = false;
+        var pageSecurityRoles = (HashSet<String>)pageContext.getAttribute(WebConstants.Attribute_SECURITY_ROLES, PageContext.REQUEST_SCOPE);
+        var securityRoleFound = false;
         
         if(pageSecurityRoles != null) {
             if(securityRole != null) {
@@ -97,10 +97,10 @@ public class HasSecurityRoleTag
                     securityRoleFound = true;
                 }
             } else if(securityRoles != null) {
-                String []securityRolesToCheck = Splitter.on(':').trimResults().omitEmptyStrings().splitToList(securityRoles).toArray(new String[0]);
-                int securityRolesToCheckLength = securityRolesToCheck.length;
+                var securityRolesToCheck = Splitter.on(':').trimResults().omitEmptyStrings().splitToList(securityRoles).toArray(new String[0]);
+                var securityRolesToCheckLength = securityRolesToCheck.length;
                 
-                for(int i = 0; i < securityRolesToCheckLength; i++) {
+                for(var i = 0; i < securityRolesToCheckLength; i++) {
                     if(pageSecurityRoles.contains(securityRolesToCheck[i])) {
                         securityRoleFound = true;
                         break;

@@ -71,28 +71,28 @@ public class CreateGeoCodeAliasCommand
     @Override
     protected BaseResult execute() {
         var geoControl = Session.getModelController(GeoControl.class);
-        String geoCodeName = form.getGeoCodeName();
-        GeoCode geoCode = geoControl.getGeoCodeByName(geoCodeName);
+        var geoCodeName = form.getGeoCodeName();
+        var geoCode = geoControl.getGeoCodeByName(geoCodeName);
 
         if(geoCode != null) {
-            GeoCodeType geoCodeType = geoCode.getLastDetail().getGeoCodeType();
-            String geoCodeAliasTypeName = form.getGeoCodeAliasTypeName();
-            GeoCodeAliasType geoCodeAliasType = geoControl.getGeoCodeAliasTypeByNameForUpdate(geoCodeType, geoCodeAliasTypeName);
+            var geoCodeType = geoCode.getLastDetail().getGeoCodeType();
+            var geoCodeAliasTypeName = form.getGeoCodeAliasTypeName();
+            var geoCodeAliasType = geoControl.getGeoCodeAliasTypeByNameForUpdate(geoCodeType, geoCodeAliasTypeName);
 
             if(geoCodeAliasType != null) {
-                GeoCodeScope geoCodeScope = geoCode.getLastDetail().getGeoCodeScope();
-                GeoCodeAlias geoCodeAlias = geoControl.getGeoCodeAliasForUpdate(geoCode, geoCodeAliasType);
-                String alias = form.getAlias();
+                var geoCodeScope = geoCode.getLastDetail().getGeoCodeScope();
+                var geoCodeAlias = geoControl.getGeoCodeAliasForUpdate(geoCode, geoCodeAliasType);
+                var alias = form.getAlias();
 
                 if(geoCodeAlias == null) {
                     geoCodeAlias = geoControl.getGeoCodeAliasByAliasWithinScope(geoCodeScope, geoCodeAliasType, alias);
 
                     if(geoCodeAlias == null) {
-                        String validationPattern = geoCodeAliasType.getLastDetail().getValidationPattern();
+                        var validationPattern = geoCodeAliasType.getLastDetail().getValidationPattern();
 
                         if(validationPattern != null) {
-                            Pattern pattern = Pattern.compile(validationPattern);
-                            Matcher m = pattern.matcher(alias);
+                            var pattern = Pattern.compile(validationPattern);
+                            var m = pattern.matcher(alias);
 
                             if(!m.matches()) {
                                 addExecutionError(ExecutionErrors.InvalidAlias.name(), alias);

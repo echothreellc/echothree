@@ -132,7 +132,7 @@ public class CommandResultObject {
     
     private List<MessageObject> getListOfSecurityMessages() {
         List<MessageObject> listOfMessages = null;
-        SecurityResult securityResult = commandResult.getSecurityResult();
+        var securityResult = commandResult.getSecurityResult();
 
         if(securityResult != null) {
             listOfMessages = getListOfMessages(securityResult.getSecurityMessages(), Messages.SECURITY_MESSAGE);
@@ -143,15 +143,15 @@ public class CommandResultObject {
 
     private List<MessageObject> getListOfValidationErrors() {
         List<MessageObject> listOfMessages = null;
-        ValidationResult validationResult = commandResult.getValidationResult();
-        Messages validationMessages = validationResult.getValidationMessages();
+        var validationResult = commandResult.getValidationResult();
+        var validationMessages = validationResult.getValidationMessages();
         
         if(!validationMessages.isEmpty()) {
-            Iterator<String> propertyIterator = validationMessages.properties();
+            var propertyIterator = validationMessages.properties();
             listOfMessages = new ArrayList<>();
 
             while(propertyIterator.hasNext()) {
-                String property = propertyIterator.next();
+                var property = propertyIterator.next();
                 
                 listOfMessages.addAll(getListOfMessages(validationMessages, property));
             }
@@ -162,7 +162,7 @@ public class CommandResultObject {
 
     private List<MessageObject> getListOfExecutionWarningsOrErrors(String property) {
         List<MessageObject> listOfMessages = null;
-        ExecutionResult executionResult = commandResult.getExecutionResult();
+        var executionResult = commandResult.getExecutionResult();
 
         if(executionResult != null) {
             listOfMessages = getListOfMessages(executionResult.getExecutionErrors(), property);
@@ -175,12 +175,12 @@ public class CommandResultObject {
         List<MessageObject> listOfMessages = null;
 
         if(messages != null) {
-            Iterator<Message> iterator = property == null ? messages.get() : messages.get(property);
+            var iterator = property == null ? messages.get() : messages.get(property);
 
             listOfMessages = new ArrayList<>();
 
-            for (Iterator<Message> i = iterator; i.hasNext(); ) {
-                Message e = i.next();
+            for (var i = iterator; i.hasNext(); ) {
+                var e = i.next();
 
                 listOfMessages.add(new MessageObject(property, e.getKey(), e.getMessage()));
             }

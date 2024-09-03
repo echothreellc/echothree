@@ -114,7 +114,7 @@ public class GetEntityListItemResultsTag
     @Override
     public int doStartTag() throws JspException {
         try {
-            GetEntityListItemResultsForm commandForm = SearchUtil.getHome().getGetEntityListItemResultsForm();
+            var commandForm = SearchUtil.getHome().getGetEntityListItemResultsForm();
             Map<String, Limit> limits = new HashMap<>();
             
             commandForm.setSearchTypeName(searchTypeName);
@@ -127,8 +127,8 @@ public class GetEntityListItemResultsTag
                 limits.put(SearchResultConstants.ENTITY_TYPE_NAME, new Limit(entityListItemResultCount, entityListItemResultOffset));
             }
             commandForm.setLimits(limits);
-            
-            CommandResult commandResult = SearchUtil.getHome().getEntityListItemResults(getUserVisitPK(), commandForm);
+
+            var commandResult = SearchUtil.getHome().getEntityListItemResults(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -136,8 +136,8 @@ public class GetEntityListItemResultsTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetEntityListItemResultsResult result = (GetEntityListItemResultsResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetEntityListItemResultsResult)executionResult.getResult();
 
                 pageContext.setAttribute(var, new ListWrapper<>(result.getEntityListItemResults()), scope);
 

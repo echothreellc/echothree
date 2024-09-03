@@ -53,16 +53,16 @@ public class DeleteShipmentTypeShippingMethodCommand
     @Override
     protected BaseResult execute() {
         var shipmentControl = Session.getModelController(ShipmentControl.class);
-        String shipmentTypeName = form.getShipmentTypeName();
-        ShipmentType shipmentType = shipmentControl.getShipmentTypeByName(shipmentTypeName);
+        var shipmentTypeName = form.getShipmentTypeName();
+        var shipmentType = shipmentControl.getShipmentTypeByName(shipmentTypeName);
         
         if(shipmentType != null) {
             var shippingControl = Session.getModelController(ShippingControl.class);
-            String shippingMethodName = form.getShippingMethodName();
-            ShippingMethod shippingMethod = shippingControl.getShippingMethodByName(shippingMethodName);
+            var shippingMethodName = form.getShippingMethodName();
+            var shippingMethod = shippingControl.getShippingMethodByName(shippingMethodName);
             
             if(shippingMethod != null) {
-                ShipmentTypeShippingMethod shipmentTypeShippingMethod = shipmentControl.getShipmentTypeShippingMethodForUpdate(shipmentType,
+                var shipmentTypeShippingMethod = shipmentControl.getShipmentTypeShippingMethodForUpdate(shipmentType,
                         shippingMethod);
                 
                 if(shipmentTypeShippingMethod != null) {

@@ -55,20 +55,20 @@ public class GetContactMechanismCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        GetContactMechanismResult result = ContactResultFactory.getGetContactMechanismResult();
-        String partyName = form.getPartyName();
-        Party party = partyName == null ? null : partyControl.getPartyByName(partyName);
+        var result = ContactResultFactory.getGetContactMechanismResult();
+        var partyName = form.getPartyName();
+        var party = partyName == null ? null : partyControl.getPartyByName(partyName);
 
         if(partyName == null || party != null) {
             var contactControl = Session.getModelController(ContactControl.class);
-            String contactMechanismName = form.getContactMechanismName();
-            ContactMechanism contactMechanism = contactControl.getContactMechanismByName(contactMechanismName);
+            var contactMechanismName = form.getContactMechanismName();
+            var contactMechanism = contactControl.getContactMechanismByName(contactMechanismName);
 
             if(contactMechanism != null) {
                 if(partyName == null) {
                     result.setContactMechanism(contactControl.getContactMechanismTransfer(getUserVisit(), contactMechanism));
                 } else {
-                    PartyContactMechanism partyContactMechanism = contactControl.getPartyContactMechanism(party, contactMechanism);
+                    var partyContactMechanism = contactControl.getPartyContactMechanism(party, contactMechanism);
 
                     if(partyContactMechanism != null) {
                         result.setPartyContactMechanism(contactControl.getPartyContactMechanismTransfer(getUserVisit(), partyContactMechanism));

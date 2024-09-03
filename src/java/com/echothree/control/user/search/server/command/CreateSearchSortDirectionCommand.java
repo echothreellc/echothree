@@ -66,8 +66,8 @@ public class CreateSearchSortDirectionCommand
     @Override
     protected BaseResult execute() {
         var searchControl = Session.getModelController(SearchControl.class);
-        String searchSortDirectionName = form.getSearchSortDirectionName();
-        SearchSortDirection searchSortDirection = searchControl.getSearchSortDirectionByName(searchSortDirectionName);
+        var searchSortDirectionName = form.getSearchSortDirectionName();
+        var searchSortDirection = searchControl.getSearchSortDirectionByName(searchSortDirectionName);
         
         if(searchSortDirection == null) {
             var partyPK = getPartyPK();

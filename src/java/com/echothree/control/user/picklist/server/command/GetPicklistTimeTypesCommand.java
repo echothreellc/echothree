@@ -65,9 +65,9 @@ public class GetPicklistTimeTypesCommand
     @Override
     protected BaseResult execute() {
         var picklistControl = Session.getModelController(PicklistControl.class);
-        GetPicklistTimeTypesResult result = PicklistResultFactory.getGetPicklistTimeTypesResult();
-        String picklistTypeName = form.getPicklistTypeName();
-        PicklistType picklistType = picklistControl.getPicklistTypeByName(picklistTypeName);
+        var result = PicklistResultFactory.getGetPicklistTimeTypesResult();
+        var picklistTypeName = form.getPicklistTypeName();
+        var picklistType = picklistControl.getPicklistTypeByName(picklistTypeName);
 
         if(picklistType != null) {
             result.setPicklistTimeTypes(picklistControl.getPicklistTimeTypeTransfers(getUserVisit(), picklistType));

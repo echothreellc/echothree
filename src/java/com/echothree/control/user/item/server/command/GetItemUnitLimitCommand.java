@@ -59,23 +59,23 @@ public class GetItemUnitLimitCommand
     @Override
     protected BaseResult execute() {
         var itemControl = Session.getModelController(ItemControl.class);
-        GetItemUnitLimitResult result = ItemResultFactory.getGetItemUnitLimitResult();
-        String itemName = form.getItemName();
-        Item item = itemControl.getItemByName(itemName);
+        var result = ItemResultFactory.getGetItemUnitLimitResult();
+        var itemName = form.getItemName();
+        var item = itemControl.getItemByName(itemName);
         
         if(item != null) {
             var inventoryControl = Session.getModelController(InventoryControl.class);
-            String inventoryConditionName = form.getInventoryConditionName();
-            InventoryCondition inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
+            var inventoryConditionName = form.getInventoryConditionName();
+            var inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
             
             if(inventoryCondition != null) {
                 var uomControl = Session.getModelController(UomControl.class);
-                String unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
-                UnitOfMeasureKind unitOfMeasureKind = item.getLastDetail().getUnitOfMeasureKind();
-                UnitOfMeasureType unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
+                var unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
+                var unitOfMeasureKind = item.getLastDetail().getUnitOfMeasureKind();
+                var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
                 
                 if(unitOfMeasureType != null) {
-                    ItemUnitLimit itemUnitLimit = itemControl.getItemUnitLimit(item, inventoryCondition, unitOfMeasureType);
+                    var itemUnitLimit = itemControl.getItemUnitLimit(item, inventoryCondition, unitOfMeasureType);
                     
                     if(itemUnitLimit != null) {
                         result.setItemUnitLimit(itemControl.getItemUnitLimitTransfer(getUserVisit(), itemUnitLimit));

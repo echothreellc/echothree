@@ -75,34 +75,34 @@ public class EditInventoryLocationGroupVolumeCommand
     @Override
     protected BaseResult execute() {
         var warehouseControl = Session.getModelController(WarehouseControl.class);
-        EditInventoryLocationGroupVolumeResult result = InventoryResultFactory.getEditInventoryLocationGroupVolumeResult();
-        String warehouseName = spec.getWarehouseName();
-        Warehouse warehouse = warehouseControl.getWarehouseByName(warehouseName);
+        var result = InventoryResultFactory.getEditInventoryLocationGroupVolumeResult();
+        var warehouseName = spec.getWarehouseName();
+        var warehouse = warehouseControl.getWarehouseByName(warehouseName);
         
         if(warehouse != null) {
             var inventoryControl = Session.getModelController(InventoryControl.class);
-            String inventoryLocationGroupName = spec.getInventoryLocationGroupName();
-            InventoryLocationGroup inventoryLocationGroup = inventoryControl.getInventoryLocationGroupByName(warehouse.getParty(), inventoryLocationGroupName);
+            var inventoryLocationGroupName = spec.getInventoryLocationGroupName();
+            var inventoryLocationGroup = inventoryControl.getInventoryLocationGroupByName(warehouse.getParty(), inventoryLocationGroupName);
             
             if(inventoryLocationGroup != null) {
                 var uomControl = Session.getModelController(UomControl.class);
-                UnitOfMeasureKind volumeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_VOLUME);
+                var volumeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_VOLUME);
                 
                 if(volumeUnitOfMeasureKind != null) {
                     if(editMode.equals(EditMode.LOCK)) {
-                        InventoryLocationGroupVolume inventoryLocationGroupVolume = inventoryControl.getInventoryLocationGroupVolume(inventoryLocationGroup);
+                        var inventoryLocationGroupVolume = inventoryControl.getInventoryLocationGroupVolume(inventoryLocationGroup);
                         
                         if(inventoryLocationGroupVolume != null) {
                             result.setInventoryLocationGroupVolume(inventoryControl.getInventoryLocationGroupVolumeTransfer(getUserVisit(), inventoryLocationGroupVolume));
                             
                             if(lockEntity(inventoryLocationGroup)) {
-                                InventoryLocationGroupVolumeEdit edit = InventoryEditFactory.getInventoryLocationGroupVolumeEdit();
-                                Long height = inventoryLocationGroupVolume.getHeight();
-                                Conversion heightConversion = height == null? null: new Conversion(uomControl, volumeUnitOfMeasureKind, height).convertToHighestUnitOfMeasureType();
-                                Long width = inventoryLocationGroupVolume.getWidth();
-                                Conversion widthConversion = width == null? null: new Conversion(uomControl, volumeUnitOfMeasureKind, width).convertToHighestUnitOfMeasureType();
-                                Long depth = inventoryLocationGroupVolume.getDepth();
-                                Conversion depthConversion = depth == null? null: new Conversion(uomControl, volumeUnitOfMeasureKind, depth).convertToHighestUnitOfMeasureType();
+                                var edit = InventoryEditFactory.getInventoryLocationGroupVolumeEdit();
+                                var height = inventoryLocationGroupVolume.getHeight();
+                                var heightConversion = height == null? null: new Conversion(uomControl, volumeUnitOfMeasureKind, height).convertToHighestUnitOfMeasureType();
+                                var width = inventoryLocationGroupVolume.getWidth();
+                                var widthConversion = width == null? null: new Conversion(uomControl, volumeUnitOfMeasureKind, width).convertToHighestUnitOfMeasureType();
+                                var depth = inventoryLocationGroupVolume.getDepth();
+                                var depthConversion = depth == null? null: new Conversion(uomControl, volumeUnitOfMeasureKind, depth).convertToHighestUnitOfMeasureType();
                                 
                                 result.setEdit(edit);
                                 edit.setHeight(heightConversion.getQuantity().toString());
@@ -120,39 +120,39 @@ public class EditInventoryLocationGroupVolumeCommand
                             addExecutionError(ExecutionErrors.UnknownInventoryLocationGroupVolume.name());
                         }
                     } else if(editMode.equals(EditMode.UPDATE)) {
-                        InventoryLocationGroupVolume inventoryLocationGroupVolume = inventoryControl.getInventoryLocationGroupVolumeForUpdate(inventoryLocationGroup);
+                        var inventoryLocationGroupVolume = inventoryControl.getInventoryLocationGroupVolumeForUpdate(inventoryLocationGroup);
                         
                         if(inventoryLocationGroupVolume != null) {
-                            String heightUnitOfMeasureTypeName = edit.getHeightUnitOfMeasureTypeName();
-                            UnitOfMeasureType heightUnitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(volumeUnitOfMeasureKind,
+                            var heightUnitOfMeasureTypeName = edit.getHeightUnitOfMeasureTypeName();
+                            var heightUnitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(volumeUnitOfMeasureKind,
                                     heightUnitOfMeasureTypeName);
                             
                             if(heightUnitOfMeasureType != null) {
-                                Long height = Long.valueOf(edit.getHeight());
+                                var height = Long.valueOf(edit.getHeight());
                                 
                                 if(height > 0) {
-                                    String widthUnitOfMeasureTypeName = edit.getWidthUnitOfMeasureTypeName();
-                                    UnitOfMeasureType widthUnitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(volumeUnitOfMeasureKind,
+                                    var widthUnitOfMeasureTypeName = edit.getWidthUnitOfMeasureTypeName();
+                                    var widthUnitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(volumeUnitOfMeasureKind,
                                             widthUnitOfMeasureTypeName);
                                     
                                     if(widthUnitOfMeasureType != null) {
-                                        Long width = Long.valueOf(edit.getWidth());
+                                        var width = Long.valueOf(edit.getWidth());
                                         
                                         if(width > 0) {
-                                            String depthUnitOfMeasureTypeName = edit.getDepthUnitOfMeasureTypeName();
-                                            UnitOfMeasureType depthUnitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(volumeUnitOfMeasureKind,
+                                            var depthUnitOfMeasureTypeName = edit.getDepthUnitOfMeasureTypeName();
+                                            var depthUnitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(volumeUnitOfMeasureKind,
                                                     depthUnitOfMeasureTypeName);
                                             
                                             if(depthUnitOfMeasureType != null) {
-                                                Long depth = Long.valueOf(edit.getDepth());
+                                                var depth = Long.valueOf(edit.getDepth());
                                                 
                                                 if(depth > 0) {
                                                     if(lockEntityForUpdate(inventoryLocationGroup)) {
                                                         try {
                                                             var inventoryLocationGroupVolumeValue = inventoryControl.getInventoryLocationGroupVolumeValueForUpdate(inventoryLocationGroupVolume);
-                                                            Conversion heightConversion = new Conversion(uomControl, heightUnitOfMeasureType, height).convertToLowestUnitOfMeasureType();
-                                                            Conversion widthConversion = new Conversion(uomControl, widthUnitOfMeasureType, width).convertToLowestUnitOfMeasureType();
-                                                            Conversion depthConversion = new Conversion(uomControl, depthUnitOfMeasureType, depth).convertToLowestUnitOfMeasureType();
+                                                            var heightConversion = new Conversion(uomControl, heightUnitOfMeasureType, height).convertToLowestUnitOfMeasureType();
+                                                            var widthConversion = new Conversion(uomControl, widthUnitOfMeasureType, width).convertToLowestUnitOfMeasureType();
+                                                            var depthConversion = new Conversion(uomControl, depthUnitOfMeasureType, depth).convertToLowestUnitOfMeasureType();
                                                             
                                                             inventoryLocationGroupVolumeValue.setHeight(heightConversion.getQuantity());
                                                             inventoryLocationGroupVolumeValue.setWidth(widthConversion.getQuantity());

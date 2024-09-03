@@ -36,11 +36,11 @@ public class ShipmentTimeTypeDescriptionTransferCache
 
     @Override
     public ShipmentTimeTypeDescriptionTransfer getTransfer(ShipmentTimeTypeDescription shipmentTimeTypeDescription) {
-        ShipmentTimeTypeDescriptionTransfer shipmentTimeTypeDescriptionTransfer = get(shipmentTimeTypeDescription);
+        var shipmentTimeTypeDescriptionTransfer = get(shipmentTimeTypeDescription);
         
         if(shipmentTimeTypeDescriptionTransfer == null) {
-            ShipmentTimeTypeTransfer shipmentTimeTypeTransfer = shipmentControl.getShipmentTimeTypeTransfer(userVisit, shipmentTimeTypeDescription.getShipmentTimeType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, shipmentTimeTypeDescription.getLanguage());
+            var shipmentTimeTypeTransfer = shipmentControl.getShipmentTimeTypeTransfer(userVisit, shipmentTimeTypeDescription.getShipmentTimeType());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, shipmentTimeTypeDescription.getLanguage());
             
             shipmentTimeTypeDescriptionTransfer = new ShipmentTimeTypeDescriptionTransfer(languageTransfer, shipmentTimeTypeTransfer, shipmentTimeTypeDescription.getDescription());
             put(shipmentTimeTypeDescription, shipmentTimeTypeDescriptionTransfer);

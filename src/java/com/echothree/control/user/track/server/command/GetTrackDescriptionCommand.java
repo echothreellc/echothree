@@ -68,17 +68,17 @@ public class GetTrackDescriptionCommand
     @Override
     protected BaseResult execute() {
         var trackControl = Session.getModelController(TrackControl.class);
-        GetTrackDescriptionResult result = TrackResultFactory.getGetTrackDescriptionResult();
-        String trackName = form.getTrackName();
-        Track track = trackControl.getTrackByName(trackName);
+        var result = TrackResultFactory.getGetTrackDescriptionResult();
+        var trackName = form.getTrackName();
+        var track = trackControl.getTrackByName(trackName);
 
         if(track != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
-                TrackDescription trackDescription = trackControl.getTrackDescription(track, language);
+                var trackDescription = trackControl.getTrackDescription(track, language);
 
                 if(trackDescription != null) {
                     result.setTrackDescription(trackControl.getTrackDescriptionTransfer(getUserVisit(), trackDescription));

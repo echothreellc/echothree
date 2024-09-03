@@ -30,7 +30,7 @@ public class ContentUtil {
     public static ContentLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
 
             cachedLocal = (ContentLocal)ctx.lookup("ejb:echothree/echothree-server/ContentBean!com.echothree.control.user.content.server.ContentLocal");
         }
@@ -42,7 +42,7 @@ public class ContentUtil {
     public static ContentRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
             
             cachedRemote = (ContentRemote)ctx.lookup("ejb:echothree/echothree-server/ContentBean!com.echothree.control.user.content.common.ContentRemote");
         }

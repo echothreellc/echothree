@@ -68,29 +68,29 @@ public class EditWorkRequirementTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var workEffortControl = Session.getModelController(WorkEffortControl.class);
-        EditWorkRequirementTypeDescriptionResult result = WorkRequirementResultFactory.getEditWorkRequirementTypeDescriptionResult();
-        String workEffortTypeName = spec.getWorkEffortTypeName();
-        WorkEffortType workEffortType = workEffortControl.getWorkEffortTypeByName(workEffortTypeName);
+        var result = WorkRequirementResultFactory.getEditWorkRequirementTypeDescriptionResult();
+        var workEffortTypeName = spec.getWorkEffortTypeName();
+        var workEffortType = workEffortControl.getWorkEffortTypeByName(workEffortTypeName);
         
         if(workEffortType != null) {
             var workRequirementControl = Session.getModelController(WorkRequirementControl.class);
-            String workRequirementTypeName = spec.getWorkRequirementTypeName();
-            WorkRequirementType workRequirementType = workRequirementControl.getWorkRequirementTypeByName(workEffortType, workRequirementTypeName);
+            var workRequirementTypeName = spec.getWorkRequirementTypeName();
+            var workRequirementType = workRequirementControl.getWorkRequirementTypeByName(workEffortType, workRequirementTypeName);
             
             if(workRequirementType != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = spec.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = spec.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
                 
                 if(language != null) {
                     if(editMode.equals(EditMode.LOCK)) {
-                        WorkRequirementTypeDescription workRequirementTypeDescription = workRequirementControl.getWorkRequirementTypeDescription(workRequirementType, language);
+                        var workRequirementTypeDescription = workRequirementControl.getWorkRequirementTypeDescription(workRequirementType, language);
                         
                         if(workRequirementTypeDescription != null) {
                             result.setWorkRequirementTypeDescription(workRequirementControl.getWorkRequirementTypeDescriptionTransfer(getUserVisit(), workRequirementTypeDescription));
                             
                             if(lockEntity(workRequirementType)) {
-                                WorkRequirementTypeDescriptionEdit edit = WorkRequirementEditFactory.getWorkRequirementTypeDescriptionEdit();
+                                var edit = WorkRequirementEditFactory.getWorkRequirementTypeDescriptionEdit();
                                 
                                 result.setEdit(edit);
                                 edit.setDescription(workRequirementTypeDescription.getDescription());
@@ -103,12 +103,12 @@ public class EditWorkRequirementTypeDescriptionCommand
                             addExecutionError(ExecutionErrors.UnknownWorkRequirementTypeDescription.name());
                         }
                     } else if(editMode.equals(EditMode.UPDATE)) {
-                        WorkRequirementTypeDescriptionValue workRequirementTypeDescriptionValue = workRequirementControl.getWorkRequirementTypeDescriptionValueForUpdate(workRequirementType, language);
+                        var workRequirementTypeDescriptionValue = workRequirementControl.getWorkRequirementTypeDescriptionValueForUpdate(workRequirementType, language);
                         
                         if(workRequirementTypeDescriptionValue != null) {
                             if(lockEntityForUpdate(workRequirementType)) {
                                 try {
-                                    String description = edit.getDescription();
+                                    var description = edit.getDescription();
                                     
                                     workRequirementTypeDescriptionValue.setDescription(description);
                                     

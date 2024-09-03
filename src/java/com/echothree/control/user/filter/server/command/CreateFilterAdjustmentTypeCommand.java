@@ -64,9 +64,9 @@ public class CreateFilterAdjustmentTypeCommand
     
     @Override
     protected BaseResult execute() {
-        String filterAdjustmentTypeName = form.getFilterAdjustmentTypeName();
+        var filterAdjustmentTypeName = form.getFilterAdjustmentTypeName();
         var filterControl = Session.getModelController(FilterControl.class);
-        FilterAdjustmentType filterAdjustmentType = filterControl.getFilterAdjustmentTypeByName(filterAdjustmentTypeName);
+        var filterAdjustmentType = filterControl.getFilterAdjustmentTypeByName(filterAdjustmentTypeName);
         
         if(filterAdjustmentType == null) {
             var isDefault = Boolean.valueOf(form.getIsDefault());

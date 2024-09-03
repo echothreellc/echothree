@@ -96,15 +96,15 @@ public class EditPartyTrainingClassSessionPageCommand
     @Override
     public PartyTrainingClassSessionPage getEntity(EditPartyTrainingClassSessionPageResult result) {
         PartyTrainingClassSessionPage partyTrainingClassSessionPage = null;
-        PartyTrainingClass partyTrainingClass = PartyTrainingClassLogic.getInstance().getPartyTrainingClassByName(this, spec.getPartyTrainingClassName());
+        var partyTrainingClass = PartyTrainingClassLogic.getInstance().getPartyTrainingClassByName(this, spec.getPartyTrainingClassName());
         
         if(!hasExecutionErrors()) {
-            Integer partyTrainingClassSessionSequence = Integer.valueOf(spec.getPartyTrainingClassSessionSequence());
-            PartyTrainingClassSession partyTrainingClassSession = PartyTrainingClassSessionLogic.getInstance().getPartyTrainingClassSession(this,
+            var partyTrainingClassSessionSequence = Integer.valueOf(spec.getPartyTrainingClassSessionSequence());
+            var partyTrainingClassSession = PartyTrainingClassSessionLogic.getInstance().getPartyTrainingClassSession(this,
                     partyTrainingClass, partyTrainingClassSessionSequence);
             
             if(!hasExecutionErrors()) {
-                Integer partyTrainingClassSessionPageSequence = Integer.valueOf(spec.getPartyTrainingClassSessionPageSequence());
+                var partyTrainingClassSessionPageSequence = Integer.valueOf(spec.getPartyTrainingClassSessionPageSequence());
                 
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
                     partyTrainingClassSessionPage = PartyTrainingClassSessionLogic.getInstance().getPartyTrainingClassSessionPage(this,
@@ -133,9 +133,9 @@ public class EditPartyTrainingClassSessionPageCommand
     
     @Override
     public void doLock(PartyTrainingClassSessionPageEdit edit, PartyTrainingClassSessionPage partyTrainingClassSessionPage) {
-        DateUtils dateUtils = DateUtils.getInstance();
-        UserVisit userVisit = getUserVisit();
-        DateTimeFormat preferredDateTimeFormat = getPreferredDateTimeFormat();
+        var dateUtils = DateUtils.getInstance();
+        var userVisit = getUserVisit();
+        var preferredDateTimeFormat = getPreferredDateTimeFormat();
         
         edit.setTrainingClassPageName(partyTrainingClassSessionPage.getTrainingClassPage().getLastDetail().getTrainingClassPageName());
         edit.setReadingStartTime(dateUtils.formatTypicalDateTime(userVisit, preferredDateTimeFormat, partyTrainingClassSessionPage.getReadingStartTime()));
@@ -148,7 +148,7 @@ public class EditPartyTrainingClassSessionPageCommand
     
     @Override
     public void canUpdate(PartyTrainingClassSessionPage partyTrainingClassSessionPage) {
-        String strReadingEndTime = edit.getReadingEndTime();
+        var strReadingEndTime = edit.getReadingEndTime();
 
         trainingClassPage = TrainingClassLogic.getInstance().getTrainingClassPageByName(this,
                 partyTrainingClassSessionPage.getTrainingClassPage().getLastDetail().getTrainingClassSection(), edit.getTrainingClassPageName());
@@ -160,7 +160,7 @@ public class EditPartyTrainingClassSessionPageCommand
     public void doUpdate(PartyTrainingClassSessionPage partyTrainingClassSessionPage) {
         var trainingControl = Session.getModelController(TrainingControl.class);
         var partyPK = getPartyPK();
-        PartyTrainingClassSessionPageValue partyTrainingClassSessionPageValue = trainingControl.getPartyTrainingClassSessionPageValue(partyTrainingClassSessionPage);
+        var partyTrainingClassSessionPageValue = trainingControl.getPartyTrainingClassSessionPageValue(partyTrainingClassSessionPage);
 
         partyTrainingClassSessionPageValue.setTrainingClassPagePK(trainingClassPage.getPrimaryKey());
         partyTrainingClassSessionPageValue.setReadingStartTime(readingStartTime);

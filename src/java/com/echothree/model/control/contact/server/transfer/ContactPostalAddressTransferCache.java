@@ -54,31 +54,31 @@ public class ContactPostalAddressTransferCache
     }
     
     public ContactPostalAddressTransfer getContactPostalAddressTransfer(ContactPostalAddress contactPostalAddress) {
-        ContactPostalAddressTransfer contactPostalAddressTransfer = get(contactPostalAddress);
+        var contactPostalAddressTransfer = get(contactPostalAddress);
         
         if(contactPostalAddressTransfer == null) {
-            GeoControl geoControl = Session.getModelController(GeoControl.class);
-            PartyControl partyControl = Session.getModelController(PartyControl.class);
-            PersonalTitle personalTitle = contactPostalAddress.getPersonalTitle();
-            PersonalTitleTransfer personalTitleTransfer = personalTitle == null? null: partyControl.getPersonalTitleTransfer(userVisit, personalTitle);
-            String firstName = contactPostalAddress.getFirstName();
-            String middleName = contactPostalAddress.getMiddleName();
-            String lastName = contactPostalAddress.getLastName();
-            NameSuffix nameSuffix = contactPostalAddress.getNameSuffix();
-            NameSuffixTransfer nameSuffixTransfer = nameSuffix == null? null: partyControl.getNameSuffixTransfer(userVisit, nameSuffix);
-            String companyName = contactPostalAddress.getCompanyName();
-            String attention = contactPostalAddress.getAttention();
-            String address1 = contactPostalAddress.getAddress1();
-            String address2 = contactPostalAddress.getAddress2();
-            String address3 = contactPostalAddress.getAddress3();
-            GeoCode countyGeoCode = contactPostalAddress.getCountyGeoCode();
-            CountyTransfer countyGeoCodeTransfer = countyGeoCode == null? null: geoControl.getCountyTransfer(userVisit, countyGeoCode);
-            CountryTransfer countryGeoCodeTransfer = geoControl.getCountryTransfer(userVisit, contactPostalAddress.getCountryGeoCode());
-            Boolean isCommercial = contactPostalAddress.getIsCommercial();
-            
-            String city = contactPostalAddress.getCity();
-            GeoCode cityGeoCode = contactPostalAddress.getCityGeoCode();
-            CityTransfer cityGeoCodeTransfer = cityGeoCode == null? null: geoControl.getCityTransfer(userVisit, cityGeoCode);
+            var geoControl = Session.getModelController(GeoControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
+            var personalTitle = contactPostalAddress.getPersonalTitle();
+            var personalTitleTransfer = personalTitle == null? null: partyControl.getPersonalTitleTransfer(userVisit, personalTitle);
+            var firstName = contactPostalAddress.getFirstName();
+            var middleName = contactPostalAddress.getMiddleName();
+            var lastName = contactPostalAddress.getLastName();
+            var nameSuffix = contactPostalAddress.getNameSuffix();
+            var nameSuffixTransfer = nameSuffix == null? null: partyControl.getNameSuffixTransfer(userVisit, nameSuffix);
+            var companyName = contactPostalAddress.getCompanyName();
+            var attention = contactPostalAddress.getAttention();
+            var address1 = contactPostalAddress.getAddress1();
+            var address2 = contactPostalAddress.getAddress2();
+            var address3 = contactPostalAddress.getAddress3();
+            var countyGeoCode = contactPostalAddress.getCountyGeoCode();
+            var countyGeoCodeTransfer = countyGeoCode == null? null: geoControl.getCountyTransfer(userVisit, countyGeoCode);
+            var countryGeoCodeTransfer = geoControl.getCountryTransfer(userVisit, contactPostalAddress.getCountryGeoCode());
+            var isCommercial = contactPostalAddress.getIsCommercial();
+
+            var city = contactPostalAddress.getCity();
+            var cityGeoCode = contactPostalAddress.getCityGeoCode();
+            var cityGeoCodeTransfer = cityGeoCode == null? null: geoControl.getCityTransfer(userVisit, cityGeoCode);
             
             if(city == null && cityGeoCode != null) {
                 city = geoControl.getBestGeoCodeDescription(cityGeoCode, getLanguage());
@@ -87,10 +87,10 @@ public class ContactPostalAddressTransferCache
                     city = geoControl.getAliasForCity(cityGeoCode);
                 }
             }
-            
-            String state = contactPostalAddress.getState();
-            GeoCode stateGeoCode = contactPostalAddress.getStateGeoCode();
-            StateTransfer stateGeoCodeTransfer = stateGeoCode == null? null: geoControl.getStateTransfer(userVisit, stateGeoCode);
+
+            var state = contactPostalAddress.getState();
+            var stateGeoCode = contactPostalAddress.getStateGeoCode();
+            var stateGeoCodeTransfer = stateGeoCode == null? null: geoControl.getStateTransfer(userVisit, stateGeoCode);
             
             if(state == null && stateGeoCode != null) {
                 state = geoControl.getBestGeoCodeDescription(stateGeoCode, getLanguage());
@@ -99,10 +99,10 @@ public class ContactPostalAddressTransferCache
                     state = geoControl.getAliasForState(stateGeoCode);
                 }
             }
-            
-            String postalCode = contactPostalAddress.getPostalCode();
-            GeoCode postalCodeGeoCode = contactPostalAddress.getPostalCodeGeoCode();
-            PostalCodeTransfer postalCodeGeoCodeTransfer = postalCodeGeoCode == null? null: geoControl.getPostalCodeTransfer(userVisit, postalCodeGeoCode);
+
+            var postalCode = contactPostalAddress.getPostalCode();
+            var postalCodeGeoCode = contactPostalAddress.getPostalCodeGeoCode();
+            var postalCodeGeoCodeTransfer = postalCodeGeoCode == null? null: geoControl.getPostalCodeTransfer(userVisit, postalCodeGeoCode);
             
             if(postalCode == null && postalCodeGeoCode != null) {
                 postalCode = geoControl.getBestGeoCodeDescription(postalCodeGeoCode, getLanguage());
@@ -111,9 +111,9 @@ public class ContactPostalAddressTransferCache
                     postalCode = geoControl.getAliasForPostalCode(postalCodeGeoCode);
                 }
             }
-            
-            EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(contactPostalAddress.getContactMechanismPK());
-            WorkflowEntityStatusTransfer postalAddressStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
+
+            var entityInstance = coreControl.getEntityInstanceByBasePK(contactPostalAddress.getContactMechanismPK());
+            var postalAddressStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
                     PostalAddressStatusConstants.Workflow_POSTAL_ADDRESS_STATUS, entityInstance);
             
             contactPostalAddressTransfer = new ContactPostalAddressTransfer(personalTitleTransfer, firstName, middleName, lastName,

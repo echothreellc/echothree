@@ -63,8 +63,8 @@ public class DeleteCampaignContentCommand
     @Override
     protected BaseResult execute() {
         var campaignControl = Session.getModelController(CampaignControl.class);
-        String campaignContentName = form.getCampaignContentName();
-        CampaignContent campaignContent = campaignControl.getCampaignContentByNameForUpdate(campaignContentName);
+        var campaignContentName = form.getCampaignContentName();
+        var campaignContent = campaignControl.getCampaignContentByNameForUpdate(campaignContentName);
         
         if(campaignContent != null) {
             campaignControl.deleteCampaignContent(campaignContent, getPartyPK());

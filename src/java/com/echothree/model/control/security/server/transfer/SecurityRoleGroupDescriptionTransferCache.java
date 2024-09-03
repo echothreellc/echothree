@@ -32,12 +32,12 @@ public class SecurityRoleGroupDescriptionTransferCache
     }
     
     public SecurityRoleGroupDescriptionTransfer getSecurityRoleGroupDescriptionTransfer(SecurityRoleGroupDescription securityRoleGroupDescription) {
-        SecurityRoleGroupDescriptionTransfer securityRoleGroupDescriptionTransfer = get(securityRoleGroupDescription);
+        var securityRoleGroupDescriptionTransfer = get(securityRoleGroupDescription);
         
         if(securityRoleGroupDescriptionTransfer == null) {
-            SecurityRoleGroupTransferCache securityRoleGroupTransferCache = securityControl.getSecurityTransferCaches(userVisit).getSecurityRoleGroupTransferCache();
-            SecurityRoleGroupTransfer securityRoleGroupTransfer = securityRoleGroupTransferCache.getSecurityRoleGroupTransfer(securityRoleGroupDescription.getSecurityRoleGroup());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, securityRoleGroupDescription.getLanguage());
+            var securityRoleGroupTransferCache = securityControl.getSecurityTransferCaches(userVisit).getSecurityRoleGroupTransferCache();
+            var securityRoleGroupTransfer = securityRoleGroupTransferCache.getSecurityRoleGroupTransfer(securityRoleGroupDescription.getSecurityRoleGroup());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, securityRoleGroupDescription.getLanguage());
             
             securityRoleGroupDescriptionTransfer = new SecurityRoleGroupDescriptionTransfer(languageTransfer, securityRoleGroupTransfer, securityRoleGroupDescription.getDescription());
             put(securityRoleGroupDescription, securityRoleGroupDescriptionTransfer);

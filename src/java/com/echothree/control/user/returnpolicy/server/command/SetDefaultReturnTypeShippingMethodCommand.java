@@ -68,20 +68,20 @@ public class SetDefaultReturnTypeShippingMethodCommand
     @Override
     protected BaseResult execute() {
         var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
-        String returnKindName = form.getReturnKindName();
-        ReturnKind returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
+        var returnKindName = form.getReturnKindName();
+        var returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
         
         if(returnKind != null) {
-            String returnTypeName = form.getReturnTypeName();
-            ReturnType returnType = returnPolicyControl.getReturnTypeByName(returnKind, returnTypeName);
+            var returnTypeName = form.getReturnTypeName();
+            var returnType = returnPolicyControl.getReturnTypeByName(returnKind, returnTypeName);
             
             if(returnType != null) {
                 var shippingControl = Session.getModelController(ShippingControl.class);
-                String shippingMethodName = form.getShippingMethodName();
-                ShippingMethod shippingMethod = shippingControl.getShippingMethodByName(shippingMethodName);
+                var shippingMethodName = form.getShippingMethodName();
+                var shippingMethod = shippingControl.getShippingMethodByName(shippingMethodName);
                 
                 if(shippingMethod != null) {
-                    ReturnTypeShippingMethodValue returnTypeShippingMethodValue = returnPolicyControl.getReturnTypeShippingMethodValueForUpdate(returnType,
+                    var returnTypeShippingMethodValue = returnPolicyControl.getReturnTypeShippingMethodValueForUpdate(returnType,
                             shippingMethod);
                     
                     if(returnTypeShippingMethodValue != null) {

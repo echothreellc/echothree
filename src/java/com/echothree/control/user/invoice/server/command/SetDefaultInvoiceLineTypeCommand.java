@@ -64,12 +64,12 @@ public class SetDefaultInvoiceLineTypeCommand
     @Override
     protected BaseResult execute() {
         var invoiceControl = Session.getModelController(InvoiceControl.class);
-        String invoiceTypeName = form.getInvoiceTypeName();
-        InvoiceType invoiceType = invoiceControl.getInvoiceTypeByName(invoiceTypeName);
+        var invoiceTypeName = form.getInvoiceTypeName();
+        var invoiceType = invoiceControl.getInvoiceTypeByName(invoiceTypeName);
         
         if(invoiceType != null) {
-            String invoiceLineTypeName = form.getInvoiceLineTypeName();
-            InvoiceLineTypeDetailValue invoiceLineTypeDetailValue = invoiceControl.getInvoiceLineTypeDetailValueByNameForUpdate(invoiceType,
+            var invoiceLineTypeName = form.getInvoiceLineTypeName();
+            var invoiceLineTypeDetailValue = invoiceControl.getInvoiceLineTypeDetailValueByNameForUpdate(invoiceType,
                     invoiceLineTypeName);
             
             if(invoiceLineTypeDetailValue != null) {

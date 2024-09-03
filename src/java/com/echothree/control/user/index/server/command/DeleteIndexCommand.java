@@ -63,8 +63,8 @@ public class DeleteIndexCommand
     @Override
     protected BaseResult execute() {
         var indexControl = Session.getModelController(IndexControl.class);
-        String indexName = form.getIndexName();
-        Index index = indexControl.getIndexByNameForUpdate(indexName);
+        var indexName = form.getIndexName();
+        var index = indexControl.getIndexByNameForUpdate(indexName);
         
         if(index != null) {
             indexControl.deleteIndex(index, getPartyPK());

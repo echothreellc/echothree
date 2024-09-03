@@ -67,16 +67,16 @@ public class DeleteSequenceTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var sequenceControl = Session.getModelController(SequenceControl.class);
-        String sequenceTypeName = form.getSequenceTypeName();
-        SequenceType sequenceType = sequenceControl.getSequenceTypeByName(sequenceTypeName);
+        var sequenceTypeName = form.getSequenceTypeName();
+        var sequenceType = sequenceControl.getSequenceTypeByName(sequenceTypeName);
         
         if(sequenceType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                SequenceTypeDescription sequenceTypeDescription = sequenceControl.getSequenceTypeDescriptionForUpdate(sequenceType, language);
+                var sequenceTypeDescription = sequenceControl.getSequenceTypeDescriptionForUpdate(sequenceType, language);
                 
                 if(sequenceTypeDescription != null) {
                     sequenceControl.deleteSequenceTypeDescription(sequenceTypeDescription, getPartyPK());

@@ -66,13 +66,13 @@ public class GetCancellationPolicyChoicesCommand
     @Override
     protected BaseResult execute() {
         var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
-        GetCancellationPolicyChoicesResult result = CancellationPolicyResultFactory.getGetCancellationPolicyChoicesResult();
-        String cancellationKindName = form.getCancellationKindName();
-        CancellationKind cancellationKind = cancellationPolicyControl.getCancellationKindByName(cancellationKindName);
+        var result = CancellationPolicyResultFactory.getGetCancellationPolicyChoicesResult();
+        var cancellationKindName = form.getCancellationKindName();
+        var cancellationKind = cancellationPolicyControl.getCancellationKindByName(cancellationKindName);
         
         if(cancellationKind != null) {
-            String defaultCancellationPolicyChoice = form.getDefaultCancellationPolicyChoice();
-            boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+            var defaultCancellationPolicyChoice = form.getDefaultCancellationPolicyChoice();
+            var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
             
             result.setCancellationPolicyChoices(cancellationPolicyControl.getCancellationPolicyChoices(defaultCancellationPolicyChoice, getPreferredLanguage(),
                     allowNullChoice, cancellationKind));

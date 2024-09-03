@@ -63,8 +63,8 @@ public class DeleteShippingMethodCommand
     @Override
     protected BaseResult execute() {
         var shippingControl = Session.getModelController(ShippingControl.class);
-        String shippingMethodName = form.getShippingMethodName();
-        ShippingMethod shippingMethod = shippingControl.getShippingMethodByNameForUpdate(shippingMethodName);
+        var shippingMethodName = form.getShippingMethodName();
+        var shippingMethod = shippingControl.getShippingMethodByNameForUpdate(shippingMethodName);
         
         if(shippingMethod != null) {
             shippingControl.deleteShippingMethod(shippingMethod, getPartyPK());

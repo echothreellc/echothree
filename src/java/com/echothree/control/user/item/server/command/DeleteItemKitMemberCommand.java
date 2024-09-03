@@ -61,37 +61,37 @@ public class DeleteItemKitMemberCommand
     @Override
     protected BaseResult execute() {
         var itemControl = Session.getModelController(ItemControl.class);
-        String itemName = form.getItemName();
-        Item item = itemControl.getItemByName(itemName);
+        var itemName = form.getItemName();
+        var item = itemControl.getItemByName(itemName);
         
         if(item != null) {
-            ItemDetail itemDetail = item.getLastDetail();
-            String itemTypeName = itemDetail.getItemType().getItemTypeName();
+            var itemDetail = item.getLastDetail();
+            var itemTypeName = itemDetail.getItemType().getItemTypeName();
             
             if(itemTypeName.equals(ItemConstants.ItemType_KIT)) {
                 var inventoryControl = Session.getModelController(InventoryControl.class);
-                String inventoryConditionName = form.getInventoryConditionName();
-                InventoryCondition inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
+                var inventoryConditionName = form.getInventoryConditionName();
+                var inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
                 
                 if(inventoryCondition != null) {
                     var uomControl = Session.getModelController(UomControl.class);
-                    String unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
-                    UnitOfMeasureType unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(itemDetail.getUnitOfMeasureKind(), unitOfMeasureTypeName);
+                    var unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
+                    var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(itemDetail.getUnitOfMeasureKind(), unitOfMeasureTypeName);
                     
                     if(unitOfMeasureType != null) {
-                        String memberItemName = form.getMemberItemName();
-                        Item memberItem = itemControl.getItemByName(memberItemName);
+                        var memberItemName = form.getMemberItemName();
+                        var memberItem = itemControl.getItemByName(memberItemName);
                         
                         if(memberItem != null) {
-                            String memberInventoryConditionName = form.getMemberInventoryConditionName();
-                            InventoryCondition memberInventoryCondition = inventoryControl.getInventoryConditionByName(memberInventoryConditionName);
+                            var memberInventoryConditionName = form.getMemberInventoryConditionName();
+                            var memberInventoryCondition = inventoryControl.getInventoryConditionByName(memberInventoryConditionName);
                             
                             if(memberInventoryCondition != null) {
-                                String memberUnitOfMeasureTypeName = form.getMemberUnitOfMeasureTypeName();
-                                UnitOfMeasureType memberUnitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(memberItem.getLastDetail().getUnitOfMeasureKind(), memberUnitOfMeasureTypeName);
+                                var memberUnitOfMeasureTypeName = form.getMemberUnitOfMeasureTypeName();
+                                var memberUnitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(memberItem.getLastDetail().getUnitOfMeasureKind(), memberUnitOfMeasureTypeName);
                                 
                                 if(memberUnitOfMeasureType != null) {
-                                    ItemKitMember itemKitMember = itemControl.getItemKitMemberForUpdate(item, inventoryCondition,
+                                    var itemKitMember = itemControl.getItemKitMemberForUpdate(item, inventoryCondition,
                                             unitOfMeasureType, memberItem, memberInventoryCondition, memberUnitOfMeasureType);
                                     
                                     if(itemKitMember != null) {

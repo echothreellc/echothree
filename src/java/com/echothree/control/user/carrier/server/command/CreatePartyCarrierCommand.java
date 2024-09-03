@@ -67,17 +67,17 @@ public class CreatePartyCarrierCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        String partyName = form.getPartyName();
-        Party party = partyControl.getPartyByName(partyName);
+        var partyName = form.getPartyName();
+        var party = partyControl.getPartyByName(partyName);
         
         if(party != null) {
             var carrierControl = Session.getModelController(CarrierControl.class);
-            String carrierName = form.getCarrierName();
-            Carrier carrier = carrierControl.getCarrierByName(carrierName);
+            var carrierName = form.getCarrierName();
+            var carrier = carrierControl.getCarrierByName(carrierName);
             
             if(carrier != null) {
-                Party carrierParty = carrier.getParty();
-                PartyCarrier partyCarrier = carrierControl.getPartyCarrier(party, carrierParty);
+                var carrierParty = carrier.getParty();
+                var partyCarrier = carrierControl.getPartyCarrier(party, carrierParty);
                 
                 if(partyCarrier == null) {
                     carrierControl.createPartyCarrier(party, carrierParty, getPartyPK());

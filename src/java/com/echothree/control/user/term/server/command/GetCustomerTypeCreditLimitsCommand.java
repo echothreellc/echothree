@@ -53,13 +53,13 @@ public class GetCustomerTypeCreditLimitsCommand
     @Override
     protected BaseResult execute() {
         var customerControl = Session.getModelController(CustomerControl.class);
-        GetCustomerTypeCreditLimitsResult result = TermResultFactory.getGetCustomerTypeCreditLimitsResult();
-        String customerTypeName = form.getCustomerTypeName();
-        CustomerType customerType = customerControl.getCustomerTypeByName(customerTypeName);
+        var result = TermResultFactory.getGetCustomerTypeCreditLimitsResult();
+        var customerTypeName = form.getCustomerTypeName();
+        var customerType = customerControl.getCustomerTypeByName(customerTypeName);
         
         if(customerType != null) {
             var termControl = Session.getModelController(TermControl.class);
-            UserVisit userVisit = getUserVisit();
+            var userVisit = getUserVisit();
             
             result.setCustomerType(customerControl.getCustomerTypeTransfer(userVisit, customerType));
             result.setCustomerTypeCreditLimits(termControl.getCustomerTypeCreditLimitTransfersByCustomerType(getUserVisit(),

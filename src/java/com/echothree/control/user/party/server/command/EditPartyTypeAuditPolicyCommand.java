@@ -70,26 +70,26 @@ public class EditPartyTypeAuditPolicyCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        EditPartyTypeAuditPolicyResult result = PartyResultFactory.getEditPartyTypeAuditPolicyResult();
-        String partyTypeName = spec.getPartyTypeName();
-        PartyType partyType = partyControl.getPartyTypeByName(partyTypeName);
+        var result = PartyResultFactory.getEditPartyTypeAuditPolicyResult();
+        var partyTypeName = spec.getPartyTypeName();
+        var partyType = partyControl.getPartyTypeByName(partyTypeName);
 
         if(partyType != null) {
-            PartyTypeAuditPolicy partyTypeAuditPolicy = partyControl.getPartyTypeAuditPolicy(partyType);
+            var partyTypeAuditPolicy = partyControl.getPartyTypeAuditPolicy(partyType);
 
             if(partyTypeAuditPolicy != null) {
                 var uomControl = Session.getModelController(UomControl.class);
-                UnitOfMeasureKind timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
+                var timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
 
                 if(timeUnitOfMeasureKind != null) {
                     if(editMode.equals(EditMode.LOCK)) {
                         result.setPartyType(partyControl.getPartyTypeTransfer(getUserVisit(), partyType));
 
                         if(lockEntity(partyTypeAuditPolicy)) {
-                            PartyTypeAuditPolicyEdit edit = PartyEditFactory.getPartyTypeAuditPolicyEdit();
-                            PartyTypeAuditPolicyDetail partyTypeAuditPolicyDetail = partyTypeAuditPolicy.getLastDetail();
-                            Long retainUserVisitsTime = partyTypeAuditPolicyDetail.getRetainUserVisitsTime();
-                            Conversion retainUserVisitsTimeConversion = retainUserVisitsTime == null ? null
+                            var edit = PartyEditFactory.getPartyTypeAuditPolicyEdit();
+                            var partyTypeAuditPolicyDetail = partyTypeAuditPolicy.getLastDetail();
+                            var retainUserVisitsTime = partyTypeAuditPolicyDetail.getRetainUserVisitsTime();
+                            var retainUserVisitsTimeConversion = retainUserVisitsTime == null ? null
                                     : new Conversion(uomControl, timeUnitOfMeasureKind, retainUserVisitsTime).convertToHighestUnitOfMeasureType();
 
                             result.setEdit(edit);
@@ -106,24 +106,24 @@ public class EditPartyTypeAuditPolicyCommand
                     } else if(editMode.equals(EditMode.ABANDON)) {
                         unlockEntity(partyTypeAuditPolicy);
                     } else if(editMode.equals(EditMode.UPDATE)) {
-                        PartyTypeAuditPolicyDetailValue partyTypeAuditPolicyDetailValue = partyControl.getPartyTypeAuditPolicyDetailValueForUpdate(partyTypeAuditPolicy);
+                        var partyTypeAuditPolicyDetailValue = partyControl.getPartyTypeAuditPolicyDetailValueForUpdate(partyTypeAuditPolicy);
 
                         if(partyTypeAuditPolicyDetailValue != null) {
-                            String rawRetainUserVisitsTime = edit.getRetainUserVisitsTime();
-                            String retainUserVisitsTimeUnitOfMeasureTypeName = edit.getRetainUserVisitsTimeUnitOfMeasureTypeName();
-                            int retainUserVisitsTimeParameterCount = (rawRetainUserVisitsTime == null ? 0 : 1) + (retainUserVisitsTimeUnitOfMeasureTypeName == null ? 0 : 1);
+                            var rawRetainUserVisitsTime = edit.getRetainUserVisitsTime();
+                            var retainUserVisitsTimeUnitOfMeasureTypeName = edit.getRetainUserVisitsTimeUnitOfMeasureTypeName();
+                            var retainUserVisitsTimeParameterCount = (rawRetainUserVisitsTime == null ? 0 : 1) + (retainUserVisitsTimeUnitOfMeasureTypeName == null ? 0 : 1);
 
                             if(retainUserVisitsTimeParameterCount == 0 || retainUserVisitsTimeParameterCount == 2) {
-                                UnitOfMeasureType retainUserVisitsTimeUnitOfMeasureType = retainUserVisitsTimeUnitOfMeasureTypeName == null ? null
+                                var retainUserVisitsTimeUnitOfMeasureType = retainUserVisitsTimeUnitOfMeasureTypeName == null ? null
                                         : uomControl.getUnitOfMeasureTypeByName(timeUnitOfMeasureKind, retainUserVisitsTimeUnitOfMeasureTypeName);
 
                                 if(retainUserVisitsTimeUnitOfMeasureTypeName == null || retainUserVisitsTimeUnitOfMeasureType != null) {
                                     if(lockEntityForUpdate(partyTypeAuditPolicy)) {
                                         try {
-                                            String rawAuditCommands = edit.getAuditCommands();
-                                            Boolean auditCommands = rawAuditCommands == null ? null : Boolean.valueOf(rawAuditCommands);
-                                            Long retainUserVisitsTime = rawRetainUserVisitsTime == null ? null : Long.valueOf(rawRetainUserVisitsTime);
-                                            Conversion retainUserVisitsTimeConversion = retainUserVisitsTime == null ? null
+                                            var rawAuditCommands = edit.getAuditCommands();
+                                            var auditCommands = rawAuditCommands == null ? null : Boolean.valueOf(rawAuditCommands);
+                                            var retainUserVisitsTime = rawRetainUserVisitsTime == null ? null : Long.valueOf(rawRetainUserVisitsTime);
+                                            var retainUserVisitsTimeConversion = retainUserVisitsTime == null ? null
                                                     : new Conversion(uomControl, retainUserVisitsTimeUnitOfMeasureType, retainUserVisitsTime).convertToLowestUnitOfMeasureType();
 
                                             partyTypeAuditPolicyDetailValue.setAuditCommands(auditCommands);

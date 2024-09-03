@@ -68,13 +68,13 @@ public class GetInvoiceTimeTypeCommand
     @Override
     protected BaseResult execute() {
         var invoiceControl = Session.getModelController(InvoiceControl.class);
-        GetInvoiceTimeTypeResult result = InvoiceResultFactory.getGetInvoiceTimeTypeResult();
-        String invoiceTypeName = form.getInvoiceTypeName();
-        InvoiceType invoiceType = invoiceControl.getInvoiceTypeByName(invoiceTypeName);
+        var result = InvoiceResultFactory.getGetInvoiceTimeTypeResult();
+        var invoiceTypeName = form.getInvoiceTypeName();
+        var invoiceType = invoiceControl.getInvoiceTypeByName(invoiceTypeName);
 
         if(invoiceType != null) {
-            String invoiceTimeTypeName = form.getInvoiceTimeTypeName();
-            InvoiceTimeType invoiceTimeType = invoiceControl.getInvoiceTimeTypeByName(invoiceType, invoiceTimeTypeName);
+            var invoiceTimeTypeName = form.getInvoiceTimeTypeName();
+            var invoiceTimeType = invoiceControl.getInvoiceTimeTypeByName(invoiceType, invoiceTimeTypeName);
 
             if(invoiceTimeType != null) {
                 result.setInvoiceTimeType(invoiceControl.getInvoiceTimeTypeTransfer(getUserVisit(), invoiceTimeType));

@@ -89,7 +89,7 @@ public class EditPartyPrinterGroupUseCommand
     @Override
     public PartyPrinterGroupUse getEntity(EditPartyPrinterGroupUseResult result) {
         PartyPrinterGroupUse partyPrinterGroupUse = null;
-        String partyName = spec.getPartyName();
+        var partyName = spec.getPartyName();
         Party party = null;
 
         if(partyName != null) {
@@ -106,8 +106,8 @@ public class EditPartyPrinterGroupUseCommand
 
         if(!hasExecutionErrors()) {
             var printerControl = Session.getModelController(PrinterControl.class);
-            String printerGroupUseTypeName = spec.getPrinterGroupUseTypeName();
-            PrinterGroupUseType printerGroupUseType = printerControl.getPrinterGroupUseTypeByName(printerGroupUseTypeName);
+            var printerGroupUseTypeName = spec.getPrinterGroupUseTypeName();
+            var printerGroupUseType = printerControl.getPrinterGroupUseTypeByName(printerGroupUseTypeName);
 
             if(printerGroupUseType != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -149,7 +149,7 @@ public class EditPartyPrinterGroupUseCommand
     @Override
     public void canUpdate(PartyPrinterGroupUse partyPrinterGroupUse) {
         var printerControl = Session.getModelController(PrinterControl.class);
-        String printerGroupName = edit.getPrinterGroupName();
+        var printerGroupName = edit.getPrinterGroupName();
 
         printerGroup = printerControl.getPrinterGroupByName(printerGroupName);
 
@@ -161,7 +161,7 @@ public class EditPartyPrinterGroupUseCommand
     @Override
     public void doUpdate(PartyPrinterGroupUse partyPrinterGroupUse) {
         var printerControl = Session.getModelController(PrinterControl.class);
-        PartyPrinterGroupUseValue partyPrinterGroupUseValue = printerControl.getPartyPrinterGroupUseValue(partyPrinterGroupUse);
+        var partyPrinterGroupUseValue = printerControl.getPartyPrinterGroupUseValue(partyPrinterGroupUse);
 
         partyPrinterGroupUseValue.setPrinterGroupPK(printerGroup.getPrimaryKey());
 

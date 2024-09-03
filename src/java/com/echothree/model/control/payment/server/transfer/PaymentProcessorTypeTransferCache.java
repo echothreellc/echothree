@@ -37,14 +37,14 @@ public class PaymentProcessorTypeTransferCache
     
     @Override
     public PaymentProcessorTypeTransfer getTransfer(PaymentProcessorType paymentProcessorType) {
-        PaymentProcessorTypeTransfer paymentProcessorTypeTransfer = get(paymentProcessorType);
+        var paymentProcessorTypeTransfer = get(paymentProcessorType);
         
         if(paymentProcessorTypeTransfer == null) {
-            PaymentProcessorTypeDetail paymentProcessorTypeDetail = paymentProcessorType.getLastDetail();
-            String paymentProcessorTypeName = paymentProcessorTypeDetail.getPaymentProcessorTypeName();
-            Boolean isDefault = paymentProcessorTypeDetail.getIsDefault();
-            Integer sortOrder = paymentProcessorTypeDetail.getSortOrder();
-            String description = paymentProcessorTypeControl.getBestPaymentProcessorTypeDescription(paymentProcessorType, getLanguage());
+            var paymentProcessorTypeDetail = paymentProcessorType.getLastDetail();
+            var paymentProcessorTypeName = paymentProcessorTypeDetail.getPaymentProcessorTypeName();
+            var isDefault = paymentProcessorTypeDetail.getIsDefault();
+            var sortOrder = paymentProcessorTypeDetail.getSortOrder();
+            var description = paymentProcessorTypeControl.getBestPaymentProcessorTypeDescription(paymentProcessorType, getLanguage());
             
             paymentProcessorTypeTransfer = new PaymentProcessorTypeTransfer(paymentProcessorTypeName, isDefault, sortOrder, description);
             put(paymentProcessorType, paymentProcessorTypeTransfer);

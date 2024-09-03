@@ -68,13 +68,13 @@ public class GetShippingMethodChoicesCommand
     protected BaseResult execute() {
         var shipmentControl = Session.getModelController(ShipmentControl.class);
         var shippingControl = Session.getModelController(ShippingControl.class);
-        GetShippingMethodChoicesResult result = ShippingResultFactory.getGetShippingMethodChoicesResult();
-        String shipmentTypeName = form.getShipmentTypeName();
-        ShipmentType shipmentType = shipmentTypeName == null? null: shipmentControl.getShipmentTypeByName(shipmentTypeName);
+        var result = ShippingResultFactory.getGetShippingMethodChoicesResult();
+        var shipmentTypeName = form.getShipmentTypeName();
+        var shipmentType = shipmentTypeName == null? null: shipmentControl.getShipmentTypeByName(shipmentTypeName);
         
         if(shipmentTypeName == null || shipmentType != null) {
-            String defaultShippingMethodChoice = form.getDefaultShippingMethodChoice();
-            boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+            var defaultShippingMethodChoice = form.getDefaultShippingMethodChoice();
+            var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
             
             if(shipmentType == null) {
                 result.setShippingMethodChoices(shippingControl.getShippingMethodChoices(defaultShippingMethodChoice,

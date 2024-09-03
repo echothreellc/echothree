@@ -72,13 +72,13 @@ public class CreateLocationTypeCommand
     protected BaseResult execute() {
         var result = WarehouseResultFactory.getCreateLocationTypeResult();
         var warehouseControl = Session.getModelController(WarehouseControl.class);
-        String warehouseName = form.getWarehouseName();
-        Warehouse warehouse = warehouseControl.getWarehouseByName(warehouseName);
+        var warehouseName = form.getWarehouseName();
+        var warehouse = warehouseControl.getWarehouseByName(warehouseName);
         
         if(warehouse != null) {
-            Party warehouseParty = warehouse.getParty();
-            String locationTypeName = form.getLocationTypeName();
-            LocationType locationType = warehouseControl.getLocationTypeByName(warehouseParty, locationTypeName);
+            var warehouseParty = warehouse.getParty();
+            var locationTypeName = form.getLocationTypeName();
+            var locationType = warehouseControl.getLocationTypeByName(warehouseParty, locationTypeName);
             
             if(locationType == null) {
                 var isDefault = Boolean.valueOf(form.getIsDefault());

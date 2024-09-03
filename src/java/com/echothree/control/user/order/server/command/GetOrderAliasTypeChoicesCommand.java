@@ -67,14 +67,14 @@ public class GetOrderAliasTypeChoicesCommand
     @Override
     protected BaseResult execute() {
         var orderTypeControl = Session.getModelController(OrderTypeControl.class);
-        GetOrderAliasTypeChoicesResult result = OrderResultFactory.getGetOrderAliasTypeChoicesResult();
+        var result = OrderResultFactory.getGetOrderAliasTypeChoicesResult();
         var orderTypeName = form.getOrderTypeName();
         var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
             var orderAliasControl = Session.getModelController(OrderAliasControl.class);
-            String defaultOrderAliasTypeChoice = form.getDefaultOrderAliasTypeChoice();
-            boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+            var defaultOrderAliasTypeChoice = form.getDefaultOrderAliasTypeChoice();
+            var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 
             result.setOrderAliasTypeChoices(orderAliasControl.getOrderAliasTypeChoices(defaultOrderAliasTypeChoice, getPreferredLanguage(), allowNullChoice,
                     orderType));

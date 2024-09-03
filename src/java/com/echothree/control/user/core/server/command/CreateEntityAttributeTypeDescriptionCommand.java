@@ -67,16 +67,16 @@ public class CreateEntityAttributeTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String entityAttributeTypeName = form.getEntityAttributeTypeName();
-        EntityAttributeType entityAttributeType = coreControl.getEntityAttributeTypeByName(entityAttributeTypeName);
+        var entityAttributeTypeName = form.getEntityAttributeTypeName();
+        var entityAttributeType = coreControl.getEntityAttributeTypeByName(entityAttributeTypeName);
         
         if(entityAttributeType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                EntityAttributeTypeDescription entityAttributeTypeDescription = coreControl.getEntityAttributeTypeDescription(entityAttributeType, language);
+                var entityAttributeTypeDescription = coreControl.getEntityAttributeTypeDescription(entityAttributeType, language);
                 
                 if(entityAttributeTypeDescription == null) {
                     var description = form.getDescription();

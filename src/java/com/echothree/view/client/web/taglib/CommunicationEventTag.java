@@ -92,15 +92,15 @@ public class CommunicationEventTag
     public int doStartTag()
             throws JspException {
         try {
-            GetCommunicationEventForm commandForm = CommunicationUtil.getHome().getGetCommunicationEventForm();
+            var commandForm = CommunicationUtil.getHome().getGetCommunicationEventForm();
             
             commandForm.setCommunicationEventName(communicationEventName);
             
             setOptions(options, null, commandForm);
 
             commandForm.setTransferProperties(transferProperties);
-            
-            CommandResult commandResult = CommunicationUtil.getHome().getCommunicationEvent(getUserVisitPK(), commandForm);
+
+            var commandResult = CommunicationUtil.getHome().getCommunicationEvent(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -108,8 +108,8 @@ public class CommunicationEventTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetCommunicationEventResult result = (GetCommunicationEventResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetCommunicationEventResult)executionResult.getResult();
 
                 pageContext.setAttribute(var, result.getCommunicationEvent(), scope);
             }

@@ -59,26 +59,26 @@ public class CreatePartyContactMechanismAliasCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        String partyName = form.getPartyName();
-        Party party = partyControl.getPartyByName(partyName);
+        var partyName = form.getPartyName();
+        var party = partyControl.getPartyByName(partyName);
         
         if(party != null) {
             var contactControl = Session.getModelController(ContactControl.class);
-            String contactMechanismName = form.getContactMechanismName();
-            ContactMechanism contactMechanism = contactControl.getContactMechanismByName(contactMechanismName);
+            var contactMechanismName = form.getContactMechanismName();
+            var contactMechanism = contactControl.getContactMechanismByName(contactMechanismName);
 
             if(contactMechanism != null) {
-                String contactMechanismAliasTypeName = form.getContactMechanismAliasTypeName();
-                ContactMechanismAliasType contactMechanismAliasType = contactControl.getContactMechanismAliasTypeByName(contactMechanismAliasTypeName);
+                var contactMechanismAliasTypeName = form.getContactMechanismAliasTypeName();
+                var contactMechanismAliasType = contactControl.getContactMechanismAliasTypeByName(contactMechanismAliasTypeName);
 
                 if(contactMechanismAliasType != null) {
-                    ContactMechanismAliasTypeDetail contactMechanismAliasTypeDetail = contactMechanismAliasType.getLastDetail();
-                    String validationPattern = contactMechanismAliasTypeDetail.getValidationPattern();
-                    String alias = form.getAlias();
+                    var contactMechanismAliasTypeDetail = contactMechanismAliasType.getLastDetail();
+                    var validationPattern = contactMechanismAliasTypeDetail.getValidationPattern();
+                    var alias = form.getAlias();
 
                     if(validationPattern != null) {
-                        Pattern pattern = Pattern.compile(validationPattern);
-                        Matcher m = pattern.matcher(alias);
+                        var pattern = Pattern.compile(validationPattern);
+                        var m = pattern.matcher(alias);
 
                         if(!m.matches()) {
                             addExecutionError(ExecutionErrors.InvalidAlias.name(), alias);
@@ -86,7 +86,7 @@ public class CreatePartyContactMechanismAliasCommand
                     }
 
                     if(!hasExecutionErrors()) {
-                        PartyContactMechanismAlias partyContactMechanismAlias = contactControl.getPartyContactMechanismAliasByAlias(party,
+                        var partyContactMechanismAlias = contactControl.getPartyContactMechanismAliasByAlias(party,
                                 contactMechanismAliasType, alias);
 
                         if(partyContactMechanismAlias == null) {

@@ -40,17 +40,17 @@ public class CancellationTypeTransferCache
     }
     
     public CancellationTypeTransfer getCancellationTypeTransfer(CancellationType cancellationType) {
-        CancellationTypeTransfer cancellationTypeTransfer = get(cancellationType);
+        var cancellationTypeTransfer = get(cancellationType);
         
         if(cancellationTypeTransfer == null) {
-            CancellationTypeDetail cancellationTypeDetail = cancellationType.getLastDetail();
-            CancellationKindTransfer cancellationKindTransfer = cancellationPolicyControl.getCancellationKindTransfer(userVisit, cancellationTypeDetail.getCancellationKind());
-            String cancellationTypeName = cancellationTypeDetail.getCancellationTypeName();
-            Sequence cancellationSequence = cancellationTypeDetail.getCancellationSequence();
-            SequenceTransfer cancellationSequenceTransfer = cancellationSequence == null? null: sequenceControl.getSequenceTransfer(userVisit, cancellationSequence);
-            Boolean isDefault = cancellationTypeDetail.getIsDefault();
-            Integer sortOrder = cancellationTypeDetail.getSortOrder();
-            String description = cancellationPolicyControl.getBestCancellationTypeDescription(cancellationType, getLanguage());
+            var cancellationTypeDetail = cancellationType.getLastDetail();
+            var cancellationKindTransfer = cancellationPolicyControl.getCancellationKindTransfer(userVisit, cancellationTypeDetail.getCancellationKind());
+            var cancellationTypeName = cancellationTypeDetail.getCancellationTypeName();
+            var cancellationSequence = cancellationTypeDetail.getCancellationSequence();
+            var cancellationSequenceTransfer = cancellationSequence == null? null: sequenceControl.getSequenceTransfer(userVisit, cancellationSequence);
+            var isDefault = cancellationTypeDetail.getIsDefault();
+            var sortOrder = cancellationTypeDetail.getSortOrder();
+            var description = cancellationPolicyControl.getBestCancellationTypeDescription(cancellationType, getLanguage());
             
             cancellationTypeTransfer = new CancellationTypeTransfer(cancellationKindTransfer, cancellationTypeName, cancellationSequenceTransfer, isDefault,
                     sortOrder, description);

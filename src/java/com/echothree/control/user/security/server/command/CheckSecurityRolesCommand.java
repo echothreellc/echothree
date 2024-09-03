@@ -52,23 +52,23 @@ public class CheckSecurityRolesCommand
     
     @Override
     protected BaseResult execute() {
-        CheckSecurityRolesResult result = SecurityResultFactory.getCheckSecurityRolesResult();
-        UserVisit userVisit = getUserVisit();
+        var result = SecurityResultFactory.getCheckSecurityRolesResult();
+        var userVisit = getUserVisit();
         StringBuilder resultSecurityRoles = new StringBuilder();
         
         if(userVisit != null) {
-            UserKeyDetail userKeyDetail = userVisit.getUserKey().getLastDetail();
-            Party party = userKeyDetail.getParty();
+            var userKeyDetail = userVisit.getUserKey().getLastDetail();
+            var party = userKeyDetail.getParty();
             
             if(party != null) {
-                SecurityRoleLogic securityRoleLogic = SecurityRoleLogic.getInstance();
-                String formSecurityRoles = form.getSecurityRoles();
-                String []securityRolesToCheck = Splitter.on(':').trimResults().omitEmptyStrings().splitToList(formSecurityRoles).toArray(new String[0]);
-                int securityRolesToCheckLength = securityRolesToCheck.length;
+                var securityRoleLogic = SecurityRoleLogic.getInstance();
+                var formSecurityRoles = form.getSecurityRoles();
+                var securityRolesToCheck = Splitter.on(':').trimResults().omitEmptyStrings().splitToList(formSecurityRoles).toArray(new String[0]);
+                var securityRolesToCheckLength = securityRolesToCheck.length;
                 
-                for(int i = 0; i < securityRolesToCheckLength; i++) {
-                    String []securityRoleToCheck = Splitter.on('.').trimResults().omitEmptyStrings().splitToList(securityRolesToCheck[i]).toArray(new String[0]);
-                    int securityRoleToCheckLength = securityRoleToCheck.length;
+                for(var i = 0; i < securityRolesToCheckLength; i++) {
+                    var securityRoleToCheck = Splitter.on('.').trimResults().omitEmptyStrings().splitToList(securityRolesToCheck[i]).toArray(new String[0]);
+                    var securityRoleToCheckLength = securityRoleToCheck.length;
                     
                     if(securityRoleToCheckLength == 2) {
                         if(securityRoleLogic.hasSecurityRoleUsingNames(null, party, securityRoleToCheck[0], securityRoleToCheck[1])) {

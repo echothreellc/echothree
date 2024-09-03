@@ -63,8 +63,8 @@ public class SetDefaultItemImageTypeCommand
     @Override
     protected BaseResult execute() {
         var itemControl = Session.getModelController(ItemControl.class);
-        String itemImageTypeName = form.getItemImageTypeName();
-        ItemImageTypeDetailValue itemImageTypeDetailValue = itemControl.getItemImageTypeDetailValueByNameForUpdate(itemImageTypeName);
+        var itemImageTypeName = form.getItemImageTypeName();
+        var itemImageTypeDetailValue = itemControl.getItemImageTypeDetailValueByNameForUpdate(itemImageTypeName);
         
         if(itemImageTypeDetailValue != null) {
             itemImageTypeDetailValue.setIsDefault(Boolean.TRUE);

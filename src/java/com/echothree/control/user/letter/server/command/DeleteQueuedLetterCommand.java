@@ -68,14 +68,14 @@ public class DeleteQueuedLetterCommand
     @Override
     protected BaseResult execute() {
         var chainControl = Session.getModelController(ChainControl.class);
-        GetQueuedLetterResult result = LetterResultFactory.getGetQueuedLetterResult();
-        String chainInstanceName = form.getChainInstanceName();
-        ChainInstance chainInstance = chainControl.getChainInstanceByName(chainInstanceName);
+        var result = LetterResultFactory.getGetQueuedLetterResult();
+        var chainInstanceName = form.getChainInstanceName();
+        var chainInstance = chainControl.getChainInstanceByName(chainInstanceName);
         
         if(chainInstance != null) {
             var letterControl = Session.getModelController(LetterControl.class);
-            Integer queuedLetterSequence = Integer.valueOf(form.getQueuedLetterSequence());
-            QueuedLetter queuedLetter = letterControl.getQueuedLetterForUpdate(chainInstance, queuedLetterSequence);
+            var queuedLetterSequence = Integer.valueOf(form.getQueuedLetterSequence());
+            var queuedLetter = letterControl.getQueuedLetterForUpdate(chainInstance, queuedLetterSequence);
 
             if(queuedLetter != null) {
                 letterControl.removeQueuedLetter(queuedLetter, getPartyPK());

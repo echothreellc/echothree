@@ -39,14 +39,14 @@ public class PartyCarrierAccountTransferCache
     }
     
     public PartyCarrierAccountTransfer getPartyCarrierAccountTransfer(PartyCarrierAccount partyCarrierAccount) {
-        PartyCarrierAccountTransfer partyCarrierAccountTransfer = get(partyCarrierAccount);
+        var partyCarrierAccountTransfer = get(partyCarrierAccount);
         
         if(partyCarrierAccountTransfer == null) {
-            PartyCarrierAccountDetail partyCarrierAccountDetail = partyCarrierAccount.getLastDetail();
-            PartyTransfer party = partyControl.getPartyTransfer(userVisit, partyCarrierAccountDetail.getParty());
-            CarrierTransfer carrier = carrierControl.getCarrierTransfer(userVisit, partyCarrierAccountDetail.getCarrierParty());
-            String account = partyCarrierAccountDetail.getAccount();
-            Boolean alwaysUseThirdPartyBilling = partyCarrierAccountDetail.getAlwaysUseThirdPartyBilling();
+            var partyCarrierAccountDetail = partyCarrierAccount.getLastDetail();
+            var party = partyControl.getPartyTransfer(userVisit, partyCarrierAccountDetail.getParty());
+            var carrier = carrierControl.getCarrierTransfer(userVisit, partyCarrierAccountDetail.getCarrierParty());
+            var account = partyCarrierAccountDetail.getAccount();
+            var alwaysUseThirdPartyBilling = partyCarrierAccountDetail.getAlwaysUseThirdPartyBilling();
             
             partyCarrierAccountTransfer = new PartyCarrierAccountTransfer(party, carrier, account, alwaysUseThirdPartyBilling);
             put(partyCarrierAccount, partyCarrierAccountTransfer);

@@ -53,21 +53,21 @@ public class PartyTrainingClassSessionTransferCache
     }
     
     public PartyTrainingClassSessionTransfer getPartyTrainingClassSessionTransfer(PartyTrainingClassSession partyTrainingClassSession) {
-        PartyTrainingClassSessionTransfer partyTrainingClassSessionTransfer = get(partyTrainingClassSession);
+        var partyTrainingClassSessionTransfer = get(partyTrainingClassSession);
         
         if(partyTrainingClassSessionTransfer == null) {
-            PartyTrainingClassSessionDetail partyTrainingClassSessionDetail = partyTrainingClassSession.getLastDetail();
-            PartyTrainingClassTransfer partyTrainingClassTransfer = trainingControl.getPartyTrainingClassTransfer(userVisit, partyTrainingClassSessionDetail.getPartyTrainingClass());
-            Integer partyTrainingClassSessionSequence = partyTrainingClassSessionDetail.getPartyTrainingClassSessionSequence();
-            PartyTrainingClassSessionStatus partyTrainingClassSessionStatus = trainingControl.getPartyTrainingClassSessionStatus(partyTrainingClassSession);
+            var partyTrainingClassSessionDetail = partyTrainingClassSession.getLastDetail();
+            var partyTrainingClassTransfer = trainingControl.getPartyTrainingClassTransfer(userVisit, partyTrainingClassSessionDetail.getPartyTrainingClass());
+            var partyTrainingClassSessionSequence = partyTrainingClassSessionDetail.getPartyTrainingClassSessionSequence();
+            var partyTrainingClassSessionStatus = trainingControl.getPartyTrainingClassSessionStatus(partyTrainingClassSession);
             PartyTrainingClassSessionSectionTransfer lastPartyTrainingClassSessionSectionTransfer = null;
             PartyTrainingClassSessionPageTransfer lastPartyTrainingClassSessionPageTransfer = null;
             PartyTrainingClassSessionQuestionTransfer lastPartyTrainingClassSessionQuestionTransfer = null;
             
             if(partyTrainingClassSessionStatus != null) {
-                PartyTrainingClassSessionSection lastPartyTrainingClassSessionSection = partyTrainingClassSessionStatus.getLastPartyTrainingClassSessionSection();
-                PartyTrainingClassSessionPage lastPartyTrainingClassSessionPage = partyTrainingClassSessionStatus.getLastPartyTrainingClassSessionPage();
-                PartyTrainingClassSessionQuestion lastPartyTrainingClassSessionQuestion = partyTrainingClassSessionStatus.getLastPartyTrainingClassSessionQuestion();
+                var lastPartyTrainingClassSessionSection = partyTrainingClassSessionStatus.getLastPartyTrainingClassSessionSection();
+                var lastPartyTrainingClassSessionPage = partyTrainingClassSessionStatus.getLastPartyTrainingClassSessionPage();
+                var lastPartyTrainingClassSessionQuestion = partyTrainingClassSessionStatus.getLastPartyTrainingClassSessionQuestion();
 
                 lastPartyTrainingClassSessionSectionTransfer = lastPartyTrainingClassSessionSection == null ? null : trainingControl.getPartyTrainingClassSessionSectionTransfer(userVisit, lastPartyTrainingClassSessionSection);
                 lastPartyTrainingClassSessionPageTransfer = lastPartyTrainingClassSessionPage == null ? null : trainingControl.getPartyTrainingClassSessionPageTransfer(userVisit, lastPartyTrainingClassSessionPage);

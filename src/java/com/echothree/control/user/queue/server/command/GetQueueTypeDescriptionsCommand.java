@@ -65,9 +65,9 @@ public class GetQueueTypeDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var queueControl = Session.getModelController(QueueControl.class);
-        GetQueueTypeDescriptionsResult result = QueueResultFactory.getGetQueueTypeDescriptionsResult();
-        String queueTypeName = form.getQueueTypeName();
-        QueueType queueType = queueControl.getQueueTypeByName(queueTypeName);
+        var result = QueueResultFactory.getGetQueueTypeDescriptionsResult();
+        var queueTypeName = form.getQueueTypeName();
+        var queueType = queueControl.getQueueTypeByName(queueTypeName);
         
         if(queueType != null) {
             result.setQueueType(queueControl.getQueueTypeTransfer(getUserVisit(), queueType));

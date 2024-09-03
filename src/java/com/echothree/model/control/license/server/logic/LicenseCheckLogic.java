@@ -56,7 +56,7 @@ public class LicenseCheckLogic
     private Long lastLicenseAttempt;
     
     private LicenseCheckLogic() {
-        long initializedTime = System.currentTimeMillis();
+        var initializedTime = System.currentTimeMillis();
 
         licenseValidUntilTime = new AtomicLong(initializedTime + DEMO_LICENSE_DURATION);
         log.info("Demo license installed for this instance.");
@@ -90,10 +90,10 @@ public class LicenseCheckLogic
     }
     
     public boolean attemptRetrieval() {
-        List<String> foundServerNames = getFoundServerNames();
-        boolean licenseUpdated = false;
+        var foundServerNames = getFoundServerNames();
+        var licenseUpdated = false;
         
-        try(CloseableHttpClient client = HttpClientBuilder
+        try(var client = HttpClientBuilder
                 .create()
                 .setUserAgent("Echo Three/1.0")
                 .setDefaultRequestConfig(RequestConfig.custom()
@@ -108,22 +108,22 @@ public class LicenseCheckLogic
                 log.info("Requesting license for: " + foundServerName);
 
                 try {
-                    try(CloseableHttpResponse closeableHttpResponse = client.execute(httpGet)) {
+                    try(var closeableHttpResponse = client.execute(httpGet)) {
                         var statusCode = closeableHttpResponse.getStatusLine().getStatusCode();
 
                         if(statusCode == 200) {
-                            HttpEntity entity = closeableHttpResponse.getEntity();
+                            var entity = closeableHttpResponse.getEntity();
 
                             if(entity != null) {
-                                String text = CharStreams.toString(new InputStreamReader(entity.getContent(), Charsets.UTF_8));
+                                var text = CharStreams.toString(new InputStreamReader(entity.getContent(), Charsets.UTF_8));
                                 Properties properties = new Properties();
 
                                 properties.loadFromXML(new ByteArrayInputStream(text.getBytes(Charsets.UTF_8)));
 
-                                String retrievedServerName = properties.getProperty("serverName");
+                                var retrievedServerName = properties.getProperty("serverName");
 
                                 if(foundServerName.equals(retrievedServerName)) {
-                                    String retrievedLicenseValidUntilTime = properties.getProperty("licenseValidUntilTime");
+                                    var retrievedLicenseValidUntilTime = properties.getProperty("licenseValidUntilTime");
 
                                     licenseValidUntilTime.set(ZonedDateTime.parse(retrievedLicenseValidUntilTime).toInstant().toEpochMilli());
 
@@ -182,7 +182,7 @@ public class LicenseCheckLogic
     }
 
     public boolean permitExecution(final Session session) {
-        boolean result = executionPermitted.get();
+        var result = executionPermitted.get();
 
         // If we're past the licenseValidUntilTime, disable command execution.
         if(session.START_TIME > licenseValidUntilTime.get() && executionPermitted.get()) {

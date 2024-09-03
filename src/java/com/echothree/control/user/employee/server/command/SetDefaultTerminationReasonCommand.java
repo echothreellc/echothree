@@ -63,8 +63,8 @@ public class SetDefaultTerminationReasonCommand
     @Override
     protected BaseResult execute() {
         var employeeControl = Session.getModelController(EmployeeControl.class);
-        String terminationReasonName = form.getTerminationReasonName();
-        TerminationReasonDetailValue terminationReasonDetailValue = employeeControl.getTerminationReasonDetailValueByNameForUpdate(terminationReasonName);
+        var terminationReasonName = form.getTerminationReasonName();
+        var terminationReasonDetailValue = employeeControl.getTerminationReasonDetailValueByNameForUpdate(terminationReasonName);
         
         if(terminationReasonDetailValue != null) {
             terminationReasonDetailValue.setIsDefault(Boolean.TRUE);

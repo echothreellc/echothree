@@ -74,7 +74,7 @@ public class GetQueueTypeCommand
 
     @Override
     protected QueueType getEntity() {
-        String queueTypeName = form.getQueueTypeName();
+        var queueTypeName = form.getQueueTypeName();
         QueueType queueType = null;
         var parameterCount = (queueTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
@@ -105,7 +105,7 @@ public class GetQueueTypeCommand
     @Override
     protected BaseResult getResult(QueueType queueType) {
         var queueControl = Session.getModelController(QueueControl.class);
-        GetQueueTypeResult result = QueueResultFactory.getGetQueueTypeResult();
+        var result = QueueResultFactory.getGetQueueTypeResult();
 
         if(queueType != null) {
             result.setQueueType(queueControl.getQueueTypeTransfer(getUserVisit(), queueType));

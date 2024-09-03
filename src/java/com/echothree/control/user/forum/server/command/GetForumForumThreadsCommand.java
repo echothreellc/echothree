@@ -53,14 +53,14 @@ public class GetForumForumThreadsCommand
     @Override
     protected BaseResult execute() {
         var forumControl = Session.getModelController(ForumControl.class);
-        GetForumForumThreadsResult result = ForumResultFactory.getGetForumForumThreadsResult();
-        String forumName = form.getForumName();
-        String forumThreadName = form.getForumThreadName();
+        var result = ForumResultFactory.getGetForumForumThreadsResult();
+        var forumName = form.getForumName();
+        var forumThreadName = form.getForumThreadName();
         var parameterCount = (forumName != null? 1: 0) + (forumThreadName != null? 1: 0);
         
         if(parameterCount == 1) {
             if(forumName != null) {
-                Forum forum = forumControl.getForumByName(forumName);
+                var forum = forumControl.getForumByName(forumName);
                 
                 if(forum != null) {
                     result.setForum(forumControl.getForumTransfer(getUserVisit(), forum));
@@ -69,7 +69,7 @@ public class GetForumForumThreadsCommand
                     addExecutionError(ExecutionErrors.UnknownForumName.name(), forumName);
                 }
             } else if(forumThreadName != null) {
-                ForumThread forumThread = forumControl.getForumThreadByName(forumThreadName);
+                var forumThread = forumControl.getForumThreadByName(forumThreadName);
                 
                 if(forumThread != null) {
                     result.setForumThread(forumControl.getForumThreadTransfer(getUserVisit(), forumThread));

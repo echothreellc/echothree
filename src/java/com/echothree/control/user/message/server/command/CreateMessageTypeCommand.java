@@ -67,14 +67,14 @@ public class CreateMessageTypeCommand
 
             if(entityTypeDetail.getIsExtensible()) {
                 var messageControl = Session.getModelController(MessageControl.class);
-                String messageTypeName = form.getMessageTypeName();
+                var messageTypeName = form.getMessageTypeName();
 
                 messageType = messageControl.getMessageTypeByName(entityType, messageTypeName);
                 
                 if(messageType == null) {
                     var coreControl = getCoreControl();
-                    String mimeTypeUsageTypeName = form.getMimeTypeUsageTypeName();
-                    MimeTypeUsageType mimeTypeUsageType = mimeTypeUsageTypeName == null? null: coreControl.getMimeTypeUsageTypeByName(mimeTypeUsageTypeName);
+                    var mimeTypeUsageTypeName = form.getMimeTypeUsageTypeName();
+                    var mimeTypeUsageType = mimeTypeUsageTypeName == null? null: coreControl.getMimeTypeUsageTypeByName(mimeTypeUsageTypeName);
                     
                     if(mimeTypeUsageTypeName == null || mimeTypeUsageType != null) {
                         var partyPK = getPartyPK();

@@ -57,8 +57,8 @@ public class CreateInvoiceLineUseTypeCommand
     @Override
     protected BaseResult execute() {
         var invoiceControl = Session.getModelController(InvoiceControl.class);
-        String invoiceLineUseTypeName = form.getInvoiceLineUseTypeName();
-        InvoiceLineUseType invoiceLineUseType = invoiceControl.getInvoiceLineUseTypeByName(invoiceLineUseTypeName);
+        var invoiceLineUseTypeName = form.getInvoiceLineUseTypeName();
+        var invoiceLineUseType = invoiceControl.getInvoiceLineUseTypeByName(invoiceLineUseTypeName);
         
         if(invoiceLineUseType == null) {
             invoiceControl.createInvoiceLineUseType(invoiceLineUseTypeName);

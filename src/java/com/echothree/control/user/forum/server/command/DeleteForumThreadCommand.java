@@ -49,8 +49,8 @@ public class DeleteForumThreadCommand
     @Override
     protected BaseResult execute() {
         var forumControl = Session.getModelController(ForumControl.class);
-        String forumThreadName = form.getForumThreadName();
-        ForumThread forumThread = forumControl.getForumThreadByNameForUpdate(forumThreadName);
+        var forumThreadName = form.getForumThreadName();
+        var forumThread = forumControl.getForumThreadByNameForUpdate(forumThreadName);
         
         if(forumThread != null) {
             forumControl.deleteForumThread(forumThread, getPartyPK());

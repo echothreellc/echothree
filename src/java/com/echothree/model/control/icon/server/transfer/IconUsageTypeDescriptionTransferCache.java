@@ -32,11 +32,11 @@ public class IconUsageTypeDescriptionTransferCache
     }
     
     public IconUsageTypeDescriptionTransfer getIconUsageTypeDescriptionTransfer(IconUsageTypeDescription iconUsageTypeDescription) {
-        IconUsageTypeDescriptionTransfer iconUsageTypeDescriptionTransfer = get(iconUsageTypeDescription);
+        var iconUsageTypeDescriptionTransfer = get(iconUsageTypeDescription);
         
         if(iconUsageTypeDescriptionTransfer == null) {
-            IconUsageTypeTransfer iconUsageTypeTransfer = iconControl.getIconUsageTypeTransfer(userVisit, iconUsageTypeDescription.getIconUsageType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, iconUsageTypeDescription.getLanguage());
+            var iconUsageTypeTransfer = iconControl.getIconUsageTypeTransfer(userVisit, iconUsageTypeDescription.getIconUsageType());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, iconUsageTypeDescription.getLanguage());
             
             iconUsageTypeDescriptionTransfer = new IconUsageTypeDescriptionTransfer(languageTransfer, iconUsageTypeTransfer, iconUsageTypeDescription.getDescription());
             put(iconUsageTypeDescription, iconUsageTypeDescriptionTransfer);

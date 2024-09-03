@@ -63,8 +63,8 @@ public class DeleteInvoiceTypeCommand
     @Override
     protected BaseResult execute() {
         var invoiceControl = Session.getModelController(InvoiceControl.class);
-        String invoiceTypeName = form.getInvoiceTypeName();
-        InvoiceType invoiceType = invoiceControl.getInvoiceTypeByNameForUpdate(invoiceTypeName);
+        var invoiceTypeName = form.getInvoiceTypeName();
+        var invoiceType = invoiceControl.getInvoiceTypeByNameForUpdate(invoiceTypeName);
         
         if(invoiceType != null) {
             invoiceControl.deleteInvoiceType(invoiceType, getPartyPK());

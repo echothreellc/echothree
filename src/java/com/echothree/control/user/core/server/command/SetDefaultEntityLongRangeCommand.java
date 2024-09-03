@@ -68,24 +68,24 @@ public class SetDefaultEntityLongRangeCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String componentVendorName = form.getComponentVendorName();
-        ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+        var componentVendorName = form.getComponentVendorName();
+        var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
         
         if(componentVendor != null) {
-            String entityTypeName = form.getEntityTypeName();
-            EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+            var entityTypeName = form.getEntityTypeName();
+            var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
             
             if(entityType != null) {
-                String entityAttributeName = form.getEntityAttributeName();
-                EntityAttribute entityAttribute = coreControl.getEntityAttributeByName(entityType, entityAttributeName);
+                var entityAttributeName = form.getEntityAttributeName();
+                var entityAttribute = coreControl.getEntityAttributeByName(entityType, entityAttributeName);
                 
                 if(entityAttribute != null) {
-                    EntityAttributeType entityAttributeType = entityAttribute.getLastDetail().getEntityAttributeType();
-                    String entityAttributeTypeName = entityAttributeType.getEntityAttributeTypeName();
+                    var entityAttributeType = entityAttribute.getLastDetail().getEntityAttributeType();
+                    var entityAttributeTypeName = entityAttributeType.getEntityAttributeTypeName();
                     
                     if(entityAttributeTypeName.equals(EntityAttributeTypes.LONG.name())) {
-                        String entityLongRangeName = form.getEntityLongRangeName();
-                        EntityLongRangeDetailValue entityLongRangeDetailValue = coreControl.getEntityLongRangeDetailValueByNameForUpdate(entityAttribute, entityLongRangeName);
+                        var entityLongRangeName = form.getEntityLongRangeName();
+                        var entityLongRangeDetailValue = coreControl.getEntityLongRangeDetailValueByNameForUpdate(entityAttribute, entityLongRangeName);
 
                         if(entityLongRangeDetailValue != null) {
                             entityLongRangeDetailValue.setIsDefault(Boolean.TRUE);

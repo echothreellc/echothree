@@ -55,20 +55,20 @@ public class PartyTrainingClassTransferCache
     }
     
     public PartyTrainingClassTransfer getPartyTrainingClassTransfer(PartyTrainingClass partyTrainingClass) {
-        PartyTrainingClassTransfer partyTrainingClassTransfer = get(partyTrainingClass);
+        var partyTrainingClassTransfer = get(partyTrainingClass);
 
         if(partyTrainingClassTransfer == null) {
-            PartyTrainingClassDetail partyTrainingClassDetail = partyTrainingClass.getLastDetail();
-            String partyTrainingClassName = partyTrainingClassDetail.getPartyTrainingClassName();
-            PartyTransfer partyTransfer = partyControl.getPartyTransfer(userVisit, partyTrainingClassDetail.getParty());
-            TrainingClassTransfer trainingClassTransfer = trainingControl.getTrainingClassTransfer(userVisit, partyTrainingClassDetail.getTrainingClass());
-            Long unformattedCompletedTime = partyTrainingClassDetail.getCompletedTime();
-            String completedTime = unformattedCompletedTime == null ? null : formatTypicalDateTime(unformattedCompletedTime);
-            Long unformattedValidUntilTime = partyTrainingClassDetail.getValidUntilTime();
-            String validUntilTime = unformattedValidUntilTime == null ? null : formatTypicalDateTime(unformattedValidUntilTime);
+            var partyTrainingClassDetail = partyTrainingClass.getLastDetail();
+            var partyTrainingClassName = partyTrainingClassDetail.getPartyTrainingClassName();
+            var partyTransfer = partyControl.getPartyTransfer(userVisit, partyTrainingClassDetail.getParty());
+            var trainingClassTransfer = trainingControl.getTrainingClassTransfer(userVisit, partyTrainingClassDetail.getTrainingClass());
+            var unformattedCompletedTime = partyTrainingClassDetail.getCompletedTime();
+            var completedTime = unformattedCompletedTime == null ? null : formatTypicalDateTime(unformattedCompletedTime);
+            var unformattedValidUntilTime = partyTrainingClassDetail.getValidUntilTime();
+            var validUntilTime = unformattedValidUntilTime == null ? null : formatTypicalDateTime(unformattedValidUntilTime);
 
-            EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(partyTrainingClass.getPrimaryKey());
-            WorkflowEntityStatusTransfer partyTrainingClassStatus = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
+            var entityInstance = coreControl.getEntityInstanceByBasePK(partyTrainingClass.getPrimaryKey());
+            var partyTrainingClassStatus = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
                     PartyTrainingClassStatusConstants.Workflow_PARTY_TRAINING_CLASS_STATUS, entityInstance);
 
             partyTrainingClassTransfer = new PartyTrainingClassTransfer(partyTrainingClassName, partyTransfer, trainingClassTransfer,

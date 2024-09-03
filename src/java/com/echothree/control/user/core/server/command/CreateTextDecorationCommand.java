@@ -64,8 +64,8 @@ public class CreateTextDecorationCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String textDecorationName = form.getTextDecorationName();
-        TextDecoration textDecoration = coreControl.getTextDecorationByName(textDecorationName);
+        var textDecorationName = form.getTextDecorationName();
+        var textDecoration = coreControl.getTextDecorationByName(textDecorationName);
         
         if(textDecoration == null) {
             var partyPK = getPartyPK();

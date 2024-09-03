@@ -58,18 +58,18 @@ public class CreateForumMessageAttachmentCommand
     @Override
     protected BaseResult execute() {
         var forumControl = Session.getModelController(ForumControl.class);
-        String forumMessageName = form.getForumMessageName();
-        ForumMessage forumMessage = forumControl.getForumMessageByNameForUpdate(forumMessageName);
+        var forumMessageName = form.getForumMessageName();
+        var forumMessage = forumControl.getForumMessageByNameForUpdate(forumMessageName);
 
         if(forumMessage != null) {
             var coreControl = getCoreControl();
-            String mimeTypeName = form.getMimeTypeName();
-            MimeType mimeType = coreControl.getMimeTypeByName(mimeTypeName);
+            var mimeTypeName = form.getMimeTypeName();
+            var mimeType = coreControl.getMimeTypeByName(mimeTypeName);
 
             if(mimeType != null) {
-                String entityAttributeTypeName = mimeType.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
-                ByteArray blob = form.getBlob();
-                String clob = form.getClob();
+                var entityAttributeTypeName = mimeType.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
+                var blob = form.getBlob();
+                var clob = form.getClob();
 
                 if(entityAttributeTypeName.equals(EntityAttributeTypes.BLOB.name()) && blob == null) {
                     addExecutionError(ExecutionErrors.MissingBlob.name());
@@ -81,10 +81,10 @@ public class CreateForumMessageAttachmentCommand
 
                 if(!hasExecutionErrors()) {
                     var partyPK = getPartyPK();
-                    String strForumMessageAttachmentSequence = form.getForumMessageAttachmentSequence();
-                    Integer forumMessageAttachmentSequence = strForumMessageAttachmentSequence == null ? null : Integer.valueOf(strForumMessageAttachmentSequence);
+                    var strForumMessageAttachmentSequence = form.getForumMessageAttachmentSequence();
+                    var forumMessageAttachmentSequence = strForumMessageAttachmentSequence == null ? null : Integer.valueOf(strForumMessageAttachmentSequence);
                     ForumMessageAttachment forumMessageAttachment = null;
-                    ForumMessageStatus forumMessageStatus = forumControl.getOrCreateForumMessageStatusForUpdate(forumMessage);
+                    var forumMessageStatus = forumControl.getOrCreateForumMessageStatusForUpdate(forumMessage);
 
                     if(forumMessageAttachmentSequence == null) {
                         forumMessageAttachmentSequence = forumMessageStatus.getForumMessageAttachmentSequence() + 1;

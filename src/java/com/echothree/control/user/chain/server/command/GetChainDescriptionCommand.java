@@ -73,25 +73,25 @@ public class GetChainDescriptionCommand
     @Override
     protected BaseResult execute() {
         var chainControl = Session.getModelController(ChainControl.class);
-        GetChainDescriptionResult result = ChainResultFactory.getGetChainDescriptionResult();
-        String chainKindName = form.getChainKindName();
-        ChainKind chainKind = chainControl.getChainKindByName(chainKindName);
+        var result = ChainResultFactory.getGetChainDescriptionResult();
+        var chainKindName = form.getChainKindName();
+        var chainKind = chainControl.getChainKindByName(chainKindName);
 
         if(chainKind != null) {
-            String chainTypeName = form.getChainTypeName();
-            ChainType chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
+            var chainTypeName = form.getChainTypeName();
+            var chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
 
             if(chainType != null) {
-                String chainName = form.getChainName();
-                Chain chain = chainControl.getChainByName(chainType, chainName);
+                var chainName = form.getChainName();
+                var chain = chainControl.getChainByName(chainType, chainName);
 
                 if(chain != null) {
                     var partyControl = Session.getModelController(PartyControl.class);
-                    String languageIsoName = form.getLanguageIsoName();
-                    Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                    var languageIsoName = form.getLanguageIsoName();
+                    var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                     if(language != null) {
-                        ChainDescription chainDescription = chainControl.getChainDescription(chain, language);
+                        var chainDescription = chainControl.getChainDescription(chain, language);
 
                         if(chainDescription != null) {
                             result.setChainDescription(chainControl.getChainDescriptionTransfer(getUserVisit(), chainDescription));

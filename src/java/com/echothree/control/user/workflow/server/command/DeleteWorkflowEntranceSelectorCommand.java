@@ -70,23 +70,23 @@ public class DeleteWorkflowEntranceSelectorCommand
     @Override
     protected BaseResult execute() {
         var workflowControl = Session.getModelController(WorkflowControl.class);
-        String workflowName = form.getWorkflowName();
+        var workflowName = form.getWorkflowName();
         var workflow = workflowControl.getWorkflowByName(workflowName);
         
         if(workflow != null) {
-            SelectorType selectorType = workflow.getLastDetail().getSelectorType();
+            var selectorType = workflow.getLastDetail().getSelectorType();
             
             if(selectorType != null) {
-                String workflowEntranceName = form.getWorkflowEntranceName();
-                WorkflowEntrance workflowEntrance = workflowControl.getWorkflowEntranceByName(workflow, workflowEntranceName);
+                var workflowEntranceName = form.getWorkflowEntranceName();
+                var workflowEntrance = workflowControl.getWorkflowEntranceByName(workflow, workflowEntranceName);
                 
                 if(workflowEntrance != null) {
                     var selectorControl = Session.getModelController(SelectorControl.class);
-                    String selectorName = form.getSelectorName();
-                    Selector selector = selectorControl.getSelectorByName(selectorType, selectorName);
+                    var selectorName = form.getSelectorName();
+                    var selector = selectorControl.getSelectorByName(selectorType, selectorName);
                     
                     if(selector != null) {
-                        WorkflowEntranceSelector workflowEntranceSelector = workflowControl.getWorkflowEntranceSelectorForUpdate(workflowEntrance, selector);
+                        var workflowEntranceSelector = workflowControl.getWorkflowEntranceSelectorForUpdate(workflowEntrance, selector);
                         
                         if(workflowEntranceSelector != null) {
                             workflowControl.deleteWorkflowEntranceSelector(workflowEntranceSelector, getPartyPK());

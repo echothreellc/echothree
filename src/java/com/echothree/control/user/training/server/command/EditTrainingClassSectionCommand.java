@@ -104,12 +104,12 @@ public class EditTrainingClassSectionCommand
     public TrainingClassSection getEntity(EditTrainingClassSectionResult result) {
         var trainingControl = Session.getModelController(TrainingControl.class);
         TrainingClassSection trainingClassSection = null;
-        String trainingClassName = spec.getTrainingClassName();
+        var trainingClassName = spec.getTrainingClassName();
 
         trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
 
         if(trainingClass != null) {
-            String trainingClassSectionName = spec.getTrainingClassSectionName();
+            var trainingClassSectionName = spec.getTrainingClassSectionName();
 
             if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
                 trainingClassSection = trainingControl.getTrainingClassSectionByName(trainingClass, trainingClassSectionName);
@@ -147,9 +147,9 @@ public class EditTrainingClassSectionCommand
     @Override
     public void doLock(TrainingClassSectionEdit edit, TrainingClassSection trainingClassSection) {
         var trainingControl = Session.getModelController(TrainingControl.class);
-        TrainingClassSectionTranslation trainingClassSectionTranslation = trainingControl.getTrainingClassSectionTranslation(trainingClassSection, getPreferredLanguage());
-        TrainingClassSectionDetail trainingClassSectionDetail = trainingClassSection.getLastDetail();
-        Integer questionCount = trainingClassSectionDetail.getQuestionCount();
+        var trainingClassSectionTranslation = trainingControl.getTrainingClassSectionTranslation(trainingClassSection, getPreferredLanguage());
+        var trainingClassSectionDetail = trainingClassSection.getLastDetail();
+        var questionCount = trainingClassSectionDetail.getQuestionCount();
 
         edit.setTrainingClassSectionName(trainingClassSectionDetail.getTrainingClassSectionName());
         edit.setPercentageToPass(PercentUtils.getInstance().formatFractionalPercent(trainingClassSectionDetail.getPercentageToPass()));
@@ -171,23 +171,23 @@ public class EditTrainingClassSectionCommand
     @Override
     public void canUpdate(TrainingClassSection trainingClassSection) {
         var trainingControl = Session.getModelController(TrainingControl.class);
-        String trainingClassSectionName = edit.getTrainingClassSectionName();
-        TrainingClassSection duplicateTrainingClassSection = trainingControl.getTrainingClassSectionByName(trainingClass, trainingClassSectionName);
+        var trainingClassSectionName = edit.getTrainingClassSectionName();
+        var duplicateTrainingClassSection = trainingControl.getTrainingClassSectionByName(trainingClass, trainingClassSectionName);
 
         if(duplicateTrainingClassSection != null && !trainingClassSection.equals(duplicateTrainingClassSection)) {
             addExecutionError(ExecutionErrors.DuplicateTrainingClassSectionName.name(), trainingClassSectionName);
         } else {
-            MimeTypeLogic mimeTypeLogic = MimeTypeLogic.getInstance();
-            String overviewMimeTypeName = edit.getOverviewMimeTypeName();
-            String overview = edit.getOverview();
+            var mimeTypeLogic = MimeTypeLogic.getInstance();
+            var overviewMimeTypeName = edit.getOverviewMimeTypeName();
+            var overview = edit.getOverview();
 
             overviewMimeType = mimeTypeLogic.checkMimeType(this, overviewMimeTypeName, overview, MimeTypeUsageTypes.TEXT.name(),
                     ExecutionErrors.MissingRequiredOverviewMimeTypeName.name(), ExecutionErrors.MissingRequiredOverview.name(),
                     ExecutionErrors.UnknownOverviewMimeTypeName.name(), ExecutionErrors.UnknownOverviewMimeTypeUsage.name());
 
             if(!hasExecutionErrors()) {
-                String introductionMimeTypeName = edit.getIntroductionMimeTypeName();
-                String introduction = edit.getIntroduction();
+                var introductionMimeTypeName = edit.getIntroductionMimeTypeName();
+                var introduction = edit.getIntroduction();
 
                 introductionMimeType = mimeTypeLogic.checkMimeType(this, introductionMimeTypeName, introduction, MimeTypeUsageTypes.TEXT.name(),
                         ExecutionErrors.MissingRequiredIntroductionMimeTypeName.name(), ExecutionErrors.MissingRequiredIntroduction.name(),
@@ -200,13 +200,13 @@ public class EditTrainingClassSectionCommand
     public void doUpdate(TrainingClassSection trainingClassSection) {
         var trainingControl = Session.getModelController(TrainingControl.class);
         var partyPK = getPartyPK();
-        TrainingClassSectionDetailValue trainingClassSectionDetailValue = trainingControl.getTrainingClassSectionDetailValueForUpdate(trainingClassSection);
-        TrainingClassSectionTranslation trainingClassSectionTranslation = trainingControl.getTrainingClassSectionTranslationForUpdate(trainingClassSection, getPreferredLanguage());
-        String percentageToPass = edit.getPercentageToPass();
-        String questionCount = edit.getQuestionCount();
-        String description = edit.getDescription();
-        String overview = edit.getOverview();
-        String introduction = edit.getIntroduction();
+        var trainingClassSectionDetailValue = trainingControl.getTrainingClassSectionDetailValueForUpdate(trainingClassSection);
+        var trainingClassSectionTranslation = trainingControl.getTrainingClassSectionTranslationForUpdate(trainingClassSection, getPreferredLanguage());
+        var percentageToPass = edit.getPercentageToPass();
+        var questionCount = edit.getQuestionCount();
+        var description = edit.getDescription();
+        var overview = edit.getOverview();
+        var introduction = edit.getIntroduction();
 
         trainingClassSectionDetailValue.setTrainingClassSectionName(edit.getTrainingClassSectionName());
         trainingClassSectionDetailValue.setPercentageToPass(percentageToPass == null ? null : Integer.valueOf(percentageToPass));
@@ -221,7 +221,7 @@ public class EditTrainingClassSectionCommand
         } else if(trainingClassSectionTranslation != null && (description == null && overview == null && introduction == null)) {
             trainingControl.deleteTrainingClassSectionTranslation(trainingClassSectionTranslation, partyPK);
         } else if(trainingClassSectionTranslation != null && (description != null || overview != null || introduction != null)) {
-            TrainingClassSectionTranslationValue trainingClassSectionTranslationValue = trainingControl.getTrainingClassSectionTranslationValue(trainingClassSectionTranslation);
+            var trainingClassSectionTranslationValue = trainingControl.getTrainingClassSectionTranslationValue(trainingClassSectionTranslation);
 
             trainingClassSectionTranslationValue.setDescription(description);
             trainingClassSectionTranslationValue.setOverviewMimeTypePK(overviewMimeType == null? null: overviewMimeType.getPrimaryKey());

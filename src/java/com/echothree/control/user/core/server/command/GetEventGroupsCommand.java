@@ -45,7 +45,7 @@ public class GetEventGroupsCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        GetEventGroupsResult result = CoreResultFactory.getGetEventGroupsResult();
+        var result = CoreResultFactory.getGetEventGroupsResult();
         
         result.setEventGroups(coreControl.getEventGroupTransfers(getUserVisit()));
         

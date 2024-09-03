@@ -32,11 +32,11 @@ public class LicenseTypeDescriptionTransferCache
     }
     
     public LicenseTypeDescriptionTransfer getLicenseTypeDescriptionTransfer(LicenseTypeDescription licenseTypeDescription) {
-        LicenseTypeDescriptionTransfer licenseTypeDescriptionTransfer = get(licenseTypeDescription);
+        var licenseTypeDescriptionTransfer = get(licenseTypeDescription);
         
         if(licenseTypeDescriptionTransfer == null) {
-            LicenseTypeTransfer licenseTypeTransfer = licenseControl.getLicenseTypeTransfer(userVisit, licenseTypeDescription.getLicenseType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, licenseTypeDescription.getLanguage());
+            var licenseTypeTransfer = licenseControl.getLicenseTypeTransfer(userVisit, licenseTypeDescription.getLicenseType());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, licenseTypeDescription.getLanguage());
             
             licenseTypeDescriptionTransfer = new LicenseTypeDescriptionTransfer(languageTransfer, licenseTypeTransfer, licenseTypeDescription.getDescription());
             put(licenseTypeDescription, licenseTypeDescriptionTransfer);

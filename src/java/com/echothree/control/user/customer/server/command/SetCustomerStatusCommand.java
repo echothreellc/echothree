@@ -64,11 +64,11 @@ public class SetCustomerStatusCommand
     @Override
     protected BaseResult execute() {
         var customerControl = Session.getModelController(CustomerControl.class);
-        String customerName = form.getCustomerName();
-        Customer customer = customerControl.getCustomerByName(customerName);
+        var customerName = form.getCustomerName();
+        var customer = customerControl.getCustomerByName(customerName);
         
         if(customer != null) {
-            String customerStatusChoice = form.getCustomerStatusChoice();
+            var customerStatusChoice = form.getCustomerStatusChoice();
             
             CustomerLogic.getInstance().setCustomerStatus(session, this, customer.getParty(), customerStatusChoice, getPartyPK());
         } else {

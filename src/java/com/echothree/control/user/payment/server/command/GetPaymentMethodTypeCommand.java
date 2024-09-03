@@ -56,7 +56,7 @@ public class GetPaymentMethodTypeCommand
     
     @Override
     protected PaymentMethodType getEntity() {
-        PaymentMethodType paymentMethodType = PaymentMethodTypeLogic.getInstance().getPaymentMethodTypeByUniversalSpec(this, form, true);
+        var paymentMethodType = PaymentMethodTypeLogic.getInstance().getPaymentMethodTypeByUniversalSpec(this, form, true);
 
         if(paymentMethodType != null) {
             sendEvent(paymentMethodType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -68,7 +68,7 @@ public class GetPaymentMethodTypeCommand
     @Override
     protected BaseResult getResult(PaymentMethodType paymentMethodType) {
         var paymentMethodTypeControl = Session.getModelController(PaymentMethodTypeControl.class);
-        GetPaymentMethodTypeResult result = PaymentResultFactory.getGetPaymentMethodTypeResult();
+        var result = PaymentResultFactory.getGetPaymentMethodTypeResult();
 
         if(paymentMethodType != null) {
             result.setPaymentMethodType(paymentMethodTypeControl.getPaymentMethodTypeTransfer(getUserVisit(), paymentMethodType));

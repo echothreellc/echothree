@@ -90,34 +90,34 @@ public class CarrierTransferCache
     }
 
     public CarrierTransfer getCarrierTransfer(Party party) {
-        CarrierTransfer carrierTransfer = get(party);
+        var carrierTransfer = get(party);
         
         if(carrierTransfer == null) {
-            PartyDetail partyDetail = party.getLastDetail();
-            String partyName = partyDetail.getPartyName();
-            PartyTypeTransfer partyTypeTransfer = partyControl.getPartyTypeTransfer(userVisit, partyDetail.getPartyType());
-            Language preferredLanguage = partyDetail.getPreferredLanguage();
-            LanguageTransfer preferredLanguageTransfer = preferredLanguage == null ? null : partyControl.getLanguageTransfer(userVisit, preferredLanguage);
-            Currency preferredCurrency = partyDetail.getPreferredCurrency();
-            CurrencyTransfer preferredCurrencyTransfer = preferredCurrency == null ? null : accountingControl.getCurrencyTransfer(userVisit, preferredCurrency);
-            TimeZone preferredTimeZone = partyDetail.getPreferredTimeZone();
-            TimeZoneTransfer preferredTimeZoneTransfer = preferredTimeZone == null ? null : partyControl.getTimeZoneTransfer(userVisit, preferredTimeZone);
-            DateTimeFormat preferredDateTimeFormat = partyDetail.getPreferredDateTimeFormat();
-            DateTimeFormatTransfer preferredDateTimeFormatTransfer = preferredDateTimeFormat == null ? null : partyControl.getDateTimeFormatTransfer(userVisit, preferredDateTimeFormat);
-            Person person = partyControl.getPerson(party);
-            PersonTransfer personTransfer = person == null ? null : partyControl.getPersonTransfer(userVisit, person);
-            PartyGroup partyGroup = partyControl.getPartyGroup(party);
-            PartyGroupTransfer partyGroupTransfer = partyGroup == null ? null : partyControl.getPartyGroupTransfer(userVisit, partyGroup);
-            Carrier carrier = carrierControl.getCarrier(party);
-            String carrierName = carrier.getCarrierName();
-            CarrierTypeTransfer carrierType = carrierControl.getCarrierTypeTransfer(userVisit, carrier.getCarrierType());
-            Selector geoCodeSelector = carrier.getGeoCodeSelector();
-            SelectorTransfer geoCodeSelectorTransfer = geoCodeSelector == null? null: selectorControl.getSelectorTransfer(userVisit, geoCodeSelector);
-            Selector itemSelector = carrier.getItemSelector();
-            SelectorTransfer itemSelectorTransfer = itemSelector == null? null: selectorControl.getSelectorTransfer(userVisit, itemSelector);
-            String accountValidationPattern = carrier.getAccountValidationPattern();
-            Boolean isDefault = carrier.getIsDefault();
-            Integer sortOrder = carrier.getSortOrder();
+            var partyDetail = party.getLastDetail();
+            var partyName = partyDetail.getPartyName();
+            var partyTypeTransfer = partyControl.getPartyTypeTransfer(userVisit, partyDetail.getPartyType());
+            var preferredLanguage = partyDetail.getPreferredLanguage();
+            var preferredLanguageTransfer = preferredLanguage == null ? null : partyControl.getLanguageTransfer(userVisit, preferredLanguage);
+            var preferredCurrency = partyDetail.getPreferredCurrency();
+            var preferredCurrencyTransfer = preferredCurrency == null ? null : accountingControl.getCurrencyTransfer(userVisit, preferredCurrency);
+            var preferredTimeZone = partyDetail.getPreferredTimeZone();
+            var preferredTimeZoneTransfer = preferredTimeZone == null ? null : partyControl.getTimeZoneTransfer(userVisit, preferredTimeZone);
+            var preferredDateTimeFormat = partyDetail.getPreferredDateTimeFormat();
+            var preferredDateTimeFormatTransfer = preferredDateTimeFormat == null ? null : partyControl.getDateTimeFormatTransfer(userVisit, preferredDateTimeFormat);
+            var person = partyControl.getPerson(party);
+            var personTransfer = person == null ? null : partyControl.getPersonTransfer(userVisit, person);
+            var partyGroup = partyControl.getPartyGroup(party);
+            var partyGroupTransfer = partyGroup == null ? null : partyControl.getPartyGroupTransfer(userVisit, partyGroup);
+            var carrier = carrierControl.getCarrier(party);
+            var carrierName = carrier.getCarrierName();
+            var carrierType = carrierControl.getCarrierTypeTransfer(userVisit, carrier.getCarrierType());
+            var geoCodeSelector = carrier.getGeoCodeSelector();
+            var geoCodeSelectorTransfer = geoCodeSelector == null? null: selectorControl.getSelectorTransfer(userVisit, geoCodeSelector);
+            var itemSelector = carrier.getItemSelector();
+            var itemSelectorTransfer = itemSelector == null? null: selectorControl.getSelectorTransfer(userVisit, itemSelector);
+            var accountValidationPattern = carrier.getAccountValidationPattern();
+            var isDefault = carrier.getIsDefault();
+            var sortOrder = carrier.getSortOrder();
             
             carrierTransfer = new CarrierTransfer(partyName, partyTypeTransfer, preferredLanguageTransfer, preferredCurrencyTransfer, preferredTimeZoneTransfer,
                     preferredDateTimeFormatTransfer, personTransfer, partyGroupTransfer, carrierName, carrierType, geoCodeSelectorTransfer, itemSelectorTransfer,

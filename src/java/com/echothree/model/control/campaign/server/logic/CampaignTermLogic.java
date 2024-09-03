@@ -55,7 +55,7 @@ public class CampaignTermLogic
     
     public CampaignTerm getCampaignTermByName(final ExecutionErrorAccumulator eea, final String campaignTermName) {
         var campaignControl = Session.getModelController(CampaignControl.class);
-        CampaignTerm campaignTerm = campaignControl.getCampaignTermByName(campaignTermName);
+        var campaignTerm = campaignControl.getCampaignTermByName(campaignTermName);
 
         if(campaignTerm == null) {
             handleExecutionError(UnknownCampaignTermNameException.class, eea, ExecutionErrors.UnknownCampaignTermName.name(), campaignTermName);
@@ -66,7 +66,7 @@ public class CampaignTermLogic
     
     public CampaignTerm getCampaignTermByValue(final ExecutionErrorAccumulator eea, final String campaignTermValue) {
         var campaignControl = Session.getModelController(CampaignControl.class);
-        CampaignTerm campaignTerm = campaignControl.getCampaignTermByValue(campaignTermValue);
+        var campaignTerm = campaignControl.getCampaignTermByValue(campaignTermValue);
 
         if(campaignTerm == null) {
             handleExecutionError(UnknownCampaignTermValueException.class, eea, ExecutionErrors.UnknownCampaignTermValue.name(), campaignTermValue);
@@ -79,15 +79,15 @@ public class CampaignTermLogic
         var coreControl = Session.getModelController(CoreControl.class);
         var workflowControl = Session.getModelController(WorkflowControl.class);
         var workflowLogic = WorkflowLogic.getInstance();
-        Workflow workflow = workflowLogic.getWorkflowByName(eea, CampaignTermStatusConstants.Workflow_CAMPAIGN_TERM_STATUS);
-        EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(campaignTerm.getPrimaryKey());
-        WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdate(workflow, entityInstance);
-        WorkflowDestination workflowDestination = campaignTermStatusChoice == null ? null : workflowControl.getWorkflowDestinationByName(workflowEntityStatus.getWorkflowStep(), campaignTermStatusChoice);
+        var workflow = workflowLogic.getWorkflowByName(eea, CampaignTermStatusConstants.Workflow_CAMPAIGN_TERM_STATUS);
+        var entityInstance = coreControl.getEntityInstanceByBasePK(campaignTerm.getPrimaryKey());
+        var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdate(workflow, entityInstance);
+        var workflowDestination = campaignTermStatusChoice == null ? null : workflowControl.getWorkflowDestinationByName(workflowEntityStatus.getWorkflowStep(), campaignTermStatusChoice);
 
         if(workflowDestination != null || campaignTermStatusChoice == null) {
-            WorkflowDestinationLogic workflowDestinationLogic = WorkflowDestinationLogic.getInstance();
-            String currentWorkflowStepName = workflowEntityStatus.getWorkflowStep().getLastDetail().getWorkflowStepName();
-            Map<String, Set<String>> map = workflowDestinationLogic.getWorkflowDestinationsAsMap(workflowDestination);
+            var workflowDestinationLogic = WorkflowDestinationLogic.getInstance();
+            var currentWorkflowStepName = workflowEntityStatus.getWorkflowStep().getLastDetail().getWorkflowStepName();
+            var map = workflowDestinationLogic.getWorkflowDestinationsAsMap(workflowDestination);
             Long triggerTime = null;
 
             if(currentWorkflowStepName.equals(CampaignTermStatusConstants.WorkflowStep_ACTIVE)) {

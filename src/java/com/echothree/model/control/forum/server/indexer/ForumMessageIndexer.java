@@ -66,10 +66,10 @@ public class ForumMessageIndexer
     
     @Override
     protected Document convertToDocument(final EntityInstance entityInstance, final ForumMessage forumMessage) {
-        ForumMessageDetail forumMessageDetail = forumMessage.getLastDetail();
-        ForumThread forumThread = forumMessageDetail.getForumThread();
-        List<ForumForumThread> forumForumThreads = forumControl.getForumForumThreadsByForumThread(forumThread);
-        List<ForumMessageTypePartType> forumMessageTypePartTypes = forumControl.getForumMessageTypePartTypesByForumMessageTypeAndIncludeInIndex(forumMessageDetail.getForumMessageType());
+        var forumMessageDetail = forumMessage.getLastDetail();
+        var forumThread = forumMessageDetail.getForumThread();
+        var forumForumThreads = forumControl.getForumForumThreadsByForumThread(forumThread);
+        var forumMessageTypePartTypes = forumControl.getForumMessageTypePartTypesByForumMessageTypeAndIncludeInIndex(forumMessageDetail.getForumMessageType());
 
         var document = newDocumentWithEntityInstanceFields(entityInstance, forumMessage.getPrimaryKey());
 
@@ -78,22 +78,22 @@ public class ForumMessageIndexer
         document.add(new LongPoint(IndexFields.postedTime.name(), forumMessageDetail.getPostedTime()));
 
         forumMessageTypePartTypes.stream().map((forumMessageTypePartType) -> forumMessageTypePartType.getForumMessagePartType()).forEach((forumMessagePartType) -> {
-            ForumMessagePart forumMessagePart = forumControl.getBestForumMessagePart(forumMessage, forumMessagePartType, language);
+            var forumMessagePart = forumControl.getBestForumMessagePart(forumMessage, forumMessagePartType, language);
             if (forumMessagePart != null) {
-                MimeTypeUsageType mimeTypeUsageType = forumMessagePartType.getMimeTypeUsageType();
+                var mimeTypeUsageType = forumMessagePartType.getMimeTypeUsageType();
 
                 if(mimeTypeUsageType == null) {
-                    String forumMessagePartTypeName = forumMessagePartType.getForumMessagePartTypeName();
-                    String string = forumControl.getForumStringMessagePart(forumMessagePart).getString();
+                    var forumMessagePartTypeName = forumMessagePartType.getForumMessagePartTypeName();
+                    var string = forumControl.getForumStringMessagePart(forumMessagePart).getString();
                     
                     document.add(new Field(forumMessagePartTypeName, string, FieldTypes.NOT_STORED_TOKENIZED));
                     document.add(new SortedDocValuesField(forumMessagePartTypeName + IndexConstants.INDEX_FIELD_VARIATION_SEPARATOR + IndexFieldVariations.sortable.name(),
                             new BytesRef(string)));
                 } else {
-                    String mimeTypeUsageTypeName = mimeTypeUsageType.getMimeTypeUsageTypeName();
+                    var mimeTypeUsageTypeName = mimeTypeUsageType.getMimeTypeUsageTypeName();
 
                     if(mimeTypeUsageTypeName.equals(MimeTypeUsageTypes.TEXT.name())) {
-                        ForumClobMessagePart forumClobMessagePart = forumControl.getForumClobMessagePart(forumMessagePart);
+                        var forumClobMessagePart = forumControl.getForumClobMessagePart(forumMessagePart);
 
                         // TODO: mime type conversion to text/plain happens here
                         document.add(new Field(forumMessagePartType.getForumMessagePartTypeName(), forumClobMessagePart.getClob(), FieldTypes.NOT_STORED_TOKENIZED));

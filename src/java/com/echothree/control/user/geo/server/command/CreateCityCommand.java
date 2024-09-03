@@ -79,47 +79,47 @@ public class CreateCityCommand
     
     @Override
     protected BaseResult execute() {
-        CreateCityResult result = GeoResultFactory.getCreateCityResult();
+        var result = GeoResultFactory.getCreateCityResult();
         var geoControl = Session.getModelController(GeoControl.class);
         BasePK createdBy = getPartyPK();
         GeoCode geoCode;
-        
-        String stateGeoCodeName = form.getStateGeoCodeName();
-        GeoCode stateGeoCode = geoControl.getGeoCodeByName(stateGeoCodeName);
-        
-        GeoCodeAliasType stateGeoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(stateGeoCode.getLastDetail().getGeoCodeType(), GeoConstants.GeoCodeAliasType_POSTAL_2_LETTER);
-        GeoCodeAlias stateGeoCodeAlias = geoControl.getGeoCodeAlias(stateGeoCode, stateGeoCodeAliasType);
-        String statePostal2Letter = stateGeoCodeAlias.getAlias();
-        
-        GeoCodeType countryGeoCodeType = geoControl.getGeoCodeTypeByName(GeoConstants.GeoCodeType_COUNTRY);
+
+        var stateGeoCodeName = form.getStateGeoCodeName();
+        var stateGeoCode = geoControl.getGeoCodeByName(stateGeoCodeName);
+
+        var stateGeoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(stateGeoCode.getLastDetail().getGeoCodeType(), GeoConstants.GeoCodeAliasType_POSTAL_2_LETTER);
+        var stateGeoCodeAlias = geoControl.getGeoCodeAlias(stateGeoCode, stateGeoCodeAliasType);
+        var statePostal2Letter = stateGeoCodeAlias.getAlias();
+
+        var countryGeoCodeType = geoControl.getGeoCodeTypeByName(GeoConstants.GeoCodeType_COUNTRY);
         GeoCode countryGeoCode = null;
         Collection stateRelationships = geoControl.getGeoCodeRelationshipsByFromGeoCode(stateGeoCode);
-        for(Iterator iter = stateRelationships.iterator(); iter.hasNext();) {
-            GeoCodeRelationship geoCodeRelationship = (GeoCodeRelationship)iter.next();
-            GeoCode toGeoCode = geoCodeRelationship.getToGeoCode();
+        for(var iter = stateRelationships.iterator(); iter.hasNext();) {
+            var geoCodeRelationship = (GeoCodeRelationship)iter.next();
+            var toGeoCode = geoCodeRelationship.getToGeoCode();
             if(toGeoCode.getLastDetail().getGeoCodeType().equals(countryGeoCodeType)) {
                 countryGeoCode = toGeoCode;
                 break;
             }
         }
-        
-        GeoCodeAliasType countryGeoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(countryGeoCode.getLastDetail().getGeoCodeType(), GeoConstants.GeoCodeAliasType_ISO_2_LETTER);
-        GeoCodeAlias countryGeoCodeAlias = geoControl.getGeoCodeAlias(countryGeoCode, countryGeoCodeAliasType);
-        String countryIso2Letter = countryGeoCodeAlias.getAlias();
-        
-        String geoCodeScopeName = countryIso2Letter + "_" + statePostal2Letter + "_CITIES";
-        GeoCodeScope geoCodeScope = geoControl.getGeoCodeScopeByName(geoCodeScopeName);
+
+        var countryGeoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(countryGeoCode.getLastDetail().getGeoCodeType(), GeoConstants.GeoCodeAliasType_ISO_2_LETTER);
+        var countryGeoCodeAlias = geoControl.getGeoCodeAlias(countryGeoCode, countryGeoCodeAliasType);
+        var countryIso2Letter = countryGeoCodeAlias.getAlias();
+
+        var geoCodeScopeName = countryIso2Letter + "_" + statePostal2Letter + "_CITIES";
+        var geoCodeScope = geoControl.getGeoCodeScopeByName(geoCodeScopeName);
         if(geoCodeScope == null) {
             geoCodeScope = geoControl.createGeoCodeScope(geoCodeScopeName, Boolean.FALSE, 0, getPartyPK());
         }
-        
-        GeoCodeType geoCodeType = geoControl.getGeoCodeTypeByName(GeoConstants.GeoCodeType_CITY);
-        GeoCodeAliasType geoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, GeoConstants.GeoCodeAliasType_CITY_NAME);
-        String cityName = form.getCityName();
-        GeoCodeAlias geoCodeAlias = geoControl.getGeoCodeAliasByAliasWithinScope(geoCodeScope, geoCodeAliasType, cityName);
+
+        var geoCodeType = geoControl.getGeoCodeTypeByName(GeoConstants.GeoCodeType_CITY);
+        var geoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, GeoConstants.GeoCodeAliasType_CITY_NAME);
+        var cityName = form.getCityName();
+        var geoCodeAlias = geoControl.getGeoCodeAliasByAliasWithinScope(geoCodeScope, geoCodeAliasType, cityName);
         
         if(geoCodeAlias == null) {
-            String geoCodeName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(null, SequenceTypes.GEO_CODE.name());
+            var geoCodeName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(null, SequenceTypes.GEO_CODE.name());
             var isDefault = Boolean.valueOf(form.getIsDefault());
             var sortOrder = Integer.valueOf(form.getSortOrder());
             var description = form.getDescription();
@@ -129,7 +129,7 @@ public class CreateCityCommand
             geoControl.createGeoCodeAlias(geoCode, geoCodeAliasType, cityName, createdBy);
             
             if(description != null) {
-                Language language = getPreferredLanguage();
+                var language = getPreferredLanguage();
                 
                 geoControl.createGeoCodeDescription(geoCode, language, description, createdBy);
             }

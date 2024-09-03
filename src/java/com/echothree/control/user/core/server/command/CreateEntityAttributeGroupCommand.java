@@ -65,12 +65,12 @@ public class CreateEntityAttributeGroupCommand
     
     @Override
     protected BaseResult execute() {
-        CreateEntityAttributeGroupResult result = CoreResultFactory.getCreateEntityAttributeGroupResult();
-        String entityAttributeGroupName = form.getEntityAttributeGroupName();
+        var result = CoreResultFactory.getCreateEntityAttributeGroupResult();
+        var entityAttributeGroupName = form.getEntityAttributeGroupName();
         var isDefault = Boolean.valueOf(form.getIsDefault());
         var sortOrder = Integer.valueOf(form.getSortOrder());
         var description = form.getDescription();
-        EntityAttributeGroup entityAttributeGroup = EntityAttributeGroupLogic.getInstance().createEntityAttributeGroup(this,
+        var entityAttributeGroup = EntityAttributeGroupLogic.getInstance().createEntityAttributeGroup(this,
                 entityAttributeGroupName, isDefault, sortOrder, description, description == null ? null : getPreferredLanguage(),
                 getPartyPK());
 

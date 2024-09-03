@@ -65,14 +65,14 @@ public class CreateFilterAdjustmentSourceCommand
     
     @Override
     protected BaseResult execute() {
-        String filterAdjustmentSourceName = form.getFilterAdjustmentSourceName();
+        var filterAdjustmentSourceName = form.getFilterAdjustmentSourceName();
         var filterControl = Session.getModelController(FilterControl.class);
-        FilterAdjustmentSource filterAdjustmentSource = filterControl.getFilterAdjustmentSourceByName(filterAdjustmentSourceName);
+        var filterAdjustmentSource = filterControl.getFilterAdjustmentSourceByName(filterAdjustmentSourceName);
         
         if(filterAdjustmentSource == null) {
             var isDefault = Boolean.valueOf(form.getIsDefault());
             var sortOrder = Integer.valueOf(form.getSortOrder());
-            Boolean allowedForInitialAmount = Boolean.valueOf(form.getAllowedForInitialAmount());
+            var allowedForInitialAmount = Boolean.valueOf(form.getAllowedForInitialAmount());
             
             filterControl.createFilterAdjustmentSource(filterAdjustmentSourceName, allowedForInitialAmount, isDefault, sortOrder);
         } else {

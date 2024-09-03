@@ -67,16 +67,16 @@ public class DeleteCustomerTypeContactListGroupCommand
     @Override
     protected BaseResult execute() {
         var customerControl = Session.getModelController(CustomerControl.class);
-        String customerTypeName = form.getCustomerTypeName();
-        CustomerType customerType = customerControl.getCustomerTypeByName(customerTypeName);
+        var customerTypeName = form.getCustomerTypeName();
+        var customerType = customerControl.getCustomerTypeByName(customerTypeName);
         
         if(customerType != null) {
             var contactListControl = Session.getModelController(ContactListControl.class);
-            String contactListGroupName = form.getContactListGroupName();
-            ContactListGroup contactListGroup = contactListControl.getContactListGroupByName(contactListGroupName);
+            var contactListGroupName = form.getContactListGroupName();
+            var contactListGroup = contactListControl.getContactListGroupByName(contactListGroupName);
             
             if(contactListGroup != null) {
-                CustomerTypeContactListGroup customerTypeContactListGroup = contactListControl.getCustomerTypeContactListGroupForUpdate(customerType, contactListGroup);
+                var customerTypeContactListGroup = contactListControl.getCustomerTypeContactListGroupForUpdate(customerType, contactListGroup);
                 
                 if(customerTypeContactListGroup != null) {
                     contactListControl.deleteCustomerTypeContactListGroup(customerTypeContactListGroup, getPartyPK());

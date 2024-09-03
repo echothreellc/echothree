@@ -96,17 +96,17 @@ public class EditPartyApplicationEditorUseCommand
     @Override
     public PartyApplicationEditorUse getEntity(EditPartyApplicationEditorUseResult result) {
         PartyApplicationEditorUse partyApplicationEditorUse = null;
-        String partyName = spec.getPartyName();
-        Party party = partyName == null ? getParty() : PartyLogic.getInstance().getPartyByName(this, partyName);
+        var partyName = spec.getPartyName();
+        var party = partyName == null ? getParty() : PartyLogic.getInstance().getPartyByName(this, partyName);
         
         if(!hasExecutionErrors()) {
-            String applicationName = spec.getApplicationName();
+            var applicationName = spec.getApplicationName();
             
             application = ApplicationLogic.getInstance().getApplicationByName(this, applicationName);
             
             if(!hasExecutionErrors()) {
-                String applicationEditorUseName = spec.getApplicationEditorUseName();
-                ApplicationEditorUse applicationEditorUse = ApplicationLogic.getInstance().getApplicationEditorUseByName(this, application, applicationEditorUseName);
+                var applicationEditorUseName = spec.getApplicationEditorUseName();
+                var applicationEditorUse = ApplicationLogic.getInstance().getApplicationEditorUseByName(this, application, applicationEditorUseName);
                 
                 if(!hasExecutionErrors()) {
                     var coreControl = getCoreControl();
@@ -143,9 +143,9 @@ public class EditPartyApplicationEditorUseCommand
     
     @Override
     public void doLock(PartyApplicationEditorUseEdit edit, PartyApplicationEditorUse partyApplicationEditorUse) {
-        PartyApplicationEditorUseDetail partyApplicationEditorUseDetail = partyApplicationEditorUse.getLastDetail();
-        Integer preferredHeight = partyApplicationEditorUseDetail.getPreferredHeight();
-        Integer preferredWidth = partyApplicationEditorUseDetail.getPreferredWidth();
+        var partyApplicationEditorUseDetail = partyApplicationEditorUse.getLastDetail();
+        var preferredHeight = partyApplicationEditorUseDetail.getPreferredHeight();
+        var preferredWidth = partyApplicationEditorUseDetail.getPreferredWidth();
 
         applicationEditor = partyApplicationEditorUseDetail.getApplicationEditor();
        
@@ -156,8 +156,8 @@ public class EditPartyApplicationEditorUseCommand
 
     @Override
     public void canUpdate(PartyApplicationEditorUse partyApplicationEditorUse) {
-        String editorName = edit.getEditorName();
-        Editor editor = editorName == null ? null : ApplicationLogic.getInstance().getEditorByName(this, editorName);
+        var editorName = edit.getEditorName();
+        var editor = editorName == null ? null : ApplicationLogic.getInstance().getEditorByName(this, editorName);
 
         if(!hasExecutionErrors()) {
             applicationEditor = editor == null ? null : ApplicationLogic.getInstance().getApplicationEditor(this, application, editor);
@@ -168,11 +168,11 @@ public class EditPartyApplicationEditorUseCommand
     public void doUpdate(PartyApplicationEditorUse partyApplicationEditorUse) {
         var coreControl = getCoreControl();
         var partyPK = getPartyPK();
-        PartyApplicationEditorUseDetailValue partyApplicationEditorUseDetailValue = coreControl.getPartyApplicationEditorUseDetailValueForUpdate(partyApplicationEditorUse);
-        String strPreferredHeight = edit.getPreferredHeight();
-        Integer preferredHeight = strPreferredHeight == null ? null : Integer.valueOf(strPreferredHeight);
-        String strPreferredWidth = edit.getPreferredWidth();
-        Integer preferredWidth = strPreferredWidth == null ? null : Integer.valueOf(strPreferredWidth);
+        var partyApplicationEditorUseDetailValue = coreControl.getPartyApplicationEditorUseDetailValueForUpdate(partyApplicationEditorUse);
+        var strPreferredHeight = edit.getPreferredHeight();
+        var preferredHeight = strPreferredHeight == null ? null : Integer.valueOf(strPreferredHeight);
+        var strPreferredWidth = edit.getPreferredWidth();
+        var preferredWidth = strPreferredWidth == null ? null : Integer.valueOf(strPreferredWidth);
 
         partyApplicationEditorUseDetailValue.setApplicationEditorPK(applicationEditor == null ? null : applicationEditor.getPrimaryKey());
         partyApplicationEditorUseDetailValue.setPreferredHeight(preferredHeight);

@@ -37,11 +37,11 @@ public class LotTimeTypeDescriptionTransferCache
     
     @Override
     public LotTimeTypeDescriptionTransfer getTransfer(LotTimeTypeDescription lotTimeTypeDescription) {
-        LotTimeTypeDescriptionTransfer lotTimeTypeDescriptionTransfer = get(lotTimeTypeDescription);
+        var lotTimeTypeDescriptionTransfer = get(lotTimeTypeDescription);
         
         if(lotTimeTypeDescriptionTransfer == null) {
-            LotTimeTypeTransfer lotTimeTypeTransfer = lotTimeControl.getLotTimeTypeTransfer(userVisit, lotTimeTypeDescription.getLotTimeType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, lotTimeTypeDescription.getLanguage());
+            var lotTimeTypeTransfer = lotTimeControl.getLotTimeTypeTransfer(userVisit, lotTimeTypeDescription.getLotTimeType());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, lotTimeTypeDescription.getLanguage());
             
             lotTimeTypeDescriptionTransfer = new LotTimeTypeDescriptionTransfer(languageTransfer, lotTimeTypeTransfer, lotTimeTypeDescription.getDescription());
             put(lotTimeTypeDescription, lotTimeTypeDescriptionTransfer);

@@ -79,25 +79,25 @@ public class EditUseTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var useTypeControl = Session.getModelController(UseTypeControl.class);
-        EditUseTypeDescriptionResult result = OfferResultFactory.getEditUseTypeDescriptionResult();
-        String useTypeName = spec.getUseTypeName();
-        UseType useType = useTypeControl.getUseTypeByName(useTypeName);
+        var result = OfferResultFactory.getEditUseTypeDescriptionResult();
+        var useTypeName = spec.getUseTypeName();
+        var useType = useTypeControl.getUseTypeByName(useTypeName);
         
         if(useType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                    UseTypeDescription useTypeDescription = useTypeControl.getUseTypeDescription(useType, language);
+                    var useTypeDescription = useTypeControl.getUseTypeDescription(useType, language);
                     
                     if(useTypeDescription != null) {
                         if(editMode.equals(EditMode.LOCK)) {
                             result.setUseTypeDescription(useTypeControl.getUseTypeDescriptionTransfer(getUserVisit(), useTypeDescription));
 
                             if(lockEntity(useType)) {
-                                UseTypeDescriptionEdit edit = OfferEditFactory.getUseTypeDescriptionEdit();
+                                var edit = OfferEditFactory.getUseTypeDescriptionEdit();
 
                                 result.setEdit(edit);
                                 edit.setDescription(useTypeDescription.getDescription());
@@ -113,12 +113,12 @@ public class EditUseTypeDescriptionCommand
                         addExecutionError(ExecutionErrors.UnknownUseTypeDescription.name());
                     }
                 } else if(editMode.equals(EditMode.UPDATE)) {
-                    UseTypeDescriptionValue useTypeDescriptionValue = useTypeControl.getUseTypeDescriptionValueForUpdate(useType, language);
+                    var useTypeDescriptionValue = useTypeControl.getUseTypeDescriptionValueForUpdate(useType, language);
                     
                     if(useTypeDescriptionValue != null) {
                         if(lockEntityForUpdate(useType)) {
                             try {
-                                String description = edit.getDescription();
+                                var description = edit.getDescription();
                                 
                                 useTypeDescriptionValue.setDescription(description);
                                 

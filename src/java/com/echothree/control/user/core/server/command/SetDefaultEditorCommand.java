@@ -61,8 +61,8 @@ public class SetDefaultEditorCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String editorName = form.getEditorName();
-        EditorDetailValue editorDetailValue = coreControl.getEditorDetailValueByNameForUpdate(editorName);
+        var editorName = form.getEditorName();
+        var editorDetailValue = coreControl.getEditorDetailValueByNameForUpdate(editorName);
         
         if(editorDetailValue != null) {
             editorDetailValue.setIsDefault(Boolean.TRUE);

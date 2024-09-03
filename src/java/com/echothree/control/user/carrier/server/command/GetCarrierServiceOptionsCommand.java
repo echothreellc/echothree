@@ -70,19 +70,19 @@ public class GetCarrierServiceOptionsCommand
     @Override
     protected BaseResult execute() {
         var carrierControl = Session.getModelController(CarrierControl.class);
-        GetCarrierServiceOptionsResult result = CarrierResultFactory.getGetCarrierServiceOptionsResult();
-        String carrierName = form.getCarrierName();
-        Carrier carrier = carrierControl.getCarrierByName(carrierName);
+        var result = CarrierResultFactory.getGetCarrierServiceOptionsResult();
+        var carrierName = form.getCarrierName();
+        var carrier = carrierControl.getCarrierByName(carrierName);
         
         if(carrier != null) {
-            Party carrierParty = carrier.getParty();
-            String carrierServiceName = form.getCarrierServiceName();
-            String carrierOptionName = form.getCarrierOptionName();
+            var carrierParty = carrier.getParty();
+            var carrierServiceName = form.getCarrierServiceName();
+            var carrierOptionName = form.getCarrierOptionName();
             var parameterCount = (carrierServiceName == null ? 0 : 1) + (carrierOptionName == null ? 0 : 1);
             
             if(parameterCount == 1) {
                 if(carrierServiceName != null) {
-                    CarrierService carrierService = carrierControl.getCarrierServiceByName(carrierParty, carrierServiceName);
+                    var carrierService = carrierControl.getCarrierServiceByName(carrierParty, carrierServiceName);
                     
                     if(carrierService != null) {
                         result.setCarrierService(carrierControl.getCarrierServiceTransfer(getUserVisit(), carrierService));
@@ -94,7 +94,7 @@ public class GetCarrierServiceOptionsCommand
                 }
                 
                 if(carrierOptionName != null) {
-                    CarrierOption carrierOption = carrierControl.getCarrierOptionByName(carrierParty, carrierOptionName);
+                    var carrierOption = carrierControl.getCarrierOptionByName(carrierParty, carrierOptionName);
                     
                     if(carrierOption != null) {
                         result.setCarrierOption(carrierControl.getCarrierOptionTransfer(getUserVisit(), carrierOption));

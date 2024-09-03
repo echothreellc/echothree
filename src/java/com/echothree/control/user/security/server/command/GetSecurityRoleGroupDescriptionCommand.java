@@ -69,17 +69,17 @@ public class GetSecurityRoleGroupDescriptionCommand
     @Override
     protected BaseResult execute() {
         var securityControl = Session.getModelController(SecurityControl.class);
-        GetSecurityRoleGroupDescriptionResult result = SecurityResultFactory.getGetSecurityRoleGroupDescriptionResult();
-        String securityRoleGroupName = form.getSecurityRoleGroupName();
-        SecurityRoleGroup securityRoleGroup = securityControl.getSecurityRoleGroupByName(securityRoleGroupName);
+        var result = SecurityResultFactory.getGetSecurityRoleGroupDescriptionResult();
+        var securityRoleGroupName = form.getSecurityRoleGroupName();
+        var securityRoleGroup = securityControl.getSecurityRoleGroupByName(securityRoleGroupName);
         
         if(securityRoleGroup != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                SecurityRoleGroupDescription securityRoleGroupDescription = securityControl.getSecurityRoleGroupDescription(securityRoleGroup, language);
+                var securityRoleGroupDescription = securityControl.getSecurityRoleGroupDescription(securityRoleGroup, language);
                 
                 if(securityRoleGroupDescription != null) {
                     result.setSecurityRoleGroupDescription(securityControl.getSecurityRoleGroupDescriptionTransfer(getUserVisit(), securityRoleGroupDescription));

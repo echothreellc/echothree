@@ -67,7 +67,7 @@ public class ContactMechanismLogic
             final PartyPK deletedBy) {
         var contactControl = Session.getModelController(ContactControl.class);
         var partyPaymentMethodControl = Session.getModelController(PartyPaymentMethodControl.class);
-        boolean cannotDeleteContactMechanismInUse = false;
+        var cannotDeleteContactMechanismInUse = false;
 
         // Check if the ContactMechanism is in-use by any PartyPaymentMethodCreditCard.
         var partyContactMechanisms = contactControl.getPartyContactMechanismsByContactMechanism(contactMechanism);

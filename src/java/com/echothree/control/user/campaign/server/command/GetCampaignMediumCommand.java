@@ -73,8 +73,8 @@ public class GetCampaignMediumCommand
     
     @Override
     protected BaseResult execute() {
-        GetCampaignMediumResult result = CampaignResultFactory.getGetCampaignMediumResult();
-        String campaignMediumName = form.getCampaignMediumName();
+        var result = CampaignResultFactory.getGetCampaignMediumResult();
+        var campaignMediumName = form.getCampaignMediumName();
         var parameterCount = (campaignMediumName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {

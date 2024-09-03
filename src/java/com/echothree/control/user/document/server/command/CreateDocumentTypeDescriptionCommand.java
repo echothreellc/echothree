@@ -68,16 +68,16 @@ public class CreateDocumentTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var documentControl = Session.getModelController(DocumentControl.class);
-        String documentTypeName = form.getDocumentTypeName();
-        DocumentType documentType = documentControl.getDocumentTypeByName(documentTypeName);
+        var documentTypeName = form.getDocumentTypeName();
+        var documentType = documentControl.getDocumentTypeByName(documentTypeName);
         
         if(documentType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                DocumentTypeDescription documentTypeDescription = documentControl.getDocumentTypeDescription(documentType, language);
+                var documentTypeDescription = documentControl.getDocumentTypeDescription(documentType, language);
                 
                 if(documentTypeDescription == null) {
                     var description = form.getDescription();

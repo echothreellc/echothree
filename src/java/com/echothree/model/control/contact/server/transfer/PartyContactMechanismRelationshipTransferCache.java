@@ -31,11 +31,11 @@ public class PartyContactMechanismRelationshipTransferCache
     }
     
     public PartyContactMechanismRelationshipTransfer getPartyContactMechanismRelationshipTransfer(PartyContactMechanismRelationship partyContactMechanismRelationship) {
-        PartyContactMechanismRelationshipTransfer partyContactMechanismRelationshipTransfer = get(partyContactMechanismRelationship);
+        var partyContactMechanismRelationshipTransfer = get(partyContactMechanismRelationship);
         
         if(partyContactMechanismRelationshipTransfer == null) {
-            PartyContactMechanismTransfer fromPartyContactMechanism = contactControl.getPartyContactMechanismTransfer(userVisit, partyContactMechanismRelationship.getFromPartyContactMechanism());
-            PartyContactMechanismTransfer toPartyContactMechanism = contactControl.getPartyContactMechanismTransfer(userVisit, partyContactMechanismRelationship.getToPartyContactMechanism());
+            var fromPartyContactMechanism = contactControl.getPartyContactMechanismTransfer(userVisit, partyContactMechanismRelationship.getFromPartyContactMechanism());
+            var toPartyContactMechanism = contactControl.getPartyContactMechanismTransfer(userVisit, partyContactMechanismRelationship.getToPartyContactMechanism());
             
             partyContactMechanismRelationshipTransfer = new PartyContactMechanismRelationshipTransfer(fromPartyContactMechanism, toPartyContactMechanism);
             put(partyContactMechanismRelationship, partyContactMechanismRelationshipTransfer);

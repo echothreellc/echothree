@@ -70,35 +70,35 @@ public class SearchSalesOrdersCommand
     
     @Override
     protected BaseResult execute() {
-        SearchLogic searchLogic = SearchLogic.getInstance();
-        SearchSalesOrdersResult result = SearchResultFactory.getSearchSalesOrdersResult();
-        SearchKind searchKind = searchLogic.getSearchKindByName(null, SearchKinds.SALES_ORDER.name());
+        var searchLogic = SearchLogic.getInstance();
+        var result = SearchResultFactory.getSearchSalesOrdersResult();
+        var searchKind = searchLogic.getSearchKindByName(null, SearchKinds.SALES_ORDER.name());
 
         if(!hasExecutionErrors()) {
-            String searchTypeName = form.getSearchTypeName();
-            SearchType searchType = searchLogic.getSearchTypeByName(this, searchKind, searchTypeName);
+            var searchTypeName = form.getSearchTypeName();
+            var searchType = searchLogic.getSearchTypeByName(this, searchKind, searchTypeName);
 
             if(!hasExecutionErrors()) {
                 var workflowControl = Session.getModelController(WorkflowControl.class);
-                String salesOrderStatusChoice = form.getSalesOrderStatusChoice();
-                WorkflowStep salesOrderStatusWorkflowStep = salesOrderStatusChoice == null ? null :
+                var salesOrderStatusChoice = form.getSalesOrderStatusChoice();
+                var salesOrderStatusWorkflowStep = salesOrderStatusChoice == null ? null :
                     workflowControl.getWorkflowStepByName(workflowControl.getWorkflowByName(SalesOrderStatusConstants.Workflow_SALES_ORDER_STATUS), salesOrderStatusChoice);
 
                 if(salesOrderStatusChoice == null || salesOrderStatusChoice != null) {
-                    OrderLogic orderLogic = OrderLogic.getInstance();
-                    OrderType orderType = orderLogic.getOrderTypeByName(this, OrderTypes.SALES_ORDER.name());
+                    var orderLogic = OrderLogic.getInstance();
+                    var orderType = orderLogic.getOrderTypeByName(this, OrderTypes.SALES_ORDER.name());
 
                     if(!hasExecutionErrors()) {
-                        String orderAliasTypeName = form.getOrderAliasTypeName();
-                        OrderAliasType orderAliasType = orderAliasTypeName == null ? null : orderLogic.getOrderAliasTypeByName(this, orderType, orderAliasTypeName);
+                        var orderAliasTypeName = form.getOrderAliasTypeName();
+                        var orderAliasType = orderAliasTypeName == null ? null : orderLogic.getOrderAliasTypeByName(this, orderType, orderAliasTypeName);
 
                         if(!hasExecutionErrors()) {
-                            SalesOrderSearchEvaluator salesOrderSearchEvaluator = new SalesOrderSearchEvaluator(getUserVisit(), searchType,
+                            var salesOrderSearchEvaluator = new SalesOrderSearchEvaluator(getUserVisit(), searchType,
                                     searchLogic.getDefaultSearchDefaultOperator(null), searchLogic.getDefaultSearchSortOrder(null, searchKind),
                                     searchLogic.getDefaultSearchSortDirection(null));
-                            String createdSince = form.getCreatedSince();
-                            String modifiedSince = form.getModifiedSince();
-                            String fields = form.getFields();
+                            var createdSince = form.getCreatedSince();
+                            var modifiedSince = form.getModifiedSince();
+                            var fields = form.getFields();
 
                             salesOrderSearchEvaluator.setOrderStatusWorkflowStep(salesOrderStatusWorkflowStep);
                             salesOrderSearchEvaluator.setOrderAliasType(orderAliasType);

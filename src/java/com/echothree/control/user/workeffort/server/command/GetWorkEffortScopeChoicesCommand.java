@@ -54,14 +54,14 @@ public class GetWorkEffortScopeChoicesCommand
     @Override
     protected BaseResult execute() {
         var workEffortControl = Session.getModelController(WorkEffortControl.class);
-        GetWorkEffortScopeChoicesResult result = WorkEffortResultFactory.getGetWorkEffortScopeChoicesResult();
-        String workEffortTypeName = form.getWorkEffortTypeName();
-        WorkEffortType workEffortType = workEffortControl.getWorkEffortTypeByName(workEffortTypeName);
+        var result = WorkEffortResultFactory.getGetWorkEffortScopeChoicesResult();
+        var workEffortTypeName = form.getWorkEffortTypeName();
+        var workEffortType = workEffortControl.getWorkEffortTypeByName(workEffortTypeName);
         
         if(workEffortType != null) {
-            String defaultWorkEffortScopeChoice = form.getDefaultWorkEffortScopeChoice();
-            Language language = getPreferredLanguage();
-            boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+            var defaultWorkEffortScopeChoice = form.getDefaultWorkEffortScopeChoice();
+            var language = getPreferredLanguage();
+            var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
             
             result.setWorkEffortScopeChoices(workEffortControl.getWorkEffortScopeChoices(defaultWorkEffortScopeChoice, language,
                     allowNullChoice, workEffortType));

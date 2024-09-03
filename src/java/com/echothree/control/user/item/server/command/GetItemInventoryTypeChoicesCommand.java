@@ -50,9 +50,9 @@ public class GetItemInventoryTypeChoicesCommand
     @Override
     protected BaseResult execute() {
         var itemControl = Session.getModelController(ItemControl.class);
-        GetItemInventoryTypeChoicesResult result = ItemResultFactory.getGetItemInventoryTypeChoicesResult();
-        String defaultItemInventoryTypeChoice = form.getDefaultItemInventoryTypeChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = ItemResultFactory.getGetItemInventoryTypeChoicesResult();
+        var defaultItemInventoryTypeChoice = form.getDefaultItemInventoryTypeChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setItemInventoryTypeChoices(itemControl.getItemInventoryTypeChoices(defaultItemInventoryTypeChoice, getPreferredLanguage(), allowNullChoice));
         

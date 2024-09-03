@@ -63,9 +63,9 @@ public class GetTrackChoicesCommand
     @Override
     protected BaseResult execute() {
         var trackControl = Session.getModelController(TrackControl.class);
-        GetTrackChoicesResult result = TrackResultFactory.getGetTrackChoicesResult();
-        String defaultTrackChoice = form.getDefaultTrackChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = TrackResultFactory.getGetTrackChoicesResult();
+        var defaultTrackChoice = form.getDefaultTrackChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setTrackChoices(trackControl.getTrackChoices(defaultTrackChoice, getPreferredLanguage(), allowNullChoice));
         

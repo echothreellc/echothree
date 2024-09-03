@@ -91,7 +91,7 @@ public class GetCountyCommand
             GeoCode countryGeoCode = null;
             var stateRelationships = geoControl.getGeoCodeRelationshipsByFromGeoCode(stateGeoCode);
             for(var geoCodeRelationship : stateRelationships) {
-                GeoCode toGeoCode = geoCodeRelationship.getToGeoCode();
+                var toGeoCode = geoCodeRelationship.getToGeoCode();
                 if(toGeoCode.getLastDetail().getGeoCodeType().equals(countryGeoCodeType)) {
                     countryGeoCode = toGeoCode;
                     break;

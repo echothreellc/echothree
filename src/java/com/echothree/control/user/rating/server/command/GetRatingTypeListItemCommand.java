@@ -57,23 +57,23 @@ public class GetRatingTypeListItemCommand
     
     @Override
     protected BaseResult execute() {
-        GetRatingTypeListItemResult result = RatingResultFactory.getGetRatingTypeListItemResult();
+        var result = RatingResultFactory.getGetRatingTypeListItemResult();
         var coreControl = getCoreControl();
-        String componentVendorName = form.getComponentVendorName();
-        ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+        var componentVendorName = form.getComponentVendorName();
+        var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
         
         if(componentVendor != null) {
-            String entityTypeName = form.getEntityTypeName();
-            EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+            var entityTypeName = form.getEntityTypeName();
+            var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
             
             if(entityType != null) {
                 var ratingControl = Session.getModelController(RatingControl.class);
-                String ratingTypeName = form.getRatingTypeName();
-                RatingType ratingType = ratingControl.getRatingTypeByName(entityType, ratingTypeName);
+                var ratingTypeName = form.getRatingTypeName();
+                var ratingType = ratingControl.getRatingTypeByName(entityType, ratingTypeName);
                 
                 if(ratingType != null) {
-                    String ratingTypeListItemName = form.getRatingTypeListItemName();
-                    RatingTypeListItem ratingTypeListItem = ratingControl.getRatingTypeListItemByName(ratingType, ratingTypeListItemName);
+                    var ratingTypeListItemName = form.getRatingTypeListItemName();
+                    var ratingTypeListItem = ratingControl.getRatingTypeListItemByName(ratingType, ratingTypeListItemName);
                     
                     if(ratingTypeListItem != null) {
                         result.setRatingTypeListItem(ratingControl.getRatingTypeListItemTransfer(getUserVisit(), ratingTypeListItem));

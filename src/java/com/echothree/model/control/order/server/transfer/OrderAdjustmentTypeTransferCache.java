@@ -36,14 +36,14 @@ public class OrderAdjustmentTypeTransferCache
     }
     
     public OrderAdjustmentTypeTransfer getOrderAdjustmentTypeTransfer(OrderAdjustmentType orderAdjustmentType) {
-        OrderAdjustmentTypeTransfer orderAdjustmentTypeTransfer = get(orderAdjustmentType);
+        var orderAdjustmentTypeTransfer = get(orderAdjustmentType);
         
         if(orderAdjustmentTypeTransfer == null) {
-            OrderAdjustmentTypeDetail orderAdjustmentTypeDetail = orderAdjustmentType.getLastDetail();
-            String orderAdjustmentTypeName = orderAdjustmentTypeDetail.getOrderAdjustmentTypeName();
-            Boolean isDefault = orderAdjustmentTypeDetail.getIsDefault();
-            Integer sortOrder = orderAdjustmentTypeDetail.getSortOrder();
-            String description = orderAdjustmentControl.getBestOrderAdjustmentTypeDescription(orderAdjustmentType, getLanguage());
+            var orderAdjustmentTypeDetail = orderAdjustmentType.getLastDetail();
+            var orderAdjustmentTypeName = orderAdjustmentTypeDetail.getOrderAdjustmentTypeName();
+            var isDefault = orderAdjustmentTypeDetail.getIsDefault();
+            var sortOrder = orderAdjustmentTypeDetail.getSortOrder();
+            var description = orderAdjustmentControl.getBestOrderAdjustmentTypeDescription(orderAdjustmentType, getLanguage());
             
             orderAdjustmentTypeTransfer = new OrderAdjustmentTypeTransfer(orderAdjustmentTypeName, isDefault, sortOrder, description);
             put(orderAdjustmentType, orderAdjustmentTypeTransfer);

@@ -62,8 +62,8 @@ public class GetForumMessageCommand
     
     @Override
     protected BaseResult execute() {
-        GetForumMessageResult result = ForumResultFactory.getGetForumMessageResult();
-        String forumMessageName = form.getForumMessageName();
+        var result = ForumResultFactory.getGetForumMessageResult();
+        var forumMessageName = form.getForumMessageName();
         var parameterCount = (forumMessageName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {

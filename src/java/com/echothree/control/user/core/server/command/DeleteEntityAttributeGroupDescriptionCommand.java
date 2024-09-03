@@ -66,16 +66,16 @@ public class DeleteEntityAttributeGroupDescriptionCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String entityAttributeGroupName = form.getEntityAttributeGroupName();
-        EntityAttributeGroup entityAttributeGroup = coreControl.getEntityAttributeGroupByName(entityAttributeGroupName);
+        var entityAttributeGroupName = form.getEntityAttributeGroupName();
+        var entityAttributeGroup = coreControl.getEntityAttributeGroupByName(entityAttributeGroupName);
         
         if(entityAttributeGroup != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                EntityAttributeGroupDescription entityAttributeGroupDescription = coreControl.getEntityAttributeGroupDescriptionForUpdate(entityAttributeGroup, language);
+                var entityAttributeGroupDescription = coreControl.getEntityAttributeGroupDescriptionForUpdate(entityAttributeGroup, language);
                 
                 if(entityAttributeGroupDescription != null) {
                     coreControl.deleteEntityAttributeGroupDescription(entityAttributeGroupDescription, getPartyPK());

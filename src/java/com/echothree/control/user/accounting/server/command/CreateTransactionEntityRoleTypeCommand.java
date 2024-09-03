@@ -71,21 +71,21 @@ public class CreateTransactionEntityRoleTypeCommand
     @Override
     protected BaseResult execute() {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        String transactionTypeName = form.getTransactionTypeName();
-        TransactionType transactionType = accountingControl.getTransactionTypeByName(transactionTypeName);
+        var transactionTypeName = form.getTransactionTypeName();
+        var transactionType = accountingControl.getTransactionTypeByName(transactionTypeName);
         
         if(transactionType != null) {
-            String transactionEntityRoleTypeName = form.getTransactionEntityRoleTypeName();
-            TransactionEntityRoleType transactionEntityRoleType = accountingControl.getTransactionEntityRoleTypeByName(transactionType, transactionEntityRoleTypeName);
+            var transactionEntityRoleTypeName = form.getTransactionEntityRoleTypeName();
+            var transactionEntityRoleType = accountingControl.getTransactionEntityRoleTypeByName(transactionType, transactionEntityRoleTypeName);
             
             if(transactionEntityRoleType == null) {
                 var coreControl = getCoreControl();
-                String componentVendorName = form.getComponentVendorName();
-                ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+                var componentVendorName = form.getComponentVendorName();
+                var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
                 
                 if(componentVendor != null) {
-                    String entityTypeName = form.getEntityTypeName();
-                    EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+                    var entityTypeName = form.getEntityTypeName();
+                    var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
                     
                     if(entityType != null) {
                         var sortOrder = Integer.valueOf(form.getSortOrder());

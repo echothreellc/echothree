@@ -34,17 +34,17 @@ public class LocationNameElementTransferCache
     }
     
     public LocationNameElementTransfer getLocationNameElementTransfer(LocationNameElement locationNameElement) {
-        LocationNameElementTransfer locationNameElementTransfer = get(locationNameElement);
+        var locationNameElementTransfer = get(locationNameElement);
         
         if(locationNameElementTransfer == null) {
-            LocationNameElementDetail locationNameElementDetail = locationNameElement.getLastDetail();
-            String locationNameElementName = locationNameElementDetail.getLocationNameElementName();
-            LocationTypeTransferCache locationTypeTransferCache = warehouseControl.getWarehouseTransferCaches(userVisit).getLocationTypeTransferCache();
-            LocationTypeTransfer locationType = locationTypeTransferCache.getLocationTypeTransfer(locationNameElementDetail.getLocationType());
-            Integer offset = locationNameElementDetail.getOffset();
-            Integer length = locationNameElementDetail.getLength();
-            String validationPattern = locationNameElementDetail.getValidationPattern();
-            String description = warehouseControl.getBestLocationNameElementDescription(locationNameElement, getLanguage());
+            var locationNameElementDetail = locationNameElement.getLastDetail();
+            var locationNameElementName = locationNameElementDetail.getLocationNameElementName();
+            var locationTypeTransferCache = warehouseControl.getWarehouseTransferCaches(userVisit).getLocationTypeTransferCache();
+            var locationType = locationTypeTransferCache.getLocationTypeTransfer(locationNameElementDetail.getLocationType());
+            var offset = locationNameElementDetail.getOffset();
+            var length = locationNameElementDetail.getLength();
+            var validationPattern = locationNameElementDetail.getValidationPattern();
+            var description = warehouseControl.getBestLocationNameElementDescription(locationNameElement, getLanguage());
             
             locationNameElementTransfer = new LocationNameElementTransfer(locationNameElementName, locationType, offset, length,
                     validationPattern, description);

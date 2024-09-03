@@ -47,7 +47,7 @@ public class GetTransactionTypesCommand
     @Override
     protected BaseResult execute() {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        GetTransactionTypesResult result = AccountingResultFactory.getGetTransactionTypesResult();
+        var result = AccountingResultFactory.getGetTransactionTypesResult();
         
         result.setTransactionTypes(accountingControl.getTransactionTypeTransfers(getUserVisit()));
         

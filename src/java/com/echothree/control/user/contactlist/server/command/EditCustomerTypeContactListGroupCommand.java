@@ -89,13 +89,13 @@ public class EditCustomerTypeContactListGroupCommand
     public CustomerTypeContactListGroup getEntity(EditCustomerTypeContactListGroupResult result) {
         var customerControl = Session.getModelController(CustomerControl.class);
         CustomerTypeContactListGroup customerTypeContactListGroup = null;
-        String customerTypeName = spec.getCustomerTypeName();
-        CustomerType customerType = customerControl.getCustomerTypeByName(customerTypeName);
+        var customerTypeName = spec.getCustomerTypeName();
+        var customerType = customerControl.getCustomerTypeByName(customerTypeName);
 
         if(customerType != null) {
             var contactListControl = Session.getModelController(ContactListControl.class);
-            String contactListGroupName = spec.getContactListGroupName();
-            ContactListGroup contactListGroup = contactListControl.getContactListGroupByName(contactListGroupName);
+            var contactListGroupName = spec.getContactListGroupName();
+            var contactListGroup = contactListControl.getContactListGroupByName(contactListGroupName);
 
             if(contactListGroup != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -137,7 +137,7 @@ public class EditCustomerTypeContactListGroupCommand
     @Override
     public void doUpdate(CustomerTypeContactListGroup customerTypeContactListGroup) {
         var contactListControl = Session.getModelController(ContactListControl.class);
-        CustomerTypeContactListGroupValue customerTypeContactListGroupValue = contactListControl.getCustomerTypeContactListGroupValue(customerTypeContactListGroup);
+        var customerTypeContactListGroupValue = contactListControl.getCustomerTypeContactListGroupValue(customerTypeContactListGroup);
 
         customerTypeContactListGroupValue.setAddWhenCreated(Boolean.valueOf(edit.getAddWhenCreated()));
 

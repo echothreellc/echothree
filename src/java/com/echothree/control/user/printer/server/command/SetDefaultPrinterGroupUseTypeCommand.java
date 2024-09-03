@@ -49,8 +49,8 @@ public class SetDefaultPrinterGroupUseTypeCommand
    @Override
     protected BaseResult execute() {
         var printerControl = Session.getModelController(PrinterControl.class);
-        String printerGroupUseTypeName = form.getPrinterGroupUseTypeName();
-        PrinterGroupUseTypeDetailValue printerGroupUseTypeDetailValue = printerControl.getPrinterGroupUseTypeDetailValueByNameForUpdate(printerGroupUseTypeName);
+       var printerGroupUseTypeName = form.getPrinterGroupUseTypeName();
+       var printerGroupUseTypeDetailValue = printerControl.getPrinterGroupUseTypeDetailValueByNameForUpdate(printerGroupUseTypeName);
         
         if(printerGroupUseTypeDetailValue != null) {
             printerGroupUseTypeDetailValue.setIsDefault(Boolean.TRUE);

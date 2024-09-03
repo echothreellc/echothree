@@ -48,8 +48,8 @@ public class CreatePartyRelationshipTypeCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        String partyRelationshipTypeName = form.getPartyRelationshipTypeName();
-        PartyRelationshipType partyRelationshipType = partyControl.getPartyRelationshipTypeByName(partyRelationshipTypeName);
+        var partyRelationshipTypeName = form.getPartyRelationshipTypeName();
+        var partyRelationshipType = partyControl.getPartyRelationshipTypeByName(partyRelationshipTypeName);
         
         if(partyRelationshipType == null) {
             partyControl.createPartyRelationshipType(partyRelationshipTypeName);

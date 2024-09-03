@@ -57,18 +57,18 @@ public class CreateForumGroupCommand
     @Override
     protected BaseResult execute() {
         var forumControl = Session.getModelController(ForumControl.class);
-        String forumGroupName = form.getForumGroupName();
-        ForumGroup forumGroup = forumControl.getForumGroupByName(forumGroupName);
+        var forumGroupName = form.getForumGroupName();
+        var forumGroup = forumControl.getForumGroupByName(forumGroupName);
         
         if(forumGroup == null) {
             var iconControl = Session.getModelController(IconControl.class);
-            String iconName = form.getIconName();
-            Icon icon = iconName == null? null: iconControl.getIconByName(iconName);
+            var iconName = form.getIconName();
+            var icon = iconName == null? null: iconControl.getIconByName(iconName);
             
             if(iconName == null || icon != null) {
                 if(icon != null) {
-                    IconUsageType iconUsageType = iconControl.getIconUsageTypeByName(IconConstants.IconUsageType_FORUM_GROUP);
-                    IconUsage iconUsage = iconControl.getIconUsage(iconUsageType, icon);
+                    var iconUsageType = iconControl.getIconUsageTypeByName(IconConstants.IconUsageType_FORUM_GROUP);
+                    var iconUsage = iconControl.getIconUsage(iconUsageType, icon);
                     
                     if(iconUsage == null) {
                         addExecutionError(ExecutionErrors.UnknownIconUsage.name());

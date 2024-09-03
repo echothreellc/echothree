@@ -69,17 +69,17 @@ public class GetPicklistTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var picklistControl = Session.getModelController(PicklistControl.class);
-        GetPicklistTypeDescriptionResult result = PicklistResultFactory.getGetPicklistTypeDescriptionResult();
-        String picklistTypeName = form.getPicklistTypeName();
-        PicklistType picklistType = picklistControl.getPicklistTypeByName(picklistTypeName);
+        var result = PicklistResultFactory.getGetPicklistTypeDescriptionResult();
+        var picklistTypeName = form.getPicklistTypeName();
+        var picklistType = picklistControl.getPicklistTypeByName(picklistTypeName);
         
         if(picklistType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
-                PicklistTypeDescription picklistTypeDescription = picklistControl.getPicklistTypeDescription(picklistType, language);
+                var picklistTypeDescription = picklistControl.getPicklistTypeDescription(picklistType, language);
 
                 if(picklistTypeDescription != null) {
                     result.setPicklistTypeDescription(picklistControl.getPicklistTypeDescriptionTransfer(getUserVisit(), picklistTypeDescription));

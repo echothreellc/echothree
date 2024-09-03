@@ -78,9 +78,9 @@ public class GetTrainingClassSectionsCommand
 
     @Override
     protected BaseResult execute() {
-        GetTrainingClassSectionsResult result = TrainingResultFactory.getGetTrainingClassSectionsResult();
-        String trainingClassName = form.getTrainingClassName();
-        String partyTrainingClassName = form.getPartyTrainingClassName();
+        var result = TrainingResultFactory.getGetTrainingClassSectionsResult();
+        var trainingClassName = form.getTrainingClassName();
+        var partyTrainingClassName = form.getPartyTrainingClassName();
         var parameterCount = (trainingClassName == null ? 0 : 1) + (partyTrainingClassName == null ? 0 : 1);
 
         if(parameterCount == 1) {
@@ -95,7 +95,7 @@ public class GetTrainingClassSectionsCommand
                     addExecutionError(ExecutionErrors.UnknownTrainingClassName.name(), trainingClassName);
                 }
             } else {
-                PartyTrainingClass partyTrainingClass = trainingControl.getPartyTrainingClassByName(partyTrainingClassName);
+                var partyTrainingClass = trainingControl.getPartyTrainingClassByName(partyTrainingClassName);
 
                 if(partyTrainingClass != null) {
                     PartyTrainingClassLogic.getInstance().checkPartyTrainingClassStatus(this, partyTrainingClass, partyPK);

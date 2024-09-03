@@ -78,7 +78,7 @@ public class CreateOrderTypeCommand
     protected BaseResult execute() {
         var result = OrderResultFactory.getCreateOrderTypeResult();
         var orderTypeControl = Session.getModelController(OrderTypeControl.class);
-        String parentOrderTypeName = form.getParentOrderTypeName();
+        var parentOrderTypeName = form.getParentOrderTypeName();
         OrderType parentOrderType = null;
         OrderType orderType = null;
 
@@ -88,19 +88,19 @@ public class CreateOrderTypeCommand
 
         if(parentOrderTypeName == null || parentOrderType != null) {
             var sequenceControl = Session.getModelController(SequenceControl.class);
-            String orderSequenceTypeName = form.getOrderSequenceTypeName();
-            SequenceType orderSequenceType = sequenceControl.getSequenceTypeByName(orderSequenceTypeName);
+            var orderSequenceTypeName = form.getOrderSequenceTypeName();
+            var orderSequenceType = sequenceControl.getSequenceTypeByName(orderSequenceTypeName);
 
             if(orderSequenceTypeName == null || orderSequenceType != null) {
                 var workflowControl = Session.getModelController(WorkflowControl.class);
-                String orderWorkflowName = form.getOrderWorkflowName();
-                Workflow orderWorkflow = orderWorkflowName == null ? null : workflowControl.getWorkflowByName(orderWorkflowName);
+                var orderWorkflowName = form.getOrderWorkflowName();
+                var orderWorkflow = orderWorkflowName == null ? null : workflowControl.getWorkflowByName(orderWorkflowName);
 
                 if(orderWorkflowName == null || orderWorkflow != null) {
-                    String orderWorkflowEntranceName = form.getOrderWorkflowEntranceName();
+                    var orderWorkflowEntranceName = form.getOrderWorkflowEntranceName();
 
                     if(orderWorkflowEntranceName == null || (orderWorkflow != null && orderWorkflowEntranceName != null)) {
-                        WorkflowEntrance orderWorkflowEntrance = orderWorkflowEntranceName == null ? null : workflowControl.getWorkflowEntranceByName(orderWorkflow, orderWorkflowEntranceName);
+                        var orderWorkflowEntrance = orderWorkflowEntranceName == null ? null : workflowControl.getWorkflowEntranceByName(orderWorkflow, orderWorkflowEntranceName);
 
                         if(orderWorkflowEntranceName == null || orderWorkflowEntrance != null) {
                             var orderTypeName = form.getOrderTypeName();

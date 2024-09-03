@@ -63,8 +63,8 @@ public class DeleteBirthdayFormatCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        String birthdayFormatName = form.getBirthdayFormatName();
-        BirthdayFormat birthdayFormat = partyControl.getBirthdayFormatByNameForUpdate(birthdayFormatName);
+        var birthdayFormatName = form.getBirthdayFormatName();
+        var birthdayFormat = partyControl.getBirthdayFormatByNameForUpdate(birthdayFormatName);
         
         if(birthdayFormat != null) {
             partyControl.deleteBirthdayFormat(birthdayFormat, getPartyPK());

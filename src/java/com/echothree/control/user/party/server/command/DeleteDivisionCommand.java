@@ -52,13 +52,13 @@ public class DeleteDivisionCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        String companyName = form.getCompanyName();
-        PartyCompany partyCompany = partyControl.getPartyCompanyByName(companyName);
+        var companyName = form.getCompanyName();
+        var partyCompany = partyControl.getPartyCompanyByName(companyName);
         
         if(partyCompany != null) {
-            String divisionName = form.getDivisionName();
-            Party partyCompanyParty = partyCompany.getParty();
-            PartyDivision partyDivision = partyControl.getPartyDivisionByNameForUpdate(partyCompanyParty, divisionName);
+            var divisionName = form.getDivisionName();
+            var partyCompanyParty = partyCompany.getParty();
+            var partyDivision = partyControl.getPartyDivisionByNameForUpdate(partyCompanyParty, divisionName);
             
             if(partyDivision != null) {
                 getLog().error("unimplemented deleteDivision called");

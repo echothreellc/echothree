@@ -66,12 +66,12 @@ public class GetCarrierServicesCommand
     @Override
     protected BaseResult execute() {
         var carrierControl = Session.getModelController(CarrierControl.class);
-        GetCarrierServicesResult result = CarrierResultFactory.getGetCarrierServicesResult();
-        String carrierName = form.getCarrierName();
-        Carrier carrier = carrierControl.getCarrierByName(carrierName);
+        var result = CarrierResultFactory.getGetCarrierServicesResult();
+        var carrierName = form.getCarrierName();
+        var carrier = carrierControl.getCarrierByName(carrierName);
         
         if(carrier != null) {
-            Party carrierParty = carrier.getParty();
+            var carrierParty = carrier.getParty();
             
             result.setCarrier(carrierControl.getCarrierTransfer(getUserVisit(), carrier));
             result.setCarrierServices(carrierControl.getCarrierServiceTransfers(getUserVisit(), carrierParty));

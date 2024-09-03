@@ -32,11 +32,11 @@ public class GeoCodeDescriptionTransferCache
     }
     
     public GeoCodeDescriptionTransfer getGeoCodeDescriptionTransfer(GeoCodeDescription geoCodeDescription) {
-        GeoCodeDescriptionTransfer geoCodeDescriptionTransfer = get(geoCodeDescription);
+        var geoCodeDescriptionTransfer = get(geoCodeDescription);
         
         if(geoCodeDescriptionTransfer == null) {
-            GeoCodeTransfer geoCodeTransfer = geoControl.getGeoCodeTransfer(userVisit, geoCodeDescription.getGeoCode());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, geoCodeDescription.getLanguage());
+            var geoCodeTransfer = geoControl.getGeoCodeTransfer(userVisit, geoCodeDescription.getGeoCode());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, geoCodeDescription.getLanguage());
             
             geoCodeDescriptionTransfer = new GeoCodeDescriptionTransfer(languageTransfer, geoCodeTransfer, geoCodeDescription.getDescription());
             put(geoCodeDescription, geoCodeDescriptionTransfer);

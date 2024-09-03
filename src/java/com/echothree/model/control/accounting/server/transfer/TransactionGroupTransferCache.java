@@ -52,14 +52,14 @@ public class TransactionGroupTransferCache
     
     @Override
     public TransactionGroupTransfer getTransfer(TransactionGroup transactionGroup) {
-        TransactionGroupTransfer transactionGroupTransfer = get(transactionGroup);
+        var transactionGroupTransfer = get(transactionGroup);
         
         if(transactionGroupTransfer == null) {
-            TransactionGroupDetail transactionGroupDetail = transactionGroup.getLastDetail();
-            String transactionGroupName = transactionGroupDetail.getTransactionGroupName();
-            
-            EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(transactionGroup.getPrimaryKey());
-            WorkflowEntityStatusTransfer transactionGroupStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
+            var transactionGroupDetail = transactionGroup.getLastDetail();
+            var transactionGroupName = transactionGroupDetail.getTransactionGroupName();
+
+            var entityInstance = coreControl.getEntityInstanceByBasePK(transactionGroup.getPrimaryKey());
+            var transactionGroupStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
                     TransactionGroupStatusConstants.Workflow_TRANSACTION_GROUP_STATUS, entityInstance);
             
             transactionGroupTransfer = new TransactionGroupTransfer(transactionGroupName, transactionGroupStatusTransfer);

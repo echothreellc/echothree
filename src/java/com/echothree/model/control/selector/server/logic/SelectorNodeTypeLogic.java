@@ -46,7 +46,7 @@ public class SelectorNodeTypeLogic
     
     public SelectorNodeType getSelectorNodeTypeByName(final ExecutionErrorAccumulator eea, final String selectorNodeTypeName) {
         var selectorControl = Session.getModelController(SelectorControl.class);
-        SelectorNodeType selectorNodeType = selectorControl.getSelectorNodeTypeByName(selectorNodeTypeName);
+        var selectorNodeType = selectorControl.getSelectorNodeTypeByName(selectorNodeTypeName);
 
         if(selectorNodeType == null) {
             handleExecutionError(UnknownSelectorNodeTypeNameException.class, eea, ExecutionErrors.UnknownSelectorNodeTypeName.name(), selectorNodeTypeName);

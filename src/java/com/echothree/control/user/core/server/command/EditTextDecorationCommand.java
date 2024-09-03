@@ -89,7 +89,7 @@ public class EditTextDecorationCommand
     public TextDecoration getEntity(EditTextDecorationResult result) {
         var coreControl = getCoreControl();
         TextDecoration textDecoration;
-        String textDecorationName = spec.getTextDecorationName();
+        var textDecorationName = spec.getTextDecorationName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
             textDecoration = coreControl.getTextDecorationByName(textDecorationName);
@@ -119,8 +119,8 @@ public class EditTextDecorationCommand
     @Override
     public void doLock(TextDecorationEdit edit, TextDecoration textDecoration) {
         var coreControl = getCoreControl();
-        TextDecorationDescription textDecorationDescription = coreControl.getTextDecorationDescription(textDecoration, getPreferredLanguage());
-        TextDecorationDetail textDecorationDetail = textDecoration.getLastDetail();
+        var textDecorationDescription = coreControl.getTextDecorationDescription(textDecoration, getPreferredLanguage());
+        var textDecorationDetail = textDecoration.getLastDetail();
 
         edit.setTextDecorationName(textDecorationDetail.getTextDecorationName());
         edit.setIsDefault(textDecorationDetail.getIsDefault().toString());
@@ -134,8 +134,8 @@ public class EditTextDecorationCommand
     @Override
     public void canUpdate(TextDecoration textDecoration) {
         var coreControl = getCoreControl();
-        String textDecorationName = edit.getTextDecorationName();
-        TextDecoration duplicateTextDecoration = coreControl.getTextDecorationByName(textDecorationName);
+        var textDecorationName = edit.getTextDecorationName();
+        var duplicateTextDecoration = coreControl.getTextDecorationByName(textDecorationName);
 
         if(duplicateTextDecoration != null && !textDecoration.equals(duplicateTextDecoration)) {
             addExecutionError(ExecutionErrors.DuplicateTextDecorationName.name(), textDecorationName);
@@ -146,9 +146,9 @@ public class EditTextDecorationCommand
     public void doUpdate(TextDecoration textDecoration) {
         var coreControl = getCoreControl();
         var partyPK = getPartyPK();
-        TextDecorationDetailValue textDecorationDetailValue = coreControl.getTextDecorationDetailValueForUpdate(textDecoration);
-        TextDecorationDescription textDecorationDescription = coreControl.getTextDecorationDescriptionForUpdate(textDecoration, getPreferredLanguage());
-        String description = edit.getDescription();
+        var textDecorationDetailValue = coreControl.getTextDecorationDetailValueForUpdate(textDecoration);
+        var textDecorationDescription = coreControl.getTextDecorationDescriptionForUpdate(textDecoration, getPreferredLanguage());
+        var description = edit.getDescription();
 
         textDecorationDetailValue.setTextDecorationName(edit.getTextDecorationName());
         textDecorationDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
@@ -163,7 +163,7 @@ public class EditTextDecorationCommand
                 coreControl.deleteTextDecorationDescription(textDecorationDescription, partyPK);
             } else {
                 if(textDecorationDescription != null && description != null) {
-                    TextDecorationDescriptionValue textDecorationDescriptionValue = coreControl.getTextDecorationDescriptionValue(textDecorationDescription);
+                    var textDecorationDescriptionValue = coreControl.getTextDecorationDescriptionValue(textDecorationDescription);
 
                     textDecorationDescriptionValue.setDescription(description);
                     coreControl.updateTextDecorationDescriptionFromValue(textDecorationDescriptionValue, partyPK);

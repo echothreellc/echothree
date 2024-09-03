@@ -109,7 +109,7 @@ public class ForumGroupsTag
     public int doStartTag()
             throws JspException {
         try {
-            GetForumGroupsForm commandForm = ForumUtil.getHome().getGetForumGroupsForm();
+            var commandForm = ForumUtil.getHome().getGetForumGroupsForm();
             Map<String, Limit> limits = new HashMap<>();
             
             setOptions(options, null, commandForm);
@@ -120,8 +120,8 @@ public class ForumGroupsTag
                 limits.put(ForumGroupConstants.ENTITY_TYPE_NAME, new Limit(forumGroupCount, forumGroupOffset));
             }
             commandForm.setLimits(limits);
-            
-            CommandResult commandResult = ForumUtil.getHome().getForumGroups(getUserVisitPK(), commandForm);
+
+            var commandResult = ForumUtil.getHome().getForumGroups(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -129,8 +129,8 @@ public class ForumGroupsTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetForumGroupsResult result = (GetForumGroupsResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetForumGroupsResult)executionResult.getResult();
 
                 pageContext.setAttribute(var, new ListWrapper<>(result.getForumGroups()), scope);
 

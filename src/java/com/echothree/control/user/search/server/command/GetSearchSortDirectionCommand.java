@@ -73,8 +73,8 @@ public class GetSearchSortDirectionCommand
     
     @Override
     protected BaseResult execute() {
-        GetSearchSortDirectionResult result = SearchResultFactory.getGetSearchSortDirectionResult();
-        String searchSortDirectionName = form.getSearchSortDirectionName();
+        var result = SearchResultFactory.getGetSearchSortDirectionResult();
+        var searchSortDirectionName = form.getSearchSortDirectionName();
         var parameterCount = (searchSortDirectionName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {

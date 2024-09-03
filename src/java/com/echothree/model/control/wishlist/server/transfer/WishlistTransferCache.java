@@ -46,16 +46,16 @@ public class WishlistTransferCache
     }
     
     public WishlistTransfer getWishlistTransfer(Order order) {
-        WishlistTransfer wishlistTransfer = get(order);
+        var wishlistTransfer = get(order);
         
         if(wishlistTransfer == null) {
-            OrderDetail orderDetail = order.getActiveDetail();
-            Wishlist wishlist = wishlistControl.getWishlist(order);
-            OrderTypeTransfer orderType = orderTypeControl.getOrderTypeTransfer(userVisit, orderDetail.getOrderType());
-            String orderName = orderDetail.getOrderName();
-            CurrencyTransfer currency = accountingControl.getCurrencyTransfer(userVisit, orderDetail.getCurrency());
-            OfferUseTransfer offerUse = offerUseControl.getOfferUseTransfer(userVisit, wishlist.getOfferUse());
-            WishlistTypeTransfer wishlistType = wishlistControl.getWishlistTypeTransfer(userVisit, wishlist.getWishlistType());
+            var orderDetail = order.getActiveDetail();
+            var wishlist = wishlistControl.getWishlist(order);
+            var orderType = orderTypeControl.getOrderTypeTransfer(userVisit, orderDetail.getOrderType());
+            var orderName = orderDetail.getOrderName();
+            var currency = accountingControl.getCurrencyTransfer(userVisit, orderDetail.getCurrency());
+            var offerUse = offerUseControl.getOfferUseTransfer(userVisit, wishlist.getOfferUse());
+            var wishlistType = wishlistControl.getWishlistTypeTransfer(userVisit, wishlist.getWishlistType());
             
             wishlistTransfer = new WishlistTransfer(orderType, orderName, currency, offerUse, wishlistType);
             put(order, wishlistTransfer);

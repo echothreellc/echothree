@@ -72,18 +72,18 @@ public class CreateReturnTypeCommand
     @Override
     protected BaseResult execute() {
         var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
-        String returnKindName = form.getReturnKindName();
-        ReturnKind returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
+        var returnKindName = form.getReturnKindName();
+        var returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
         
         if(returnKind != null) {
-            String returnTypeName = form.getReturnTypeName();
-            ReturnType returnType = returnPolicyControl.getReturnTypeByName(returnKind, returnTypeName);
+            var returnTypeName = form.getReturnTypeName();
+            var returnType = returnPolicyControl.getReturnTypeByName(returnKind, returnTypeName);
             
             if(returnType == null) {
                 var sequenceControl = Session.getModelController(SequenceControl.class);
-                String returnSequenceName = form.getReturnSequenceName();
-                SequenceType returnSequenceType = returnKind.getLastDetail().getReturnSequenceType();
-                Sequence returnSequence = returnSequenceName == null ? null : sequenceControl.getSequenceByName(returnSequenceType, returnSequenceName);
+                var returnSequenceName = form.getReturnSequenceName();
+                var returnSequenceType = returnKind.getLastDetail().getReturnSequenceType();
+                var returnSequence = returnSequenceName == null ? null : sequenceControl.getSequenceByName(returnSequenceType, returnSequenceName);
                 
                 if(returnSequenceName == null || returnSequence != null) {
                     var partyPK = getPartyPK();

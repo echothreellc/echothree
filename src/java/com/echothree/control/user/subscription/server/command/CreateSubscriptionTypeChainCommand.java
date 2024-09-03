@@ -66,40 +66,40 @@ public class CreateSubscriptionTypeChainCommand
     @Override
     protected BaseResult execute() {
         var subscriptionControl = Session.getModelController(SubscriptionControl.class);
-        String subscriptionKindName = form.getSubscriptionKindName();
-        SubscriptionKind subscriptionKind = subscriptionControl.getSubscriptionKindByName(subscriptionKindName);
+        var subscriptionKindName = form.getSubscriptionKindName();
+        var subscriptionKind = subscriptionControl.getSubscriptionKindByName(subscriptionKindName);
         
         if(subscriptionKind != null) {
-            String subscriptionTypeName = form.getSubscriptionTypeName();
-            SubscriptionType subscriptionType = subscriptionControl.getSubscriptionTypeByName(subscriptionKind, subscriptionTypeName);
+            var subscriptionTypeName = form.getSubscriptionTypeName();
+            var subscriptionType = subscriptionControl.getSubscriptionTypeByName(subscriptionKind, subscriptionTypeName);
             
             if(subscriptionType != null) {
                 var chainControl = Session.getModelController(ChainControl.class);
-                ChainKind chainKind = chainControl.getChainKindByName(ChainConstants.ChainKind_SUBSCRIPTION);
-                String chainTypeName = form.getChainTypeName();
-                ChainType chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
+                var chainKind = chainControl.getChainKindByName(ChainConstants.ChainKind_SUBSCRIPTION);
+                var chainTypeName = form.getChainTypeName();
+                var chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
                 
                 if(chainType != null) {
-                    String chainName = form.getChainName();
-                    Chain chain = chainControl.getChainByName(chainType, chainName);
+                    var chainName = form.getChainName();
+                    var chain = chainControl.getChainByName(chainType, chainName);
                     
                     if(chain != null) {
-                        SubscriptionTypeChain subscriptionTypeChain = subscriptionControl.getSubscriptionTypeChain(subscriptionType, chain);
+                        var subscriptionTypeChain = subscriptionControl.getSubscriptionTypeChain(subscriptionType, chain);
                         
                         if(subscriptionTypeChain == null) {
                             var uomControl = Session.getModelController(UomControl.class);
-                            String unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
+                            var unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
                             UnitOfMeasureType unitOfMeasureType = null;
                             
                             if(unitOfMeasureTypeName != null) {
-                                UnitOfMeasureKind unitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
+                                var unitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
                                 
                                 unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
                             }
                             
                             if(unitOfMeasureTypeName == null || unitOfMeasureType != null) {
-                                String strRemainingTime = form.getRemainingTime();
-                                Long remainingTime = strRemainingTime == null? null: Long.valueOf(strRemainingTime);
+                                var strRemainingTime = form.getRemainingTime();
+                                var remainingTime = strRemainingTime == null? null: Long.valueOf(strRemainingTime);
                                 
                                 if(unitOfMeasureTypeName == null || remainingTime != null) {
                                     Conversion conversion = null;

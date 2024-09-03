@@ -68,16 +68,16 @@ public class CreateJobDescriptionCommand
     @Override
     protected BaseResult execute() {
         var jobControl = Session.getModelController(JobControl.class);
-        String jobName = form.getJobName();
-        Job job = jobControl.getJobByName(jobName);
+        var jobName = form.getJobName();
+        var job = jobControl.getJobByName(jobName);
         
         if(job != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                JobDescription jobDescription = jobControl.getJobDescription(job, language);
+                var jobDescription = jobControl.getJobDescription(job, language);
                 
                 if(jobDescription == null) {
                     var description = form.getDescription();

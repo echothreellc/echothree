@@ -112,8 +112,8 @@ public class EditPaymentMethodTypeCommand
     @Override
     public void doLock(PaymentMethodTypeEdit edit, PaymentMethodType paymentMethodType) {
         var paymentMethodTypeControl = Session.getModelController(PaymentMethodTypeControl.class);
-        PaymentMethodTypeDescription paymentMethodTypeDescription = paymentMethodTypeControl.getPaymentMethodTypeDescription(paymentMethodType, getPreferredLanguage());
-        PaymentMethodTypeDetail paymentMethodTypeDetail = paymentMethodType.getLastDetail();
+        var paymentMethodTypeDescription = paymentMethodTypeControl.getPaymentMethodTypeDescription(paymentMethodType, getPreferredLanguage());
+        var paymentMethodTypeDetail = paymentMethodType.getLastDetail();
         
         edit.setPaymentMethodTypeName(paymentMethodTypeDetail.getPaymentMethodTypeName());
         edit.setIsDefault(paymentMethodTypeDetail.getIsDefault().toString());
@@ -127,8 +127,8 @@ public class EditPaymentMethodTypeCommand
     @Override
     public void canUpdate(PaymentMethodType paymentMethodType) {
         var paymentMethodTypeControl = Session.getModelController(PaymentMethodTypeControl.class);
-        String paymentMethodTypeName = edit.getPaymentMethodTypeName();
-        PaymentMethodType duplicatePaymentMethodType = paymentMethodTypeControl.getPaymentMethodTypeByName(paymentMethodTypeName);
+        var paymentMethodTypeName = edit.getPaymentMethodTypeName();
+        var duplicatePaymentMethodType = paymentMethodTypeControl.getPaymentMethodTypeByName(paymentMethodTypeName);
 
         if(duplicatePaymentMethodType != null && !paymentMethodType.equals(duplicatePaymentMethodType)) {
             addExecutionError(ExecutionErrors.DuplicatePaymentMethodTypeName.name(), paymentMethodTypeName);
@@ -139,9 +139,9 @@ public class EditPaymentMethodTypeCommand
     public void doUpdate(PaymentMethodType paymentMethodType) {
         var paymentMethodTypeControl = Session.getModelController(PaymentMethodTypeControl.class);
         var partyPK = getPartyPK();
-        PaymentMethodTypeDetailValue paymentMethodTypeDetailValue = paymentMethodTypeControl.getPaymentMethodTypeDetailValueForUpdate(paymentMethodType);
-        PaymentMethodTypeDescription paymentMethodTypeDescription = paymentMethodTypeControl.getPaymentMethodTypeDescriptionForUpdate(paymentMethodType, getPreferredLanguage());
-        String description = edit.getDescription();
+        var paymentMethodTypeDetailValue = paymentMethodTypeControl.getPaymentMethodTypeDetailValueForUpdate(paymentMethodType);
+        var paymentMethodTypeDescription = paymentMethodTypeControl.getPaymentMethodTypeDescriptionForUpdate(paymentMethodType, getPreferredLanguage());
+        var description = edit.getDescription();
 
         paymentMethodTypeDetailValue.setPaymentMethodTypeName(edit.getPaymentMethodTypeName());
         paymentMethodTypeDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
@@ -154,7 +154,7 @@ public class EditPaymentMethodTypeCommand
         } else if(paymentMethodTypeDescription != null && description == null) {
             paymentMethodTypeControl.deletePaymentMethodTypeDescription(paymentMethodTypeDescription, partyPK);
         } else if(paymentMethodTypeDescription != null && description != null) {
-            PaymentMethodTypeDescriptionValue paymentMethodTypeDescriptionValue = paymentMethodTypeControl.getPaymentMethodTypeDescriptionValue(paymentMethodTypeDescription);
+            var paymentMethodTypeDescriptionValue = paymentMethodTypeControl.getPaymentMethodTypeDescriptionValue(paymentMethodTypeDescription);
 
             paymentMethodTypeDescriptionValue.setDescription(description);
             paymentMethodTypeControl.updatePaymentMethodTypeDescriptionFromValue(paymentMethodTypeDescriptionValue, partyPK);

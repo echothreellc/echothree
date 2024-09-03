@@ -64,8 +64,8 @@ public class CreateProtocolCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String protocolName = form.getProtocolName();
-        Protocol protocol = coreControl.getProtocolByName(protocolName);
+        var protocolName = form.getProtocolName();
+        var protocol = coreControl.getProtocolByName(protocolName);
         
         if(protocol == null) {
             var partyPK = getPartyPK();

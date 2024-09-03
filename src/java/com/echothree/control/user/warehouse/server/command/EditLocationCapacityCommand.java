@@ -83,32 +83,32 @@ public class EditLocationCapacityCommand
     @Override
     protected BaseResult execute() {
         var warehouseControl = Session.getModelController(WarehouseControl.class);
-        EditLocationCapacityResult result = WarehouseResultFactory.getEditLocationCapacityResult();
-        String warehouseName = spec.getWarehouseName();
-        Warehouse warehouse = warehouseControl.getWarehouseByName(warehouseName);
+        var result = WarehouseResultFactory.getEditLocationCapacityResult();
+        var warehouseName = spec.getWarehouseName();
+        var warehouse = warehouseControl.getWarehouseByName(warehouseName);
         
         if(warehouse != null) {
-            String locationName = spec.getLocationName();
-            Location location = warehouseControl.getLocationByName(warehouse.getParty(), locationName);
+            var locationName = spec.getLocationName();
+            var location = warehouseControl.getLocationByName(warehouse.getParty(), locationName);
             
             if(location != null) {
                 var uomControl = Session.getModelController(UomControl.class);
-                String unitOfMeasureKindName = spec.getUnitOfMeasureKindName();
-                UnitOfMeasureKind unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);
+                var unitOfMeasureKindName = spec.getUnitOfMeasureKindName();
+                var unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);
                 
                 if(unitOfMeasureKind != null) {
-                    String unitOfMeasureTypeName = spec.getUnitOfMeasureTypeName();
-                    UnitOfMeasureType unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
+                    var unitOfMeasureTypeName = spec.getUnitOfMeasureTypeName();
+                    var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
                     
                     if(unitOfMeasureType != null) {
                         if(editMode.equals(EditMode.LOCK)) {
-                            LocationCapacity locationCapacity = warehouseControl.getLocationCapacity(location, unitOfMeasureType);
+                            var locationCapacity = warehouseControl.getLocationCapacity(location, unitOfMeasureType);
                             
                             if(locationCapacity != null) {
                                 result.setLocationCapacity(warehouseControl.getLocationCapacityTransfer(getUserVisit(), locationCapacity));
                                 
                                 if(lockEntity(location)) {
-                                    LocationCapacityEdit edit = WarehouseEditFactory.getLocationCapacityEdit();
+                                    var edit = WarehouseEditFactory.getLocationCapacityEdit();
                                     
                                     result.setEdit(edit);
                                     edit.setCapacity(locationCapacity.getCapacity().toString());
@@ -121,7 +121,7 @@ public class EditLocationCapacityCommand
                                 addExecutionError(ExecutionErrors.UnknownLocationCapacity.name());
                             }
                         } else if(editMode.equals(EditMode.UPDATE)) {
-                            LocationCapacityValue locationCapacityValue = warehouseControl.getLocationCapacityValueForUpdate(location, unitOfMeasureType);
+                            var locationCapacityValue = warehouseControl.getLocationCapacityValueForUpdate(location, unitOfMeasureType);
                             
                             if(locationCapacityValue != null) {
                                 if(lockEntityForUpdate(location)) {

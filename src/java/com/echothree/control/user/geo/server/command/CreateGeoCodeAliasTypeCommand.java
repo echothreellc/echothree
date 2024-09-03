@@ -71,17 +71,17 @@ public class CreateGeoCodeAliasTypeCommand
     @Override
     protected BaseResult execute() {
         var geoControl = Session.getModelController(GeoControl.class);
-        String geoCodeTypeName = form.getGeoCodeTypeName();
-        GeoCodeType geoCodeType = geoControl.getGeoCodeTypeByName(geoCodeTypeName);
+        var geoCodeTypeName = form.getGeoCodeTypeName();
+        var geoCodeType = geoControl.getGeoCodeTypeByName(geoCodeTypeName);
 
         if(geoCodeType != null) {
-            String geoAliasTypeName = form.getGeoCodeAliasTypeName();
-            GeoCodeAliasType geoAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, geoAliasTypeName);
+            var geoAliasTypeName = form.getGeoCodeAliasTypeName();
+            var geoAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, geoAliasTypeName);
 
             if(geoAliasType == null) {
-                PartyPK createdBy = getPartyPK();
-                String validationPattern = form.getValidationPattern();
-                Boolean isRequired = Boolean.valueOf(form.getIsRequired());
+                var createdBy = getPartyPK();
+                var validationPattern = form.getValidationPattern();
+                var isRequired = Boolean.valueOf(form.getIsRequired());
                 var isDefault = Boolean.valueOf(form.getIsDefault());
                 var sortOrder = Integer.valueOf(form.getSortOrder());
                 var description = form.getDescription();

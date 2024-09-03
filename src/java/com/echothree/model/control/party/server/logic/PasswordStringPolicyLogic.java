@@ -60,13 +60,13 @@ public class PasswordStringPolicyLogic {
     
     private void checkPasswordHistory(final ExecutionErrorAccumulator ema,
             final PartyTypePasswordStringPolicyDetail policyDetail, final UserLoginPassword ulp, final String password) {
-        Integer passwordHistory = policyDetail.getPasswordHistory();
+        var passwordHistory = policyDetail.getPasswordHistory();
         
         if(passwordHistory != null) {
             var userControl = Session.getModelController(UserControl.class);
             
-            for(UserLoginPasswordString userLoginPasswordString: userControl.getUserLoginPasswordStringHistory(ulp, passwordHistory)) {
-                String salt = userLoginPasswordString.getSalt();
+            for(var userLoginPasswordString: userControl.getUserLoginPasswordStringHistory(ulp, passwordHistory)) {
+                var salt = userLoginPasswordString.getSalt();
                 
                 if(Sha1Utils.getInstance().encode(salt, password).equals(userLoginPasswordString.getPassword())) {
                     ema.addExecutionError(ExecutionErrors.PasswordInRecentHistory.name(), passwordHistory);
@@ -78,17 +78,17 @@ public class PasswordStringPolicyLogic {
     
     private void checkMinimumPasswordLifetime(final Session session, final UserVisit userVisit,
             final ExecutionErrorAccumulator ema, final PartyTypePasswordStringPolicyDetail policyDetail, final UserLoginPasswordStringValue ulpsv) {
-        Long minimumPasswordLifetime = policyDetail.getMinimumPasswordLifetime();
+        var minimumPasswordLifetime = policyDetail.getMinimumPasswordLifetime();
         
         if(minimumPasswordLifetime != null) {
-            long currentPasswordLifetime = session.START_TIME - ulpsv.getChangedTime();
+            var currentPasswordLifetime = session.START_TIME - ulpsv.getChangedTime();
             
             if(currentPasswordLifetime < minimumPasswordLifetime) {
                 var uomControl = Session.getModelController(UomControl.class);
-                UnitOfMeasureKind timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
-                String fmtMinimumPasswordLifetime = UnitOfMeasureUtils.getInstance().formatUnitOfMeasure(userVisit,
+                var timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
+                var fmtMinimumPasswordLifetime = UnitOfMeasureUtils.getInstance().formatUnitOfMeasure(userVisit,
                         timeUnitOfMeasureKind, minimumPasswordLifetime);
-                String fmtCurrentPasswordLifetime = UnitOfMeasureUtils.getInstance().formatUnitOfMeasure(userVisit,
+                var fmtCurrentPasswordLifetime = UnitOfMeasureUtils.getInstance().formatUnitOfMeasure(userVisit,
                         timeUnitOfMeasureKind, Long.valueOf(currentPasswordLifetime));
                 
                 ema.addExecutionError(ExecutionErrors.PasswordMinimumLifetimeNotMet.name(), fmtMinimumPasswordLifetime, fmtCurrentPasswordLifetime);
@@ -98,9 +98,9 @@ public class PasswordStringPolicyLogic {
     
     private void checkLength(final ExecutionErrorAccumulator ema, final PartyTypePasswordStringPolicyDetail policyDetail,
             final String password) {
-        int length = password.length();
-        Integer minimumLegnth = policyDetail.getMinimumLength();
-        Integer maximumLength = policyDetail.getMaximumLength();
+        var length = password.length();
+        var minimumLegnth = policyDetail.getMinimumLength();
+        var maximumLength = policyDetail.getMaximumLength();
         
         if(minimumLegnth != null && length < minimumLegnth) {
             ema.addExecutionError(ExecutionErrors.PasswordLessThanMinimumLength.name(), minimumLegnth);
@@ -112,27 +112,27 @@ public class PasswordStringPolicyLogic {
     }
     
     private int getTypeCount(final Map<Integer, Integer> types, final byte type) {
-        Integer count = types.get(Integer.valueOf(type));
+        var count = types.get(Integer.valueOf(type));
         
         return count == null? 0: count;
     }
     
     private void checkCharacterTypes(final ExecutionErrorAccumulator ema, final PartyTypePasswordStringPolicyDetail policyDetail,
             final String password) {
-        Integer requiredDigitCount = policyDetail.getRequiredDigitCount();
-        Integer requiredLetterCount = policyDetail.getRequiredLetterCount();
-        Integer requiredUpperCaseCount = policyDetail.getRequiredUpperCaseCount();
-        Integer requiredLowerCaseCount = policyDetail.getRequiredLowerCaseCount();
-        Integer maximumRepeated = policyDetail.getMaximumRepeated();
-        Integer minimumCharacterTypes = policyDetail.getMinimumCharacterTypes();
+        var requiredDigitCount = policyDetail.getRequiredDigitCount();
+        var requiredLetterCount = policyDetail.getRequiredLetterCount();
+        var requiredUpperCaseCount = policyDetail.getRequiredUpperCaseCount();
+        var requiredLowerCaseCount = policyDetail.getRequiredLowerCaseCount();
+        var maximumRepeated = policyDetail.getMaximumRepeated();
+        var minimumCharacterTypes = policyDetail.getMinimumCharacterTypes();
         Map<Integer, Integer> types = new HashMap<>();
-        int lastCh = 0;
-        int repeat = 0;
-        int maxRepeat = 0;
+        var lastCh = 0;
+        var repeat = 0;
+        var maxRepeat = 0;
         
         for(int ch : StringUtils.getInstance().codePoints(password)) {
             Integer type = Character.getType(ch);
-            Integer count = types.get(type);
+            var count = types.get(type);
             
             if(count == null) {
                 types.put(type, 1);
@@ -156,13 +156,13 @@ public class PasswordStringPolicyLogic {
         if(repeat > maxRepeat) {
             maxRepeat = repeat;
         }
-        
-        int upperCaseCount = getTypeCount(types, Character.UPPERCASE_LETTER);
-        int lowerCaseCount = getTypeCount(types, Character.LOWERCASE_LETTER);
-        int letterCount = upperCaseCount + lowerCaseCount;
+
+        var upperCaseCount = getTypeCount(types, Character.UPPERCASE_LETTER);
+        var lowerCaseCount = getTypeCount(types, Character.LOWERCASE_LETTER);
+        var letterCount = upperCaseCount + lowerCaseCount;
         
         if(requiredDigitCount != null) {
-            int digitCount = getTypeCount(types, Character.DECIMAL_DIGIT_NUMBER);
+            var digitCount = getTypeCount(types, Character.DECIMAL_DIGIT_NUMBER);
             
             if(digitCount < requiredDigitCount) {
                 ema.addExecutionError(ExecutionErrors.PasswordRequiredDigitCountNotMet.name(), requiredDigitCount);
@@ -194,7 +194,7 @@ public class PasswordStringPolicyLogic {
         }
         
         if(minimumCharacterTypes != null) {
-            int characterTypes = types.size();
+            var characterTypes = types.size();
             
             if(characterTypes < minimumCharacterTypes) {
                 ema.addExecutionError(ExecutionErrors.PasswordMinimumCharacterTypesNotMet.name(), minimumCharacterTypes);
@@ -205,10 +205,10 @@ public class PasswordStringPolicyLogic {
     public PartyTypePasswordStringPolicy checkStringPassword(final Session session, final UserVisit userVisit, final ExecutionErrorAccumulator ema,
             final PartyType partyType, final UserLoginPassword ulp, final UserLoginPasswordStringValue ulpsv, final String password) {
         var partyControl = Session.getModelController(PartyControl.class);
-        PartyTypePasswordStringPolicy policy = partyControl.getPartyTypePasswordStringPolicy(partyType);
+        var policy = partyControl.getPartyTypePasswordStringPolicy(partyType);
         
         if(policy != null) {
-            PartyTypePasswordStringPolicyDetail policyDetail = policy.getLastDetail();
+            var policyDetail = policy.getLastDetail();
             
             if(ulp != null) {
                 checkPasswordHistory(ema, policyDetail, ulp, password);
@@ -228,7 +228,7 @@ public class PasswordStringPolicyLogic {
     
     public PartyTypePasswordStringPolicy checkStringPassword(final Session session, final UserVisit userVisit, final ExecutionErrorAccumulator ema,
             final Party party, final UserLoginPassword ulp, final UserLoginPasswordStringValue ulpsv, final String password) {
-        PartyType partyType = party.getLastDetail().getPartyType();
+        var partyType = party.getLastDetail().getPartyType();
         
         return checkStringPassword(session, userVisit, ema, partyType, ulp, ulpsv, password);
     }

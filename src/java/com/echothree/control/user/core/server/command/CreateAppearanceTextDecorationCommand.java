@@ -64,16 +64,16 @@ public class CreateAppearanceTextDecorationCommand
     
     @Override
     protected BaseResult execute() {
-        String appearanceName = form.getAppearanceName();
-        Appearance appearance = AppearanceLogic.getInstance().getAppearanceByName(this, appearanceName);
+        var appearanceName = form.getAppearanceName();
+        var appearance = AppearanceLogic.getInstance().getAppearanceByName(this, appearanceName);
         
         if(!hasExecutionErrors()) {
-            String textDecorationName = form.getTextDecorationName();
-            TextDecoration textDecoration = AppearanceLogic.getInstance().getTextDecorationByName(this, textDecorationName);
+            var textDecorationName = form.getTextDecorationName();
+            var textDecoration = AppearanceLogic.getInstance().getTextDecorationByName(this, textDecorationName);
             
             if(!hasExecutionErrors()) {
                 var coreControl = getCoreControl();
-                AppearanceTextDecoration appearanceTextDecoration = coreControl.getAppearanceTextDecoration(appearance, textDecoration);
+                var appearanceTextDecoration = coreControl.getAppearanceTextDecoration(appearance, textDecoration);
                 
                 if(appearanceTextDecoration == null) {
                     coreControl.createAppearanceTextDecoration(appearance, textDecoration, getPartyPK());

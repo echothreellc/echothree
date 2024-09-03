@@ -44,9 +44,9 @@ public class LetterSourceCommandUtil {
     public PartyContactMechanism getEmailAddressContactMechanism(ExecutionErrorAccumulator eea,
             LetterSourceEdit edit, ContactControl contactControl, Party companyParty) {
         PartyContactMechanism partyContactMechanism = null;
-        String emailAddressContactMechanismName = edit.getEmailAddressContactMechanismName();
-        String emailAddressContactMechanismAliasTypeName = edit.getEmailAddressContactMechanismAliasTypeName();
-        String alias = edit.getEmailAddressContactMechanismAlias();
+        var emailAddressContactMechanismName = edit.getEmailAddressContactMechanismName();
+        var emailAddressContactMechanismAliasTypeName = edit.getEmailAddressContactMechanismAliasTypeName();
+        var alias = edit.getEmailAddressContactMechanismAlias();
         var parameterCount = (emailAddressContactMechanismName != null && emailAddressContactMechanismAliasTypeName == null && alias == null? 1: 0)
                 + (emailAddressContactMechanismName == null && emailAddressContactMechanismAliasTypeName != null && alias != null? 1: 0);
         
@@ -60,10 +60,10 @@ public class LetterSourceCommandUtil {
                     eea.addExecutionError(ExecutionErrors.UnknownEmailAddressContactMechanismName.name(), emailAddressContactMechanismName);
                 }
             } else {
-                ContactMechanismAliasType emailAddressContactMechanismAliasType = contactControl.getContactMechanismAliasTypeByName(emailAddressContactMechanismAliasTypeName);
+                var emailAddressContactMechanismAliasType = contactControl.getContactMechanismAliasTypeByName(emailAddressContactMechanismAliasTypeName);
                 
                 if(emailAddressContactMechanismAliasType != null) {
-                    ContactMechanismAlias emailAddressContactMechanismAlias = contactControl.getContactMechanismAliasByAlias(emailAddressContactMechanismAliasType, alias);
+                    var emailAddressContactMechanismAlias = contactControl.getContactMechanismAliasByAlias(emailAddressContactMechanismAliasType, alias);
                     
                     if(emailAddressContactMechanismAlias != null) {
                         emailAddressContactMechanism = emailAddressContactMechanismAlias.getContactMechanism();
@@ -76,7 +76,7 @@ public class LetterSourceCommandUtil {
             }
             
             if(emailAddressContactMechanism != null) {
-                String contactMechanismTypeName = emailAddressContactMechanism.getLastDetail().getContactMechanismType().getContactMechanismTypeName();
+                var contactMechanismTypeName = emailAddressContactMechanism.getLastDetail().getContactMechanismType().getContactMechanismTypeName();
                 
                 if(contactMechanismTypeName.equals(ContactMechanismTypes.EMAIL_ADDRESS.name())) {
                     partyContactMechanism = contactControl.getPartyContactMechanism(companyParty, emailAddressContactMechanism);
@@ -98,9 +98,9 @@ public class LetterSourceCommandUtil {
     public PartyContactMechanism getPostalAddressContactMechanism(ExecutionErrorAccumulator eea,
             LetterSourceEdit edit, ContactControl contactControl, Party companyParty) {
         PartyContactMechanism partyContactMechanism = null;
-        String postalAddressContactMechanismName = edit.getPostalAddressContactMechanismName();
-        String postalAddressContactMechanismAliasTypeName = edit.getPostalAddressContactMechanismAliasTypeName();
-        String alias = edit.getPostalAddressContactMechanismAlias();
+        var postalAddressContactMechanismName = edit.getPostalAddressContactMechanismName();
+        var postalAddressContactMechanismAliasTypeName = edit.getPostalAddressContactMechanismAliasTypeName();
+        var alias = edit.getPostalAddressContactMechanismAlias();
         var parameterCount = (postalAddressContactMechanismName != null && postalAddressContactMechanismAliasTypeName == null && alias == null? 1: 0)
                 + (postalAddressContactMechanismName == null && postalAddressContactMechanismAliasTypeName != null && alias != null? 1: 0);
         
@@ -114,10 +114,10 @@ public class LetterSourceCommandUtil {
                     eea.addExecutionError(ExecutionErrors.UnknownPostalAddressContactMechanismName.name(), postalAddressContactMechanismName);
                 }
             } else {
-                ContactMechanismAliasType postalAddressContactMechanismAliasType = contactControl.getContactMechanismAliasTypeByName(postalAddressContactMechanismAliasTypeName);
+                var postalAddressContactMechanismAliasType = contactControl.getContactMechanismAliasTypeByName(postalAddressContactMechanismAliasTypeName);
                 
                 if(postalAddressContactMechanismAliasType != null) {
-                    ContactMechanismAlias postalAddressContactMechanismAlias = contactControl.getContactMechanismAliasByAlias(postalAddressContactMechanismAliasType, alias);
+                    var postalAddressContactMechanismAlias = contactControl.getContactMechanismAliasByAlias(postalAddressContactMechanismAliasType, alias);
                     
                     if(postalAddressContactMechanismAlias != null) {
                         postalAddressContactMechanism = postalAddressContactMechanismAlias.getContactMechanism();
@@ -130,7 +130,7 @@ public class LetterSourceCommandUtil {
             }
             
             if(postalAddressContactMechanism != null) {
-                String contactMechanismTypeName = postalAddressContactMechanism.getLastDetail().getContactMechanismType().getContactMechanismTypeName();
+                var contactMechanismTypeName = postalAddressContactMechanism.getLastDetail().getContactMechanismType().getContactMechanismTypeName();
                 
                 if(contactMechanismTypeName.equals(ContactMechanismTypes.POSTAL_ADDRESS.name())) {
                     partyContactMechanism = contactControl.getPartyContactMechanism(companyParty, postalAddressContactMechanism);
@@ -152,9 +152,9 @@ public class LetterSourceCommandUtil {
     public PartyContactMechanism getLetterSourceContactMechanism(ExecutionErrorAccumulator eea,
             LetterSourceEdit edit, ContactControl contactControl, Party companyParty) {
         PartyContactMechanism partyContactMechanism = null;
-        String letterSourceContactMechanismName = edit.getLetterSourceContactMechanismName();
-        String letterSourceContactMechanismAliasTypeName = edit.getLetterSourceContactMechanismAliasTypeName();
-        String alias = edit.getLetterSourceContactMechanismAlias();
+        var letterSourceContactMechanismName = edit.getLetterSourceContactMechanismName();
+        var letterSourceContactMechanismAliasTypeName = edit.getLetterSourceContactMechanismAliasTypeName();
+        var alias = edit.getLetterSourceContactMechanismAlias();
         var parameterCount = (letterSourceContactMechanismName != null && letterSourceContactMechanismAliasTypeName == null && alias == null? 1: 0)
                 + (letterSourceContactMechanismName == null && letterSourceContactMechanismAliasTypeName != null && alias != null? 1: 0);
         
@@ -168,10 +168,10 @@ public class LetterSourceCommandUtil {
                     eea.addExecutionError(ExecutionErrors.UnknownLetterSourceContactMechanismName.name(), letterSourceContactMechanismName);
                 }
             } else {
-                ContactMechanismAliasType letterSourceContactMechanismAliasType = contactControl.getContactMechanismAliasTypeByName(letterSourceContactMechanismAliasTypeName);
+                var letterSourceContactMechanismAliasType = contactControl.getContactMechanismAliasTypeByName(letterSourceContactMechanismAliasTypeName);
                 
                 if(letterSourceContactMechanismAliasType != null) {
-                    ContactMechanismAlias letterSourceContactMechanismAlias = contactControl.getContactMechanismAliasByAlias(letterSourceContactMechanismAliasType, alias);
+                    var letterSourceContactMechanismAlias = contactControl.getContactMechanismAliasByAlias(letterSourceContactMechanismAliasType, alias);
                     
                     if(letterSourceContactMechanismAlias != null) {
                         letterSourceContactMechanism = letterSourceContactMechanismAlias.getContactMechanism();
@@ -184,7 +184,7 @@ public class LetterSourceCommandUtil {
             }
             
             if(letterSourceContactMechanism != null) {
-                String contactMechanismTypeName = letterSourceContactMechanism.getLastDetail().getContactMechanismType().getContactMechanismTypeName();
+                var contactMechanismTypeName = letterSourceContactMechanism.getLastDetail().getContactMechanismType().getContactMechanismTypeName();
                 
                 if(contactMechanismTypeName.equals(ContactMechanismTypes.WEB_ADDRESS.name())) {
                     partyContactMechanism = contactControl.getPartyContactMechanism(companyParty, letterSourceContactMechanism);

@@ -36,12 +36,12 @@ public class CustomerTypeContactListTransferCache
     }
     
     public CustomerTypeContactListTransfer getCustomerTypeContactListTransfer(CustomerTypeContactList customerTypeContactList) {
-        CustomerTypeContactListTransfer customerTypeContactListTransfer = get(customerTypeContactList);
+        var customerTypeContactListTransfer = get(customerTypeContactList);
         
         if(customerTypeContactListTransfer == null) {
-            CustomerTypeTransfer customerTypeTransfer = customerControl.getCustomerTypeTransfer(userVisit, customerTypeContactList.getCustomerType());
-            ContactListTransfer contactListTransfer = contactListControl.getContactListTransfer(userVisit, customerTypeContactList.getContactList());
-            Boolean addWhenCreated = customerTypeContactList.getAddWhenCreated();
+            var customerTypeTransfer = customerControl.getCustomerTypeTransfer(userVisit, customerTypeContactList.getCustomerType());
+            var contactListTransfer = contactListControl.getContactListTransfer(userVisit, customerTypeContactList.getContactList());
+            var addWhenCreated = customerTypeContactList.getAddWhenCreated();
             
             customerTypeContactListTransfer = new CustomerTypeContactListTransfer(customerTypeTransfer, contactListTransfer, addWhenCreated);
             put(customerTypeContactList, customerTypeContactListTransfer);

@@ -98,8 +98,8 @@ public class SecureRewriteTag
     @Override
     public int doStartTag() throws JspException {
         // Generate the hyperlink URL
-        TagUtils tagUtils = TagUtils.getInstance();
-        Map params = tagUtils.computeParameters(pageContext, paramId, paramName, paramProperty, paramScope, name, property, scope, transaction);
+        var tagUtils = TagUtils.getInstance();
+        var params = tagUtils.computeParameters(pageContext, paramId, paramName, paramProperty, paramScope, name, property, scope, transaction);
         String url = null;
         
         try {

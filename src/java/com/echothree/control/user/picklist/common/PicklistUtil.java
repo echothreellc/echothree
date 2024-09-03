@@ -30,7 +30,7 @@ public class PicklistUtil {
     public static PicklistLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
 
             cachedLocal = (PicklistLocal)ctx.lookup("ejb:echothree/echothree-server/PicklistBean!com.echothree.control.user.picklist.server.PicklistLocal");
         }
@@ -42,7 +42,7 @@ public class PicklistUtil {
     public static PicklistRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
             
             cachedRemote = (PicklistRemote)ctx.lookup("ejb:echothree/echothree-server/PicklistBean!com.echothree.control.user.picklist.common.PicklistRemote");
         }

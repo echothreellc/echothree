@@ -68,21 +68,21 @@ public class EditPartyTermCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        EditPartyTermResult result = TermResultFactory.getEditPartyTermResult();
-        String partyName = spec.getPartyName();
-        Party party = partyControl.getPartyByName(partyName);
+        var result = TermResultFactory.getEditPartyTermResult();
+        var partyName = spec.getPartyName();
+        var party = partyControl.getPartyByName(partyName);
         
         if(party != null) {
             var termControl = Session.getModelController(TermControl.class);
             
             if(editMode.equals(EditMode.LOCK)) {
-                PartyTerm partyTerm = termControl.getPartyTerm(party);
+                var partyTerm = termControl.getPartyTerm(party);
                 
                 if(partyTerm != null) {
                     result.setPartyTerm(termControl.getPartyTermTransfer(getUserVisit(), partyTerm));
                     
                     if(lockEntity(party)) {
-                        PartyTermEdit edit = TermEditFactory.getPartyTermEdit();
+                        var edit = TermEditFactory.getPartyTermEdit();
                         
                         result.setEdit(edit);
                         edit.setTermName(partyTerm.getTerm().getLastDetail().getTermName());
@@ -96,23 +96,23 @@ public class EditPartyTermCommand
                     addExecutionError(ExecutionErrors.UnknownPartyTerm.name());
                 }
             } else if(editMode.equals(EditMode.UPDATE)) {
-                PartyTermValue partyTermValue = termControl.getPartyTermValueForUpdate(party);
+                var partyTermValue = termControl.getPartyTermValueForUpdate(party);
                 
                 if(partyTermValue != null) {
                     if(lockEntityForUpdate(party)) {
-                        String termName = edit.getTermName();
-                        Term term = termControl.getTermByName(termName);
+                        var termName = edit.getTermName();
+                        var term = termControl.getTermByName(termName);
                         
                         if(term != null) {
-                            Boolean taxable = Boolean.valueOf(edit.getTaxable());
+                            var taxable = Boolean.valueOf(edit.getTaxable());
                             
                             try {
                                 partyTermValue.setTermPK(term.getPrimaryKey());
                                 partyTermValue.setTaxable(taxable);
                                 
                                 if(partyTermValue.hasBeenModified()) {
-                                    String partyTypeName = party.getLastDetail().getPartyType().getPartyTypeName();
-                                    PartyPK updatedBy = getPartyPK();
+                                    var partyTypeName = party.getLastDetail().getPartyType().getPartyTypeName();
+                                    var updatedBy = getPartyPK();
                                     
                                     termControl.updatePartyTermFromValue(partyTermValue, updatedBy);
                                     

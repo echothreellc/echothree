@@ -66,12 +66,12 @@ public class GetLocationsCommand
     @Override
     protected BaseResult execute() {
         var warehouseControl = Session.getModelController(WarehouseControl.class);
-        GetLocationsResult result = WarehouseResultFactory.getGetLocationsResult();
-        String warehouseName = form.getWarehouseName();
-        Warehouse warehouse = warehouseControl.getWarehouseByName(warehouseName);
+        var result = WarehouseResultFactory.getGetLocationsResult();
+        var warehouseName = form.getWarehouseName();
+        var warehouse = warehouseControl.getWarehouseByName(warehouseName);
         
         if(warehouse != null) {
-            Party warehouseParty = warehouse.getParty();
+            var warehouseParty = warehouse.getParty();
             
             result.setWarehouse(warehouseControl.getWarehouseTransfer(getUserVisit(), warehouse));
             result.setLocations(warehouseControl.getLocationTransfersByWarehouseParty(getUserVisit(), warehouseParty));

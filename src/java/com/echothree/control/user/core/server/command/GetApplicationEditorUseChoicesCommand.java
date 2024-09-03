@@ -63,14 +63,14 @@ public class GetApplicationEditorUseChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        GetApplicationEditorUseChoicesResult result = CoreResultFactory.getGetApplicationEditorUseChoicesResult();
-        String applicationName = form.getApplicationName();
-        Application application = ApplicationLogic.getInstance().getApplicationByName(this, applicationName);
+        var result = CoreResultFactory.getGetApplicationEditorUseChoicesResult();
+        var applicationName = form.getApplicationName();
+        var application = ApplicationLogic.getInstance().getApplicationByName(this, applicationName);
         
         if(!hasExecutionErrors()) {
             var coreControl = getCoreControl();
-            String defaultApplicationEditorUseChoice = form.getDefaultApplicationEditorUseChoice();
-            boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+            var defaultApplicationEditorUseChoice = form.getDefaultApplicationEditorUseChoice();
+            var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 
             result.setApplicationEditorUseChoices(coreControl.getApplicationEditorUseChoices(defaultApplicationEditorUseChoice, getPreferredLanguage(),
                     allowNullChoice, application));

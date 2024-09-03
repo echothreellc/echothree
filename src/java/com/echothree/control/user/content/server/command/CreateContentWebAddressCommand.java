@@ -67,12 +67,12 @@ public class CreateContentWebAddressCommand
     @Override
     protected BaseResult execute() {
         var contentControl = Session.getModelController(ContentControl.class);
-        String contentWebAddressName = form.getContentWebAddressName();
-        ContentWebAddress contentWebAddress = contentControl.getContentWebAddressByName(contentWebAddressName);
+        var contentWebAddressName = form.getContentWebAddressName();
+        var contentWebAddress = contentControl.getContentWebAddressByName(contentWebAddressName);
         
         if(contentWebAddress == null) {
-            String contentCollectionName = form.getContentCollectionName();
-            ContentCollection contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
+            var contentCollectionName = form.getContentCollectionName();
+            var contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
             
             if(contentCollection != null) {
                 var description = form.getDescription();
@@ -81,7 +81,7 @@ public class CreateContentWebAddressCommand
                 contentWebAddress = contentControl.createContentWebAddress(contentWebAddressName, contentCollection, partyPK);
                 
                 if(description != null) {
-                    Language language = getPreferredLanguage();
+                    var language = getPreferredLanguage();
                     
                     contentControl.createContentWebAddressDescription(contentWebAddress, language, description, partyPK);
                 }

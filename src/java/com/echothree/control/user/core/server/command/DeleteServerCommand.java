@@ -61,8 +61,8 @@ public class DeleteServerCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String serverName = form.getServerName();
-        Server server = coreControl.getServerByNameForUpdate(serverName);
+        var serverName = form.getServerName();
+        var server = coreControl.getServerByNameForUpdate(serverName);
         
         if(server != null) {
             coreControl.deleteServer(server, getPartyPK());

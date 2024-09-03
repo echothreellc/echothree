@@ -63,8 +63,8 @@ public class DeleteCarrierTypeCommand
     @Override
     protected BaseResult execute() {
         var carrierControl = Session.getModelController(CarrierControl.class);
-        String carrierTypeName = form.getCarrierTypeName();
-        CarrierType carrierType = carrierControl.getCarrierTypeByNameForUpdate(carrierTypeName);
+        var carrierTypeName = form.getCarrierTypeName();
+        var carrierType = carrierControl.getCarrierTypeByNameForUpdate(carrierTypeName);
         
         if(carrierType != null) {
             carrierControl.deleteCarrierType(carrierType, getPartyPK());

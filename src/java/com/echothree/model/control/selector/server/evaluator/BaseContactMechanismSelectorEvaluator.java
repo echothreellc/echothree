@@ -63,9 +63,9 @@ public class BaseContactMechanismSelectorEvaluator
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.ContactMechanism or a
      * ECHO_THREE.PartyPaymentMethodContactMechanism */
     protected ContactMechanism getContactMechanismFromEntityInstance(EntityInstance entityInstance) {
-        EntityTypeDetail entityTypeDetail = entityInstance.getEntityType().getLastDetail();
-        String componentVendorName = entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName();
-        String entityTypeName = entityTypeDetail.getEntityTypeName();
+        var entityTypeDetail = entityInstance.getEntityType().getLastDetail();
+        var componentVendorName = entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName();
+        var entityTypeName = entityTypeDetail.getEntityTypeName();
         ContactMechanism contactMechanism = null;
         
         if(componentVendorName.equals(ComponentVendors.ECHO_THREE.name())) {
@@ -74,7 +74,7 @@ public class BaseContactMechanismSelectorEvaluator
                 contactMechanism = ContactMechanismFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
             } else if(entityTypeName.equals(EntityTypes.PartyPaymentMethodContactMechanism.name())) {
                 PartyPaymentMethodContactMechanismPK pk = new PartyPaymentMethodContactMechanismPK(entityInstance.getEntityUniqueId());
-                PartyPaymentMethodContactMechanism partyPaymentMethodContactMechanism = PartyPaymentMethodContactMechanismFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
+                var partyPaymentMethodContactMechanism = PartyPaymentMethodContactMechanismFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
                 
                 contactMechanism = partyPaymentMethodContactMechanism.getPartyContactMechanismPurpose().getLastDetail().getPartyContactMechanism().getLastDetail().getContactMechanism();
             }
@@ -90,8 +90,8 @@ public class BaseContactMechanismSelectorEvaluator
         
         this.cachedSelector = cachedSelector;
         this.entityInstance = entityInstance;
-        
-        Boolean result = evaluateSelectorNode(cachedSelector.getRootSelectorNodeDetail());
+
+        var result = evaluateSelectorNode(cachedSelector.getRootSelectorNodeDetail());
         
         this.entityInstance = null;
         this.cachedSelector = null;

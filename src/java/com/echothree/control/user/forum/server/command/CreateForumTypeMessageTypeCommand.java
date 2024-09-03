@@ -54,15 +54,15 @@ public class CreateForumTypeMessageTypeCommand
     @Override
     protected BaseResult execute() {
         var forumControl = Session.getModelController(ForumControl.class);
-        String forumTypeName = form.getForumTypeName();
-        ForumType forumType = forumControl.getForumTypeByName(forumTypeName);
+        var forumTypeName = form.getForumTypeName();
+        var forumType = forumControl.getForumTypeByName(forumTypeName);
         
         if(forumType != null) {
-            String forumMessageTypeName = form.getForumMessageTypeName();
-            ForumMessageType forumMessageType = forumControl.getForumMessageTypeByName(forumMessageTypeName);
+            var forumMessageTypeName = form.getForumMessageTypeName();
+            var forumMessageType = forumControl.getForumMessageTypeByName(forumMessageTypeName);
             
             if(forumMessageType != null) {
-                ForumTypeMessageType forumTypeMessageType = forumControl.getForumTypeMessageType(forumType, forumMessageType);
+                var forumTypeMessageType = forumControl.getForumTypeMessageType(forumType, forumMessageType);
                 
                 if(forumTypeMessageType == null) {
                     var isDefault = Boolean.valueOf(form.getIsDefault());

@@ -93,11 +93,11 @@ public class EditPicklistTimeTypeCommand
     public PicklistTimeType getEntity(EditPicklistTimeTypeResult result) {
         var picklistControl = Session.getModelController(PicklistControl.class);
         PicklistTimeType picklistTimeType = null;
-        String picklistTypeName = spec.getPicklistTypeName();
-        PicklistType picklistType = picklistControl.getPicklistTypeByName(picklistTypeName);
+        var picklistTypeName = spec.getPicklistTypeName();
+        var picklistType = picklistControl.getPicklistTypeByName(picklistTypeName);
 
         if(picklistType != null) {
-            String picklistTimeTypeName = spec.getPicklistTimeTypeName();
+            var picklistTimeTypeName = spec.getPicklistTimeTypeName();
 
             if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
                 picklistTimeType = picklistControl.getPicklistTimeTypeByName(picklistType, picklistTimeTypeName);
@@ -132,8 +132,8 @@ public class EditPicklistTimeTypeCommand
     @Override
     public void doLock(PicklistTimeTypeEdit edit, PicklistTimeType picklistTimeType) {
         var picklistControl = Session.getModelController(PicklistControl.class);
-        PicklistTimeTypeDescription picklistTimeTypeDescription = picklistControl.getPicklistTimeTypeDescription(picklistTimeType, getPreferredLanguage());
-        PicklistTimeTypeDetail picklistTimeTypeDetail = picklistTimeType.getLastDetail();
+        var picklistTimeTypeDescription = picklistControl.getPicklistTimeTypeDescription(picklistTimeType, getPreferredLanguage());
+        var picklistTimeTypeDetail = picklistTimeType.getLastDetail();
 
         edit.setPicklistTimeTypeName(picklistTimeTypeDetail.getPicklistTimeTypeName());
         edit.setIsDefault(picklistTimeTypeDetail.getIsDefault().toString());
@@ -147,12 +147,12 @@ public class EditPicklistTimeTypeCommand
     @Override
     public void canUpdate(PicklistTimeType picklistTimeType) {
         var picklistControl = Session.getModelController(PicklistControl.class);
-        String picklistTypeName = spec.getPicklistTypeName();
-        PicklistType picklistType = picklistControl.getPicklistTypeByName(picklistTypeName);
+        var picklistTypeName = spec.getPicklistTypeName();
+        var picklistType = picklistControl.getPicklistTypeByName(picklistTypeName);
 
         if(picklistType != null) {
-            String picklistTimeTypeName = edit.getPicklistTimeTypeName();
-            PicklistTimeType duplicatePicklistTimeType = picklistControl.getPicklistTimeTypeByName(picklistType, picklistTimeTypeName);
+            var picklistTimeTypeName = edit.getPicklistTimeTypeName();
+            var duplicatePicklistTimeType = picklistControl.getPicklistTimeTypeByName(picklistType, picklistTimeTypeName);
 
             if(duplicatePicklistTimeType != null && !picklistTimeType.equals(duplicatePicklistTimeType)) {
                 addExecutionError(ExecutionErrors.DuplicatePicklistTimeTypeName.name(), picklistTypeName, picklistTimeTypeName);
@@ -166,9 +166,9 @@ public class EditPicklistTimeTypeCommand
     public void doUpdate(PicklistTimeType picklistTimeType) {
         var picklistControl = Session.getModelController(PicklistControl.class);
         var partyPK = getPartyPK();
-        PicklistTimeTypeDetailValue picklistTimeTypeDetailValue = picklistControl.getPicklistTimeTypeDetailValueForUpdate(picklistTimeType);
-        PicklistTimeTypeDescription picklistTimeTypeDescription = picklistControl.getPicklistTimeTypeDescriptionForUpdate(picklistTimeType, getPreferredLanguage());
-        String description = edit.getDescription();
+        var picklistTimeTypeDetailValue = picklistControl.getPicklistTimeTypeDetailValueForUpdate(picklistTimeType);
+        var picklistTimeTypeDescription = picklistControl.getPicklistTimeTypeDescriptionForUpdate(picklistTimeType, getPreferredLanguage());
+        var description = edit.getDescription();
 
         picklistTimeTypeDetailValue.setPicklistTimeTypeName(edit.getPicklistTimeTypeName());
         picklistTimeTypeDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
@@ -183,7 +183,7 @@ public class EditPicklistTimeTypeCommand
                 picklistControl.deletePicklistTimeTypeDescription(picklistTimeTypeDescription, partyPK);
             } else {
                 if(picklistTimeTypeDescription != null && description != null) {
-                    PicklistTimeTypeDescriptionValue picklistTimeTypeDescriptionValue = picklistControl.getPicklistTimeTypeDescriptionValue(picklistTimeTypeDescription);
+                    var picklistTimeTypeDescriptionValue = picklistControl.getPicklistTimeTypeDescriptionValue(picklistTimeTypeDescription);
 
                     picklistTimeTypeDescriptionValue.setDescription(description);
                     picklistControl.updatePicklistTimeTypeDescriptionFromValue(picklistTimeTypeDescriptionValue, partyPK);

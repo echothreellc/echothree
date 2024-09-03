@@ -63,9 +63,9 @@ public class GetTextDecorationDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        GetTextDecorationDescriptionsResult result = CoreResultFactory.getGetTextDecorationDescriptionsResult();
-        String textDecorationName = form.getTextDecorationName();
-        TextDecoration textDecoration = coreControl.getTextDecorationByName(textDecorationName);
+        var result = CoreResultFactory.getGetTextDecorationDescriptionsResult();
+        var textDecorationName = form.getTextDecorationName();
+        var textDecoration = coreControl.getTextDecorationByName(textDecorationName);
         
         if(textDecoration != null) {
             result.setTextDecoration(coreControl.getTextDecorationTransfer(getUserVisit(), textDecoration));

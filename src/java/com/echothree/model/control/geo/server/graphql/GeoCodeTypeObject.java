@@ -62,7 +62,7 @@ public class GeoCodeTypeObject
     @GraphQLField
     @GraphQLDescription("parent geo code type")
     public GeoCodeTypeObject getParentGeoCodeType() {
-        GeoCodeType parentGeoCodeType = getGeoCodeTypeDetail().getParentGeoCodeType();
+        var parentGeoCodeType = getGeoCodeTypeDetail().getParentGeoCodeType();
         
         return parentGeoCodeType == null ? null : new GeoCodeTypeObject(parentGeoCodeType);
     }

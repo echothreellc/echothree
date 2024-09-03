@@ -71,26 +71,26 @@ public class CreatePartyEntityTypeCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        String partyName = form.getPartyName();
-        Party party = partyControl.getPartyByName(partyName);
+        var partyName = form.getPartyName();
+        var party = partyControl.getPartyByName(partyName);
 
         if(party != null) {
-            PartyType partyType = party.getLastDetail().getPartyType();
+            var partyType = party.getLastDetail().getPartyType();
 
             if(partyType.getAllowUserLogins()) {
                 var coreControl = getCoreControl();
-                String componentVendorName = form.getComponentVendorName();
-                ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+                var componentVendorName = form.getComponentVendorName();
+                var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
 
                 if(componentVendor != null) {
-                    String entityTypeName = form.getEntityTypeName();
-                    EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+                    var entityTypeName = form.getEntityTypeName();
+                    var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
 
                     if(entityType != null) {
-                        PartyEntityType partyEntityType = coreControl.getPartyEntityType(party, entityType);
+                        var partyEntityType = coreControl.getPartyEntityType(party, entityType);
 
                         if(partyEntityType == null) {
-                            Boolean confirmDelete = Boolean.valueOf(form.getConfirmDelete());
+                            var confirmDelete = Boolean.valueOf(form.getConfirmDelete());
 
                             coreControl.createPartyEntityType(party, entityType, confirmDelete, getPartyPK());
                         } else {

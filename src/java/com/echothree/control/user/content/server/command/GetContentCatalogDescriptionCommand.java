@@ -70,22 +70,22 @@ public class GetContentCatalogDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        GetContentCatalogDescriptionResult result = ContentResultFactory.getGetContentCatalogDescriptionResult();
+        var result = ContentResultFactory.getGetContentCatalogDescriptionResult();
         var contentControl = Session.getModelController(ContentControl.class);
-        String contentCollectionName = form.getContentCollectionName();
-        ContentCollection contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
+        var contentCollectionName = form.getContentCollectionName();
+        var contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
         
         if(contentCollection != null) {
-            String contentCatalogName = form.getContentCatalogName();
-            ContentCatalog contentCatalog = contentControl.getContentCatalogByName(contentCollection, contentCatalogName);
+            var contentCatalogName = form.getContentCatalogName();
+            var contentCatalog = contentControl.getContentCatalogByName(contentCollection, contentCatalogName);
             
             if(contentCatalog != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = form.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = form.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                 if(language != null) {
-                    ContentCatalogDescription contentCatalogDescription = contentControl.getContentCatalogDescription(contentCatalog, language);
+                    var contentCatalogDescription = contentControl.getContentCatalogDescription(contentCatalog, language);
 
                     if(contentCatalogDescription != null) {
                         result.setContentCatalogDescription(contentControl.getContentCatalogDescriptionTransfer(getUserVisit(), contentCatalogDescription));

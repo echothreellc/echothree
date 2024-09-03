@@ -48,20 +48,20 @@ public class CommentTypeTransferCache
     }
     
     public CommentTypeTransfer getCommentTypeTransfer(CommentType commentType) {
-        CommentTypeTransfer commentTypeTransfer = get(commentType);
+        var commentTypeTransfer = get(commentType);
         
         if(commentTypeTransfer == null) {
-            CommentTypeDetail commentTypeDetail = commentType.getLastDetail();
-            EntityTypeTransfer entityTypeTransfer = coreControl.getEntityTypeTransfer(userVisit, commentTypeDetail.getEntityType());
-            String commentTypeName = commentTypeDetail.getCommentTypeName();
-            Sequence commentSequence = commentTypeDetail.getCommentSequence();
-            SequenceTransfer commentSequenceTransfer = commentSequence == null? null: sequenceControl.getSequenceTransfer(userVisit, commentSequence);
-            WorkflowEntrance workflowEntrance = commentTypeDetail.getWorkflowEntrance();
-            WorkflowEntranceTransfer workflowEntranceTransfer = workflowEntrance == null? null: workflowControl.getWorkflowEntranceTransfer(userVisit, workflowEntrance);
-            MimeTypeUsageType mimeTypeUsageType = commentTypeDetail.getMimeTypeUsageType();
-            MimeTypeUsageTypeTransfer mimeTypeUsageTypeTransfer = mimeTypeUsageType == null? null: coreControl.getMimeTypeUsageTypeTransfer(userVisit, mimeTypeUsageType);
-            Integer sortOrder = commentTypeDetail.getSortOrder();
-            String description = commentControl.getBestCommentTypeDescription(commentType, getLanguage());
+            var commentTypeDetail = commentType.getLastDetail();
+            var entityTypeTransfer = coreControl.getEntityTypeTransfer(userVisit, commentTypeDetail.getEntityType());
+            var commentTypeName = commentTypeDetail.getCommentTypeName();
+            var commentSequence = commentTypeDetail.getCommentSequence();
+            var commentSequenceTransfer = commentSequence == null? null: sequenceControl.getSequenceTransfer(userVisit, commentSequence);
+            var workflowEntrance = commentTypeDetail.getWorkflowEntrance();
+            var workflowEntranceTransfer = workflowEntrance == null? null: workflowControl.getWorkflowEntranceTransfer(userVisit, workflowEntrance);
+            var mimeTypeUsageType = commentTypeDetail.getMimeTypeUsageType();
+            var mimeTypeUsageTypeTransfer = mimeTypeUsageType == null? null: coreControl.getMimeTypeUsageTypeTransfer(userVisit, mimeTypeUsageType);
+            var sortOrder = commentTypeDetail.getSortOrder();
+            var description = commentControl.getBestCommentTypeDescription(commentType, getLanguage());
             
             commentTypeTransfer = new CommentTypeTransfer(entityTypeTransfer, commentTypeName, commentSequenceTransfer,
                     workflowEntranceTransfer, mimeTypeUsageTypeTransfer, sortOrder, description);

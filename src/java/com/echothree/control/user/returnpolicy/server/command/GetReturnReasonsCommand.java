@@ -65,9 +65,9 @@ public class GetReturnReasonsCommand
     @Override
     protected BaseResult execute() {
         var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
-        GetReturnReasonsResult result = ReturnPolicyResultFactory.getGetReturnReasonsResult();
-        String returnKindName = form.getReturnKindName();
-        ReturnKind returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
+        var result = ReturnPolicyResultFactory.getGetReturnReasonsResult();
+        var returnKindName = form.getReturnKindName();
+        var returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
         
         if(returnKind != null) {
             result.setReturnKind(returnPolicyControl.getReturnKindTransfer(getUserVisit(), returnKind));

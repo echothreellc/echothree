@@ -186,11 +186,11 @@ public class FilterControl
     // --------------------------------------------------------------------------------
 
     public FilterKind createFilterKind(String filterKindName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        FilterKind defaultFilterKind = getDefaultFilterKind();
-        boolean defaultFound = defaultFilterKind != null;
+        var defaultFilterKind = getDefaultFilterKind();
+        var defaultFound = defaultFilterKind != null;
 
         if(defaultFound && isDefault) {
-            FilterKindDetailValue defaultFilterKindDetailValue = getDefaultFilterKindDetailValueForUpdate();
+            var defaultFilterKindDetailValue = getDefaultFilterKindDetailValueForUpdate();
 
             defaultFilterKindDetailValue.setIsDefault(Boolean.FALSE);
             updateFilterKindFromValue(defaultFilterKindDetailValue, false, createdBy);
@@ -198,8 +198,8 @@ public class FilterControl
             isDefault = Boolean.TRUE;
         }
 
-        FilterKind filterKind = FilterKindFactory.getInstance().create();
-        FilterKindDetail filterKindDetail = FilterKindDetailFactory.getInstance().create(filterKind, filterKindName, isDefault, sortOrder,
+        var filterKind = FilterKindFactory.getInstance().create();
+        var filterKindDetail = FilterKindDetailFactory.getInstance().create(filterKind, filterKindName, isDefault, sortOrder,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -339,7 +339,7 @@ public class FilterControl
     }
 
     public FilterKindChoicesBean getFilterKindChoices(String defaultFilterKindChoice, Language language, boolean allowNullChoice) {
-        List<FilterKind> filterKinds = getFilterKinds();
+        var filterKinds = getFilterKinds();
         var size = filterKinds.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -355,7 +355,7 @@ public class FilterControl
         }
 
         for(var filterKind : filterKinds) {
-            FilterKindDetail filterKindDetail = filterKind.getLastDetail();
+            var filterKindDetail = filterKind.getLastDetail();
 
             var label = getBestFilterKindDescription(filterKind, language);
             var value = filterKindDetail.getFilterKindName();
@@ -378,7 +378,7 @@ public class FilterControl
 
     public List<FilterKindTransfer> getFilterKindTransfers(UserVisit userVisit, Collection<FilterKind> filterKinds) {
         List<FilterKindTransfer> filterKindTransfers = new ArrayList<>(filterKinds.size());
-        FilterKindTransferCache filterKindTransferCache = getFilterTransferCaches(userVisit).getFilterKindTransferCache();
+        var filterKindTransferCache = getFilterTransferCaches(userVisit).getFilterKindTransferCache();
 
         filterKinds.forEach((filterKind) ->
                 filterKindTransfers.add(filterKindTransferCache.getTransfer(filterKind))
@@ -392,25 +392,25 @@ public class FilterControl
     }
 
     private void updateFilterKindFromValue(FilterKindDetailValue filterKindDetailValue, boolean checkDefault, BasePK updatedBy) {
-        FilterKind filterKind = FilterKindFactory.getInstance().getEntityFromPK(session,
+        var filterKind = FilterKindFactory.getInstance().getEntityFromPK(session,
                 EntityPermission.READ_WRITE, filterKindDetailValue.getFilterKindPK());
-        FilterKindDetail filterKindDetail = filterKind.getActiveDetailForUpdate();
+        var filterKindDetail = filterKind.getActiveDetailForUpdate();
 
         filterKindDetail.setThruTime(session.START_TIME_LONG);
         filterKindDetail.store();
 
-        FilterKindPK filterKindPK = filterKindDetail.getFilterKindPK();
-        String filterKindName = filterKindDetailValue.getFilterKindName();
-        Boolean isDefault = filterKindDetailValue.getIsDefault();
-        Integer sortOrder = filterKindDetailValue.getSortOrder();
+        var filterKindPK = filterKindDetail.getFilterKindPK();
+        var filterKindName = filterKindDetailValue.getFilterKindName();
+        var isDefault = filterKindDetailValue.getIsDefault();
+        var sortOrder = filterKindDetailValue.getSortOrder();
 
         if(checkDefault) {
-            FilterKind defaultFilterKind = getDefaultFilterKind();
-            boolean defaultFound = defaultFilterKind != null && !defaultFilterKind.equals(filterKind);
+            var defaultFilterKind = getDefaultFilterKind();
+            var defaultFound = defaultFilterKind != null && !defaultFilterKind.equals(filterKind);
 
             if(isDefault && defaultFound) {
                 // If I'm the default, and a default already existed...
-                FilterKindDetailValue defaultFilterKindDetailValue = getDefaultFilterKindDetailValueForUpdate();
+                var defaultFilterKindDetailValue = getDefaultFilterKindDetailValueForUpdate();
 
                 defaultFilterKindDetailValue.setIsDefault(Boolean.FALSE);
                 updateFilterKindFromValue(defaultFilterKindDetailValue, false, updatedBy);
@@ -437,22 +437,22 @@ public class FilterControl
     public void deleteFilterKind(FilterKind filterKind, BasePK deletedBy) {
         deleteFilterKindDescriptionsByFilterKind(filterKind, deletedBy);
 
-        FilterKindDetail filterKindDetail = filterKind.getLastDetailForUpdate();
+        var filterKindDetail = filterKind.getLastDetailForUpdate();
         filterKindDetail.setThruTime(session.START_TIME_LONG);
         filterKind.setActiveDetail(null);
         filterKind.store();
 
         // Check for default, and pick one if necessary
-        FilterKind defaultFilterKind = getDefaultFilterKind();
+        var defaultFilterKind = getDefaultFilterKind();
         if(defaultFilterKind == null) {
-            List<FilterKind> filterKinds = getFilterKindsForUpdate();
+            var filterKinds = getFilterKindsForUpdate();
 
             if(!filterKinds.isEmpty()) {
-                Iterator<FilterKind> iter = filterKinds.iterator();
+                var iter = filterKinds.iterator();
                 if(iter.hasNext()) {
                     defaultFilterKind = iter.next();
                 }
-                FilterKindDetailValue filterKindDetailValue = Objects.requireNonNull(defaultFilterKind).getLastDetailForUpdate().getFilterKindDetailValue().clone();
+                var filterKindDetailValue = Objects.requireNonNull(defaultFilterKind).getLastDetailForUpdate().getFilterKindDetailValue().clone();
 
                 filterKindDetailValue.setIsDefault(Boolean.TRUE);
                 updateFilterKindFromValue(filterKindDetailValue, false, deletedBy);
@@ -468,7 +468,7 @@ public class FilterControl
 
     public FilterKindDescription createFilterKindDescription(FilterKind filterKind, Language language, String description,
             BasePK createdBy) {
-        FilterKindDescription filterKindDescription = FilterKindDescriptionFactory.getInstance().create(filterKind,
+        var filterKindDescription = FilterKindDescriptionFactory.getInstance().create(filterKind,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(filterKind.getPrimaryKey(), EventTypes.MODIFY, filterKindDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -547,7 +547,7 @@ public class FilterControl
 
     public String getBestFilterKindDescription(FilterKind filterKind, Language language) {
         String description;
-        FilterKindDescription filterKindDescription = getFilterKindDescription(filterKind, language);
+        var filterKindDescription = getFilterKindDescription(filterKind, language);
 
         if(filterKindDescription == null && !language.getIsDefault()) {
             filterKindDescription = getFilterKindDescription(filterKind, getPartyControl().getDefaultLanguage());
@@ -567,7 +567,7 @@ public class FilterControl
     }
 
     public List<FilterKindDescriptionTransfer> getFilterKindDescriptionTransfersByFilterKind(UserVisit userVisit, FilterKind filterKind) {
-        List<FilterKindDescription> filterKindDescriptions = getFilterKindDescriptionsByFilterKind(filterKind);
+        var filterKindDescriptions = getFilterKindDescriptionsByFilterKind(filterKind);
         List<FilterKindDescriptionTransfer> filterKindDescriptionTransfers = new ArrayList<>(filterKindDescriptions.size());
 
         filterKindDescriptions.forEach((filterKindDescription) ->
@@ -579,15 +579,15 @@ public class FilterControl
 
     public void updateFilterKindDescriptionFromValue(FilterKindDescriptionValue filterKindDescriptionValue, BasePK updatedBy) {
         if(filterKindDescriptionValue.hasBeenModified()) {
-            FilterKindDescription filterKindDescription = FilterKindDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var filterKindDescription = FilterKindDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      filterKindDescriptionValue.getPrimaryKey());
 
             filterKindDescription.setThruTime(session.START_TIME_LONG);
             filterKindDescription.store();
 
-            FilterKind filterKind = filterKindDescription.getFilterKind();
-            Language language = filterKindDescription.getLanguage();
-            String description = filterKindDescriptionValue.getDescription();
+            var filterKind = filterKindDescription.getFilterKind();
+            var language = filterKindDescription.getLanguage();
+            var description = filterKindDescriptionValue.getDescription();
 
             filterKindDescription = FilterKindDescriptionFactory.getInstance().create(filterKind, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -604,7 +604,7 @@ public class FilterControl
     }
 
     public void deleteFilterKindDescriptionsByFilterKind(FilterKind filterKind, BasePK deletedBy) {
-        List<FilterKindDescription> filterKindDescriptions = getFilterKindDescriptionsByFilterKindForUpdate(filterKind);
+        var filterKindDescriptions = getFilterKindDescriptionsByFilterKindForUpdate(filterKind);
 
         filterKindDescriptions.forEach((filterKindDescription) -> 
                 deleteFilterKindDescription(filterKindDescription, deletedBy)
@@ -616,11 +616,11 @@ public class FilterControl
     // --------------------------------------------------------------------------------
 
     public FilterType createFilterType(FilterKind filterKind, String filterTypeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        FilterType defaultFilterType = getDefaultFilterType(filterKind);
-        boolean defaultFound = defaultFilterType != null;
+        var defaultFilterType = getDefaultFilterType(filterKind);
+        var defaultFound = defaultFilterType != null;
 
         if(defaultFound && isDefault) {
-            FilterTypeDetailValue defaultFilterTypeDetailValue = getDefaultFilterTypeDetailValueForUpdate(filterKind);
+            var defaultFilterTypeDetailValue = getDefaultFilterTypeDetailValueForUpdate(filterKind);
 
             defaultFilterTypeDetailValue.setIsDefault(Boolean.FALSE);
             updateFilterTypeFromValue(defaultFilterTypeDetailValue, false, createdBy);
@@ -628,8 +628,8 @@ public class FilterControl
             isDefault = Boolean.TRUE;
         }
 
-        FilterType filterType = FilterTypeFactory.getInstance().create();
-        FilterTypeDetail filterTypeDetail = FilterTypeDetailFactory.getInstance().create(session, filterType, filterKind, filterTypeName, isDefault, sortOrder,
+        var filterType = FilterTypeFactory.getInstance().create();
+        var filterTypeDetail = FilterTypeDetailFactory.getInstance().create(session, filterType, filterKind, filterTypeName, isDefault, sortOrder,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -777,7 +777,7 @@ public class FilterControl
 
     public FilterTypeChoicesBean getFilterTypeChoices(String defaultFilterTypeChoice, Language language,
             boolean allowNullChoice, FilterKind filterKind) {
-        List<FilterType> filterTypes = getFilterTypes(filterKind);
+        var filterTypes = getFilterTypes(filterKind);
         var size = filterTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -793,7 +793,7 @@ public class FilterControl
         }
 
         for(var filterType : filterTypes) {
-            FilterTypeDetail filterTypeDetail = filterType.getLastDetail();
+            var filterTypeDetail = filterType.getLastDetail();
             var label = getBestFilterTypeDescription(filterType, language);
             var value = filterTypeDetail.getFilterTypeName();
 
@@ -831,27 +831,27 @@ public class FilterControl
     private void updateFilterTypeFromValue(FilterTypeDetailValue filterTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(filterTypeDetailValue.hasBeenModified()) {
-            FilterType filterType = FilterTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var filterType = FilterTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      filterTypeDetailValue.getFilterTypePK());
-            FilterTypeDetail filterTypeDetail = filterType.getActiveDetailForUpdate();
+            var filterTypeDetail = filterType.getActiveDetailForUpdate();
 
             filterTypeDetail.setThruTime(session.START_TIME_LONG);
             filterTypeDetail.store();
 
-            FilterTypePK filterTypePK = filterTypeDetail.getFilterTypePK();
-            FilterKind filterKind = filterTypeDetail.getFilterKind();
-            FilterKindPK filterKindPK = filterKind.getPrimaryKey();
-            String filterTypeName = filterTypeDetailValue.getFilterTypeName();
-            Boolean isDefault = filterTypeDetailValue.getIsDefault();
-            Integer sortOrder = filterTypeDetailValue.getSortOrder();
+            var filterTypePK = filterTypeDetail.getFilterTypePK();
+            var filterKind = filterTypeDetail.getFilterKind();
+            var filterKindPK = filterKind.getPrimaryKey();
+            var filterTypeName = filterTypeDetailValue.getFilterTypeName();
+            var isDefault = filterTypeDetailValue.getIsDefault();
+            var sortOrder = filterTypeDetailValue.getSortOrder();
 
             if(checkDefault) {
-                FilterType defaultFilterType = getDefaultFilterType(filterKind);
-                boolean defaultFound = defaultFilterType != null && !defaultFilterType.equals(filterType);
+                var defaultFilterType = getDefaultFilterType(filterKind);
+                var defaultFound = defaultFilterType != null && !defaultFilterType.equals(filterType);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    FilterTypeDetailValue defaultFilterTypeDetailValue = getDefaultFilterTypeDetailValueForUpdate(filterKind);
+                    var defaultFilterTypeDetailValue = getDefaultFilterTypeDetailValueForUpdate(filterKind);
 
                     defaultFilterTypeDetailValue.setIsDefault(Boolean.FALSE);
                     updateFilterTypeFromValue(defaultFilterTypeDetailValue, false, updatedBy);
@@ -878,23 +878,23 @@ public class FilterControl
     public void deleteFilterType(FilterType filterType, BasePK deletedBy) {
         deleteFilterTypeDescriptionsByFilterType(filterType, deletedBy);
 
-        FilterTypeDetail filterTypeDetail = filterType.getLastDetailForUpdate();
+        var filterTypeDetail = filterType.getLastDetailForUpdate();
         filterTypeDetail.setThruTime(session.START_TIME_LONG);
         filterType.setActiveDetail(null);
         filterType.store();
 
         // Check for default, and pick one if necessary
-        FilterKind filterKind = filterTypeDetail.getFilterKind();
-        FilterType defaultFilterType = getDefaultFilterType(filterKind);
+        var filterKind = filterTypeDetail.getFilterKind();
+        var defaultFilterType = getDefaultFilterType(filterKind);
         if(defaultFilterType == null) {
-            List<FilterType> filterTypes = getFilterTypesForUpdate(filterKind);
+            var filterTypes = getFilterTypesForUpdate(filterKind);
 
             if(!filterTypes.isEmpty()) {
-                Iterator<FilterType> iter = filterTypes.iterator();
+                var iter = filterTypes.iterator();
                 if(iter.hasNext()) {
                     defaultFilterType = iter.next();
                 }
-                FilterTypeDetailValue filterTypeDetailValue = Objects.requireNonNull(defaultFilterType).getLastDetailForUpdate().getFilterTypeDetailValue().clone();
+                var filterTypeDetailValue = Objects.requireNonNull(defaultFilterType).getLastDetailForUpdate().getFilterTypeDetailValue().clone();
 
                 filterTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateFilterTypeFromValue(filterTypeDetailValue, false, deletedBy);
@@ -905,7 +905,7 @@ public class FilterControl
     }
 
     public void deleteFilterTypesByFilterKind(FilterKind filterKind, BasePK deletedBy) {
-        List<FilterType> filterTypes = getFilterTypesForUpdate(filterKind);
+        var filterTypes = getFilterTypesForUpdate(filterKind);
 
         filterTypes.forEach((filterType) -> 
                 deleteFilterType(filterType, deletedBy)
@@ -918,7 +918,7 @@ public class FilterControl
 
     public FilterTypeDescription createFilterTypeDescription(FilterType filterType, Language language, String description,
             BasePK createdBy) {
-        FilterTypeDescription filterTypeDescription = FilterTypeDescriptionFactory.getInstance().create(filterType,
+        var filterTypeDescription = FilterTypeDescriptionFactory.getInstance().create(filterType,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(filterType.getPrimaryKey(), EventTypes.MODIFY, filterTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -997,7 +997,7 @@ public class FilterControl
 
     public String getBestFilterTypeDescription(FilterType filterType, Language language) {
         String description;
-        FilterTypeDescription filterTypeDescription = getFilterTypeDescription(filterType, language);
+        var filterTypeDescription = getFilterTypeDescription(filterType, language);
 
         if(filterTypeDescription == null && !language.getIsDefault()) {
             filterTypeDescription = getFilterTypeDescription(filterType, getPartyControl().getDefaultLanguage());
@@ -1017,7 +1017,7 @@ public class FilterControl
     }
 
     public List<FilterTypeDescriptionTransfer> getFilterTypeDescriptionTransfersByFilterType(UserVisit userVisit, FilterType filterType) {
-        List<FilterTypeDescription> filterTypeDescriptions = getFilterTypeDescriptionsByFilterType(filterType);
+        var filterTypeDescriptions = getFilterTypeDescriptionsByFilterType(filterType);
         List<FilterTypeDescriptionTransfer> filterTypeDescriptionTransfers = new ArrayList<>(filterTypeDescriptions.size());
 
         filterTypeDescriptions.forEach((filterTypeDescription) -> {
@@ -1029,15 +1029,15 @@ public class FilterControl
 
     public void updateFilterTypeDescriptionFromValue(FilterTypeDescriptionValue filterTypeDescriptionValue, BasePK updatedBy) {
         if(filterTypeDescriptionValue.hasBeenModified()) {
-            FilterTypeDescription filterTypeDescription = FilterTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var filterTypeDescription = FilterTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      filterTypeDescriptionValue.getPrimaryKey());
 
             filterTypeDescription.setThruTime(session.START_TIME_LONG);
             filterTypeDescription.store();
 
-            FilterType filterType = filterTypeDescription.getFilterType();
-            Language language = filterTypeDescription.getLanguage();
-            String description = filterTypeDescriptionValue.getDescription();
+            var filterType = filterTypeDescription.getFilterType();
+            var language = filterTypeDescription.getLanguage();
+            var description = filterTypeDescriptionValue.getDescription();
 
             filterTypeDescription = FilterTypeDescriptionFactory.getInstance().create(filterType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1054,7 +1054,7 @@ public class FilterControl
     }
 
     public void deleteFilterTypeDescriptionsByFilterType(FilterType filterType, BasePK deletedBy) {
-        List<FilterTypeDescription> filterTypeDescriptions = getFilterTypeDescriptionsByFilterTypeForUpdate(filterType);
+        var filterTypeDescriptions = getFilterTypeDescriptionsByFilterTypeForUpdate(filterType);
 
         filterTypeDescriptions.forEach((filterTypeDescription) -> 
                 deleteFilterTypeDescription(filterTypeDescription, deletedBy)
@@ -1078,7 +1078,7 @@ public class FilterControl
     }
 
     public List<FilterAdjustmentSource> getFilterAdjustmentSources() {
-        PreparedStatement ps = FilterAdjustmentSourceFactory.getInstance().prepareStatement(
+        var ps = FilterAdjustmentSourceFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
                 "FROM filteradjustmentsources " +
                 "ORDER BY fltas_sortorder, fltas_filteradjustmentsourcename");
@@ -1090,7 +1090,7 @@ public class FilterControl
         FilterAdjustmentSource filterAdjustmentSource;
         
         try {
-            PreparedStatement ps = FilterAdjustmentSourceFactory.getInstance().prepareStatement(
+            var ps = FilterAdjustmentSourceFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM filteradjustmentsources " +
                     "WHERE fltas_filteradjustmentsourcename = ?");
@@ -1108,7 +1108,7 @@ public class FilterControl
     
     public FilterAdjustmentSourceChoicesBean getFilterAdjustmentSourceChoices(String defaultFilterAdjustmentSourceChoice,
             Language language) {
-        List<FilterAdjustmentSource> filterAdjustmentSources = getFilterAdjustmentSources();
+        var filterAdjustmentSources = getFilterAdjustmentSources();
         var size = filterAdjustmentSources.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -1163,7 +1163,7 @@ public class FilterControl
         FilterAdjustmentSourceDescription filterAdjustmentSourceDescription;
         
         try {
-            PreparedStatement ps = FilterAdjustmentSourceDescriptionFactory.getInstance().prepareStatement(
+            var ps = FilterAdjustmentSourceDescriptionFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM filteradjustmentsourcedescriptions " +
                     "WHERE fltasd_fltas_filteradjustmentsourceid = ? AND fltasd_lang_languageid = ?");
@@ -1182,7 +1182,7 @@ public class FilterControl
     
     public String getBestFilterAdjustmentSourceDescription(FilterAdjustmentSource filterAdjustmentSource, Language language) {
         String description;
-        FilterAdjustmentSourceDescription filterAdjustmentSourceDescription = getFilterAdjustmentSourceDescription(filterAdjustmentSource,
+        var filterAdjustmentSourceDescription = getFilterAdjustmentSourceDescription(filterAdjustmentSource,
                 language);
         
         if(filterAdjustmentSourceDescription == null && !language.getIsDefault()) {
@@ -1214,7 +1214,7 @@ public class FilterControl
     }
 
     public List<FilterAdjustmentType> getFilterAdjustmentTypes() {
-        PreparedStatement ps = FilterAdjustmentTypeFactory.getInstance().prepareStatement(
+        var ps = FilterAdjustmentTypeFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
                 "FROM filteradjustmenttypes " +
                 "ORDER BY fltat_sortorder, fltat_filteradjustmenttypename");
@@ -1226,7 +1226,7 @@ public class FilterControl
         FilterAdjustmentType filterAdjustmentType;
         
         try {
-            PreparedStatement ps = FilterAdjustmentTypeFactory.getInstance().prepareStatement(
+            var ps = FilterAdjustmentTypeFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM filteradjustmenttypes " +
                     "WHERE fltat_filteradjustmenttypename = ?");
@@ -1243,7 +1243,7 @@ public class FilterControl
     
     public FilterAdjustmentTypeChoicesBean getFilterAdjustmentTypeChoices(String defaultFilterAdjustmentTypeChoice,
             Language language) {
-        List<FilterAdjustmentType> filterAdjustmentTypes = getFilterAdjustmentTypes();
+        var filterAdjustmentTypes = getFilterAdjustmentTypes();
         var size = filterAdjustmentTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -1301,7 +1301,7 @@ public class FilterControl
         FilterAdjustmentTypeDescription filterAdjustmentTypeDescription;
         
         try {
-            PreparedStatement ps = FilterAdjustmentTypeDescriptionFactory.getInstance().prepareStatement(
+            var ps = FilterAdjustmentTypeDescriptionFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM filteradjustmenttypedescriptions " +
                     "WHERE fltatd_fltat_filteradjustmenttypeid = ? AND fltatd_lang_languageid = ?");
@@ -1320,7 +1320,7 @@ public class FilterControl
     
     public String getBestFilterAdjustmentTypeDescription(FilterAdjustmentType filterAdjustmentType, Language language) {
         String description;
-        FilterAdjustmentTypeDescription filterAdjustmentTypeDescription = getFilterAdjustmentTypeDescription(filterAdjustmentType,
+        var filterAdjustmentTypeDescription = getFilterAdjustmentTypeDescription(filterAdjustmentType,
                 language);
         
         if(filterAdjustmentTypeDescription == null && !language.getIsDefault()) {
@@ -1343,20 +1343,20 @@ public class FilterControl
     public FilterAdjustment createFilterAdjustment(FilterKind filterKind, String filterAdjustmentName,
             FilterAdjustmentSource filterAdjustmentSource, FilterAdjustmentType filterAdjustmentType, Boolean isDefault,
             Integer sortOrder, BasePK createdBy) {
-        FilterAdjustment defaultFilterAdjustment = getDefaultFilterAdjustment(filterKind);
-        boolean defaultFound = defaultFilterAdjustment != null;
+        var defaultFilterAdjustment = getDefaultFilterAdjustment(filterKind);
+        var defaultFound = defaultFilterAdjustment != null;
         
         if(defaultFound && isDefault) {
-            FilterAdjustmentDetailValue defaultFilterAdjustmentDetailValue = getDefaultFilterAdjustmentDetailValueForUpdate(filterKind);
+            var defaultFilterAdjustmentDetailValue = getDefaultFilterAdjustmentDetailValueForUpdate(filterKind);
             
             defaultFilterAdjustmentDetailValue.setIsDefault(Boolean.FALSE);
             updateFilterAdjustmentFromValue(defaultFilterAdjustmentDetailValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        FilterAdjustment filterAdjustment = FilterAdjustmentFactory.getInstance().create();
-        FilterAdjustmentDetail filterAdjustmentDetail = FilterAdjustmentDetailFactory.getInstance().create(session,
+
+        var filterAdjustment = FilterAdjustmentFactory.getInstance().create();
+        var filterAdjustmentDetail = FilterAdjustmentDetailFactory.getInstance().create(session,
                 filterAdjustment, filterKind, filterAdjustmentName, filterAdjustmentSource, filterAdjustmentType,
                 isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
@@ -1388,7 +1388,7 @@ public class FilterControl
     }
 
     public List<FilterAdjustment> getFilterAdjustments() {
-        PreparedStatement ps = FilterAdjustmentFactory.getInstance().prepareStatement(
+        var ps = FilterAdjustmentFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
                 "FROM filteradjustments, filteradjustmentdetails, filterkinds " +
                 "WHERE flta_activedetailid = fltadt_filteradjustmentdetailid " +
@@ -1415,8 +1415,8 @@ public class FilterControl
                         "WHERE flta_activedetailid = fltadt_filteradjustmentdetailid AND fltadt_fltk_filterkindid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = FilterAdjustmentFactory.getInstance().prepareStatement(query);
+
+            var ps = FilterAdjustmentFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, filterKind.getPrimaryKey().getEntityId());
             
@@ -1454,8 +1454,8 @@ public class FilterControl
                         "AND fltadt_isdefault = 1 " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = FilterAdjustmentFactory.getInstance().prepareStatement(query);
+
+            var ps = FilterAdjustmentFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, filterKind.getPrimaryKey().getEntityId());
             
@@ -1498,8 +1498,8 @@ public class FilterControl
                         "AND fltadt_filteradjustmentname = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = FilterAdjustmentFactory.getInstance().prepareStatement(query);
+
+            var ps = FilterAdjustmentFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, filterKind.getPrimaryKey().getEntityId());
             ps.setString(2, filterAdjustmentName);
@@ -1534,7 +1534,7 @@ public class FilterControl
     
     public List<FilterAdjustmentTransfer> getFilterAdjustmentTransfers(UserVisit userVisit,  Collection<FilterAdjustment> filterAdjustments) {
         List<FilterAdjustmentTransfer> filterAdjustmentTransfers = new ArrayList<>(filterAdjustments.size());
-        FilterAdjustmentTransferCache filterAdjustmentTransferCache = getFilterTransferCaches(userVisit).getFilterAdjustmentTransferCache();
+        var filterAdjustmentTransferCache = getFilterTransferCaches(userVisit).getFilterAdjustmentTransferCache();
         
         filterAdjustments.forEach((filterAdjustment) ->
                 filterAdjustmentTransfers.add(filterAdjustmentTransferCache.getTransfer(filterAdjustment))
@@ -1553,7 +1553,7 @@ public class FilterControl
     
     public FilterAdjustmentChoicesBean getFilterAdjustmentChoices(String defaultFilterAdjustmentChoice, Language language,
             FilterKind filterKind, boolean initialAdjustmentsOnly) {
-        List<FilterAdjustment> filterAdjustments = getFilterAdjustmentsByFilterKind(filterKind);
+        var filterAdjustments = getFilterAdjustmentsByFilterKind(filterKind);
         var size = filterAdjustments.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -1579,29 +1579,29 @@ public class FilterControl
     private void updateFilterAdjustmentFromValue(FilterAdjustmentDetailValue filterAdjustmentDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(filterAdjustmentDetailValue.hasBeenModified()) {
-            FilterAdjustment filterAdjustment = FilterAdjustmentFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var filterAdjustment = FilterAdjustmentFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      filterAdjustmentDetailValue.getFilterAdjustmentPK());
-            FilterAdjustmentDetail filterAdjustmentDetail = filterAdjustment.getActiveDetailForUpdate();
+            var filterAdjustmentDetail = filterAdjustment.getActiveDetailForUpdate();
             
             filterAdjustmentDetail.setThruTime(session.START_TIME_LONG);
             filterAdjustmentDetail.store();
-            
-            FilterAdjustmentPK filterAdjustmentPK = filterAdjustmentDetail.getFilterAdjustmentPK();
-            FilterKind filterKind = filterAdjustmentDetail.getFilterKind();
-            FilterKindPK filterKindPK = filterKind.getPrimaryKey();
-            String filterAdjustmentName = filterAdjustmentDetailValue.getFilterAdjustmentName();
-            FilterAdjustmentSourcePK filterAdjustmentSourcePK = filterAdjustmentDetailValue.getFilterAdjustmentSourcePK();
-            FilterAdjustmentTypePK filterAdjustmentTypePK = filterAdjustmentDetailValue.getFilterAdjustmentTypePK();
-            Boolean isDefault = filterAdjustmentDetailValue.getIsDefault();
-            Integer sortOrder = filterAdjustmentDetailValue.getSortOrder();
+
+            var filterAdjustmentPK = filterAdjustmentDetail.getFilterAdjustmentPK();
+            var filterKind = filterAdjustmentDetail.getFilterKind();
+            var filterKindPK = filterKind.getPrimaryKey();
+            var filterAdjustmentName = filterAdjustmentDetailValue.getFilterAdjustmentName();
+            var filterAdjustmentSourcePK = filterAdjustmentDetailValue.getFilterAdjustmentSourcePK();
+            var filterAdjustmentTypePK = filterAdjustmentDetailValue.getFilterAdjustmentTypePK();
+            var isDefault = filterAdjustmentDetailValue.getIsDefault();
+            var sortOrder = filterAdjustmentDetailValue.getSortOrder();
             
             if(checkDefault) {
-                FilterAdjustment defaultFilterAdjustment = getDefaultFilterAdjustment(filterKind);
-                boolean defaultFound = defaultFilterAdjustment != null && !defaultFilterAdjustment.equals(filterAdjustment);
+                var defaultFilterAdjustment = getDefaultFilterAdjustment(filterKind);
+                var defaultFound = defaultFilterAdjustment != null && !defaultFilterAdjustment.equals(filterAdjustment);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    FilterAdjustmentDetailValue defaultFilterAdjustmentDetailValue = getDefaultFilterAdjustmentDetailValueForUpdate(filterKind);
+                    var defaultFilterAdjustmentDetailValue = getDefaultFilterAdjustmentDetailValueForUpdate(filterKind);
                     
                     defaultFilterAdjustmentDetailValue.setIsDefault(Boolean.FALSE);
                     updateFilterAdjustmentFromValue(defaultFilterAdjustmentDetailValue, false, updatedBy);
@@ -1631,24 +1631,24 @@ public class FilterControl
         deleteFilterAdjustmentFixedAmountsByFilterAdjustment(filterAdjustment, deletedBy);
         deleteFilterAdjustmentPercentsByFilterAdjustment(filterAdjustment, deletedBy);
         deleteFilterAdjustmentDescriptionsByFilterAdjustment(filterAdjustment, deletedBy);
-        
-        FilterAdjustmentDetail filterAdjustmentDetail = filterAdjustment.getLastDetailForUpdate();
+
+        var filterAdjustmentDetail = filterAdjustment.getLastDetailForUpdate();
         filterAdjustmentDetail.setThruTime(session.START_TIME_LONG);
         filterAdjustment.setActiveDetail(null);
         filterAdjustment.store();
         
         // Check for default, and pick one if necessary
-        FilterKind filterKind = filterAdjustmentDetail.getFilterKind();
-        FilterAdjustment defaultFilterAdjustment = getDefaultFilterAdjustment(filterKind);
+        var filterKind = filterAdjustmentDetail.getFilterKind();
+        var defaultFilterAdjustment = getDefaultFilterAdjustment(filterKind);
         if(defaultFilterAdjustment == null) {
-            List<FilterAdjustment> filterKindPriorities = getFilterAdjustmentsByFilterKindForUpdate(filterKind);
+            var filterKindPriorities = getFilterAdjustmentsByFilterKindForUpdate(filterKind);
             
             if(!filterKindPriorities.isEmpty()) {
-                Iterator<FilterAdjustment> iter = filterKindPriorities.iterator();
+                var iter = filterKindPriorities.iterator();
                 if(iter.hasNext()) {
                     defaultFilterAdjustment = iter.next();
                 }
-                FilterAdjustmentDetailValue filterAdjustmentDetailValue = Objects.requireNonNull(defaultFilterAdjustment).getLastDetailForUpdate().getFilterAdjustmentDetailValue().clone();
+                var filterAdjustmentDetailValue = Objects.requireNonNull(defaultFilterAdjustment).getLastDetailForUpdate().getFilterAdjustmentDetailValue().clone();
                 
                 filterAdjustmentDetailValue.setIsDefault(Boolean.TRUE);
                 updateFilterAdjustmentFromValue(filterAdjustmentDetailValue, false, deletedBy);
@@ -1664,7 +1664,7 @@ public class FilterControl
     
     public FilterAdjustmentAmount createFilterAdjustmentAmount(FilterAdjustment filterAdjustment,
             UnitOfMeasureType unitOfMeasureType, Currency currency, Long amount, BasePK createdBy) {
-        FilterAdjustmentAmount filterAdjustmentAmount = FilterAdjustmentAmountFactory.getInstance().create(session,
+        var filterAdjustmentAmount = FilterAdjustmentAmountFactory.getInstance().create(session,
                 filterAdjustment, unitOfMeasureType, currency, amount, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(filterAdjustment.getPrimaryKey(), EventTypes.MODIFY,
@@ -1694,8 +1694,8 @@ public class FilterControl
                         "WHERE fltaa_flta_filteradjustmentid = ? AND fltaa_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = FilterAdjustmentAmountFactory.getInstance().prepareStatement(query);
+
+            var ps = FilterAdjustmentAmountFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, filterAdjustment.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1739,8 +1739,8 @@ public class FilterControl
                         "AND fltaa_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = FilterAdjustmentAmountFactory.getInstance().prepareStatement(query);
+
+            var ps = FilterAdjustmentAmountFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, filterAdjustment.getPrimaryKey().getEntityId());
             ps.setLong(2, unitOfMeasureType.getPrimaryKey().getEntityId());
@@ -1771,7 +1771,7 @@ public class FilterControl
     
     public FilterAdjustmentAmountValue getFilterAdjustmentAmountValueForUpdate(FilterAdjustment filterAdjustment,
             UnitOfMeasureType unitOfMeasureType, Currency currency) {
-        FilterAdjustmentAmount filterAdjustmentAmount = getFilterAdjustmentAmountForUpdate(filterAdjustment, unitOfMeasureType, currency);
+        var filterAdjustmentAmount = getFilterAdjustmentAmountForUpdate(filterAdjustment, unitOfMeasureType, currency);
         
         return filterAdjustmentAmount == null? null: filterAdjustmentAmount.getFilterAdjustmentAmountValue().clone();
     }
@@ -1783,7 +1783,7 @@ public class FilterControl
 
     public List<FilterAdjustmentAmountTransfer> getFilterAdjustmentAmountTransfers(UserVisit userVisit, Collection<FilterAdjustmentAmount> filterAdjustmentAmounts) {
         List<FilterAdjustmentAmountTransfer> filterAdjustmentAmountTransfers = new ArrayList<>(filterAdjustmentAmounts.size());
-        FilterAdjustmentAmountTransferCache filterAdjustmentAmountTransferCache = getFilterTransferCaches(userVisit).getFilterAdjustmentAmountTransferCache();
+        var filterAdjustmentAmountTransferCache = getFilterTransferCaches(userVisit).getFilterAdjustmentAmountTransferCache();
 
         filterAdjustmentAmounts.forEach((filterAdjustmentAmount) ->
                 filterAdjustmentAmountTransfers.add(filterAdjustmentAmountTransferCache.getTransfer(filterAdjustmentAmount))
@@ -1798,16 +1798,16 @@ public class FilterControl
 
     public void updateFilterAdjustmentAmountFromValue(FilterAdjustmentAmountValue filterAdjustmentAmountValue, BasePK updatedBy) {
         if(filterAdjustmentAmountValue.hasBeenModified()) {
-            FilterAdjustmentAmount filterAdjustmentAmount = FilterAdjustmentAmountFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var filterAdjustmentAmount = FilterAdjustmentAmountFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      filterAdjustmentAmountValue.getPrimaryKey());
             
             filterAdjustmentAmount.setThruTime(session.START_TIME_LONG);
             filterAdjustmentAmount.store();
-            
-            FilterAdjustmentPK filterAdjustmentPK = filterAdjustmentAmount.getFilterAdjustmentPK(); // Not updated
-            UnitOfMeasureTypePK unitOfMeasureTypePK = filterAdjustmentAmount.getUnitOfMeasureTypePK(); // Not updated
-            CurrencyPK currencyPK = filterAdjustmentAmount.getCurrencyPK(); // Not updated
-            Long amount = filterAdjustmentAmountValue.getAmount();
+
+            var filterAdjustmentPK = filterAdjustmentAmount.getFilterAdjustmentPK(); // Not updated
+            var unitOfMeasureTypePK = filterAdjustmentAmount.getUnitOfMeasureTypePK(); // Not updated
+            var currencyPK = filterAdjustmentAmount.getCurrencyPK(); // Not updated
+            var amount = filterAdjustmentAmountValue.getAmount();
             
             filterAdjustmentAmount = FilterAdjustmentAmountFactory.getInstance().create(filterAdjustmentPK,
                     unitOfMeasureTypePK, currencyPK, amount, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1825,7 +1825,7 @@ public class FilterControl
     }
     
     public void deleteFilterAdjustmentAmountsByFilterAdjustment(FilterAdjustment filterAdjustment, BasePK deletedBy) {
-        List<FilterAdjustmentAmount> filterAdjustmentAmounts = getFilterAdjustmentAmountsForUpdate(filterAdjustment);
+        var filterAdjustmentAmounts = getFilterAdjustmentAmountsForUpdate(filterAdjustment);
         
         filterAdjustmentAmounts.forEach((deleteFilterAdjustmentAmount) -> 
                 deleteFilterAdjustmentAmount(deleteFilterAdjustmentAmount, deletedBy)
@@ -1838,7 +1838,7 @@ public class FilterControl
     
     public FilterAdjustmentFixedAmount createFilterAdjustmentFixedAmount(FilterAdjustment filterAdjustment,
             UnitOfMeasureType unitOfMeasureType, Currency currency, Long unitAmount, BasePK createdBy) {
-        FilterAdjustmentFixedAmount filterAdjustmentFixedAmount = FilterAdjustmentFixedAmountFactory.getInstance().create(session,
+        var filterAdjustmentFixedAmount = FilterAdjustmentFixedAmountFactory.getInstance().create(session,
                 filterAdjustment, unitOfMeasureType, currency, unitAmount, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(filterAdjustment.getPrimaryKey(), EventTypes.MODIFY,
@@ -1868,8 +1868,8 @@ public class FilterControl
                         "WHERE fltafa_flta_filteradjustmentid = ? AND fltafa_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = FilterAdjustmentFixedAmountFactory.getInstance().prepareStatement(query);
+
+            var ps = FilterAdjustmentFixedAmountFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, filterAdjustment.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1914,8 +1914,8 @@ public class FilterControl
                         "AND fltafa_cur_currencyid = ? AND fltafa_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = FilterAdjustmentFixedAmountFactory.getInstance().prepareStatement(query);
+
+            var ps = FilterAdjustmentFixedAmountFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, filterAdjustment.getPrimaryKey().getEntityId());
             ps.setLong(2, unitOfMeasureType.getPrimaryKey().getEntityId());
@@ -1947,7 +1947,7 @@ public class FilterControl
     
     public FilterAdjustmentFixedAmountValue getFilterAdjustmentFixedAmountValueForUpdate(FilterAdjustment filterAdjustment,
             UnitOfMeasureType unitOfMeasureType, Currency currency) {
-        FilterAdjustmentFixedAmount filterAdjustmentFixedAmount = getFilterAdjustmentFixedAmountForUpdate(filterAdjustment,
+        var filterAdjustmentFixedAmount = getFilterAdjustmentFixedAmountForUpdate(filterAdjustment,
                 unitOfMeasureType, currency);
         
         return filterAdjustmentFixedAmount == null? null: filterAdjustmentFixedAmount.getFilterAdjustmentFixedAmountValue().clone();
@@ -1975,16 +1975,16 @@ public class FilterControl
 
     public void updateFilterAdjustmentFixedAmountFromValue(FilterAdjustmentFixedAmountValue filterAdjustmentFixedAmountValue, BasePK updatedBy) {
         if(filterAdjustmentFixedAmountValue.hasBeenModified()) {
-            FilterAdjustmentFixedAmount filterAdjustmentFixedAmount = FilterAdjustmentFixedAmountFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var filterAdjustmentFixedAmount = FilterAdjustmentFixedAmountFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      filterAdjustmentFixedAmountValue.getPrimaryKey());
             
             filterAdjustmentFixedAmount.setThruTime(session.START_TIME_LONG);
             filterAdjustmentFixedAmount.store();
-            
-            FilterAdjustmentPK filterAdjustmentPK = filterAdjustmentFixedAmount.getFilterAdjustmentPK(); // Not updated
-            UnitOfMeasureTypePK unitOfMeasureTypePK = filterAdjustmentFixedAmount.getUnitOfMeasureTypePK(); // Not updated
-            CurrencyPK currencyPK = filterAdjustmentFixedAmount.getCurrencyPK(); // Not updated
-            Long unitAmount = filterAdjustmentFixedAmountValue.getUnitAmount();
+
+            var filterAdjustmentPK = filterAdjustmentFixedAmount.getFilterAdjustmentPK(); // Not updated
+            var unitOfMeasureTypePK = filterAdjustmentFixedAmount.getUnitOfMeasureTypePK(); // Not updated
+            var currencyPK = filterAdjustmentFixedAmount.getCurrencyPK(); // Not updated
+            var unitAmount = filterAdjustmentFixedAmountValue.getUnitAmount();
             
             filterAdjustmentFixedAmount = FilterAdjustmentFixedAmountFactory.getInstance().create(filterAdjustmentPK,
                     unitOfMeasureTypePK, currencyPK, unitAmount, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -2003,7 +2003,7 @@ public class FilterControl
     }
     
     public void deleteFilterAdjustmentFixedAmountsByFilterAdjustment(FilterAdjustment filterAdjustment, BasePK deletedBy) {
-        List<FilterAdjustmentFixedAmount> filterAdjustmentFixedAmounts = getFilterAdjustmentFixedAmountsForUpdate(filterAdjustment);
+        var filterAdjustmentFixedAmounts = getFilterAdjustmentFixedAmountsForUpdate(filterAdjustment);
         
         filterAdjustmentFixedAmounts.forEach((filterAdjustmentFixedAmount) -> 
                 deleteFilterAdjustmentFixedAmount(filterAdjustmentFixedAmount, deletedBy)
@@ -2016,7 +2016,7 @@ public class FilterControl
     
     public FilterAdjustmentPercent createFilterAdjustmentPercent(FilterAdjustment filterAdjustment,
             UnitOfMeasureType unitOfMeasureType, Currency currency, Integer percent, BasePK createdBy) {
-        FilterAdjustmentPercent filterAdjustmentPercent = FilterAdjustmentPercentFactory.getInstance().create(session,
+        var filterAdjustmentPercent = FilterAdjustmentPercentFactory.getInstance().create(session,
                 filterAdjustment, unitOfMeasureType, currency, percent, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(filterAdjustment.getPrimaryKey(), EventTypes.MODIFY,
@@ -2046,8 +2046,8 @@ public class FilterControl
                         "WHERE fltap_flta_filteradjustmentid = ? AND fltap_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = FilterAdjustmentPercentFactory.getInstance().prepareStatement(query);
+
+            var ps = FilterAdjustmentPercentFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, filterAdjustment.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -2092,8 +2092,8 @@ public class FilterControl
                         "AND fltap_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = FilterAdjustmentPercentFactory.getInstance().prepareStatement(query);
+
+            var ps = FilterAdjustmentPercentFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, filterAdjustment.getPrimaryKey().getEntityId());
             ps.setLong(2, unitOfMeasureType.getPrimaryKey().getEntityId());
@@ -2124,7 +2124,7 @@ public class FilterControl
     
     public FilterAdjustmentPercentValue getFilterAdjustmentPercentValueForUpdate(FilterAdjustment filterAdjustment,
             UnitOfMeasureType unitOfMeasureType, Currency currency) {
-        FilterAdjustmentPercent filterAdjustmentPercent = getFilterAdjustmentPercentForUpdate(filterAdjustment, unitOfMeasureType,
+        var filterAdjustmentPercent = getFilterAdjustmentPercentForUpdate(filterAdjustment, unitOfMeasureType,
                 currency);
         
         return filterAdjustmentPercent == null? null: filterAdjustmentPercent.getFilterAdjustmentPercentValue().clone();
@@ -2152,16 +2152,16 @@ public class FilterControl
 
     public void updateFilterAdjustmentPercentFromValue(FilterAdjustmentPercentValue filterAdjustmentPercentValue, BasePK updatedBy) {
         if(filterAdjustmentPercentValue.hasBeenModified()) {
-            FilterAdjustmentPercent filterAdjustmentPercent = FilterAdjustmentPercentFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var filterAdjustmentPercent = FilterAdjustmentPercentFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      filterAdjustmentPercentValue.getPrimaryKey());
             
             filterAdjustmentPercent.setThruTime(session.START_TIME_LONG);
             filterAdjustmentPercent.store();
-            
-            FilterAdjustmentPK filterAdjustmentPK = filterAdjustmentPercent.getFilterAdjustmentPK(); // Not updated
-            UnitOfMeasureTypePK unitOfMeasureTypePK = filterAdjustmentPercent.getUnitOfMeasureTypePK(); // Not updated
-            CurrencyPK currencyPK = filterAdjustmentPercent.getCurrencyPK(); // Not updated
-            Integer percent = filterAdjustmentPercentValue.getPercent();
+
+            var filterAdjustmentPK = filterAdjustmentPercent.getFilterAdjustmentPK(); // Not updated
+            var unitOfMeasureTypePK = filterAdjustmentPercent.getUnitOfMeasureTypePK(); // Not updated
+            var currencyPK = filterAdjustmentPercent.getCurrencyPK(); // Not updated
+            var percent = filterAdjustmentPercentValue.getPercent();
             
             filterAdjustmentPercent = FilterAdjustmentPercentFactory.getInstance().create(filterAdjustmentPK,
                     unitOfMeasureTypePK, currencyPK, percent, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -2179,7 +2179,7 @@ public class FilterControl
     }
     
     public void deleteFilterAdjustmentPercentsByFilterAdjustment(FilterAdjustment filterAdjustment, BasePK deletedBy) {
-        List<FilterAdjustmentPercent> filterAdjustmentPercents = getFilterAdjustmentPercentsForUpdate(filterAdjustment);
+        var filterAdjustmentPercents = getFilterAdjustmentPercentsForUpdate(filterAdjustment);
         
         filterAdjustmentPercents.forEach((filterAdjustmentPercent) -> 
                 deleteFilterAdjustmentPercent(filterAdjustmentPercent, deletedBy)
@@ -2193,7 +2193,7 @@ public class FilterControl
     public FilterAdjustmentDescription createFilterAdjustmentDescription(FilterAdjustment filterAdjustment, Language language,
             String description,
             BasePK createdBy) {
-        FilterAdjustmentDescription filterAdjustmentDescription = FilterAdjustmentDescriptionFactory.getInstance().create(session,
+        var filterAdjustmentDescription = FilterAdjustmentDescriptionFactory.getInstance().create(session,
                 filterAdjustment, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(filterAdjustment.getPrimaryKey(), EventTypes.MODIFY,
@@ -2219,8 +2219,8 @@ public class FilterControl
                         "WHERE fltad_flta_filteradjustmentid = ? AND fltad_lang_languageid = ? AND fltad_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = FilterAdjustmentDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = FilterAdjustmentDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, filterAdjustment.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -2250,7 +2250,7 @@ public class FilterControl
     
     public FilterAdjustmentDescriptionValue getFilterAdjustmentDescriptionValueForUpdate(FilterAdjustment filterAdjustment,
             Language language) {
-        FilterAdjustmentDescription filterAdjustmentDescription = getFilterAdjustmentDescriptionForUpdate(filterAdjustment,
+        var filterAdjustmentDescription = getFilterAdjustmentDescriptionForUpdate(filterAdjustment,
                 language);
         
         return filterAdjustmentDescription == null? null: filterAdjustmentDescription.getFilterAdjustmentDescriptionValue().clone();
@@ -2274,8 +2274,8 @@ public class FilterControl
                         "WHERE fltad_flta_filteradjustmentid = ? AND fltad_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = FilterAdjustmentDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = FilterAdjustmentDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, filterAdjustment.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -2299,7 +2299,7 @@ public class FilterControl
     
     public String getBestFilterAdjustmentDescription(FilterAdjustment filterAdjustment, Language language) {
         String description;
-        FilterAdjustmentDescription filterAdjustmentDescription = getFilterAdjustmentDescription(filterAdjustment, language);
+        var filterAdjustmentDescription = getFilterAdjustmentDescription(filterAdjustment, language);
         
         if(filterAdjustmentDescription == null && !language.getIsDefault()) {
             filterAdjustmentDescription = getFilterAdjustmentDescription(filterAdjustment, getPartyControl().getDefaultLanguage());
@@ -2320,9 +2320,9 @@ public class FilterControl
     }
     
     public List<FilterAdjustmentDescriptionTransfer> getFilterAdjustmentDescriptionTransfers(UserVisit userVisit, FilterAdjustment filterAdjustment) {
-        List<FilterAdjustmentDescription> filterAdjustmentDescriptions = getFilterAdjustmentDescriptions(filterAdjustment);
+        var filterAdjustmentDescriptions = getFilterAdjustmentDescriptions(filterAdjustment);
         List<FilterAdjustmentDescriptionTransfer> filterAdjustmentDescriptionTransfers = new ArrayList<>(filterAdjustmentDescriptions.size());
-        FilterAdjustmentDescriptionTransferCache filterAdjustmentDescriptionTransferCache = getFilterTransferCaches(userVisit).getFilterAdjustmentDescriptionTransferCache();
+        var filterAdjustmentDescriptionTransferCache = getFilterTransferCaches(userVisit).getFilterAdjustmentDescriptionTransferCache();
         
         filterAdjustmentDescriptions.forEach((filterAdjustmentDescription) ->
                 filterAdjustmentDescriptionTransfers.add(filterAdjustmentDescriptionTransferCache.getTransfer(filterAdjustmentDescription))
@@ -2334,15 +2334,15 @@ public class FilterControl
     public void updateFilterAdjustmentDescriptionFromValue(FilterAdjustmentDescriptionValue filterAdjustmentDescriptionValue,
             BasePK updatedBy) {
         if(filterAdjustmentDescriptionValue.hasBeenModified()) {
-            FilterAdjustmentDescription filterAdjustmentDescription = FilterAdjustmentDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var filterAdjustmentDescription = FilterAdjustmentDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      filterAdjustmentDescriptionValue.getPrimaryKey());
             
             filterAdjustmentDescription.setThruTime(session.START_TIME_LONG);
             filterAdjustmentDescription.store();
-            
-            FilterAdjustment filterAdjustment = filterAdjustmentDescription.getFilterAdjustment();
-            Language language = filterAdjustmentDescription.getLanguage();
-            String description = filterAdjustmentDescriptionValue.getDescription();
+
+            var filterAdjustment = filterAdjustmentDescription.getFilterAdjustment();
+            var language = filterAdjustmentDescription.getLanguage();
+            var description = filterAdjustmentDescriptionValue.getDescription();
             
             filterAdjustmentDescription = FilterAdjustmentDescriptionFactory.getInstance().create(filterAdjustment,
                     language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -2360,7 +2360,7 @@ public class FilterControl
     }
     
     public void deleteFilterAdjustmentDescriptionsByFilterAdjustment(FilterAdjustment filterAdjustment, BasePK deletedBy) {
-        List<FilterAdjustmentDescription> filterAdjustmentDescriptions = getFilterAdjustmentDescriptionsForUpdate(filterAdjustment);
+        var filterAdjustmentDescriptions = getFilterAdjustmentDescriptionsForUpdate(filterAdjustment);
         
         filterAdjustmentDescriptions.forEach((filterAdjustmentDescription) -> 
                 deleteFilterAdjustmentDescription(filterAdjustmentDescription, deletedBy)
@@ -2373,20 +2373,20 @@ public class FilterControl
     
     public Filter createFilter(FilterType filterType, String filterName, FilterAdjustment initialFilterAdjustment,
             Selector filterItemSelector, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        Filter defaultFilter = getDefaultFilter(filterType);
-        boolean defaultFound = defaultFilter != null;
+        var defaultFilter = getDefaultFilter(filterType);
+        var defaultFound = defaultFilter != null;
         
         if(defaultFound && isDefault) {
-            FilterDetailValue defaultFilterDetailValue = getDefaultFilterDetailValueForUpdate(filterType);
+            var defaultFilterDetailValue = getDefaultFilterDetailValueForUpdate(filterType);
             
             defaultFilterDetailValue.setIsDefault(Boolean.FALSE);
             updateFilterFromValue(defaultFilterDetailValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        Filter filter = FilterFactory.getInstance().create();
-        FilterDetail filterDetail = FilterDetailFactory.getInstance().create(filter, filterType, filterName,
+
+        var filter = FilterFactory.getInstance().create();
+        var filterDetail = FilterDetailFactory.getInstance().create(filter, filterType, filterName,
                 initialFilterAdjustment, filterItemSelector, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -2458,7 +2458,7 @@ public class FilterControl
                         "FOR UPDATE";
             }
 
-            PreparedStatement ps = FilterFactory.getInstance().prepareStatement(query);
+            var ps = FilterFactory.getInstance().prepareStatement(query);
 
             ps.setLong(1, filterType.getPrimaryKey().getEntityId());
             
@@ -2494,8 +2494,8 @@ public class FilterControl
                         "WHERE flt_activedetailid = fltdt_filterdetailid AND fltdt_flttyp_filtertypeid = ? AND fltdt_isdefault = 1 " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = FilterFactory.getInstance().prepareStatement(query);
+
+            var ps = FilterFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, filterType.getPrimaryKey().getEntityId());
             
@@ -2535,8 +2535,8 @@ public class FilterControl
                         "WHERE flt_activedetailid = fltdt_filterdetailid AND fltdt_flttyp_filtertypeid = ? AND fltdt_filtername = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = FilterFactory.getInstance().prepareStatement(query);
+
+            var ps = FilterFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, filterType.getPrimaryKey().getEntityId());
             ps.setString(2, filterName);
@@ -2567,7 +2567,7 @@ public class FilterControl
     
     public FilterChoicesBean getFilterChoices(String defaultFilterChoice, Language language, boolean allowNullChoice,
             FilterType filterType) {
-        List<Filter> filters = getFilters(filterType);
+        var filters = getFilters(filterType);
         var size = filters.size() + (allowNullChoice? 1: 0);
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -2583,7 +2583,7 @@ public class FilterControl
         }
         
         for(var filter : filters) {
-            FilterDetail filterDetail = filter.getLastDetail();
+            var filterDetail = filter.getLastDetail();
             var label = getBestFilterDescription(filter, language);
             var value = filterDetail.getFilterName();
             
@@ -2605,7 +2605,7 @@ public class FilterControl
     
     public List<FilterTransfer> getFilterTransfers(UserVisit userVisit, Collection<Filter> filters) {
         List<FilterTransfer> filterTransfers = new ArrayList<>(filters.size());
-        FilterTransferCache filterTransferCache = getFilterTransferCaches(userVisit).getFilterTransferCache();
+        var filterTransferCache = getFilterTransferCaches(userVisit).getFilterTransferCache();
         
         filters.forEach((filter) ->
                 filterTransfers.add(filterTransferCache.getTransfer(filter))
@@ -2620,29 +2620,29 @@ public class FilterControl
     
     private void updateFilterFromValue(FilterDetailValue filterDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(filterDetailValue.hasBeenModified()) {
-            Filter filter = FilterFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var filter = FilterFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      filterDetailValue.getFilterPK());
-            FilterDetail filterDetail = filter.getActiveDetailForUpdate();
+            var filterDetail = filter.getActiveDetailForUpdate();
             
             filterDetail.setThruTime(session.START_TIME_LONG);
             filterDetail.store();
-            
-            FilterPK filterPK = filterDetail.getFilterPK();
-            FilterType filterType = filterDetail.getFilterType();
-            FilterTypePK filterTypePK = filterType.getPrimaryKey();
-            String filterName = filterDetailValue.getFilterName();
-            FilterAdjustmentPK initialFilterAdjustmentPK = filterDetailValue.getInitialFilterAdjustmentPK();
-            SelectorPK filterItemSelectorPK = filterDetailValue.getFilterItemSelectorPK();
-            Boolean isDefault = filterDetailValue.getIsDefault();
-            Integer sortOrder = filterDetailValue.getSortOrder();
+
+            var filterPK = filterDetail.getFilterPK();
+            var filterType = filterDetail.getFilterType();
+            var filterTypePK = filterType.getPrimaryKey();
+            var filterName = filterDetailValue.getFilterName();
+            var initialFilterAdjustmentPK = filterDetailValue.getInitialFilterAdjustmentPK();
+            var filterItemSelectorPK = filterDetailValue.getFilterItemSelectorPK();
+            var isDefault = filterDetailValue.getIsDefault();
+            var sortOrder = filterDetailValue.getSortOrder();
             
             if(checkDefault) {
-                Filter defaultFilter = getDefaultFilter(filterType);
-                boolean defaultFound = defaultFilter != null && !defaultFilter.equals(filter);
+                var defaultFilter = getDefaultFilter(filterType);
+                var defaultFound = defaultFilter != null && !defaultFilter.equals(filter);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    FilterDetailValue defaultFilterDetailValue = getDefaultFilterDetailValueForUpdate(filterType);
+                    var defaultFilterDetailValue = getDefaultFilterDetailValueForUpdate(filterType);
                     
                     defaultFilterDetailValue.setIsDefault(Boolean.FALSE);
                     updateFilterFromValue(defaultFilterDetailValue, false, updatedBy);
@@ -2670,24 +2670,24 @@ public class FilterControl
     public void deleteFilter(Filter filter, BasePK deletedBy) {
         deleteFilterStepsByFilter(filter, deletedBy);
         deleteFilterDescriptionsByFilter(filter, deletedBy);
-        
-        FilterDetail filterDetail = filter.getLastDetailForUpdate();
+
+        var filterDetail = filter.getLastDetailForUpdate();
         filterDetail.setThruTime(session.START_TIME_LONG);
         filter.setActiveDetail(null);
         filter.store();
         
         // Check for default, and pick one if necessary
-        FilterType filterType = filterDetail.getFilterType();
-        Filter defaultFilter = getDefaultFilter(filterType);
+        var filterType = filterDetail.getFilterType();
+        var defaultFilter = getDefaultFilter(filterType);
         if(defaultFilter == null) {
-            List<Filter> Filters = getFiltersForUpdate(filterType);
+            var Filters = getFiltersForUpdate(filterType);
             
             if(!Filters.isEmpty()) {
-                Iterator<Filter> iter = Filters.iterator();
+                var iter = Filters.iterator();
                 if(iter.hasNext()) {
                     defaultFilter = iter.next();
                 }
-                FilterDetailValue filterDetailValue = Objects.requireNonNull(defaultFilter).getLastDetailForUpdate().getFilterDetailValue().clone();
+                var filterDetailValue = Objects.requireNonNull(defaultFilter).getLastDetailForUpdate().getFilterDetailValue().clone();
                 
                 filterDetailValue.setIsDefault(Boolean.TRUE);
                 updateFilterFromValue(filterDetailValue, false, deletedBy);
@@ -2702,7 +2702,7 @@ public class FilterControl
     // --------------------------------------------------------------------------------
     
     public FilterDescription createFilterDescription(Filter filter, Language language, String description, BasePK createdBy) {
-        FilterDescription filterDescription = FilterDescriptionFactory.getInstance().create(filter, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        var filterDescription = FilterDescriptionFactory.getInstance().create(filter, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(filter.getPrimaryKey(), EventTypes.MODIFY, filterDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -2725,8 +2725,8 @@ public class FilterControl
                         "WHERE fltd_flt_filterid = ? AND fltd_lang_languageid = ? AND fltd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = FilterDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = FilterDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, filter.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -2753,7 +2753,7 @@ public class FilterControl
     }
     
     public FilterDescriptionValue getFilterDescriptionValueForUpdate(Filter filter, Language language) {
-        FilterDescription filterDescription = getFilterDescriptionForUpdate(filter, language);
+        var filterDescription = getFilterDescriptionForUpdate(filter, language);
         
         return filterDescription == null? null: filterDescription.getFilterDescriptionValue().clone();
     }
@@ -2775,8 +2775,8 @@ public class FilterControl
                         "WHERE fltd_flt_filterid = ? AND fltd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = FilterDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = FilterDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, filter.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -2799,7 +2799,7 @@ public class FilterControl
     
     public String getBestFilterDescription(Filter filter, Language language) {
         String description;
-        FilterDescription filterDescription = getFilterDescription(filter, language);
+        var filterDescription = getFilterDescription(filter, language);
         
         if(filterDescription == null && !language.getIsDefault()) {
             filterDescription = getFilterDescription(filter, getPartyControl().getDefaultLanguage());
@@ -2819,9 +2819,9 @@ public class FilterControl
     }
     
     public List<FilterDescriptionTransfer> getFilterDescriptionTransfers(UserVisit userVisit, Filter filter) {
-        List<FilterDescription> filterDescriptions = getFilterDescriptions(filter);
+        var filterDescriptions = getFilterDescriptions(filter);
         List<FilterDescriptionTransfer> filterDescriptionTransfers = new ArrayList<>(filterDescriptions.size());
-        FilterDescriptionTransferCache filterDescriptionTransferCache = getFilterTransferCaches(userVisit).getFilterDescriptionTransferCache();
+        var filterDescriptionTransferCache = getFilterTransferCaches(userVisit).getFilterDescriptionTransferCache();
         
         filterDescriptions.forEach((filterDescription) ->
                 filterDescriptionTransfers.add(filterDescriptionTransferCache.getTransfer(filterDescription))
@@ -2832,14 +2832,14 @@ public class FilterControl
     
     public void updateFilterDescriptionFromValue(FilterDescriptionValue filterDescriptionValue, BasePK updatedBy) {
         if(filterDescriptionValue.hasBeenModified()) {
-            FilterDescription filterDescription = FilterDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, filterDescriptionValue.getPrimaryKey());
+            var filterDescription = FilterDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, filterDescriptionValue.getPrimaryKey());
             
             filterDescription.setThruTime(session.START_TIME_LONG);
             filterDescription.store();
-            
-            Filter filter = filterDescription.getFilter();
-            Language language = filterDescription.getLanguage();
-            String description = filterDescriptionValue.getDescription();
+
+            var filter = filterDescription.getFilter();
+            var language = filterDescription.getLanguage();
+            var description = filterDescriptionValue.getDescription();
             
             filterDescription = FilterDescriptionFactory.getInstance().create(filter, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
@@ -2855,7 +2855,7 @@ public class FilterControl
     }
     
     public void deleteFilterDescriptionsByFilter(Filter filter, BasePK deletedBy) {
-        List<FilterDescription> filterDescriptions = getFilterDescriptionsForUpdate(filter);
+        var filterDescriptions = getFilterDescriptionsForUpdate(filter);
         
         filterDescriptions.forEach((filterDescription) -> 
                 deleteFilterDescription(filterDescription, deletedBy)
@@ -2867,8 +2867,8 @@ public class FilterControl
     // --------------------------------------------------------------------------------
     
     public FilterStep createFilterStep(Filter filter, String filterStepName, Selector filterItemSelector, BasePK createdBy) {
-        FilterStep filterStep = FilterStepFactory.getInstance().create();
-        FilterStepDetail filterStepDetail = FilterStepDetailFactory.getInstance().create(filterStep, filter, filterStepName, filterItemSelector, session.START_TIME_LONG,
+        var filterStep = FilterStepFactory.getInstance().create();
+        var filterStepDetail = FilterStepDetailFactory.getInstance().create(filterStep, filter, filterStepName, filterItemSelector, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -2931,8 +2931,8 @@ public class FilterControl
                         "AND fltstpdt_filterstepname = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = FilterStepFactory.getInstance().prepareStatement(query);
+
+            var ps = FilterStepFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, filter.getPrimaryKey().getEntityId());
             ps.setString(2, filterStepName);
@@ -2978,8 +2978,8 @@ public class FilterControl
                         "WHERE fltstp_activedetailid = fltstpdt_filterstepdetailid AND fltstpdt_flt_filterid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = FilterStepFactory.getInstance().prepareStatement(query);
+
+            var ps = FilterStepFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, filter.getPrimaryKey().getEntityId());
             
@@ -3001,7 +3001,7 @@ public class FilterControl
     
     public FilterStepChoicesBean getFilterStepChoices(String defaultFilterStepChoice, Language language, boolean allowNullChoice,
             Filter filter) {
-        List<FilterStep> filterSteps = getFilterStepsByFilter(filter);
+        var filterSteps = getFilterStepsByFilter(filter);
         var size = filterSteps.size() + (allowNullChoice? 1: 0);
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -3017,7 +3017,7 @@ public class FilterControl
         }
         
         for(var filterStep : filterSteps) {
-            FilterStepDetail filterStepDetail = filterStep.getLastDetail();
+            var filterStepDetail = filterStep.getLastDetail();
             var label = getBestFilterStepDescription(filterStep, language);
             var value = filterStepDetail.getFilterStepName();
             
@@ -3035,7 +3035,7 @@ public class FilterControl
     
     public List<FilterStepTransfer> getFilterStepTransfers(UserVisit userVisit, Collection<FilterStep> filterSteps) {
         List<FilterStepTransfer> filterStepTransfers = new ArrayList<>(filterSteps.size());
-        FilterStepTransferCache filterStepTransferCache = getFilterTransferCaches(userVisit).getFilterStepTransferCache();
+        var filterStepTransferCache = getFilterTransferCaches(userVisit).getFilterStepTransferCache();
         
         filterSteps.forEach((filterStep) ->
                 filterStepTransfers.add(filterStepTransferCache.getTransfer(filterStep))
@@ -3054,18 +3054,18 @@ public class FilterControl
     
     public void updateFilterStepFromValue(FilterStepDetailValue filterStepDetailValue, BasePK updatedBy) {
         if(filterStepDetailValue.hasBeenModified()) {
-            FilterStep filterStep = FilterStepFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var filterStep = FilterStepFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      filterStepDetailValue.getFilterStepPK());
-            FilterStepDetail filterStepDetail = filterStep.getActiveDetailForUpdate();
+            var filterStepDetail = filterStep.getActiveDetailForUpdate();
             
             filterStepDetail.setThruTime(session.START_TIME_LONG);
             filterStepDetail.store();
-            
-            FilterStepPK filterStepPK = filterStepDetail.getFilterStepPK();
-            Filter filter = filterStepDetail.getFilter();
-            FilterPK filterPK = filter.getPrimaryKey();
-            String filterStepName = filterStepDetailValue.getFilterStepName();
-            SelectorPK filterItemSelectorPK = filterStepDetailValue.getFilterItemSelectorPK();
+
+            var filterStepPK = filterStepDetail.getFilterStepPK();
+            var filter = filterStepDetail.getFilter();
+            var filterPK = filter.getPrimaryKey();
+            var filterStepName = filterStepDetailValue.getFilterStepName();
+            var filterItemSelectorPK = filterStepDetailValue.getFilterItemSelectorPK();
             
             filterStepDetail = FilterStepDetailFactory.getInstance().create(filterStepPK, filterPK, filterStepName,
                     filterItemSelectorPK, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -3082,8 +3082,8 @@ public class FilterControl
         deleteFilterStepDestinationsByFilterStep(filterStep, deletedBy);
         deleteFilterEntranceStepsByFilterStep(filterStep, deletedBy);
         deleteFilterStepDescriptionsByFilterStep(filterStep, deletedBy);
-        
-        FilterStepDetail filterStepDetail = filterStep.getLastDetailForUpdate();
+
+        var filterStepDetail = filterStep.getLastDetailForUpdate();
         filterStepDetail.setThruTime(session.START_TIME_LONG);
         filterStep.setActiveDetail(null);
         filterStep.store();
@@ -3092,7 +3092,7 @@ public class FilterControl
     }
     
     public void deleteFilterStepsByFilter(Filter filter, BasePK deletedBy) {
-        List<FilterStep> filterSteps = getFilterStepsByFilterForUpdate(filter);
+        var filterSteps = getFilterStepsByFilterForUpdate(filter);
         
         filterSteps.forEach((filterStep) -> 
                 deleteFilterStep(filterStep, deletedBy)
@@ -3104,7 +3104,7 @@ public class FilterControl
     // --------------------------------------------------------------------------------
     
     public FilterStepDescription createFilterStepDescription(FilterStep filterStep, Language language, String description, BasePK createdBy) {
-        FilterStepDescription filterStepDescription = FilterStepDescriptionFactory.getInstance().create(filterStep, language,
+        var filterStepDescription = FilterStepDescriptionFactory.getInstance().create(filterStep, language,
                 description, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
@@ -3130,8 +3130,8 @@ public class FilterControl
                         "WHERE fltstpd_fltstp_filterstepid = ? AND fltstpd_lang_languageid = ? AND fltstpd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = FilterStepDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = FilterStepDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, filterStep.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -3158,7 +3158,7 @@ public class FilterControl
     }
     
     public FilterStepDescriptionValue getFilterStepDescriptionValueForUpdate(FilterStep filterStep, Language language) {
-        FilterStepDescription filterStepDescription = getFilterStepDescriptionForUpdate(filterStep, language);
+        var filterStepDescription = getFilterStepDescriptionForUpdate(filterStep, language);
         
         return filterStepDescription == null? null: filterStepDescription.getFilterStepDescriptionValue().clone();
     }
@@ -3180,8 +3180,8 @@ public class FilterControl
                         "WHERE fltstpd_fltstp_filterstepid = ? AND fltstpd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = FilterStepDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = FilterStepDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, filterStep.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -3204,7 +3204,7 @@ public class FilterControl
     
     public String getBestFilterStepDescription(FilterStep filterStep, Language language) {
         String description;
-        FilterStepDescription filterStepDescription = getFilterStepDescription(filterStep, language);
+        var filterStepDescription = getFilterStepDescription(filterStep, language);
         
         if(filterStepDescription == null && !language.getIsDefault()) {
             filterStepDescription = getFilterStepDescription(filterStep, getPartyControl().getDefaultLanguage());
@@ -3224,9 +3224,9 @@ public class FilterControl
     }
     
     public List<FilterStepDescriptionTransfer> getFilterStepDescriptionTransfers(UserVisit userVisit, FilterStep filterStep) {
-        List<FilterStepDescription> filterStepDescriptions = getFilterStepDescriptions(filterStep);
+        var filterStepDescriptions = getFilterStepDescriptions(filterStep);
         List<FilterStepDescriptionTransfer> filterStepDescriptionTransfers = new ArrayList<>(filterStepDescriptions.size());
-        FilterStepDescriptionTransferCache filterStepDescriptionTransferCache = getFilterTransferCaches(userVisit).getFilterStepDescriptionTransferCache();
+        var filterStepDescriptionTransferCache = getFilterTransferCaches(userVisit).getFilterStepDescriptionTransferCache();
         
         filterStepDescriptions.forEach((filterStepDescription) ->
                 filterStepDescriptionTransfers.add(filterStepDescriptionTransferCache.getTransfer(filterStepDescription))
@@ -3237,15 +3237,15 @@ public class FilterControl
     
     public void updateFilterStepDescriptionFromValue(FilterStepDescriptionValue filterStepDescriptionValue, BasePK updatedBy) {
         if(filterStepDescriptionValue.hasBeenModified()) {
-            FilterStepDescription filterStepDescription = FilterStepDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var filterStepDescription = FilterStepDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      filterStepDescriptionValue.getPrimaryKey());
             
             filterStepDescription.setThruTime(session.START_TIME_LONG);
             filterStepDescription.store();
-            
-            FilterStep filterStep = filterStepDescription.getFilterStep();
-            Language language = filterStepDescription.getLanguage();
-            String description = filterStepDescriptionValue.getDescription();
+
+            var filterStep = filterStepDescription.getFilterStep();
+            var language = filterStepDescription.getLanguage();
+            var description = filterStepDescriptionValue.getDescription();
             
             filterStepDescription = FilterStepDescriptionFactory.getInstance().create(filterStep, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -3264,7 +3264,7 @@ public class FilterControl
     }
     
     public void deleteFilterStepDescriptionsByFilterStep(FilterStep filterStep, BasePK deletedBy) {
-        List<FilterStepDescription> filterStepDescriptions = getFilterStepDescriptionsForUpdate(filterStep);
+        var filterStepDescriptions = getFilterStepDescriptionsForUpdate(filterStep);
         
         filterStepDescriptions.forEach((filterStepDescription) -> 
                 deleteFilterStepDescription(filterStepDescription, deletedBy)
@@ -3276,7 +3276,7 @@ public class FilterControl
     // --------------------------------------------------------------------------------
     
     public FilterEntranceStep createFilterEntranceStep(Filter filter, FilterStep filterStep, BasePK createdBy) {
-        FilterEntranceStep filterEntranceStep = FilterEntranceStepFactory.getInstance().create(filter, filterStep, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        var filterEntranceStep = FilterEntranceStepFactory.getInstance().create(filter, filterStep, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(filter.getPrimaryKey(), EventTypes.MODIFY, filterEntranceStep.getPrimaryKey(),
                 EventTypes.CREATE, createdBy);
@@ -3300,8 +3300,8 @@ public class FilterControl
                         "WHERE fltens_flt_filterid = ? AND fltens_fltstp_filterstepid = ? AND fltens_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = FilterEntranceStepFactory.getInstance().prepareStatement(query);
+
+            var ps = FilterEntranceStepFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, filter.getPrimaryKey().getEntityId());
             ps.setLong(2, filterStep.getPrimaryKey().getEntityId());
@@ -3341,8 +3341,8 @@ public class FilterControl
                         "WHERE fltens_flt_filterid = ? AND fltens_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = FilterEntranceStepFactory.getInstance().prepareStatement(query);
+
+            var ps = FilterEntranceStepFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, filter.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -3384,8 +3384,8 @@ public class FilterControl
                         "WHERE fltens_fltstp_filterstepid = ? AND fltens_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = FilterEntranceStepFactory.getInstance().prepareStatement(query);
+
+            var ps = FilterEntranceStepFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, filterStep.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -3411,7 +3411,7 @@ public class FilterControl
     
     public List<FilterEntranceStepTransfer> getFilterEntranceStepTransfers(UserVisit userVisit, Collection<FilterEntranceStep> filterEntranceSteps) {
         List<FilterEntranceStepTransfer> filterEntranceStepTransfers = new ArrayList<>(filterEntranceSteps.size());
-        FilterEntranceStepTransferCache filterEntranceStepTransferCache = getFilterTransferCaches(userVisit).getFilterEntranceStepTransferCache();
+        var filterEntranceStepTransferCache = getFilterTransferCaches(userVisit).getFilterEntranceStepTransferCache();
         
         filterEntranceSteps.forEach((filterEntranceStep) ->
                 filterEntranceStepTransfers.add(filterEntranceStepTransferCache.getTransfer(filterEntranceStep))
@@ -3436,7 +3436,7 @@ public class FilterControl
     }
     
     public void deleteFilterEntranceStepsByFilterStep(FilterStep filterStep, BasePK deletedBy) {
-        List<FilterEntranceStep> filterEntranceSteps = getFilterEntranceStepsByFilterStepForUpdate(filterStep);
+        var filterEntranceSteps = getFilterEntranceStepsByFilterStepForUpdate(filterStep);
         
         filterEntranceSteps.forEach((filterEntranceStep) -> 
                 deleteFilterEntranceStep(filterEntranceStep, deletedBy)
@@ -3448,7 +3448,7 @@ public class FilterControl
     // --------------------------------------------------------------------------------
     
     public FilterStepDestination createFilterStepDestination(FilterStep fromFilterStep, FilterStep toFilterStep, BasePK createdBy) {
-        FilterStepDestination filterStepDestination = FilterStepDestinationFactory.getInstance().create(fromFilterStep,
+        var filterStepDestination = FilterStepDestinationFactory.getInstance().create(fromFilterStep,
                 toFilterStep, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(fromFilterStep.getLastDetail().getFilter().getPrimaryKey(), EventTypes.MODIFY,
@@ -3474,8 +3474,8 @@ public class FilterControl
                         "WHERE fltstpdn_fromfilterstepid = ? AND fltstpdn_tofilterstepid = ? AND fltstpdn_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = FilterStepDestinationFactory.getInstance().prepareStatement(query);
+
+            var ps = FilterStepDestinationFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, fromFilterStep.getPrimaryKey().getEntityId());
             ps.setLong(2, toFilterStep.getPrimaryKey().getEntityId());
@@ -3515,8 +3515,8 @@ public class FilterControl
                         "WHERE fltstpdn_fromfilterstepid = ? AND fltstpdn_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = FilterStepDestinationFactory.getInstance().prepareStatement(query);
+
+            var ps = FilterStepDestinationFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, fromFilterStep.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -3558,8 +3558,8 @@ public class FilterControl
                         "WHERE fltstpdn_tofilterstepid = ? AND fltstpdn_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = FilterStepDestinationFactory.getInstance().prepareStatement(query);
+
+            var ps = FilterStepDestinationFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, toFilterStep.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -3601,7 +3601,7 @@ public class FilterControl
     
     public List<FilterStepDestinationTransfer> getFilterStepDestinationTransfers(UserVisit userVisit, Collection<FilterStepDestination> filterStepDestinations) {
         List<FilterStepDestinationTransfer> filterStepDestinationTransfers = new ArrayList<>(filterStepDestinations.size());
-        FilterStepDestinationTransferCache filterStepDestinationTransferCache = getFilterTransferCaches(userVisit).getFilterStepDestinationTransferCache();
+        var filterStepDestinationTransferCache = getFilterTransferCaches(userVisit).getFilterStepDestinationTransferCache();
         
         filterStepDestinations.forEach((filterStepDestination) ->
                 filterStepDestinationTransfers.add(filterStepDestinationTransferCache.getTransfer(filterStepDestination))
@@ -3633,7 +3633,7 @@ public class FilterControl
     }
     
     public void deleteFilterStepDestinationsByFromFilterStep(FilterStep fromFilterStep, BasePK deletedBy) {
-        List<FilterStepDestination> filterStepDestinations = getFilterStepDestinationsByFromFilterStepForUpdate(fromFilterStep);
+        var filterStepDestinations = getFilterStepDestinationsByFromFilterStepForUpdate(fromFilterStep);
         
         filterStepDestinations.forEach((filterStepDestination) -> 
                 deleteFilterStepDestination(filterStepDestination, deletedBy)
@@ -3641,7 +3641,7 @@ public class FilterControl
     }
     
     public void deleteFilterStepDestinationsByToFilterStep(FilterStep toFilterStep, BasePK deletedBy) {
-        List<FilterStepDestination> filterStepDestinations = getFilterStepDestinationsByToFilterStepForUpdate(toFilterStep);
+        var filterStepDestinations = getFilterStepDestinationsByToFilterStepForUpdate(toFilterStep);
         
         filterStepDestinations.forEach((filterStepDestination) -> 
                 deleteFilterStepDestination(filterStepDestination, deletedBy)
@@ -3659,8 +3659,8 @@ public class FilterControl
     
     public FilterStepElement createFilterStepElement(FilterStep filterStep, String filterStepElementName, Selector filterItemSelector,
             FilterAdjustment filterAdjustment, BasePK createdBy) {
-        FilterStepElement filterStepElement = FilterStepElementFactory.getInstance().create();
-        FilterStepElementDetail filterStepElementDetail = FilterStepElementDetailFactory.getInstance().create(filterStepElement, filterStep,
+        var filterStepElement = FilterStepElementFactory.getInstance().create();
+        var filterStepElementDetail = FilterStepElementDetailFactory.getInstance().create(filterStepElement, filterStep,
                 filterStepElementName, filterItemSelector, filterAdjustment, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -3694,8 +3694,8 @@ public class FilterControl
                         "AND fltstpedt_fltstp_filterstepid = ? AND fltstpedt_filterstepelementname = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = FilterStepElementFactory.getInstance().prepareStatement(query);
+
+            var ps = FilterStepElementFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, filterStep.getPrimaryKey().getEntityId());
             ps.setString(2, filterStepElementName);
@@ -3740,8 +3740,8 @@ public class FilterControl
                         "WHERE fltstpe_activedetailid = fltstpedt_filterstepelementdetailid AND fltstpedt_fltstp_filterstepid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = FilterStepElementFactory.getInstance().prepareStatement(query);
+
+            var ps = FilterStepElementFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, filterStep.getPrimaryKey().getEntityId());
             
@@ -3763,7 +3763,7 @@ public class FilterControl
     
     public List<FilterStepElementTransfer> getFilterStepElementTransfers(UserVisit userVisit, Collection<FilterStepElement> filterStepElements) {
         List<FilterStepElementTransfer> filterStepElementTransfers = new ArrayList<>(filterStepElements.size());
-        FilterStepElementTransferCache filterStepElementTransferCache = getFilterTransferCaches(userVisit).getFilterStepElementTransferCache();
+        var filterStepElementTransferCache = getFilterTransferCaches(userVisit).getFilterStepElementTransferCache();
         
         filterStepElements.forEach((filterStepElement) ->
                 filterStepElementTransfers.add(filterStepElementTransferCache.getTransfer(filterStepElement))
@@ -3798,19 +3798,19 @@ public class FilterControl
     
     public void updateFilterStepElementFromValue(FilterStepElementDetailValue filterStepElementDetailValue, BasePK updatedBy) {
         if(filterStepElementDetailValue.hasBeenModified()) {
-            FilterStepElement filterStepElement = FilterStepElementFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var filterStepElement = FilterStepElementFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      filterStepElementDetailValue.getFilterStepElementPK());
-            FilterStepElementDetail filterStepElementDetail = filterStepElement.getActiveDetailForUpdate();
+            var filterStepElementDetail = filterStepElement.getActiveDetailForUpdate();
             
             filterStepElementDetail.setThruTime(session.START_TIME_LONG);
             filterStepElementDetail.store();
-            
-            FilterStepElementPK filterStepElementPK = filterStepElementDetail.getFilterStepElementPK();
-            FilterStep filterStep = filterStepElementDetail.getFilterStep();
-            FilterStepPK filterStepPK = filterStep.getPrimaryKey();
-            String filterStepElementName = filterStepElementDetailValue.getFilterStepElementName();
-            SelectorPK filterItemSelectorPK = filterStepElementDetailValue.getFilterItemSelectorPK();
-            FilterAdjustmentPK filterAdjustmentPK = filterStepElementDetailValue.getFilterAdjustmentPK();
+
+            var filterStepElementPK = filterStepElementDetail.getFilterStepElementPK();
+            var filterStep = filterStepElementDetail.getFilterStep();
+            var filterStepPK = filterStep.getPrimaryKey();
+            var filterStepElementName = filterStepElementDetailValue.getFilterStepElementName();
+            var filterItemSelectorPK = filterStepElementDetailValue.getFilterItemSelectorPK();
+            var filterAdjustmentPK = filterStepElementDetailValue.getFilterAdjustmentPK();
             
             filterStepElementDetail = FilterStepElementDetailFactory.getInstance().create(filterStepElementPK,
                     filterStepPK, filterStepElementName, filterItemSelectorPK, filterAdjustmentPK, session.START_TIME_LONG,
@@ -3826,8 +3826,8 @@ public class FilterControl
     
     public void deleteFilterStepElement(FilterStepElement filterStepElement, BasePK deletedBy) {
         deleteFilterStepElementDescriptionsByFilterStepElement(filterStepElement, deletedBy);
-        
-        FilterStepElementDetail filterStepElementDetail = filterStepElement.getLastDetailForUpdate();
+
+        var filterStepElementDetail = filterStepElement.getLastDetailForUpdate();
         filterStepElementDetail.setThruTime(session.START_TIME_LONG);
         filterStepElement.setActiveDetail(null);
         filterStepElement.store();
@@ -3837,7 +3837,7 @@ public class FilterControl
     }
     
     public void deleteFilterStepElementsByFilterStep(FilterStep filterStep, BasePK deletedBy) {
-        List<FilterStepElement> filterStepElements = getFilterStepElementsByFilterStepForUpdate(filterStep);
+        var filterStepElements = getFilterStepElementsByFilterStepForUpdate(filterStep);
         
         filterStepElements.forEach((filterStepElement) -> 
                 deleteFilterStepElement(filterStepElement, deletedBy)
@@ -3850,7 +3850,7 @@ public class FilterControl
     
     public FilterStepElementDescription createFilterStepElementDescription(FilterStepElement filterStepElement, Language language,
             String description, BasePK createdBy) {
-        FilterStepElementDescription filterStepElementDescription = FilterStepElementDescriptionFactory.getInstance().create(session,
+        var filterStepElementDescription = FilterStepElementDescriptionFactory.getInstance().create(session,
                 filterStepElement, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(filterStepElement.getLastDetail().getFilterStep().getLastDetail().getFilterPK(),
@@ -3877,8 +3877,8 @@ public class FilterControl
                         "WHERE fltstped_fltstpe_filterstepelementid = ? AND fltstped_lang_languageid = ? AND fltstped_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = FilterStepElementDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = FilterStepElementDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, filterStepElement.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -3905,7 +3905,7 @@ public class FilterControl
     }
     
     public FilterStepElementDescriptionValue getFilterStepElementDescriptionValueForUpdate(FilterStepElement filterStepElement, Language language) {
-        FilterStepElementDescription filterStepElementDescription = getFilterStepElementDescriptionForUpdate(filterStepElement, language);
+        var filterStepElementDescription = getFilterStepElementDescriptionForUpdate(filterStepElement, language);
         
         return filterStepElementDescription == null? null: filterStepElementDescription.getFilterStepElementDescriptionValue().clone();
     }
@@ -3927,8 +3927,8 @@ public class FilterControl
                         "WHERE fltstped_fltstpe_filterstepelementid = ? AND fltstped_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = FilterStepElementDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = FilterStepElementDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, filterStepElement.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -3951,7 +3951,7 @@ public class FilterControl
     
     public String getBestFilterStepElementDescription(FilterStepElement filterStepElement, Language language) {
         String description;
-        FilterStepElementDescription filterStepElementDescription = getFilterStepElementDescription(filterStepElement, language);
+        var filterStepElementDescription = getFilterStepElementDescription(filterStepElement, language);
         
         if(filterStepElementDescription == null && !language.getIsDefault()) {
             filterStepElementDescription = getFilterStepElementDescription(filterStepElement, getPartyControl().getDefaultLanguage());
@@ -3971,9 +3971,9 @@ public class FilterControl
     }
     
     public List<FilterStepElementDescriptionTransfer> getFilterStepElementDescriptionTransfers(UserVisit userVisit, FilterStepElement filterStepElement) {
-        List<FilterStepElementDescription> filterStepElementDescriptions = getFilterStepElementDescriptions(filterStepElement);
+        var filterStepElementDescriptions = getFilterStepElementDescriptions(filterStepElement);
         List<FilterStepElementDescriptionTransfer> filterStepElementDescriptionTransfers = new ArrayList<>(filterStepElementDescriptions.size());
-        FilterStepElementDescriptionTransferCache filterStepElementDescriptionTransferCache = getFilterTransferCaches(userVisit).getFilterStepElementDescriptionTransferCache();
+        var filterStepElementDescriptionTransferCache = getFilterTransferCaches(userVisit).getFilterStepElementDescriptionTransferCache();
         
         filterStepElementDescriptions.forEach((filterStepElementDescription) ->
                 filterStepElementDescriptionTransfers.add(filterStepElementDescriptionTransferCache.getTransfer(filterStepElementDescription))
@@ -3984,14 +3984,14 @@ public class FilterControl
     
     public void updateFilterStepElementDescriptionFromValue(FilterStepElementDescriptionValue filterStepElementDescriptionValue, BasePK updatedBy) {
         if(filterStepElementDescriptionValue.hasBeenModified()) {
-            FilterStepElementDescription filterStepElementDescription = FilterStepElementDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, filterStepElementDescriptionValue.getPrimaryKey());
+            var filterStepElementDescription = FilterStepElementDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, filterStepElementDescriptionValue.getPrimaryKey());
             
             filterStepElementDescription.setThruTime(session.START_TIME_LONG);
             filterStepElementDescription.store();
-            
-            FilterStepElement filterStepElement = filterStepElementDescription.getFilterStepElement();
-            Language language = filterStepElementDescription.getLanguage();
-            String description = filterStepElementDescriptionValue.getDescription();
+
+            var filterStepElement = filterStepElementDescription.getFilterStepElement();
+            var language = filterStepElementDescription.getLanguage();
+            var description = filterStepElementDescriptionValue.getDescription();
             
             filterStepElementDescription = FilterStepElementDescriptionFactory.getInstance().create(filterStepElement,
                     language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -4008,7 +4008,7 @@ public class FilterControl
     }
     
     public void deleteFilterStepElementDescriptionsByFilterStepElement(FilterStepElement filterStepElement, BasePK deletedBy) {
-        List<FilterStepElementDescription> filterStepElementDescriptions = getFilterStepElementDescriptionsForUpdate(filterStepElement);
+        var filterStepElementDescriptions = getFilterStepElementDescriptionsForUpdate(filterStepElement);
         
         filterStepElementDescriptions.forEach((filterStepElementDescription) -> 
                 deleteFilterStepElementDescription(filterStepElementDescription, deletedBy)

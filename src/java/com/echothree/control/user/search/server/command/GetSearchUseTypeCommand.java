@@ -73,8 +73,8 @@ public class GetSearchUseTypeCommand
     
     @Override
     protected BaseResult execute() {
-        GetSearchUseTypeResult result = SearchResultFactory.getGetSearchUseTypeResult();
-        String searchUseTypeName = form.getSearchUseTypeName();
+        var result = SearchResultFactory.getGetSearchUseTypeResult();
+        var searchUseTypeName = form.getSearchUseTypeName();
         var parameterCount = (searchUseTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {

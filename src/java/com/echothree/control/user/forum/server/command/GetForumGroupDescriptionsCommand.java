@@ -51,9 +51,9 @@ public class GetForumGroupDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var forumControl = Session.getModelController(ForumControl.class);
-        GetForumGroupDescriptionsResult result = ForumResultFactory.getGetForumGroupDescriptionsResult();
-        String forumGroupName = form.getForumGroupName();
-        ForumGroup forumGroup = forumControl.getForumGroupByName(forumGroupName);
+        var result = ForumResultFactory.getGetForumGroupDescriptionsResult();
+        var forumGroupName = form.getForumGroupName();
+        var forumGroup = forumControl.getForumGroupByName(forumGroupName);
         
         if(forumGroup != null) {
             result.setForumGroup(forumControl.getForumGroupTransfer(getUserVisit(), forumGroup));

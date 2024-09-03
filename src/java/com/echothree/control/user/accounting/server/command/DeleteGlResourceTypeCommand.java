@@ -63,8 +63,8 @@ public class DeleteGlResourceTypeCommand
     @Override
     protected BaseResult execute() {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        String glResourceTypeName = form.getGlResourceTypeName();
-        GlResourceType glResourceType = accountingControl.getGlResourceTypeByNameForUpdate(glResourceTypeName);
+        var glResourceTypeName = form.getGlResourceTypeName();
+        var glResourceType = accountingControl.getGlResourceTypeByNameForUpdate(glResourceTypeName);
         
         if(glResourceType != null) {
             accountingControl.deleteGlResourceType(glResourceType, getPartyPK());

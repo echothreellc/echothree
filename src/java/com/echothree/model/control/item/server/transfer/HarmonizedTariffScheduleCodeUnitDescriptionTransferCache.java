@@ -33,11 +33,11 @@ public class HarmonizedTariffScheduleCodeUnitDescriptionTransferCache
     
     @Override
     public HarmonizedTariffScheduleCodeUnitDescriptionTransfer getTransfer(HarmonizedTariffScheduleCodeUnitDescription harmonizedTariffScheduleCodeUnitDescription) {
-        HarmonizedTariffScheduleCodeUnitDescriptionTransfer harmonizedTariffScheduleCodeUnitDescriptionTransfer = get(harmonizedTariffScheduleCodeUnitDescription);
+        var harmonizedTariffScheduleCodeUnitDescriptionTransfer = get(harmonizedTariffScheduleCodeUnitDescription);
         
         if(harmonizedTariffScheduleCodeUnitDescriptionTransfer == null) {
-            HarmonizedTariffScheduleCodeUnitTransfer harmonizedTariffScheduleCodeUnitTransfer = itemControl.getHarmonizedTariffScheduleCodeUnitTransfer(userVisit, harmonizedTariffScheduleCodeUnitDescription.getHarmonizedTariffScheduleCodeUnit());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, harmonizedTariffScheduleCodeUnitDescription.getLanguage());
+            var harmonizedTariffScheduleCodeUnitTransfer = itemControl.getHarmonizedTariffScheduleCodeUnitTransfer(userVisit, harmonizedTariffScheduleCodeUnitDescription.getHarmonizedTariffScheduleCodeUnit());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, harmonizedTariffScheduleCodeUnitDescription.getLanguage());
             
             harmonizedTariffScheduleCodeUnitDescriptionTransfer = new HarmonizedTariffScheduleCodeUnitDescriptionTransfer(languageTransfer, harmonizedTariffScheduleCodeUnitTransfer, harmonizedTariffScheduleCodeUnitDescription.getDescription());
             put(harmonizedTariffScheduleCodeUnitDescription, harmonizedTariffScheduleCodeUnitDescriptionTransfer);

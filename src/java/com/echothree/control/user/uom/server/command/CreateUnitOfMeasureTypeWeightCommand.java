@@ -58,33 +58,33 @@ public class CreateUnitOfMeasureTypeWeightCommand
     @Override
     protected BaseResult execute() {
         var uomControl = Session.getModelController(UomControl.class);
-        String unitOfMeasureKindName = form.getUnitOfMeasureKindName();
-        UnitOfMeasureKind unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);
+        var unitOfMeasureKindName = form.getUnitOfMeasureKindName();
+        var unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);
         
         if(unitOfMeasureKind != null) {
-            UnitOfMeasureKindUseType unitOfMeasureKindUseType = uomControl.getUnitOfMeasureKindUseTypeByName(UomConstants.UnitOfMeasureKindUseType_QUANTITY);
-            UnitOfMeasureKindUse unitOfMeasureKindUse = uomControl.getUnitOfMeasureKindUse(unitOfMeasureKindUseType, unitOfMeasureKind);
+            var unitOfMeasureKindUseType = uomControl.getUnitOfMeasureKindUseTypeByName(UomConstants.UnitOfMeasureKindUseType_QUANTITY);
+            var unitOfMeasureKindUse = uomControl.getUnitOfMeasureKindUse(unitOfMeasureKindUseType, unitOfMeasureKind);
             
             if(unitOfMeasureKindUse != null) {
-                String unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
-                UnitOfMeasureType unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
+                var unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
+                var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
                 
                 if(unitOfMeasureType != null) {
-                    UnitOfMeasureTypeWeight unitOfMeasureTypeWeight = uomControl.getUnitOfMeasureTypeWeight(unitOfMeasureType);
+                    var unitOfMeasureTypeWeight = uomControl.getUnitOfMeasureTypeWeight(unitOfMeasureType);
                     
                     if(unitOfMeasureTypeWeight == null) {
-                        UnitOfMeasureKind weightUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_WEIGHT);
+                        var weightUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_WEIGHT);
                         
                         if(weightUnitOfMeasureKind != null) {
-                            String weightUnitOfMeasureTypeName = form.getWeightUnitOfMeasureTypeName();
-                            UnitOfMeasureType weightUnitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(weightUnitOfMeasureKind,
+                            var weightUnitOfMeasureTypeName = form.getWeightUnitOfMeasureTypeName();
+                            var weightUnitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(weightUnitOfMeasureKind,
                                     weightUnitOfMeasureTypeName);
                             
                             if(weightUnitOfMeasureType != null) {
-                                Long weight = Long.valueOf(form.getWeight());
+                                var weight = Long.valueOf(form.getWeight());
                                 
                                 if(weight > 0) {
-                                    Conversion weightConversion = new Conversion(uomControl, weightUnitOfMeasureType, weight).convertToLowestUnitOfMeasureType();
+                                    var weightConversion = new Conversion(uomControl, weightUnitOfMeasureType, weight).convertToLowestUnitOfMeasureType();
                                     
                                     uomControl.createUnitOfMeasureTypeWeight(unitOfMeasureType, weightConversion.getQuantity(),
                                             getPartyPK());

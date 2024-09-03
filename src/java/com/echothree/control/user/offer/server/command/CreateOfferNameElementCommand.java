@@ -66,14 +66,14 @@ public class CreateOfferNameElementCommand
     
     @Override
     protected BaseResult execute() {
-        CreateOfferNameElementResult result = OfferResultFactory.getCreateOfferNameElementResult();
-        String offerNameElementName = form.getOfferNameElementName();
-        Integer offset = Integer.valueOf(form.getOffset());
-        Integer length = Integer.valueOf(form.getLength());
-        String validationPattern = form.getValidationPattern();
+        var result = OfferResultFactory.getCreateOfferNameElementResult();
+        var offerNameElementName = form.getOfferNameElementName();
+        var offset = Integer.valueOf(form.getOffset());
+        var length = Integer.valueOf(form.getLength());
+        var validationPattern = form.getValidationPattern();
         var description = form.getDescription();
 
-        OfferNameElement offerNameElement = OfferNameElementLogic.getInstance().createOfferNameElement(this,
+        var offerNameElement = OfferNameElementLogic.getInstance().createOfferNameElement(this,
                 offerNameElementName, offset, length, validationPattern, getPreferredLanguage(), description,
                 getPartyPK());
 

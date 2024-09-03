@@ -70,20 +70,20 @@ public class CreateCancellationTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
-        String cancellationKindName = form.getCancellationKindName();
-        CancellationKind cancellationKind = cancellationPolicyControl.getCancellationKindByName(cancellationKindName);
+        var cancellationKindName = form.getCancellationKindName();
+        var cancellationKind = cancellationPolicyControl.getCancellationKindByName(cancellationKindName);
         
         if(cancellationKind != null) {
-            String cancellationTypeName = form.getCancellationTypeName();
-            CancellationType cancellationType = cancellationPolicyControl.getCancellationTypeByName(cancellationKind, cancellationTypeName);
+            var cancellationTypeName = form.getCancellationTypeName();
+            var cancellationType = cancellationPolicyControl.getCancellationTypeByName(cancellationKind, cancellationTypeName);
             
             if(cancellationType != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = form.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = form.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
                 
                 if(language != null) {
-                    CancellationTypeDescription cancellationTypeDescription = cancellationPolicyControl.getCancellationTypeDescription(cancellationType, language);
+                    var cancellationTypeDescription = cancellationPolicyControl.getCancellationTypeDescription(cancellationType, language);
                     
                     if(cancellationTypeDescription == null) {
                         var description = form.getDescription();

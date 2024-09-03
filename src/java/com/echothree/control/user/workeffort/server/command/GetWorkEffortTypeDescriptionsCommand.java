@@ -51,9 +51,9 @@ public class GetWorkEffortTypeDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var workEffortControl = Session.getModelController(WorkEffortControl.class);
-        GetWorkEffortTypeDescriptionsResult result = WorkEffortResultFactory.getGetWorkEffortTypeDescriptionsResult();
-        String workEffortTypeName = form.getWorkEffortTypeName();
-        WorkEffortType workEffortType = workEffortControl.getWorkEffortTypeByName(workEffortTypeName);
+        var result = WorkEffortResultFactory.getGetWorkEffortTypeDescriptionsResult();
+        var workEffortTypeName = form.getWorkEffortTypeName();
+        var workEffortType = workEffortControl.getWorkEffortTypeByName(workEffortTypeName);
         
         if(workEffortType != null) {
             result.setWorkEffortType(workEffortControl.getWorkEffortTypeTransfer(getUserVisit(), workEffortType));

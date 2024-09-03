@@ -86,40 +86,40 @@ public class EditPartyTypePasswordStringPolicyCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        EditPartyTypePasswordStringPolicyResult result = PartyResultFactory.getEditPartyTypePasswordStringPolicyResult();
-        String partyTypeName = spec.getPartyTypeName();
-        PartyType partyType = partyControl.getPartyTypeByName(partyTypeName);
+        var result = PartyResultFactory.getEditPartyTypePasswordStringPolicyResult();
+        var partyTypeName = spec.getPartyTypeName();
+        var partyType = partyControl.getPartyTypeByName(partyTypeName);
         
         if(partyType != null) {
-            PartyTypePasswordStringPolicy partyTypePasswordStringPolicy = partyControl.getPartyTypePasswordStringPolicy(partyType);
+            var partyTypePasswordStringPolicy = partyControl.getPartyTypePasswordStringPolicy(partyType);
             
             if(partyTypePasswordStringPolicy != null) {
                 var uomControl = Session.getModelController(UomControl.class);
-                UnitOfMeasureKind timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
+                var timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
                 
                 if(timeUnitOfMeasureKind != null) {
                     if(editMode.equals(EditMode.LOCK)) {
                         result.setPartyType(partyControl.getPartyTypeTransfer(getUserVisit(), partyType));
                         
                         if(lockEntity(partyTypePasswordStringPolicy)) {
-                            PartyTypePasswordStringPolicyEdit edit = PartyEditFactory.getPartyTypePasswordStringPolicyEdit();
-                            PartyTypePasswordStringPolicyDetail partyTypePasswordStringPolicyDetail = partyTypePasswordStringPolicy.getLastDetail();
-                            Integer passwordHistory = partyTypePasswordStringPolicyDetail.getPasswordHistory();
-                            Long minimumPasswordLifetime = partyTypePasswordStringPolicyDetail.getMinimumPasswordLifetime();
-                            Conversion minimumPasswordLifetimeConversion = minimumPasswordLifetime == null? null: new Conversion(uomControl, timeUnitOfMeasureKind, minimumPasswordLifetime).convertToHighestUnitOfMeasureType();
-                            Long maximumPasswordLifetime = partyTypePasswordStringPolicyDetail.getMaximumPasswordLifetime();
-                            Conversion maximumPasswordLifetimeConversion = maximumPasswordLifetime == null? null: new Conversion(uomControl, timeUnitOfMeasureKind, maximumPasswordLifetime).convertToHighestUnitOfMeasureType();
-                            Long expirationWarningTime = partyTypePasswordStringPolicyDetail.getExpirationWarningTime();
-                            Conversion expirationWarningTimeConversion = expirationWarningTime == null? null: new Conversion(uomControl, timeUnitOfMeasureKind, expirationWarningTime).convertToHighestUnitOfMeasureType();
-                            Integer expiredLoginsPermitted = partyTypePasswordStringPolicyDetail.getExpiredLoginsPermitted();
-                            Integer minimumLength = partyTypePasswordStringPolicyDetail.getMinimumLength();
-                            Integer maximumLength = partyTypePasswordStringPolicyDetail.getMaximumLength();
-                            Integer requiredDigitCount = partyTypePasswordStringPolicyDetail.getRequiredDigitCount();
-                            Integer requiredLetterCount = partyTypePasswordStringPolicyDetail.getRequiredLetterCount();
-                            Integer requiredUpperCaseCount = partyTypePasswordStringPolicyDetail.getRequiredUpperCaseCount();
-                            Integer requiredLowerCaseCount = partyTypePasswordStringPolicyDetail.getRequiredLowerCaseCount();
-                            Integer maximumRepeated = partyTypePasswordStringPolicyDetail.getMaximumRepeated();
-                            Integer minimumCharacterTypes = partyTypePasswordStringPolicyDetail.getMinimumCharacterTypes();
+                            var edit = PartyEditFactory.getPartyTypePasswordStringPolicyEdit();
+                            var partyTypePasswordStringPolicyDetail = partyTypePasswordStringPolicy.getLastDetail();
+                            var passwordHistory = partyTypePasswordStringPolicyDetail.getPasswordHistory();
+                            var minimumPasswordLifetime = partyTypePasswordStringPolicyDetail.getMinimumPasswordLifetime();
+                            var minimumPasswordLifetimeConversion = minimumPasswordLifetime == null? null: new Conversion(uomControl, timeUnitOfMeasureKind, minimumPasswordLifetime).convertToHighestUnitOfMeasureType();
+                            var maximumPasswordLifetime = partyTypePasswordStringPolicyDetail.getMaximumPasswordLifetime();
+                            var maximumPasswordLifetimeConversion = maximumPasswordLifetime == null? null: new Conversion(uomControl, timeUnitOfMeasureKind, maximumPasswordLifetime).convertToHighestUnitOfMeasureType();
+                            var expirationWarningTime = partyTypePasswordStringPolicyDetail.getExpirationWarningTime();
+                            var expirationWarningTimeConversion = expirationWarningTime == null? null: new Conversion(uomControl, timeUnitOfMeasureKind, expirationWarningTime).convertToHighestUnitOfMeasureType();
+                            var expiredLoginsPermitted = partyTypePasswordStringPolicyDetail.getExpiredLoginsPermitted();
+                            var minimumLength = partyTypePasswordStringPolicyDetail.getMinimumLength();
+                            var maximumLength = partyTypePasswordStringPolicyDetail.getMaximumLength();
+                            var requiredDigitCount = partyTypePasswordStringPolicyDetail.getRequiredDigitCount();
+                            var requiredLetterCount = partyTypePasswordStringPolicyDetail.getRequiredLetterCount();
+                            var requiredUpperCaseCount = partyTypePasswordStringPolicyDetail.getRequiredUpperCaseCount();
+                            var requiredLowerCaseCount = partyTypePasswordStringPolicyDetail.getRequiredLowerCaseCount();
+                            var maximumRepeated = partyTypePasswordStringPolicyDetail.getMaximumRepeated();
+                            var minimumCharacterTypes = partyTypePasswordStringPolicyDetail.getMinimumCharacterTypes();
                             
                             result.setEdit(edit);
                             edit.setForceChangeAfterCreate(partyTypePasswordStringPolicyDetail.getForceChangeAfterCreate().toString());
@@ -155,65 +155,65 @@ public class EditPartyTypePasswordStringPolicyCommand
                     } else if(editMode.equals(EditMode.ABANDON)) {
                         unlockEntity(partyTypePasswordStringPolicy);
                     } else if(editMode.equals(EditMode.UPDATE)) {
-                        PartyTypePasswordStringPolicyDetailValue partyTypePasswordStringPolicyDetailValue = partyControl.getPartyTypePasswordStringPolicyDetailValueForUpdate(partyTypePasswordStringPolicy);
+                        var partyTypePasswordStringPolicyDetailValue = partyControl.getPartyTypePasswordStringPolicyDetailValueForUpdate(partyTypePasswordStringPolicy);
                         
                         if(partyTypePasswordStringPolicyDetailValue != null) {
-                            String rawMinimumPasswordLifetime = edit.getMinimumPasswordLifetime();
-                            String minimumPasswordLifetimeUnitOfMeasureTypeName = edit.getMinimumPasswordLifetimeUnitOfMeasureTypeName();
-                            int minimumPasswordLifetimeParameterCount = (rawMinimumPasswordLifetime == null ? 0 : 1) + (minimumPasswordLifetimeUnitOfMeasureTypeName == null ? 0 : 1);
-                            String rawMaximumPasswordLifetime = edit.getMaximumPasswordLifetime();
-                            String maximumPasswordLifetimeUnitOfMeasureTypeName = edit.getMaximumPasswordLifetimeUnitOfMeasureTypeName();
-                            int maximumPasswordLifetimeParameterCount = (rawMaximumPasswordLifetime == null ? 0 : 1) + (maximumPasswordLifetimeUnitOfMeasureTypeName == null ? 0 : 1);
-                            String rawExpirationWarningTime = edit.getExpirationWarningTime();
-                            String expirationWarningTimeUnitOfMeasureTypeName = edit.getExpirationWarningTimeUnitOfMeasureTypeName();
-                            int expirationWarningTimeParameterCount = (rawExpirationWarningTime == null ? 0 : 1) + (expirationWarningTimeUnitOfMeasureTypeName == null ? 0 : 1);
+                            var rawMinimumPasswordLifetime = edit.getMinimumPasswordLifetime();
+                            var minimumPasswordLifetimeUnitOfMeasureTypeName = edit.getMinimumPasswordLifetimeUnitOfMeasureTypeName();
+                            var minimumPasswordLifetimeParameterCount = (rawMinimumPasswordLifetime == null ? 0 : 1) + (minimumPasswordLifetimeUnitOfMeasureTypeName == null ? 0 : 1);
+                            var rawMaximumPasswordLifetime = edit.getMaximumPasswordLifetime();
+                            var maximumPasswordLifetimeUnitOfMeasureTypeName = edit.getMaximumPasswordLifetimeUnitOfMeasureTypeName();
+                            var maximumPasswordLifetimeParameterCount = (rawMaximumPasswordLifetime == null ? 0 : 1) + (maximumPasswordLifetimeUnitOfMeasureTypeName == null ? 0 : 1);
+                            var rawExpirationWarningTime = edit.getExpirationWarningTime();
+                            var expirationWarningTimeUnitOfMeasureTypeName = edit.getExpirationWarningTimeUnitOfMeasureTypeName();
+                            var expirationWarningTimeParameterCount = (rawExpirationWarningTime == null ? 0 : 1) + (expirationWarningTimeUnitOfMeasureTypeName == null ? 0 : 1);
                             
                             if((minimumPasswordLifetimeParameterCount == 0 || minimumPasswordLifetimeParameterCount == 2) &&
                                     (maximumPasswordLifetimeParameterCount == 0 || maximumPasswordLifetimeParameterCount == 2) &&
                                     (expirationWarningTimeParameterCount == 0 || expirationWarningTimeParameterCount == 2)) {
-                                UnitOfMeasureType minimumPasswordLifetimeUnitOfMeasureType = minimumPasswordLifetimeUnitOfMeasureTypeName == null? null: uomControl.getUnitOfMeasureTypeByName(timeUnitOfMeasureKind,
+                                var minimumPasswordLifetimeUnitOfMeasureType = minimumPasswordLifetimeUnitOfMeasureTypeName == null? null: uomControl.getUnitOfMeasureTypeByName(timeUnitOfMeasureKind,
                                         minimumPasswordLifetimeUnitOfMeasureTypeName);
                                 
                                 if(minimumPasswordLifetimeUnitOfMeasureTypeName == null || minimumPasswordLifetimeUnitOfMeasureType != null) {
-                                    UnitOfMeasureType maximumPasswordLifetimeUnitOfMeasureType = maximumPasswordLifetimeUnitOfMeasureTypeName == null? null: uomControl.getUnitOfMeasureTypeByName(timeUnitOfMeasureKind,
+                                    var maximumPasswordLifetimeUnitOfMeasureType = maximumPasswordLifetimeUnitOfMeasureTypeName == null? null: uomControl.getUnitOfMeasureTypeByName(timeUnitOfMeasureKind,
                                             maximumPasswordLifetimeUnitOfMeasureTypeName);
                                     
                                     if(maximumPasswordLifetimeUnitOfMeasureTypeName == null || maximumPasswordLifetimeUnitOfMeasureType != null) {
-                                        UnitOfMeasureType expirationWarningTimeUnitOfMeasureType = expirationWarningTimeUnitOfMeasureTypeName == null? null: uomControl.getUnitOfMeasureTypeByName(timeUnitOfMeasureKind,
+                                        var expirationWarningTimeUnitOfMeasureType = expirationWarningTimeUnitOfMeasureTypeName == null? null: uomControl.getUnitOfMeasureTypeByName(timeUnitOfMeasureKind,
                                                 expirationWarningTimeUnitOfMeasureTypeName);
                                         
                                         if(expirationWarningTimeUnitOfMeasureTypeName == null || expirationWarningTimeUnitOfMeasureType != null) {
                                             if(lockEntityForUpdate(partyTypePasswordStringPolicy)) {
                                                 try {
-                                                    Boolean forceChangeAfterCreate = Boolean.valueOf(edit.getForceChangeAfterCreate());
-                                                    Boolean forceChangeAfterReset = Boolean.valueOf(edit.getForceChangeAfterReset());
-                                                    Boolean allowChange = Boolean.valueOf(edit.getAllowChange());
-                                                    String rawPasswordHistory = edit.getPasswordHistory();
-                                                    Integer passwordHistory = rawPasswordHistory == null? null: Integer.valueOf(rawPasswordHistory);
-                                                    Long minimumPasswordLifetime = rawMinimumPasswordLifetime == null? null: Long.valueOf(rawMinimumPasswordLifetime);
-                                                    Conversion minimumPasswordLifetimeConversion = minimumPasswordLifetime == null? null: new Conversion(uomControl, minimumPasswordLifetimeUnitOfMeasureType, minimumPasswordLifetime).convertToLowestUnitOfMeasureType();
-                                                    Long maximumPasswordLifetime = rawMaximumPasswordLifetime == null? null: Long.valueOf(rawMaximumPasswordLifetime);
-                                                    Conversion maximumPasswordLifetimeConversion = maximumPasswordLifetime == null? null: new Conversion(uomControl, maximumPasswordLifetimeUnitOfMeasureType, maximumPasswordLifetime).convertToLowestUnitOfMeasureType();
-                                                    Long expirationWarningTime = rawExpirationWarningTime == null? null: Long.valueOf(rawExpirationWarningTime);
-                                                    Conversion expirationWarningTimeConversion = expirationWarningTime == null? null: new Conversion(uomControl, expirationWarningTimeUnitOfMeasureType, expirationWarningTime).convertToLowestUnitOfMeasureType();
-                                                    String rawExpiredLoginsPermitted = edit.getExpiredLoginsPermitted();
-                                                    Integer expiredLoginsPermitted = rawExpiredLoginsPermitted == null? null: Integer.valueOf(rawExpiredLoginsPermitted);
-                                                    String rawMinimumLength = edit.getMinimumLength();
-                                                    Integer minimumLength = rawMinimumLength == null? null: Integer.valueOf(rawMinimumLength);
-                                                    String rawMaximumLength = edit.getMaximumLength();
-                                                    Integer maximumLength = rawMaximumLength == null? null: Integer.valueOf(rawMaximumLength);
-                                                    String rawRequiredDigitCount = edit.getRequiredDigitCount();
-                                                    Integer requiredDigitCount = rawRequiredDigitCount == null? null: Integer.valueOf(rawRequiredDigitCount);
-                                                    String rawRequiredLetterCount = edit.getRequiredLetterCount();
-                                                    Integer requiredLetterCount = rawRequiredLetterCount == null? null: Integer.valueOf(rawRequiredLetterCount);
-                                                    String rawRequiredUpperCaseCount = edit.getRequiredUpperCaseCount();
-                                                    Integer requiredUpperCaseCount = rawRequiredUpperCaseCount == null? null: Integer.valueOf(rawRequiredUpperCaseCount);
-                                                    String rawRequiredLowerCaseCount = edit.getRequiredLowerCaseCount();
-                                                    Integer requiredLowerCaseCount = rawRequiredLowerCaseCount == null? null: Integer.valueOf(rawRequiredLowerCaseCount);
-                                                    String rawMaximumRepeated = edit.getMaximumRepeated();
-                                                    Integer maximumRepeated = rawMaximumRepeated == null? null: Integer.valueOf(rawMaximumRepeated);
-                                                    String rawMinimumCharacterTypes = edit.getMinimumCharacterTypes();
-                                                    Integer minimumCharacterTypes = rawMinimumCharacterTypes == null? null: Integer.valueOf(rawMinimumCharacterTypes);
+                                                    var forceChangeAfterCreate = Boolean.valueOf(edit.getForceChangeAfterCreate());
+                                                    var forceChangeAfterReset = Boolean.valueOf(edit.getForceChangeAfterReset());
+                                                    var allowChange = Boolean.valueOf(edit.getAllowChange());
+                                                    var rawPasswordHistory = edit.getPasswordHistory();
+                                                    var passwordHistory = rawPasswordHistory == null? null: Integer.valueOf(rawPasswordHistory);
+                                                    var minimumPasswordLifetime = rawMinimumPasswordLifetime == null? null: Long.valueOf(rawMinimumPasswordLifetime);
+                                                    var minimumPasswordLifetimeConversion = minimumPasswordLifetime == null? null: new Conversion(uomControl, minimumPasswordLifetimeUnitOfMeasureType, minimumPasswordLifetime).convertToLowestUnitOfMeasureType();
+                                                    var maximumPasswordLifetime = rawMaximumPasswordLifetime == null? null: Long.valueOf(rawMaximumPasswordLifetime);
+                                                    var maximumPasswordLifetimeConversion = maximumPasswordLifetime == null? null: new Conversion(uomControl, maximumPasswordLifetimeUnitOfMeasureType, maximumPasswordLifetime).convertToLowestUnitOfMeasureType();
+                                                    var expirationWarningTime = rawExpirationWarningTime == null? null: Long.valueOf(rawExpirationWarningTime);
+                                                    var expirationWarningTimeConversion = expirationWarningTime == null? null: new Conversion(uomControl, expirationWarningTimeUnitOfMeasureType, expirationWarningTime).convertToLowestUnitOfMeasureType();
+                                                    var rawExpiredLoginsPermitted = edit.getExpiredLoginsPermitted();
+                                                    var expiredLoginsPermitted = rawExpiredLoginsPermitted == null? null: Integer.valueOf(rawExpiredLoginsPermitted);
+                                                    var rawMinimumLength = edit.getMinimumLength();
+                                                    var minimumLength = rawMinimumLength == null? null: Integer.valueOf(rawMinimumLength);
+                                                    var rawMaximumLength = edit.getMaximumLength();
+                                                    var maximumLength = rawMaximumLength == null? null: Integer.valueOf(rawMaximumLength);
+                                                    var rawRequiredDigitCount = edit.getRequiredDigitCount();
+                                                    var requiredDigitCount = rawRequiredDigitCount == null? null: Integer.valueOf(rawRequiredDigitCount);
+                                                    var rawRequiredLetterCount = edit.getRequiredLetterCount();
+                                                    var requiredLetterCount = rawRequiredLetterCount == null? null: Integer.valueOf(rawRequiredLetterCount);
+                                                    var rawRequiredUpperCaseCount = edit.getRequiredUpperCaseCount();
+                                                    var requiredUpperCaseCount = rawRequiredUpperCaseCount == null? null: Integer.valueOf(rawRequiredUpperCaseCount);
+                                                    var rawRequiredLowerCaseCount = edit.getRequiredLowerCaseCount();
+                                                    var requiredLowerCaseCount = rawRequiredLowerCaseCount == null? null: Integer.valueOf(rawRequiredLowerCaseCount);
+                                                    var rawMaximumRepeated = edit.getMaximumRepeated();
+                                                    var maximumRepeated = rawMaximumRepeated == null? null: Integer.valueOf(rawMaximumRepeated);
+                                                    var rawMinimumCharacterTypes = edit.getMinimumCharacterTypes();
+                                                    var minimumCharacterTypes = rawMinimumCharacterTypes == null? null: Integer.valueOf(rawMinimumCharacterTypes);
                                                     
                                                     partyTypePasswordStringPolicyDetailValue.setForceChangeAfterCreate(forceChangeAfterCreate);
                                                     partyTypePasswordStringPolicyDetailValue.setForceChangeAfterReset(forceChangeAfterReset);

@@ -51,8 +51,8 @@ public class CreateCommunicationSourceTypeCommand
     @Override
     protected BaseResult execute() {
         var communicationControl = Session.getModelController(CommunicationControl.class);
-        String communicationSourceTypeName = form.getCommunicationSourceTypeName();
-        CommunicationSourceType communicationSourceType = communicationControl.getCommunicationSourceTypeByName(communicationSourceTypeName);
+        var communicationSourceTypeName = form.getCommunicationSourceTypeName();
+        var communicationSourceType = communicationControl.getCommunicationSourceTypeByName(communicationSourceTypeName);
         
         if(communicationSourceType == null) {
             var isDefault = Boolean.valueOf(form.getIsDefault());

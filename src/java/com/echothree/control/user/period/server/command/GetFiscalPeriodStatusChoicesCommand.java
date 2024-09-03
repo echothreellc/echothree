@@ -65,13 +65,13 @@ public class GetFiscalPeriodStatusChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        GetFiscalPeriodStatusChoicesResult result = PeriodResultFactory.getGetFiscalPeriodStatusChoicesResult();
-        Period period = FiscalPeriodLogic.getInstance().getFiscalPeriodByName(this, form.getPeriodName());
+        var result = PeriodResultFactory.getGetFiscalPeriodStatusChoicesResult();
+        var period = FiscalPeriodLogic.getInstance().getFiscalPeriodByName(this, form.getPeriodName());
         
         if(!hasExecutionErrors()) {
             var periodControl = Session.getModelController(PeriodControl.class);
-            String defaultFiscalPeriodStatusChoice = form.getDefaultFiscalPeriodStatusChoice();
-            boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+            var defaultFiscalPeriodStatusChoice = form.getDefaultFiscalPeriodStatusChoice();
+            var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 
             result.setFiscalPeriodStatusChoices(periodControl.getFiscalPeriodStatusChoices(defaultFiscalPeriodStatusChoice, getPreferredLanguage(),
                     allowNullChoice, period, getPartyPK()));

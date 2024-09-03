@@ -66,13 +66,13 @@ public class GetIndexFieldChoicesCommand
     @Override
     protected BaseResult execute() {
         var indexControl = Session.getModelController(IndexControl.class);
-        GetIndexFieldChoicesResult result = IndexResultFactory.getGetIndexFieldChoicesResult();
-        String indexTypeName = form.getIndexTypeName();
-        IndexType indexType = indexControl.getIndexTypeByName(indexTypeName);
+        var result = IndexResultFactory.getGetIndexFieldChoicesResult();
+        var indexTypeName = form.getIndexTypeName();
+        var indexType = indexControl.getIndexTypeByName(indexTypeName);
         
         if(indexType != null) {
-            String defaultIndexFieldChoice = form.getDefaultIndexFieldChoice();
-            boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+            var defaultIndexFieldChoice = form.getDefaultIndexFieldChoice();
+            var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
             
             result.setIndexFieldChoices(indexControl.getIndexFieldChoices(defaultIndexFieldChoice, getPreferredLanguage(),
                     allowNullChoice, indexType));

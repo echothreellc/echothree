@@ -52,15 +52,15 @@ public class CreateRoleTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        String roleTypeName = form.getRoleTypeName();
-        RoleType roleType = partyControl.getRoleTypeByName(roleTypeName);
+        var roleTypeName = form.getRoleTypeName();
+        var roleType = partyControl.getRoleTypeByName(roleTypeName);
         
         if(roleType != null) {
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                RoleTypeDescription roleTypeDescription = partyControl.getRoleTypeDescription(roleType, language);
+                var roleTypeDescription = partyControl.getRoleTypeDescription(roleType, language);
                 
                 if(roleTypeDescription == null) {
                     var description = form.getDescription();

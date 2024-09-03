@@ -50,8 +50,8 @@ public class DeletePrinterGroupJobCommand
    @Override
     protected BaseResult execute() {
         var printerControl = Session.getModelController(PrinterControl.class);
-        String printerGroupJobName = form.getPrinterGroupJobName();
-        PrinterGroupJob printerGroupJob = printerControl.getPrinterGroupJobByNameForUpdate(printerGroupJobName);
+       var printerGroupJobName = form.getPrinterGroupJobName();
+       var printerGroupJob = printerControl.getPrinterGroupJobByNameForUpdate(printerGroupJobName);
         
         if(printerGroupJob != null) {
             PrinterGroupJobLogic.getInstance().deletePrinterGroupJob(this, printerGroupJob, getPartyPK());

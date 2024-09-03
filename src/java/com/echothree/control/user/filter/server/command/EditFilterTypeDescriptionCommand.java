@@ -90,17 +90,17 @@ public class EditFilterTypeDescriptionCommand
     public FilterTypeDescription getEntity(EditFilterTypeDescriptionResult result) {
         var filterControl = Session.getModelController(FilterControl.class);
         FilterTypeDescription filterTypeDescription = null;
-        String filterKindName = spec.getFilterKindName();
-        FilterKind filterKind = filterControl.getFilterKindByName(filterKindName);
+        var filterKindName = spec.getFilterKindName();
+        var filterKind = filterControl.getFilterKindByName(filterKindName);
 
         if(filterKind != null) {
-            String filterTypeName = spec.getFilterTypeName();
-            FilterType filterType = filterControl.getFilterTypeByName(filterKind, filterTypeName);
+            var filterTypeName = spec.getFilterTypeName();
+            var filterType = filterControl.getFilterTypeByName(filterKind, filterTypeName);
 
             if(filterType != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = spec.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = spec.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                 if(language != null) {
                     if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -145,7 +145,7 @@ public class EditFilterTypeDescriptionCommand
     @Override
     public void doUpdate(FilterTypeDescription filterTypeDescription) {
         var filterControl = Session.getModelController(FilterControl.class);
-        FilterTypeDescriptionValue filterTypeDescriptionValue = filterControl.getFilterTypeDescriptionValue(filterTypeDescription);
+        var filterTypeDescriptionValue = filterControl.getFilterTypeDescriptionValue(filterTypeDescription);
 
         filterTypeDescriptionValue.setDescription(edit.getDescription());
 

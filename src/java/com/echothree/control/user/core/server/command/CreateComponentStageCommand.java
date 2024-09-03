@@ -49,12 +49,12 @@ public class CreateComponentStageCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String componentStageName = form.getComponentStageName();
-        ComponentStage componentStage = coreControl.getComponentStageByName(componentStageName);
+        var componentStageName = form.getComponentStageName();
+        var componentStage = coreControl.getComponentStageByName(componentStageName);
         
         if(componentStage == null) {
             var description = form.getDescription();
-            Integer relativeAge = Integer.valueOf(form.getRelativeAge());
+            var relativeAge = Integer.valueOf(form.getRelativeAge());
             
             coreControl.createComponentStage(componentStageName, description, relativeAge);
         } else {

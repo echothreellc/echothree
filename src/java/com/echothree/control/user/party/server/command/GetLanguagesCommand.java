@@ -56,7 +56,7 @@ public class GetLanguagesCommand
     
     @Override
     protected BaseResult getResult(Collection<Language> entities) {
-        GetLanguagesResult result = PartyResultFactory.getGetLanguagesResult();
+        var result = PartyResultFactory.getGetLanguagesResult();
         var partyControl = Session.getModelController(PartyControl.class);
         
         result.setLanguages(partyControl.getLanguageTransfers(getUserVisit(), entities));

@@ -95,13 +95,13 @@ public class EditGeoCodeAliasCommand
     public GeoCodeAlias getEntity(EditGeoCodeAliasResult result) {
         var geoControl = Session.getModelController(GeoControl.class);
         GeoCodeAlias geoCodeAlias = null;
-        String geoCodeName = spec.getGeoCodeName();
+        var geoCodeName = spec.getGeoCodeName();
 
         geoCode = geoControl.getGeoCodeByName(geoCodeName);
 
         if(geoCode != null) {
-            GeoCodeType geoCodeType = geoCode.getLastDetail().getGeoCodeType();
-            String geoCodeAliasTypeName = spec.getGeoCodeAliasTypeName();
+            var geoCodeType = geoCode.getLastDetail().getGeoCodeType();
+            var geoCodeAliasTypeName = spec.getGeoCodeAliasTypeName();
 
             geoCodeAliasType = geoControl.getGeoCodeAliasTypeByNameForUpdate(geoCodeType, geoCodeAliasTypeName);
 
@@ -147,19 +147,19 @@ public class EditGeoCodeAliasCommand
     @Override
     public void canUpdate(GeoCodeAlias geoCodeAlias) {
         var geoControl = Session.getModelController(GeoControl.class);
-        GeoCodeScope geoCodeScope = geoCode.getLastDetail().getGeoCodeScope();
-        String alias = edit.getAlias();
-        GeoCodeAlias duplicateGeoCodeAlias = geoControl.getGeoCodeAliasByAliasWithinScope(geoCodeScope, geoCodeAliasType, alias);
+        var geoCodeScope = geoCode.getLastDetail().getGeoCodeScope();
+        var alias = edit.getAlias();
+        var duplicateGeoCodeAlias = geoControl.getGeoCodeAliasByAliasWithinScope(geoCodeScope, geoCodeAliasType, alias);
 
         if(duplicateGeoCodeAlias != null && !geoCodeAlias.equals(duplicateGeoCodeAlias)) {
             addExecutionError(ExecutionErrors.DuplicateGeoCodeAlias.name(), geoCode.getLastDetail().getGeoCodeName(),
                     geoCodeScope.getLastDetail().getGeoCodeScopeName(), geoCodeAliasType.getLastDetail().getGeoCodeAliasTypeName(), alias);
         } else {
-            String validationPattern = geoCodeAliasType.getLastDetail().getValidationPattern();
+            var validationPattern = geoCodeAliasType.getLastDetail().getValidationPattern();
 
             if(validationPattern != null) {
-                Pattern pattern = Pattern.compile(validationPattern);
-                Matcher m = pattern.matcher(alias);
+                var pattern = Pattern.compile(validationPattern);
+                var m = pattern.matcher(alias);
 
                 if(!m.matches()) {
                     addExecutionError(ExecutionErrors.InvalidAlias.name(), alias);
@@ -171,7 +171,7 @@ public class EditGeoCodeAliasCommand
     @Override
     public void doUpdate(GeoCodeAlias geoCodeAlias) {
         var geoControl = Session.getModelController(GeoControl.class);
-        GeoCodeAliasValue geoCodeAliasValue = geoControl.getGeoCodeAliasValue(geoCodeAlias);
+        var geoCodeAliasValue = geoControl.getGeoCodeAliasValue(geoCodeAlias);
 
         geoCodeAliasValue.setAlias(edit.getAlias());
 

@@ -75,12 +75,12 @@ public class EditForumForumThreadCommand
     public ForumForumThread getEntity(EditForumForumThreadResult result) {
         var forumControl = Session.getModelController(ForumControl.class);
         ForumForumThread forumForumThread = null;
-        String forumName = spec.getForumName();
-        Forum forum = forumControl.getForumByName(forumName);
+        var forumName = spec.getForumName();
+        var forum = forumControl.getForumByName(forumName);
 
         if(forum != null) {
-            String forumThreadName = spec.getForumThreadName();
-            ForumThread forumThread = forumControl.getForumThreadByName(forumThreadName);
+            var forumThreadName = spec.getForumThreadName();
+            var forumThread = forumControl.getForumThreadByName(forumThreadName);
 
             if(forumThread != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -123,7 +123,7 @@ public class EditForumForumThreadCommand
     @Override
     public void doUpdate(ForumForumThread forumForumThread) {
         var forumControl = Session.getModelController(ForumControl.class);
-        ForumForumThreadValue forumForumThreadValue = forumControl.getForumForumThreadValue(forumForumThread);
+        var forumForumThreadValue = forumControl.getForumForumThreadValue(forumForumThread);
 
         forumForumThreadValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
         forumForumThreadValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));

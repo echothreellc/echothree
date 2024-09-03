@@ -59,8 +59,8 @@ public class CreateItemInventoryTypeCommand
     @Override
     protected BaseResult execute() {
         var itemControl = Session.getModelController(ItemControl.class);
-        String itemInventoryTypeName = form.getItemInventoryTypeName();
-        ItemInventoryType itemInventoryType = itemControl.getItemInventoryTypeByName(itemInventoryTypeName);
+        var itemInventoryTypeName = form.getItemInventoryTypeName();
+        var itemInventoryType = itemControl.getItemInventoryTypeByName(itemInventoryTypeName);
         
         if(itemInventoryType == null) {
             var isDefault = Boolean.valueOf(form.getIsDefault());

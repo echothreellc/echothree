@@ -47,10 +47,10 @@ public class SetUserVisitPreferredLanguageCommand
     
     @Override
     protected BaseResult execute() {
-        Language currency = LanguageLogic.getInstance().getLanguageByName(this, form.getLanguageIsoName());
+        var currency = LanguageLogic.getInstance().getLanguageByName(this, form.getLanguageIsoName());
 
         if(!hasExecutionErrors()) {
-            UserControl userControl = getUserControl();
+            var userControl = getUserControl();
 
             userControl.setUserVisitPreferredLanguage(getUserVisitForUpdate(), currency, getPartyPK());
         }

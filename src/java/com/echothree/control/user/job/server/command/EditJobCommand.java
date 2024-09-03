@@ -80,19 +80,19 @@ public class EditJobCommand
     @Override
     protected BaseResult execute() {
         var jobControl = Session.getModelController(JobControl.class);
-        EditJobResult result = JobResultFactory.getEditJobResult();
+        var result = JobResultFactory.getEditJobResult();
         
         if(editMode.equals(EditMode.LOCK)) {
-            String jobName = spec.getJobName();
-            Job job = jobControl.getJobByName(jobName);
+            var jobName = spec.getJobName();
+            var job = jobControl.getJobByName(jobName);
             
             if(job != null) {
                 result.setJob(jobControl.getJobTransfer(getUserVisit(), job));
                 
                 if(lockEntity(job)) {
-                    JobDescription jobDescription = jobControl.getJobDescription(job, getPreferredLanguage());
-                    JobEdit edit = JobEditFactory.getJobEdit();
-                    JobDetail jobDetail = job.getLastDetail();
+                    var jobDescription = jobControl.getJobDescription(job, getPreferredLanguage());
+                    var edit = JobEditFactory.getJobEdit();
+                    var jobDetail = job.getLastDetail();
                     
                     result.setEdit(edit);
                     edit.setJobName(jobDetail.getJobName());
@@ -109,20 +109,20 @@ public class EditJobCommand
                 addExecutionError(ExecutionErrors.UnknownJobName.name(), jobName);
             }
         } else if(editMode.equals(EditMode.UPDATE)) {
-            String jobName = spec.getJobName();
-            Job job = jobControl.getJobByNameForUpdate(jobName);
+            var jobName = spec.getJobName();
+            var job = jobControl.getJobByNameForUpdate(jobName);
             
             if(job != null) {
                 jobName = edit.getJobName();
-                Job duplicateJob = jobControl.getJobByName(jobName);
+                var duplicateJob = jobControl.getJobByName(jobName);
                 
                 if(duplicateJob == null || job.equals(duplicateJob)) {
                     if(lockEntityForUpdate(job)) {
                         try {
                             var partyPK = getPartyPK();
-                            JobDetailValue jobDetailValue = jobControl.getJobDetailValueForUpdate(job);
-                            JobDescription jobDescription = jobControl.getJobDescriptionForUpdate(job, getPreferredLanguage());
-                            String description = edit.getDescription();
+                            var jobDetailValue = jobControl.getJobDetailValueForUpdate(job);
+                            var jobDescription = jobControl.getJobDescriptionForUpdate(job, getPreferredLanguage());
+                            var description = edit.getDescription();
                             
                             jobDetailValue.setJobName(edit.getJobName());
                             jobDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
@@ -134,7 +134,7 @@ public class EditJobCommand
                             } else if(jobDescription != null && description == null) {
                                 jobControl.deleteJobDescription(jobDescription, partyPK);
                             } else if(jobDescription != null && description != null) {
-                                JobDescriptionValue jobDescriptionValue = jobControl.getJobDescriptionValue(jobDescription);
+                                var jobDescriptionValue = jobControl.getJobDescriptionValue(jobDescription);
                                 
                                 jobDescriptionValue.setDescription(description);
                                 jobControl.updateJobDescriptionFromValue(jobDescriptionValue, partyPK);

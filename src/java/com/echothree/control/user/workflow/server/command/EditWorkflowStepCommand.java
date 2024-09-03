@@ -161,7 +161,7 @@ public class EditWorkflowStepCommand
         } else if(workflowStepDescription != null && description == null) {
             workflowControl.deleteWorkflowStepDescription(workflowStepDescription, partyPK);
         } else if(workflowStepDescription != null && description != null) {
-            WorkflowStepDescriptionValue workflowStepDescriptionValue = workflowControl.getWorkflowStepDescriptionValue(workflowStepDescription);
+            var workflowStepDescriptionValue = workflowControl.getWorkflowStepDescriptionValue(workflowStepDescription);
 
             workflowStepDescriptionValue.setDescription(description);
             workflowControl.updateWorkflowStepDescriptionFromValue(workflowStepDescriptionValue, partyPK);

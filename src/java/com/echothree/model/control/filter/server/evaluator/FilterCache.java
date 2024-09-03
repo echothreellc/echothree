@@ -43,7 +43,7 @@ public class FilterCache {
     
     public CachedFilter getFilterByName(String filterName) {
         CachedFilter cachedFilter = null;
-        Filter filter = filterControl.getFilterByName(filterType, filterName);
+        var filter = filterControl.getFilterByName(filterType, filterName);
         
         if(filter != null)
             cachedFilter = getFilter(filter);

@@ -32,11 +32,11 @@ public class FinancialAccountTransactionTypeDescriptionTransferCache
     }
     
     public FinancialAccountTransactionTypeDescriptionTransfer getFinancialAccountTransactionTypeDescriptionTransfer(FinancialAccountTransactionTypeDescription financialAccountTransactionTypeDescription) {
-        FinancialAccountTransactionTypeDescriptionTransfer financialAccountTransactionTypeDescriptionTransfer = get(financialAccountTransactionTypeDescription);
+        var financialAccountTransactionTypeDescriptionTransfer = get(financialAccountTransactionTypeDescription);
         
         if(financialAccountTransactionTypeDescriptionTransfer == null) {
-            FinancialAccountTransactionTypeTransfer financialAccountTransactionTypeTransfer = financialControl.getFinancialAccountTransactionTypeTransfer(userVisit, financialAccountTransactionTypeDescription.getFinancialAccountTransactionType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, financialAccountTransactionTypeDescription.getLanguage());
+            var financialAccountTransactionTypeTransfer = financialControl.getFinancialAccountTransactionTypeTransfer(userVisit, financialAccountTransactionTypeDescription.getFinancialAccountTransactionType());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, financialAccountTransactionTypeDescription.getLanguage());
             
             financialAccountTransactionTypeDescriptionTransfer = new FinancialAccountTransactionTypeDescriptionTransfer(languageTransfer, financialAccountTransactionTypeTransfer, financialAccountTransactionTypeDescription.getDescription());
             put(financialAccountTransactionTypeDescription, financialAccountTransactionTypeDescriptionTransfer);

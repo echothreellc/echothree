@@ -123,7 +123,7 @@ public class ContentPagesTag
     public int doStartTag()
             throws JspException {
         try {
-            GetContentPagesForm commandForm = ContentUtil.getHome().getGetContentPagesForm();
+            var commandForm = ContentUtil.getHome().getGetContentPagesForm();
 
             commandForm.setContentWebAddressName(contentWebAddressName);
             commandForm.setContentCollectionName(contentCollectionName);
@@ -136,7 +136,7 @@ public class ContentPagesTag
 
             commandForm.setTransferProperties(transferProperties);
 
-            CommandResult commandResult = ContentUtil.getHome().getContentPages(getUserVisitPK(), commandForm);
+            var commandResult = ContentUtil.getHome().getContentPages(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -144,8 +144,8 @@ public class ContentPagesTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetContentPagesResult result = (GetContentPagesResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetContentPagesResult)executionResult.getResult();
 
                 pageContext.setAttribute(var, new ListWrapper<>(result.getContentPages()), scope);
             }

@@ -32,11 +32,11 @@ public class WorkflowEntranceDescriptionTransferCache
     }
     
     public WorkflowEntranceDescriptionTransfer getWorkflowEntranceDescriptionTransfer(WorkflowEntranceDescription workflowEntranceDescription) {
-        WorkflowEntranceDescriptionTransfer workflowEntranceDescriptionTransfer = get(workflowEntranceDescription);
+        var workflowEntranceDescriptionTransfer = get(workflowEntranceDescription);
         
         if(workflowEntranceDescriptionTransfer == null) {
-            WorkflowEntranceTransfer workflowEntranceTransfer = workflowControl.getWorkflowEntranceTransfer(userVisit, workflowEntranceDescription.getWorkflowEntrance());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, workflowEntranceDescription.getLanguage());
+            var workflowEntranceTransfer = workflowControl.getWorkflowEntranceTransfer(userVisit, workflowEntranceDescription.getWorkflowEntrance());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, workflowEntranceDescription.getLanguage());
             
             workflowEntranceDescriptionTransfer = new WorkflowEntranceDescriptionTransfer(languageTransfer, workflowEntranceTransfer, workflowEntranceDescription.getDescription());
             put(workflowEntranceDescription, workflowEntranceDescriptionTransfer);

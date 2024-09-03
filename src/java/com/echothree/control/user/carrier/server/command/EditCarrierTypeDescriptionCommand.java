@@ -89,13 +89,13 @@ public class EditCarrierTypeDescriptionCommand
     public CarrierTypeDescription getEntity(EditCarrierTypeDescriptionResult result) {
         var carrierControl = Session.getModelController(CarrierControl.class);
         CarrierTypeDescription carrierTypeDescription = null;
-        String carrierTypeName = spec.getCarrierTypeName();
-        CarrierType carrierType = carrierControl.getCarrierTypeByName(carrierTypeName);
+        var carrierTypeName = spec.getCarrierTypeName();
+        var carrierType = carrierControl.getCarrierTypeByName(carrierTypeName);
 
         if(carrierType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -137,7 +137,7 @@ public class EditCarrierTypeDescriptionCommand
     @Override
     public void doUpdate(CarrierTypeDescription carrierTypeDescription) {
         var carrierControl = Session.getModelController(CarrierControl.class);
-        CarrierTypeDescriptionValue carrierTypeDescriptionValue = carrierControl.getCarrierTypeDescriptionValue(carrierTypeDescription);
+        var carrierTypeDescriptionValue = carrierControl.getCarrierTypeDescriptionValue(carrierTypeDescription);
         
         carrierTypeDescriptionValue.setDescription(edit.getDescription());
         

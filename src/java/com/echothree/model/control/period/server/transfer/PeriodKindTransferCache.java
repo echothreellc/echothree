@@ -33,14 +33,14 @@ public class PeriodKindTransferCache
     }
     
     public PeriodKindTransfer getPeriodKindTransfer(PeriodKind periodKind) {
-        PeriodKindTransfer periodKindTransfer = get(periodKind);
+        var periodKindTransfer = get(periodKind);
         
         if(periodKindTransfer == null) {
-            PeriodKindDetail periodKindDetail = periodKind.getLastDetail();
-            String periodKindName = periodKindDetail.getPeriodKindName();
-            Boolean isDefault = periodKindDetail.getIsDefault();
-            Integer sortOrder = periodKindDetail.getSortOrder();
-            String description = periodControl.getBestPeriodKindDescription(periodKind, getLanguage());
+            var periodKindDetail = periodKind.getLastDetail();
+            var periodKindName = periodKindDetail.getPeriodKindName();
+            var isDefault = periodKindDetail.getIsDefault();
+            var sortOrder = periodKindDetail.getSortOrder();
+            var description = periodControl.getBestPeriodKindDescription(periodKind, getLanguage());
             
             periodKindTransfer = new PeriodKindTransfer(periodKindName, isDefault, sortOrder, description);
             put(periodKind, periodKindTransfer);

@@ -52,15 +52,15 @@ public class SetDefaultInventoryConditionUseCommand
     @Override
     protected BaseResult execute() {
         var inventoryControl = Session.getModelController(InventoryControl.class);
-        String inventoryConditionUseTypeName = form.getInventoryConditionUseTypeName();
-        InventoryConditionUseType inventoryConditionUseType = inventoryControl.getInventoryConditionUseTypeByName(inventoryConditionUseTypeName);
+        var inventoryConditionUseTypeName = form.getInventoryConditionUseTypeName();
+        var inventoryConditionUseType = inventoryControl.getInventoryConditionUseTypeByName(inventoryConditionUseTypeName);
         
         if(inventoryConditionUseType != null) {
-            String inventoryConditionName = form.getInventoryConditionName();
-            InventoryCondition inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
+            var inventoryConditionName = form.getInventoryConditionName();
+            var inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
             
             if(inventoryCondition != null) {
-                InventoryConditionUseValue inventoryConditionUseValue = inventoryControl.getInventoryConditionUseValueForUpdate(inventoryConditionUseType,
+                var inventoryConditionUseValue = inventoryControl.getInventoryConditionUseValueForUpdate(inventoryConditionUseType,
                         inventoryCondition);
                 
                 if(inventoryConditionUseValue != null) {

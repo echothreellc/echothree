@@ -53,13 +53,13 @@ public class GetSubscriptionTypeChoicesCommand
     @Override
     protected BaseResult execute() {
         var subscriptionControl = Session.getModelController(SubscriptionControl.class);
-        GetSubscriptionTypeChoicesResult result = SubscriptionResultFactory.getGetSubscriptionTypeChoicesResult();
-        String subscriptionKindName = form.getSubscriptionKindName();
-        SubscriptionKind subscriptionKind = subscriptionControl.getSubscriptionKindByName(subscriptionKindName);
+        var result = SubscriptionResultFactory.getGetSubscriptionTypeChoicesResult();
+        var subscriptionKindName = form.getSubscriptionKindName();
+        var subscriptionKind = subscriptionControl.getSubscriptionKindByName(subscriptionKindName);
         
         if(subscriptionKind != null) {
-            String defaultSubscriptionTypeChoice = form.getDefaultSubscriptionTypeChoice();
-            boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+            var defaultSubscriptionTypeChoice = form.getDefaultSubscriptionTypeChoice();
+            var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
             
             result.setSubscriptionTypeChoices(subscriptionControl.getSubscriptionTypeChoices(defaultSubscriptionTypeChoice,
                     getPreferredLanguage(), allowNullChoice, subscriptionKind));

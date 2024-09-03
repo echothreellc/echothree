@@ -56,20 +56,20 @@ public class PrinterGroupTransferCache
     }
     
     public PrinterGroupTransfer getPrinterGroupTransfer(PrinterGroup printerGroup) {
-        PrinterGroupTransfer printerGroupTransfer = get(printerGroup);
+        var printerGroupTransfer = get(printerGroup);
         
         if(printerGroupTransfer == null) {
-            PrinterGroupDetail printerGroupDetail = printerGroup.getLastDetail();
-            UnitOfMeasureKind timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
-            String printerGroupName = printerGroupDetail.getPrinterGroupName();
-            Long unformattedKeepPrintedJobsTime = printerGroupDetail.getKeepPrintedJobsTime();
-            String keepPrintedJobsTime = UnitOfMeasureUtils.getInstance().formatUnitOfMeasure(userVisit, timeUnitOfMeasureKind, unformattedKeepPrintedJobsTime);
-            Boolean isDefault = printerGroupDetail.getIsDefault();
-            Integer sortOrder = printerGroupDetail.getSortOrder();
-            String description = printerControl.getBestPrinterGroupDescription(printerGroup, getLanguage());
-            
-            EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(printerGroup.getPrimaryKey());
-            WorkflowEntityStatusTransfer printerGroupStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
+            var printerGroupDetail = printerGroup.getLastDetail();
+            var timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
+            var printerGroupName = printerGroupDetail.getPrinterGroupName();
+            var unformattedKeepPrintedJobsTime = printerGroupDetail.getKeepPrintedJobsTime();
+            var keepPrintedJobsTime = UnitOfMeasureUtils.getInstance().formatUnitOfMeasure(userVisit, timeUnitOfMeasureKind, unformattedKeepPrintedJobsTime);
+            var isDefault = printerGroupDetail.getIsDefault();
+            var sortOrder = printerGroupDetail.getSortOrder();
+            var description = printerControl.getBestPrinterGroupDescription(printerGroup, getLanguage());
+
+            var entityInstance = coreControl.getEntityInstanceByBasePK(printerGroup.getPrimaryKey());
+            var printerGroupStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
                     PrinterGroupStatusConstants.Workflow_PRINTER_GROUP_STATUS, entityInstance);
             
             printerGroupTransfer = new PrinterGroupTransfer(printerGroupName, unformattedKeepPrintedJobsTime, keepPrintedJobsTime, isDefault, sortOrder,

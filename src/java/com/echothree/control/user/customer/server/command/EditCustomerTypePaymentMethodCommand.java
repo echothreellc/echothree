@@ -77,13 +77,13 @@ public class EditCustomerTypePaymentMethodCommand
     public CustomerTypePaymentMethod getEntity(EditCustomerTypePaymentMethodResult result) {
         var customerControl = Session.getModelController(CustomerControl.class);
         CustomerTypePaymentMethod customerTypePaymentMethod = null;
-        String customerTypeName = spec.getCustomerTypeName();
-        CustomerType customerType = customerControl.getCustomerTypeByName(customerTypeName);
+        var customerTypeName = spec.getCustomerTypeName();
+        var customerType = customerControl.getCustomerTypeByName(customerTypeName);
 
         if(customerType != null) {
             var paymentMethodControl = Session.getModelController(PaymentMethodControl.class);
-            String paymentMethodName = spec.getPaymentMethodName();
-            PaymentMethod paymentMethod = paymentMethodControl.getPaymentMethodByName(paymentMethodName);
+            var paymentMethodName = spec.getPaymentMethodName();
+            var paymentMethod = paymentMethodControl.getPaymentMethodByName(paymentMethodName);
 
             if(paymentMethod != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -127,7 +127,7 @@ public class EditCustomerTypePaymentMethodCommand
     @Override
     public void doUpdate(CustomerTypePaymentMethod customerTypePaymentMethod) {
         var customerControl = Session.getModelController(CustomerControl.class);
-        CustomerTypePaymentMethodValue customerTypePaymentMethodValue = customerControl.getCustomerTypePaymentMethodValue(customerTypePaymentMethod);
+        var customerTypePaymentMethodValue = customerControl.getCustomerTypePaymentMethodValue(customerTypePaymentMethod);
         
         customerTypePaymentMethodValue.setDefaultSelectionPriority(Integer.valueOf(edit.getDefaultSelectionPriority()));
         customerTypePaymentMethodValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));

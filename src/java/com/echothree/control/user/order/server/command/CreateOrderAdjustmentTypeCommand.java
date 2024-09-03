@@ -75,8 +75,8 @@ public class CreateOrderAdjustmentTypeCommand
 
         if(orderType != null) {
             var orderAdjustmentControl = Session.getModelController(OrderAdjustmentControl.class);
-            String orderAdjustmentTypeName = form.getOrderAdjustmentTypeName();
-            OrderAdjustmentType orderAdjustmentType = orderAdjustmentControl.getOrderAdjustmentTypeByName(orderType, orderAdjustmentTypeName);
+            var orderAdjustmentTypeName = form.getOrderAdjustmentTypeName();
+            var orderAdjustmentType = orderAdjustmentControl.getOrderAdjustmentTypeByName(orderType, orderAdjustmentTypeName);
 
             if(orderAdjustmentType == null) {
                 var partyPK = getPartyPK();

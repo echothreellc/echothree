@@ -52,17 +52,17 @@ public class DeleteRecoveryQuestionDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        UserControl userControl = getUserControl();
-        String recoveryQuestionName = form.getRecoveryQuestionName();
-        RecoveryQuestion recoveryQuestion = userControl.getRecoveryQuestionByName(recoveryQuestionName);
+        var userControl = getUserControl();
+        var recoveryQuestionName = form.getRecoveryQuestionName();
+        var recoveryQuestion = userControl.getRecoveryQuestionByName(recoveryQuestionName);
         
         if(recoveryQuestion != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                RecoveryQuestionDescription recoveryQuestionDescription = userControl.getRecoveryQuestionDescriptionForUpdate(recoveryQuestion, language);
+                var recoveryQuestionDescription = userControl.getRecoveryQuestionDescriptionForUpdate(recoveryQuestion, language);
                 
                 if(recoveryQuestionDescription != null) {
                     userControl.deleteRecoveryQuestionDescription(recoveryQuestionDescription, getPartyPK());

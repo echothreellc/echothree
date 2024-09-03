@@ -76,28 +76,28 @@ public class CreateTrainingClassQuestionCommand
     @Override
     protected BaseResult execute() {
         var trainingControl = Session.getModelController(TrainingControl.class);
-        String trainingClassName = form.getTrainingClassName();
-        TrainingClass trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
+        var trainingClassName = form.getTrainingClassName();
+        var trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
 
         if(trainingClass != null) {
-            String trainingClassSectionName = form.getTrainingClassSectionName();
-            TrainingClassSection trainingClassSection = trainingControl.getTrainingClassSectionByName(trainingClass, trainingClassSectionName);
+            var trainingClassSectionName = form.getTrainingClassSectionName();
+            var trainingClassSection = trainingControl.getTrainingClassSectionByName(trainingClass, trainingClassSectionName);
 
             if(trainingClassSection != null) {
-                String trainingClassQuestionName = form.getTrainingClassQuestionName();
-                TrainingClassQuestion trainingClassQuestion = trainingControl.getTrainingClassQuestionByName(trainingClassSection, trainingClassQuestionName);
+                var trainingClassQuestionName = form.getTrainingClassQuestionName();
+                var trainingClassQuestion = trainingControl.getTrainingClassQuestionByName(trainingClassSection, trainingClassQuestionName);
 
                 if(trainingClassQuestion == null) {
-                    MimeTypeLogic mimeTypeLogic = MimeTypeLogic.getInstance();
-                    String question = form.getQuestion();
-                    MimeType questionMimeType = mimeTypeLogic.checkMimeType(this, form.getQuestionMimeTypeName(), question, MimeTypeUsageTypes.TEXT.name(),
+                    var mimeTypeLogic = MimeTypeLogic.getInstance();
+                    var question = form.getQuestion();
+                    var questionMimeType = mimeTypeLogic.checkMimeType(this, form.getQuestionMimeTypeName(), question, MimeTypeUsageTypes.TEXT.name(),
                             ExecutionErrors.MissingRequiredQuestionMimeTypeName.name(), ExecutionErrors.MissingRequiredQuestion.name(),
                             ExecutionErrors.UnknownQuestionMimeTypeName.name(), ExecutionErrors.UnknownQuestionMimeTypeUsage.name());
 
                     if(!hasExecutionErrors()) {
-                        PartyPK createdBy = getPartyPK();
-                        Boolean askingRequired = Boolean.valueOf(form.getAskingRequired());
-                        Boolean passingRequired = Boolean.valueOf(form.getPassingRequired());
+                        var createdBy = getPartyPK();
+                        var askingRequired = Boolean.valueOf(form.getAskingRequired());
+                        var passingRequired = Boolean.valueOf(form.getPassingRequired());
                         var sortOrder = Integer.valueOf(form.getSortOrder());
 
                         trainingClassQuestion = trainingControl.createTrainingClassQuestion(trainingClassSection, trainingClassQuestionName, askingRequired,

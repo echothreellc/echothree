@@ -98,7 +98,7 @@ public class DepartmentLogic
                     // Use of partyName or universalEntitySpec cannot include a divisionParty.
                     if(divisionParty == null) {
                         if(partyName != null) {
-                            Party party = partyControl.getPartyByName(partyName);
+                            var party = partyControl.getPartyByName(partyName);
 
                             if(party != null) {
                                 PartyLogic.getInstance().checkPartyType(eea, party, PartyTypes.DEPARTMENT.name());

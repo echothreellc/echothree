@@ -67,17 +67,17 @@ public class GetServiceDescriptionCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        GetServiceDescriptionResult result = CoreResultFactory.getGetServiceDescriptionResult();
-        String serviceName = form.getServiceName();
-        Service service = coreControl.getServiceByName(serviceName);
+        var result = CoreResultFactory.getGetServiceDescriptionResult();
+        var serviceName = form.getServiceName();
+        var service = coreControl.getServiceByName(serviceName);
 
         if(service != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
-                ServiceDescription serviceDescription = coreControl.getServiceDescription(service, language);
+                var serviceDescription = coreControl.getServiceDescription(service, language);
 
                 if(serviceDescription != null) {
                     result.setServiceDescription(coreControl.getServiceDescriptionTransfer(getUserVisit(), serviceDescription));

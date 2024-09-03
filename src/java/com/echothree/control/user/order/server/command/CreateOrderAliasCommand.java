@@ -75,22 +75,22 @@ public class CreateOrderAliasCommand
 
         if(orderType != null) {
             var orderControl = Session.getModelController(OrderControl.class);
-            String orderName = form.getOrderName();
-            Order order = orderControl.getOrderByName(orderType, orderName);
+            var orderName = form.getOrderName();
+            var order = orderControl.getOrderByName(orderType, orderName);
 
             if(order != null) {
                 var orderAliasControl = Session.getModelController(OrderAliasControl.class);
-                String orderAliasTypeName = form.getOrderAliasTypeName();
-                OrderAliasType orderAliasType = orderAliasControl.getOrderAliasTypeByName(orderType, orderAliasTypeName);
+                var orderAliasTypeName = form.getOrderAliasTypeName();
+                var orderAliasType = orderAliasControl.getOrderAliasTypeByName(orderType, orderAliasTypeName);
 
                 if(orderAliasType != null) {
-                    OrderAliasTypeDetail orderAliasTypeDetail = orderAliasType.getLastDetail();
-                    String validationPattern = orderAliasTypeDetail.getValidationPattern();
-                    String alias = form.getAlias();
+                    var orderAliasTypeDetail = orderAliasType.getLastDetail();
+                    var validationPattern = orderAliasTypeDetail.getValidationPattern();
+                    var alias = form.getAlias();
 
                     if(validationPattern != null) {
-                        Pattern pattern = Pattern.compile(validationPattern);
-                        Matcher m = pattern.matcher(alias);
+                        var pattern = Pattern.compile(validationPattern);
+                        var m = pattern.matcher(alias);
 
                         if(!m.matches()) {
                             addExecutionError(ExecutionErrors.InvalidAlias.name(), alias);

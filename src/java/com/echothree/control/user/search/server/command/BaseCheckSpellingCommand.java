@@ -44,14 +44,14 @@ public abstract class BaseCheckSpellingCommand<F extends BaseCheckSpellingForm, 
     }
     
     protected PartySearchTypePreference getPartySearchTypePreference(SearchControl searchControl, SearchType searchType) {
-        Party party = getParty();
+        var party = getParty();
         
         return party == null ? null : searchControl.getPartySearchTypePreference(party, searchType);
     }
     
     protected SearchDefaultOperator getDefaultSearchDefaultOperator(SearchLogic searchLogic, boolean rememberPreferences,
             PartySearchTypePreferenceDetail partySearchTypePreferenceDetail) {
-        SearchDefaultOperator searchDefaultOperator = partySearchTypePreferenceDetail == null || rememberPreferences ? null
+        var searchDefaultOperator = partySearchTypePreferenceDetail == null || rememberPreferences ? null
                 : partySearchTypePreferenceDetail.getSearchDefaultOperator();
         
         if(searchDefaultOperator == null) {

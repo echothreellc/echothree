@@ -67,11 +67,11 @@ public class CreateTerminationReasonCommand
     @Override
     protected BaseResult execute() {
         var employeeControl = Session.getModelController(EmployeeControl.class);
-        String terminationReasonName = form.getTerminationReasonName();
-        TerminationReason terminationReason = employeeControl.getTerminationReasonByName(terminationReasonName);
+        var terminationReasonName = form.getTerminationReasonName();
+        var terminationReason = employeeControl.getTerminationReasonByName(terminationReasonName);
         
         if(terminationReason == null) {
-            PartyPK createdBy = getPartyPK();
+            var createdBy = getPartyPK();
             var isDefault = Boolean.valueOf(form.getIsDefault());
             var sortOrder = Integer.valueOf(form.getSortOrder());
             var description = form.getDescription();

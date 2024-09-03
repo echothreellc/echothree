@@ -67,16 +67,16 @@ public class DeleteItemCategoryDescriptionCommand
     @Override
     protected BaseResult execute() {
         var itemControl = Session.getModelController(ItemControl.class);
-        String itemCategoryName = form.getItemCategoryName();
-        ItemCategory itemCategory = itemControl.getItemCategoryByName(itemCategoryName);
+        var itemCategoryName = form.getItemCategoryName();
+        var itemCategory = itemControl.getItemCategoryByName(itemCategoryName);
         
         if(itemCategory != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                ItemCategoryDescription itemCategoryDescription = itemControl.getItemCategoryDescriptionForUpdate(itemCategory, language);
+                var itemCategoryDescription = itemControl.getItemCategoryDescriptionForUpdate(itemCategory, language);
                 
                 if(itemCategoryDescription != null) {
                     itemControl.deleteItemCategoryDescription(itemCategoryDescription, getPartyPK());

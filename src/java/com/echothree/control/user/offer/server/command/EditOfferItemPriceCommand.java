@@ -93,7 +93,7 @@ public class EditOfferItemPriceCommand
     @Override
     protected void setupValidatorForEdit(Validator validator, BaseForm specForm) {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        String currencyIsoName = spec.getCurrencyIsoName();
+        var currencyIsoName = spec.getCurrencyIsoName();
         
         validator.setCurrency(accountingControl.getCurrencyByIsoName(currencyIsoName));
     }
@@ -168,7 +168,7 @@ public class EditOfferItemPriceCommand
 
                                         if(lockEntityForUpdate(offerItem)) {
                                             try {
-                                                OfferItemFixedPriceValue offerItemFixedPriceValue = offerItemControl.getOfferItemFixedPriceValueForUpdate(offerItemPrice);
+                                                var offerItemFixedPriceValue = offerItemControl.getOfferItemFixedPriceValueForUpdate(offerItemPrice);
 
                                                 offerItemFixedPriceValue.setUnitPrice(unitPrice);
 
@@ -211,7 +211,7 @@ public class EditOfferItemPriceCommand
                                     if(minimumUnitPrice != null && maximumUnitPrice != null && unitPriceIncrement != null) {
                                         if(lockEntityForUpdate(offerItem)) {
                                             try {
-                                                OfferItemVariablePriceValue offerItemVariablePriceValue = offerItemControl.getOfferItemVariablePriceValueForUpdate(offerItemPrice);
+                                                var offerItemVariablePriceValue = offerItemControl.getOfferItemVariablePriceValueForUpdate(offerItemPrice);
 
                                                 offerItemVariablePriceValue.setMinimumUnitPrice(minimumUnitPrice);
                                                 offerItemVariablePriceValue.setMaximumUnitPrice(maximumUnitPrice);

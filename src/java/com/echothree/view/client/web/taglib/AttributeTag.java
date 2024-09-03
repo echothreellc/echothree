@@ -52,7 +52,7 @@ public class AttributeTag
     @Override
     public int doStartTag()
             throws JspException {
-        HtmlFilterHolder currentHtmlFilterHolder = (HtmlFilterHolder)pageContext.getAttribute(WebConstants.Attribute_HTML_FILTER_HOLDER, PageContext.REQUEST_SCOPE);
+        var currentHtmlFilterHolder = (HtmlFilterHolder)pageContext.getAttribute(WebConstants.Attribute_HTML_FILTER_HOLDER, PageContext.REQUEST_SCOPE);
 
         if(currentHtmlFilterHolder.hasCurrentHtmlTagHolder()) {
             currentHtmlFilterHolder.addAttribute(attribute.toLowerCase(Locale.getDefault()));

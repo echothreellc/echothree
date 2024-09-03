@@ -65,8 +65,8 @@ public class GetWorkflowDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var workflowControl = Session.getModelController(WorkflowControl.class);
-        GetWorkflowDescriptionsResult result = WorkflowResultFactory.getGetWorkflowDescriptionsResult();
-        String workflowName = form.getWorkflowName();
+        var result = WorkflowResultFactory.getGetWorkflowDescriptionsResult();
+        var workflowName = form.getWorkflowName();
         var workflow = workflowControl.getWorkflowByName(workflowName);
         
         if(workflow != null) {

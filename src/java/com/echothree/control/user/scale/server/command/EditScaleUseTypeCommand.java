@@ -91,7 +91,7 @@ public class EditScaleUseTypeCommand
     public ScaleUseType getEntity(EditScaleUseTypeResult result) {
         var scaleControl = Session.getModelController(ScaleControl.class);
         ScaleUseType scaleUseType = null;
-        String scaleUseTypeName = spec.getScaleUseTypeName();
+        var scaleUseTypeName = spec.getScaleUseTypeName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
             scaleUseType = scaleControl.getScaleUseTypeByName(scaleUseTypeName);
@@ -123,8 +123,8 @@ public class EditScaleUseTypeCommand
     @Override
     public void doLock(ScaleUseTypeEdit edit, ScaleUseType scaleUseType) {
         var scaleControl = Session.getModelController(ScaleControl.class);
-        ScaleUseTypeDescription scaleUseTypeDescription = scaleControl.getScaleUseTypeDescription(scaleUseType, getPreferredLanguage());
-        ScaleUseTypeDetail scaleUseTypeDetail = scaleUseType.getLastDetail();
+        var scaleUseTypeDescription = scaleControl.getScaleUseTypeDescription(scaleUseType, getPreferredLanguage());
+        var scaleUseTypeDetail = scaleUseType.getLastDetail();
 
         edit.setScaleUseTypeName(scaleUseTypeDetail.getScaleUseTypeName());
         edit.setIsDefault(scaleUseTypeDetail.getIsDefault().toString());
@@ -138,8 +138,8 @@ public class EditScaleUseTypeCommand
     @Override
     public void canUpdate(ScaleUseType scaleUseType) {
         var scaleControl = Session.getModelController(ScaleControl.class);
-        String scaleUseTypeName = edit.getScaleUseTypeName();
-        ScaleUseType duplicateScaleUseType = scaleControl.getScaleUseTypeByName(scaleUseTypeName);
+        var scaleUseTypeName = edit.getScaleUseTypeName();
+        var duplicateScaleUseType = scaleControl.getScaleUseTypeByName(scaleUseTypeName);
 
         if(duplicateScaleUseType != null && !scaleUseType.equals(duplicateScaleUseType)) {
             addExecutionError(ExecutionErrors.DuplicateScaleUseTypeName.name(), scaleUseTypeName);
@@ -150,9 +150,9 @@ public class EditScaleUseTypeCommand
     public void doUpdate(ScaleUseType scaleUseType) {
         var scaleControl = Session.getModelController(ScaleControl.class);
         var partyPK = getPartyPK();
-        ScaleUseTypeDetailValue scaleUseTypeDetailValue = scaleControl.getScaleUseTypeDetailValueForUpdate(scaleUseType);
-        ScaleUseTypeDescription scaleUseTypeDescription = scaleControl.getScaleUseTypeDescriptionForUpdate(scaleUseType, getPreferredLanguage());
-        String description = edit.getDescription();
+        var scaleUseTypeDetailValue = scaleControl.getScaleUseTypeDetailValueForUpdate(scaleUseType);
+        var scaleUseTypeDescription = scaleControl.getScaleUseTypeDescriptionForUpdate(scaleUseType, getPreferredLanguage());
+        var description = edit.getDescription();
 
         scaleUseTypeDetailValue.setScaleUseTypeName(edit.getScaleUseTypeName());
         scaleUseTypeDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
@@ -165,7 +165,7 @@ public class EditScaleUseTypeCommand
         } else if(scaleUseTypeDescription != null && description == null) {
             scaleControl.deleteScaleUseTypeDescription(scaleUseTypeDescription, partyPK);
         } else if(scaleUseTypeDescription != null && description != null) {
-            ScaleUseTypeDescriptionValue scaleUseTypeDescriptionValue = scaleControl.getScaleUseTypeDescriptionValue(scaleUseTypeDescription);
+            var scaleUseTypeDescriptionValue = scaleControl.getScaleUseTypeDescriptionValue(scaleUseTypeDescription);
 
             scaleUseTypeDescriptionValue.setDescription(description);
             scaleControl.updateScaleUseTypeDescriptionFromValue(scaleUseTypeDescriptionValue, partyPK);

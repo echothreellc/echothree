@@ -122,7 +122,7 @@ public class ContentSectionTag
     public int doStartTag()
             throws JspException {
         try {
-            GetContentSectionForm commandForm = ContentUtil.getHome().getGetContentSectionForm();
+            var commandForm = ContentUtil.getHome().getGetContentSectionForm();
 
             commandForm.setContentWebAddressName(contentWebAddressName);
             commandForm.setContentCollectionName(contentCollectionName);
@@ -135,7 +135,7 @@ public class ContentSectionTag
 
             commandForm.setTransferProperties(transferProperties);
 
-            CommandResult commandResult = ContentUtil.getHome().getContentSection(getUserVisitPK(), commandForm);
+            var commandResult = ContentUtil.getHome().getContentSection(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -143,8 +143,8 @@ public class ContentSectionTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetContentSectionResult result = (GetContentSectionResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetContentSectionResult)executionResult.getResult();
 
                 pageContext.setAttribute(var, result.getContentSection(), scope);
             }

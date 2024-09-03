@@ -89,7 +89,7 @@ public class EditPartyScaleUseCommand
     @Override
     public PartyScaleUse getEntity(EditPartyScaleUseResult result) {
         PartyScaleUse partyScaleUse = null;
-        String partyName = spec.getPartyName();
+        var partyName = spec.getPartyName();
         Party party = null;
 
         if(partyName != null) {
@@ -106,8 +106,8 @@ public class EditPartyScaleUseCommand
 
         if(!hasExecutionErrors()) {
             var scaleControl = Session.getModelController(ScaleControl.class);
-            String scaleUseTypeName = spec.getScaleUseTypeName();
-            ScaleUseType scaleUseType = scaleControl.getScaleUseTypeByName(scaleUseTypeName);
+            var scaleUseTypeName = spec.getScaleUseTypeName();
+            var scaleUseType = scaleControl.getScaleUseTypeByName(scaleUseTypeName);
 
             if(scaleUseType != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -149,7 +149,7 @@ public class EditPartyScaleUseCommand
     @Override
     public void canUpdate(PartyScaleUse partyScaleUse) {
         var scaleControl = Session.getModelController(ScaleControl.class);
-        String scaleName = edit.getScaleName();
+        var scaleName = edit.getScaleName();
 
         scale = scaleControl.getScaleByName(scaleName);
 
@@ -161,7 +161,7 @@ public class EditPartyScaleUseCommand
     @Override
     public void doUpdate(PartyScaleUse partyScaleUse) {
         var scaleControl = Session.getModelController(ScaleControl.class);
-        PartyScaleUseValue partyScaleUseValue = scaleControl.getPartyScaleUseValue(partyScaleUse);
+        var partyScaleUseValue = scaleControl.getPartyScaleUseValue(partyScaleUse);
 
         partyScaleUseValue.setScalePK(scale.getPrimaryKey());
 

@@ -38,14 +38,14 @@ public class InventoryLocationGroupVolumeTransferCache
     
     @Override
     public InventoryLocationGroupVolumeTransfer getTransfer(InventoryLocationGroupVolume inventoryLocationGroupVolume) {
-        InventoryLocationGroupVolumeTransfer inventoryLocationGroupVolumeTransfer = get(inventoryLocationGroupVolume);
+        var inventoryLocationGroupVolumeTransfer = get(inventoryLocationGroupVolume);
         
         if(inventoryLocationGroupVolumeTransfer == null) {
-            InventoryLocationGroupTransfer inventoryLocationGroupTransfer = inventoryControl.getInventoryLocationGroupTransfer(userVisit, inventoryLocationGroupVolume.getInventoryLocationGroup());
-            UnitOfMeasureKind volumeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_VOLUME);
-            String height = formatUnitOfMeasure(volumeUnitOfMeasureKind, inventoryLocationGroupVolume.getHeight());
-            String width = formatUnitOfMeasure(volumeUnitOfMeasureKind, inventoryLocationGroupVolume.getWidth());
-            String depth = formatUnitOfMeasure(volumeUnitOfMeasureKind, inventoryLocationGroupVolume.getDepth());
+            var inventoryLocationGroupTransfer = inventoryControl.getInventoryLocationGroupTransfer(userVisit, inventoryLocationGroupVolume.getInventoryLocationGroup());
+            var volumeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_VOLUME);
+            var height = formatUnitOfMeasure(volumeUnitOfMeasureKind, inventoryLocationGroupVolume.getHeight());
+            var width = formatUnitOfMeasure(volumeUnitOfMeasureKind, inventoryLocationGroupVolume.getWidth());
+            var depth = formatUnitOfMeasure(volumeUnitOfMeasureKind, inventoryLocationGroupVolume.getDepth());
             
             inventoryLocationGroupVolumeTransfer = new InventoryLocationGroupVolumeTransfer(inventoryLocationGroupTransfer, height, width, depth);
             put(inventoryLocationGroupVolume, inventoryLocationGroupVolumeTransfer);

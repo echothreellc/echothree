@@ -68,19 +68,19 @@ public class DeletePartyAliasTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        String partyTypeName = form.getPartyTypeName();
-        PartyType partyType = partyControl.getPartyTypeByName(partyTypeName);
+        var partyTypeName = form.getPartyTypeName();
+        var partyType = partyControl.getPartyTypeByName(partyTypeName);
 
         if(partyType != null) {
-            String partyAliasTypeName = form.getPartyAliasTypeName();
-            PartyAliasType partyAliasType = partyControl.getPartyAliasTypeByName(partyType, partyAliasTypeName);
+            var partyAliasTypeName = form.getPartyAliasTypeName();
+            var partyAliasType = partyControl.getPartyAliasTypeByName(partyType, partyAliasTypeName);
 
             if(partyAliasType != null) {
-                String languageIsoName = form.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = form.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                 if(language != null) {
-                    PartyAliasTypeDescription partyAliasTypeDescription = partyControl.getPartyAliasTypeDescriptionForUpdate(partyAliasType, language);
+                    var partyAliasTypeDescription = partyControl.getPartyAliasTypeDescriptionForUpdate(partyAliasType, language);
 
                     if(partyAliasTypeDescription != null) {
                         partyControl.deletePartyAliasTypeDescription(partyAliasTypeDescription, getPartyPK());

@@ -41,16 +41,16 @@ public class DateFieldType
         
     @Override
     public String validate() {
-        DateTimeFormatDetail dateTimeFormatDetail = getPreferredDateTimeFormat().getLastDetail();
-        ZoneId zoneId = ZoneId.of(getPreferredTimeZone().getLastDetail().getJavaTimeZoneName());
+        var dateTimeFormatDetail = getPreferredDateTimeFormat().getLastDetail();
+        var zoneId = ZoneId.of(getPreferredTimeZone().getLastDetail().getJavaTimeZoneName());
         LocalDate localDate = null;
         
         if(fieldValue.equalsIgnoreCase("TODAY")) {
-            ZonedDateTime zonedDateTime = ZonedDateTime.ofInstant(Instant.ofEpochMilli(getSession().START_TIME), zoneId);
+            var zonedDateTime = ZonedDateTime.ofInstant(Instant.ofEpochMilli(getSession().START_TIME), zoneId);
             
             localDate = LocalDate.of(zonedDateTime.getYear(), zonedDateTime.getMonth(), zonedDateTime.getDayOfMonth());
         } else {
-            DateTimeFormatter javaShortDateFormat = DateTimeFormatter.ofPattern(dateTimeFormatDetail.getJavaShortDateFormat()).withZone(zoneId);
+            var javaShortDateFormat = DateTimeFormatter.ofPattern(dateTimeFormatDetail.getJavaShortDateFormat()).withZone(zoneId);
 
             try {
                 localDate = LocalDate.parse(fieldValue, javaShortDateFormat);

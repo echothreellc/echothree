@@ -32,13 +32,13 @@ public class IconUsageTransferCache
     }
     
     public IconUsageTransfer getIconUsageTransfer(IconUsage iconUsage) {
-        IconUsageTransfer iconUsageTransfer = get(iconUsage);
+        var iconUsageTransfer = get(iconUsage);
         
         if(iconUsageTransfer == null) {
-            IconTransfer icon = iconControl.getIconTransfer(userVisit, iconUsage.getIcon());
-            IconUsageTypeTransfer iconUsageType = iconControl.getIconUsageTypeTransfer(userVisit, iconUsage.getIconUsageType());
-            Boolean isDefault = iconUsageType.getIsDefault();
-            Integer sortOrder = iconUsageType.getSortOrder();
+            var icon = iconControl.getIconTransfer(userVisit, iconUsage.getIcon());
+            var iconUsageType = iconControl.getIconUsageTypeTransfer(userVisit, iconUsage.getIconUsageType());
+            var isDefault = iconUsageType.getIsDefault();
+            var sortOrder = iconUsageType.getSortOrder();
             
             iconUsageTransfer = new IconUsageTransfer(icon, iconUsageType, isDefault, sortOrder);
             put(iconUsage, iconUsageTransfer);

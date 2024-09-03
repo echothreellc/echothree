@@ -49,8 +49,8 @@ public class DeletePrinterGroupCommand
    @Override
     protected BaseResult execute() {
         var printerControl = Session.getModelController(PrinterControl.class);
-        String printerGroupName = form.getPrinterGroupName();
-        PrinterGroup printerGroup = printerControl.getPrinterGroupByNameForUpdate(printerGroupName);
+       var printerGroupName = form.getPrinterGroupName();
+       var printerGroup = printerControl.getPrinterGroupByNameForUpdate(printerGroupName);
         
         if(printerGroup != null) {
             printerControl.deletePrinterGroup(printerGroup, getPartyPK());

@@ -50,11 +50,11 @@ public class SetPrinterGroupJobStatusCommand
    @Override
     protected BaseResult execute() {
         var printerControl = Session.getModelController(PrinterControl.class);
-        String printerGroupJobName = form.getPrinterGroupJobName();
-        PrinterGroupJob printerGroupJob = printerControl.getPrinterGroupJobByName(printerGroupJobName);
+       var printerGroupJobName = form.getPrinterGroupJobName();
+       var printerGroupJob = printerControl.getPrinterGroupJobByName(printerGroupJobName);
         
         if(printerGroupJob != null) {
-            String printerGroupJobStatusChoice = form.getPrinterGroupJobStatusChoice();
+            var printerGroupJobStatusChoice = form.getPrinterGroupJobStatusChoice();
             
             printerControl.setPrinterGroupJobStatus(this, printerGroupJob, printerGroupJobStatusChoice, getPartyPK());
         } else {

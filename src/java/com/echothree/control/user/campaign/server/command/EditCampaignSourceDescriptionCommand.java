@@ -89,13 +89,13 @@ public class EditCampaignSourceDescriptionCommand
     public CampaignSourceDescription getEntity(EditCampaignSourceDescriptionResult result) {
         var campaignControl = Session.getModelController(CampaignControl.class);
         CampaignSourceDescription campaignSourceDescription = null;
-        String campaignSourceName = spec.getCampaignSourceName();
-        CampaignSource campaignSource = campaignControl.getCampaignSourceByName(campaignSourceName);
+        var campaignSourceName = spec.getCampaignSourceName();
+        var campaignSource = campaignControl.getCampaignSourceByName(campaignSourceName);
 
         if(campaignSource != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -137,7 +137,7 @@ public class EditCampaignSourceDescriptionCommand
     @Override
     public void doUpdate(CampaignSourceDescription campaignSourceDescription) {
         var campaignControl = Session.getModelController(CampaignControl.class);
-        CampaignSourceDescriptionValue campaignSourceDescriptionValue = campaignControl.getCampaignSourceDescriptionValue(campaignSourceDescription);
+        var campaignSourceDescriptionValue = campaignControl.getCampaignSourceDescriptionValue(campaignSourceDescription);
         campaignSourceDescriptionValue.setDescription(edit.getDescription());
 
         campaignControl.updateCampaignSourceDescriptionFromValue(campaignSourceDescriptionValue, getPartyPK());

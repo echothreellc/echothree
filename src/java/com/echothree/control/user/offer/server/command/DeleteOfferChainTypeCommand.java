@@ -69,20 +69,20 @@ public class DeleteOfferChainTypeCommand
     @Override
     protected BaseResult execute() {
         var offerControl = Session.getModelController(OfferControl.class);
-        String offerName = form.getOfferName();
-        Offer offer = offerControl.getOfferByName(offerName);
+        var offerName = form.getOfferName();
+        var offer = offerControl.getOfferByName(offerName);
         
         if(offer != null) {
             var chainControl = Session.getModelController(ChainControl.class);
-            String chainKindName = form.getChainKindName();
-            ChainKind chainKind = chainControl.getChainKindByName(chainKindName);
+            var chainKindName = form.getChainKindName();
+            var chainKind = chainControl.getChainKindByName(chainKindName);
             
             if(chainKind != null) {
-                String chainTypeName = form.getChainTypeName();
-                ChainType chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
+                var chainTypeName = form.getChainTypeName();
+                var chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
                 
                 if(chainType != null) {
-                    OfferChainType offerChainType = offerControl.getOfferChainTypeForUpdate(offer, chainType);
+                    var offerChainType = offerControl.getOfferChainTypeForUpdate(offer, chainType);
                     
                     if(offerChainType != null) {
                         offerControl.deleteOfferChainType(offerChainType, getPartyPK());

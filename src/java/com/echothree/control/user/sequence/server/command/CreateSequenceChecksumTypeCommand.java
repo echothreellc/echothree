@@ -65,8 +65,8 @@ public class CreateSequenceChecksumTypeCommand
     @Override
     protected BaseResult execute() {
         var sequenceControl = Session.getModelController(SequenceControl.class);
-        String sequenceChecksumTypeName = form.getSequenceChecksumTypeName();
-        SequenceChecksumType sequenceChecksumType = sequenceControl.getSequenceChecksumTypeByName(sequenceChecksumTypeName);
+        var sequenceChecksumTypeName = form.getSequenceChecksumTypeName();
+        var sequenceChecksumType = sequenceControl.getSequenceChecksumTypeByName(sequenceChecksumTypeName);
         
         if(sequenceChecksumType == null) {
             var isDefault = Boolean.valueOf(form.getIsDefault());

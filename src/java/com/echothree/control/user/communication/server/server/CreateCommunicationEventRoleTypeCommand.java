@@ -50,8 +50,8 @@ public class CreateCommunicationEventRoleTypeCommand
     @Override
     protected BaseResult execute() {
         var communicationControl = Session.getModelController(CommunicationControl.class);
-        String communicationEventRoleTypeName = form.getCommunicationEventRoleTypeName();
-        CommunicationEventRoleType communicationEventRoleType = communicationControl.getCommunicationEventRoleTypeByName(communicationEventRoleTypeName);
+        var communicationEventRoleTypeName = form.getCommunicationEventRoleTypeName();
+        var communicationEventRoleType = communicationControl.getCommunicationEventRoleTypeByName(communicationEventRoleTypeName);
         
         if(communicationEventRoleType == null) {
             var sortOrder = Integer.valueOf(form.getSortOrder());

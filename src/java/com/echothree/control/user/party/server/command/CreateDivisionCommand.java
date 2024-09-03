@@ -68,30 +68,30 @@ public class CreateDivisionCommand
     
     @Override
     protected BaseResult execute() {
-        CreateDivisionResult result = PartyResultFactory.getCreateDivisionResult();
+        var result = PartyResultFactory.getCreateDivisionResult();
         var partyControl = Session.getModelController(PartyControl.class);
-        String companyName = form.getCompanyName();
-        PartyCompany partyCompany = partyControl.getPartyCompanyByName(companyName);
+        var companyName = form.getCompanyName();
+        var partyCompany = partyControl.getPartyCompanyByName(companyName);
         
         if(partyCompany != null) {
-            String divisionName = form.getDivisionName();
-            Party partyCompanyParty = partyCompany.getParty();
-            PartyDivision partyDivision = partyControl.getPartyDivisionByName(partyCompanyParty, divisionName);
+            var divisionName = form.getDivisionName();
+            var partyCompanyParty = partyCompany.getParty();
+            var partyDivision = partyControl.getPartyDivisionByName(partyCompanyParty, divisionName);
             
             if(partyDivision == null) {
-                String preferredLanguageIsoName = form.getPreferredLanguageIsoName();
-                Language preferredLanguage = preferredLanguageIsoName == null? null: partyControl.getLanguageByIsoName(preferredLanguageIsoName);
+                var preferredLanguageIsoName = form.getPreferredLanguageIsoName();
+                var preferredLanguage = preferredLanguageIsoName == null? null: partyControl.getLanguageByIsoName(preferredLanguageIsoName);
                 
                 if(preferredLanguageIsoName == null || (preferredLanguage != null)) {
-                    String preferredJavaTimeZoneName = form.getPreferredJavaTimeZoneName();
-                    TimeZone preferredTimeZone = preferredJavaTimeZoneName == null? null: partyControl.getTimeZoneByJavaName(preferredJavaTimeZoneName);
+                    var preferredJavaTimeZoneName = form.getPreferredJavaTimeZoneName();
+                    var preferredTimeZone = preferredJavaTimeZoneName == null? null: partyControl.getTimeZoneByJavaName(preferredJavaTimeZoneName);
                     
                     if(preferredJavaTimeZoneName == null || (preferredTimeZone != null)) {
-                        String preferredDateTimeFormatName = form.getPreferredDateTimeFormatName();
-                        DateTimeFormat preferredDateTimeFormat = preferredDateTimeFormatName == null? null: partyControl.getDateTimeFormatByName(preferredDateTimeFormatName);
+                        var preferredDateTimeFormatName = form.getPreferredDateTimeFormatName();
+                        var preferredDateTimeFormat = preferredDateTimeFormatName == null? null: partyControl.getDateTimeFormatByName(preferredDateTimeFormatName);
                         
                         if(preferredDateTimeFormatName == null || (preferredDateTimeFormat != null)) {
-                            String preferredCurrencyIsoName = form.getPreferredCurrencyIsoName();
+                            var preferredCurrencyIsoName = form.getPreferredCurrencyIsoName();
                             Currency preferredCurrency;
                             
                             if(preferredCurrencyIsoName == null)
@@ -102,13 +102,13 @@ public class CreateDivisionCommand
                             }
                             
                             if(preferredCurrencyIsoName == null || (preferredCurrency != null)) {
-                                PartyType partyType = partyControl.getPartyTypeByName(PartyTypes.DIVISION.name());
+                                var partyType = partyControl.getPartyTypeByName(PartyTypes.DIVISION.name());
                                 BasePK createdBy = getPartyPK();
-                                String name = form.getName();
+                                var name = form.getName();
                                 var isDefault = Boolean.valueOf(form.getIsDefault());
                                 var sortOrder = Integer.valueOf(form.getSortOrder());
-                                
-                                Party party = partyControl.createParty(null, partyType, preferredLanguage, preferredCurrency, preferredTimeZone, preferredDateTimeFormat, createdBy);
+
+                                var party = partyControl.createParty(null, partyType, preferredLanguage, preferredCurrency, preferredTimeZone, preferredDateTimeFormat, createdBy);
                                 partyControl.createPartyGroup(party, name, createdBy);
                                 partyDivision = partyControl.createPartyDivision(party, partyCompanyParty, divisionName, isDefault, sortOrder, createdBy);
                             } else {
@@ -128,7 +128,7 @@ public class CreateDivisionCommand
             }
             
             if(partyDivision != null) {
-                Party party = partyDivision.getParty();
+                var party = partyDivision.getParty();
                 
                 result.setEntityRef(party.getPrimaryKey().getEntityRef());
                 result.setDivisionName(partyDivision.getPartyDivisionName());

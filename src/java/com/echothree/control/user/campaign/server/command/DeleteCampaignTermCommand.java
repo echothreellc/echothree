@@ -63,8 +63,8 @@ public class DeleteCampaignTermCommand
     @Override
     protected BaseResult execute() {
         var campaignControl = Session.getModelController(CampaignControl.class);
-        String campaignTermName = form.getCampaignTermName();
-        CampaignTerm campaignTerm = campaignControl.getCampaignTermByNameForUpdate(campaignTermName);
+        var campaignTermName = form.getCampaignTermName();
+        var campaignTerm = campaignControl.getCampaignTermByNameForUpdate(campaignTermName);
         
         if(campaignTerm != null) {
             campaignControl.deleteCampaignTerm(campaignTerm, getPartyPK());

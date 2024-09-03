@@ -61,7 +61,7 @@ public class GetChainActionTypesCommand
     @Override
     protected BaseResult execute() {
         var chainControl = Session.getModelController(ChainControl.class);
-        GetChainActionTypesResult result = ChainResultFactory.getGetChainActionTypesResult();
+        var result = ChainResultFactory.getGetChainActionTypesResult();
         
         result.setChainActionTypes(chainControl.getChainActionTypeTransfers(getUserVisit()));
         

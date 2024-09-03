@@ -49,8 +49,8 @@ public class DeleteClubCommand
     @Override
     protected BaseResult execute() {
         var clubControl = Session.getModelController(ClubControl.class);
-        String clubName = form.getClubName();
-        Club club = clubControl.getClubByNameForUpdate(clubName);
+        var clubName = form.getClubName();
+        var club = clubControl.getClubByNameForUpdate(clubName);
         
         if(club != null) {
             clubControl.deleteClub(club, getPartyPK());

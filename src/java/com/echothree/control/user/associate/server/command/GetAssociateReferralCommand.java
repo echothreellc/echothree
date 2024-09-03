@@ -51,9 +51,9 @@ public class GetAssociateReferralCommand
     @Override
     protected BaseResult execute() {
         var associateControl = Session.getModelController(AssociateControl.class);
-        GetAssociateReferralResult result = AssociateResultFactory.getGetAssociateReferralResult();
-        String associateReferralName = form.getAssociateReferralName();
-        AssociateReferral associateReferral = associateControl.getAssociateReferralByName(associateReferralName);
+        var result = AssociateResultFactory.getGetAssociateReferralResult();
+        var associateReferralName = form.getAssociateReferralName();
+        var associateReferral = associateControl.getAssociateReferralByName(associateReferralName);
         
         if(associateReferral != null) {
             result.setAssociateReferral(associateControl.getAssociateReferralTransfer(getUserVisit(), associateReferral));

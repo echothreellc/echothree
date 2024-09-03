@@ -63,8 +63,8 @@ public class DeleteContentWebAddressCommand
     @Override
     protected BaseResult execute() {
         var contentControl = Session.getModelController(ContentControl.class);
-        String contentWebAddressName = form.getContentWebAddressName();
-        ContentWebAddress contentWebAddress = contentControl.getContentWebAddressByNameForUpdate(contentWebAddressName);
+        var contentWebAddressName = form.getContentWebAddressName();
+        var contentWebAddress = contentControl.getContentWebAddressByNameForUpdate(contentWebAddressName);
         
         if(contentWebAddress != null) {
             contentControl.deleteContentWebAddress(contentWebAddress, getPartyPK());

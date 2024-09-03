@@ -68,17 +68,17 @@ public class GetSearchCheckSpellingActionTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var searchControl = Session.getModelController(SearchControl.class);
-        GetSearchCheckSpellingActionTypeDescriptionResult result = SearchResultFactory.getGetSearchCheckSpellingActionTypeDescriptionResult();
-        String searchCheckSpellingActionTypeName = form.getSearchCheckSpellingActionTypeName();
-        SearchCheckSpellingActionType searchCheckSpellingActionType = searchControl.getSearchCheckSpellingActionTypeByName(searchCheckSpellingActionTypeName);
+        var result = SearchResultFactory.getGetSearchCheckSpellingActionTypeDescriptionResult();
+        var searchCheckSpellingActionTypeName = form.getSearchCheckSpellingActionTypeName();
+        var searchCheckSpellingActionType = searchControl.getSearchCheckSpellingActionTypeByName(searchCheckSpellingActionTypeName);
 
         if(searchCheckSpellingActionType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
-                SearchCheckSpellingActionTypeDescription searchCheckSpellingActionTypeDescription = searchControl.getSearchCheckSpellingActionTypeDescription(searchCheckSpellingActionType, language);
+                var searchCheckSpellingActionTypeDescription = searchControl.getSearchCheckSpellingActionTypeDescription(searchCheckSpellingActionType, language);
 
                 if(searchCheckSpellingActionTypeDescription != null) {
                     result.setSearchCheckSpellingActionTypeDescription(searchControl.getSearchCheckSpellingActionTypeDescriptionTransfer(getUserVisit(), searchCheckSpellingActionTypeDescription));

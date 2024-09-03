@@ -61,8 +61,8 @@ public class DeleteEntityAttributeGroupCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String entityAttributeGroupName = form.getEntityAttributeGroupName();
-        EntityAttributeGroup entityAttributeGroup = coreControl.getEntityAttributeGroupByNameForUpdate(entityAttributeGroupName);
+        var entityAttributeGroupName = form.getEntityAttributeGroupName();
+        var entityAttributeGroup = coreControl.getEntityAttributeGroupByNameForUpdate(entityAttributeGroupName);
         
         if(entityAttributeGroup != null) {
             coreControl.deleteEntityAttributeGroup(entityAttributeGroup, getPartyPK());

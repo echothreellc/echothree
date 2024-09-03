@@ -67,16 +67,16 @@ public class DeleteLetterSourceDescriptionCommand
     @Override
     protected BaseResult execute() {
         var letterControl = Session.getModelController(LetterControl.class);
-        String letterSourceName = form.getLetterSourceName();
-        LetterSource letterSource = letterControl.getLetterSourceByName(letterSourceName);
+        var letterSourceName = form.getLetterSourceName();
+        var letterSource = letterControl.getLetterSourceByName(letterSourceName);
         
         if(letterSource != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                LetterSourceDescription letterSourceDescription = letterControl.getLetterSourceDescriptionForUpdate(letterSource, language);
+                var letterSourceDescription = letterControl.getLetterSourceDescriptionForUpdate(letterSource, language);
                 
                 if(letterSourceDescription != null) {
                     letterControl.deleteLetterSourceDescription(letterSourceDescription, getPartyPK());

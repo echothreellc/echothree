@@ -52,12 +52,12 @@ public class GetTransactionsCommand
     @Override
     protected BaseResult execute() {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        GetTransactionsResult result = AccountingResultFactory.getGetTransactionsResult();
-        String transactionGroupName = form.getTransactionGroupName();
-        TransactionGroup transactionGroup = accountingControl.getTransactionGroupByName(transactionGroupName);
+        var result = AccountingResultFactory.getGetTransactionsResult();
+        var transactionGroupName = form.getTransactionGroupName();
+        var transactionGroup = accountingControl.getTransactionGroupByName(transactionGroupName);
         
         if(transactionGroup != null) {
-            UserVisit userVisit = getUserVisit();
+            var userVisit = getUserVisit();
             
             result.setTransactionGroup(accountingControl.getTransactionGroupTransfer(userVisit, transactionGroup));
             result.setTransactions(accountingControl.getTransactionTransfersByTransactionGroup(userVisit, transactionGroup));

@@ -50,9 +50,9 @@ public class GetSelectorComparisonTypeChoicesCommand
     @Override
     protected BaseResult execute() {
         var selectorControl = Session.getModelController(SelectorControl.class);
-        GetSelectorComparisonTypeChoicesResult result = SelectorResultFactory.getGetSelectorComparisonTypeChoicesResult();
-        String defaultSelectorComparisonTypeChoice = form.getDefaultSelectorComparisonTypeChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = SelectorResultFactory.getGetSelectorComparisonTypeChoicesResult();
+        var defaultSelectorComparisonTypeChoice = form.getDefaultSelectorComparisonTypeChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setSelectorComparisonTypeChoices(selectorControl.getSelectorComparisonTypeChoices(defaultSelectorComparisonTypeChoice,
                 getPreferredLanguage(), allowNullChoice));

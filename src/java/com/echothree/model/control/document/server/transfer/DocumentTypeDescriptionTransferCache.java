@@ -32,11 +32,11 @@ public class DocumentTypeDescriptionTransferCache
     }
     
     public DocumentTypeDescriptionTransfer getDocumentTypeDescriptionTransfer(DocumentTypeDescription documentTypeDescription) {
-        DocumentTypeDescriptionTransfer documentTypeDescriptionTransfer = get(documentTypeDescription);
+        var documentTypeDescriptionTransfer = get(documentTypeDescription);
         
         if(documentTypeDescriptionTransfer == null) {
-            DocumentTypeTransfer documentTypeTransfer = documentControl.getDocumentTypeTransfer(userVisit, documentTypeDescription.getDocumentType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, documentTypeDescription.getLanguage());
+            var documentTypeTransfer = documentControl.getDocumentTypeTransfer(userVisit, documentTypeDescription.getDocumentType());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, documentTypeDescription.getLanguage());
             
             documentTypeDescriptionTransfer = new DocumentTypeDescriptionTransfer(languageTransfer, documentTypeTransfer, documentTypeDescription.getDescription());
             put(documentTypeDescription, documentTypeDescriptionTransfer);

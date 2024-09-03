@@ -66,16 +66,16 @@ public class SetDefaultWorkflowDestinationCommand
     @Override
     protected BaseResult execute() {
         var workflowControl = Session.getModelController(WorkflowControl.class);
-        String workflowName = form.getWorkflowName();
+        var workflowName = form.getWorkflowName();
         var workflow = workflowControl.getWorkflowByName(workflowName);
         
         if(workflow != null) {
-            String workflowStepName = form.getWorkflowStepName();
+            var workflowStepName = form.getWorkflowStepName();
             var workflowStep = workflowControl.getWorkflowStepByName(workflow, workflowStepName);
             
             if(workflowStep != null) {
-                String workflowDestinationName = form.getWorkflowDestinationName();
-                WorkflowDestinationDetailValue workflowDestinationDetailValue = workflowControl.getWorkflowDestinationDetailValueByNameForUpdate(workflowStep, workflowDestinationName);
+                var workflowDestinationName = form.getWorkflowDestinationName();
+                var workflowDestinationDetailValue = workflowControl.getWorkflowDestinationDetailValueByNameForUpdate(workflowStep, workflowDestinationName);
                 
                 if(workflowDestinationDetailValue != null) {
                     workflowDestinationDetailValue.setIsDefault(Boolean.TRUE);

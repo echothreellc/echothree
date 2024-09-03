@@ -55,19 +55,19 @@ public class GetInventoryLocationGroupStatusChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        GetInventoryLocationGroupStatusChoicesResult result = InventoryResultFactory.getGetInventoryLocationGroupStatusChoicesResult();
+        var result = InventoryResultFactory.getGetInventoryLocationGroupStatusChoicesResult();
         var warehouseControl = Session.getModelController(WarehouseControl.class);
-        String warehouseName = form.getWarehouseName();
-        Warehouse warehouse = warehouseControl.getWarehouseByName(warehouseName);
+        var warehouseName = form.getWarehouseName();
+        var warehouse = warehouseControl.getWarehouseByName(warehouseName);
         
         if(warehouse != null) {
             var inventoryControl = Session.getModelController(InventoryControl.class);
-            Party warehouseParty = warehouse.getParty();
-            String inventoryLocationGroupName = form.getInventoryLocationGroupName();
-            InventoryLocationGroup inventoryLocationGroup = inventoryControl.getInventoryLocationGroupByName(warehouseParty, inventoryLocationGroupName);
+            var warehouseParty = warehouse.getParty();
+            var inventoryLocationGroupName = form.getInventoryLocationGroupName();
+            var inventoryLocationGroup = inventoryControl.getInventoryLocationGroupByName(warehouseParty, inventoryLocationGroupName);
             
             if(inventoryLocationGroup != null) {
-                String defaultInventoryLocationGroupStatusChoice = form.getDefaultInventoryLocationGroupStatusChoice();
+                var defaultInventoryLocationGroupStatusChoice = form.getDefaultInventoryLocationGroupStatusChoice();
                 
                 result.setInventoryLocationGroupStatusChoices(inventoryControl.getInventoryLocationGroupStatusChoices(defaultInventoryLocationGroupStatusChoice,
                         getPreferredLanguage(), inventoryLocationGroup, getPartyPK()));

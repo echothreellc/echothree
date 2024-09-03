@@ -35,11 +35,11 @@ public class FontWeightDescriptionTransferCache
     }
     
     public FontWeightDescriptionTransfer getFontWeightDescriptionTransfer(FontWeightDescription fontWeightDescription) {
-        FontWeightDescriptionTransfer fontWeightDescriptionTransfer = get(fontWeightDescription);
+        var fontWeightDescriptionTransfer = get(fontWeightDescription);
         
         if(fontWeightDescriptionTransfer == null) {
-            FontWeightTransfer fontWeightTransfer = coreControl.getFontWeightTransfer(userVisit, fontWeightDescription.getFontWeight());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, fontWeightDescription.getLanguage());
+            var fontWeightTransfer = coreControl.getFontWeightTransfer(userVisit, fontWeightDescription.getFontWeight());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, fontWeightDescription.getLanguage());
             
             fontWeightDescriptionTransfer = new FontWeightDescriptionTransfer(languageTransfer, fontWeightTransfer, fontWeightDescription.getDescription());
             put(fontWeightDescription, fontWeightDescriptionTransfer);

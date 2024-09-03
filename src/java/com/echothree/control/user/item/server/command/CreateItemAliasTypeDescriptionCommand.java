@@ -68,16 +68,16 @@ public class CreateItemAliasTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var itemControl = Session.getModelController(ItemControl.class);
-        String itemAliasTypeName = form.getItemAliasTypeName();
-        ItemAliasType itemAliasType = itemControl.getItemAliasTypeByName(itemAliasTypeName);
+        var itemAliasTypeName = form.getItemAliasTypeName();
+        var itemAliasType = itemControl.getItemAliasTypeByName(itemAliasTypeName);
         
         if(itemAliasType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                ItemAliasTypeDescription itemAliasTypeDescription = itemControl.getItemAliasTypeDescription(itemAliasType, language);
+                var itemAliasTypeDescription = itemControl.getItemAliasTypeDescription(itemAliasType, language);
                 
                 if(itemAliasTypeDescription == null) {
                     var description = form.getDescription();

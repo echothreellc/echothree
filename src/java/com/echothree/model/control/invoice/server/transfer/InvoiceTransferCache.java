@@ -74,7 +74,7 @@ public class InvoiceTransferCache
     }
 
     private InvoiceTransfer setInvoiceTimes(Invoice invoice, InvoiceTransfer invoiceTransfer) {
-        List<InvoiceTimeTransfer> invoiceTimeTransfers = invoiceControl.getInvoiceTimeTransfersByInvoice(userVisit, invoice);
+        var invoiceTimeTransfers = invoiceControl.getInvoiceTimeTransfersByInvoice(userVisit, invoice);
         MapWrapper<InvoiceTimeTransfer> invoiceTimes = new MapWrapper<>(invoiceTimeTransfers.size());
 
         invoiceTimeTransfers.forEach((invoiceTimeTransfer) -> {
@@ -87,7 +87,7 @@ public class InvoiceTransferCache
     }
 
     private InvoiceTransfer setInvoiceRoles(Invoice invoice, InvoiceTransfer invoiceTransfer) {
-        List<InvoiceRoleTransfer> invoiceRoleTransfers = invoiceControl.getInvoiceRoleTransfersByInvoice(userVisit, invoice);
+        var invoiceRoleTransfers = invoiceControl.getInvoiceRoleTransfersByInvoice(userVisit, invoice);
         MapWrapper<InvoiceRoleTransfer> invoiceRoles = new MapWrapper<>(invoiceRoleTransfers.size());
 
         invoiceRoleTransfers.forEach((invoiceRoleTransfer) -> {
@@ -100,21 +100,21 @@ public class InvoiceTransferCache
     }
 
     public InvoiceTransfer getInvoiceTransfer(Invoice invoice) {
-        InvoiceTransfer invoiceTransfer = get(invoice);
+        var invoiceTransfer = get(invoice);
         
         if(invoiceTransfer == null) {
-            InvoiceDetail invoiceDetail = invoice.getLastDetail();
-            InvoiceTypeTransfer invoiceType = invoiceControl.getInvoiceTypeTransfer(userVisit, invoiceDetail.getInvoiceType());
-            String invoiceName = invoiceDetail.getInvoiceName();
-            BillingAccountTransfer billingAccount = billingControl.getBillingAccountTransfer(userVisit, invoiceDetail.getBillingAccount());
-            GlAccountTransfer glAccount = accountingControl.getGlAccountTransfer(userVisit, invoiceDetail.getGlAccount());
-            TermTransfer term = termControl.getTermTransfer(userVisit, invoiceDetail.getTerm()); 
-            String reference = invoiceDetail.getReference();
-            String description = invoiceDetail.getDescription();
+            var invoiceDetail = invoice.getLastDetail();
+            var invoiceType = invoiceControl.getInvoiceTypeTransfer(userVisit, invoiceDetail.getInvoiceType());
+            var invoiceName = invoiceDetail.getInvoiceName();
+            var billingAccount = billingControl.getBillingAccountTransfer(userVisit, invoiceDetail.getBillingAccount());
+            var glAccount = accountingControl.getGlAccountTransfer(userVisit, invoiceDetail.getGlAccount());
+            var term = termControl.getTermTransfer(userVisit, invoiceDetail.getTerm());
+            var reference = invoiceDetail.getReference();
+            var description = invoiceDetail.getDescription();
             WorkflowEntityStatusTransfer invoiceStatus = null;
-            
-            String invoiceTypeName = invoiceType.getInvoiceTypeName();
-            EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(invoice.getPrimaryKey());
+
+            var invoiceTypeName = invoiceType.getInvoiceTypeName();
+            var entityInstance = coreControl.getEntityInstanceByBasePK(invoice.getPrimaryKey());
             if(invoiceTypeName.equals(InvoiceTypes.PURCHASE_INVOICE.name())) {
                 invoiceStatus = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit, PurchaseInvoiceStatusConstants.Workflow_PURCHASE_INVOICE_STATUS, entityInstance);
             }

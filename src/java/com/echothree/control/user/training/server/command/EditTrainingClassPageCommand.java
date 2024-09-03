@@ -103,16 +103,16 @@ public class EditTrainingClassPageCommand
     public TrainingClassPage getEntity(EditTrainingClassPageResult result) {
         var trainingControl = Session.getModelController(TrainingControl.class);
         TrainingClassPage trainingClassPage = null;
-        String trainingClassName = spec.getTrainingClassName();
-        TrainingClass trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
+        var trainingClassName = spec.getTrainingClassName();
+        var trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
 
         if(trainingClass != null) {
-            String trainingClassSectionName = spec.getTrainingClassSectionName();
+            var trainingClassSectionName = spec.getTrainingClassSectionName();
             
             trainingClassSection = trainingControl.getTrainingClassSectionByName(trainingClass, trainingClassSectionName);
 
             if(trainingClassSection != null) {
-                String trainingClassPageName = spec.getTrainingClassPageName();
+                var trainingClassPageName = spec.getTrainingClassPageName();
 
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
                     trainingClassPage = trainingControl.getTrainingClassPageByName(trainingClassSection, trainingClassPageName);
@@ -153,8 +153,8 @@ public class EditTrainingClassPageCommand
     @Override
     public void doLock(TrainingClassPageEdit edit, TrainingClassPage trainingClassPage) {
         var trainingControl = Session.getModelController(TrainingControl.class);
-        TrainingClassPageTranslation trainingClassPageTranslation = trainingControl.getTrainingClassPageTranslation(trainingClassPage, getPreferredLanguage());
-        TrainingClassPageDetail trainingClassPageDetail = trainingClassPage.getLastDetail();
+        var trainingClassPageTranslation = trainingControl.getTrainingClassPageTranslation(trainingClassPage, getPreferredLanguage());
+        var trainingClassPageDetail = trainingClassPage.getLastDetail();
 
         edit.setTrainingClassPageName(trainingClassPageDetail.getTrainingClassPageName());
         edit.setSortOrder(trainingClassPageDetail.getSortOrder().toString());
@@ -171,15 +171,15 @@ public class EditTrainingClassPageCommand
     @Override
     public void canUpdate(TrainingClassPage trainingClassPage) {
         var trainingControl = Session.getModelController(TrainingControl.class);
-        String trainingClassPageName = edit.getTrainingClassPageName();
-        TrainingClassPage duplicateTrainingClassPage = trainingControl.getTrainingClassPageByName(trainingClassSection, trainingClassPageName);
+        var trainingClassPageName = edit.getTrainingClassPageName();
+        var duplicateTrainingClassPage = trainingControl.getTrainingClassPageByName(trainingClassSection, trainingClassPageName);
 
         if(duplicateTrainingClassPage != null && !trainingClassPage.equals(duplicateTrainingClassPage)) {
             addExecutionError(ExecutionErrors.DuplicateTrainingClassPageName.name(), trainingClassPageName);
         } else {
-            MimeTypeLogic mimeTypeLogic = MimeTypeLogic.getInstance();
-            String pageMimeTypeName = edit.getPageMimeTypeName();
-            String page = edit.getPage();
+            var mimeTypeLogic = MimeTypeLogic.getInstance();
+            var pageMimeTypeName = edit.getPageMimeTypeName();
+            var page = edit.getPage();
 
             pageMimeType = mimeTypeLogic.checkMimeType(this, pageMimeTypeName, page, MimeTypeUsageTypes.TEXT.name(),
                     ExecutionErrors.MissingRequiredPageMimeTypeName.name(), ExecutionErrors.MissingRequiredPage.name(),
@@ -191,10 +191,10 @@ public class EditTrainingClassPageCommand
     public void doUpdate(TrainingClassPage trainingClassPage) {
         var trainingControl = Session.getModelController(TrainingControl.class);
         var partyPK = getPartyPK();
-        TrainingClassPageDetailValue trainingClassPageDetailValue = trainingControl.getTrainingClassPageDetailValueForUpdate(trainingClassPage);
-        TrainingClassPageTranslation trainingClassPageTranslation = trainingControl.getTrainingClassPageTranslationForUpdate(trainingClassPage, getPreferredLanguage());
-        String description = edit.getDescription();
-        String page = edit.getPage();
+        var trainingClassPageDetailValue = trainingControl.getTrainingClassPageDetailValueForUpdate(trainingClassPage);
+        var trainingClassPageTranslation = trainingControl.getTrainingClassPageTranslationForUpdate(trainingClassPage, getPreferredLanguage());
+        var description = edit.getDescription();
+        var page = edit.getPage();
 
         trainingClassPageDetailValue.setTrainingClassPageName(edit.getTrainingClassPageName());
         trainingClassPageDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
@@ -207,7 +207,7 @@ public class EditTrainingClassPageCommand
         } else if(trainingClassPageTranslation != null && (description == null && page == null)) {
             trainingControl.deleteTrainingClassPageTranslation(trainingClassPageTranslation, partyPK);
         } else if(trainingClassPageTranslation != null && (description != null || page != null)) {
-            TrainingClassPageTranslationValue trainingClassPageTranslationValue = trainingControl.getTrainingClassPageTranslationValue(trainingClassPageTranslation);
+            var trainingClassPageTranslationValue = trainingControl.getTrainingClassPageTranslationValue(trainingClassPageTranslation);
 
             trainingClassPageTranslationValue.setDescription(description);
             trainingClassPageTranslationValue.setPageMimeTypePK(pageMimeType == null? null: pageMimeType.getPrimaryKey());

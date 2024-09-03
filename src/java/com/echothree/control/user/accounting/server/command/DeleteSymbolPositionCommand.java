@@ -63,8 +63,8 @@ public class DeleteSymbolPositionCommand
     @Override
     protected BaseResult execute() {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        String symbolPositionName = form.getSymbolPositionName();
-        SymbolPosition symbolPosition = accountingControl.getSymbolPositionByNameForUpdate(symbolPositionName);
+        var symbolPositionName = form.getSymbolPositionName();
+        var symbolPosition = accountingControl.getSymbolPositionByNameForUpdate(symbolPositionName);
         
         if(symbolPosition != null) {
             accountingControl.deleteSymbolPosition(symbolPosition, getPartyPK());

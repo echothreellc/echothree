@@ -65,9 +65,9 @@ public class GetContentPageLayoutDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var contentControl = Session.getModelController(ContentControl.class);
-        GetContentPageLayoutDescriptionsResult result = ContentResultFactory.getGetContentPageLayoutDescriptionsResult();
-        String contentPageLayoutName = form.getContentPageLayoutName();
-        ContentPageLayout contentPageLayout = contentControl.getContentPageLayoutByName(contentPageLayoutName);
+        var result = ContentResultFactory.getGetContentPageLayoutDescriptionsResult();
+        var contentPageLayoutName = form.getContentPageLayoutName();
+        var contentPageLayout = contentControl.getContentPageLayoutByName(contentPageLayoutName);
         
         if(contentPageLayout != null) {
             result.setContentPageLayout(contentControl.getContentPageLayoutTransfer(getUserVisit(), contentPageLayout));

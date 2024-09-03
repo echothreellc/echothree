@@ -61,7 +61,7 @@ public class GetPicklistTypesCommand
     @Override
     protected BaseResult execute() {
         var picklistControl = Session.getModelController(PicklistControl.class);
-        GetPicklistTypesResult result = PicklistResultFactory.getGetPicklistTypesResult();
+        var result = PicklistResultFactory.getGetPicklistTypesResult();
         
         result.setPicklistTypes(picklistControl.getPicklistTypeTransfers(getUserVisit()));
         

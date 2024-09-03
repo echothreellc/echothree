@@ -60,29 +60,29 @@ public class CreateMessageDescriptionCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String componentVendorName = form.getComponentVendorName();
-        ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+        var componentVendorName = form.getComponentVendorName();
+        var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
         
         if(componentVendor != null) {
-            String entityTypeName = form.getEntityTypeName();
-            EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+            var entityTypeName = form.getEntityTypeName();
+            var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
             
             if(entityType != null) {
                 var messageControl = Session.getModelController(MessageControl.class);
-                String messageTypeName = form.getMessageTypeName();
-                MessageType messageType = messageControl.getMessageTypeByName(entityType, messageTypeName);
+                var messageTypeName = form.getMessageTypeName();
+                var messageType = messageControl.getMessageTypeByName(entityType, messageTypeName);
                 
                 if(messageType != null) {
-                    String messageName = form.getMessageName();
-                    Message message = messageControl.getMessageByName(messageType, messageName);
+                    var messageName = form.getMessageName();
+                    var message = messageControl.getMessageByName(messageType, messageName);
                     
                     if(message != null) {
                         var partyControl = Session.getModelController(PartyControl.class);
-                        String languageIsoName = form.getLanguageIsoName();
-                        Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                        var languageIsoName = form.getLanguageIsoName();
+                        var language = partyControl.getLanguageByIsoName(languageIsoName);
                         
                         if(language != null) {
-                            MessageDescription messageDescription = messageControl.getMessageDescription(message, language);
+                            var messageDescription = messageControl.getMessageDescription(message, language);
                             
                             if(messageDescription == null) {
                                 var description = form.getDescription();

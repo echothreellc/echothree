@@ -88,30 +88,30 @@ public class DateTimeFormatTransferCache
     }
     
     public DateTimeFormatTransfer getDateTimeFormatTransfer(DateTimeFormat dateTimeFormat) {
-        DateTimeFormatTransfer dateTimeFormatTransfer = get(dateTimeFormat);
+        var dateTimeFormatTransfer = get(dateTimeFormat);
         
         if(dateTimeFormatTransfer == null) {
-            DateTimeFormatDetail dateTimeFormatDetail = dateTimeFormat.getLastDetail();
-            String dateTimeFormatName = filterDateTimeFormatName ? null : dateTimeFormatDetail.getDateTimeFormatName();
-            String javaShortDateFormat = filterJavaShortDateFormat ? null : dateTimeFormatDetail.getJavaShortDateFormat();
-            String javaAbbrevDateFormat = filterJavaAbbrevDateFormat ? null : dateTimeFormatDetail.getJavaAbbrevDateFormat();
-            String javaAbbrevDateFormatWeekday = filterJavaAbbrevDateFormatWeekday ? null : dateTimeFormatDetail.getJavaAbbrevDateFormatWeekday();
-            String javaLongDateFormat = filterJavaLongDateFormat ? null : dateTimeFormatDetail.getJavaLongDateFormat();
-            String javaLongDateFormatWeekday = filterJavaLongDateFormatWeekday ? null : dateTimeFormatDetail.getJavaLongDateFormatWeekday();
-            String javaTimeFormat = filterJavaTimeFormat ? null : dateTimeFormatDetail.getJavaTimeFormat();
-            String javaTimeFormatSeconds = filterJavaTimeFormatSeconds ? null : dateTimeFormatDetail.getJavaTimeFormatSeconds();
-            String unixShortDateFormat = filterUnixShortDateFormat ? null : dateTimeFormatDetail.getUnixShortDateFormat();
-            String unixAbbrevDateFormat = filterUnixAbbrevDateFormat ? null : dateTimeFormatDetail.getUnixAbbrevDateFormat();
-            String unixAbbrevDateFormatWeekday = filterUnixAbbrevDateFormatWeekday ? null : dateTimeFormatDetail.getUnixAbbrevDateFormatWeekday();
-            String unixLongDateFormat = filterUnixLongDateFormat ? null : dateTimeFormatDetail.getUnixLongDateFormat();
-            String unixLongDateFormatWeekday = filterUnixLongDateFormatWeekday ? null : dateTimeFormatDetail.getUnixLongDateFormatWeekday();
-            String unixTimeFormat = filterUnixTimeFormat ? null : dateTimeFormatDetail.getUnixTimeFormat();
-            String unixTimeFormatSeconds = filterUnixTimeFormatSeconds ? null : dateTimeFormatDetail.getUnixTimeFormatSeconds();
-            String shortDateSeparator = filterShortDateSeparator ? null : dateTimeFormatDetail.getShortDateSeparator();
-            String timeSeparator = filterTimeSeparator ? null : dateTimeFormatDetail.getTimeSeparator();
-            Boolean isDefault = filterIsDefault ? null : dateTimeFormatDetail.getIsDefault();
-            Integer sortOrder = filterSortOrder ? null : dateTimeFormatDetail.getSortOrder();
-            String description = filterDescription ? null : partyControl.getBestDateTimeFormatDescription(dateTimeFormat, getLanguage());
+            var dateTimeFormatDetail = dateTimeFormat.getLastDetail();
+            var dateTimeFormatName = filterDateTimeFormatName ? null : dateTimeFormatDetail.getDateTimeFormatName();
+            var javaShortDateFormat = filterJavaShortDateFormat ? null : dateTimeFormatDetail.getJavaShortDateFormat();
+            var javaAbbrevDateFormat = filterJavaAbbrevDateFormat ? null : dateTimeFormatDetail.getJavaAbbrevDateFormat();
+            var javaAbbrevDateFormatWeekday = filterJavaAbbrevDateFormatWeekday ? null : dateTimeFormatDetail.getJavaAbbrevDateFormatWeekday();
+            var javaLongDateFormat = filterJavaLongDateFormat ? null : dateTimeFormatDetail.getJavaLongDateFormat();
+            var javaLongDateFormatWeekday = filterJavaLongDateFormatWeekday ? null : dateTimeFormatDetail.getJavaLongDateFormatWeekday();
+            var javaTimeFormat = filterJavaTimeFormat ? null : dateTimeFormatDetail.getJavaTimeFormat();
+            var javaTimeFormatSeconds = filterJavaTimeFormatSeconds ? null : dateTimeFormatDetail.getJavaTimeFormatSeconds();
+            var unixShortDateFormat = filterUnixShortDateFormat ? null : dateTimeFormatDetail.getUnixShortDateFormat();
+            var unixAbbrevDateFormat = filterUnixAbbrevDateFormat ? null : dateTimeFormatDetail.getUnixAbbrevDateFormat();
+            var unixAbbrevDateFormatWeekday = filterUnixAbbrevDateFormatWeekday ? null : dateTimeFormatDetail.getUnixAbbrevDateFormatWeekday();
+            var unixLongDateFormat = filterUnixLongDateFormat ? null : dateTimeFormatDetail.getUnixLongDateFormat();
+            var unixLongDateFormatWeekday = filterUnixLongDateFormatWeekday ? null : dateTimeFormatDetail.getUnixLongDateFormatWeekday();
+            var unixTimeFormat = filterUnixTimeFormat ? null : dateTimeFormatDetail.getUnixTimeFormat();
+            var unixTimeFormatSeconds = filterUnixTimeFormatSeconds ? null : dateTimeFormatDetail.getUnixTimeFormatSeconds();
+            var shortDateSeparator = filterShortDateSeparator ? null : dateTimeFormatDetail.getShortDateSeparator();
+            var timeSeparator = filterTimeSeparator ? null : dateTimeFormatDetail.getTimeSeparator();
+            var isDefault = filterIsDefault ? null : dateTimeFormatDetail.getIsDefault();
+            var sortOrder = filterSortOrder ? null : dateTimeFormatDetail.getSortOrder();
+            var description = filterDescription ? null : partyControl.getBestDateTimeFormatDescription(dateTimeFormat, getLanguage());
             
             dateTimeFormatTransfer = new DateTimeFormatTransfer(dateTimeFormatName, javaShortDateFormat, javaAbbrevDateFormat,
                     javaAbbrevDateFormatWeekday, javaLongDateFormat, javaLongDateFormatWeekday, javaTimeFormat,

@@ -69,9 +69,9 @@ public class GetCarrierCommand
     
     @Override
     protected BaseResult execute() {
-        GetCarrierResult result = CarrierResultFactory.getGetCarrierResult();
-        String carrierName = form.getCarrierName();
-        String partyName = form.getPartyName();
+        var result = CarrierResultFactory.getGetCarrierResult();
+        var carrierName = form.getCarrierName();
+        var partyName = form.getPartyName();
         var parameterCount = (carrierName == null ? 0 : 1) + (partyName == null ? 0 : 1);
         
         if(parameterCount == 1) {
@@ -86,10 +86,10 @@ public class GetCarrierCommand
                 }
             } else {
                 var partyControl = Session.getModelController(PartyControl.class);
-                Party party = partyControl.getPartyByName(partyName);
+                var party = partyControl.getPartyByName(partyName);
                 
                 if(party != null) {
-                    PartyType partyType = partyControl.getPartyTypeByName(PartyTypes.CARRIER.name());
+                    var partyType = partyControl.getPartyTypeByName(PartyTypes.CARRIER.name());
                     
                     if(party.getLastDetail().getPartyType().equals(partyType)) {
                         carrier = carrierControl.getCarrier(party);

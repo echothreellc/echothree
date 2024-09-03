@@ -76,25 +76,25 @@ public class GetTrainingClassPageCommand
     @Override
     protected BaseResult execute() {
         var trainingControl = Session.getModelController(TrainingControl.class);
-        GetTrainingClassPageResult result = TrainingResultFactory.getGetTrainingClassPageResult();
-        String trainingClassName = form.getTrainingClassName();
-        TrainingClass trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
+        var result = TrainingResultFactory.getGetTrainingClassPageResult();
+        var trainingClassName = form.getTrainingClassName();
+        var trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
 
         if(trainingClass != null) {
-            String trainingClassSectionName = form.getTrainingClassSectionName();
-            TrainingClassSection trainingClassSection = trainingControl.getTrainingClassSectionByName(trainingClass, trainingClassSectionName);
+            var trainingClassSectionName = form.getTrainingClassSectionName();
+            var trainingClassSection = trainingControl.getTrainingClassSectionByName(trainingClass, trainingClassSectionName);
 
             if(trainingClassSection != null) {
-                String trainingClassPageName = form.getTrainingClassPageName();
-                TrainingClassPage trainingClassPage = trainingControl.getTrainingClassPageByName(trainingClassSection, trainingClassPageName);
+                var trainingClassPageName = form.getTrainingClassPageName();
+                var trainingClassPage = trainingControl.getTrainingClassPageByName(trainingClassSection, trainingClassPageName);
 
                 if(trainingClassPage != null) {
-                    String partyTrainingClassName = form.getPartyTrainingClassName();
-                    PartyTrainingClassSessionStatus partyTrainingClassSessionStatus = partyTrainingClassName == null ? null
+                    var partyTrainingClassName = form.getPartyTrainingClassName();
+                    var partyTrainingClassSessionStatus = partyTrainingClassName == null ? null
                             : PartyTrainingClassSessionLogic.getInstance().getLatestPartyTrainingClassSessionStatusForUpdate(this, partyTrainingClassName);
                     
                     if(!hasExecutionErrors()) {
-                        PartyTrainingClassSession partyTrainingClassSession = partyTrainingClassSessionStatus == null ? null
+                        var partyTrainingClassSession = partyTrainingClassSessionStatus == null ? null
                                 : partyTrainingClassSessionStatus.getPartyTrainingClassSession();
                         
                         // Verify that the TrainingClass from above is same as the one being used by the PartyTrainingClassSession.
@@ -105,7 +105,7 @@ public class GetTrainingClassPageCommand
                         }
                         
                         if(!hasExecutionErrors()) {
-                            UserVisit userVisit = getUserVisit();
+                            var userVisit = getUserVisit();
                             var partyPK = getPartyPK();
 
                             result.setTrainingClassPage(trainingControl.getTrainingClassPageTransfer(userVisit, trainingClassPage));
@@ -113,7 +113,7 @@ public class GetTrainingClassPageCommand
                             sendEvent(trainingClassPage.getPrimaryKey(), EventTypes.READ, null, null, partyPK);
 
                             if(partyTrainingClassSessionStatus != null) {
-                                PartyTrainingClassSessionPage partyTrainingClassSessionPage = trainingControl.createPartyTrainingClassSessionPage(partyTrainingClassSession,
+                                var partyTrainingClassSessionPage = trainingControl.createPartyTrainingClassSessionPage(partyTrainingClassSession,
                                         trainingClassPage, session.START_TIME_LONG, null, partyPK);
 
                                 PartyTrainingClassSessionLogic.getInstance().updatePartyTrainingClassSessionStatus(session, partyTrainingClassSessionStatus,

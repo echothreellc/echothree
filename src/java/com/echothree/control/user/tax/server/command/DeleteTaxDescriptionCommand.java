@@ -53,16 +53,16 @@ public class DeleteTaxDescriptionCommand
     @Override
     protected BaseResult execute() {
         var taxControl = Session.getModelController(TaxControl.class);
-        String taxName = form.getTaxName();
-        Tax tax = taxControl.getTaxByName(taxName);
+        var taxName = form.getTaxName();
+        var tax = taxControl.getTaxByName(taxName);
         
         if(tax != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                TaxDescription taxDescription = taxControl.getTaxDescriptionForUpdate(tax, language);
+                var taxDescription = taxControl.getTaxDescriptionForUpdate(tax, language);
                 
                 if(taxDescription != null) {
                     taxControl.deleteTaxDescription(taxDescription, getPartyPK());

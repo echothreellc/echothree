@@ -115,7 +115,7 @@ public class UseTypesTag
     public int doStartTag()
             throws JspException {
         try {
-            GetUseTypesForm commandForm = OfferUtil.getHome().getGetUseTypesForm();
+            var commandForm = OfferUtil.getHome().getGetUseTypesForm();
             Map<String, Limit> limits = new HashMap<>();
             
             setOptions(options, null, commandForm);
@@ -127,7 +127,7 @@ public class UseTypesTag
             }
             commandForm.setLimits(limits);
 
-            CommandResult commandResult = OfferUtil.getHome().getUseTypes(getUserVisitPK(), commandForm);
+            var commandResult = OfferUtil.getHome().getUseTypes(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -135,8 +135,8 @@ public class UseTypesTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetUseTypesResult result = (GetUseTypesResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetUseTypesResult)executionResult.getResult();
 
                 pageContext.setAttribute(var, new ListWrapper<>(result.getUseTypes()), scope);
 

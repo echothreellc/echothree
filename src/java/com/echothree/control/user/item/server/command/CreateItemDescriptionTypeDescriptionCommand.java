@@ -68,16 +68,16 @@ public class CreateItemDescriptionTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var itemControl = Session.getModelController(ItemControl.class);
-        String itemDescriptionTypeName = form.getItemDescriptionTypeName();
-        ItemDescriptionType itemDescriptionType = itemControl.getItemDescriptionTypeByName(itemDescriptionTypeName);
+        var itemDescriptionTypeName = form.getItemDescriptionTypeName();
+        var itemDescriptionType = itemControl.getItemDescriptionTypeByName(itemDescriptionTypeName);
         
         if(itemDescriptionType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                ItemDescriptionTypeDescription itemDescriptionTypeDescription = itemControl.getItemDescriptionTypeDescription(itemDescriptionType, language);
+                var itemDescriptionTypeDescription = itemControl.getItemDescriptionTypeDescription(itemDescriptionType, language);
                 
                 if(itemDescriptionTypeDescription == null) {
                     var description = form.getDescription();

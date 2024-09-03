@@ -32,11 +32,11 @@ public class CustomerTypeDescriptionTransferCache
     }
     
     public CustomerTypeDescriptionTransfer getCustomerTypeDescriptionTransfer(CustomerTypeDescription customerTypeDescription) {
-        CustomerTypeDescriptionTransfer customerTypeDescriptionTransfer = get(customerTypeDescription);
+        var customerTypeDescriptionTransfer = get(customerTypeDescription);
         
         if(customerTypeDescriptionTransfer == null) {
-            CustomerTypeTransfer customerTypeTransfer = customerControl.getCustomerTypeTransfer(userVisit, customerTypeDescription.getCustomerType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, customerTypeDescription.getLanguage());
+            var customerTypeTransfer = customerControl.getCustomerTypeTransfer(userVisit, customerTypeDescription.getCustomerType());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, customerTypeDescription.getLanguage());
             
             customerTypeDescriptionTransfer = new CustomerTypeDescriptionTransfer(languageTransfer, customerTypeTransfer, customerTypeDescription.getDescription());
             put(customerTypeDescription, customerTypeDescriptionTransfer);

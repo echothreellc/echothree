@@ -65,13 +65,13 @@ public class CreateContentPageLayoutCommand
     
     @Override
     protected BaseResult execute() {
-        CreateContentPageLayoutResult result = ContentResultFactory.getCreateContentPageLayoutResult();
-        String contentPageLayoutName = form.getContentPageLayoutName();
+        var result = ContentResultFactory.getCreateContentPageLayoutResult();
+        var contentPageLayoutName = form.getContentPageLayoutName();
         var isDefault = Boolean.valueOf(form.getIsDefault());
         var sortOrder = Integer.valueOf(form.getSortOrder());
         var description = form.getDescription();
 
-        ContentPageLayout contentPageLayout = ContentPageLayoutLogic.getInstance().createContentPageLayout(this,
+        var contentPageLayout = ContentPageLayoutLogic.getInstance().createContentPageLayout(this,
                 contentPageLayoutName, isDefault, sortOrder, getPreferredLanguage(), description, getPartyPK());
 
         if(contentPageLayout != null && !hasExecutionErrors()) {

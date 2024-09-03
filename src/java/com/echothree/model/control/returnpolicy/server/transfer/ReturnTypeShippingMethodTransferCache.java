@@ -38,13 +38,13 @@ public class ReturnTypeShippingMethodTransferCache
     }
     
     public ReturnTypeShippingMethodTransfer getReturnTypeShippingMethodTransfer(ReturnTypeShippingMethod returnTypeShippingMethod) {
-        ReturnTypeShippingMethodTransfer returnTypeShippingMethodTransfer = get(returnTypeShippingMethod);
+        var returnTypeShippingMethodTransfer = get(returnTypeShippingMethod);
         
         if(returnTypeShippingMethodTransfer == null) {
-            ReturnTypeTransfer returnType = returnPolicyControl.getReturnTypeTransfer(userVisit, returnTypeShippingMethod.getReturnType());
-            ShippingMethodTransfer shippingMethod = shippingControl.getShippingMethodTransfer(userVisit, returnTypeShippingMethod.getShippingMethod());
-            Boolean isDefault = returnTypeShippingMethod.getIsDefault();
-            Integer sortOrder = returnTypeShippingMethod.getSortOrder();
+            var returnType = returnPolicyControl.getReturnTypeTransfer(userVisit, returnTypeShippingMethod.getReturnType());
+            var shippingMethod = shippingControl.getShippingMethodTransfer(userVisit, returnTypeShippingMethod.getShippingMethod());
+            var isDefault = returnTypeShippingMethod.getIsDefault();
+            var sortOrder = returnTypeShippingMethod.getSortOrder();
             
             returnTypeShippingMethodTransfer = new ReturnTypeShippingMethodTransfer(returnType, shippingMethod, isDefault,
                     sortOrder);

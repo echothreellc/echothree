@@ -47,8 +47,8 @@ public class DeleteMimeTypeCommand
    @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String mimeTypeName = form.getMimeTypeName();
-        MimeType mimeType = coreControl.getMimeTypeByNameForUpdate(mimeTypeName);
+       var mimeTypeName = form.getMimeTypeName();
+       var mimeType = coreControl.getMimeTypeByNameForUpdate(mimeTypeName);
         
         if(mimeType != null) {
             coreControl.deleteMimeType(mimeType, getPartyPK());

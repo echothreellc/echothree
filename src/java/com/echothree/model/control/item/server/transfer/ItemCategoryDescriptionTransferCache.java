@@ -33,12 +33,12 @@ public class ItemCategoryDescriptionTransferCache
     
     @Override
     public ItemCategoryDescriptionTransfer getTransfer(ItemCategoryDescription itemCategoryDescription) {
-        ItemCategoryDescriptionTransfer itemCategoryDescriptionTransfer = get(itemCategoryDescription);
+        var itemCategoryDescriptionTransfer = get(itemCategoryDescription);
         
         if(itemCategoryDescriptionTransfer == null) {
-            ItemCategoryTransferCache itemCategoryTransferCache = itemControl.getItemTransferCaches(userVisit).getItemCategoryTransferCache();
-            ItemCategoryTransfer itemCategoryTransfer = itemCategoryTransferCache.getTransfer(itemCategoryDescription.getItemCategory());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, itemCategoryDescription.getLanguage());
+            var itemCategoryTransferCache = itemControl.getItemTransferCaches(userVisit).getItemCategoryTransferCache();
+            var itemCategoryTransfer = itemCategoryTransferCache.getTransfer(itemCategoryDescription.getItemCategory());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, itemCategoryDescription.getLanguage());
             
             itemCategoryDescriptionTransfer = new ItemCategoryDescriptionTransfer(languageTransfer, itemCategoryTransfer, itemCategoryDescription.getDescription());
             put(itemCategoryDescription, itemCategoryDescriptionTransfer);

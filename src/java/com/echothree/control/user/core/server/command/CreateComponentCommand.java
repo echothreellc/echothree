@@ -50,12 +50,12 @@ public class CreateComponentCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String componentVendorName = form.getComponentVendorName();
-        ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+        var componentVendorName = form.getComponentVendorName();
+        var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
         
         if(componentVendor != null) {
-            String componentName = form.getComponentName();
-            Component component = coreControl.getComponentByName(componentVendor, componentName);
+            var componentName = form.getComponentName();
+            var component = coreControl.getComponentByName(componentVendor, componentName);
             
             if(component == null) {
                 var description = form.getDescription();

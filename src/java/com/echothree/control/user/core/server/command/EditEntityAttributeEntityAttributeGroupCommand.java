@@ -90,10 +90,10 @@ public class EditEntityAttributeEntityAttributeGroupCommand
     @Override
     public EntityAttributeEntityAttributeGroup getEntity(EditEntityAttributeEntityAttributeGroupResult result) {
         EntityAttributeEntityAttributeGroup entityAttributeEntityAttributeGroup = null;
-        EntityAttribute entityAttribute = EntityAttributeLogic.getInstance().getEntityAttributeByName(this, spec.getComponentVendorName(), spec.getEntityTypeName(), spec.getEntityAttributeName());
+        var entityAttribute = EntityAttributeLogic.getInstance().getEntityAttributeByName(this, spec.getComponentVendorName(), spec.getEntityTypeName(), spec.getEntityAttributeName());
         
         if(!hasExecutionErrors()) {
-            EntityAttributeGroup entityAttributeGroup = EntityAttributeLogic.getInstance().getEntityAttributeGroupByName(this, spec.getEntityAttributeGroupName());
+            var entityAttributeGroup = EntityAttributeLogic.getInstance().getEntityAttributeGroupByName(this, spec.getEntityAttributeGroupName());
             
             if(!hasExecutionErrors()) {
                 var coreControl = getCoreControl();
@@ -105,8 +105,8 @@ public class EditEntityAttributeEntityAttributeGroupCommand
                 }
 
                 if(entityAttributeEntityAttributeGroup == null) {
-                    EntityAttributeDetail entityAttributeDetail = entityAttribute.getLastDetail();
-                    EntityTypeDetail entityTypeDetail = entityAttributeDetail.getEntityType().getLastDetail();
+                    var entityAttributeDetail = entityAttribute.getLastDetail();
+                    var entityTypeDetail = entityAttributeDetail.getEntityType().getLastDetail();
                     
                     addExecutionError(ExecutionErrors.UnknownEntityAttributeEntityAttributeGroup.name(),
                             entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(), entityTypeDetail.getEntityTypeName(),
@@ -138,7 +138,7 @@ public class EditEntityAttributeEntityAttributeGroupCommand
     @Override
     public void doUpdate(EntityAttributeEntityAttributeGroup entityAttributeEntityAttributeGroup) {
         var coreControl = getCoreControl();
-        EntityAttributeEntityAttributeGroupValue entityAttributeEntityAttributeGroupValue = coreControl.getEntityAttributeEntityAttributeGroupValue(entityAttributeEntityAttributeGroup);
+        var entityAttributeEntityAttributeGroupValue = coreControl.getEntityAttributeEntityAttributeGroupValue(entityAttributeEntityAttributeGroup);
         
         entityAttributeEntityAttributeGroupValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
 

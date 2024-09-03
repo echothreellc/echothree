@@ -72,26 +72,26 @@ public class GetContentCategoryDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        GetContentCategoryDescriptionResult result = ContentResultFactory.getGetContentCategoryDescriptionResult();
+        var result = ContentResultFactory.getGetContentCategoryDescriptionResult();
         var contentControl = Session.getModelController(ContentControl.class);
-        String contentCollectionName = form.getContentCollectionName();
-        ContentCollection contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
+        var contentCollectionName = form.getContentCollectionName();
+        var contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
         
         if(contentCollection != null) {
-            String contentCatalogName = form.getContentCatalogName();
-            ContentCatalog contentCatalog = contentControl.getContentCatalogByName(contentCollection, contentCatalogName);
+            var contentCatalogName = form.getContentCatalogName();
+            var contentCatalog = contentControl.getContentCatalogByName(contentCollection, contentCatalogName);
             
             if(contentCatalog != null) {
-                String contentCategoryName = form.getContentCategoryName();
-                ContentCategory contentCategory = contentControl.getContentCategoryByName(contentCatalog, contentCategoryName);
+                var contentCategoryName = form.getContentCategoryName();
+                var contentCategory = contentControl.getContentCategoryByName(contentCatalog, contentCategoryName);
                 
                 if(contentCategory != null) {
                     var partyControl = Session.getModelController(PartyControl.class);
-                    String languageIsoName = form.getLanguageIsoName();
-                    Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                    var languageIsoName = form.getLanguageIsoName();
+                    var language = partyControl.getLanguageByIsoName(languageIsoName);
                     
                     if(language != null) {
-                        ContentCategoryDescription contentCategoryDescription = contentControl.getContentCategoryDescription(contentCategory, language);
+                        var contentCategoryDescription = contentControl.getContentCategoryDescription(contentCategory, language);
                         
                         if(contentCategoryDescription != null) {
                             result.setContentCategoryDescription(contentControl.getContentCategoryDescriptionTransfer(getUserVisit(), contentCategoryDescription));

@@ -69,7 +69,7 @@ public class GetContentPageLayoutsCommand
     
     @Override
     protected BaseResult getResult(Collection<ContentPageLayout> entities) {
-        GetContentPageLayoutsResult result = ContentResultFactory.getGetContentPageLayoutsResult();
+        var result = ContentResultFactory.getGetContentPageLayoutsResult();
         var contentControl = Session.getModelController(ContentControl.class);
         
         result.setContentPageLayouts(contentControl.getContentPageLayoutTransfers(getUserVisit(), entities));

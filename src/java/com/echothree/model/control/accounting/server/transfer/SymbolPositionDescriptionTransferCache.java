@@ -33,12 +33,12 @@ public class SymbolPositionDescriptionTransferCache
     
     @Override
     public SymbolPositionDescriptionTransfer getTransfer(SymbolPositionDescription symbolPositionDescription) {
-        SymbolPositionDescriptionTransfer symbolPositionDescriptionTransfer = get(symbolPositionDescription);
+        var symbolPositionDescriptionTransfer = get(symbolPositionDescription);
         
         if(symbolPositionDescriptionTransfer == null) {
-            SymbolPositionTransferCache symbolPositionTransferCache = accountingControl.getAccountingTransferCaches(userVisit).getSymbolPositionTransferCache();
-            SymbolPositionTransfer symbolPositionTransfer = symbolPositionTransferCache.getTransfer(symbolPositionDescription.getSymbolPosition());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, symbolPositionDescription.getLanguage());
+            var symbolPositionTransferCache = accountingControl.getAccountingTransferCaches(userVisit).getSymbolPositionTransferCache();
+            var symbolPositionTransfer = symbolPositionTransferCache.getTransfer(symbolPositionDescription.getSymbolPosition());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, symbolPositionDescription.getLanguage());
             
             symbolPositionDescriptionTransfer = new SymbolPositionDescriptionTransfer(languageTransfer, symbolPositionTransfer, symbolPositionDescription.getDescription());
             put(symbolPositionDescription, symbolPositionDescriptionTransfer);

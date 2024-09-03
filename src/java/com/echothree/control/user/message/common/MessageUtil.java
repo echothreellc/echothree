@@ -30,7 +30,7 @@ public class MessageUtil {
     public static MessageLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
 
             cachedLocal = (MessageLocal)ctx.lookup("ejb:echothree/echothree-server/MessageBean!com.echothree.control.user.message.server.MessageLocal");
         }
@@ -42,7 +42,7 @@ public class MessageUtil {
     public static MessageRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
             
             cachedRemote = (MessageRemote)ctx.lookup("ejb:echothree/echothree-server/MessageBean!com.echothree.control.user.message.common.MessageRemote");
         }

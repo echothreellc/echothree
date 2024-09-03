@@ -63,8 +63,8 @@ public class SetDefaultRelatedItemTypeCommand
     @Override
     protected BaseResult execute() {
         var itemControl = Session.getModelController(ItemControl.class);
-        String relatedItemTypeName = form.getRelatedItemTypeName();
-        RelatedItemTypeDetailValue relatedItemTypeDetailValue = itemControl.getRelatedItemTypeDetailValueByNameForUpdate(relatedItemTypeName);
+        var relatedItemTypeName = form.getRelatedItemTypeName();
+        var relatedItemTypeDetailValue = itemControl.getRelatedItemTypeDetailValueByNameForUpdate(relatedItemTypeName);
         
         if(relatedItemTypeDetailValue != null) {
             relatedItemTypeDetailValue.setIsDefault(Boolean.TRUE);

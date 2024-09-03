@@ -55,17 +55,17 @@ public class DeletePartyContactMechanismAliasCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        String partyName = form.getPartyName();
-        Party party = partyControl.getPartyByName(partyName);
+        var partyName = form.getPartyName();
+        var party = partyControl.getPartyByName(partyName);
         
         if(party != null) {
             var contactControl = Session.getModelController(ContactControl.class);
-            String contactMechanismAliasTypeName = form.getContactMechanismAliasTypeName();
-            ContactMechanismAliasType contactMechanismAliasType = contactControl.getContactMechanismAliasTypeByName(contactMechanismAliasTypeName);
+            var contactMechanismAliasTypeName = form.getContactMechanismAliasTypeName();
+            var contactMechanismAliasType = contactControl.getContactMechanismAliasTypeByName(contactMechanismAliasTypeName);
             
             if(contactMechanismAliasType != null) {
-                String alias = form.getAlias();
-                PartyContactMechanismAlias partyContactMechanismAlias = contactControl.getPartyContactMechanismAliasByAliasForUpdate(party,
+                var alias = form.getAlias();
+                var partyContactMechanismAlias = contactControl.getPartyContactMechanismAliasByAliasForUpdate(party,
                         contactMechanismAliasType, alias);
                 
                 if(partyContactMechanismAlias != null) {

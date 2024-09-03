@@ -68,17 +68,17 @@ public class GetQueueTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var queueControl = Session.getModelController(QueueControl.class);
-        GetQueueTypeDescriptionResult result = QueueResultFactory.getGetQueueTypeDescriptionResult();
-        String queueTypeName = form.getQueueTypeName();
-        QueueType queueType = queueControl.getQueueTypeByName(queueTypeName);
+        var result = QueueResultFactory.getGetQueueTypeDescriptionResult();
+        var queueTypeName = form.getQueueTypeName();
+        var queueType = queueControl.getQueueTypeByName(queueTypeName);
 
         if(queueType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
-                QueueTypeDescription queueTypeDescription = queueControl.getQueueTypeDescription(queueType, language);
+                var queueTypeDescription = queueControl.getQueueTypeDescription(queueType, language);
 
                 if(queueTypeDescription != null) {
                     result.setQueueTypeDescription(queueControl.getQueueTypeDescriptionTransfer(getUserVisit(), queueTypeDescription));

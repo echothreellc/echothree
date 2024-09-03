@@ -60,8 +60,8 @@ public class SetDefaultEntityAttributeGroupCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String entityAttributeGroupName = form.getEntityAttributeGroupName();
-        EntityAttributeGroupDetailValue entityAttributeGroupDetailValue = coreControl.getEntityAttributeGroupDetailValueByNameForUpdate(entityAttributeGroupName);
+        var entityAttributeGroupName = form.getEntityAttributeGroupName();
+        var entityAttributeGroupDetailValue = coreControl.getEntityAttributeGroupDetailValueByNameForUpdate(entityAttributeGroupName);
         
         if(entityAttributeGroupDetailValue != null) {
             entityAttributeGroupDetailValue.setIsDefault(Boolean.TRUE);

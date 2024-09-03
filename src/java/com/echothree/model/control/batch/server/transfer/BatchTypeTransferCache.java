@@ -46,22 +46,22 @@ public class BatchTypeTransferCache
     
     @Override
     public BatchTypeTransfer getTransfer(BatchType batchType) {
-        BatchTypeTransfer batchTypeTransfer = get(batchType);
+        var batchTypeTransfer = get(batchType);
         
         if(batchTypeTransfer == null) {
-            BatchTypeDetail batchTypeDetail = batchType.getLastDetail();
-            String batchTypeName = batchTypeDetail.getBatchTypeName();
-            BatchType parentBatchType = batchTypeDetail.getParentBatchType();
-            BatchTypeTransfer parentBatchTypeTransfer = parentBatchType == null? null: getTransfer(parentBatchType);
-            SequenceType batchSequenceType = batchTypeDetail.getBatchSequenceType();
-            SequenceTypeTransfer batchSequenceTypeTransfer = batchSequenceType == null? null: sequenceControl.getSequenceTypeTransfer(userVisit, batchSequenceType);
-            Workflow batchWorkflow = batchTypeDetail.getBatchWorkflow();
-            WorkflowTransfer batchWorkflowTransfer = batchWorkflow == null? null: workflowControl.getWorkflowTransfer(userVisit, batchWorkflow);
-            WorkflowEntrance batchWorkflowEntrance = batchTypeDetail.getBatchWorkflowEntrance();
-            WorkflowEntranceTransfer batchWorkflowEntranceTransfer = batchWorkflowEntrance == null? null: workflowControl.getWorkflowEntranceTransfer(userVisit, batchWorkflowEntrance);
-            Boolean isDefault = batchTypeDetail.getIsDefault();
-            Integer sortOrder = batchTypeDetail.getSortOrder();
-            String description = batchControl.getBestBatchTypeDescription(batchType, getLanguage());
+            var batchTypeDetail = batchType.getLastDetail();
+            var batchTypeName = batchTypeDetail.getBatchTypeName();
+            var parentBatchType = batchTypeDetail.getParentBatchType();
+            var parentBatchTypeTransfer = parentBatchType == null? null: getTransfer(parentBatchType);
+            var batchSequenceType = batchTypeDetail.getBatchSequenceType();
+            var batchSequenceTypeTransfer = batchSequenceType == null? null: sequenceControl.getSequenceTypeTransfer(userVisit, batchSequenceType);
+            var batchWorkflow = batchTypeDetail.getBatchWorkflow();
+            var batchWorkflowTransfer = batchWorkflow == null? null: workflowControl.getWorkflowTransfer(userVisit, batchWorkflow);
+            var batchWorkflowEntrance = batchTypeDetail.getBatchWorkflowEntrance();
+            var batchWorkflowEntranceTransfer = batchWorkflowEntrance == null? null: workflowControl.getWorkflowEntranceTransfer(userVisit, batchWorkflowEntrance);
+            var isDefault = batchTypeDetail.getIsDefault();
+            var sortOrder = batchTypeDetail.getSortOrder();
+            var description = batchControl.getBestBatchTypeDescription(batchType, getLanguage());
             
             batchTypeTransfer = new BatchTypeTransfer(batchTypeName, parentBatchTypeTransfer, batchSequenceTypeTransfer, batchWorkflowTransfer,
                     batchWorkflowEntranceTransfer, isDefault, sortOrder, description);

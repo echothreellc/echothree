@@ -27,7 +27,7 @@ public class ThreadCaches {
     private ThreadCaches() {}
 
     public static Caches currentCaches() {
-        Caches caches = cacheses.get();
+        var caches = cacheses.get();
         
         if(caches == null) {
             caches = CachesFactory.getInstance().getCaches();
@@ -51,7 +51,7 @@ public class ThreadCaches {
 
     // Utilize via ThreadUtils
     static ThreadCaches.PreservedCaches preserve() {
-        Caches caches = cacheses.get();
+        var caches = cacheses.get();
 
         if(caches != null) {
             cacheses.remove();
@@ -79,7 +79,7 @@ public class ThreadCaches {
 
     // Utilize via ThreadUtils
     public static void close() {
-        Caches caches = cacheses.get();
+        var caches = cacheses.get();
         
         if(caches != null) {
             caches.close();

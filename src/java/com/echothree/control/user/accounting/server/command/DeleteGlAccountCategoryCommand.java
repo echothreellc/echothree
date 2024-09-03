@@ -63,8 +63,8 @@ public class DeleteGlAccountCategoryCommand
     @Override
     protected BaseResult execute() {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        String glAccountCategoryName = form.getGlAccountCategoryName();
-        GlAccountCategory glAccountCategory = accountingControl.getGlAccountCategoryByNameForUpdate(glAccountCategoryName);
+        var glAccountCategoryName = form.getGlAccountCategoryName();
+        var glAccountCategory = accountingControl.getGlAccountCategoryByNameForUpdate(glAccountCategoryName);
         
         if(glAccountCategory != null) {
             accountingControl.deleteGlAccountCategory(glAccountCategory, getPartyPK());

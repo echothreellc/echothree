@@ -43,15 +43,15 @@ public class CustomerTypeCreditLimitTransferCache
     }
     
     public CustomerTypeCreditLimitTransfer getCustomerTypeCreditLimitTransfer(CustomerTypeCreditLimit customerTypeCreditLimit) {
-        CustomerTypeCreditLimitTransfer customerTypeCreditLimitTransfer = get(customerTypeCreditLimit);
+        var customerTypeCreditLimitTransfer = get(customerTypeCreditLimit);
         
         if(customerTypeCreditLimitTransfer == null) {
-            CustomerTypeTransfer customerTypeTransfer = customerControl.getCustomerTypeTransfer(userVisit,
+            var customerTypeTransfer = customerControl.getCustomerTypeTransfer(userVisit,
                     customerTypeCreditLimit.getCustomerType());
-            Currency currency = customerTypeCreditLimit.getCurrency();
-            CurrencyTransfer currencyTransfer = accountingControl.getCurrencyTransfer(userVisit, currency);
-            String creditLimit = AmountUtils.getInstance().formatAmount(currency, customerTypeCreditLimit.getCreditLimit());
-            String potentialCreditLimit = AmountUtils.getInstance().formatAmount(currency, customerTypeCreditLimit.getPotentialCreditLimit());
+            var currency = customerTypeCreditLimit.getCurrency();
+            var currencyTransfer = accountingControl.getCurrencyTransfer(userVisit, currency);
+            var creditLimit = AmountUtils.getInstance().formatAmount(currency, customerTypeCreditLimit.getCreditLimit());
+            var potentialCreditLimit = AmountUtils.getInstance().formatAmount(currency, customerTypeCreditLimit.getPotentialCreditLimit());
             
             customerTypeCreditLimitTransfer = new CustomerTypeCreditLimitTransfer(customerTypeTransfer, currencyTransfer,
                     creditLimit, potentialCreditLimit);

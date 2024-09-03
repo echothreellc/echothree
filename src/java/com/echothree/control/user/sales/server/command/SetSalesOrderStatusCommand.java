@@ -61,10 +61,10 @@ public class SetSalesOrderStatusCommand
     
     @Override
     protected BaseResult execute() {
-        Order order = SalesOrderLogic.getInstance().getOrderByName(this, form.getOrderName());
+        var order = SalesOrderLogic.getInstance().getOrderByName(this, form.getOrderName());
 
         if(!hasExecutionErrors()) {
-            String salesOrderStatusChoice = form.getSalesOrderStatusChoice();
+            var salesOrderStatusChoice = form.getSalesOrderStatusChoice();
 
             SalesOrderLogic.getInstance().setSalesOrderStatus(session, this, order, salesOrderStatusChoice, getPartyPK());
         }

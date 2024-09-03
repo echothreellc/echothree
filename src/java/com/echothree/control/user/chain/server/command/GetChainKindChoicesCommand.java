@@ -63,9 +63,9 @@ public class GetChainKindChoicesCommand
     @Override
     protected BaseResult execute() {
         var chainControl = Session.getModelController(ChainControl.class);
-        GetChainKindChoicesResult result = ChainResultFactory.getGetChainKindChoicesResult();
-        String defaultChainKindChoice = form.getDefaultChainKindChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = ChainResultFactory.getGetChainKindChoicesResult();
+        var defaultChainKindChoice = form.getDefaultChainKindChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setChainKindChoices(chainControl.getChainKindChoices(defaultChainKindChoice, getPreferredLanguage(),
                 allowNullChoice));

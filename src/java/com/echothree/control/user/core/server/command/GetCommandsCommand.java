@@ -49,13 +49,13 @@ public class GetCommandsCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        GetCommandsResult result = CoreResultFactory.getGetCommandsResult();
-        String componentVendorName = form.getComponentVendorName();
+        var result = CoreResultFactory.getGetCommandsResult();
+        var componentVendorName = form.getComponentVendorName();
         
         if(componentVendorName == null) {
             result.setCommands(coreControl.getCommandTransfers(getUserVisit()));
         } else {
-            ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+            var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
             
             if(componentVendor != null) {
                 result.setCommands(coreControl.getCommandTransfersByComponentVendor(getUserVisit(), componentVendor));

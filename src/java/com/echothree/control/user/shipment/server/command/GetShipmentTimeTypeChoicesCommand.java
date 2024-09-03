@@ -66,13 +66,13 @@ public class GetShipmentTimeTypeChoicesCommand
     @Override
     protected BaseResult execute() {
         var shipmentControl = Session.getModelController(ShipmentControl.class);
-        GetShipmentTimeTypeChoicesResult result = ShipmentResultFactory.getGetShipmentTimeTypeChoicesResult();
-        String shipmentTypeName = form.getShipmentTypeName();
-        ShipmentType shipmentType = shipmentControl.getShipmentTypeByName(shipmentTypeName);
+        var result = ShipmentResultFactory.getGetShipmentTimeTypeChoicesResult();
+        var shipmentTypeName = form.getShipmentTypeName();
+        var shipmentType = shipmentControl.getShipmentTypeByName(shipmentTypeName);
 
         if(shipmentType != null) {
-            String defaultShipmentTimeTypeChoice = form.getDefaultShipmentTimeTypeChoice();
-            boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+            var defaultShipmentTimeTypeChoice = form.getDefaultShipmentTimeTypeChoice();
+            var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 
             result.setShipmentTimeTypeChoices(shipmentControl.getShipmentTimeTypeChoices(defaultShipmentTimeTypeChoice, getPreferredLanguage(), allowNullChoice,
                     shipmentType));

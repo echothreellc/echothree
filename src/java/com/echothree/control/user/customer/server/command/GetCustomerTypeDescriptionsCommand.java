@@ -65,9 +65,9 @@ public class GetCustomerTypeDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var customerControl = Session.getModelController(CustomerControl.class);
-        GetCustomerTypeDescriptionsResult result = CustomerResultFactory.getGetCustomerTypeDescriptionsResult();
-        String customerTypeName = form.getCustomerTypeName();
-        CustomerType customerType = customerControl.getCustomerTypeByName(customerTypeName);
+        var result = CustomerResultFactory.getGetCustomerTypeDescriptionsResult();
+        var customerTypeName = form.getCustomerTypeName();
+        var customerType = customerControl.getCustomerTypeByName(customerTypeName);
         
         if(customerType != null) {
             result.setCustomerType(customerControl.getCustomerTypeTransfer(getUserVisit(), customerType));

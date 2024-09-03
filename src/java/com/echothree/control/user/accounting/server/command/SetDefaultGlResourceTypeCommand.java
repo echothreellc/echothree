@@ -62,8 +62,8 @@ public class SetDefaultGlResourceTypeCommand
     @Override
     protected BaseResult execute() {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        String glResourceTypeName = form.getGlResourceTypeName();
-        GlResourceTypeDetailValue glResourceTypeDetailValue = accountingControl.getGlResourceTypeDetailValueByNameForUpdate(glResourceTypeName);
+        var glResourceTypeName = form.getGlResourceTypeName();
+        var glResourceTypeDetailValue = accountingControl.getGlResourceTypeDetailValueByNameForUpdate(glResourceTypeName);
         
         if(glResourceTypeDetailValue != null) {
             glResourceTypeDetailValue.setIsDefault(Boolean.TRUE);

@@ -64,16 +64,16 @@ public class DeleteAppearanceTextTransformationCommand
     
     @Override
     protected BaseResult execute() {
-        String appearanceName = form.getAppearanceName();
-        Appearance appearance = AppearanceLogic.getInstance().getAppearanceByName(this, appearanceName);
+        var appearanceName = form.getAppearanceName();
+        var appearance = AppearanceLogic.getInstance().getAppearanceByName(this, appearanceName);
         
         if(!hasExecutionErrors()) {
-            String textTransformationName = form.getTextTransformationName();
-            TextTransformation textTransformation = AppearanceLogic.getInstance().getTextTransformationByName(this, textTransformationName);
+            var textTransformationName = form.getTextTransformationName();
+            var textTransformation = AppearanceLogic.getInstance().getTextTransformationByName(this, textTransformationName);
             
             if(!hasExecutionErrors()) {
                 var coreControl = getCoreControl();
-                AppearanceTextTransformation appearanceTextTransformation = coreControl.getAppearanceTextTransformationForUpdate(appearance, textTransformation);
+                var appearanceTextTransformation = coreControl.getAppearanceTextTransformationForUpdate(appearance, textTransformation);
                 
                 if(appearanceTextTransformation != null) {
                     coreControl.deleteAppearanceTextTransformation(appearanceTextTransformation, getPartyPK());

@@ -89,12 +89,12 @@ public class EditPartyAliasCommand
     public PartyAlias getEntity(EditPartyAliasResult result) {
         var partyControl = Session.getModelController(PartyControl.class);
         PartyAlias partyAlias = null;
-        String partyName = spec.getPartyName();
-        Party party = partyControl.getPartyByName(partyName);
+        var partyName = spec.getPartyName();
+        var party = partyControl.getPartyByName(partyName);
 
         if(party != null) {
-            PartyType partyType = party.getLastDetail().getPartyType();
-            String partyAliasTypeName = spec.getPartyAliasTypeName();
+            var partyType = party.getLastDetail().getPartyType();
+            var partyAliasTypeName = spec.getPartyAliasTypeName();
 
             partyAliasType = partyControl.getPartyAliasTypeByName(partyType, partyAliasTypeName);
 
@@ -140,11 +140,11 @@ public class EditPartyAliasCommand
     @Override
     public void canUpdate(PartyAlias partyAlias) {
         var partyControl = Session.getModelController(PartyControl.class);
-        String alias = edit.getAlias();
-        PartyAlias duplicatePartyAlias = partyControl.getPartyAliasByAlias(partyAliasType, alias);
+        var alias = edit.getAlias();
+        var duplicatePartyAlias = partyControl.getPartyAliasByAlias(partyAliasType, alias);
 
         if(duplicatePartyAlias != null && !partyAlias.equals(duplicatePartyAlias)) {
-            PartyAliasTypeDetail partyAliasTypeDetail = partyAlias.getPartyAliasType().getLastDetail();
+            var partyAliasTypeDetail = partyAlias.getPartyAliasType().getLastDetail();
 
             addExecutionError(ExecutionErrors.DuplicatePartyAlias.name(), partyAliasTypeDetail.getPartyType().getPartyTypeName(),
                     partyAliasTypeDetail.getPartyAliasTypeName(), alias);
@@ -154,7 +154,7 @@ public class EditPartyAliasCommand
     @Override
     public void doUpdate(PartyAlias partyAlias) {
         var partyControl = Session.getModelController(PartyControl.class);
-        PartyAliasValue partyAliasValue = partyControl.getPartyAliasValue(partyAlias);
+        var partyAliasValue = partyControl.getPartyAliasValue(partyAlias);
 
         partyAliasValue.setAlias(edit.getAlias());
 

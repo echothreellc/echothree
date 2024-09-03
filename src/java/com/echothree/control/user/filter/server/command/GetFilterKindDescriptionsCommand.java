@@ -65,9 +65,9 @@ public class GetFilterKindDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var filterControl = Session.getModelController(FilterControl.class);
-        GetFilterKindDescriptionsResult result = FilterResultFactory.getGetFilterKindDescriptionsResult();
-        String filterKindName = form.getFilterKindName();
-        FilterKind filterKind = filterControl.getFilterKindByName(filterKindName);
+        var result = FilterResultFactory.getGetFilterKindDescriptionsResult();
+        var filterKindName = form.getFilterKindName();
+        var filterKind = filterControl.getFilterKindByName(filterKindName);
         
         if(filterKind != null) {
             result.setFilterKind(filterControl.getFilterKindTransfer(getUserVisit(), filterKind));

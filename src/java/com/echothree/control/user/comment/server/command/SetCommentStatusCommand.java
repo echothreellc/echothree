@@ -50,11 +50,11 @@ public class SetCommentStatusCommand
     @Override
     protected BaseResult execute() {
         var commentControl = Session.getModelController(CommentControl.class);
-        String commentName = form.getCommentName();
-        Comment comment = commentControl.getCommentByName(commentName);
+        var commentName = form.getCommentName();
+        var comment = commentControl.getCommentByName(commentName);
         
         if(comment != null) {
-            String commentStatusChoice = form.getCommentStatusChoice();
+            var commentStatusChoice = form.getCommentStatusChoice();
             
             commentControl.setCommentStatus(this, comment, commentStatusChoice, getPartyPK());
         } else {

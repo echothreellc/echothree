@@ -71,8 +71,8 @@ public class DeleteOrderLineAdjustmentTypeCommand
 
         if(orderType != null) {
             var orderLineAdjustmentControl = Session.getModelController(OrderLineAdjustmentControl.class);
-            String orderLineAdjustmentTypeName = form.getOrderLineAdjustmentTypeName();
-            OrderLineAdjustmentType orderLineAdjustmentType = orderLineAdjustmentControl.getOrderLineAdjustmentTypeByNameForUpdate(orderType, orderLineAdjustmentTypeName);
+            var orderLineAdjustmentTypeName = form.getOrderLineAdjustmentTypeName();
+            var orderLineAdjustmentType = orderLineAdjustmentControl.getOrderLineAdjustmentTypeByNameForUpdate(orderType, orderLineAdjustmentTypeName);
 
             if(orderLineAdjustmentType != null) {
                 orderLineAdjustmentControl.deleteOrderLineAdjustmentType(orderLineAdjustmentType, getPartyPK());

@@ -53,16 +53,16 @@ public class DeleteResponsibilityTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var employeeControl = Session.getModelController(EmployeeControl.class);
-        String responsibilityTypeName = form.getResponsibilityTypeName();
-        ResponsibilityType responsibilityType = employeeControl.getResponsibilityTypeByName(responsibilityTypeName);
+        var responsibilityTypeName = form.getResponsibilityTypeName();
+        var responsibilityType = employeeControl.getResponsibilityTypeByName(responsibilityTypeName);
         
         if(responsibilityType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                ResponsibilityTypeDescription responsibilityTypeDescription = employeeControl.getResponsibilityTypeDescriptionForUpdate(responsibilityType, language);
+                var responsibilityTypeDescription = employeeControl.getResponsibilityTypeDescriptionForUpdate(responsibilityType, language);
                 
                 if(responsibilityTypeDescription != null) {
                     employeeControl.deleteResponsibilityTypeDescription(responsibilityTypeDescription, getPartyPK());

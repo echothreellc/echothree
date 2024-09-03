@@ -81,29 +81,29 @@ public class EditDivisionCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        EditDivisionResult result = PartyResultFactory.getEditDivisionResult();
-        String companyName = spec.getCompanyName();
-        PartyCompany partyCompany = partyControl.getPartyCompanyByName(companyName);
+        var result = PartyResultFactory.getEditDivisionResult();
+        var companyName = spec.getCompanyName();
+        var partyCompany = partyControl.getPartyCompanyByName(companyName);
         
         if(partyCompany != null) {
-            String originalDivisionName = spec.getDivisionName();
-            Party partyCompanyParty = partyCompany.getParty();
-            PartyDivision partyDivision = partyControl.getPartyDivisionByNameForUpdate(partyCompanyParty, originalDivisionName);
+            var originalDivisionName = spec.getDivisionName();
+            var partyCompanyParty = partyCompany.getParty();
+            var partyDivision = partyControl.getPartyDivisionByNameForUpdate(partyCompanyParty, originalDivisionName);
             
             if(partyDivision != null) {
-                Party party = partyDivision.getParty();
+                var party = partyDivision.getParty();
                 
                 if(editMode.equals(EditMode.LOCK)) {
                     result.setDivision(partyControl.getDivisionTransfer(getUserVisit(), partyDivision));
                     
                     if(lockEntity(party)) {
-                        DivisionEdit edit = PartyEditFactory.getDivisionEdit();
-                        PartyDetail partyDetail = party.getLastDetail();
-                        PartyGroup partyGroup = partyControl.getPartyGroup(party);
-                        Language preferredLanguage = partyDetail.getPreferredLanguage();
-                        Currency preferredCurrency = partyDetail.getPreferredCurrency();
-                        TimeZone preferredTimeZone = partyDetail.getPreferredTimeZone();
-                        DateTimeFormat preferredDateTimeFormat = partyDetail.getPreferredDateTimeFormat();
+                        var edit = PartyEditFactory.getDivisionEdit();
+                        var partyDetail = party.getLastDetail();
+                        var partyGroup = partyControl.getPartyGroup(party);
+                        var preferredLanguage = partyDetail.getPreferredLanguage();
+                        var preferredCurrency = partyDetail.getPreferredCurrency();
+                        var preferredTimeZone = partyDetail.getPreferredTimeZone();
+                        var preferredDateTimeFormat = partyDetail.getPreferredDateTimeFormat();
                         
                         result.setEdit(edit);
                         edit.setDivisionName(partyDivision.getPartyDivisionName());
@@ -122,24 +122,24 @@ public class EditDivisionCommand
                 } else if(editMode.equals(EditMode.ABANDON)) {
                     unlockEntity(party);
                 } else if(editMode.equals(EditMode.UPDATE)) {
-                    PartyDivisionValue partyDivisionValue = partyControl.getPartyDivisionValueForUpdate(partyDivision);
-                    String divisionName = edit.getDivisionName();
-                    PartyDivision duplicatePartyDivision = partyControl.getPartyDivisionByName(partyCompanyParty, divisionName);
+                    var partyDivisionValue = partyControl.getPartyDivisionValueForUpdate(partyDivision);
+                    var divisionName = edit.getDivisionName();
+                    var duplicatePartyDivision = partyControl.getPartyDivisionByName(partyCompanyParty, divisionName);
                     
                     if(duplicatePartyDivision == null || duplicatePartyDivision.getPrimaryKey().equals(partyDivisionValue.getPrimaryKey())) {
-                        String preferredLanguageIsoName = edit.getPreferredLanguageIsoName();
-                        Language preferredLanguage = preferredLanguageIsoName == null? null: partyControl.getLanguageByIsoName(preferredLanguageIsoName);
+                        var preferredLanguageIsoName = edit.getPreferredLanguageIsoName();
+                        var preferredLanguage = preferredLanguageIsoName == null? null: partyControl.getLanguageByIsoName(preferredLanguageIsoName);
                         
                         if(preferredLanguageIsoName == null || (preferredLanguage != null)) {
-                            String preferredJavaTimeZoneName = edit.getPreferredJavaTimeZoneName();
-                            TimeZone preferredTimeZone = preferredJavaTimeZoneName == null? null: partyControl.getTimeZoneByJavaName(preferredJavaTimeZoneName);
+                            var preferredJavaTimeZoneName = edit.getPreferredJavaTimeZoneName();
+                            var preferredTimeZone = preferredJavaTimeZoneName == null? null: partyControl.getTimeZoneByJavaName(preferredJavaTimeZoneName);
                             
                             if(preferredJavaTimeZoneName == null || (preferredTimeZone != null)) {
-                                String preferredDateTimeFormatName = edit.getPreferredDateTimeFormatName();
-                                DateTimeFormat preferredDateTimeFormat = preferredDateTimeFormatName == null? null: partyControl.getDateTimeFormatByName(preferredDateTimeFormatName);
+                                var preferredDateTimeFormatName = edit.getPreferredDateTimeFormatName();
+                                var preferredDateTimeFormat = preferredDateTimeFormatName == null? null: partyControl.getDateTimeFormatByName(preferredDateTimeFormatName);
                                 
                                 if(preferredDateTimeFormatName == null || (preferredDateTimeFormat != null)) {
-                                    String preferredCurrencyIsoName = edit.getPreferredCurrencyIsoName();
+                                    var preferredCurrencyIsoName = edit.getPreferredCurrencyIsoName();
                                     Currency preferredCurrency;
                                     
                                     if(preferredCurrencyIsoName == null)
@@ -152,9 +152,9 @@ public class EditDivisionCommand
                                     if(preferredCurrencyIsoName == null || (preferredCurrency != null)) {
                                         if(lockEntityForUpdate(party)) {
                                             try {
-                                                PartyPK updatedBy = getPartyPK();
-                                                PartyDetailValue partyDetailValue = partyControl.getPartyDetailValueForUpdate(party);
-                                                PartyGroupValue partyGroupValue = partyControl.getPartyGroupValueForUpdate(party);
+                                                var updatedBy = getPartyPK();
+                                                var partyDetailValue = partyControl.getPartyDetailValueForUpdate(party);
+                                                var partyGroupValue = partyControl.getPartyGroupValueForUpdate(party);
                                                 
                                                 partyDivisionValue.setPartyDivisionName(divisionName);
                                                 partyGroupValue.setName(edit.getName());

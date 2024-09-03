@@ -53,7 +53,7 @@ public class CachedFilter {
     
     /** Creates a new instance of CachedFilter */
     public CachedFilter(Session session, FilterControl filterControl, Filter filter) {
-        Selector filterItemSelector = filter.getLastDetail().getFilterItemSelector();
+        var filterItemSelector = filter.getLastDetail().getFilterItemSelector();
         
         this.session = session;
         this.filterControl = filterControl;
@@ -80,15 +80,15 @@ public class CachedFilter {
             log.info(">>> cacheFilterSteps");
         
         Collection<FilterStep> rawFilterSteps = filterControl.getFilterStepsByFilter(filter);
-        int size = rawFilterSteps.size();
+        var size = rawFilterSteps.size();
         
         if(BaseFilterEvaluatorDebugFlags.CachedFilter)
             log.info("---   rawFilterSteps.size() = " + size);
         
         filterSteps = new ArrayList<>(size);
         rawFilterSteps.forEach((filterStep) -> {
-            FilterStepDetail filterStepDetail = filterStep.getLastDetail();
-            Selector filterItemSelector = filterStepDetail.getFilterItemSelector();
+            var filterStepDetail = filterStep.getLastDetail();
+            var filterItemSelector = filterStepDetail.getFilterItemSelector();
             filterSteps.add(filterStep);
             if (filterItemSelector != null) {
                 selectorCache.getSelector(filterItemSelector);
@@ -104,9 +104,9 @@ public class CachedFilter {
     private void cacheFilterEntraceSteps() {
         if(BaseFilterEvaluatorDebugFlags.CachedFilter)
             log.info(">>> cacheFilterEntraceSteps");
-        
-        List<FilterEntranceStep> rawFilterEntranceSteps = filterControl.getFilterEntranceStepsByFilter(filter);
-        int size = rawFilterEntranceSteps.size();
+
+        var rawFilterEntranceSteps = filterControl.getFilterEntranceStepsByFilter(filter);
+        var size = rawFilterEntranceSteps.size();
         
         filterEntranceSteps = new ArrayList<>(size);
         rawFilterEntranceSteps.stream().map((filterEntranceStep) -> filterEntranceStep.getFilterStep()).map((filterStep) -> {
@@ -127,13 +127,13 @@ public class CachedFilter {
     private void cacheFilterStepDestinations() {
         if(BaseFilterEvaluatorDebugFlags.CachedFilter)
             log.info(">>> cacheFilterStepDestinations");
-        
-        int filterStepsSize = filterSteps.size();
+
+        var filterStepsSize = filterSteps.size();
         filterStepDestinations = new HashMap<>(filterStepsSize);
         
         filterSteps.forEach((filterStep) -> {
-            List<FilterStepDestination> rawFilterStepDestinations = filterControl.getFilterStepDestinationsByFromFilterStep(filterStep);
-            int rawFilterStepDestinationsSize = rawFilterStepDestinations.size();
+            var rawFilterStepDestinations = filterControl.getFilterStepDestinationsByFromFilterStep(filterStep);
+            var rawFilterStepDestinationsSize = rawFilterStepDestinations.size();
             List<FilterStep> filterStepDestinationsList = new ArrayList<>(rawFilterStepDestinationsSize);
             if(BaseFilterEvaluatorDebugFlags.CachedFilter)
                 log.info("---   fromFilterStepName = " + filterStep.getLastDetail().getFilterStepName() + ", rawFilterStepDestinationsSize = " + rawFilterStepDestinationsSize);
@@ -159,19 +159,19 @@ public class CachedFilter {
     private void cacheFilterStepElements() {
         if(BaseFilterEvaluatorDebugFlags.CachedFilter)
             log.info(">>> cacheFilterStepElements");
-        
-        int filterStepsSize = filterSteps.size();
+
+        var filterStepsSize = filterSteps.size();
         filterStepElements = new HashMap<>(filterStepsSize);
         
         filterSteps.forEach((filterStep) -> {
-            List<FilterStepElement> rawFilterStepElements = filterControl.getFilterStepElementsByFilterStep(filterStep);
-            int rawFilterStepElementsSize = rawFilterStepElements.size();
+            var rawFilterStepElements = filterControl.getFilterStepElementsByFilterStep(filterStep);
+            var rawFilterStepElementsSize = rawFilterStepElements.size();
             List<FilterStepElementDetail> filterStepElementsList = new ArrayList<>(rawFilterStepElementsSize);
             if(BaseFilterEvaluatorDebugFlags.CachedFilter)
                 log.info("---   filterStepName = " + filterStep.getLastDetail().getFilterStepName() + ", rawFilterStepElementsSize = " + rawFilterStepElementsSize);
             if (rawFilterStepElementsSize != 0) {
                 rawFilterStepElements.forEach((filterStepElement) -> {
-                    Selector filterItemSelector = filterStepElement.getLastDetail().getFilterItemSelector();
+                    var filterItemSelector = filterStepElement.getLastDetail().getFilterItemSelector();
                     if(BaseFilterEvaluatorDebugFlags.CachedFilter)
                         log.info("---     filterStepElementName = " + filterStepElement.getLastDetail().getFilterStepElementName());
                     filterStepElementsList.add(filterStepElement.getLastDetail());

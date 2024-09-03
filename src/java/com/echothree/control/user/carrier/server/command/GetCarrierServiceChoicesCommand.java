@@ -67,14 +67,14 @@ public class GetCarrierServiceChoicesCommand
     @Override
     protected BaseResult execute() {
         var carrierControl = Session.getModelController(CarrierControl.class);
-        GetCarrierServiceChoicesResult result = CarrierResultFactory.getGetCarrierServiceChoicesResult();
-        String carrierName = form.getCarrierName();
-        Carrier carrier = carrierControl.getCarrierByName(carrierName);
+        var result = CarrierResultFactory.getGetCarrierServiceChoicesResult();
+        var carrierName = form.getCarrierName();
+        var carrier = carrierControl.getCarrierByName(carrierName);
         
         if(carrier != null) {
-            Party carrierParty = carrier.getParty();
-            String defaultCarrierServiceChoice = form.getDefaultCarrierServiceChoice();
-            boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+            var carrierParty = carrier.getParty();
+            var defaultCarrierServiceChoice = form.getDefaultCarrierServiceChoice();
+            var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
             
             result.setCarrierServiceChoices(carrierControl.getCarrierServiceChoices(defaultCarrierServiceChoice, getPreferredLanguage(), allowNullChoice,
                     carrierParty));

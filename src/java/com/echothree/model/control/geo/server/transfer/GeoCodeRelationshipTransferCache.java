@@ -31,11 +31,11 @@ public class GeoCodeRelationshipTransferCache
     }
     
     public GeoCodeRelationshipTransfer getGeoCodeRelationshipTransfer(GeoCodeRelationship geoCodeRelationship) {
-        GeoCodeRelationshipTransfer geoCodeRelationshipTransfer = get(geoCodeRelationship);
+        var geoCodeRelationshipTransfer = get(geoCodeRelationship);
         
         if(geoCodeRelationshipTransfer == null) {
-            GeoCodeTransfer fromGeoCode = geoControl.getGeoCodeTransfer(userVisit, geoCodeRelationship.getFromGeoCode());
-            GeoCodeTransfer toGeoCode = geoControl.getGeoCodeTransfer(userVisit, geoCodeRelationship.getToGeoCode());
+            var fromGeoCode = geoControl.getGeoCodeTransfer(userVisit, geoCodeRelationship.getFromGeoCode());
+            var toGeoCode = geoControl.getGeoCodeTransfer(userVisit, geoCodeRelationship.getToGeoCode());
             
             geoCodeRelationshipTransfer = new GeoCodeRelationshipTransfer(fromGeoCode, toGeoCode);
             put(geoCodeRelationship, geoCodeRelationshipTransfer);

@@ -98,7 +98,7 @@ public class EmployeeTag
     public int doStartTag()
             throws JspException {
         try {
-            GetEmployeeForm commandForm = EmployeeUtil.getHome().getGetEmployeeForm();
+            var commandForm = EmployeeUtil.getHome().getGetEmployeeForm();
             
             commandForm.setEmployeeName(employeeName);
             commandForm.setPartyName(partyName);
@@ -106,8 +106,8 @@ public class EmployeeTag
             setOptions(options, null, commandForm);
 
             commandForm.setTransferProperties(transferProperties);
-            
-            CommandResult commandResult = EmployeeUtil.getHome().getEmployee(getUserVisitPK(), commandForm);
+
+            var commandResult = EmployeeUtil.getHome().getEmployee(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -115,8 +115,8 @@ public class EmployeeTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetEmployeeResult result = (GetEmployeeResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetEmployeeResult)executionResult.getResult();
 
                 pageContext.setAttribute(var, result.getEmployee(), scope);
             }

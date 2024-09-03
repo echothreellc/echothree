@@ -80,8 +80,8 @@ public class CreatePurchaseInvoiceLineCommand
     
     @Override
     protected void setupValidator(Validator validator) {
-        String invoiceName = form.getInvoiceName();
-        Invoice invoice = invoiceName == null? null: PurchaseInvoiceLogic.getInstance().getInvoiceByName(invoiceName);
+        var invoiceName = form.getInvoiceName();
+        var invoice = invoiceName == null? null: PurchaseInvoiceLogic.getInstance().getInvoiceByName(invoiceName);
         
         if(invoice != null) {
             validator.setCurrency(InvoiceLogic.getInstance().getInvoiceCurrency(invoice));
@@ -91,32 +91,32 @@ public class CreatePurchaseInvoiceLineCommand
     @Override
     protected BaseResult execute() {
         var invoiceControl = Session.getModelController(InvoiceControl.class);
-        CreatePurchaseInvoiceLineResult result = PurchaseResultFactory.getCreatePurchaseInvoiceLineResult();
+        var result = PurchaseResultFactory.getCreatePurchaseInvoiceLineResult();
         InvoiceLine invoiceLine = null;
-        String invoiceName = form.getInvoiceName();
-        InvoiceType invoiceType = invoiceControl.getInvoiceTypeByName(InvoiceTypes.PURCHASE_INVOICE.name());
-        Invoice invoice = invoiceControl.getInvoiceByName(invoiceType, invoiceName);
+        var invoiceName = form.getInvoiceName();
+        var invoiceType = invoiceControl.getInvoiceTypeByName(InvoiceTypes.PURCHASE_INVOICE.name());
+        var invoice = invoiceControl.getInvoiceByName(invoiceType, invoiceName);
         
         if(invoice != null) {
-            String rawParentInvoiceLine = form.getParentInvoiceLine();
-            Integer intParentInvoiceLine = rawParentInvoiceLine == null? null: Integer.valueOf(rawParentInvoiceLine);
-            InvoiceLine parentInvoiceLine = intParentInvoiceLine == null? null: invoiceControl.getInvoiceLine(invoice, intParentInvoiceLine);
+            var rawParentInvoiceLine = form.getParentInvoiceLine();
+            var intParentInvoiceLine = rawParentInvoiceLine == null? null: Integer.valueOf(rawParentInvoiceLine);
+            var parentInvoiceLine = intParentInvoiceLine == null? null: invoiceControl.getInvoiceLine(invoice, intParentInvoiceLine);
             
             if(rawParentInvoiceLine == null || parentInvoiceLine != null) {
-                String invoiceTypeName = form.getInvoiceLineTypeName();
-                InvoiceLineType invoiceLineType = invoiceControl.getInvoiceLineTypeByName(invoiceType, invoiceTypeName);
+                var invoiceTypeName = form.getInvoiceLineTypeName();
+                var invoiceLineType = invoiceControl.getInvoiceLineTypeByName(invoiceType, invoiceTypeName);
                 
                 if(invoiceLineType != null) {
                     var accountingControl = Session.getModelController(AccountingControl.class);
-                    String glAccountName = form.getGlAccountName();
-                    GlAccount glAccount = glAccountName == null? null: accountingControl.getGlAccountByName(glAccountName);
+                    var glAccountName = form.getGlAccountName();
+                    var glAccount = glAccountName == null? null: accountingControl.getGlAccountByName(glAccountName);
                     
                     if(glAccountName == null || glAccount != null) {
-                        String strInvoiceLineSequence = form.getInvoiceLineSequence();
-                        Integer invoiceLineSequence = strInvoiceLineSequence == null? null: Integer.valueOf(strInvoiceLineSequence);
+                        var strInvoiceLineSequence = form.getInvoiceLineSequence();
+                        var invoiceLineSequence = strInvoiceLineSequence == null? null: Integer.valueOf(strInvoiceLineSequence);
                         
                         if(invoiceLineSequence == null || invoiceControl.getInvoiceLine(invoice, invoiceLineSequence) == null) {
-                            Long amount = Long.valueOf(form.getAmount());
+                            var amount = Long.valueOf(form.getAmount());
                             var description = form.getDescription();
 
                             invoiceLine = PurchaseInvoiceLogic.getInstance().createInvoiceLine(this, invoice, invoiceLineSequence, parentInvoiceLine, amount, invoiceLineType, glAccount,
@@ -138,7 +138,7 @@ public class CreatePurchaseInvoiceLineCommand
         }
         
         if(invoiceLine != null) {
-            InvoiceLineDetail invoiceLineDetail = invoiceLine.getLastDetail();
+            var invoiceLineDetail = invoiceLine.getLastDetail();
             
             result.setEntityRef(invoiceLine.getPrimaryKey().getEntityRef());
             result.setInvoiceName(invoiceLineDetail.getInvoice().getLastDetail().getInvoiceName());

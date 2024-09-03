@@ -91,17 +91,17 @@ public class EditInvoiceTimeTypeDescriptionCommand
     public InvoiceTimeTypeDescription getEntity(EditInvoiceTimeTypeDescriptionResult result) {
         var invoiceControl = Session.getModelController(InvoiceControl.class);
         InvoiceTimeTypeDescription invoiceTimeTypeDescription = null;
-        String invoiceTypeName = spec.getInvoiceTypeName();
-        InvoiceType invoiceType = invoiceControl.getInvoiceTypeByName(invoiceTypeName);
+        var invoiceTypeName = spec.getInvoiceTypeName();
+        var invoiceType = invoiceControl.getInvoiceTypeByName(invoiceTypeName);
 
         if(invoiceType != null) {
-            String invoiceTimeTypeName = spec.getInvoiceTimeTypeName();
-            InvoiceTimeType invoiceTimeType = invoiceControl.getInvoiceTimeTypeByName(invoiceType, invoiceTimeTypeName);
+            var invoiceTimeTypeName = spec.getInvoiceTimeTypeName();
+            var invoiceTimeType = invoiceControl.getInvoiceTimeTypeByName(invoiceType, invoiceTimeTypeName);
 
             if(invoiceTimeType != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = spec.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = spec.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                 if(language != null) {
                     if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -146,7 +146,7 @@ public class EditInvoiceTimeTypeDescriptionCommand
     @Override
     public void doUpdate(InvoiceTimeTypeDescription invoiceTimeTypeDescription) {
         var invoiceControl = Session.getModelController(InvoiceControl.class);
-        InvoiceTimeTypeDescriptionValue invoiceTimeTypeDescriptionValue = invoiceControl.getInvoiceTimeTypeDescriptionValue(invoiceTimeTypeDescription);
+        var invoiceTimeTypeDescriptionValue = invoiceControl.getInvoiceTimeTypeDescriptionValue(invoiceTimeTypeDescription);
         invoiceTimeTypeDescriptionValue.setDescription(edit.getDescription());
 
         invoiceControl.updateInvoiceTimeTypeDescriptionFromValue(invoiceTimeTypeDescriptionValue, getPartyPK());

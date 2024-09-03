@@ -48,10 +48,10 @@ public class GetRecoveryQuestionChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        UserControl userControl = getUserControl();
-        GetRecoveryQuestionChoicesResult result = UserResultFactory.getGetRecoveryQuestionChoicesResult();
-        String defaultRecoveryQuestionChoice = form.getDefaultRecoveryQuestionChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var userControl = getUserControl();
+        var result = UserResultFactory.getGetRecoveryQuestionChoicesResult();
+        var defaultRecoveryQuestionChoice = form.getDefaultRecoveryQuestionChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setRecoveryQuestionChoices(userControl.getRecoveryQuestionChoices(defaultRecoveryQuestionChoice,
                 getPreferredLanguage(), allowNullChoice));

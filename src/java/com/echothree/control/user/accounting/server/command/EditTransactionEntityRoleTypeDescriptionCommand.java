@@ -81,29 +81,29 @@ public class EditTransactionEntityRoleTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        EditTransactionEntityRoleTypeDescriptionResult result = AccountingResultFactory.getEditTransactionEntityRoleTypeDescriptionResult();
-        String transactionTypeName = spec.getTransactionTypeName();
-        TransactionType transactionType = accountingControl.getTransactionTypeByName(transactionTypeName);
+        var result = AccountingResultFactory.getEditTransactionEntityRoleTypeDescriptionResult();
+        var transactionTypeName = spec.getTransactionTypeName();
+        var transactionType = accountingControl.getTransactionTypeByName(transactionTypeName);
         
         if(transactionType != null) {
-            String transactionEntityRoleTypeName = spec.getTransactionEntityRoleTypeName();
-            TransactionEntityRoleType transactionEntityRoleType = accountingControl.getTransactionEntityRoleTypeByName(transactionType, transactionEntityRoleTypeName);
+            var transactionEntityRoleTypeName = spec.getTransactionEntityRoleTypeName();
+            var transactionEntityRoleType = accountingControl.getTransactionEntityRoleTypeByName(transactionType, transactionEntityRoleTypeName);
 
             if(transactionEntityRoleType != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = spec.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = spec.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                 if(language != null) {
                     if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                        TransactionEntityRoleTypeDescription transactionEntityRoleTypeDescription = accountingControl.getTransactionEntityRoleTypeDescription(transactionEntityRoleType, language);
+                        var transactionEntityRoleTypeDescription = accountingControl.getTransactionEntityRoleTypeDescription(transactionEntityRoleType, language);
 
                         if(transactionEntityRoleTypeDescription != null) {
                             if(editMode.equals(EditMode.LOCK)) {
                                 result.setTransactionEntityRoleTypeDescription(accountingControl.getTransactionEntityRoleTypeDescriptionTransfer(getUserVisit(), transactionEntityRoleTypeDescription));
 
                                 if(lockEntity(transactionEntityRoleType)) {
-                                    TransactionEntityRoleTypeDescriptionEdit edit = AccountingEditFactory.getTransactionEntityRoleTypeDescriptionEdit();
+                                    var edit = AccountingEditFactory.getTransactionEntityRoleTypeDescriptionEdit();
 
                                     result.setEdit(edit);
                                     edit.setDescription(transactionEntityRoleTypeDescription.getDescription());
@@ -119,12 +119,12 @@ public class EditTransactionEntityRoleTypeDescriptionCommand
                             addExecutionError(ExecutionErrors.UnknownTransactionEntityRoleTypeDescription.name());
                         }
                     } else if(editMode.equals(EditMode.UPDATE)) {
-                        TransactionEntityRoleTypeDescriptionValue transactionEntityRoleTypeDescriptionValue = accountingControl.getTransactionEntityRoleTypeDescriptionValueForUpdate(transactionEntityRoleType, language);
+                        var transactionEntityRoleTypeDescriptionValue = accountingControl.getTransactionEntityRoleTypeDescriptionValueForUpdate(transactionEntityRoleType, language);
 
                         if(transactionEntityRoleTypeDescriptionValue != null) {
                             if(lockEntityForUpdate(transactionEntityRoleType)) {
                                 try {
-                                    String description = edit.getDescription();
+                                    var description = edit.getDescription();
 
                                     transactionEntityRoleTypeDescriptionValue.setDescription(description);
 

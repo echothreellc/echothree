@@ -70,16 +70,16 @@ public class CreateShipmentAliasTypeCommand
     @Override
     protected BaseResult execute() {
         var shipmentControl = Session.getModelController(ShipmentControl.class);
-        String shipmentTypeName = form.getShipmentTypeName();
-        ShipmentType shipmentType = shipmentControl.getShipmentTypeByName(shipmentTypeName);
+        var shipmentTypeName = form.getShipmentTypeName();
+        var shipmentType = shipmentControl.getShipmentTypeByName(shipmentTypeName);
 
         if(shipmentType != null) {
-            String shipmentAliasTypeName = form.getShipmentAliasTypeName();
-            ShipmentAliasType shipmentAliasType = shipmentControl.getShipmentAliasTypeByName(shipmentType, shipmentAliasTypeName);
+            var shipmentAliasTypeName = form.getShipmentAliasTypeName();
+            var shipmentAliasType = shipmentControl.getShipmentAliasTypeByName(shipmentType, shipmentAliasTypeName);
 
             if(shipmentAliasType == null) {
-                PartyPK createdBy = getPartyPK();
-                String validationPattern = form.getValidationPattern();
+                var createdBy = getPartyPK();
+                var validationPattern = form.getValidationPattern();
                 var isDefault = Boolean.valueOf(form.getIsDefault());
                 var sortOrder = Integer.valueOf(form.getSortOrder());
                 var description = form.getDescription();

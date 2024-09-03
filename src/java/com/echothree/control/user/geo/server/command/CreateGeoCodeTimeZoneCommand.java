@@ -69,16 +69,16 @@ public class CreateGeoCodeTimeZoneCommand
     @Override
     protected BaseResult execute() {
         var geoControl = Session.getModelController(GeoControl.class);
-        String geoCodeName = form.getGeoCodeName();
-        GeoCode geoCode = geoControl.getGeoCodeByName(geoCodeName);
+        var geoCodeName = form.getGeoCodeName();
+        var geoCode = geoControl.getGeoCodeByName(geoCodeName);
         
         if(geoCode != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String javaTimeZoneName = form.getJavaTimeZoneName();
-            TimeZone timeZone = partyControl.getTimeZoneByJavaName(javaTimeZoneName);
+            var javaTimeZoneName = form.getJavaTimeZoneName();
+            var timeZone = partyControl.getTimeZoneByJavaName(javaTimeZoneName);
             
             if(timeZone != null) {
-                GeoCodeTimeZone geoCodeTimeZone = geoControl.getGeoCodeTimeZone(geoCode, timeZone);
+                var geoCodeTimeZone = geoControl.getGeoCodeTimeZone(geoCode, timeZone);
                 
                 if(geoCodeTimeZone == null) {
                     var isDefault = Boolean.valueOf(form.getIsDefault());

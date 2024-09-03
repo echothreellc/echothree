@@ -32,12 +32,12 @@ public class MessageDescriptionTransferCache
     }
     
     public MessageDescriptionTransfer getMessageDescriptionTransfer(MessageDescription messageDescription) {
-        MessageDescriptionTransfer messageDescriptionTransfer = get(messageDescription);
+        var messageDescriptionTransfer = get(messageDescription);
         
         if(messageDescriptionTransfer == null) {
-            MessageTransferCache messageTransferCache = messageControl.getMessageTransferCaches(userVisit).getMessageTransferCache();
-            MessageTransfer messageTransfer = messageTransferCache.getMessageTransfer(messageDescription.getMessage());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, messageDescription.getLanguage());
+            var messageTransferCache = messageControl.getMessageTransferCaches(userVisit).getMessageTransferCache();
+            var messageTransfer = messageTransferCache.getMessageTransfer(messageDescription.getMessage());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, messageDescription.getLanguage());
             
             messageDescriptionTransfer = new MessageDescriptionTransfer(languageTransfer, messageTransfer, messageDescription.getDescription());
             put(messageDescription, messageDescriptionTransfer);

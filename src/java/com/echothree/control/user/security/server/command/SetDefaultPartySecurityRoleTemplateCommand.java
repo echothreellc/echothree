@@ -62,8 +62,8 @@ public class SetDefaultPartySecurityRoleTemplateCommand
     @Override
     protected BaseResult execute() {
         var securityControl = Session.getModelController(SecurityControl.class);
-        String partySecurityRoleTemplateName = form.getPartySecurityRoleTemplateName();
-        PartySecurityRoleTemplateDetailValue partySecurityRoleTemplateDetailValue = securityControl.getPartySecurityRoleTemplateDetailValueByNameForUpdate(partySecurityRoleTemplateName);
+        var partySecurityRoleTemplateName = form.getPartySecurityRoleTemplateName();
+        var partySecurityRoleTemplateDetailValue = securityControl.getPartySecurityRoleTemplateDetailValueByNameForUpdate(partySecurityRoleTemplateName);
         
         if(partySecurityRoleTemplateDetailValue != null) {
             partySecurityRoleTemplateDetailValue.setIsDefault(Boolean.TRUE);

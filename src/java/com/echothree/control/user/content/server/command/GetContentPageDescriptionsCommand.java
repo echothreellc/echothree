@@ -69,19 +69,19 @@ public class GetContentPageDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var contentControl = Session.getModelController(ContentControl.class);
-        GetContentPageDescriptionsResult result = ContentResultFactory.getGetContentPageDescriptionsResult();
-        String contentCollectionName = form.getContentCollectionName();
-        ContentCollection contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
+        var result = ContentResultFactory.getGetContentPageDescriptionsResult();
+        var contentCollectionName = form.getContentCollectionName();
+        var contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
         
         if(contentCollection != null) {
-            String contentSectionName = form.getContentSectionName();
-            ContentSection contentSection = contentControl.getContentSectionByName(contentCollection, contentSectionName);
+            var contentSectionName = form.getContentSectionName();
+            var contentSection = contentControl.getContentSectionByName(contentCollection, contentSectionName);
             
             result.setContentCollection(contentControl.getContentCollectionTransfer(getUserVisit(), contentCollection));
             
             if(contentSection != null) {
-                String contentPageName = form.getContentPageName();
-                ContentPage contentPage = contentControl.getContentPageByName(contentSection, contentPageName);
+                var contentPageName = form.getContentPageName();
+                var contentPage = contentControl.getContentPageByName(contentSection, contentPageName);
                 
                 result.setContentSection(contentControl.getContentSectionTransfer(getUserVisit(), contentSection));
                 

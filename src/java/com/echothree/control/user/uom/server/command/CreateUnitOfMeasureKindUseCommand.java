@@ -54,11 +54,11 @@ public class CreateUnitOfMeasureKindUseCommand
     @Override
     protected BaseResult execute() {
         var uomControl = Session.getModelController(UomControl.class);
-        String unitOfMeasureKindUseTypeName = form.getUnitOfMeasureKindUseTypeName();
-        UnitOfMeasureKindUseType unitOfMeasureKindUseType = uomControl.getUnitOfMeasureKindUseTypeByName(unitOfMeasureKindUseTypeName);
+        var unitOfMeasureKindUseTypeName = form.getUnitOfMeasureKindUseTypeName();
+        var unitOfMeasureKindUseType = uomControl.getUnitOfMeasureKindUseTypeByName(unitOfMeasureKindUseTypeName);
         
         if(unitOfMeasureKindUseType != null) {
-            boolean multipleUseError = false;
+            var multipleUseError = false;
             
             if(!unitOfMeasureKindUseType.getAllowMultiple()) {
                 if(uomControl.countUnitOfMeasureKindUsesByUnitOfMeasureKindUseType(unitOfMeasureKindUseType) != 0)
@@ -66,15 +66,15 @@ public class CreateUnitOfMeasureKindUseCommand
             }
             
             if(!multipleUseError) {
-                String unitOfMeasureKindName = form.getUnitOfMeasureKindName();
-                UnitOfMeasureKind unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);
+                var unitOfMeasureKindName = form.getUnitOfMeasureKindName();
+                var unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);
                 
                 if(unitOfMeasureKind != null) {
-                    UnitOfMeasureKindUse unitOfMeasureKindUse = uomControl.getUnitOfMeasureKindUse(unitOfMeasureKindUseType, unitOfMeasureKind);
+                    var unitOfMeasureKindUse = uomControl.getUnitOfMeasureKindUse(unitOfMeasureKindUseType, unitOfMeasureKind);
                     
                     if(unitOfMeasureKindUse == null) {
                         var isDefault = Boolean.valueOf(form.getIsDefault());
-                        Integer sortorder = Integer.valueOf(form.getSortOrder());
+                        var sortorder = Integer.valueOf(form.getSortOrder());
                         
                         uomControl.createUnitOfMeasureKindUse(unitOfMeasureKindUseType, unitOfMeasureKind, isDefault, sortorder,
                                 getPartyPK());

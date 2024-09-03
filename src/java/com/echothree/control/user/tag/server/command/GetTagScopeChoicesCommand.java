@@ -64,9 +64,9 @@ public class GetTagScopeChoicesCommand
     @Override
     protected BaseResult execute() {
         var tagControl = Session.getModelController(TagControl.class);
-        GetTagScopeChoicesResult result = TagResultFactory.getGetTagScopeChoicesResult();
-        String defaultTagScopeChoice = form.getDefaultTagScopeChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = TagResultFactory.getGetTagScopeChoicesResult();
+        var defaultTagScopeChoice = form.getDefaultTagScopeChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setTagScopeChoices(tagControl.getTagScopeChoices(defaultTagScopeChoice, getPreferredLanguage(), allowNullChoice));
         

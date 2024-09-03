@@ -92,15 +92,15 @@ public class GetContentCategoryResultsFacetsTag
     @Override
     public int doStartTag() throws JspException {
         try {
-            GetContentCategoryResultsFacetsForm commandForm = SearchUtil.getHome().getGetContentCategoryResultsFacetsForm();
+            var commandForm = SearchUtil.getHome().getGetContentCategoryResultsFacetsForm();
             
             commandForm.setSearchTypeName(searchTypeName);
             
             setOptions(options, null, commandForm);
 
             commandForm.setTransferProperties(transferProperties);
-            
-            CommandResult commandResult = SearchUtil.getHome().getContentCategoryResultsFacets(getUserVisitPK(), commandForm);
+
+            var commandResult = SearchUtil.getHome().getContentCategoryResultsFacets(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -108,8 +108,8 @@ public class GetContentCategoryResultsFacetsTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetContentCategoryResultsFacetsResult result = (GetContentCategoryResultsFacetsResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetContentCategoryResultsFacetsResult)executionResult.getResult();
 
                 pageContext.setAttribute(var, new MapWrapper<>(result.getUserVisitSearchFacets()), scope);
             }

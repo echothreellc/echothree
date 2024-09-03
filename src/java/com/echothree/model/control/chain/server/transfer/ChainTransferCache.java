@@ -40,17 +40,17 @@ public class ChainTransferCache
     }
     
     public ChainTransfer getChainTransfer(Chain chain) {
-        ChainTransfer chainTransfer = get(chain);
+        var chainTransfer = get(chain);
         
         if(chainTransfer == null) {
-            ChainDetail chainDetail = chain.getLastDetail();
-            ChainTypeTransfer chainTypeTransfer = chainControl.getChainTypeTransfer(userVisit, chainDetail.getChainType());
-            String chainName = chainDetail.getChainName();
-            Sequence chainInstanceSequence = chainDetail.getChainInstanceSequence();
-            SequenceTransfer chainInstanceSequenceTransfer = chainInstanceSequence == null? null: sequenceControl.getSequenceTransfer(userVisit, chainInstanceSequence);
-            Boolean isDefault = chainDetail.getIsDefault();
-            Integer sortOrder = chainDetail.getSortOrder();
-            String description = chainControl.getBestChainDescription(chain, getLanguage());
+            var chainDetail = chain.getLastDetail();
+            var chainTypeTransfer = chainControl.getChainTypeTransfer(userVisit, chainDetail.getChainType());
+            var chainName = chainDetail.getChainName();
+            var chainInstanceSequence = chainDetail.getChainInstanceSequence();
+            var chainInstanceSequenceTransfer = chainInstanceSequence == null? null: sequenceControl.getSequenceTransfer(userVisit, chainInstanceSequence);
+            var isDefault = chainDetail.getIsDefault();
+            var sortOrder = chainDetail.getSortOrder();
+            var description = chainControl.getBestChainDescription(chain, getLanguage());
             
             chainTransfer = new ChainTransfer(chainTypeTransfer, chainName, chainInstanceSequenceTransfer, isDefault, sortOrder, description);
             put(chain, chainTransfer);

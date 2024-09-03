@@ -67,13 +67,13 @@ public class GetReturnPolicyTranslationsCommand
     @Override
     protected BaseResult execute() {
         var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
-        GetReturnPolicyTranslationsResult result = ReturnPolicyResultFactory.getGetReturnPolicyTranslationsResult();
-        String returnKindName = form.getReturnKindName();
-        ReturnKind returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
+        var result = ReturnPolicyResultFactory.getGetReturnPolicyTranslationsResult();
+        var returnKindName = form.getReturnKindName();
+        var returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
 
         if(returnKind != null) {
-            String returnPolicyName = form.getReturnPolicyName();
-            ReturnPolicy returnPolicy = returnPolicyControl.getReturnPolicyByName(returnKind, returnPolicyName);
+            var returnPolicyName = form.getReturnPolicyName();
+            var returnPolicy = returnPolicyControl.getReturnPolicyByName(returnKind, returnPolicyName);
 
             if(returnPolicy != null) {
                 result.setReturnPolicy(returnPolicyControl.getReturnPolicyTransfer(getUserVisit(), returnPolicy));

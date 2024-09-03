@@ -133,7 +133,7 @@ public class ItemDescriptionsTag
     public int doStartTag()
             throws JspException {
         try {
-            GetItemDescriptionsForm commandForm = ItemUtil.getHome().getGetItemDescriptionsForm();
+            var commandForm = ItemUtil.getHome().getGetItemDescriptionsForm();
             Map<String, Limit> limits = new HashMap<>();
             
             commandForm.setItemName(itemName);
@@ -149,7 +149,7 @@ public class ItemDescriptionsTag
             }
             commandForm.setLimits(limits);
 
-            CommandResult commandResult = ItemUtil.getHome().getItemDescriptions(getUserVisitPK(), commandForm);
+            var commandResult = ItemUtil.getHome().getItemDescriptions(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -157,8 +157,8 @@ public class ItemDescriptionsTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetItemDescriptionsResult result = (GetItemDescriptionsResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetItemDescriptionsResult)executionResult.getResult();
 
                 pageContext.setAttribute(var, new ListWrapper<>(result.getItemDescriptions()), scope);
 

@@ -50,21 +50,21 @@ public class CommandMessageTransferCache
     }
     
     public CommandMessageTransfer getCommandMessageTransfer(CommandMessage commandMessage) {
-        CommandMessageTransfer commandMessageTransfer = get(commandMessage);
+        var commandMessageTransfer = get(commandMessage);
         
         if(commandMessageTransfer == null) {
-            CommandMessageDetail commandMessageDetail = commandMessage.getLastDetail();
-            CommandMessageTypeTransfer commandMessageType = coreControl.getCommandMessageTypeTransfer(userVisit, commandMessageDetail.getCommandMessageType());
-            String commandMessageKey = commandMessageDetail.getCommandMessageKey();
-            CommandMessageTranslation commandMessageTranslation = coreControl.getBestCommandMessageTranslation(commandMessage, getLanguage());
-            String translation = commandMessageTranslation == null ? null : commandMessageTranslation.getTranslation();
+            var commandMessageDetail = commandMessage.getLastDetail();
+            var commandMessageType = coreControl.getCommandMessageTypeTransfer(userVisit, commandMessageDetail.getCommandMessageType());
+            var commandMessageKey = commandMessageDetail.getCommandMessageKey();
+            var commandMessageTranslation = coreControl.getBestCommandMessageTranslation(commandMessage, getLanguage());
+            var translation = commandMessageTranslation == null ? null : commandMessageTranslation.getTranslation();
     
             commandMessageTransfer = new CommandMessageTransfer(commandMessageType, commandMessageKey, translation);
             put(commandMessage, commandMessageTransfer);
             
             if(includeTranslations) {
-                List<CommandMessageTranslationTransfer> commandMessageTranslationTransfers = coreControl.getCommandMessageTranslationTransfersByCommandMessage(userVisit, commandMessage);
-                MapWrapper<CommandMessageTranslationTransfer> commandMessageTranslations = new MapWrapper<>();
+                var commandMessageTranslationTransfers = coreControl.getCommandMessageTranslationTransfersByCommandMessage(userVisit, commandMessage);
+                var commandMessageTranslations = new MapWrapper<CommandMessageTranslationTransfer>();
 
                 commandMessageTranslationTransfers.forEach((commandMessageTranslationTransfer) -> {
                     commandMessageTranslations.put(commandMessageTranslationTransfer.getLanguage().getLanguageIsoName(), commandMessageTranslationTransfer);

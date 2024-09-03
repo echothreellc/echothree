@@ -65,7 +65,7 @@ public class GetEntityAliasTypeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        GetEntityAliasTypeChoicesResult result = CoreResultFactory.getGetEntityAliasTypeChoicesResult();
+        var result = CoreResultFactory.getGetEntityAliasTypeChoicesResult();
         var entityType = EntityTypeLogic.getInstance().getEntityTypeByUniversalSpec(this, form);
             
         if(!hasExecutionErrors()) {

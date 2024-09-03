@@ -76,7 +76,7 @@ public class GetEntityAttributeTypesCommand
     
     @Override
     protected BaseResult getResult(Collection<EntityAttributeType> entities) {
-        GetEntityAttributeTypesResult result = CoreResultFactory.getGetEntityAttributeTypesResult();
+        var result = CoreResultFactory.getGetEntityAttributeTypesResult();
         var coreControl = getCoreControl();
         
         result.setEntityAttributeTypes(coreControl.getEntityAttributeTypeTransfers(getUserVisit(), entities));

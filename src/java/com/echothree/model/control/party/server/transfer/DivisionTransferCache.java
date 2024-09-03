@@ -85,30 +85,30 @@ public class DivisionTransferCache
     }
     
     public DivisionTransfer getDivisionTransfer(Party party) {
-        DivisionTransfer divisionTransfer = get(party);
+        var divisionTransfer = get(party);
         
         if(divisionTransfer == null) {
-            PartyDetail partyDetail = party.getLastDetail();
-            String partyName = partyDetail.getPartyName();
-            PartyTypeTransfer partyTypeTransfer = partyControl.getPartyTypeTransfer(userVisit, partyDetail.getPartyType());
-            Language preferredLanguage = partyDetail.getPreferredLanguage();
-            LanguageTransfer preferredLanguageTransfer = preferredLanguage == null ? null : partyControl.getLanguageTransfer(userVisit, preferredLanguage);
-            Currency preferredCurrency = partyDetail.getPreferredCurrency();
-            CurrencyTransfer preferredCurrencyTransfer = preferredCurrency == null ? null : accountingControl.getCurrencyTransfer(userVisit, preferredCurrency);
-            TimeZone preferredTimeZone = partyDetail.getPreferredTimeZone();
-            TimeZoneTransfer preferredTimeZoneTransfer = preferredTimeZone == null ? null : partyControl.getTimeZoneTransfer(userVisit, preferredTimeZone);
-            DateTimeFormat preferredDateTimeFormat = partyDetail.getPreferredDateTimeFormat();
-            DateTimeFormatTransfer preferredDateTimeFormatTransfer = preferredDateTimeFormat == null ? null : partyControl.getDateTimeFormatTransfer(userVisit, preferredDateTimeFormat);
-            Person person = partyControl.getPerson(party);
-            PersonTransfer personTransfer = person == null ? null : partyControl.getPersonTransfer(userVisit, person);
-            PartyGroup partyGroup = partyControl.getPartyGroup(party);
-            PartyGroupTransfer partyGroupTransfer = partyGroup == null ? null : partyControl.getPartyGroupTransfer(userVisit, partyGroup);
-            PartyDivision partyDivision = partyControl.getPartyDivision(party);
-            Party companyParty = partyDivision.getCompanyParty();
-            CompanyTransfer company = partyControl.getCompanyTransfer(userVisit, companyParty);
-            String divisionName = partyDivision.getPartyDivisionName();
-            String isDefault = partyDivision.getIsDefault().toString();
-            String sortOrder = partyDivision.getSortOrder().toString();
+            var partyDetail = party.getLastDetail();
+            var partyName = partyDetail.getPartyName();
+            var partyTypeTransfer = partyControl.getPartyTypeTransfer(userVisit, partyDetail.getPartyType());
+            var preferredLanguage = partyDetail.getPreferredLanguage();
+            var preferredLanguageTransfer = preferredLanguage == null ? null : partyControl.getLanguageTransfer(userVisit, preferredLanguage);
+            var preferredCurrency = partyDetail.getPreferredCurrency();
+            var preferredCurrencyTransfer = preferredCurrency == null ? null : accountingControl.getCurrencyTransfer(userVisit, preferredCurrency);
+            var preferredTimeZone = partyDetail.getPreferredTimeZone();
+            var preferredTimeZoneTransfer = preferredTimeZone == null ? null : partyControl.getTimeZoneTransfer(userVisit, preferredTimeZone);
+            var preferredDateTimeFormat = partyDetail.getPreferredDateTimeFormat();
+            var preferredDateTimeFormatTransfer = preferredDateTimeFormat == null ? null : partyControl.getDateTimeFormatTransfer(userVisit, preferredDateTimeFormat);
+            var person = partyControl.getPerson(party);
+            var personTransfer = person == null ? null : partyControl.getPersonTransfer(userVisit, person);
+            var partyGroup = partyControl.getPartyGroup(party);
+            var partyGroupTransfer = partyGroup == null ? null : partyControl.getPartyGroupTransfer(userVisit, partyGroup);
+            var partyDivision = partyControl.getPartyDivision(party);
+            var companyParty = partyDivision.getCompanyParty();
+            var company = partyControl.getCompanyTransfer(userVisit, companyParty);
+            var divisionName = partyDivision.getPartyDivisionName();
+            var isDefault = partyDivision.getIsDefault().toString();
+            var sortOrder = partyDivision.getSortOrder().toString();
             
             divisionTransfer = new DivisionTransfer(partyName, partyTypeTransfer, preferredLanguageTransfer, preferredCurrencyTransfer, preferredTimeZoneTransfer, preferredDateTimeFormatTransfer,
                     personTransfer, partyGroupTransfer, company, divisionName, isDefault, sortOrder);

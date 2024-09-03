@@ -120,8 +120,8 @@ public class ItemPurchasingCategoryLogic
 
     private long countItemsByItemPurchasingCategoryChildren(final VendorControl vendorControl, final ItemControl itemControl,
             final ItemPurchasingCategory parentItemPurchasingCategory) {
-        List<ItemPurchasingCategory> itemPurchasingCategoryChildren = vendorControl.getItemPurchasingCategoriesByParentItemPurchasingCategory(parentItemPurchasingCategory);
-        long total = itemControl.countItemsByItemPurchasingCategory(parentItemPurchasingCategory);
+        var itemPurchasingCategoryChildren = vendorControl.getItemPurchasingCategoriesByParentItemPurchasingCategory(parentItemPurchasingCategory);
+        var total = itemControl.countItemsByItemPurchasingCategory(parentItemPurchasingCategory);
 
         total = itemPurchasingCategoryChildren.stream().map((childItemPurchasingCategory) -> countItemsByItemPurchasingCategoryChildren(vendorControl, itemControl, childItemPurchasingCategory)).reduce(total, (accumulator, _item) -> accumulator + _item);
 

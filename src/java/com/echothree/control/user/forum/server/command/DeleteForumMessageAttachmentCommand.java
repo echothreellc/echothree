@@ -51,12 +51,12 @@ public class DeleteForumMessageAttachmentCommand
     @Override
     protected BaseResult execute() {
         var forumControl = Session.getModelController(ForumControl.class);
-        String forumMessageName = form.getForumMessageName();
-        ForumMessage forumMessage = forumControl.getForumMessageByNameForUpdate(forumMessageName);
+        var forumMessageName = form.getForumMessageName();
+        var forumMessage = forumControl.getForumMessageByNameForUpdate(forumMessageName);
         
         if(forumMessage != null) {
-            Integer forumMessageAttachmentSequence = Integer.valueOf(form.getForumMessageAttachmentSequence());
-            ForumMessageAttachment forumMessageAttachment = forumControl.getForumMessageAttachmentBySequenceForUpdate(forumMessage, forumMessageAttachmentSequence);
+            var forumMessageAttachmentSequence = Integer.valueOf(form.getForumMessageAttachmentSequence());
+            var forumMessageAttachment = forumControl.getForumMessageAttachmentBySequenceForUpdate(forumMessage, forumMessageAttachmentSequence);
 
             if(forumMessageAttachment != null) {
                 forumControl.deleteForumMessageAttachment(forumMessageAttachment, getPartyPK());

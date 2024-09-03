@@ -31,15 +31,15 @@ public class ContactMechanismAliasTypeTransferCache
     }
     
     public ContactMechanismAliasTypeTransfer getContactMechanismAliasTypeTransfer(ContactMechanismAliasType contactMechanismAliasType) {
-        ContactMechanismAliasTypeTransfer contactMechanismAliasTypeTransfer = get(contactMechanismAliasType);
+        var contactMechanismAliasTypeTransfer = get(contactMechanismAliasType);
         
         if(contactMechanismAliasTypeTransfer == null) {
-            ContactMechanismAliasTypeDetail contactMechanismAliasTypeDetail = contactMechanismAliasType.getLastDetail();
-            String contactMechanismAliasTypeName = contactMechanismAliasTypeDetail.getContactMechanismAliasTypeName();
-            String validationPattern = contactMechanismAliasTypeDetail.getValidationPattern();
-            Boolean isDefault = contactMechanismAliasTypeDetail.getIsDefault();
-            Integer sortOrder = contactMechanismAliasTypeDetail.getSortOrder();
-            String description = contactControl.getBestContactMechanismAliasTypeDescription(contactMechanismAliasType, getLanguage());
+            var contactMechanismAliasTypeDetail = contactMechanismAliasType.getLastDetail();
+            var contactMechanismAliasTypeName = contactMechanismAliasTypeDetail.getContactMechanismAliasTypeName();
+            var validationPattern = contactMechanismAliasTypeDetail.getValidationPattern();
+            var isDefault = contactMechanismAliasTypeDetail.getIsDefault();
+            var sortOrder = contactMechanismAliasTypeDetail.getSortOrder();
+            var description = contactControl.getBestContactMechanismAliasTypeDescription(contactMechanismAliasType, getLanguage());
             
             contactMechanismAliasTypeTransfer = new ContactMechanismAliasTypeTransfer(contactMechanismAliasTypeName, validationPattern, isDefault, sortOrder,
                     description);

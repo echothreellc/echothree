@@ -30,7 +30,7 @@ public class CampaignUtil {
     public static CampaignLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
 
             cachedLocal = (CampaignLocal)ctx.lookup("ejb:echothree/echothree-server/CampaignBean!com.echothree.control.user.campaign.server.CampaignLocal");
         }
@@ -42,7 +42,7 @@ public class CampaignUtil {
     public static CampaignRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
             
             cachedRemote = (CampaignRemote)ctx.lookup("ejb:echothree/echothree-server/CampaignBean!com.echothree.control.user.campaign.common.CampaignRemote");
         }

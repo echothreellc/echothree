@@ -56,17 +56,17 @@ public class GetHarmonizedTariffScheduleCodeResultsCommand
     
     @Override
     protected BaseResult execute() {
-        GetHarmonizedTariffScheduleCodeResultsResult result = SearchResultFactory.getGetHarmonizedTariffScheduleCodeResultsResult();
+        var result = SearchResultFactory.getGetHarmonizedTariffScheduleCodeResultsResult();
         var searchControl = Session.getModelController(SearchControl.class);
-        SearchKind searchKind = searchControl.getSearchKindByName(SearchKinds.HARMONIZED_TARIFF_SCHEDULE_CODE.name());
+        var searchKind = searchControl.getSearchKindByName(SearchKinds.HARMONIZED_TARIFF_SCHEDULE_CODE.name());
         
         if(searchKind != null) {
-            String searchTypeName = form.getSearchTypeName();
-            SearchType searchType = searchControl.getSearchTypeByName(searchKind, searchTypeName);
+            var searchTypeName = form.getSearchTypeName();
+            var searchType = searchControl.getSearchTypeByName(searchKind, searchTypeName);
             
             if(searchType != null) {
-                UserVisit userVisit = getUserVisit();
-                UserVisitSearch userVisitSearch = searchControl.getUserVisitSearch(userVisit, searchType);
+                var userVisit = getUserVisit();
+                var userVisitSearch = searchControl.getUserVisitSearch(userVisit, searchType);
                 
                 if(userVisitSearch != null) {
                     var harmonizedTariffScheduleCodeControl = Session.getModelController(HarmonizedTariffScheduleCodeControl.class);

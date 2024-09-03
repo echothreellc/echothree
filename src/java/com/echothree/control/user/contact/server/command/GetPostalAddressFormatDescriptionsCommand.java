@@ -51,9 +51,9 @@ public class GetPostalAddressFormatDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var contactControl = Session.getModelController(ContactControl.class);
-        GetPostalAddressFormatDescriptionsResult result = ContactResultFactory.getGetPostalAddressFormatDescriptionsResult();
-        String postalAddressFormatName = form.getPostalAddressFormatName();
-        PostalAddressFormat postalAddressFormat = contactControl.getPostalAddressFormatByName(postalAddressFormatName);
+        var result = ContactResultFactory.getGetPostalAddressFormatDescriptionsResult();
+        var postalAddressFormatName = form.getPostalAddressFormatName();
+        var postalAddressFormat = contactControl.getPostalAddressFormatByName(postalAddressFormatName);
         
         if(postalAddressFormat != null) {
             result.setPostalAddressFormat(contactControl.getPostalAddressFormatTransfer(getUserVisit(), postalAddressFormat));

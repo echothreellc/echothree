@@ -38,13 +38,13 @@ public class GeoCodeCurrencyTransferCache
     }
     
     public GeoCodeCurrencyTransfer getGeoCodeCurrencyTransfer(GeoCodeCurrency geoCodeCurrency) {
-        GeoCodeCurrencyTransfer geoCodeCurrencyTransfer = get(geoCodeCurrency);
+        var geoCodeCurrencyTransfer = get(geoCodeCurrency);
         
         if(geoCodeCurrencyTransfer == null) {
-            GeoCodeTransfer geoCode = geoControl.getGeoCodeTransfer(userVisit, geoCodeCurrency.getGeoCode());
-            CurrencyTransfer currency = accountingControl.getCurrencyTransfer(userVisit, geoCodeCurrency.getCurrency());
-            Boolean isDefault = geoCodeCurrency.getIsDefault();
-            Integer sortOrder = geoCodeCurrency.getSortOrder();
+            var geoCode = geoControl.getGeoCodeTransfer(userVisit, geoCodeCurrency.getGeoCode());
+            var currency = accountingControl.getCurrencyTransfer(userVisit, geoCodeCurrency.getCurrency());
+            var isDefault = geoCodeCurrency.getIsDefault();
+            var sortOrder = geoCodeCurrency.getSortOrder();
             
             geoCodeCurrencyTransfer = new GeoCodeCurrencyTransfer(geoCode, currency, isDefault, sortOrder);
             put(geoCodeCurrency, geoCodeCurrencyTransfer);

@@ -65,9 +65,9 @@ public class GetCampaignSourceDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var campaignControl = Session.getModelController(CampaignControl.class);
-        GetCampaignSourceDescriptionsResult result = CampaignResultFactory.getGetCampaignSourceDescriptionsResult();
-        String campaignSourceName = form.getCampaignSourceName();
-        CampaignSource campaignSource = campaignControl.getCampaignSourceByName(campaignSourceName);
+        var result = CampaignResultFactory.getGetCampaignSourceDescriptionsResult();
+        var campaignSourceName = form.getCampaignSourceName();
+        var campaignSource = campaignControl.getCampaignSourceByName(campaignSourceName);
         
         if(campaignSource != null) {
             result.setCampaignSource(campaignControl.getCampaignSourceTransfer(getUserVisit(), campaignSource));

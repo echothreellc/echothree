@@ -71,24 +71,24 @@ public class CreateSalesOrderBatchCommand
     
     @Override
     protected BaseResult execute() {
-        CreateSalesOrderBatchResult result = SalesResultFactory.getCreateSalesOrderBatchResult();
+        var result = SalesResultFactory.getCreateSalesOrderBatchResult();
         var accountingControl = Session.getModelController(AccountingControl.class);
-        String currencyIsoName = form.getCurrencyIsoName();
+        var currencyIsoName = form.getCurrencyIsoName();
 
-        Currency currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
+        var currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
 
         if(currency != null) {
             var paymentMethodControl = Session.getModelController(PaymentMethodControl.class);
-            String paymentMethodName = form.getPaymentMethodName();
-            PaymentMethod paymentMethod = paymentMethodControl.getPaymentMethodByName(paymentMethodName);
+            var paymentMethodName = form.getPaymentMethodName();
+            var paymentMethod = paymentMethodControl.getPaymentMethodByName(paymentMethodName);
 
             if(paymentMethod != null) {
-                String strCount = form.getCount();
-                Long count = strCount == null ? null : Long.valueOf(strCount);
-                String strAmount = form.getAmount();
-                Long amount = strAmount == null ? null : Long.valueOf(strAmount);
+                var strCount = form.getCount();
+                var count = strCount == null ? null : Long.valueOf(strCount);
+                var strAmount = form.getAmount();
+                var amount = strAmount == null ? null : Long.valueOf(strAmount);
 
-                Batch batch = SalesOrderBatchLogic.getInstance().createBatch(this, currency, paymentMethod, count, amount, getPartyPK());
+                var batch = SalesOrderBatchLogic.getInstance().createBatch(this, currency, paymentMethod, count, amount, getPartyPK());
 
                 if(!hasExecutionErrors()) {
                     result.setBatchName(batch.getLastDetail().getBatchName());

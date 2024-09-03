@@ -67,16 +67,16 @@ public class DeleteGeoCodeScopeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var geoControl = Session.getModelController(GeoControl.class);
-        String geoCodeScopeName = form.getGeoCodeScopeName();
-        GeoCodeScope geoCodeScope = geoControl.getGeoCodeScopeByName(geoCodeScopeName);
+        var geoCodeScopeName = form.getGeoCodeScopeName();
+        var geoCodeScope = geoControl.getGeoCodeScopeByName(geoCodeScopeName);
         
         if(geoCodeScope != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                GeoCodeScopeDescription geoCodeScopeDescription = geoControl.getGeoCodeScopeDescriptionForUpdate(geoCodeScope, language);
+                var geoCodeScopeDescription = geoControl.getGeoCodeScopeDescriptionForUpdate(geoCodeScope, language);
                 
                 if(geoCodeScopeDescription != null) {
                     geoControl.deleteGeoCodeScopeDescription(geoCodeScopeDescription, getPartyPK());

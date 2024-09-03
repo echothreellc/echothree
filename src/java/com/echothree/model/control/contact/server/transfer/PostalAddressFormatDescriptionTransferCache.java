@@ -32,11 +32,11 @@ public class PostalAddressFormatDescriptionTransferCache
     }
     
     public PostalAddressFormatDescriptionTransfer getPostalAddressFormatDescriptionTransfer(PostalAddressFormatDescription postalAddressFormatDescription) {
-        PostalAddressFormatDescriptionTransfer postalAddressFormatDescriptionTransfer = get(postalAddressFormatDescription);
+        var postalAddressFormatDescriptionTransfer = get(postalAddressFormatDescription);
         
         if(postalAddressFormatDescriptionTransfer == null) {
-            PostalAddressFormatTransfer postalAddressFormatTransfer = contactControl.getPostalAddressFormatTransfer(userVisit, postalAddressFormatDescription.getPostalAddressFormat());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, postalAddressFormatDescription.getLanguage());
+            var postalAddressFormatTransfer = contactControl.getPostalAddressFormatTransfer(userVisit, postalAddressFormatDescription.getPostalAddressFormat());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, postalAddressFormatDescription.getLanguage());
             
             postalAddressFormatDescriptionTransfer = new PostalAddressFormatDescriptionTransfer(languageTransfer, postalAddressFormatTransfer, postalAddressFormatDescription.getDescription());
             put(postalAddressFormatDescription, postalAddressFormatDescriptionTransfer);

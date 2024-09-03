@@ -68,9 +68,9 @@ public class GetSecurityRoleChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        GetSecurityRoleChoicesResult result = SecurityResultFactory.getGetSecurityRoleChoicesResult();
-        String securityRoleGroupName = form.getSecurityRoleGroupName();
-        String workflowName = form.getWorkflowName();
+        var result = SecurityResultFactory.getGetSecurityRoleChoicesResult();
+        var securityRoleGroupName = form.getSecurityRoleGroupName();
+        var workflowName = form.getWorkflowName();
         var parameterCount = (securityRoleGroupName == null ? 0 : 1) + (workflowName == null ? 0 : 1);
         
         if(parameterCount == 1) {
@@ -99,8 +99,8 @@ public class GetSecurityRoleChoicesCommand
             }
             
             if(!hasExecutionErrors()) {
-                String defaultSecurityRoleChoice = form.getDefaultSecurityRoleChoice();
-                boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+                var defaultSecurityRoleChoice = form.getDefaultSecurityRoleChoice();
+                var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 
                 result.setSecurityRoleChoices(securityControl.getSecurityRoleChoices(defaultSecurityRoleChoice, getPreferredLanguage(), allowNullChoice,
                         securityRoleGroup));

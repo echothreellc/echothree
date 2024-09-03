@@ -57,20 +57,20 @@ public class GetSelectorPartiesCommand
     @Override
     protected BaseResult execute() {
         var selectorControl = Session.getModelController(SelectorControl.class);
-        GetSelectorPartiesResult result = SelectorResultFactory.getGetSelectorPartiesResult();
-        String selectorKindName = form.getSelectorKindName();
-        SelectorKind selectorKind = selectorControl.getSelectorKindByName(selectorKindName);
+        var result = SelectorResultFactory.getGetSelectorPartiesResult();
+        var selectorKindName = form.getSelectorKindName();
+        var selectorKind = selectorControl.getSelectorKindByName(selectorKindName);
         
         if(selectorKind != null) {
-            UserVisit userVisit = getUserVisit();
-            String selectorTypeName = form.getSelectorTypeName();
-            SelectorType selectorType = selectorControl.getSelectorTypeByName(selectorKind, selectorTypeName);
+            var userVisit = getUserVisit();
+            var selectorTypeName = form.getSelectorTypeName();
+            var selectorType = selectorControl.getSelectorTypeByName(selectorKind, selectorTypeName);
             
             result.setSelectorKind(selectorControl.getSelectorKindTransfer(userVisit, selectorKind));
             
             if(selectorType != null) {
-                String selectorName = form.getSelectorName();
-                Selector selector = selectorControl.getSelectorByName(selectorType, selectorName);
+                var selectorName = form.getSelectorName();
+                var selector = selectorControl.getSelectorByName(selectorType, selectorName);
                 
                 result.setSelectorType(selectorControl.getSelectorTypeTransfer(userVisit, selectorType));
                 

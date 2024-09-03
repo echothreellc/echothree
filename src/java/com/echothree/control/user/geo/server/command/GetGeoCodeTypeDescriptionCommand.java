@@ -69,17 +69,17 @@ public class GetGeoCodeTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var geoControl = Session.getModelController(GeoControl.class);
-        GetGeoCodeTypeDescriptionResult result = GeoResultFactory.getGetGeoCodeTypeDescriptionResult();
-        String geoCodeTypeName = form.getGeoCodeTypeName();
-        GeoCodeType geoCodeType = geoControl.getGeoCodeTypeByName(geoCodeTypeName);
+        var result = GeoResultFactory.getGetGeoCodeTypeDescriptionResult();
+        var geoCodeTypeName = form.getGeoCodeTypeName();
+        var geoCodeType = geoControl.getGeoCodeTypeByName(geoCodeTypeName);
         
         if(geoCodeType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                GeoCodeTypeDescription geoCodeTypeDescription = geoControl.getGeoCodeTypeDescription(geoCodeType, language);
+                var geoCodeTypeDescription = geoControl.getGeoCodeTypeDescription(geoCodeType, language);
                 
                 if(geoCodeTypeDescription != null) {
                     result.setGeoCodeTypeDescription(geoControl.getGeoCodeTypeDescriptionTransfer(getUserVisit(), geoCodeTypeDescription));

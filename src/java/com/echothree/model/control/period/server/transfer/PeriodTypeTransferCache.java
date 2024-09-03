@@ -34,15 +34,15 @@ public class PeriodTypeTransferCache
     }
     
     public PeriodTypeTransfer getPeriodTypeTransfer(PeriodType periodType) {
-        PeriodTypeTransfer periodTypeTransfer = get(periodType);
+        var periodTypeTransfer = get(periodType);
         
         if(periodTypeTransfer == null) {
-            PeriodTypeDetail periodTypeDetail = periodType.getLastDetail();
-            PeriodKindTransfer periodKindTransfer = periodControl.getPeriodKindTransfer(userVisit, periodTypeDetail.getPeriodKind());
-            String periodTypeName = periodTypeDetail.getPeriodTypeName();
-            Boolean isDefault = periodTypeDetail.getIsDefault();
-            Integer sortOrder = periodTypeDetail.getSortOrder();
-            String description = periodControl.getBestPeriodTypeDescription(periodType, getLanguage());
+            var periodTypeDetail = periodType.getLastDetail();
+            var periodKindTransfer = periodControl.getPeriodKindTransfer(userVisit, periodTypeDetail.getPeriodKind());
+            var periodTypeName = periodTypeDetail.getPeriodTypeName();
+            var isDefault = periodTypeDetail.getIsDefault();
+            var sortOrder = periodTypeDetail.getSortOrder();
+            var description = periodControl.getBestPeriodTypeDescription(periodType, getLanguage());
             
             periodTypeTransfer = new PeriodTypeTransfer(periodKindTransfer, periodTypeName, isDefault, sortOrder, description);
             put(periodType, periodTypeTransfer);

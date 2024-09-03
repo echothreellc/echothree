@@ -73,28 +73,28 @@ public class DeleteFilterStepDescriptionCommand
     @Override
     protected BaseResult execute() {
         var filterControl = Session.getModelController(FilterControl.class);
-        String filterKindName = form.getFilterKindName();
-        FilterKind filterKind = filterControl.getFilterKindByName(filterKindName);
+        var filterKindName = form.getFilterKindName();
+        var filterKind = filterControl.getFilterKindByName(filterKindName);
         
         if(filterKind != null) {
-            String filterTypeName = form.getFilterTypeName();
-            FilterType filterType = filterControl.getFilterTypeByName(filterKind, filterTypeName);
+            var filterTypeName = form.getFilterTypeName();
+            var filterType = filterControl.getFilterTypeByName(filterKind, filterTypeName);
             
             if(filterType != null) {
-                String filterName = form.getFilterName();
-                Filter filter = filterControl.getFilterByName(filterType, filterName);
+                var filterName = form.getFilterName();
+                var filter = filterControl.getFilterByName(filterType, filterName);
                 
                 if(filter != null) {
-                    String filterStepName = form.getFilterStepName();
-                    FilterStep filterStep = filterControl.getFilterStepByName(filter, filterStepName);
+                    var filterStepName = form.getFilterStepName();
+                    var filterStep = filterControl.getFilterStepByName(filter, filterStepName);
                     
                     if(filterStep != null) {
                         var partyControl = Session.getModelController(PartyControl.class);
-                        String languageIsoName = form.getLanguageIsoName();
-                        Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                        var languageIsoName = form.getLanguageIsoName();
+                        var language = partyControl.getLanguageByIsoName(languageIsoName);
                         
                         if(language != null) {
-                            FilterStepDescription filterStepDescription = filterControl.getFilterStepDescriptionForUpdate(filterStep, language);
+                            var filterStepDescription = filterControl.getFilterStepDescriptionForUpdate(filterStep, language);
                             
                             if(filterStepDescription != null) {
                                 filterControl.deleteFilterStepDescription(filterStepDescription, getPartyPK());

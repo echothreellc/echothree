@@ -64,12 +64,12 @@ public class SetDefaultPeriodTypeCommand
     @Override
     protected BaseResult execute() {
         var periodControl = Session.getModelController(PeriodControl.class);
-        String periodKindName = form.getPeriodKindName();
-        PeriodKind periodKind = periodControl.getPeriodKindByName(periodKindName);
+        var periodKindName = form.getPeriodKindName();
+        var periodKind = periodControl.getPeriodKindByName(periodKindName);
         
         if(periodKind != null) {
-            String periodTypeName = form.getPeriodTypeName();
-            PeriodTypeDetailValue periodTypeDetailValue = periodControl.getPeriodTypeDetailValueByNameForUpdate(periodKind,
+            var periodTypeName = form.getPeriodTypeName();
+            var periodTypeDetailValue = periodControl.getPeriodTypeDetailValueByNameForUpdate(periodKind,
                     periodTypeName);
             
             if(periodTypeDetailValue != null) {

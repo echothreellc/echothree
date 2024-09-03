@@ -35,17 +35,17 @@ public class ItemAliasTypeTransferCache
     
     @Override
     public ItemAliasTypeTransfer getTransfer(ItemAliasType itemAliasType) {
-        ItemAliasTypeTransfer itemAliasTypeTransfer = get(itemAliasType);
+        var itemAliasTypeTransfer = get(itemAliasType);
         
         if(itemAliasTypeTransfer == null) {
-            ItemAliasTypeDetail itemAliasTypeDetail = itemAliasType.getLastDetail();
-            String itemAliasTypeName = itemAliasTypeDetail.getItemAliasTypeName();
-            String validationPattern = itemAliasTypeDetail.getValidationPattern();
-            ItemAliasChecksumTypeTransfer itemAliasChecksumType = itemControl.getItemAliasChecksumTypeTransfer(userVisit, itemAliasTypeDetail.getItemAliasChecksumType());
-            Boolean allowMultiple = itemAliasTypeDetail.getAllowMultiple();
-            Boolean isDefault = itemAliasTypeDetail.getIsDefault();
-            Integer sortOrder = itemAliasTypeDetail.getSortOrder();
-            String description = itemControl.getBestItemAliasTypeDescription(itemAliasType, getLanguage());
+            var itemAliasTypeDetail = itemAliasType.getLastDetail();
+            var itemAliasTypeName = itemAliasTypeDetail.getItemAliasTypeName();
+            var validationPattern = itemAliasTypeDetail.getValidationPattern();
+            var itemAliasChecksumType = itemControl.getItemAliasChecksumTypeTransfer(userVisit, itemAliasTypeDetail.getItemAliasChecksumType());
+            var allowMultiple = itemAliasTypeDetail.getAllowMultiple();
+            var isDefault = itemAliasTypeDetail.getIsDefault();
+            var sortOrder = itemAliasTypeDetail.getSortOrder();
+            var description = itemControl.getBestItemAliasTypeDescription(itemAliasType, getLanguage());
             
             itemAliasTypeTransfer = new ItemAliasTypeTransfer(itemAliasTypeName, validationPattern, itemAliasChecksumType, allowMultiple, isDefault, sortOrder,
                     description);

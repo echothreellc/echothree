@@ -62,8 +62,8 @@ public class SetDefaultSequenceTypeCommand
     @Override
     protected BaseResult execute() {
         var sequenceControl = Session.getModelController(SequenceControl.class);
-        String sequenceTypeName = form.getSequenceTypeName();
-        SequenceTypeDetailValue sequenceTypeDetailValue = sequenceControl.getSequenceTypeDetailValueByNameForUpdate(sequenceTypeName);
+        var sequenceTypeName = form.getSequenceTypeName();
+        var sequenceTypeDetailValue = sequenceControl.getSequenceTypeDetailValueByNameForUpdate(sequenceTypeName);
         
         if(sequenceTypeDetailValue != null) {
             sequenceTypeDetailValue.setIsDefault(Boolean.TRUE);

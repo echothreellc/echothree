@@ -31,13 +31,13 @@ public class UnitOfMeasureEquivalentTransferCache
     }
     
     public UnitOfMeasureEquivalentTransfer getUnitOfMeasureEquivalentTransfer(UnitOfMeasureEquivalent unitOfMeasureEquivalent) {
-        UnitOfMeasureEquivalentTransfer unitOfMeasureEquivalentTransfer = get(unitOfMeasureEquivalent);
+        var unitOfMeasureEquivalentTransfer = get(unitOfMeasureEquivalent);
         
         if(unitOfMeasureEquivalentTransfer == null) {
-            UnitOfMeasureTypeTransferCache unitOfMeasureTypeTransferCache = uomControl.getUomTransferCaches(userVisit).getUnitOfMeasureTypeTransferCache();
-            UnitOfMeasureTypeTransfer fromUnitOfMeasureType = unitOfMeasureTypeTransferCache.getUnitOfMeasureTypeTransfer(unitOfMeasureEquivalent.getFromUnitOfMeasureType());
-            UnitOfMeasureTypeTransfer toUnitOfMeasureType = unitOfMeasureTypeTransferCache.getUnitOfMeasureTypeTransfer(unitOfMeasureEquivalent.getToUnitOfMeasureType());
-            Long toQuantity = unitOfMeasureEquivalent.getToQuantity();
+            var unitOfMeasureTypeTransferCache = uomControl.getUomTransferCaches(userVisit).getUnitOfMeasureTypeTransferCache();
+            var fromUnitOfMeasureType = unitOfMeasureTypeTransferCache.getUnitOfMeasureTypeTransfer(unitOfMeasureEquivalent.getFromUnitOfMeasureType());
+            var toUnitOfMeasureType = unitOfMeasureTypeTransferCache.getUnitOfMeasureTypeTransfer(unitOfMeasureEquivalent.getToUnitOfMeasureType());
+            var toQuantity = unitOfMeasureEquivalent.getToQuantity();
             
             unitOfMeasureEquivalentTransfer = new UnitOfMeasureEquivalentTransfer(fromUnitOfMeasureType, toUnitOfMeasureType, toQuantity);
             put(unitOfMeasureEquivalent, unitOfMeasureEquivalentTransfer);

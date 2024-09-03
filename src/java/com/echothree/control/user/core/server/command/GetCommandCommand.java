@@ -52,16 +52,16 @@ public class GetCommandCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        GetCommandResult result = CoreResultFactory.getGetCommandResult();
-        String componentVendorName = form.getComponentVendorName();
-        ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+        var result = CoreResultFactory.getGetCommandResult();
+        var componentVendorName = form.getComponentVendorName();
+        var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
         
         if(componentVendor != null) {
-            String commandName = form.getCommandName();
-            Command command = coreControl.getCommandByName(componentVendor, commandName);
+            var commandName = form.getCommandName();
+            var command = coreControl.getCommandByName(componentVendor, commandName);
             
             if(command != null) {
-                UserVisit userVisit = getUserVisit();
+                var userVisit = getUserVisit();
                 
                 result.setCommand(coreControl.getCommandTransfer(userVisit, command));
             } else {

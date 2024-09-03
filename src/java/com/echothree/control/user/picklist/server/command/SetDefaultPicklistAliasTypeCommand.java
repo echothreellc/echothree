@@ -64,12 +64,12 @@ public class SetDefaultPicklistAliasTypeCommand
     @Override
     protected BaseResult execute() {
         var picklistControl = Session.getModelController(PicklistControl.class);
-        String picklistTypeName = form.getPicklistTypeName();
-        PicklistType picklistType = picklistControl.getPicklistTypeByName(picklistTypeName);
+        var picklistTypeName = form.getPicklistTypeName();
+        var picklistType = picklistControl.getPicklistTypeByName(picklistTypeName);
 
         if(picklistType != null) {
-            String picklistAliasTypeName = form.getPicklistAliasTypeName();
-            PicklistAliasTypeDetailValue picklistAliasTypeDetailValue = picklistControl.getPicklistAliasTypeDetailValueByNameForUpdate(picklistType, picklistAliasTypeName);
+            var picklistAliasTypeName = form.getPicklistAliasTypeName();
+            var picklistAliasTypeDetailValue = picklistControl.getPicklistAliasTypeDetailValueByNameForUpdate(picklistType, picklistAliasTypeName);
 
             if(picklistAliasTypeDetailValue != null) {
                 picklistAliasTypeDetailValue.setIsDefault(Boolean.TRUE);

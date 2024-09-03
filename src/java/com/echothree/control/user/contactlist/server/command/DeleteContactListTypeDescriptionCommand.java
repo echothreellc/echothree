@@ -67,16 +67,16 @@ public class DeleteContactListTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var contactListControl = Session.getModelController(ContactListControl.class);
-        String contactListTypeName = form.getContactListTypeName();
-        ContactListType contactListType = contactListControl.getContactListTypeByName(contactListTypeName);
+        var contactListTypeName = form.getContactListTypeName();
+        var contactListType = contactListControl.getContactListTypeByName(contactListTypeName);
         
         if(contactListType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                ContactListTypeDescription contactListTypeDescription = contactListControl.getContactListTypeDescriptionForUpdate(contactListType, language);
+                var contactListTypeDescription = contactListControl.getContactListTypeDescriptionForUpdate(contactListType, language);
                 
                 if(contactListTypeDescription != null) {
                     contactListControl.deleteContactListTypeDescription(contactListTypeDescription, getPartyPK());

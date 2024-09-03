@@ -41,7 +41,7 @@ public class ContactListGroupLogic
     
     public ContactListGroup getContactListGroupByName(final ExecutionErrorAccumulator eea, final String contactListGroupName) {
         var contactListControl = Session.getModelController(ContactListControl.class);
-        ContactListGroup contactListGroup = contactListControl.getContactListGroupByName(contactListGroupName);
+        var contactListGroup = contactListControl.getContactListGroupByName(contactListGroupName);
 
         if(contactListGroup == null) {
             handleExecutionError(UnknownContactListGroupNameException.class, eea, ExecutionErrors.UnknownContactListGroupName.name(), contactListGroupName);

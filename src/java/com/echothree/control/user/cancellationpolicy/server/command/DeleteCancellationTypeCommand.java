@@ -65,12 +65,12 @@ public class DeleteCancellationTypeCommand
     @Override
     protected BaseResult execute() {
         var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
-        String cancellationKindName = form.getCancellationKindName();
-        CancellationKind cancellationKind = cancellationPolicyControl.getCancellationKindByName(cancellationKindName);
+        var cancellationKindName = form.getCancellationKindName();
+        var cancellationKind = cancellationPolicyControl.getCancellationKindByName(cancellationKindName);
         
         if(cancellationKind != null) {
-            String cancellationTypeName = form.getCancellationTypeName();
-            CancellationType cancellationType = cancellationPolicyControl.getCancellationTypeByNameForUpdate(cancellationKind, cancellationTypeName);
+            var cancellationTypeName = form.getCancellationTypeName();
+            var cancellationType = cancellationPolicyControl.getCancellationTypeByNameForUpdate(cancellationKind, cancellationTypeName);
             
             if(cancellationType != null) {
                 cancellationPolicyControl.deleteCancellationType(cancellationType, getPartyPK());

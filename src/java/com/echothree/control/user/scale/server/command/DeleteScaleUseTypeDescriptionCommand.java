@@ -53,16 +53,16 @@ public class DeleteScaleUseTypeDescriptionCommand
    @Override
     protected BaseResult execute() {
         var scaleControl = Session.getModelController(ScaleControl.class);
-        String scaleUseTypeName = form.getScaleUseTypeName();
-        ScaleUseType scaleUseType = scaleControl.getScaleUseTypeByName(scaleUseTypeName);
+       var scaleUseTypeName = form.getScaleUseTypeName();
+       var scaleUseType = scaleControl.getScaleUseTypeByName(scaleUseTypeName);
         
         if(scaleUseType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                ScaleUseTypeDescription scaleUseTypeDescription = scaleControl.getScaleUseTypeDescriptionForUpdate(scaleUseType, language);
+                var scaleUseTypeDescription = scaleControl.getScaleUseTypeDescriptionForUpdate(scaleUseType, language);
                 
                 if(scaleUseTypeDescription != null) {
                     scaleControl.deleteScaleUseTypeDescription(scaleUseTypeDescription, getPartyPK());

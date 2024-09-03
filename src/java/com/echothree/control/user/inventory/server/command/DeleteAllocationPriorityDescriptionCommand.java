@@ -67,16 +67,16 @@ public class DeleteAllocationPriorityDescriptionCommand
     @Override
     protected BaseResult execute() {
         var inventoryControl = Session.getModelController(InventoryControl.class);
-        String allocationPriorityName = form.getAllocationPriorityName();
-        AllocationPriority allocationPriority = inventoryControl.getAllocationPriorityByName(allocationPriorityName);
+        var allocationPriorityName = form.getAllocationPriorityName();
+        var allocationPriority = inventoryControl.getAllocationPriorityByName(allocationPriorityName);
 
         if(allocationPriority != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
-                AllocationPriorityDescription allocationPriorityDescription = inventoryControl.getAllocationPriorityDescriptionForUpdate(allocationPriority, language);
+                var allocationPriorityDescription = inventoryControl.getAllocationPriorityDescriptionForUpdate(allocationPriority, language);
 
                 if(allocationPriorityDescription != null) {
                     inventoryControl.deleteAllocationPriorityDescription(allocationPriorityDescription, getPartyPK());

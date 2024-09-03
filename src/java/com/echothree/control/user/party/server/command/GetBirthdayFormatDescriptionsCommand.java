@@ -66,9 +66,9 @@ public class GetBirthdayFormatDescriptionsCommand
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
 
-        GetBirthdayFormatDescriptionsResult result = PartyResultFactory.getGetBirthdayFormatDescriptionsResult();
-        String birthdayFormatName = form.getBirthdayFormatName();
-        BirthdayFormat birthdayFormat = partyControl.getBirthdayFormatByName(birthdayFormatName);
+        var result = PartyResultFactory.getGetBirthdayFormatDescriptionsResult();
+        var birthdayFormatName = form.getBirthdayFormatName();
+        var birthdayFormat = partyControl.getBirthdayFormatByName(birthdayFormatName);
         
         if(birthdayFormat != null) {
             result.setBirthdayFormat(partyControl.getBirthdayFormatTransfer(getUserVisit(), birthdayFormat));

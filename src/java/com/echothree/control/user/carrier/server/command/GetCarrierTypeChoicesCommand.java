@@ -63,9 +63,9 @@ public class GetCarrierTypeChoicesCommand
     @Override
     protected BaseResult execute() {
         var carrierControl = Session.getModelController(CarrierControl.class);
-        GetCarrierTypeChoicesResult result = CarrierResultFactory.getGetCarrierTypeChoicesResult();
-        String defaultCarrierTypeChoice = form.getDefaultCarrierTypeChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = CarrierResultFactory.getGetCarrierTypeChoicesResult();
+        var defaultCarrierTypeChoice = form.getDefaultCarrierTypeChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setCarrierTypeChoices(carrierControl.getCarrierTypeChoices(defaultCarrierTypeChoice, getPreferredLanguage(), allowNullChoice));
         

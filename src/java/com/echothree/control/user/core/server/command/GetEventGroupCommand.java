@@ -50,9 +50,9 @@ public class GetEventGroupCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        GetEventGroupResult result = CoreResultFactory.getGetEventGroupResult();
-        String eventGroupName = form.getEventGroupName();
-        EventGroup eventGroup = coreControl.getEventGroupByName(eventGroupName);
+        var result = CoreResultFactory.getGetEventGroupResult();
+        var eventGroupName = form.getEventGroupName();
+        var eventGroup = coreControl.getEventGroupByName(eventGroupName);
         
         if(eventGroup != null) {
             result.setEventGroup(coreControl.getEventGroupTransfer(getUserVisit(), eventGroup));

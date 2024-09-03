@@ -45,7 +45,7 @@ public class MimeTypeLogic
     
     public MimeType getMimeTypeByName(final ExecutionErrorAccumulator eea, final String mimeTypeName) {
         var coreControl = Session.getModelController(CoreControl.class);
-        MimeType mimeType = coreControl.getMimeTypeByName(mimeTypeName);
+        var mimeType = coreControl.getMimeTypeByName(mimeTypeName);
 
         if(mimeType == null) {
             handleExecutionError(UnknownMimeTypeNameException.class, eea, ExecutionErrors.UnknownMimeTypeName.name(), mimeTypeName);
@@ -56,7 +56,7 @@ public class MimeTypeLogic
     
     public MimeTypeUsageType getMimeTypeUsageTypeByName(final ExecutionErrorAccumulator eea, final String mimeTypeUsageTypeName) {
         var coreControl = Session.getModelController(CoreControl.class);
-        MimeTypeUsageType mimeTypeUsageType = coreControl.getMimeTypeUsageTypeByName(mimeTypeUsageTypeName);
+        var mimeTypeUsageType = coreControl.getMimeTypeUsageTypeByName(mimeTypeUsageTypeName);
 
         if(mimeTypeUsageType == null) {
             handleExecutionError(UnknownMimeTypeUsageTypeNameException.class, eea, ExecutionErrors.UnknownMimeTypeUsageTypeName.name(), mimeTypeUsageTypeName);
@@ -67,7 +67,7 @@ public class MimeTypeLogic
     
     public MimeTypeUsage getMimeTypeUsage(final ExecutionErrorAccumulator eea, final MimeType mimeType, final MimeTypeUsageType mimeTypeUsageType) {
         var coreControl = Session.getModelController(CoreControl.class);
-        MimeTypeUsage mimeTypeUsage = coreControl.getMimeTypeUsage(mimeType, mimeTypeUsageType);
+        var mimeTypeUsage = coreControl.getMimeTypeUsage(mimeType, mimeTypeUsageType);
 
         if(mimeTypeUsage == null) {
             handleExecutionError(UnknownMimeTypeUsageException.class, eea, ExecutionErrors.UnknownMimeTypeUsage.name(), mimeType.getLastDetail().getMimeTypeName(),
@@ -89,7 +89,7 @@ public class MimeTypeLogic
             
             if(mimeTypeName == null || mimeType != null) {
                 if(mimeTypeUsageTypeName != null) {
-                    MimeTypeUsageType mimeTypeUsageType = coreControl.getMimeTypeUsageTypeByName(mimeTypeUsageTypeName);
+                    var mimeTypeUsageType = coreControl.getMimeTypeUsageTypeByName(mimeTypeUsageTypeName);
                     
                     if(mimeTypeUsageType != null) {
                         if(coreControl.getMimeTypeUsage(mimeType, mimeTypeUsageType) == null) {

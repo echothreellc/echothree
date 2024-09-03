@@ -42,16 +42,16 @@ public class PartyApplicationEditorUseTransferCache
     }
 
     public PartyApplicationEditorUseTransfer getPartyApplicationEditorUseTransfer(PartyApplicationEditorUse partyApplicationEditorUse) {
-        PartyApplicationEditorUseTransfer partyApplicationEditorUseTransfer = get(partyApplicationEditorUse);
+        var partyApplicationEditorUseTransfer = get(partyApplicationEditorUse);
 
         if(partyApplicationEditorUseTransfer == null) {
-            PartyApplicationEditorUseDetail partyApplicationEditorUseDetail = partyApplicationEditorUse.getLastDetail();
-            PartyTransfer partyTransfer = partyControl.getPartyTransfer(userVisit, partyApplicationEditorUseDetail.getParty());
-            ApplicationEditorUseTransfer applicationEditorUseTransfer = coreControl.getApplicationEditorUseTransfer(userVisit, partyApplicationEditorUseDetail.getApplicationEditorUse());
-            ApplicationEditor applicationEditor = partyApplicationEditorUseDetail.getApplicationEditor();
-            ApplicationEditorTransfer applicationEditorTransfer = applicationEditor == null ? null : coreControl.getApplicationEditorTransfer(userVisit, applicationEditor);
-            Integer preferredHeight = partyApplicationEditorUseDetail.getPreferredHeight();
-            Integer preferredWidth = partyApplicationEditorUseDetail.getPreferredWidth();
+            var partyApplicationEditorUseDetail = partyApplicationEditorUse.getLastDetail();
+            var partyTransfer = partyControl.getPartyTransfer(userVisit, partyApplicationEditorUseDetail.getParty());
+            var applicationEditorUseTransfer = coreControl.getApplicationEditorUseTransfer(userVisit, partyApplicationEditorUseDetail.getApplicationEditorUse());
+            var applicationEditor = partyApplicationEditorUseDetail.getApplicationEditor();
+            var applicationEditorTransfer = applicationEditor == null ? null : coreControl.getApplicationEditorTransfer(userVisit, applicationEditor);
+            var preferredHeight = partyApplicationEditorUseDetail.getPreferredHeight();
+            var preferredWidth = partyApplicationEditorUseDetail.getPreferredWidth();
 
             partyApplicationEditorUseTransfer = new PartyApplicationEditorUseTransfer(partyTransfer, applicationEditorUseTransfer, applicationEditorTransfer,
                     preferredHeight, preferredWidth);

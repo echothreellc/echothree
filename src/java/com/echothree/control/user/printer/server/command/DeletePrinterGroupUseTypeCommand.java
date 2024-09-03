@@ -49,8 +49,8 @@ public class DeletePrinterGroupUseTypeCommand
    @Override
     protected BaseResult execute() {
         var printerControl = Session.getModelController(PrinterControl.class);
-        String printerGroupUseTypeName = form.getPrinterGroupUseTypeName();
-        PrinterGroupUseType printerGroupUseType = printerControl.getPrinterGroupUseTypeByNameForUpdate(printerGroupUseTypeName);
+       var printerGroupUseTypeName = form.getPrinterGroupUseTypeName();
+       var printerGroupUseType = printerControl.getPrinterGroupUseTypeByNameForUpdate(printerGroupUseTypeName);
         
         if(printerGroupUseType != null) {
             printerControl.deletePrinterGroupUseType(printerGroupUseType, getPartyPK());

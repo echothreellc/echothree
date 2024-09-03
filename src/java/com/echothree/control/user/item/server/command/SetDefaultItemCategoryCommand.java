@@ -62,8 +62,8 @@ public class SetDefaultItemCategoryCommand
     @Override
     protected BaseResult execute() {
         var itemControl = Session.getModelController(ItemControl.class);
-        String itemCategoryName = form.getItemCategoryName();
-        ItemCategoryDetailValue itemCategoryDetailValue = itemControl.getItemCategoryDetailValueByNameForUpdate(itemCategoryName);
+        var itemCategoryName = form.getItemCategoryName();
+        var itemCategoryDetailValue = itemControl.getItemCategoryDetailValueByNameForUpdate(itemCategoryName);
         
         if(itemCategoryDetailValue != null) {
             itemCategoryDetailValue.setIsDefault(Boolean.TRUE);

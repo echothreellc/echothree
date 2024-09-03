@@ -86,30 +86,30 @@ public class CreateContactWebAddressCommand
 
     @Override
     protected BaseResult execute() {
-        CreateContactWebAddressResult result = ContactResultFactory.getCreateContactWebAddressResult();
+        var result = ContactResultFactory.getCreateContactWebAddressResult();
         var partyControl = Session.getModelController(PartyControl.class);
-        String partyName = form.getPartyName();
-        Party party = partyName == null ? getParty() : partyControl.getPartyByName(partyName);
+        var partyName = form.getPartyName();
+        var party = partyName == null ? getParty() : partyControl.getPartyByName(partyName);
         
         if(party != null) {
             var contactControl = Session.getModelController(ContactControl.class);
                             var coreControl = getCoreControl();
             var workflowControl = Session.getModelController(WorkflowControl.class);
             BasePK createdBy = getPartyPK();
-            String url = form.getUrl();
+            var url = form.getUrl();
             var description = form.getDescription();
-            String contactMechanismName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(null, SequenceTypes.CONTACT_MECHANISM.name());
+            var contactMechanismName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(null, SequenceTypes.CONTACT_MECHANISM.name());
 
-            ContactMechanismType contactMechanismType = contactControl.getContactMechanismTypeByName(ContactMechanismTypes.WEB_ADDRESS.name());
-            ContactMechanism contactMechanism = contactControl.createContactMechanism(contactMechanismName, contactMechanismType,
+            var contactMechanismType = contactControl.getContactMechanismTypeByName(ContactMechanismTypes.WEB_ADDRESS.name());
+            var contactMechanism = contactControl.createContactMechanism(contactMechanismName, contactMechanismType,
                     Boolean.FALSE, createdBy);
             
             contactControl.createContactWebAddress(contactMechanism, url, createdBy);
             
             contactControl.createPartyContactMechanism(party, contactMechanism, description, Boolean.FALSE, 1,
                     createdBy);
-            
-            EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(contactMechanism.getPrimaryKey());
+
+            var entityInstance = coreControl.getEntityInstanceByBasePK(contactMechanism.getPrimaryKey());
             workflowControl.addEntityToWorkflowUsingNames(null, WebAddressStatusConstants.Workflow_WEB_ADDRESS_STATUS,
                     WebAddressStatusConstants.WorkflowEntrance_NEW_WEB_ADDRESS, entityInstance, null, null, createdBy);
             

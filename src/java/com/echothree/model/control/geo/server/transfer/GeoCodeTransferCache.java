@@ -44,16 +44,16 @@ public class GeoCodeTransferCache
     }
     
     public GeoCodeTransfer getGeoCodeTransfer(GeoCode geoCode) {
-        GeoCodeTransfer geoCodeTransfer = get(geoCode);
+        var geoCodeTransfer = get(geoCode);
         
         if(geoCodeTransfer == null) {
-            GeoCodeDetail geoCodeDetail = geoCode.getLastDetail();
-            String geoCodeName = geoCodeDetail.getGeoCodeName();
-            GeoCodeTypeTransfer geoCodeType = geoControl.getGeoCodeTypeTransfer(userVisit, geoCodeDetail.getGeoCodeType());
-            GeoCodeScopeTransfer geoCodeScope = geoControl.getGeoCodeScopeTransfer(userVisit, geoCodeDetail.getGeoCodeScope());
-            Boolean isDefault = geoCodeDetail.getIsDefault();
-            Integer sortOrder = geoCodeDetail.getSortOrder();
-            String description = geoControl.getBestGeoCodeDescription(geoCode, getLanguage());
+            var geoCodeDetail = geoCode.getLastDetail();
+            var geoCodeName = geoCodeDetail.getGeoCodeName();
+            var geoCodeType = geoControl.getGeoCodeTypeTransfer(userVisit, geoCodeDetail.getGeoCodeType());
+            var geoCodeScope = geoControl.getGeoCodeScopeTransfer(userVisit, geoCodeDetail.getGeoCodeScope());
+            var isDefault = geoCodeDetail.getIsDefault();
+            var sortOrder = geoCodeDetail.getSortOrder();
+            var description = geoControl.getBestGeoCodeDescription(geoCode, getLanguage());
             
             geoCodeTransfer = new GeoCodeTransfer(geoCodeName, geoCodeType, geoCodeScope, isDefault, sortOrder, description);
             put(geoCode, geoCodeTransfer);

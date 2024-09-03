@@ -54,16 +54,16 @@ public class CreateWorkEffortTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var workEffortControl = Session.getModelController(WorkEffortControl.class);
-        String workEffortTypeName = form.getWorkEffortTypeName();
-        WorkEffortType workEffortType = workEffortControl.getWorkEffortTypeByName(workEffortTypeName);
+        var workEffortTypeName = form.getWorkEffortTypeName();
+        var workEffortType = workEffortControl.getWorkEffortTypeByName(workEffortTypeName);
         
         if(workEffortType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                WorkEffortTypeDescription workEffortTypeDescription = workEffortControl.getWorkEffortTypeDescription(workEffortType, language);
+                var workEffortTypeDescription = workEffortControl.getWorkEffortTypeDescription(workEffortType, language);
                 
                 if(workEffortTypeDescription == null) {
                     var description = form.getDescription();

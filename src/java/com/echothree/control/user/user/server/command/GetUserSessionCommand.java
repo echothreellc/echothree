@@ -54,16 +54,16 @@ public class GetUserSessionCommand
     
     @Override
     protected BaseResult execute() {
-        UserControl userControl = getUserControl();
-        GetUserSessionResult result = UserResultFactory.getGetUserSessionResult();
-        UserSession userSession = getUserSession();
+        var userControl = getUserControl();
+        var result = UserResultFactory.getGetUserSessionResult();
+        var userSession = getUserSession();
         
         if(userSession != null) {
             var workflowControl = Session.getModelController(WorkflowControl.class);
-            EntityInstance entityInstance = getCoreControl().getEntityInstanceByBasePK(getPartyPK());
-            Party party = userSession.getParty();
-            String partyTypeName = party == null ? null : party.getLastDetail().getPartyType().getPartyTypeName();
-            UserVisit userVisit = getUserVisit();
+            var entityInstance = getCoreControl().getEntityInstanceByBasePK(getPartyPK());
+            var party = userSession.getParty();
+            var partyTypeName = party == null ? null : party.getLastDetail().getPartyType().getPartyTypeName();
+            var userVisit = getUserVisit();
             
             result.setUserSession(userControl.getUserSessionTransfer(userVisit, userSession));
 

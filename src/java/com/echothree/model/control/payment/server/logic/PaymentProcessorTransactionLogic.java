@@ -80,7 +80,7 @@ public class PaymentProcessorTransactionLogic
     public PaymentProcessorTransaction getPaymentProcessorTransactionByName(final ExecutionErrorAccumulator eea, final String paymentProcessorTransactionName,
             final EntityPermission entityPermission) {
         var paymentProcessorTransactionControl = Session.getModelController(PaymentProcessorTransactionControl.class);
-        PaymentProcessorTransaction paymentProcessorTransaction = paymentProcessorTransactionControl.getPaymentProcessorTransactionByName(paymentProcessorTransactionName, entityPermission);
+        var paymentProcessorTransaction = paymentProcessorTransactionControl.getPaymentProcessorTransactionByName(paymentProcessorTransactionName, entityPermission);
 
         if(paymentProcessorTransaction == null) {
             handleExecutionError(UnknownPaymentProcessorTransactionNameException.class, eea, ExecutionErrors.UnknownPaymentProcessorTransactionName.name(), paymentProcessorTransactionName);
@@ -101,7 +101,7 @@ public class PaymentProcessorTransactionLogic
             final PaymentProcessorTransactionUniversalSpec universalSpec, final EntityPermission entityPermission) {
         PaymentProcessorTransaction paymentProcessorTransaction = null;
         var paymentProcessorTransactionControl = Session.getModelController(PaymentProcessorTransactionControl.class);
-        String paymentProcessorTransactionName = universalSpec.getPaymentProcessorTransactionName();
+        var paymentProcessorTransactionName = universalSpec.getPaymentProcessorTransactionName();
         var parameterCount = (paymentProcessorTransactionName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {

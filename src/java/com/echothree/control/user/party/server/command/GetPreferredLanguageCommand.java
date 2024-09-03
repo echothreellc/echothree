@@ -49,8 +49,8 @@ public class GetPreferredLanguageCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        GetPreferredLanguageResult result = PartyResultFactory.getGetPreferredLanguageResult();
-        Language language = getPreferredLanguage();
+        var result = PartyResultFactory.getGetPreferredLanguageResult();
+        var language = getPreferredLanguage();
 
         result.setPreferredLanguage(partyControl.getLanguageTransfer(getUserVisit(), language));
         sendEvent(language.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());

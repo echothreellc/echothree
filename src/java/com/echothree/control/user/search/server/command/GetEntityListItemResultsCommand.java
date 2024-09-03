@@ -56,17 +56,17 @@ public class GetEntityListItemResultsCommand
     
     @Override
     protected BaseResult execute() {
-        GetEntityListItemResultsResult result = SearchResultFactory.getGetEntityListItemResultsResult();
+        var result = SearchResultFactory.getGetEntityListItemResultsResult();
         var searchControl = Session.getModelController(SearchControl.class);
-        SearchKind searchKind = searchControl.getSearchKindByName(SearchKinds.ENTITY_LIST_ITEM.name());
+        var searchKind = searchControl.getSearchKindByName(SearchKinds.ENTITY_LIST_ITEM.name());
         
         if(searchKind != null) {
-            String searchTypeName = form.getSearchTypeName();
-            SearchType searchType = searchControl.getSearchTypeByName(searchKind, searchTypeName);
+            var searchTypeName = form.getSearchTypeName();
+            var searchType = searchControl.getSearchTypeByName(searchKind, searchTypeName);
             
             if(searchType != null) {
-                UserVisit userVisit = getUserVisit();
-                UserVisitSearch userVisitSearch = searchControl.getUserVisitSearch(userVisit, searchType);
+                var userVisit = getUserVisit();
+                var userVisitSearch = searchControl.getUserVisitSearch(userVisit, searchType);
                 
                 if(userVisitSearch != null) {
                     var entityListItemControl = Session.getModelController(EntityListItemControl.class);

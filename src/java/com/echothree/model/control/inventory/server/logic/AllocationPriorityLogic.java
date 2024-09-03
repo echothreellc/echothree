@@ -54,7 +54,7 @@ public class AllocationPriorityLogic
             final Integer priority, final Boolean isDefault, final Integer sortOrder, final Language language, final String description,
             final BasePK createdBy) {
         var inventoryControl = Session.getModelController(InventoryControl.class);
-        AllocationPriority allocationPriority = inventoryControl.getAllocationPriorityByName(allocationPriorityName);
+        var allocationPriority = inventoryControl.getAllocationPriorityByName(allocationPriorityName);
 
         if(allocationPriority == null) {
             allocationPriority = inventoryControl.createAllocationPriority(allocationPriorityName, priority, isDefault, sortOrder, createdBy);
@@ -72,7 +72,7 @@ public class AllocationPriorityLogic
     public AllocationPriority getAllocationPriorityByName(final ExecutionErrorAccumulator eea, final String allocationPriorityName,
             final EntityPermission entityPermission) {
         var inventoryControl = Session.getModelController(InventoryControl.class);
-        AllocationPriority allocationPriority = inventoryControl.getAllocationPriorityByName(allocationPriorityName, entityPermission);
+        var allocationPriority = inventoryControl.getAllocationPriorityByName(allocationPriorityName, entityPermission);
 
         if(allocationPriority == null) {
             handleExecutionError(UnknownAllocationPriorityNameException.class, eea, ExecutionErrors.UnknownAllocationPriorityName.name(), allocationPriorityName);
@@ -93,7 +93,7 @@ public class AllocationPriorityLogic
             final AllocationPriorityUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
         AllocationPriority allocationPriority = null;
         var inventoryControl = Session.getModelController(InventoryControl.class);
-        String allocationPriorityName = universalSpec.getAllocationPriorityName();
+        var allocationPriorityName = universalSpec.getAllocationPriorityName();
         var parameterCount = (allocationPriorityName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {

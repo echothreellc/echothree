@@ -54,7 +54,7 @@ public class PaymentProcessorActionTypeLogic
             final Boolean isDefault, final Integer sortOrder, final Language language, final String description,
             final BasePK createdBy) {
         var paymentProcessorActionTypeControl = Session.getModelController(PaymentProcessorActionTypeControl.class);
-        PaymentProcessorActionType paymentProcessorActionType = paymentProcessorActionTypeControl.getPaymentProcessorActionTypeByName(paymentProcessorActionTypeName);
+        var paymentProcessorActionType = paymentProcessorActionTypeControl.getPaymentProcessorActionTypeByName(paymentProcessorActionTypeName);
 
         if(paymentProcessorActionType == null) {
             paymentProcessorActionType = paymentProcessorActionTypeControl.createPaymentProcessorActionType(paymentProcessorActionTypeName, isDefault, sortOrder, createdBy);
@@ -72,7 +72,7 @@ public class PaymentProcessorActionTypeLogic
     public PaymentProcessorActionType getPaymentProcessorActionTypeByName(final ExecutionErrorAccumulator eea, final String paymentProcessorActionTypeName,
             final EntityPermission entityPermission) {
         var paymentProcessorActionTypeControl = Session.getModelController(PaymentProcessorActionTypeControl.class);
-        PaymentProcessorActionType paymentProcessorActionType = paymentProcessorActionTypeControl.getPaymentProcessorActionTypeByName(paymentProcessorActionTypeName, entityPermission);
+        var paymentProcessorActionType = paymentProcessorActionTypeControl.getPaymentProcessorActionTypeByName(paymentProcessorActionTypeName, entityPermission);
 
         if(paymentProcessorActionType == null) {
             handleExecutionError(UnknownPaymentProcessorActionTypeNameException.class, eea, ExecutionErrors.UnknownPaymentProcessorActionTypeName.name(), paymentProcessorActionTypeName);
@@ -93,7 +93,7 @@ public class PaymentProcessorActionTypeLogic
             final PaymentProcessorActionTypeUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
         PaymentProcessorActionType paymentProcessorActionType = null;
         var paymentProcessorActionTypeControl = Session.getModelController(PaymentProcessorActionTypeControl.class);
-        String paymentProcessorActionTypeName = universalSpec.getPaymentProcessorActionTypeName();
+        var paymentProcessorActionTypeName = universalSpec.getPaymentProcessorActionTypeName();
         var parameterCount = (paymentProcessorActionTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {

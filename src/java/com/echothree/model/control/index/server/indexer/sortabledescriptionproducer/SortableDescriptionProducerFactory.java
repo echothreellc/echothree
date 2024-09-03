@@ -34,7 +34,7 @@ public class SortableDescriptionProducerFactory {
     }
 
     public SortableDescriptionProducer getSortableDescriptionProducer(Language language) {
-        String languageIsoName = language.getLanguageIsoName();
+        var languageIsoName = language.getLanguageIsoName();
 
         if(languageIsoName.equals(Languages.en.name())) {
             return new EnglishSortableDescriptionProducer();

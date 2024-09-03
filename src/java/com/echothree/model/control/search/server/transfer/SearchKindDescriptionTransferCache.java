@@ -32,11 +32,11 @@ public class SearchKindDescriptionTransferCache
     }
     
     public SearchKindDescriptionTransfer getSearchKindDescriptionTransfer(SearchKindDescription searchKindDescription) {
-        SearchKindDescriptionTransfer searchKindDescriptionTransfer = get(searchKindDescription);
+        var searchKindDescriptionTransfer = get(searchKindDescription);
         
         if(searchKindDescriptionTransfer == null) {
-            SearchKindTransfer searchKindTransfer = searchControl.getSearchKindTransfer(userVisit, searchKindDescription.getSearchKind());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, searchKindDescription.getLanguage());
+            var searchKindTransfer = searchControl.getSearchKindTransfer(userVisit, searchKindDescription.getSearchKind());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, searchKindDescription.getLanguage());
             
             searchKindDescriptionTransfer = new SearchKindDescriptionTransfer(languageTransfer, searchKindTransfer, searchKindDescription.getDescription());
             put(searchKindDescription, searchKindDescriptionTransfer);

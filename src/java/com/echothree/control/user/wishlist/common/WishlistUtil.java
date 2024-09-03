@@ -30,7 +30,7 @@ public class WishlistUtil {
     public static WishlistLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
 
             cachedLocal = (WishlistLocal)ctx.lookup("ejb:echothree/echothree-server/WishlistBean!com.echothree.control.user.wishlist.server.WishlistLocal");
         }
@@ -42,7 +42,7 @@ public class WishlistUtil {
     public static WishlistRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
             
             cachedRemote = (WishlistRemote)ctx.lookup("ejb:echothree/echothree-server/WishlistBean!com.echothree.control.user.wishlist.common.WishlistRemote");
         }

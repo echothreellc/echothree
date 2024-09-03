@@ -61,7 +61,7 @@ public class GetHarmonizedTariffScheduleCodeUnitsCommand
     @Override
     protected BaseResult execute() {
         var itemControl = Session.getModelController(ItemControl.class);
-        GetHarmonizedTariffScheduleCodeUnitsResult result = ItemResultFactory.getGetHarmonizedTariffScheduleCodeUnitsResult();
+        var result = ItemResultFactory.getGetHarmonizedTariffScheduleCodeUnitsResult();
         
         result.setHarmonizedTariffScheduleCodeUnits(itemControl.getHarmonizedTariffScheduleCodeUnitTransfers(getUserVisit()));
         

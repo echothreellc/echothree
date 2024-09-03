@@ -66,13 +66,13 @@ public class GetPartyEntityTypesCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        GetPartyEntityTypesResult result = CoreResultFactory.getGetPartyEntityTypesResult();
-        String partyName = form.getPartyName();
-        Party party = partyName == null? getParty(): partyControl.getPartyByName(partyName);
+        var result = CoreResultFactory.getGetPartyEntityTypesResult();
+        var partyName = form.getPartyName();
+        var party = partyName == null? getParty(): partyControl.getPartyByName(partyName);
 
         if(party != null) {
             var coreControl = getCoreControl();
-            UserVisit userVisit = getUserVisit();
+            var userVisit = getUserVisit();
 
             result.setParty(partyControl.getPartyTransfer(userVisit, party));
             result.setPartyEntityTypes(coreControl.getPartyEntityTypeTransfersByParty(getUserVisit(), party));

@@ -61,9 +61,9 @@ public class GetEntityAttributeGroupChoicesCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        GetEntityAttributeGroupChoicesResult result = CoreResultFactory.getGetEntityAttributeGroupChoicesResult();
-        String defaultEntityAttributeGroupChoice = form.getDefaultEntityAttributeGroupChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = CoreResultFactory.getGetEntityAttributeGroupChoicesResult();
+        var defaultEntityAttributeGroupChoice = form.getDefaultEntityAttributeGroupChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setEntityAttributeGroupChoices(coreControl.getEntityAttributeGroupChoices(defaultEntityAttributeGroupChoice, getPreferredLanguage(), allowNullChoice));
         

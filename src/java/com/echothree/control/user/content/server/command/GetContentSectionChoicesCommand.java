@@ -67,13 +67,13 @@ public class GetContentSectionChoicesCommand
     @Override
     protected BaseResult execute() {
         var contentControl = Session.getModelController(ContentControl.class);
-        GetContentSectionChoicesResult result = ContentResultFactory.getGetContentSectionChoicesResult();
-        String contentCollectionName = form.getContentCollectionName();
-        ContentCollection contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
+        var result = ContentResultFactory.getGetContentSectionChoicesResult();
+        var contentCollectionName = form.getContentCollectionName();
+        var contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
         
         if(contentCollection != null) {
-            String defaultContentSectionChoice = form.getDefaultContentSectionChoice();
-            boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+            var defaultContentSectionChoice = form.getDefaultContentSectionChoice();
+            var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 
             result.setContentSectionChoices(contentControl.getContentSectionChoices(contentCollection, defaultContentSectionChoice, getPreferredLanguage(), allowNullChoice));
         } else {

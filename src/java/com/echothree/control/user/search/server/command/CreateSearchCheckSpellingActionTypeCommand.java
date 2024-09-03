@@ -66,8 +66,8 @@ public class CreateSearchCheckSpellingActionTypeCommand
     @Override
     protected BaseResult execute() {
         var searchControl = Session.getModelController(SearchControl.class);
-        String searchCheckSpellingActionTypeName = form.getSearchCheckSpellingActionTypeName();
-        SearchCheckSpellingActionType searchCheckSpellingActionType = searchControl.getSearchCheckSpellingActionTypeByName(searchCheckSpellingActionTypeName);
+        var searchCheckSpellingActionTypeName = form.getSearchCheckSpellingActionTypeName();
+        var searchCheckSpellingActionType = searchControl.getSearchCheckSpellingActionTypeByName(searchCheckSpellingActionTypeName);
         
         if(searchCheckSpellingActionType == null) {
             var partyPK = getPartyPK();

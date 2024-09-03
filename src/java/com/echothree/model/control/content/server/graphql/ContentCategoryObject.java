@@ -125,7 +125,7 @@ public class ContentCategoryObject
     @GraphQLDescription("content category items")
     public List<ContentCategoryItemObject> getContentCategoryItems(final DataFetchingEnvironment env) {
         var contentControl = Session.getModelController(ContentControl.class);
-        List<ContentCategoryItem> entities = ContentSecurityUtils.getHasContentCategoryItemsAccess(env) ? contentControl.getContentCategoryItemsByContentCategory(contentCategory) : null;
+        var entities = ContentSecurityUtils.getHasContentCategoryItemsAccess(env) ? contentControl.getContentCategoryItemsByContentCategory(contentCategory) : null;
         List<ContentCategoryItemObject> contentCategoryItems = entities == null ? null : new ArrayList<>(entities.size());
                 
         if(entities != null) {

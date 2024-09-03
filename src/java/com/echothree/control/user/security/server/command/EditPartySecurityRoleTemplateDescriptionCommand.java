@@ -89,13 +89,13 @@ public class EditPartySecurityRoleTemplateDescriptionCommand
     public PartySecurityRoleTemplateDescription getEntity(EditPartySecurityRoleTemplateDescriptionResult result) {
         var securityControl = Session.getModelController(SecurityControl.class);
         PartySecurityRoleTemplateDescription partySecurityRoleTemplateDescription = null;
-        String partySecurityRoleTemplateName = spec.getPartySecurityRoleTemplateName();
-        PartySecurityRoleTemplate partySecurityRoleTemplate = securityControl.getPartySecurityRoleTemplateByName(partySecurityRoleTemplateName);
+        var partySecurityRoleTemplateName = spec.getPartySecurityRoleTemplateName();
+        var partySecurityRoleTemplate = securityControl.getPartySecurityRoleTemplateByName(partySecurityRoleTemplateName);
 
         if(partySecurityRoleTemplate != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -137,7 +137,7 @@ public class EditPartySecurityRoleTemplateDescriptionCommand
     @Override
     public void doUpdate(PartySecurityRoleTemplateDescription partySecurityRoleTemplateDescription) {
         var securityControl = Session.getModelController(SecurityControl.class);
-        PartySecurityRoleTemplateDescriptionValue partySecurityRoleTemplateDescriptionValue = securityControl.getPartySecurityRoleTemplateDescriptionValue(partySecurityRoleTemplateDescription);
+        var partySecurityRoleTemplateDescriptionValue = securityControl.getPartySecurityRoleTemplateDescriptionValue(partySecurityRoleTemplateDescription);
         
         partySecurityRoleTemplateDescriptionValue.setDescription(edit.getDescription());
         

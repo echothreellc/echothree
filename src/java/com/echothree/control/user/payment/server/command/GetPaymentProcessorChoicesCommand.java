@@ -63,9 +63,9 @@ public class GetPaymentProcessorChoicesCommand
     @Override
     protected BaseResult execute() {
         var paymentProcessorControl = Session.getModelController(PaymentProcessorControl.class);
-        GetPaymentProcessorChoicesResult result = PaymentResultFactory.getGetPaymentProcessorChoicesResult();
-        String defaultPaymentProcessorChoice = form.getDefaultPaymentProcessorChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = PaymentResultFactory.getGetPaymentProcessorChoicesResult();
+        var defaultPaymentProcessorChoice = form.getDefaultPaymentProcessorChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setPaymentProcessorChoices(paymentProcessorControl.getPaymentProcessorChoices(defaultPaymentProcessorChoice,
                 getPreferredLanguage(), allowNullChoice));

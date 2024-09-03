@@ -35,16 +35,16 @@ public class ReturnPolicyTransferCache
     }
     
     public ReturnPolicyTransfer getReturnPolicyTransfer(ReturnPolicy returnPolicy) {
-        ReturnPolicyTransfer returnPolicyTransfer = get(returnPolicy);
+        var returnPolicyTransfer = get(returnPolicy);
         
         if(returnPolicyTransfer == null) {
-            ReturnPolicyDetail returnPolicyDetail = returnPolicy.getLastDetail();
-            ReturnKindTransfer returnKind = returnPolicyControl.getReturnKindTransfer(userVisit, returnPolicyDetail.getReturnKind());
-            String returnPolicyName = returnPolicyDetail.getReturnPolicyName();
-            Boolean isDefault = returnPolicyDetail.getIsDefault();
-            Integer sortOrder = returnPolicyDetail.getSortOrder();
-            ReturnPolicyTranslation returnPolicyTranslation = returnPolicyControl.getBestReturnPolicyTranslation(returnPolicy, getLanguage());
-            String description = returnPolicyTranslation == null ? returnPolicyName : returnPolicyTranslation.getDescription();
+            var returnPolicyDetail = returnPolicy.getLastDetail();
+            var returnKind = returnPolicyControl.getReturnKindTransfer(userVisit, returnPolicyDetail.getReturnKind());
+            var returnPolicyName = returnPolicyDetail.getReturnPolicyName();
+            var isDefault = returnPolicyDetail.getIsDefault();
+            var sortOrder = returnPolicyDetail.getSortOrder();
+            var returnPolicyTranslation = returnPolicyControl.getBestReturnPolicyTranslation(returnPolicy, getLanguage());
+            var description = returnPolicyTranslation == null ? returnPolicyName : returnPolicyTranslation.getDescription();
             
             returnPolicyTransfer = new ReturnPolicyTransfer(returnKind, returnPolicyName, isDefault, sortOrder, description);
             put(returnPolicy, returnPolicyTransfer);

@@ -65,13 +65,13 @@ public class CreateFreeOnBoardCommand
     
     @Override
     protected BaseResult execute() {
-        CreateFreeOnBoardResult result = ShipmentResultFactory.getCreateFreeOnBoardResult();
-        String freeOnBoardName = form.getFreeOnBoardName();
+        var result = ShipmentResultFactory.getCreateFreeOnBoardResult();
+        var freeOnBoardName = form.getFreeOnBoardName();
         var isDefault = Boolean.valueOf(form.getIsDefault());
         var sortOrder = Integer.valueOf(form.getSortOrder());
         var description = form.getDescription();
 
-        FreeOnBoard freeOnBoard = FreeOnBoardLogic.getInstance().createFreeOnBoard(this,
+        var freeOnBoard = FreeOnBoardLogic.getInstance().createFreeOnBoard(this,
                 freeOnBoardName, isDefault, sortOrder, getPreferredLanguage(), description, getPartyPK());
 
         if(freeOnBoard != null && !hasExecutionErrors()) {

@@ -38,12 +38,12 @@ public class PartyTermTransferCache
     }
     
     public PartyTermTransfer getPartyTermTransfer(PartyTerm partyTerm) {
-        PartyTermTransfer partyTermTransfer = get(partyTerm);
+        var partyTermTransfer = get(partyTerm);
         
         if(partyTermTransfer == null) {
-            PartyTransfer party = partyControl.getPartyTransfer(userVisit, partyTerm.getParty());
-            TermTransfer term = termControl.getTermTransfer(userVisit, partyTerm.getTerm());
-            Boolean taxable = partyTerm.getTaxable();
+            var party = partyControl.getPartyTransfer(userVisit, partyTerm.getParty());
+            var term = termControl.getTermTransfer(userVisit, partyTerm.getTerm());
+            var taxable = partyTerm.getTaxable();
             
             partyTermTransfer = new PartyTermTransfer(party, term, taxable);
             put(partyTerm, partyTermTransfer);

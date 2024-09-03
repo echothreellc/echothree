@@ -98,7 +98,7 @@ public class EditScaleCommand
     public Scale getEntity(EditScaleResult result) {
         var scaleControl = Session.getModelController(ScaleControl.class);
         Scale scale = null;
-        String scaleName = spec.getScaleName();
+        var scaleName = spec.getScaleName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
             scale = scaleControl.getScaleByName(scaleName);
@@ -132,8 +132,8 @@ public class EditScaleCommand
     @Override
     public void doLock(ScaleEdit edit, Scale scale) {
         var scaleControl = Session.getModelController(ScaleControl.class);
-        ScaleDescription scaleDescription = scaleControl.getScaleDescription(scale, getPreferredLanguage());
-        ScaleDetail scaleDetail = scale.getLastDetail();
+        var scaleDescription = scaleControl.getScaleDescription(scale, getPreferredLanguage());
+        var scaleDetail = scale.getLastDetail();
 
         serverService = scaleDetail.getServerService();
 
@@ -154,13 +154,13 @@ public class EditScaleCommand
     @Override
     public void canUpdate(Scale scale) {
         var scaleControl = Session.getModelController(ScaleControl.class);
-        String scaleName = edit.getScaleName();
-        Scale duplicateScale = scaleControl.getScaleByName(scaleName);
+        var scaleName = edit.getScaleName();
+        var duplicateScale = scaleControl.getScaleByName(scaleName);
 
         if(duplicateScale != null && !scale.equals(duplicateScale)) {
             addExecutionError(ExecutionErrors.DuplicateScaleName.name(), scaleName);
         } else {
-            String scaleTypeName = edit.getScaleTypeName();
+            var scaleTypeName = edit.getScaleTypeName();
 
             scaleType = scaleControl.getScaleTypeByName(scaleTypeName);
 
@@ -168,14 +168,14 @@ public class EditScaleCommand
                 addExecutionError(ExecutionErrors.UnknownScaleTypeName.name(), scaleTypeName);
             } else {
                 var coreControl = getCoreControl();
-                String serverName = edit.getServerName();
-                Server server = coreControl.getServerByName(serverName);
+                var serverName = edit.getServerName();
+                var server = coreControl.getServerByName(serverName);
 
                 if(server == null) {
                     addExecutionError(ExecutionErrors.UnknownServerName.name(), serverName);
                 } else {
-                    String serviceName = edit.getServiceName();
-                    Service service = coreControl.getServiceByName(serviceName);
+                    var serviceName = edit.getServiceName();
+                    var service = coreControl.getServiceByName(serviceName);
 
                     if(service == null) {
                         addExecutionError(ExecutionErrors.UnknownServiceName.name(), serviceName);
@@ -195,9 +195,9 @@ public class EditScaleCommand
     public void doUpdate(Scale scale) {
         var scaleControl = Session.getModelController(ScaleControl.class);
         var partyPK = getPartyPK();
-        ScaleDetailValue scaleDetailValue = scaleControl.getScaleDetailValueForUpdate(scale);
-        ScaleDescription scaleDescription = scaleControl.getScaleDescriptionForUpdate(scale, getPreferredLanguage());
-        String description = edit.getDescription();
+        var scaleDetailValue = scaleControl.getScaleDetailValueForUpdate(scale);
+        var scaleDescription = scaleControl.getScaleDescriptionForUpdate(scale, getPreferredLanguage());
+        var description = edit.getDescription();
 
         scaleDetailValue.setScaleName(edit.getScaleName());
         scaleDetailValue.setScaleTypePK(scaleType.getPrimaryKey());
@@ -212,7 +212,7 @@ public class EditScaleCommand
         } else if(scaleDescription != null && description == null) {
             scaleControl.deleteScaleDescription(scaleDescription, partyPK);
         } else if(scaleDescription != null && description != null) {
-            ScaleDescriptionValue scaleDescriptionValue = scaleControl.getScaleDescriptionValue(scaleDescription);
+            var scaleDescriptionValue = scaleControl.getScaleDescriptionValue(scaleDescription);
 
             scaleDescriptionValue.setDescription(description);
             scaleControl.updateScaleDescriptionFromValue(scaleDescriptionValue, partyPK);

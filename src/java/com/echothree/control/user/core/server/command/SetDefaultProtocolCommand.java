@@ -61,8 +61,8 @@ public class SetDefaultProtocolCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String protocolName = form.getProtocolName();
-        ProtocolDetailValue protocolDetailValue = coreControl.getProtocolDetailValueByNameForUpdate(protocolName);
+        var protocolName = form.getProtocolName();
+        var protocolDetailValue = coreControl.getProtocolDetailValueByNameForUpdate(protocolName);
         
         if(protocolDetailValue != null) {
             protocolDetailValue.setIsDefault(Boolean.TRUE);

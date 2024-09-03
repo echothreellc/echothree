@@ -35,12 +35,12 @@ public class ShipmentTimeTransferCache
 
     @Override
     public ShipmentTimeTransfer getTransfer(ShipmentTime shipmentTime) {
-        ShipmentTimeTransfer shipmentTimeTransfer = get(shipmentTime);
+        var shipmentTimeTransfer = get(shipmentTime);
         
         if(shipmentTimeTransfer == null) {
-            ShipmentTimeTypeTransfer shipmentTimeType = shipmentControl.getShipmentTimeTypeTransfer(userVisit, shipmentTime.getShipmentTimeType());
-            Long unformattedTime = shipmentTime.getTime();
-            String time = formatTypicalDateTime(unformattedTime);
+            var shipmentTimeType = shipmentControl.getShipmentTimeTypeTransfer(userVisit, shipmentTime.getShipmentTimeType());
+            var unformattedTime = shipmentTime.getTime();
+            var time = formatTypicalDateTime(unformattedTime);
             
             shipmentTimeTransfer = new ShipmentTimeTransfer(shipmentTimeType, unformattedTime, time);
             put(shipmentTime, shipmentTimeTransfer);

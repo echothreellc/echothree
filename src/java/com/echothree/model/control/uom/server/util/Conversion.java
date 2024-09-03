@@ -47,9 +47,9 @@ public class Conversion {
     
     
     private void convertToHighestUnitOfMeasureType(UnitOfMeasureType unitOfMeasureType, long measure) {
-        List<UnitOfMeasureEquivalent> unitOfMeasureEquivalents = uomControl.getUnitOfMeasureEquivalentsByToUnitOfMeasureType(unitOfMeasureType);
-        UnitOfMeasureType attemptUnitOfMeasureType = unitOfMeasureType;
-        long attemptMeasure = measure;
+        var unitOfMeasureEquivalents = uomControl.getUnitOfMeasureEquivalentsByToUnitOfMeasureType(unitOfMeasureType);
+        var attemptUnitOfMeasureType = unitOfMeasureType;
+        var attemptMeasure = measure;
         
         if(!unitOfMeasureEquivalents.isEmpty()) {
             for(var unitOfMeasureEquivalent : unitOfMeasureEquivalents) {
@@ -57,7 +57,7 @@ public class Conversion {
                 
                 // If there's no remainder, then check to see if its lower than the existing attemptMeasure
                 if(measure % toQuantity == 0) {
-                    long trialMeasure = measure / toQuantity;
+                    var trialMeasure = measure / toQuantity;
                     
                     if(trialMeasure < attemptMeasure) {
                         attemptUnitOfMeasureType = unitOfMeasureEquivalent.getFromUnitOfMeasureType();
@@ -84,11 +84,11 @@ public class Conversion {
     }
     
     public Conversion convertToLowestUnitOfMeasureType() {
-        List<UnitOfMeasureEquivalent> unitOfMeasureEquivalents = uomControl.getUnitOfMeasureEquivalentsByFromUnitOfMeasureType(unitOfMeasureType);
+        var unitOfMeasureEquivalents = uomControl.getUnitOfMeasureEquivalentsByFromUnitOfMeasureType(unitOfMeasureType);
         
         while(!unitOfMeasureEquivalents.isEmpty()) {
-            Iterator<UnitOfMeasureEquivalent> iter = unitOfMeasureEquivalents.iterator();
-            UnitOfMeasureEquivalent unitOfMeasureEquivalent = iter.next();
+            var iter = unitOfMeasureEquivalents.iterator();
+            var unitOfMeasureEquivalent = iter.next();
             
             unitOfMeasureType = unitOfMeasureEquivalent.getToUnitOfMeasureType();
             quantity = quantity * unitOfMeasureEquivalent.getToQuantity();

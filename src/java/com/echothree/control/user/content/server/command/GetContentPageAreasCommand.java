@@ -57,17 +57,17 @@ public class GetContentPageAreasCommand
     @Override
     protected Collection<ContentPageArea> getEntities() {
         var contentControl = Session.getModelController(ContentControl.class);
-        String contentCollectionName = form.getContentCollectionName();
-        ContentCollection contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
+        var contentCollectionName = form.getContentCollectionName();
+        var contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
         Collection<ContentPageArea> contentPageAreas = null;
         
         if(contentCollection != null) {
-            String contentSectionName = form.getContentSectionName();
-            ContentSection contentSection = contentControl.getContentSectionByName(contentCollection, contentSectionName);
+            var contentSectionName = form.getContentSectionName();
+            var contentSection = contentControl.getContentSectionByName(contentCollection, contentSectionName);
             
             if(contentSection != null) {
-                String contentPageName = form.getContentPageName();
-                ContentPage contentPage = contentControl.getContentPageByName(contentSection, contentPageName);
+                var contentPageName = form.getContentPageName();
+                var contentPage = contentControl.getContentPageByName(contentSection, contentPageName);
                 
                 if(contentPage != null) {
                     contentPageAreas = contentControl.getContentPageAreasByContentPage(contentPage);
@@ -86,7 +86,7 @@ public class GetContentPageAreasCommand
     
     @Override
     protected BaseResult getResult(Collection<ContentPageArea> entities) {
-        GetContentPageAreasResult result = ContentResultFactory.getGetContentPageAreasResult();
+        var result = ContentResultFactory.getGetContentPageAreasResult();
                 
         if(entities != null) {
             var contentControl = Session.getModelController(ContentControl.class);

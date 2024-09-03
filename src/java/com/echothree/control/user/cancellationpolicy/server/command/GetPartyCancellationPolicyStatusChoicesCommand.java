@@ -73,25 +73,25 @@ public class GetPartyCancellationPolicyStatusChoicesCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        GetPartyCancellationPolicyStatusChoicesResult result = CancellationPolicyResultFactory.getGetPartyCancellationPolicyStatusChoicesResult();
-        String partyName = form.getPartyName();
-        Party party = partyControl.getPartyByName(partyName);
+        var result = CancellationPolicyResultFactory.getGetPartyCancellationPolicyStatusChoicesResult();
+        var partyName = form.getPartyName();
+        var party = partyControl.getPartyByName(partyName);
 
         if(party != null) {
             var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
-            String cancellationKindName = form.getCancellationKindName();
-            CancellationKind cancellationKind = cancellationPolicyControl.getCancellationKindByName(cancellationKindName);
+            var cancellationKindName = form.getCancellationKindName();
+            var cancellationKind = cancellationPolicyControl.getCancellationKindByName(cancellationKindName);
 
             if(cancellationKind != null) {
-                String cancellationPolicyName = form.getCancellationPolicyName();
-                CancellationPolicy cancellationPolicy = cancellationPolicyControl.getCancellationPolicyByName(cancellationKind, cancellationPolicyName);
+                var cancellationPolicyName = form.getCancellationPolicyName();
+                var cancellationPolicy = cancellationPolicyControl.getCancellationPolicyByName(cancellationKind, cancellationPolicyName);
 
                 if(cancellationPolicy != null) {
-                    PartyCancellationPolicy partyCancellationPolicy = cancellationPolicyControl.createPartyCancellationPolicy(party, cancellationPolicy, getPartyPK());
+                    var partyCancellationPolicy = cancellationPolicyControl.createPartyCancellationPolicy(party, cancellationPolicy, getPartyPK());
 
                     if(partyCancellationPolicy != null) {
-                        String defaultPartyCancellationPolicyStatusChoice = form.getDefaultPartyCancellationPolicyStatusChoice();
-                        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+                        var defaultPartyCancellationPolicyStatusChoice = form.getDefaultPartyCancellationPolicyStatusChoice();
+                        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 
                         result.setPartyCancellationPolicyStatusChoices(PartyCancellationPolicyLogic.getInstance().getPartyCancellationPolicyStatusChoices(defaultPartyCancellationPolicyStatusChoice,
                                 getPreferredLanguage(), allowNullChoice, partyCancellationPolicy, getPartyPK()));

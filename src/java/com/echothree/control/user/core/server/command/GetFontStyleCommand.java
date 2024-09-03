@@ -61,7 +61,7 @@ public class GetFontStyleCommand
     protected FontStyle getEntity() {
         var coreControl = getCoreControl();
         FontStyle fontStyle = null;
-        String fontStyleName = form.getFontStyleName();
+        var fontStyleName = form.getFontStyleName();
         var parameterCount = (fontStyleName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {
@@ -89,7 +89,7 @@ public class GetFontStyleCommand
     @Override
     protected BaseResult getResult(FontStyle fontStyle) {
         var coreControl = getCoreControl();
-        GetFontStyleResult result = CoreResultFactory.getGetFontStyleResult();
+        var result = CoreResultFactory.getGetFontStyleResult();
 
         if(fontStyle != null) {
             result.setFontStyle(coreControl.getFontStyleTransfer(getUserVisit(), fontStyle));

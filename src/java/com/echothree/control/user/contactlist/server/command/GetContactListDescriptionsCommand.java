@@ -65,9 +65,9 @@ public class GetContactListDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var contactListControl = Session.getModelController(ContactListControl.class);
-        GetContactListDescriptionsResult result = ContactListResultFactory.getGetContactListDescriptionsResult();
-        String contactListName = form.getContactListName();
-        ContactList contactList = contactListControl.getContactListByName(contactListName);
+        var result = ContactListResultFactory.getGetContactListDescriptionsResult();
+        var contactListName = form.getContactListName();
+        var contactList = contactListControl.getContactListByName(contactListName);
         
         if(contactList != null) {
             result.setContactList(contactListControl.getContactListTransfer(getUserVisit(), contactList));

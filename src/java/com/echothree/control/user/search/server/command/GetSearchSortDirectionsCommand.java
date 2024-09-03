@@ -61,7 +61,7 @@ public class GetSearchSortDirectionsCommand
     @Override
     protected BaseResult execute() {
         var searchControl = Session.getModelController(SearchControl.class);
-        GetSearchSortDirectionsResult result = SearchResultFactory.getGetSearchSortDirectionsResult();
+        var result = SearchResultFactory.getGetSearchSortDirectionsResult();
         
         result.setSearchSortDirections(searchControl.getSearchSortDirectionTransfers(getUserVisit()));
         

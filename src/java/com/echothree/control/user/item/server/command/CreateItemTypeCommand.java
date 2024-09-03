@@ -59,8 +59,8 @@ public class CreateItemTypeCommand
     @Override
     protected BaseResult execute() {
         var itemControl = Session.getModelController(ItemControl.class);
-        String itemTypeName = form.getItemTypeName();
-        ItemType itemType = itemControl.getItemTypeByName(itemTypeName);
+        var itemTypeName = form.getItemTypeName();
+        var itemType = itemControl.getItemTypeByName(itemTypeName);
         
         if(itemType == null) {
             var isDefault = Boolean.valueOf(form.getIsDefault());

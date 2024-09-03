@@ -70,20 +70,20 @@ public class DeleteItemDescriptionCommand
     @Override
     protected BaseResult execute() {
         var itemControl = Session.getModelController(ItemControl.class);
-        String itemName = form.getItemName();
-        Item item = itemControl.getItemByName(itemName);
+        var itemName = form.getItemName();
+        var item = itemControl.getItemByName(itemName);
         
         if(item != null) {
-            String itemDescriptionTypeName = form.getItemDescriptionTypeName();
-            ItemDescriptionType itemDescriptionType = itemControl.getItemDescriptionTypeByName(itemDescriptionTypeName);
+            var itemDescriptionTypeName = form.getItemDescriptionTypeName();
+            var itemDescriptionType = itemControl.getItemDescriptionTypeByName(itemDescriptionTypeName);
             
             if(itemDescriptionType != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = form.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = form.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
                 
                 if(language != null) {
-                    ItemDescription itemDescription = itemControl.getItemDescriptionForUpdate(itemDescriptionType, item, language);
+                    var itemDescription = itemControl.getItemDescriptionForUpdate(itemDescriptionType, item, language);
                     
                     if(itemDescription != null) {
                         ItemDescriptionLogic.getInstance().deleteItemDescription(itemDescription, getPartyPK());

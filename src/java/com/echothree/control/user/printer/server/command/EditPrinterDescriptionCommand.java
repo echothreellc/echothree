@@ -89,13 +89,13 @@ public class EditPrinterDescriptionCommand
     public PrinterDescription getEntity(EditPrinterDescriptionResult result) {
         var printerControl = Session.getModelController(PrinterControl.class);
         PrinterDescription printerDescription = null;
-        String printerName = spec.getPrinterName();
-        Printer printer = printerControl.getPrinterByName(printerName);
+        var printerName = spec.getPrinterName();
+        var printer = printerControl.getPrinterByName(printerName);
 
         if(printer != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -137,7 +137,7 @@ public class EditPrinterDescriptionCommand
     @Override
     public void doUpdate(PrinterDescription printerDescription) {
         var printerControl = Session.getModelController(PrinterControl.class);
-        PrinterDescriptionValue printerDescriptionValue = printerControl.getPrinterDescriptionValue(printerDescription);
+        var printerDescriptionValue = printerControl.getPrinterDescriptionValue(printerDescription);
 
         printerDescriptionValue.setDescription(edit.getDescription());
 

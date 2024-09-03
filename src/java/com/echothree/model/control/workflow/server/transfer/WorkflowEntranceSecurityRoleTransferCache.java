@@ -38,11 +38,11 @@ public class WorkflowEntranceSecurityRoleTransferCache
     }
     
     public WorkflowEntranceSecurityRoleTransfer getWorkflowEntranceSecurityRoleTransfer(WorkflowEntranceSecurityRole workflowEntranceSecurityRole) {
-        WorkflowEntranceSecurityRoleTransfer workflowEntranceSecurityRoleTransfer = get(workflowEntranceSecurityRole);
+        var workflowEntranceSecurityRoleTransfer = get(workflowEntranceSecurityRole);
         
         if(workflowEntranceSecurityRoleTransfer == null) {
-            WorkflowEntrancePartyTypeTransfer workflowEntrancePartyType = workflowControl.getWorkflowEntrancePartyTypeTransfer(userVisit, workflowEntranceSecurityRole.getWorkflowEntrancePartyType());
-            SecurityRoleTransfer securityRole = securityControl.getSecurityRoleTransfer(userVisit, workflowEntranceSecurityRole.getSecurityRole());
+            var workflowEntrancePartyType = workflowControl.getWorkflowEntrancePartyTypeTransfer(userVisit, workflowEntranceSecurityRole.getWorkflowEntrancePartyType());
+            var securityRole = securityControl.getSecurityRoleTransfer(userVisit, workflowEntranceSecurityRole.getSecurityRole());
             
             workflowEntranceSecurityRoleTransfer = new WorkflowEntranceSecurityRoleTransfer(workflowEntrancePartyType, securityRole);
             put(workflowEntranceSecurityRole, workflowEntranceSecurityRoleTransfer);

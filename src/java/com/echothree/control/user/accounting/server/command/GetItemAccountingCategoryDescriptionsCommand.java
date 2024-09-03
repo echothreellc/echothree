@@ -65,9 +65,9 @@ public class GetItemAccountingCategoryDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        GetItemAccountingCategoryDescriptionsResult result = AccountingResultFactory.getGetItemAccountingCategoryDescriptionsResult();
-        String itemAccountingCategoryName = form.getItemAccountingCategoryName();
-        ItemAccountingCategory itemAccountingCategory = accountingControl.getItemAccountingCategoryByName(itemAccountingCategoryName);
+        var result = AccountingResultFactory.getGetItemAccountingCategoryDescriptionsResult();
+        var itemAccountingCategoryName = form.getItemAccountingCategoryName();
+        var itemAccountingCategory = accountingControl.getItemAccountingCategoryByName(itemAccountingCategoryName);
         
         if(itemAccountingCategory != null) {
             result.setItemAccountingCategory(accountingControl.getItemAccountingCategoryTransfer(getUserVisit(), itemAccountingCategory));

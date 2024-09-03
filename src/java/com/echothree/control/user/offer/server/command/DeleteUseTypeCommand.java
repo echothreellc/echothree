@@ -60,8 +60,8 @@ public class DeleteUseTypeCommand
     
     @Override
     protected BaseResult execute() {
-        String useTypeName = form.getUseTypeName();
-        UseType useType = UseTypeLogic.getInstance().getUseTypeByNameForUpdate(this, useTypeName);
+        var useTypeName = form.getUseTypeName();
+        var useType = UseTypeLogic.getInstance().getUseTypeByNameForUpdate(this, useTypeName);
         
         if(!hasExecutionErrors()) {
             UseTypeLogic.getInstance().deleteUseType(this, useType, getPartyPK());

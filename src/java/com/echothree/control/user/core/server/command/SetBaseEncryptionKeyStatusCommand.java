@@ -57,11 +57,11 @@ public class SetBaseEncryptionKeyStatusCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String baseEncryptionKeyName = form.getBaseEncryptionKeyName();
-        BaseEncryptionKey baseEncryptionKey = coreControl.getBaseEncryptionKeyByName(baseEncryptionKeyName);
+        var baseEncryptionKeyName = form.getBaseEncryptionKeyName();
+        var baseEncryptionKey = coreControl.getBaseEncryptionKeyByName(baseEncryptionKeyName);
         
         if(baseEncryptionKey != null) {
-            String BaseEncryptionKeyStatusChoice = form.getBaseEncryptionKeyStatusChoice();
+            var BaseEncryptionKeyStatusChoice = form.getBaseEncryptionKeyStatusChoice();
             
             coreControl.setBaseEncryptionKeyStatus(this, baseEncryptionKey, BaseEncryptionKeyStatusChoice, getPartyPK());
         } else {

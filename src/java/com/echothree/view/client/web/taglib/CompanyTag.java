@@ -98,7 +98,7 @@ public class CompanyTag
     public int doStartTag()
             throws JspException {
         try {
-            GetCompanyForm commandForm = PartyUtil.getHome().getGetCompanyForm();
+            var commandForm = PartyUtil.getHome().getGetCompanyForm();
             
             commandForm.setCompanyName(companyName);
             commandForm.setPartyName(partyName);
@@ -106,8 +106,8 @@ public class CompanyTag
             setOptions(options, null, commandForm);
 
             commandForm.setTransferProperties(transferProperties);
-            
-            CommandResult commandResult = PartyUtil.getHome().getCompany(getUserVisitPK(), commandForm);
+
+            var commandResult = PartyUtil.getHome().getCompany(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -115,8 +115,8 @@ public class CompanyTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetCompanyResult result = (GetCompanyResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetCompanyResult)executionResult.getResult();
 
                 pageContext.setAttribute(var, result.getCompany(), scope);
             }

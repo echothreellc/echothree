@@ -70,25 +70,25 @@ public class GetSearchSortDirectionChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        GetSearchSortDirectionChoicesResult result = SearchResultFactory.getGetSearchSortDirectionChoicesResult();
-        String searchKindName = form.getSearchKindName();
-        String searchTypeName = form.getSearchTypeName();
+        var result = SearchResultFactory.getGetSearchSortDirectionChoicesResult();
+        var searchKindName = form.getSearchKindName();
+        var searchTypeName = form.getSearchTypeName();
         var parameterCount = (searchKindName == null ? 0 : 1) + (searchTypeName == null ? 0 : 1);
 
         if(parameterCount == 0 || parameterCount == 2) {
-            String defaultSearchSortDirectionChoice = form.getDefaultSearchSortDirectionChoice();
-            Party party = getParty();
-            SearchType searchType = defaultSearchSortDirectionChoice == null && party != null ? SearchLogic.getInstance().getSearchTypeByName(this, searchKindName, searchTypeName) : null;
+            var defaultSearchSortDirectionChoice = form.getDefaultSearchSortDirectionChoice();
+            var party = getParty();
+            var searchType = defaultSearchSortDirectionChoice == null && party != null ? SearchLogic.getInstance().getSearchTypeByName(this, searchKindName, searchTypeName) : null;
 
             if(!hasExecutionErrors()) {
                 var searchControl = Session.getModelController(SearchControl.class);
-                boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+                var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 
                 if(searchType != null) {
-                    PartySearchTypePreference partySearchTypePreference = searchControl.getPartySearchTypePreference(party, searchType);
+                    var partySearchTypePreference = searchControl.getPartySearchTypePreference(party, searchType);
 
                     if(partySearchTypePreference != null) {
-                        SearchSortDirection searchSortDirection = partySearchTypePreference.getLastDetail().getSearchSortDirection();
+                        var searchSortDirection = partySearchTypePreference.getLastDetail().getSearchSortDirection();
 
                         if(searchSortDirection != null) {
                             defaultSearchSortDirectionChoice = searchSortDirection.getLastDetail().getSearchSortDirectionName();

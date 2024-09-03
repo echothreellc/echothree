@@ -49,12 +49,12 @@ public class DeleteCommandCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String componentVendorName = form.getComponentVendorName();
-        ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+        var componentVendorName = form.getComponentVendorName();
+        var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
         
         if(componentVendor != null) {
-            String commandName = form.getCommandName();
-            Command command = coreControl.getCommandByNameForUpdate(componentVendor, commandName);
+            var commandName = form.getCommandName();
+            var command = coreControl.getCommandByNameForUpdate(componentVendor, commandName);
             
             if(command != null) {
                 coreControl.deleteCommand(command, getPartyPK());

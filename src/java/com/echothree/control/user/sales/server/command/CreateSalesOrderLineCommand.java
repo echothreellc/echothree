@@ -75,8 +75,8 @@ public class CreateSalesOrderLineCommand
 
     @Override
     protected void setupValidator(Validator validator) {
-        String orderName = form.getOrderName();
-        Order order = orderName == null ? null : SalesOrderLogic.getInstance().getOrderByName(this, orderName);
+        var orderName = form.getOrderName();
+        var order = orderName == null ? null : SalesOrderLogic.getInstance().getOrderByName(this, orderName);
         
         if(order != null) {
             validator.setCurrency(OrderLogic.getInstance().getOrderCurrency(order));

@@ -91,7 +91,7 @@ public class EditLicenseTypeCommand
     public LicenseType getEntity(EditLicenseTypeResult result) {
         var licenseControl = Session.getModelController(LicenseControl.class);
         LicenseType licenseType;
-        String licenseTypeName = spec.getLicenseTypeName();
+        var licenseTypeName = spec.getLicenseTypeName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
             licenseType = licenseControl.getLicenseTypeByName(licenseTypeName);
@@ -121,8 +121,8 @@ public class EditLicenseTypeCommand
     @Override
     public void doLock(LicenseTypeEdit edit, LicenseType licenseType) {
         var licenseControl = Session.getModelController(LicenseControl.class);
-        LicenseTypeDescription licenseTypeDescription = licenseControl.getLicenseTypeDescription(licenseType, getPreferredLanguage());
-        LicenseTypeDetail licenseTypeDetail = licenseType.getLastDetail();
+        var licenseTypeDescription = licenseControl.getLicenseTypeDescription(licenseType, getPreferredLanguage());
+        var licenseTypeDetail = licenseType.getLastDetail();
 
         edit.setLicenseTypeName(licenseTypeDetail.getLicenseTypeName());
         edit.setIsDefault(licenseTypeDetail.getIsDefault().toString());
@@ -136,8 +136,8 @@ public class EditLicenseTypeCommand
     @Override
     public void canUpdate(LicenseType licenseType) {
         var licenseControl = Session.getModelController(LicenseControl.class);
-        String licenseTypeName = edit.getLicenseTypeName();
-        LicenseType duplicateLicenseType = licenseControl.getLicenseTypeByName(licenseTypeName);
+        var licenseTypeName = edit.getLicenseTypeName();
+        var duplicateLicenseType = licenseControl.getLicenseTypeByName(licenseTypeName);
 
         if(duplicateLicenseType != null && !licenseType.equals(duplicateLicenseType)) {
             addExecutionError(ExecutionErrors.DuplicateLicenseTypeName.name(), licenseTypeName);
@@ -148,9 +148,9 @@ public class EditLicenseTypeCommand
     public void doUpdate(LicenseType licenseType) {
         var licenseControl = Session.getModelController(LicenseControl.class);
         var partyPK = getPartyPK();
-        LicenseTypeDetailValue licenseTypeDetailValue = licenseControl.getLicenseTypeDetailValueForUpdate(licenseType);
-        LicenseTypeDescription licenseTypeDescription = licenseControl.getLicenseTypeDescriptionForUpdate(licenseType, getPreferredLanguage());
-        String description = edit.getDescription();
+        var licenseTypeDetailValue = licenseControl.getLicenseTypeDetailValueForUpdate(licenseType);
+        var licenseTypeDescription = licenseControl.getLicenseTypeDescriptionForUpdate(licenseType, getPreferredLanguage());
+        var description = edit.getDescription();
 
         licenseTypeDetailValue.setLicenseTypeName(edit.getLicenseTypeName());
         licenseTypeDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
@@ -165,7 +165,7 @@ public class EditLicenseTypeCommand
                 licenseControl.deleteLicenseTypeDescription(licenseTypeDescription, partyPK);
             } else {
                 if(licenseTypeDescription != null && description != null) {
-                    LicenseTypeDescriptionValue licenseTypeDescriptionValue = licenseControl.getLicenseTypeDescriptionValue(licenseTypeDescription);
+                    var licenseTypeDescriptionValue = licenseControl.getLicenseTypeDescriptionValue(licenseTypeDescription);
 
                     licenseTypeDescriptionValue.setDescription(description);
                     licenseControl.updateLicenseTypeDescriptionFromValue(licenseTypeDescriptionValue, partyPK);

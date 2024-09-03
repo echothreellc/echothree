@@ -63,9 +63,9 @@ public class GetLicenseTypeChoicesCommand
     @Override
     protected BaseResult execute() {
         var licenseControl = Session.getModelController(LicenseControl.class);
-        GetLicenseTypeChoicesResult result = LicenseResultFactory.getGetLicenseTypeChoicesResult();
-        String defaultLicenseTypeChoice = form.getDefaultLicenseTypeChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = LicenseResultFactory.getGetLicenseTypeChoicesResult();
+        var defaultLicenseTypeChoice = form.getDefaultLicenseTypeChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setLicenseTypeChoices(licenseControl.getLicenseTypeChoices(defaultLicenseTypeChoice, getPreferredLanguage(), allowNullChoice));
         

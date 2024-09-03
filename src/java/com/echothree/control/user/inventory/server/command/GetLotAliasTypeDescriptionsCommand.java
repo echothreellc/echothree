@@ -65,9 +65,9 @@ public class GetLotAliasTypeDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var lotAliasControl = Session.getModelController(LotAliasControl.class);
-        GetLotAliasTypeDescriptionsResult result = InventoryResultFactory.getGetLotAliasTypeDescriptionsResult();
-        String lotAliasTypeName = form.getLotAliasTypeName();
-        LotAliasType lotAliasType = lotAliasControl.getLotAliasTypeByName(lotAliasTypeName);
+        var result = InventoryResultFactory.getGetLotAliasTypeDescriptionsResult();
+        var lotAliasTypeName = form.getLotAliasTypeName();
+        var lotAliasType = lotAliasControl.getLotAliasTypeByName(lotAliasTypeName);
 
         if(lotAliasType != null) {
             result.setLotAliasType(lotAliasControl.getLotAliasTypeTransfer(getUserVisit(), lotAliasType));

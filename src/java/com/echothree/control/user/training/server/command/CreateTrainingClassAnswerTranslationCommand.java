@@ -80,41 +80,41 @@ public class CreateTrainingClassAnswerTranslationCommand
     @Override
     protected BaseResult execute() {
         var trainingControl = Session.getModelController(TrainingControl.class);
-        String trainingClassName = form.getTrainingClassName();
-        TrainingClass trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
+        var trainingClassName = form.getTrainingClassName();
+        var trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
 
         if(trainingClass != null) {
-            String trainingClassSectionName = form.getTrainingClassSectionName();
-            TrainingClassSection trainingClassSection = trainingControl.getTrainingClassSectionByName(trainingClass, trainingClassSectionName);
+            var trainingClassSectionName = form.getTrainingClassSectionName();
+            var trainingClassSection = trainingControl.getTrainingClassSectionByName(trainingClass, trainingClassSectionName);
 
             if(trainingClassSection != null) {
-                String trainingClassQuestionName = form.getTrainingClassQuestionName();
-                TrainingClassQuestion trainingClassQuestion = trainingControl.getTrainingClassQuestionByName(trainingClassSection, trainingClassQuestionName);
+                var trainingClassQuestionName = form.getTrainingClassQuestionName();
+                var trainingClassQuestion = trainingControl.getTrainingClassQuestionByName(trainingClassSection, trainingClassQuestionName);
 
                 if(trainingClassQuestion != null) {
-                    String trainingClassAnswerName = form.getTrainingClassAnswerName();
-                    TrainingClassAnswer trainingClassAnswer = trainingControl.getTrainingClassAnswerByName(trainingClassQuestion, trainingClassAnswerName);
+                    var trainingClassAnswerName = form.getTrainingClassAnswerName();
+                    var trainingClassAnswer = trainingControl.getTrainingClassAnswerByName(trainingClassQuestion, trainingClassAnswerName);
 
                     if(trainingClassAnswer != null) {
                         var partyControl = Session.getModelController(PartyControl.class);
-                        String languageIsoName = form.getLanguageIsoName();
-                        Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                        var languageIsoName = form.getLanguageIsoName();
+                        var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                         if(language != null) {
-                            TrainingClassAnswerTranslation trainingClassAnswerTranslation = trainingControl.getTrainingClassAnswerTranslation(trainingClassAnswer, language);
+                            var trainingClassAnswerTranslation = trainingControl.getTrainingClassAnswerTranslation(trainingClassAnswer, language);
 
                             if(trainingClassAnswerTranslation == null) {
-                                MimeTypeLogic mimeTypeLogic = MimeTypeLogic.getInstance();
-                                String answerMimeTypeName = form.getAnswerMimeTypeName();
-                                String answer = form.getAnswer();
+                                var mimeTypeLogic = MimeTypeLogic.getInstance();
+                                var answerMimeTypeName = form.getAnswerMimeTypeName();
+                                var answer = form.getAnswer();
 
-                                MimeType answerMimeType = mimeTypeLogic.checkMimeType(this, answerMimeTypeName, answer, MimeTypeUsageTypes.TEXT.name(),
+                                var answerMimeType = mimeTypeLogic.checkMimeType(this, answerMimeTypeName, answer, MimeTypeUsageTypes.TEXT.name(),
                                         ExecutionErrors.MissingRequiredAnswerMimeTypeName.name(), ExecutionErrors.MissingRequiredAnswer.name(),
                                         ExecutionErrors.UnknownAnswerMimeTypeName.name(), ExecutionErrors.UnknownAnswerMimeTypeUsage.name());
 
                                 if(!hasExecutionErrors()) {
-                                    String selected = form.getSelected();
-                                    MimeType selectedMimeType = mimeTypeLogic.checkMimeType(this, form.getSelectedMimeTypeName(), selected, MimeTypeUsageTypes.TEXT.name(),
+                                    var selected = form.getSelected();
+                                    var selectedMimeType = mimeTypeLogic.checkMimeType(this, form.getSelectedMimeTypeName(), selected, MimeTypeUsageTypes.TEXT.name(),
                                             ExecutionErrors.MissingRequiredSelectedMimeTypeName.name(), ExecutionErrors.MissingRequiredSelected.name(),
                                             ExecutionErrors.UnknownSelectedMimeTypeName.name(), ExecutionErrors.UnknownSelectedMimeTypeUsage.name());
 

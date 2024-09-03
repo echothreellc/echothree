@@ -34,15 +34,15 @@ public class SecurityRoleTransferCache
     }
     
     public SecurityRoleTransfer getSecurityRoleTransfer(SecurityRole securityRole) {
-        SecurityRoleTransfer securityRoleTransfer = get(securityRole);
+        var securityRoleTransfer = get(securityRole);
         
         if(securityRoleTransfer == null) {
-            SecurityRoleDetail securityRoleDetail = securityRole.getLastDetail();
-            String securityRoleName = securityRoleDetail.getSecurityRoleName();
-            SecurityRoleGroupTransfer securityRoleGroupTransfer = securityControl.getSecurityRoleGroupTransfer(userVisit, securityRoleDetail.getSecurityRoleGroup());
-            Boolean isDefault = securityRoleDetail.getIsDefault();
-            Integer sortOrder = securityRoleDetail.getSortOrder();
-            String description = securityControl.getBestSecurityRoleDescription(securityRole, getLanguage());
+            var securityRoleDetail = securityRole.getLastDetail();
+            var securityRoleName = securityRoleDetail.getSecurityRoleName();
+            var securityRoleGroupTransfer = securityControl.getSecurityRoleGroupTransfer(userVisit, securityRoleDetail.getSecurityRoleGroup());
+            var isDefault = securityRoleDetail.getIsDefault();
+            var sortOrder = securityRoleDetail.getSortOrder();
+            var description = securityControl.getBestSecurityRoleDescription(securityRole, getLanguage());
             
             securityRoleTransfer = new SecurityRoleTransfer(securityRoleGroupTransfer, securityRoleName, isDefault, sortOrder, description);
             put(securityRole, securityRoleTransfer);

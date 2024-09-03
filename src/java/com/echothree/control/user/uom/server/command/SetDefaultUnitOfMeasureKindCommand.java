@@ -49,8 +49,8 @@ public class SetDefaultUnitOfMeasureKindCommand
     @Override
     protected BaseResult execute() {
         var uomControl = Session.getModelController(UomControl.class);
-        String unitOfMeasureKindName = form.getUnitOfMeasureKindName();
-        UnitOfMeasureKindDetailValue unitOfMeasureKindDetailValue = uomControl.getUnitOfMeasureKindDetailValueByNameForUpdate(unitOfMeasureKindName);
+        var unitOfMeasureKindName = form.getUnitOfMeasureKindName();
+        var unitOfMeasureKindDetailValue = uomControl.getUnitOfMeasureKindDetailValueByNameForUpdate(unitOfMeasureKindName);
         
         if(unitOfMeasureKindDetailValue != null) {
             unitOfMeasureKindDetailValue.setIsDefault(Boolean.TRUE);

@@ -61,9 +61,9 @@ public class GetServerChoicesCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        GetServerChoicesResult result = CoreResultFactory.getGetServerChoicesResult();
-        String defaultServerChoice = form.getDefaultServerChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = CoreResultFactory.getGetServerChoicesResult();
+        var defaultServerChoice = form.getDefaultServerChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setServerChoices(coreControl.getServerChoices(defaultServerChoice, getPreferredLanguage(),
                 allowNullChoice));

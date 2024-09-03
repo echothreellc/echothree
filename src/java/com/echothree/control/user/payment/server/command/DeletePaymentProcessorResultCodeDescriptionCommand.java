@@ -67,16 +67,16 @@ public class DeletePaymentProcessorResultCodeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var paymentProcessorResultCodeControl = Session.getModelController(PaymentProcessorResultCodeControl.class);
-        String paymentProcessorResultCodeName = form.getPaymentProcessorResultCodeName();
-        PaymentProcessorResultCode paymentProcessorResultCode = paymentProcessorResultCodeControl.getPaymentProcessorResultCodeByName(paymentProcessorResultCodeName);
+        var paymentProcessorResultCodeName = form.getPaymentProcessorResultCodeName();
+        var paymentProcessorResultCode = paymentProcessorResultCodeControl.getPaymentProcessorResultCodeByName(paymentProcessorResultCodeName);
         
         if(paymentProcessorResultCode != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                PaymentProcessorResultCodeDescription paymentProcessorResultCodeDescription = paymentProcessorResultCodeControl.getPaymentProcessorResultCodeDescriptionForUpdate(paymentProcessorResultCode, language);
+                var paymentProcessorResultCodeDescription = paymentProcessorResultCodeControl.getPaymentProcessorResultCodeDescriptionForUpdate(paymentProcessorResultCode, language);
                 
                 if(paymentProcessorResultCodeDescription != null) {
                     paymentProcessorResultCodeControl.deletePaymentProcessorResultCodeDescription(paymentProcessorResultCodeDescription, getPartyPK());

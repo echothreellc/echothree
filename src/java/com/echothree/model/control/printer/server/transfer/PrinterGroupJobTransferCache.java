@@ -46,18 +46,18 @@ public class PrinterGroupJobTransferCache
     }
     
     public PrinterGroupJobTransfer getPrinterGroupJobTransfer(PrinterGroupJob printerGroupJob) {
-        PrinterGroupJobTransfer printerGroupJobTransfer = get(printerGroupJob);
+        var printerGroupJobTransfer = get(printerGroupJob);
         
         if(printerGroupJobTransfer == null) {
-            PrinterGroupJobDetail printerGroupJobDetail = printerGroupJob.getLastDetail();
-            String printerGroupJobName = printerGroupJobDetail.getPrinterGroupJobName();
-            PrinterGroupTransfer printerGroupTransfer = printerControl.getPrinterGroupTransfer(userVisit, printerGroupJobDetail.getPrinterGroup());
-            DocumentTransfer documentTransfer = documentControl.getDocumentTransfer(userVisit, printerGroupJobDetail.getDocument());
-            Integer copies = printerGroupJobDetail.getCopies();
-            Integer priority = printerGroupJobDetail.getPriority();
-            
-            EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(printerGroupJob.getPrimaryKey());
-            WorkflowEntityStatusTransfer printerGroupJobStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
+            var printerGroupJobDetail = printerGroupJob.getLastDetail();
+            var printerGroupJobName = printerGroupJobDetail.getPrinterGroupJobName();
+            var printerGroupTransfer = printerControl.getPrinterGroupTransfer(userVisit, printerGroupJobDetail.getPrinterGroup());
+            var documentTransfer = documentControl.getDocumentTransfer(userVisit, printerGroupJobDetail.getDocument());
+            var copies = printerGroupJobDetail.getCopies();
+            var priority = printerGroupJobDetail.getPriority();
+
+            var entityInstance = coreControl.getEntityInstanceByBasePK(printerGroupJob.getPrimaryKey());
+            var printerGroupJobStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
                     PrinterGroupJobStatusConstants.Workflow_PRINTER_GROUP_JOB_STATUS, entityInstance);
             
             printerGroupJobTransfer = new PrinterGroupJobTransfer(printerGroupJobName, printerGroupTransfer, documentTransfer, copies, priority,

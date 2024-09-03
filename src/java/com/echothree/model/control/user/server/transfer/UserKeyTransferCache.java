@@ -42,15 +42,15 @@ public class UserKeyTransferCache
     }
     
     public UserKeyTransfer getUserKeyTransfer(UserKey userKey) {
-        UserKeyTransfer userKeyTransfer = get(userKey);
+        var userKeyTransfer = get(userKey);
         
         if(userKeyTransfer == null) {
-            UserKeyDetail userKeyDetail = userKey.getLastDetail();
-            String userKeyName = userKeyDetail.getUserKeyName();
-            Party party = userKeyDetail.getParty();
-            PartyTransfer partyTransfer = party == null? null: partyControl.getPartyTransfer(userVisit, party);
-            PartyRelationship partyRelationship = userKeyDetail.getPartyRelationship();
-            PartyRelationshipTransfer partyRelationshipTransfer = partyRelationship == null? null: partyControl.getPartyRelationshipTransfer(userVisit, partyRelationship);
+            var userKeyDetail = userKey.getLastDetail();
+            var userKeyName = userKeyDetail.getUserKeyName();
+            var party = userKeyDetail.getParty();
+            var partyTransfer = party == null? null: partyControl.getPartyTransfer(userVisit, party);
+            var partyRelationship = userKeyDetail.getPartyRelationship();
+            var partyRelationshipTransfer = partyRelationship == null? null: partyControl.getPartyRelationshipTransfer(userVisit, partyRelationship);
             
             userKeyTransfer = new UserKeyTransfer(userKeyName, partyTransfer, partyRelationshipTransfer);
             put(userKey, userKeyTransfer);

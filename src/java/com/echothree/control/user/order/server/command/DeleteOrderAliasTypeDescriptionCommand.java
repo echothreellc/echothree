@@ -74,16 +74,16 @@ public class DeleteOrderAliasTypeDescriptionCommand
 
         if(orderType != null) {
             var orderAliasControl = Session.getModelController(OrderAliasControl.class);
-            String orderAliasTypeName = form.getOrderAliasTypeName();
-            OrderAliasType orderAliasType = orderAliasControl.getOrderAliasTypeByName(orderType, orderAliasTypeName);
+            var orderAliasTypeName = form.getOrderAliasTypeName();
+            var orderAliasType = orderAliasControl.getOrderAliasTypeByName(orderType, orderAliasTypeName);
 
             if(orderAliasType != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = form.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = form.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                 if(language != null) {
-                    OrderAliasTypeDescription orderAliasTypeDescription = orderAliasControl.getOrderAliasTypeDescriptionForUpdate(orderAliasType, language);
+                    var orderAliasTypeDescription = orderAliasControl.getOrderAliasTypeDescriptionForUpdate(orderAliasType, language);
 
                     if(orderAliasTypeDescription != null) {
                         orderAliasControl.deleteOrderAliasTypeDescription(orderAliasTypeDescription, getPartyPK());

@@ -69,17 +69,17 @@ public class GetGeoCodeScopeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var geoControl = Session.getModelController(GeoControl.class);
-        GetGeoCodeScopeDescriptionResult result = GeoResultFactory.getGetGeoCodeScopeDescriptionResult();
-        String geoCodeScopeName = form.getGeoCodeScopeName();
-        GeoCodeScope geoCodeScope = geoControl.getGeoCodeScopeByName(geoCodeScopeName);
+        var result = GeoResultFactory.getGetGeoCodeScopeDescriptionResult();
+        var geoCodeScopeName = form.getGeoCodeScopeName();
+        var geoCodeScope = geoControl.getGeoCodeScopeByName(geoCodeScopeName);
         
         if(geoCodeScope != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                GeoCodeScopeDescription geoCodeScopeDescription = geoControl.getGeoCodeScopeDescription(geoCodeScope, language);
+                var geoCodeScopeDescription = geoControl.getGeoCodeScopeDescription(geoCodeScope, language);
                 
                 if(geoCodeScopeDescription != null) {
                     result.setGeoCodeScopeDescription(geoControl.getGeoCodeScopeDescriptionTransfer(getUserVisit(), geoCodeScopeDescription));

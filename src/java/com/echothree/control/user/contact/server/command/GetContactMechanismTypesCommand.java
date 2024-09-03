@@ -47,7 +47,7 @@ public class GetContactMechanismTypesCommand
     @Override
     protected BaseResult execute() {
         var contactControl = Session.getModelController(ContactControl.class);
-        GetContactMechanismTypesResult result = ContactResultFactory.getGetContactMechanismTypesResult();
+        var result = ContactResultFactory.getGetContactMechanismTypesResult();
         
         result.setContactMechanismTypes(contactControl.getContactMechanismTypeTransfers(getUserVisit()));
         

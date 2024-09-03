@@ -89,13 +89,13 @@ public class EditCampaignMediumDescriptionCommand
     public CampaignMediumDescription getEntity(EditCampaignMediumDescriptionResult result) {
         var campaignControl = Session.getModelController(CampaignControl.class);
         CampaignMediumDescription campaignMediumDescription = null;
-        String campaignMediumName = spec.getCampaignMediumName();
-        CampaignMedium campaignMedium = campaignControl.getCampaignMediumByName(campaignMediumName);
+        var campaignMediumName = spec.getCampaignMediumName();
+        var campaignMedium = campaignControl.getCampaignMediumByName(campaignMediumName);
 
         if(campaignMedium != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -137,7 +137,7 @@ public class EditCampaignMediumDescriptionCommand
     @Override
     public void doUpdate(CampaignMediumDescription campaignMediumDescription) {
         var campaignControl = Session.getModelController(CampaignControl.class);
-        CampaignMediumDescriptionValue campaignMediumDescriptionValue = campaignControl.getCampaignMediumDescriptionValue(campaignMediumDescription);
+        var campaignMediumDescriptionValue = campaignControl.getCampaignMediumDescriptionValue(campaignMediumDescription);
         campaignMediumDescriptionValue.setDescription(edit.getDescription());
 
         campaignControl.updateCampaignMediumDescriptionFromValue(campaignMediumDescriptionValue, getPartyPK());

@@ -70,20 +70,20 @@ public class CreateReturnReasonDescriptionCommand
     @Override
     protected BaseResult execute() {
         var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
-        String returnKindName = form.getReturnKindName();
-        ReturnKind returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
+        var returnKindName = form.getReturnKindName();
+        var returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
         
         if(returnKind != null) {
-            String returnReasonName = form.getReturnReasonName();
-            ReturnReason returnReason = returnPolicyControl.getReturnReasonByName(returnKind, returnReasonName);
+            var returnReasonName = form.getReturnReasonName();
+            var returnReason = returnPolicyControl.getReturnReasonByName(returnKind, returnReasonName);
             
             if(returnReason != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = form.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = form.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
                 
                 if(language != null) {
-                    ReturnReasonDescription returnReasonDescription = returnPolicyControl.getReturnReasonDescription(returnReason, language);
+                    var returnReasonDescription = returnPolicyControl.getReturnReasonDescription(returnReason, language);
                     
                     if(returnReasonDescription == null) {
                         var description = form.getDescription();

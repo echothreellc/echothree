@@ -50,23 +50,23 @@ public class WorkflowEntityStatusTransferCache
     }
 
     public WorkflowEntityStatusTransfer getWorkflowEntityStatusTransfer(WorkflowEntityStatus workflowEntityStatus) {
-        WorkflowEntityStatusTransfer workflowEntityStatusTransfer = get(workflowEntityStatus);
+        var workflowEntityStatusTransfer = get(workflowEntityStatus);
 
         if(workflowEntityStatusTransfer == null) {
-            CoreControl coreControl = Session.getModelController(CoreControl.class);
-            EntityInstanceTransfer entityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, workflowEntityStatus.getEntityInstance(), false, false, false, false, false, false);
-            WorkflowStepTransfer workflowStepTransfer = workflowControl.getWorkflowStepTransfer(userVisit, workflowEntityStatus.getWorkflowStep());
-            WorkEffortScope workEffortScope = workflowEntityStatus.getWorkEffortScope();
-            WorkEffortScopeTransfer workEffortScopeTransfer = workEffortScope == null ? null : workEffortControl.getWorkEffortScopeTransfer(userVisit, workEffortScope);
-            Long unformattedFromTime = workflowEntityStatus.getFromTime();
-            String fromTime = formatTypicalDateTime(unformattedFromTime);
-            Long unformattedThruTime = workflowEntityStatus.getThruTime();
-            String thruTime = formatTypicalDateTime(unformattedThruTime);
+            var coreControl = Session.getModelController(CoreControl.class);
+            var entityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, workflowEntityStatus.getEntityInstance(), false, false, false, false, false, false);
+            var workflowStepTransfer = workflowControl.getWorkflowStepTransfer(userVisit, workflowEntityStatus.getWorkflowStep());
+            var workEffortScope = workflowEntityStatus.getWorkEffortScope();
+            var workEffortScopeTransfer = workEffortScope == null ? null : workEffortControl.getWorkEffortScopeTransfer(userVisit, workEffortScope);
+            var unformattedFromTime = workflowEntityStatus.getFromTime();
+            var fromTime = formatTypicalDateTime(unformattedFromTime);
+            var unformattedThruTime = workflowEntityStatus.getThruTime();
+            var thruTime = formatTypicalDateTime(unformattedThruTime);
             Long unformattedTriggerTime = null;
             String triggerTime = null;
 
             if(includeTriggerTime) {
-                WorkflowTrigger workflowTrigger = workflowControl.getWorkflowTrigger(workflowEntityStatus);
+                var workflowTrigger = workflowControl.getWorkflowTrigger(workflowEntityStatus);
 
                 unformattedTriggerTime = workflowTrigger == null ? null : workflowTrigger.getTriggerTime();
                 triggerTime = unformattedTriggerTime == null ? null : formatTypicalDateTime(unformattedTriggerTime);

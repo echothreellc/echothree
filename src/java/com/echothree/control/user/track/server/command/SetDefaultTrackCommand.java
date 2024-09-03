@@ -63,8 +63,8 @@ public class SetDefaultTrackCommand
     @Override
     protected BaseResult execute() {
         var trackControl = Session.getModelController(TrackControl.class);
-        String trackName = form.getTrackName();
-        TrackDetailValue trackDetailValue = trackControl.getTrackDetailValueByNameForUpdate(trackName);
+        var trackName = form.getTrackName();
+        var trackDetailValue = trackControl.getTrackDetailValueByNameForUpdate(trackName);
         
         if(trackDetailValue != null) {
             trackDetailValue.setIsDefault(Boolean.TRUE);

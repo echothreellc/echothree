@@ -46,16 +46,16 @@ public class PartyChainLogic
     
     protected ChainInstance createPartyChainInstance(final ExecutionErrorAccumulator eea, final String chainTypeName, final Party party,
             final boolean resetChainIfRunning, final BasePK createdBy) {
-        String partyTypeName = party.getLastDetail().getPartyType().getPartyTypeName(); // Used as ChainTypeName & ChainEntityRoleTypeName
-        ChainType chainType = getChainTypeByName(eea, partyTypeName, chainTypeName);
+        var partyTypeName = party.getLastDetail().getPartyType().getPartyTypeName(); // Used as ChainTypeName & ChainEntityRoleTypeName
+        var chainType = getChainTypeByName(eea, partyTypeName, chainTypeName);
         ChainInstance chainInstance = null;
         
         if(!hasExecutionErrors(eea)) {
-            ChainEntityRoleType chainEntityRoleType = getChainEntityRoleTypeByName(eea, chainType, partyTypeName);
+            var chainEntityRoleType = getChainEntityRoleTypeByName(eea, chainType, partyTypeName);
             
             if(!hasExecutionErrors(eea)) {
                 var ccoreControl = Session.getModelController(CoreControl.class);
-                EntityInstance entityInstance = ccoreControl.getEntityInstanceByBasePK(party.getPrimaryKey());
+                var entityInstance = ccoreControl.getEntityInstanceByBasePK(party.getPrimaryKey());
                 
                 if(resetChainIfRunning) {
                     deleteChainInstancedByChainEntityRoleTypeAndEntityInstance(chainEntityRoleType, entityInstance, createdBy);

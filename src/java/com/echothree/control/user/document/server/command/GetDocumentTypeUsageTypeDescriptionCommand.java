@@ -69,17 +69,17 @@ public class GetDocumentTypeUsageTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var documentControl = Session.getModelController(DocumentControl.class);
-        GetDocumentTypeUsageTypeDescriptionResult result = DocumentResultFactory.getGetDocumentTypeUsageTypeDescriptionResult();
-        String documentTypeUsageTypeName = form.getDocumentTypeUsageTypeName();
-        DocumentTypeUsageType documentTypeUsageType = documentControl.getDocumentTypeUsageTypeByName(documentTypeUsageTypeName);
+        var result = DocumentResultFactory.getGetDocumentTypeUsageTypeDescriptionResult();
+        var documentTypeUsageTypeName = form.getDocumentTypeUsageTypeName();
+        var documentTypeUsageType = documentControl.getDocumentTypeUsageTypeByName(documentTypeUsageTypeName);
         
         if(documentTypeUsageType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
-                DocumentTypeUsageTypeDescription documentTypeUsageTypeDescription = documentControl.getDocumentTypeUsageTypeDescription(documentTypeUsageType, language);
+                var documentTypeUsageTypeDescription = documentControl.getDocumentTypeUsageTypeDescription(documentTypeUsageType, language);
 
                 if(documentTypeUsageTypeDescription != null) {
                     result.setDocumentTypeUsageTypeDescription(documentControl.getDocumentTypeUsageTypeDescriptionTransfer(getUserVisit(), documentTypeUsageTypeDescription));

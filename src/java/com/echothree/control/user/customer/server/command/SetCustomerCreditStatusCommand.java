@@ -53,13 +53,13 @@ public class SetCustomerCreditStatusCommand
     @Override
     protected BaseResult execute() {
         var customerControl = Session.getModelController(CustomerControl.class);
-        String customerName = form.getCustomerName();
-        Customer customer = customerControl.getCustomerByName(customerName);
+        var customerName = form.getCustomerName();
+        var customer = customerControl.getCustomerByName(customerName);
         
         if(customer != null) {
-            String customerCreditStatusChoice = form.getCustomerCreditStatusChoice();
-            Party party = customer.getParty();
-            PartyPK updatedBy = getPartyPK();
+            var customerCreditStatusChoice = form.getCustomerCreditStatusChoice();
+            var party = customer.getParty();
+            var updatedBy = getPartyPK();
             
             customerControl.setCustomerCreditStatus(this, party, customerCreditStatusChoice, updatedBy);
             

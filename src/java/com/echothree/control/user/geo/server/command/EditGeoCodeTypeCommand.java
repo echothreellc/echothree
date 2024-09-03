@@ -92,7 +92,7 @@ public class EditGeoCodeTypeCommand
     public GeoCodeType getEntity(EditGeoCodeTypeResult result) {
         var geoControl = Session.getModelController(GeoControl.class);
         GeoCodeType geoCodeType = null;
-        String geoCodeTypeName = spec.getGeoCodeTypeName();
+        var geoCodeTypeName = spec.getGeoCodeTypeName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
             geoCodeType = geoControl.getGeoCodeTypeByName(geoCodeTypeName);
@@ -126,8 +126,8 @@ public class EditGeoCodeTypeCommand
     @Override
     public void doLock(GeoCodeTypeEdit edit, GeoCodeType geoCodeType) {
         var geoControl = Session.getModelController(GeoControl.class);
-        GeoCodeTypeDescription geoCodeTypeDescription = geoControl.getGeoCodeTypeDescription(geoCodeType, getPreferredLanguage());
-        GeoCodeTypeDetail geoCodeTypeDetail = geoCodeType.getLastDetail();
+        var geoCodeTypeDescription = geoControl.getGeoCodeTypeDescription(geoCodeType, getPreferredLanguage());
+        var geoCodeTypeDetail = geoCodeType.getLastDetail();
 
         parentGeoCodeType = geoCodeTypeDetail.getParentGeoCodeType();
 
@@ -144,11 +144,11 @@ public class EditGeoCodeTypeCommand
     @Override
     public void canUpdate(GeoCodeType geoCodeType) {
         var geoControl = Session.getModelController(GeoControl.class);
-        String geoCodeTypeName = edit.getGeoCodeTypeName();
-        GeoCodeType duplicateGeoCodeType = geoControl.getGeoCodeTypeByName(geoCodeTypeName);
+        var geoCodeTypeName = edit.getGeoCodeTypeName();
+        var duplicateGeoCodeType = geoControl.getGeoCodeTypeByName(geoCodeTypeName);
 
         if(duplicateGeoCodeType == null || geoCodeType.equals(duplicateGeoCodeType)) {
-            String parentGeoCodeTypeName = edit.getParentGeoCodeTypeName();
+            var parentGeoCodeTypeName = edit.getParentGeoCodeTypeName();
 
             if(parentGeoCodeTypeName != null) {
                 parentGeoCodeType = geoControl.getGeoCodeTypeByName(parentGeoCodeTypeName);
@@ -170,9 +170,9 @@ public class EditGeoCodeTypeCommand
     public void doUpdate(GeoCodeType geoCodeType) {
         var geoControl = Session.getModelController(GeoControl.class);
         var partyPK = getPartyPK();
-        GeoCodeTypeDetailValue geoCodeTypeDetailValue = geoControl.getGeoCodeTypeDetailValueForUpdate(geoCodeType);
-        GeoCodeTypeDescription geoCodeTypeDescription = geoControl.getGeoCodeTypeDescriptionForUpdate(geoCodeType, getPreferredLanguage());
-        String description = edit.getDescription();
+        var geoCodeTypeDetailValue = geoControl.getGeoCodeTypeDetailValueForUpdate(geoCodeType);
+        var geoCodeTypeDescription = geoControl.getGeoCodeTypeDescriptionForUpdate(geoCodeType, getPreferredLanguage());
+        var description = edit.getDescription();
 
         geoCodeTypeDetailValue.setGeoCodeTypeName(edit.getGeoCodeTypeName());
         geoCodeTypeDetailValue.setParentGeoCodeTypePK(parentGeoCodeType == null ? null : parentGeoCodeType.getPrimaryKey());
@@ -188,7 +188,7 @@ public class EditGeoCodeTypeCommand
                 geoControl.deleteGeoCodeTypeDescription(geoCodeTypeDescription, partyPK);
             } else {
                 if(geoCodeTypeDescription != null && description != null) {
-                    GeoCodeTypeDescriptionValue geoCodeTypeDescriptionValue = geoControl.getGeoCodeTypeDescriptionValue(geoCodeTypeDescription);
+                    var geoCodeTypeDescriptionValue = geoControl.getGeoCodeTypeDescriptionValue(geoCodeTypeDescription);
 
                     geoCodeTypeDescriptionValue.setDescription(description);
                     geoControl.updateGeoCodeTypeDescriptionFromValue(geoCodeTypeDescriptionValue, partyPK);

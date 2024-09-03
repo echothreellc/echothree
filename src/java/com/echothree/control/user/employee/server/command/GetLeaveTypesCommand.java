@@ -61,7 +61,7 @@ public class GetLeaveTypesCommand
     @Override
     protected BaseResult execute() {
         var employeeControl = Session.getModelController(EmployeeControl.class);
-        GetLeaveTypesResult result = EmployeeResultFactory.getGetLeaveTypesResult();
+        var result = EmployeeResultFactory.getGetLeaveTypesResult();
 
         result.setLeaveTypes(employeeControl.getLeaveTypeTransfers(getUserVisit()));
         

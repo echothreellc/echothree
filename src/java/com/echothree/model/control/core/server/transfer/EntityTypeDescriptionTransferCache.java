@@ -35,11 +35,11 @@ public class EntityTypeDescriptionTransferCache
     }
     
     public EntityTypeDescriptionTransfer getEntityTypeDescriptionTransfer(EntityTypeDescription entityTypeDescription) {
-        EntityTypeDescriptionTransfer entityTypeDescriptionTransfer = get(entityTypeDescription);
+        var entityTypeDescriptionTransfer = get(entityTypeDescription);
         
         if(entityTypeDescriptionTransfer == null) {
-            EntityTypeTransfer entityTypeTransfer = coreControl.getEntityTypeTransfer(userVisit, entityTypeDescription.getEntityType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, entityTypeDescription.getLanguage());
+            var entityTypeTransfer = coreControl.getEntityTypeTransfer(userVisit, entityTypeDescription.getEntityType());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, entityTypeDescription.getLanguage());
             
             entityTypeDescriptionTransfer = new EntityTypeDescriptionTransfer(languageTransfer, entityTypeTransfer,
                     entityTypeDescription.getDescription());

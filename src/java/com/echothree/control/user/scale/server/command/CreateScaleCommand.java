@@ -61,35 +61,35 @@ public class CreateScaleCommand
    @Override
     protected BaseResult execute() {
         var scaleControl = Session.getModelController(ScaleControl.class);
-        String scaleName = form.getScaleName();
-        Scale scale = scaleControl.getScaleByName(scaleName);
+       var scaleName = form.getScaleName();
+       var scale = scaleControl.getScaleByName(scaleName);
 
         if(scale == null) {
-            String scaleTypeName = form.getScaleTypeName();
-            ScaleType scaleType = scaleControl.getScaleTypeByName(scaleTypeName);
+            var scaleTypeName = form.getScaleTypeName();
+            var scaleType = scaleControl.getScaleTypeByName(scaleTypeName);
 
             if(scaleType != null) {
                 var coreControl = getCoreControl();
-                String serverName = form.getServerName();
-                Server server = coreControl.getServerByName(serverName);
+                var serverName = form.getServerName();
+                var server = coreControl.getServerByName(serverName);
 
                 if(server != null) {
-                    String serviceName = form.getServiceName();
-                    Service service = coreControl.getServiceByName(serviceName);
+                    var serviceName = form.getServiceName();
+                    var service = coreControl.getServiceByName(serviceName);
 
                     if(service != null) {
-                        ServerService serverService = coreControl.getServerService(server, service);
+                        var serverService = coreControl.getServerService(server, service);
 
                         if(serverService != null) {
                             var isDefault = Boolean.valueOf(form.getIsDefault());
                             var sortOrder = Integer.valueOf(form.getSortOrder());
                             var description = form.getDescription();
-                            PartyPK createdBy = getPartyPK();
+                            var createdBy = getPartyPK();
 
                             scale = scaleControl.createScale(scaleName, scaleType, serverService, isDefault, sortOrder, createdBy);
 
                             if(description != null) {
-                                Language language = getPreferredLanguage();
+                                var language = getPreferredLanguage();
 
                                 scaleControl.createScaleDescription(scale, language, description, createdBy);
                             }

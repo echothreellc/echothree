@@ -109,10 +109,10 @@ public class CreatePaymentMethodCommand
     @Override
     protected ValidationResult validate() {
         Validator validator = new Validator(this);
-        ValidationResult validationResult = validator.validate(form, FORM_FIELD_DEFINITIONS);
+        var validationResult = validator.validate(form, FORM_FIELD_DEFINITIONS);
         
         if(!validationResult.getHasErrors()) {
-            String paymentMethodTypeName = form.getPaymentMethodTypeName();
+            var paymentMethodTypeName = form.getPaymentMethodTypeName();
             
             if(paymentMethodTypeName.equals(PaymentMethodTypes.CHECK.name())) {
                 validationResult = validator.validate(form, formCheckFieldDefinitions);
@@ -127,28 +127,28 @@ public class CreatePaymentMethodCommand
     @Override
     protected BaseResult execute() {
         var paymentMethodControl = Session.getModelController(PaymentMethodControl.class);
-        CreatePaymentMethodResult result = PaymentResultFactory.getCreatePaymentMethodResult();
-        String paymentMethodName = form.getPaymentMethodName();
-        PaymentMethod paymentMethod = paymentMethodControl.getPaymentMethodByName(paymentMethodName);
+        var result = PaymentResultFactory.getCreatePaymentMethodResult();
+        var paymentMethodName = form.getPaymentMethodName();
+        var paymentMethod = paymentMethodControl.getPaymentMethodByName(paymentMethodName);
 
         if(paymentMethod == null) {
-            String paymentMethodTypeName = form.getPaymentMethodTypeName();
-            PaymentMethodType paymentMethodType = PaymentMethodTypeLogic.getInstance().getPaymentMethodTypeByName(this, paymentMethodTypeName);
+            var paymentMethodTypeName = form.getPaymentMethodTypeName();
+            var paymentMethodType = PaymentMethodTypeLogic.getInstance().getPaymentMethodTypeByName(this, paymentMethodTypeName);
 
             if(!hasExecutionErrors()) {
                 var paymentProcessorControl = Session.getModelController(PaymentProcessorControl.class);
-                String paymentProcessorName = form.getPaymentProcessorName();
-                PaymentProcessor paymentProcessor = paymentProcessorName == null ? null : paymentProcessorControl.getPaymentProcessorByName(paymentProcessorName);
+                var paymentProcessorName = form.getPaymentProcessorName();
+                var paymentProcessor = paymentProcessorName == null ? null : paymentProcessorControl.getPaymentProcessorByName(paymentProcessorName);
 
                 if(paymentProcessorName == null || paymentProcessor != null) {
                     var selectorControl = Session.getModelController(SelectorControl.class);
-                    String itemSelectorName = form.getItemSelectorName();
-                    Selector itemSelector = itemSelectorName == null ? null : selectorControl.getSelectorUsingNames(this, SelectorKinds.ITEM.name(),
+                    var itemSelectorName = form.getItemSelectorName();
+                    var itemSelector = itemSelectorName == null ? null : selectorControl.getSelectorUsingNames(this, SelectorKinds.ITEM.name(),
                             SelectorTypes.PAYMENT_METHOD.name(), itemSelectorName, ExecutionErrors.UnknownItemSelectorName.name());
 
                     if(!hasExecutionErrors()) {
-                        String salesOrderItemSelectorName = form.getSalesOrderItemSelectorName();
-                        Selector salesOrderItemSelector = salesOrderItemSelectorName == null ? null : selectorControl.getSelectorUsingNames(this,
+                        var salesOrderItemSelectorName = form.getSalesOrderItemSelectorName();
+                        var salesOrderItemSelector = salesOrderItemSelectorName == null ? null : selectorControl.getSelectorUsingNames(this,
                                 SelectorKinds.SALES_ORDER_ITEM.name(), SelectorTypes.PAYMENT_METHOD.name(), salesOrderItemSelectorName,
                                 ExecutionErrors.UnknownSalesOrderItemSelectorName.name());
 
@@ -162,27 +162,27 @@ public class CreatePaymentMethodCommand
                                     isDefault, sortOrder, partyPK);
 
                             if(paymentMethodTypeName.equals(PaymentMethodTypes.CHECK.name())) {
-                                Integer holdDays = Integer.valueOf(form.getHoldDays());
+                                var holdDays = Integer.valueOf(form.getHoldDays());
 
                                 paymentMethodControl.createPaymentMethodCheck(paymentMethod, holdDays, partyPK);
                             } else {
                                 if(paymentMethodTypeName.equals(PaymentMethodTypes.CREDIT_CARD.name())) {
-                                    Boolean requestNameOnCard = Boolean.valueOf(form.getRequestNameOnCard());
-                                    Boolean requireNameOnCard = Boolean.valueOf(form.getRequireNameOnCard());
-                                    Boolean checkCardNumber = Boolean.valueOf(form.getCheckCardNumber());
-                                    Boolean requestExpirationDate = Boolean.valueOf(form.getRequestExpirationDate());
-                                    Boolean requireExpirationDate = Boolean.valueOf(form.getRequireExpirationDate());
-                                    Boolean checkExpirationDate = Boolean.valueOf(form.getCheckExpirationDate());
-                                    Boolean requestSecurityCode = Boolean.valueOf(form.getRequestSecurityCode());
-                                    Boolean requireSecurityCode = Boolean.valueOf(form.getRequireSecurityCode());
-                                    String cardNumberValidationPattern = form.getCardNumberValidationPattern();
-                                    String securityCodeValidationPattern = form.getSecurityCodeValidationPattern();
-                                    Boolean retainCreditCard = Boolean.valueOf(form.getRetainCreditCard());
-                                    Boolean retainSecurityCode = Boolean.valueOf(form.getRetainSecurityCode());
-                                    Boolean requestBilling = Boolean.valueOf(form.getRequestBilling());
-                                    Boolean requireBilling = Boolean.valueOf(form.getRequireBilling());
-                                    Boolean requestIssuer = Boolean.valueOf(form.getRequestIssuer());
-                                    Boolean requireIssuer = Boolean.valueOf(form.getRequireIssuer());
+                                    var requestNameOnCard = Boolean.valueOf(form.getRequestNameOnCard());
+                                    var requireNameOnCard = Boolean.valueOf(form.getRequireNameOnCard());
+                                    var checkCardNumber = Boolean.valueOf(form.getCheckCardNumber());
+                                    var requestExpirationDate = Boolean.valueOf(form.getRequestExpirationDate());
+                                    var requireExpirationDate = Boolean.valueOf(form.getRequireExpirationDate());
+                                    var checkExpirationDate = Boolean.valueOf(form.getCheckExpirationDate());
+                                    var requestSecurityCode = Boolean.valueOf(form.getRequestSecurityCode());
+                                    var requireSecurityCode = Boolean.valueOf(form.getRequireSecurityCode());
+                                    var cardNumberValidationPattern = form.getCardNumberValidationPattern();
+                                    var securityCodeValidationPattern = form.getSecurityCodeValidationPattern();
+                                    var retainCreditCard = Boolean.valueOf(form.getRetainCreditCard());
+                                    var retainSecurityCode = Boolean.valueOf(form.getRetainSecurityCode());
+                                    var requestBilling = Boolean.valueOf(form.getRequestBilling());
+                                    var requireBilling = Boolean.valueOf(form.getRequireBilling());
+                                    var requestIssuer = Boolean.valueOf(form.getRequestIssuer());
+                                    var requireIssuer = Boolean.valueOf(form.getRequireIssuer());
 
                                     paymentMethodControl.createPaymentMethodCreditCard(paymentMethod, requestNameOnCard, requireNameOnCard,
                                             checkCardNumber, requestExpirationDate, requireExpirationDate, checkExpirationDate, requestSecurityCode,
@@ -192,7 +192,7 @@ public class CreatePaymentMethodCommand
                             }
 
                             if(description != null) {
-                                Language language = getPreferredLanguage();
+                                var language = getPreferredLanguage();
 
                                 paymentMethodControl.createPaymentMethodDescription(paymentMethod, language, description, partyPK);
                             }

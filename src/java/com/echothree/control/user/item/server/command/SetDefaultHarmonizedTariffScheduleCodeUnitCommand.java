@@ -62,8 +62,8 @@ public class SetDefaultHarmonizedTariffScheduleCodeUnitCommand
     @Override
     protected BaseResult execute() {
         var itemControl = Session.getModelController(ItemControl.class);
-        String harmonizedTariffScheduleCodeUnitName = form.getHarmonizedTariffScheduleCodeUnitName();
-        HarmonizedTariffScheduleCodeUnitDetailValue harmonizedTariffScheduleCodeUnitDetailValue = itemControl.getHarmonizedTariffScheduleCodeUnitDetailValueByNameForUpdate(harmonizedTariffScheduleCodeUnitName);
+        var harmonizedTariffScheduleCodeUnitName = form.getHarmonizedTariffScheduleCodeUnitName();
+        var harmonizedTariffScheduleCodeUnitDetailValue = itemControl.getHarmonizedTariffScheduleCodeUnitDetailValueByNameForUpdate(harmonizedTariffScheduleCodeUnitName);
         
         if(harmonizedTariffScheduleCodeUnitDetailValue != null) {
             harmonizedTariffScheduleCodeUnitDetailValue.setIsDefault(Boolean.TRUE);

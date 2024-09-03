@@ -68,13 +68,13 @@ public class GetGeoCodeAliasTypeCommand
     @Override
     protected BaseResult execute() {
         var geoControl = Session.getModelController(GeoControl.class);
-        GetGeoCodeAliasTypeResult result = GeoResultFactory.getGetGeoCodeAliasTypeResult();
-        String geoCodeTypeName = form.getGeoCodeTypeName();
-        GeoCodeType geoCodeType = geoControl.getGeoCodeTypeByName(geoCodeTypeName);
+        var result = GeoResultFactory.getGetGeoCodeAliasTypeResult();
+        var geoCodeTypeName = form.getGeoCodeTypeName();
+        var geoCodeType = geoControl.getGeoCodeTypeByName(geoCodeTypeName);
 
         if(geoCodeType != null) {
-            String geoAliasTypeName = form.getGeoCodeAliasTypeName();
-            GeoCodeAliasType geoAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, geoAliasTypeName);
+            var geoAliasTypeName = form.getGeoCodeAliasTypeName();
+            var geoAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, geoAliasTypeName);
 
             if(geoAliasType != null) {
                 result.setGeoCodeAliasType(geoControl.getGeoCodeAliasTypeTransfer(getUserVisit(), geoAliasType));

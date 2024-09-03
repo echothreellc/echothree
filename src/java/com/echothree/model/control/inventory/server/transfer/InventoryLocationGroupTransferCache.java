@@ -59,21 +59,21 @@ public class InventoryLocationGroupTransferCache
     
     @Override
     public InventoryLocationGroupTransfer getTransfer(InventoryLocationGroup inventoryLocationGroup) {
-        InventoryLocationGroupTransfer inventoryLocationGroupTransfer = get(inventoryLocationGroup);
+        var inventoryLocationGroupTransfer = get(inventoryLocationGroup);
         
         if(inventoryLocationGroupTransfer == null) {
-            WarehouseControl warehouseControl = Session.getModelController(WarehouseControl.class);
-            InventoryLocationGroupDetail inventoryLocationGroupDetail = inventoryLocationGroup.getLastDetail();
-            Party warehouseParty = inventoryLocationGroupDetail.getWarehouseParty();
-            Warehouse warehouse = warehouseControl.getWarehouse(warehouseParty);
-            WarehouseTransfer warehouseTransfer = warehouseControl.getWarehouseTransferCaches(userVisit).getWarehouseTransferCache().getWarehouseTransfer(warehouse);
-            String inventoryLocationGroupName = inventoryLocationGroupDetail.getInventoryLocationGroupName();
-            Boolean isDefault = inventoryLocationGroupDetail.getIsDefault();
-            Integer sortOrder = inventoryLocationGroupDetail.getSortOrder();
-            String description = inventoryControl.getBestInventoryLocationGroupDescription(inventoryLocationGroup, getLanguage());
-            
-            EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(inventoryLocationGroup.getPrimaryKey());
-            WorkflowEntityStatusTransfer inventoryLocationGroupStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
+            var warehouseControl = Session.getModelController(WarehouseControl.class);
+            var inventoryLocationGroupDetail = inventoryLocationGroup.getLastDetail();
+            var warehouseParty = inventoryLocationGroupDetail.getWarehouseParty();
+            var warehouse = warehouseControl.getWarehouse(warehouseParty);
+            var warehouseTransfer = warehouseControl.getWarehouseTransferCaches(userVisit).getWarehouseTransferCache().getWarehouseTransfer(warehouse);
+            var inventoryLocationGroupName = inventoryLocationGroupDetail.getInventoryLocationGroupName();
+            var isDefault = inventoryLocationGroupDetail.getIsDefault();
+            var sortOrder = inventoryLocationGroupDetail.getSortOrder();
+            var description = inventoryControl.getBestInventoryLocationGroupDescription(inventoryLocationGroup, getLanguage());
+
+            var entityInstance = coreControl.getEntityInstanceByBasePK(inventoryLocationGroup.getPrimaryKey());
+            var inventoryLocationGroupStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
                     InventoryLocationGroupStatusConstants.Workflow_INVENTORY_LOCATION_GROUP_STATUS, entityInstance);
             
             inventoryLocationGroupTransfer = new InventoryLocationGroupTransfer(warehouseTransfer, inventoryLocationGroupName, isDefault, sortOrder,
@@ -85,7 +85,7 @@ public class InventoryLocationGroupTransferCache
             }
             
             if(includeVolume) {
-                InventoryLocationGroupVolume inventoryLocationGroupVolume = inventoryControl.getInventoryLocationGroupVolume(inventoryLocationGroup);
+                var inventoryLocationGroupVolume = inventoryControl.getInventoryLocationGroupVolume(inventoryLocationGroup);
                 
                 if(inventoryLocationGroupVolume != null) {
                     inventoryLocationGroupTransfer.setInventoryLocationGroupVolume(inventoryControl.getInventoryLocationGroupVolumeTransfer(userVisit, inventoryLocationGroupVolume));

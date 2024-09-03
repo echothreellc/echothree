@@ -66,9 +66,9 @@ public class GetTerminationTypeCommand
     @Override
     protected BaseResult execute() {
         var employeeControl = Session.getModelController(EmployeeControl.class);
-        GetTerminationTypeResult result = EmployeeResultFactory.getGetTerminationTypeResult();
-        String terminationTypeName = form.getTerminationTypeName();
-        TerminationType terminationType = employeeControl.getTerminationTypeByName(terminationTypeName);
+        var result = EmployeeResultFactory.getGetTerminationTypeResult();
+        var terminationTypeName = form.getTerminationTypeName();
+        var terminationType = employeeControl.getTerminationTypeByName(terminationTypeName);
         
         if(terminationType != null) {
             result.setTerminationType(employeeControl.getTerminationTypeTransfer(getUserVisit(), terminationType));

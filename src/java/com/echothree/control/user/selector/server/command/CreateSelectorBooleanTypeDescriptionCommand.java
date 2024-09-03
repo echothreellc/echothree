@@ -54,16 +54,16 @@ public class CreateSelectorBooleanTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var selectorControl = Session.getModelController(SelectorControl.class);
-        String selectorBooleanTypeName = form.getSelectorBooleanTypeName();
-        SelectorBooleanType selectorBooleanType = selectorControl.getSelectorBooleanTypeByName(selectorBooleanTypeName);
+        var selectorBooleanTypeName = form.getSelectorBooleanTypeName();
+        var selectorBooleanType = selectorControl.getSelectorBooleanTypeByName(selectorBooleanTypeName);
         
         if(selectorBooleanType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                SelectorBooleanTypeDescription selectorBooleanTypeDescription = selectorControl.getSelectorBooleanTypeDescription(selectorBooleanType, language);
+                var selectorBooleanTypeDescription = selectorControl.getSelectorBooleanTypeDescription(selectorBooleanType, language);
                 
                 if(selectorBooleanTypeDescription == null) {
                     var description = form.getDescription();

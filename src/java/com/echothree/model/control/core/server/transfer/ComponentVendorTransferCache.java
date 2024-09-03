@@ -52,12 +52,12 @@ public class ComponentVendorTransferCache
     }
     
     public ComponentVendorTransfer getComponentVendorTransfer(ComponentVendor componentVendor) {
-        ComponentVendorTransfer componentVendorTransfer = get(componentVendor);
+        var componentVendorTransfer = get(componentVendor);
         
         if(componentVendorTransfer == null) {
-            ComponentVendorDetail componentVendorDetail = componentVendor.getLastDetail();
-            String componentVendorName = filterComponentVendorName ? null : componentVendorDetail.getComponentVendorName();
-            String description = filterDescription ? null : componentVendorDetail.getDescription();
+            var componentVendorDetail = componentVendor.getLastDetail();
+            var componentVendorName = filterComponentVendorName ? null : componentVendorDetail.getComponentVendorName();
+            var description = filterDescription ? null : componentVendorDetail.getDescription();
             
             componentVendorTransfer = new ComponentVendorTransfer(componentVendorName, description);
             put(componentVendor, componentVendorTransfer);

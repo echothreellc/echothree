@@ -66,13 +66,13 @@ public class GetCampaignStatusChoicesCommand
     @Override
     protected BaseResult execute() {
         var campaignControl = Session.getModelController(CampaignControl.class);
-        GetCampaignStatusChoicesResult result = CampaignResultFactory.getGetCampaignStatusChoicesResult();
-        String campaignName = form.getCampaignName();
-        Campaign campaign = campaignControl.getCampaignByName(campaignName);
+        var result = CampaignResultFactory.getGetCampaignStatusChoicesResult();
+        var campaignName = form.getCampaignName();
+        var campaign = campaignControl.getCampaignByName(campaignName);
         
         if(campaign != null) {
-            String defaultCampaignStatusChoice = form.getDefaultCampaignStatusChoice();
-            boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+            var defaultCampaignStatusChoice = form.getDefaultCampaignStatusChoice();
+            var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
             
             result.setCampaignStatusChoices(campaignControl.getCampaignStatusChoices(defaultCampaignStatusChoice,
                     getPreferredLanguage(), allowNullChoice, campaign, getPartyPK()));

@@ -79,11 +79,11 @@ public class CountSalesOrderBatchResultsTag
     public int doStartTag()
             throws JspException {
         try {
-            CountSalesOrderBatchResultsForm commandForm = SearchUtil.getHome().getCountSalesOrderBatchResultsForm();
+            var commandForm = SearchUtil.getHome().getCountSalesOrderBatchResultsForm();
 
             commandForm.setSearchTypeName(searchTypeName);
 
-            CommandResult commandResult = SearchUtil.getHome().countSalesOrderBatchResults(getUserVisitPK(), commandForm);
+            var commandResult = SearchUtil.getHome().countSalesOrderBatchResults(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -91,8 +91,8 @@ public class CountSalesOrderBatchResultsTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                CountSalesOrderBatchResultsResult result = (CountSalesOrderBatchResultsResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (CountSalesOrderBatchResultsResult)executionResult.getResult();
 
                 pageContext.setAttribute(countVar, result.getCount(), scope);
             }

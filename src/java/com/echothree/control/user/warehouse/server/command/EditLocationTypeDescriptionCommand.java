@@ -82,29 +82,29 @@ public class EditLocationTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var warehouseControl = Session.getModelController(WarehouseControl.class);
-        EditLocationTypeDescriptionResult result = WarehouseResultFactory.getEditLocationTypeDescriptionResult();
-        String warehouseName = spec.getWarehouseName();
-        Warehouse warehouse = warehouseControl.getWarehouseByName(warehouseName);
+        var result = WarehouseResultFactory.getEditLocationTypeDescriptionResult();
+        var warehouseName = spec.getWarehouseName();
+        var warehouse = warehouseControl.getWarehouseByName(warehouseName);
         
         if(warehouse != null) {
-            Party warehouseParty = warehouse.getParty();
-            String locationTypeName = spec.getLocationTypeName();
-            LocationType locationType = warehouseControl.getLocationTypeByName(warehouseParty, locationTypeName);
+            var warehouseParty = warehouse.getParty();
+            var locationTypeName = spec.getLocationTypeName();
+            var locationType = warehouseControl.getLocationTypeByName(warehouseParty, locationTypeName);
             
             if(locationType != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = spec.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = spec.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
                 
                 if(language != null) {
                     if(editMode.equals(EditMode.LOCK)) {
-                        LocationTypeDescription locationTypeDescription = warehouseControl.getLocationTypeDescription(locationType, language);
+                        var locationTypeDescription = warehouseControl.getLocationTypeDescription(locationType, language);
                         
                         if(locationTypeDescription != null) {
                             result.setLocationTypeDescription(warehouseControl.getLocationTypeDescriptionTransfer(getUserVisit(), locationTypeDescription));
                             
                             if(lockEntity(locationType)) {
-                                LocationTypeDescriptionEdit edit = WarehouseEditFactory.getLocationTypeDescriptionEdit();
+                                var edit = WarehouseEditFactory.getLocationTypeDescriptionEdit();
                                 
                                 result.setEdit(edit);
                                 edit.setDescription(locationTypeDescription.getDescription());
@@ -117,12 +117,12 @@ public class EditLocationTypeDescriptionCommand
                             addExecutionError(ExecutionErrors.UnknownLocationTypeDescription.name());
                         }
                     } else if(editMode.equals(EditMode.UPDATE)) {
-                        LocationTypeDescriptionValue locationTypeDescriptionValue = warehouseControl.getLocationTypeDescriptionValueForUpdate(locationType, language);
+                        var locationTypeDescriptionValue = warehouseControl.getLocationTypeDescriptionValueForUpdate(locationType, language);
                         
                         if(locationTypeDescriptionValue != null) {
                             if(lockEntityForUpdate(locationType)) {
                                 try {
-                                    String description = edit.getDescription();
+                                    var description = edit.getDescription();
                                     
                                     locationTypeDescriptionValue.setDescription(description);
                                     

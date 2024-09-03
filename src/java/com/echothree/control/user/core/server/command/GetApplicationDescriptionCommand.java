@@ -67,17 +67,17 @@ public class GetApplicationDescriptionCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        GetApplicationDescriptionResult result = CoreResultFactory.getGetApplicationDescriptionResult();
-        String applicationName = form.getApplicationName();
-        Application application = coreControl.getApplicationByName(applicationName);
+        var result = CoreResultFactory.getGetApplicationDescriptionResult();
+        var applicationName = form.getApplicationName();
+        var application = coreControl.getApplicationByName(applicationName);
 
         if(application != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
-                ApplicationDescription applicationDescription = coreControl.getApplicationDescription(application, language);
+                var applicationDescription = coreControl.getApplicationDescription(application, language);
 
                 if(applicationDescription != null) {
                     result.setApplicationDescription(coreControl.getApplicationDescriptionTransfer(getUserVisit(), applicationDescription));

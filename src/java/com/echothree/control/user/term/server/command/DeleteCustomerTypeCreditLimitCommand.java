@@ -54,17 +54,17 @@ public class DeleteCustomerTypeCreditLimitCommand
     @Override
     protected BaseResult execute() {
         var customerControl = Session.getModelController(CustomerControl.class);
-        String customerTypeName = form.getCustomerTypeName();
-        CustomerType customerType = customerControl.getCustomerTypeByName(customerTypeName);
+        var customerTypeName = form.getCustomerTypeName();
+        var customerType = customerControl.getCustomerTypeByName(customerTypeName);
         
         if(customerType != null) {
             var accountingControl = Session.getModelController(AccountingControl.class);
-            String currencyIsoName = form.getCurrencyIsoName();
-            Currency currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
+            var currencyIsoName = form.getCurrencyIsoName();
+            var currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
             
             if(currency != null) {
                 var termControl = Session.getModelController(TermControl.class);
-                CustomerTypeCreditLimit customerTypeCreditLimit = termControl.getCustomerTypeCreditLimitForUpdate(customerType, currency);
+                var customerTypeCreditLimit = termControl.getCustomerTypeCreditLimitForUpdate(customerType, currency);
                 
                 if(customerTypeCreditLimit != null) {
                     termControl.deleteCustomerTypeCreditLimit(customerTypeCreditLimit, getPartyPK());

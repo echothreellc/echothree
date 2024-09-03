@@ -79,25 +79,25 @@ public class EditPaymentProcessorActionTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var paymentProcessorActionTypeControl = Session.getModelController(PaymentProcessorActionTypeControl.class);
-        EditPaymentProcessorActionTypeDescriptionResult result = PaymentResultFactory.getEditPaymentProcessorActionTypeDescriptionResult();
-        String paymentProcessorActionTypeName = spec.getPaymentProcessorActionTypeName();
-        PaymentProcessorActionType paymentProcessorActionType = paymentProcessorActionTypeControl.getPaymentProcessorActionTypeByName(paymentProcessorActionTypeName);
+        var result = PaymentResultFactory.getEditPaymentProcessorActionTypeDescriptionResult();
+        var paymentProcessorActionTypeName = spec.getPaymentProcessorActionTypeName();
+        var paymentProcessorActionType = paymentProcessorActionTypeControl.getPaymentProcessorActionTypeByName(paymentProcessorActionTypeName);
         
         if(paymentProcessorActionType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                    PaymentProcessorActionTypeDescription paymentProcessorActionTypeDescription = paymentProcessorActionTypeControl.getPaymentProcessorActionTypeDescription(paymentProcessorActionType, language);
+                    var paymentProcessorActionTypeDescription = paymentProcessorActionTypeControl.getPaymentProcessorActionTypeDescription(paymentProcessorActionType, language);
                     
                     if(paymentProcessorActionTypeDescription != null) {
                         if(editMode.equals(EditMode.LOCK)) {
                             result.setPaymentProcessorActionTypeDescription(paymentProcessorActionTypeControl.getPaymentProcessorActionTypeDescriptionTransfer(getUserVisit(), paymentProcessorActionTypeDescription));
 
                             if(lockEntity(paymentProcessorActionType)) {
-                                PaymentProcessorActionTypeDescriptionEdit edit = PaymentEditFactory.getPaymentProcessorActionTypeDescriptionEdit();
+                                var edit = PaymentEditFactory.getPaymentProcessorActionTypeDescriptionEdit();
 
                                 result.setEdit(edit);
                                 edit.setDescription(paymentProcessorActionTypeDescription.getDescription());
@@ -113,12 +113,12 @@ public class EditPaymentProcessorActionTypeDescriptionCommand
                         addExecutionError(ExecutionErrors.UnknownPaymentProcessorActionTypeDescription.name());
                     }
                 } else if(editMode.equals(EditMode.UPDATE)) {
-                    PaymentProcessorActionTypeDescriptionValue paymentProcessorActionTypeDescriptionValue = paymentProcessorActionTypeControl.getPaymentProcessorActionTypeDescriptionValueForUpdate(paymentProcessorActionType, language);
+                    var paymentProcessorActionTypeDescriptionValue = paymentProcessorActionTypeControl.getPaymentProcessorActionTypeDescriptionValueForUpdate(paymentProcessorActionType, language);
                     
                     if(paymentProcessorActionTypeDescriptionValue != null) {
                         if(lockEntityForUpdate(paymentProcessorActionType)) {
                             try {
-                                String description = edit.getDescription();
+                                var description = edit.getDescription();
                                 
                                 paymentProcessorActionTypeDescriptionValue.setDescription(description);
                                 

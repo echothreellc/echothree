@@ -63,11 +63,11 @@ public class SetDefaultPartyDocumentCommand
     @Override
     protected BaseResult execute() {
         var documentControl = Session.getModelController(DocumentControl.class);
-        String documentName = form.getDocumentName();
-        Document document = documentControl.getDocumentByNameForUpdate(documentName);
+        var documentName = form.getDocumentName();
+        var document = documentControl.getDocumentByNameForUpdate(documentName);
         
         if(document != null) {
-            PartyDocumentValue partyDocumentValue = documentControl.getPartyDocumentValueForUpdate(document);
+            var partyDocumentValue = documentControl.getPartyDocumentValueForUpdate(document);
 
             if(partyDocumentValue != null) {
                 partyDocumentValue.setIsDefault(Boolean.TRUE);

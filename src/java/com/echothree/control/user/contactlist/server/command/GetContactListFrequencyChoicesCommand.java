@@ -63,9 +63,9 @@ public class GetContactListFrequencyChoicesCommand
     @Override
     protected BaseResult execute() {
         var contactListControl = Session.getModelController(ContactListControl.class);
-        GetContactListFrequencyChoicesResult result = ContactListResultFactory.getGetContactListFrequencyChoicesResult();
-        String defaultContactListFrequencyChoice = form.getDefaultContactListFrequencyChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = ContactListResultFactory.getGetContactListFrequencyChoicesResult();
+        var defaultContactListFrequencyChoice = form.getDefaultContactListFrequencyChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setContactListFrequencyChoices(contactListControl.getContactListFrequencyChoices(defaultContactListFrequencyChoice, getPreferredLanguage(),
                 allowNullChoice));

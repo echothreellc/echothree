@@ -38,16 +38,16 @@ public class ShipmentAliasTypeTransferCache
 
     @Override
     public ShipmentAliasTypeTransfer getTransfer(ShipmentAliasType shipmentAliasType) {
-        ShipmentAliasTypeTransfer shipmentAliasTypeTransfer = get(shipmentAliasType);
+        var shipmentAliasTypeTransfer = get(shipmentAliasType);
         
         if(shipmentAliasTypeTransfer == null) {
-            ShipmentAliasTypeDetail shipmentAliasTypeDetail = shipmentAliasType.getLastDetail();
-            ShipmentTypeTransfer shipmentType = shipmentControl.getShipmentTypeTransfer(userVisit, shipmentAliasTypeDetail.getShipmentType());
-            String shipmentAliasTypeName = shipmentAliasTypeDetail.getShipmentAliasTypeName();
-            String validationPattern = shipmentAliasTypeDetail.getValidationPattern();
-            Boolean isDefault = shipmentAliasTypeDetail.getIsDefault();
-            Integer sortOrder = shipmentAliasTypeDetail.getSortOrder();
-            String description = shipmentControl.getBestShipmentAliasTypeDescription(shipmentAliasType, getLanguage());
+            var shipmentAliasTypeDetail = shipmentAliasType.getLastDetail();
+            var shipmentType = shipmentControl.getShipmentTypeTransfer(userVisit, shipmentAliasTypeDetail.getShipmentType());
+            var shipmentAliasTypeName = shipmentAliasTypeDetail.getShipmentAliasTypeName();
+            var validationPattern = shipmentAliasTypeDetail.getValidationPattern();
+            var isDefault = shipmentAliasTypeDetail.getIsDefault();
+            var sortOrder = shipmentAliasTypeDetail.getSortOrder();
+            var description = shipmentControl.getBestShipmentAliasTypeDescription(shipmentAliasType, getLanguage());
             
             shipmentAliasTypeTransfer = new ShipmentAliasTypeTransfer(shipmentType, shipmentAliasTypeName, validationPattern, isDefault, sortOrder, description);
             put(shipmentAliasType, shipmentAliasTypeTransfer);

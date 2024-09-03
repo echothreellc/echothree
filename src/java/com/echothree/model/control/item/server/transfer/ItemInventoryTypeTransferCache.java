@@ -31,13 +31,13 @@ public class ItemInventoryTypeTransferCache
     
     @Override
     public ItemInventoryTypeTransfer getTransfer(ItemInventoryType itemInventoryType) {
-        ItemInventoryTypeTransfer itemInventoryTypeTransfer = get(itemInventoryType);
+        var itemInventoryTypeTransfer = get(itemInventoryType);
         
         if(itemInventoryTypeTransfer == null) {
-            String itemInventoryTypeName = itemInventoryType.getItemInventoryTypeName();
-            Boolean isDefault = itemInventoryType.getIsDefault();
-            Integer sortOrder = itemInventoryType.getSortOrder();
-            String description = itemControl.getBestItemInventoryTypeDescription(itemInventoryType, getLanguage());
+            var itemInventoryTypeName = itemInventoryType.getItemInventoryTypeName();
+            var isDefault = itemInventoryType.getIsDefault();
+            var sortOrder = itemInventoryType.getSortOrder();
+            var description = itemControl.getBestItemInventoryTypeDescription(itemInventoryType, getLanguage());
             
             itemInventoryTypeTransfer = new ItemInventoryTypeTransfer(itemInventoryTypeName, isDefault, sortOrder, description);
             put(itemInventoryType, itemInventoryTypeTransfer);

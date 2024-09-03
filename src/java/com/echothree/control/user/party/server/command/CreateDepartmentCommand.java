@@ -70,35 +70,35 @@ public class CreateDepartmentCommand
     
     @Override
     protected BaseResult execute() {
-        CreateDepartmentResult result = PartyResultFactory.getCreateDepartmentResult();
+        var result = PartyResultFactory.getCreateDepartmentResult();
         var partyControl = Session.getModelController(PartyControl.class);
-        String companyName = form.getCompanyName();
-        PartyCompany partyCompany = partyControl.getPartyCompanyByName(companyName);
+        var companyName = form.getCompanyName();
+        var partyCompany = partyControl.getPartyCompanyByName(companyName);
         
         if(partyCompany != null) {
-            String divisionName = form.getDivisionName();
-            Party partyCompanyParty = partyCompany.getParty();
-            PartyDivision partyDivision = partyControl.getPartyDivisionByName(partyCompanyParty, divisionName);
+            var divisionName = form.getDivisionName();
+            var partyCompanyParty = partyCompany.getParty();
+            var partyDivision = partyControl.getPartyDivisionByName(partyCompanyParty, divisionName);
             
             if(partyDivision != null) {
-                String departmentName = form.getDepartmentName();
-                Party partyDivisionParty = partyDivision.getParty();
-                PartyDepartment partyDepartment = partyControl.getPartyDepartmentByName(partyDivisionParty, departmentName);
+                var departmentName = form.getDepartmentName();
+                var partyDivisionParty = partyDivision.getParty();
+                var partyDepartment = partyControl.getPartyDepartmentByName(partyDivisionParty, departmentName);
                 
                 if(partyDepartment == null) {
-                    String preferredLanguageIsoName = form.getPreferredLanguageIsoName();
-                    Language preferredLanguage = preferredLanguageIsoName == null? null: partyControl.getLanguageByIsoName(preferredLanguageIsoName);
+                    var preferredLanguageIsoName = form.getPreferredLanguageIsoName();
+                    var preferredLanguage = preferredLanguageIsoName == null? null: partyControl.getLanguageByIsoName(preferredLanguageIsoName);
                     
                     if(preferredLanguageIsoName == null || (preferredLanguage != null)) {
-                        String preferredJavaTimeZoneName = form.getPreferredJavaTimeZoneName();
-                        TimeZone preferredTimeZone = preferredJavaTimeZoneName == null? null: partyControl.getTimeZoneByJavaName(preferredJavaTimeZoneName);
+                        var preferredJavaTimeZoneName = form.getPreferredJavaTimeZoneName();
+                        var preferredTimeZone = preferredJavaTimeZoneName == null? null: partyControl.getTimeZoneByJavaName(preferredJavaTimeZoneName);
                         
                         if(preferredJavaTimeZoneName == null || (preferredTimeZone != null)) {
-                            String preferredDateTimeFormatName = form.getPreferredDateTimeFormatName();
-                            DateTimeFormat preferredDateTimeFormat = preferredDateTimeFormatName == null? null: partyControl.getDateTimeFormatByName(preferredDateTimeFormatName);
+                            var preferredDateTimeFormatName = form.getPreferredDateTimeFormatName();
+                            var preferredDateTimeFormat = preferredDateTimeFormatName == null? null: partyControl.getDateTimeFormatByName(preferredDateTimeFormatName);
                             
                             if(preferredDateTimeFormatName == null || (preferredDateTimeFormat != null)) {
-                                String preferredCurrencyIsoName = form.getPreferredCurrencyIsoName();
+                                var preferredCurrencyIsoName = form.getPreferredCurrencyIsoName();
                                 Currency preferredCurrency;
                                 
                                 if(preferredCurrencyIsoName == null)
@@ -109,13 +109,13 @@ public class CreateDepartmentCommand
                                 }
                                 
                                 if(preferredCurrencyIsoName == null || (preferredCurrency != null)) {
-                                    PartyType partyType = partyControl.getPartyTypeByName(PartyTypes.DEPARTMENT.name());
+                                    var partyType = partyControl.getPartyTypeByName(PartyTypes.DEPARTMENT.name());
                                     BasePK createdBy = getPartyPK();
-                                    String name = form.getName();
+                                    var name = form.getName();
                                     var isDefault = Boolean.valueOf(form.getIsDefault());
                                     var sortOrder = Integer.valueOf(form.getSortOrder());
-                                    
-                                    Party party = partyControl.createParty(null, partyType, preferredLanguage, preferredCurrency, preferredTimeZone, preferredDateTimeFormat, createdBy);
+
+                                    var party = partyControl.createParty(null, partyType, preferredLanguage, preferredCurrency, preferredTimeZone, preferredDateTimeFormat, createdBy);
                                     partyControl.createPartyGroup(party, name, createdBy);
                                     partyDepartment = partyControl.createPartyDepartment(party, partyDivisionParty, departmentName, isDefault, sortOrder, createdBy);
                                 } else {
@@ -135,7 +135,7 @@ public class CreateDepartmentCommand
                 }
                 
                 if(partyDepartment != null) {
-                    Party party = partyDepartment.getParty();
+                    var party = partyDepartment.getParty();
                     
                     result.setEntityRef(party.getPrimaryKey().getEntityRef());
                     result.setDepartmentName(partyDepartment.getPartyDepartmentName());

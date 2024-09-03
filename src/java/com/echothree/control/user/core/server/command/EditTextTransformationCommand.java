@@ -89,7 +89,7 @@ public class EditTextTransformationCommand
     public TextTransformation getEntity(EditTextTransformationResult result) {
         var coreControl = getCoreControl();
         TextTransformation textTransformation;
-        String textTransformationName = spec.getTextTransformationName();
+        var textTransformationName = spec.getTextTransformationName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
             textTransformation = coreControl.getTextTransformationByName(textTransformationName);
@@ -119,8 +119,8 @@ public class EditTextTransformationCommand
     @Override
     public void doLock(TextTransformationEdit edit, TextTransformation textTransformation) {
         var coreControl = getCoreControl();
-        TextTransformationDescription textTransformationDescription = coreControl.getTextTransformationDescription(textTransformation, getPreferredLanguage());
-        TextTransformationDetail textTransformationDetail = textTransformation.getLastDetail();
+        var textTransformationDescription = coreControl.getTextTransformationDescription(textTransformation, getPreferredLanguage());
+        var textTransformationDetail = textTransformation.getLastDetail();
 
         edit.setTextTransformationName(textTransformationDetail.getTextTransformationName());
         edit.setIsDefault(textTransformationDetail.getIsDefault().toString());
@@ -134,8 +134,8 @@ public class EditTextTransformationCommand
     @Override
     public void canUpdate(TextTransformation textTransformation) {
         var coreControl = getCoreControl();
-        String textTransformationName = edit.getTextTransformationName();
-        TextTransformation duplicateTextTransformation = coreControl.getTextTransformationByName(textTransformationName);
+        var textTransformationName = edit.getTextTransformationName();
+        var duplicateTextTransformation = coreControl.getTextTransformationByName(textTransformationName);
 
         if(duplicateTextTransformation != null && !textTransformation.equals(duplicateTextTransformation)) {
             addExecutionError(ExecutionErrors.DuplicateTextTransformationName.name(), textTransformationName);
@@ -146,9 +146,9 @@ public class EditTextTransformationCommand
     public void doUpdate(TextTransformation textTransformation) {
         var coreControl = getCoreControl();
         var partyPK = getPartyPK();
-        TextTransformationDetailValue textTransformationDetailValue = coreControl.getTextTransformationDetailValueForUpdate(textTransformation);
-        TextTransformationDescription textTransformationDescription = coreControl.getTextTransformationDescriptionForUpdate(textTransformation, getPreferredLanguage());
-        String description = edit.getDescription();
+        var textTransformationDetailValue = coreControl.getTextTransformationDetailValueForUpdate(textTransformation);
+        var textTransformationDescription = coreControl.getTextTransformationDescriptionForUpdate(textTransformation, getPreferredLanguage());
+        var description = edit.getDescription();
 
         textTransformationDetailValue.setTextTransformationName(edit.getTextTransformationName());
         textTransformationDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
@@ -163,7 +163,7 @@ public class EditTextTransformationCommand
                 coreControl.deleteTextTransformationDescription(textTransformationDescription, partyPK);
             } else {
                 if(textTransformationDescription != null && description != null) {
-                    TextTransformationDescriptionValue textTransformationDescriptionValue = coreControl.getTextTransformationDescriptionValue(textTransformationDescription);
+                    var textTransformationDescriptionValue = coreControl.getTextTransformationDescriptionValue(textTransformationDescription);
 
                     textTransformationDescriptionValue.setDescription(description);
                     coreControl.updateTextTransformationDescriptionFromValue(textTransformationDescriptionValue, partyPK);

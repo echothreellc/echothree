@@ -39,11 +39,11 @@ public class PersistenceUtils {
     private final static String SqlState_IntegrityConstraintViolation = "23000";
     
     public boolean isIntegrityConstraintViolation(PersistenceDatabaseException pde) {
-        boolean result = false;
-        Throwable cause = pde.getCause();
+        var result = false;
+        var cause = pde.getCause();
 
         if(cause instanceof SQLException) {
-            SQLException se = (SQLException)cause;
+            var se = (SQLException)cause;
 
             if(se.getSQLState().equals(SqlState_IntegrityConstraintViolation)) {
                 result = true;
@@ -54,7 +54,7 @@ public class PersistenceUtils {
     }
     
     public BasePK getBasePKFromEntityInstance(EntityInstance entityInstance) {
-        EntityTypeDetail entityTypeDetail = entityInstance.getEntityType().getLastDetail();
+        var entityTypeDetail = entityInstance.getEntityType().getLastDetail();
 
         return new BasePK(entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
                 entityTypeDetail.getEntityTypeName(), entityInstance.getEntityUniqueId());

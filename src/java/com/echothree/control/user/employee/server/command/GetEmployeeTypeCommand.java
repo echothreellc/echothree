@@ -66,9 +66,9 @@ public class GetEmployeeTypeCommand
     @Override
     protected BaseResult execute() {
         var employeeControl = Session.getModelController(EmployeeControl.class);
-        GetEmployeeTypeResult result = EmployeeResultFactory.getGetEmployeeTypeResult();
-        String employeeTypeName = form.getEmployeeTypeName();
-        EmployeeType employeeType = employeeControl.getEmployeeTypeByName(employeeTypeName);
+        var result = EmployeeResultFactory.getGetEmployeeTypeResult();
+        var employeeTypeName = form.getEmployeeTypeName();
+        var employeeType = employeeControl.getEmployeeTypeByName(employeeTypeName);
         
         if(employeeType != null) {
             result.setEmployeeType(employeeControl.getEmployeeTypeTransfer(getUserVisit(), employeeType));

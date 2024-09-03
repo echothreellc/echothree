@@ -89,7 +89,7 @@ public class CreateUserLoginCommand
     
     @Override
     protected BaseResult execute() {
-        String partyName = form.getPartyName();
+        var partyName = form.getPartyName();
         var parameterCount = (partyName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {
@@ -108,7 +108,7 @@ public class CreateUserLoginCommand
             }
             
             if(!hasExecutionErrors()) {
-                PartyLogic partyLogic = PartyLogic.getInstance();
+                var partyLogic = PartyLogic.getInstance();
 
                 if(!hasExecutionErrors()) {
                     var partyType = party.getLastDetail().getPartyType();
@@ -122,14 +122,14 @@ public class CreateUserLoginCommand
                                         PartyTypes.VENDOR.name());
 
                                 if(!hasExecutionErrors()) {
-                                    UserControl userControl = getUserControl();
-                                    String username = form.getUsername();
-                                    UserLogin userLogin = userControl.getUserLoginByUsername(username);
+                                    var userControl = getUserControl();
+                                    var username = form.getUsername();
+                                    var userLogin = userControl.getUserLoginByUsername(username);
 
                                     if(userLogin == null) {
-                                        String recoveryQuestionName = form.getRecoveryQuestionName();
-                                        String answer = form.getAnswer();
-                                        int recoveryParameterCount = (recoveryQuestionName == null ? 0 : 1) + (answer == null ? 0 : 1);
+                                        var recoveryQuestionName = form.getRecoveryQuestionName();
+                                        var answer = form.getAnswer();
+                                        var recoveryParameterCount = (recoveryQuestionName == null ? 0 : 1) + (answer == null ? 0 : 1);
 
                                         if(partyLogic.isPartyType(party, PartyTypes.CUSTOMER.name())) {
                                             if(recoveryParameterCount != 2) {
@@ -141,27 +141,27 @@ public class CreateUserLoginCommand
                                         }
 
                                         if(!hasExecutionErrors()) {
-                                            String password1 = form.getPassword1();
-                                            String password2 = form.getPassword2();
+                                            var password1 = form.getPassword1();
+                                            var password2 = form.getPassword2();
 
                                             if(password1.equals(password2)) {
-                                                PartyTypePasswordStringPolicy partyTypePasswordStringPolicy = PasswordStringPolicyLogic.getInstance().checkStringPassword(session,
+                                                var partyTypePasswordStringPolicy = PasswordStringPolicyLogic.getInstance().checkStringPassword(session,
                                                         getUserVisit(), this, partyType, null, null, password1);
 
                                                 if(!hasExecutionErrors()) {
-                                                    RecoveryQuestion recoveryQuestion = recoveryQuestionName == null ? null : userControl.getRecoveryQuestionByName(recoveryQuestionName);
+                                                    var recoveryQuestion = recoveryQuestionName == null ? null : userControl.getRecoveryQuestionByName(recoveryQuestionName);
 
                                                     if(recoveryQuestionName == null || recoveryQuestion != null) {
-                                                        UserLoginPasswordType userLoginPasswordType = userControl.getUserLoginPasswordTypeByName(UserConstants.UserLoginPasswordType_STRING);
-                                                        PartyPK createdBy = getPartyPK();
+                                                        var userLoginPasswordType = userControl.getUserLoginPasswordTypeByName(UserConstants.UserLoginPasswordType_STRING);
+                                                        var createdBy = getPartyPK();
 
                                                         userControl.createUserLogin(party, username, createdBy);
 
-                                                        UserLoginPassword userLoginPassword = userControl.createUserLoginPassword(party, userLoginPasswordType, createdBy);
+                                                        var userLoginPassword = userControl.createUserLoginPassword(party, userLoginPasswordType, createdBy);
                                                         userControl.createUserLoginPasswordString(userLoginPassword, password1, session.START_TIME_LONG, Boolean.FALSE, createdBy);
 
                                                         if(partyTypePasswordStringPolicy != null && partyTypePasswordStringPolicy.getLastDetail().getForceChangeAfterCreate()) {
-                                                            UserLoginStatus userLoginStatus = userControl.getUserLoginStatusForUpdate(party);
+                                                            var userLoginStatus = userControl.getUserLoginStatusForUpdate(party);
 
                                                             userLoginStatus.setForceChange(Boolean.TRUE);
                                                         }

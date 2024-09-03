@@ -64,8 +64,8 @@ public class CreateApplicationCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String applicationName = form.getApplicationName();
-        Application application = coreControl.getApplicationByName(applicationName);
+        var applicationName = form.getApplicationName();
+        var application = coreControl.getApplicationByName(applicationName);
         
         if(application == null) {
             var partyPK = getPartyPK();

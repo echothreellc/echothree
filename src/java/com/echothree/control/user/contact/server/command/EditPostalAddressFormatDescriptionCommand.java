@@ -65,14 +65,14 @@ public class EditPostalAddressFormatDescriptionCommand
     @Override
     protected BaseResult execute() {
         var contactControl = Session.getModelController(ContactControl.class);
-        EditPostalAddressFormatDescriptionResult result = ContactResultFactory.getEditPostalAddressFormatDescriptionResult();
-        String postalAddressFormatName = spec.getPostalAddressFormatName();
-        PostalAddressFormat postalAddressFormat = contactControl.getPostalAddressFormatByName(postalAddressFormatName);
+        var result = ContactResultFactory.getEditPostalAddressFormatDescriptionResult();
+        var postalAddressFormatName = spec.getPostalAddressFormatName();
+        var postalAddressFormat = contactControl.getPostalAddressFormatByName(postalAddressFormatName);
         
         if(postalAddressFormat != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             result.setPostalAddressFormat(contactControl.getPostalAddressFormatTransfer(getUserVisit(), postalAddressFormat));
             
@@ -80,13 +80,13 @@ public class EditPostalAddressFormatDescriptionCommand
                 result.setLanguage(partyControl.getLanguageTransfer(getUserVisit(), language));
                 
                 if(editMode.equals(EditMode.LOCK)) {
-                    PostalAddressFormatDescription postalAddressFormatDescription = contactControl.getPostalAddressFormatDescription(postalAddressFormat, language);
+                    var postalAddressFormatDescription = contactControl.getPostalAddressFormatDescription(postalAddressFormat, language);
                     
                     if(postalAddressFormatDescription != null) {
                         result.setPostalAddressFormatDescription(contactControl.getPostalAddressFormatDescriptionTransfer(getUserVisit(), postalAddressFormatDescription));
                         
                         if(lockEntity(postalAddressFormat)) {
-                            PostalAddressFormatDescriptionEdit edit = ContactEditFactory.getPostalAddressFormatDescriptionEdit();
+                            var edit = ContactEditFactory.getPostalAddressFormatDescriptionEdit();
                             
                             result.setEdit(edit);
                             edit.setDescription(postalAddressFormatDescription.getDescription());
@@ -99,12 +99,12 @@ public class EditPostalAddressFormatDescriptionCommand
                         addExecutionError(ExecutionErrors.UnknownPostalAddressFormatDescription.name());
                     }
                 } else if(editMode.equals(EditMode.UPDATE)) {
-                    PostalAddressFormatDescriptionValue postalAddressFormatDescriptionValue = contactControl.getPostalAddressFormatDescriptionValueForUpdate(postalAddressFormat, language);
+                    var postalAddressFormatDescriptionValue = contactControl.getPostalAddressFormatDescriptionValueForUpdate(postalAddressFormat, language);
                     
                     if(postalAddressFormatDescriptionValue != null) {
                         if(lockEntityForUpdate(postalAddressFormat)) {
                             try {
-                                String description = edit.getDescription();
+                                var description = edit.getDescription();
                                 
                                 postalAddressFormatDescriptionValue.setDescription(description);
                                 

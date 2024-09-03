@@ -60,10 +60,10 @@ public class SubscriptionChainLogic
     protected ChainInstance createChainInstance(final ExecutionErrorAccumulator eea, final String chainKindName, final String chainTypeName,
             final Subscription subscription, final BasePK createdBy) {
         var subscriptionControl = Session.getModelController(SubscriptionControl.class);
-        SubscriptionType subscriptionType = subscription.getLastDetail().getSubscriptionType();
-        ChainType chainType = getChainTypeByName(eea, chainKindName, chainTypeName);
-        Party party = subscription.getLastDetail().getParty();
-        List<SubscriptionTypeChain> subscriptionTypeChains = chainTypeName.equals(ChainConstants.ChainType_RENEWAL) ? null
+        var subscriptionType = subscription.getLastDetail().getSubscriptionType();
+        var chainType = getChainTypeByName(eea, chainKindName, chainTypeName);
+        var party = subscription.getLastDetail().getParty();
+        var subscriptionTypeChains = chainTypeName.equals(ChainConstants.ChainType_RENEWAL) ? null
                 : subscriptionControl.getSubscriptionTypeChainsBySubscriptionTypeAndChainType(subscriptionType, chainType);
         Chain chain = null;
         ChainInstance chainInstance = null;
@@ -83,11 +83,11 @@ public class SubscriptionChainLogic
     
     protected ChainInstance createSubscriptionChainInstance(final ExecutionErrorAccumulator eea, final String chainTypeName, final Subscription subscription,
             final BasePK createdBy) {
-        ChainInstance chainInstance = createChainInstance(eea, ChainConstants.ChainKind_SUBSCRIPTION, chainTypeName, subscription, createdBy);
+        var chainInstance = createChainInstance(eea, ChainConstants.ChainKind_SUBSCRIPTION, chainTypeName, subscription, createdBy);
         
         if(chainInstance != null) {
             var chainControl = Session.getModelController(ChainControl.class);
-            ChainType chainType = chainInstance.getLastDetail().getChain().getLastDetail().getChainType();
+            var chainType = chainInstance.getLastDetail().getChain().getLastDetail().getChainType();
         
             chainControl.createChainInstanceEntityRole(chainInstance, chainControl.getChainEntityRoleTypeByName(chainType,
                     ChainConstants.ChainEntityRoleType_SUBSCRIPTION), subscription.getPrimaryKey(), createdBy);

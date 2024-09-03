@@ -40,19 +40,19 @@ public class CarrierServiceTransferCache
     }
     
     public CarrierServiceTransfer getCarrierServiceTransfer(CarrierService carrierService) {
-        CarrierServiceTransfer carrierServiceTransfer = get(carrierService);
+        var carrierServiceTransfer = get(carrierService);
         
         if(carrierServiceTransfer == null) {
-            CarrierServiceDetail carrierServiceDetail = carrierService.getLastDetail();
-            CarrierTransfer carrier = carrierControl.getCarrierTransfer(userVisit, carrierServiceDetail.getCarrierParty());
-            String carrierServiceName = carrierServiceDetail.getCarrierServiceName();
-            Selector geoCodeSelector = carrierServiceDetail.getGeoCodeSelector();
-            SelectorTransfer geoCodeSelectorTransfer = geoCodeSelector == null? null: selectorControl.getSelectorTransfer(userVisit, geoCodeSelector);
-            Selector itemSelector = carrierServiceDetail.getItemSelector();
-            SelectorTransfer itemSelectorTransfer = itemSelector == null? null: selectorControl.getSelectorTransfer(userVisit, itemSelector);
-            Boolean isDefault = carrierServiceDetail.getIsDefault();
-            Integer sortOrder = carrierServiceDetail.getSortOrder();
-            String description = carrierControl.getBestCarrierServiceDescription(carrierService, getLanguage());
+            var carrierServiceDetail = carrierService.getLastDetail();
+            var carrier = carrierControl.getCarrierTransfer(userVisit, carrierServiceDetail.getCarrierParty());
+            var carrierServiceName = carrierServiceDetail.getCarrierServiceName();
+            var geoCodeSelector = carrierServiceDetail.getGeoCodeSelector();
+            var geoCodeSelectorTransfer = geoCodeSelector == null? null: selectorControl.getSelectorTransfer(userVisit, geoCodeSelector);
+            var itemSelector = carrierServiceDetail.getItemSelector();
+            var itemSelectorTransfer = itemSelector == null? null: selectorControl.getSelectorTransfer(userVisit, itemSelector);
+            var isDefault = carrierServiceDetail.getIsDefault();
+            var sortOrder = carrierServiceDetail.getSortOrder();
+            var description = carrierControl.getBestCarrierServiceDescription(carrierService, getLanguage());
             
             carrierServiceTransfer = new CarrierServiceTransfer(carrier, carrierServiceName, geoCodeSelectorTransfer, itemSelectorTransfer, isDefault,
                     sortOrder, description);

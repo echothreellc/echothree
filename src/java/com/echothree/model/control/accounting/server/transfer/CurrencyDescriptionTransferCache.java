@@ -33,12 +33,12 @@ public class CurrencyDescriptionTransferCache
     
     @Override
     public CurrencyDescriptionTransfer getTransfer(CurrencyDescription currencyDescription) {
-        CurrencyDescriptionTransfer currencyDescriptionTransfer = get(currencyDescription);
+        var currencyDescriptionTransfer = get(currencyDescription);
         
         if(currencyDescriptionTransfer == null) {
-            CurrencyTransferCache currencyTransferCache = accountingControl.getAccountingTransferCaches(userVisit).getCurrencyTransferCache();
-            CurrencyTransfer currencyTransfer = currencyTransferCache.getTransfer(currencyDescription.getCurrency());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, currencyDescription.getLanguage());
+            var currencyTransferCache = accountingControl.getAccountingTransferCaches(userVisit).getCurrencyTransferCache();
+            var currencyTransfer = currencyTransferCache.getTransfer(currencyDescription.getCurrency());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, currencyDescription.getLanguage());
             
             currencyDescriptionTransfer = new CurrencyDescriptionTransfer(languageTransfer, currencyTransfer, currencyDescription.getDescription());
             put(currencyDescription, currencyDescriptionTransfer);

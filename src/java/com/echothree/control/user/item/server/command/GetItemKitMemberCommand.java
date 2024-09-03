@@ -64,40 +64,40 @@ public class GetItemKitMemberCommand
     @Override
     protected BaseResult execute() {
         var itemControl = Session.getModelController(ItemControl.class);
-        GetItemKitMemberResult result = ItemResultFactory.getGetItemKitMemberResult();
-        String itemName = form.getItemName();
-        Item item = itemControl.getItemByName(itemName);
+        var result = ItemResultFactory.getGetItemKitMemberResult();
+        var itemName = form.getItemName();
+        var item = itemControl.getItemByName(itemName);
         
         if(item != null) {
-            ItemDetail itemDetail = item.getLastDetail();
-            String itemTypeName = itemDetail.getItemType().getItemTypeName();
+            var itemDetail = item.getLastDetail();
+            var itemTypeName = itemDetail.getItemType().getItemTypeName();
             
             if(itemTypeName.equals(ItemConstants.ItemType_KIT)) {
                 var inventoryControl = Session.getModelController(InventoryControl.class);
-                String inventoryConditionName = form.getInventoryConditionName();
-                InventoryCondition inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
+                var inventoryConditionName = form.getInventoryConditionName();
+                var inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
                 
                 if(inventoryCondition != null) {
                     var uomControl = Session.getModelController(UomControl.class);
-                    String unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
-                    UnitOfMeasureKind unitOfMeasureKind = itemDetail.getUnitOfMeasureKind();
-                    UnitOfMeasureType unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
+                    var unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
+                    var unitOfMeasureKind = itemDetail.getUnitOfMeasureKind();
+                    var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
                     
                     if(unitOfMeasureType != null) {
-                        String memberItemName = form.getMemberItemName();
-                        Item memberItem = itemControl.getItemByName(memberItemName);
+                        var memberItemName = form.getMemberItemName();
+                        var memberItem = itemControl.getItemByName(memberItemName);
                         
                         if(memberItem != null) {
-                            String memberInventoryConditionName = form.getMemberInventoryConditionName();
-                            InventoryCondition memberInventoryCondition = inventoryControl.getInventoryConditionByName(memberInventoryConditionName);
+                            var memberInventoryConditionName = form.getMemberInventoryConditionName();
+                            var memberInventoryCondition = inventoryControl.getInventoryConditionByName(memberInventoryConditionName);
                             
                             if(memberInventoryCondition != null) {
-                                String memberUnitOfMeasureTypeName = form.getMemberUnitOfMeasureTypeName();
-                                UnitOfMeasureKind memberUnitOfMeasureKind = memberItem.getLastDetail().getUnitOfMeasureKind();
-                                UnitOfMeasureType memberUnitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(memberUnitOfMeasureKind, memberUnitOfMeasureTypeName);
+                                var memberUnitOfMeasureTypeName = form.getMemberUnitOfMeasureTypeName();
+                                var memberUnitOfMeasureKind = memberItem.getLastDetail().getUnitOfMeasureKind();
+                                var memberUnitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(memberUnitOfMeasureKind, memberUnitOfMeasureTypeName);
                                 
                                 if(memberUnitOfMeasureType != null) {
-                                    ItemKitMember itemKitMember = itemControl.getItemKitMember(item, inventoryCondition,
+                                    var itemKitMember = itemControl.getItemKitMember(item, inventoryCondition,
                                             unitOfMeasureType, memberItem, memberInventoryCondition, memberUnitOfMeasureType);
                                     
                                     if(itemKitMember != null) {

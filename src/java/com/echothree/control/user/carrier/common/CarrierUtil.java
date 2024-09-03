@@ -30,7 +30,7 @@ public class CarrierUtil {
     public static CarrierLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
 
             cachedLocal = (CarrierLocal)ctx.lookup("ejb:echothree/echothree-server/CarrierBean!com.echothree.control.user.carrier.server.CarrierLocal");
         }
@@ -42,7 +42,7 @@ public class CarrierUtil {
     public static CarrierRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
             
             cachedRemote = (CarrierRemote)ctx.lookup("ejb:echothree/echothree-server/CarrierBean!com.echothree.control.user.carrier.common.CarrierRemote");
         }

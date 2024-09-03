@@ -30,7 +30,7 @@ public class FilterUtil {
     public static FilterLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
 
             cachedLocal = (FilterLocal)ctx.lookup("ejb:echothree/echothree-server/FilterBean!com.echothree.control.user.filter.server.FilterLocal");
         }
@@ -42,7 +42,7 @@ public class FilterUtil {
     public static FilterRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
             
             cachedRemote = (FilterRemote)ctx.lookup("ejb:echothree/echothree-server/FilterBean!com.echothree.control.user.filter.common.FilterRemote");
         }

@@ -56,16 +56,16 @@ public class InvoiceTimeLogic {
     public void createOrUpdateInvoiceTime(final ExecutionErrorAccumulator ema, final Invoice invoice, final String invoiceTimeTypeName, final Long time,
             final BasePK partyPK) {
         var invoiceControl = Session.getModelController(InvoiceControl.class);
-        InvoiceDetail invoiceDetail = invoice.getLastDetail();
-        InvoiceType invoiceType = invoiceDetail.getInvoiceType();
-        InvoiceTimeType invoiceTimeType = invoiceControl.getInvoiceTimeTypeByName(invoiceType, invoiceTimeTypeName);
+        var invoiceDetail = invoice.getLastDetail();
+        var invoiceType = invoiceDetail.getInvoiceType();
+        var invoiceTimeType = invoiceControl.getInvoiceTimeTypeByName(invoiceType, invoiceTimeTypeName);
 
         if(invoiceTimeType == null) {
             if(ema != null) {
                 ema.addExecutionError(ExecutionErrors.UnknownInvoiceTimeTypeName.name(), getInvoiceTypeName(invoiceType), invoiceTimeTypeName);
             }
         } else {
-            InvoiceTimeValue invoiceTimeValue = invoiceControl.getInvoiceTimeValueForUpdate(invoice, invoiceTimeType);
+            var invoiceTimeValue = invoiceControl.getInvoiceTimeValueForUpdate(invoice, invoiceTimeType);
 
             if(invoiceTimeValue == null) {
                 invoiceControl.createInvoiceTime(invoice, invoiceTimeType, time, partyPK);
@@ -78,9 +78,9 @@ public class InvoiceTimeLogic {
 
     public Long getInvoiceTime(final ExecutionErrorAccumulator ema, final Invoice invoice, final String invoiceTimeTypeName) {
         var invoiceControl = Session.getModelController(InvoiceControl.class);
-        InvoiceDetail invoiceDetail = invoice.getLastDetail();
-        InvoiceType invoiceType = invoiceDetail.getInvoiceType();
-        InvoiceTimeType invoiceTimeType = invoiceControl.getInvoiceTimeTypeByName(invoiceType, invoiceTimeTypeName);
+        var invoiceDetail = invoice.getLastDetail();
+        var invoiceType = invoiceDetail.getInvoiceType();
+        var invoiceTimeType = invoiceControl.getInvoiceTimeTypeByName(invoiceType, invoiceTimeTypeName);
         Long result = null;
 
         if(invoiceTimeType == null) {
@@ -88,7 +88,7 @@ public class InvoiceTimeLogic {
                 ema.addExecutionError(ExecutionErrors.UnknownInvoiceTimeTypeName.name(), getInvoiceTypeName(invoiceType), invoiceTimeTypeName);
             }
         } else {
-            InvoiceTime invoiceTime = invoiceControl.getInvoiceTime(invoice, invoiceTimeType);
+            var invoiceTime = invoiceControl.getInvoiceTime(invoice, invoiceTimeType);
 
             if(invoiceTime == null) {
                 if(ema != null) {
@@ -104,16 +104,16 @@ public class InvoiceTimeLogic {
 
     public void deleteInvoiceTime(final ExecutionErrorAccumulator ema, final Invoice invoice, final String invoiceTimeTypeName, final BasePK deletedBy) {
         var invoiceControl = Session.getModelController(InvoiceControl.class);
-        InvoiceDetail invoiceDetail = invoice.getLastDetail();
-        InvoiceType invoiceType = invoiceDetail.getInvoiceType();
-        InvoiceTimeType invoiceTimeType = invoiceControl.getInvoiceTimeTypeByName(invoiceType, invoiceTimeTypeName);
+        var invoiceDetail = invoice.getLastDetail();
+        var invoiceType = invoiceDetail.getInvoiceType();
+        var invoiceTimeType = invoiceControl.getInvoiceTimeTypeByName(invoiceType, invoiceTimeTypeName);
 
         if(invoiceTimeType == null) {
             if(ema != null) {
                 ema.addExecutionError(ExecutionErrors.UnknownInvoiceTimeTypeName.name(), getInvoiceTypeName(invoiceType), invoiceTimeTypeName);
             }
         } else {
-            InvoiceTime invoiceTime = invoiceControl.getInvoiceTimeForUpdate(invoice, invoiceTimeType);
+            var invoiceTime = invoiceControl.getInvoiceTimeForUpdate(invoice, invoiceTimeType);
 
             if(invoiceTime == null) {
                 if(ema != null) {

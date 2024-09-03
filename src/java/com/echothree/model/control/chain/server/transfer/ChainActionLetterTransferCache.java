@@ -36,11 +36,11 @@ public class ChainActionLetterTransferCache
     }
     
     public ChainActionLetterTransfer getChainActionLetterTransfer(ChainActionLetter chainActionLetter) {
-        ChainActionLetterTransfer chainActionLetterTransfer = get(chainActionLetter);
+        var chainActionLetterTransfer = get(chainActionLetter);
         
         if(chainActionLetterTransfer == null) {
-            ChainActionTransfer chainAction = chainControl.getChainActionTransfer(userVisit, chainActionLetter.getChainAction());
-            LetterTransfer letter = letterControl.getLetterTransfer(userVisit, chainActionLetter.getLetter());
+            var chainAction = chainControl.getChainActionTransfer(userVisit, chainActionLetter.getChainAction());
+            var letter = letterControl.getLetterTransfer(userVisit, chainActionLetter.getLetter());
             
             chainActionLetterTransfer = new ChainActionLetterTransfer(chainAction, letter);
             put(chainActionLetter, chainActionLetterTransfer);

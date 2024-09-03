@@ -46,14 +46,14 @@ public class InvoiceLineItemTransferCache
     }
 
     public InvoiceLineItemTransfer getInvoiceLineItemTransfer(InvoiceLineItem invoiceLineItem) {
-        InvoiceLineItemTransfer invoiceLineItemTransfer = get(invoiceLineItem);
+        var invoiceLineItemTransfer = get(invoiceLineItem);
 
         if(invoiceLineItemTransfer == null) {
-            InvoiceLineTransfer invoiceLine = invoiceControl.getInvoiceLineTransfer(userVisit, invoiceLineItem.getInvoiceLine());
-            ItemTransfer item = itemControl.getItemTransfer(userVisit, invoiceLineItem.getItem());
-            InventoryConditionTransfer inventoryCondition = inventoryControl.getInventoryConditionTransfer(userVisit, invoiceLineItem.getInventoryCondition());
-            UnitOfMeasureTypeTransfer unitOfMeasureType = uomControl.getUnitOfMeasureTypeTransfer(userVisit, invoiceLineItem.getUnitOfMeasureType());
-            Integer quantity = invoiceLineItem.getQuantity();
+            var invoiceLine = invoiceControl.getInvoiceLineTransfer(userVisit, invoiceLineItem.getInvoiceLine());
+            var item = itemControl.getItemTransfer(userVisit, invoiceLineItem.getItem());
+            var inventoryCondition = inventoryControl.getInventoryConditionTransfer(userVisit, invoiceLineItem.getInventoryCondition());
+            var unitOfMeasureType = uomControl.getUnitOfMeasureTypeTransfer(userVisit, invoiceLineItem.getUnitOfMeasureType());
+            var quantity = invoiceLineItem.getQuantity();
             
             invoiceLineItemTransfer = new InvoiceLineItemTransfer(invoiceLine, item, inventoryCondition, unitOfMeasureType, quantity);
             put(invoiceLineItem, invoiceLineItemTransfer);

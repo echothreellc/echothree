@@ -65,13 +65,13 @@ public class GetContactListContactMechanismPurposesCommand
     
     @Override
     protected BaseResult execute() {
-        GetContactListContactMechanismPurposesResult result = ContactListResultFactory.getGetContactListContactMechanismPurposesResult();
-        String contactListName = form.getContactListName();
-        ContactList contactList = ContactListLogic.getInstance().getContactListByName(this, contactListName);
+        var result = ContactListResultFactory.getGetContactListContactMechanismPurposesResult();
+        var contactListName = form.getContactListName();
+        var contactList = ContactListLogic.getInstance().getContactListByName(this, contactListName);
         
         if(!hasExecutionErrors()) {
             var contactListControl = Session.getModelController(ContactListControl.class);
-            UserVisit userVisit = getUserVisit();
+            var userVisit = getUserVisit();
             
             result.setContactList(contactListControl.getContactListTransfer(userVisit, contactList));
             result.setContactListContactMechanismPurposes(contactListControl.getContactListContactMechanismPurposeTransfersByContactList(userVisit, contactList));

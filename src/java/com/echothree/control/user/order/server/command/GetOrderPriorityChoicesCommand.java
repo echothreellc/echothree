@@ -67,14 +67,14 @@ public class GetOrderPriorityChoicesCommand
     @Override
     protected BaseResult execute() {
         var orderTypeControl = Session.getModelController(OrderTypeControl.class);
-        GetOrderPriorityChoicesResult result = OrderResultFactory.getGetOrderPriorityChoicesResult();
+        var result = OrderResultFactory.getGetOrderPriorityChoicesResult();
         var orderTypeName = form.getOrderTypeName();
         var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
             var orderPriorityControl = Session.getModelController(OrderPriorityControl.class);
-            String defaultOrderPriorityChoice = form.getDefaultOrderPriorityChoice();
-            boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+            var defaultOrderPriorityChoice = form.getDefaultOrderPriorityChoice();
+            var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 
             result.setOrderPriorityChoices(orderPriorityControl.getOrderPriorityChoices(defaultOrderPriorityChoice, getPreferredLanguage(), allowNullChoice,
                     orderType));

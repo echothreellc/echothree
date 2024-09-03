@@ -90,13 +90,13 @@ public class EditPartyTypeDocumentTypeUsageTypeCommand
     public PartyTypeDocumentTypeUsageType getEntity(EditPartyTypeDocumentTypeUsageTypeResult result) {
         var partyControl = Session.getModelController(PartyControl.class);
         PartyTypeDocumentTypeUsageType partyTypeDocumentTypeUsageType = null;
-        String partyTypeName = spec.getPartyTypeName();
-        PartyType partyType = partyControl.getPartyTypeByName(partyTypeName);
+        var partyTypeName = spec.getPartyTypeName();
+        var partyType = partyControl.getPartyTypeByName(partyTypeName);
 
         if(partyType != null) {
             var documentControl = Session.getModelController(DocumentControl.class);
-            String documentTypeUsageTypeName = spec.getDocumentTypeUsageTypeName();
-            DocumentTypeUsageType documentTypeUsageType = documentControl.getDocumentTypeUsageTypeByName(documentTypeUsageTypeName);
+            var documentTypeUsageTypeName = spec.getDocumentTypeUsageTypeName();
+            var documentTypeUsageType = documentControl.getDocumentTypeUsageTypeByName(documentTypeUsageTypeName);
 
             if(documentTypeUsageType != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -139,7 +139,7 @@ public class EditPartyTypeDocumentTypeUsageTypeCommand
     @Override
     public void doUpdate(PartyTypeDocumentTypeUsageType partyTypeDocumentTypeUsageType) {
         var documentControl = Session.getModelController(DocumentControl.class);
-        PartyTypeDocumentTypeUsageTypeValue partyTypeDocumentTypeUsageTypeValue = documentControl.getPartyTypeDocumentTypeUsageTypeValueForUpdate(partyTypeDocumentTypeUsageType);
+        var partyTypeDocumentTypeUsageTypeValue = documentControl.getPartyTypeDocumentTypeUsageTypeValueForUpdate(partyTypeDocumentTypeUsageType);
 
         partyTypeDocumentTypeUsageTypeValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
         partyTypeDocumentTypeUsageTypeValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));

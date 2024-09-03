@@ -36,12 +36,12 @@ public class EntityIntegerAttributeTransferCache
     }
     
     public EntityIntegerAttributeTransfer getEntityIntegerAttributeTransfer(EntityIntegerAttribute entityIntegerAttribute, EntityInstance entityInstance) {
-        EntityIntegerAttributeTransfer entityIntegerAttributeTransfer = get(entityIntegerAttribute);
+        var entityIntegerAttributeTransfer = get(entityIntegerAttribute);
         
         if(entityIntegerAttributeTransfer == null) {
-            EntityAttributeTransfer entityAttribute = entityInstance == null ? coreControl.getEntityAttributeTransfer(userVisit, entityIntegerAttribute.getEntityAttribute(), entityInstance) : null;
-            EntityInstanceTransfer entityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, entityIntegerAttribute.getEntityInstance(), false, false, false, false, false, false);
-            Integer integerAttribute = entityIntegerAttribute.getIntegerAttribute();
+            var entityAttribute = entityInstance == null ? coreControl.getEntityAttributeTransfer(userVisit, entityIntegerAttribute.getEntityAttribute(), entityInstance) : null;
+            var entityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, entityIntegerAttribute.getEntityInstance(), false, false, false, false, false, false);
+            var integerAttribute = entityIntegerAttribute.getIntegerAttribute();
             
             entityIntegerAttributeTransfer = new EntityIntegerAttributeTransfer(entityAttribute, entityInstanceTransfer, integerAttribute);
             put(entityIntegerAttribute, entityIntegerAttributeTransfer);

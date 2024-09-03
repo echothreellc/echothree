@@ -69,14 +69,14 @@ public class GetOfferCustomerTypeCommand
     @Override
     protected OfferCustomerType getEntity() {
         var offerControl = Session.getModelController(OfferControl.class);
-        String offerName = form.getOfferName();
-        Offer offer = offerControl.getOfferByName(offerName);
+        var offerName = form.getOfferName();
+        var offer = offerControl.getOfferByName(offerName);
         OfferCustomerType offerCustomerType = null;
 
         if(offer != null) {
             var customerControl = Session.getModelController(CustomerControl.class);
-            String customerTypeName = form.getCustomerTypeName();
-            CustomerType customerType = customerControl.getCustomerTypeByName(customerTypeName);
+            var customerTypeName = form.getCustomerTypeName();
+            var customerType = customerControl.getCustomerTypeByName(customerTypeName);
 
             if(customerType != null) {
                 offerCustomerType = offerControl.getOfferCustomerType(offer, customerType);
@@ -98,7 +98,7 @@ public class GetOfferCustomerTypeCommand
     @Override
     protected BaseResult getResult(OfferCustomerType offerCustomerType) {
         var offerControl = Session.getModelController(OfferControl.class);
-        GetOfferCustomerTypeResult result = OfferResultFactory.getGetOfferCustomerTypeResult();
+        var result = OfferResultFactory.getGetOfferCustomerTypeResult();
 
         if(offerCustomerType != null) {
             result.setOfferCustomerType(offerControl.getOfferCustomerTypeTransfer(getUserVisit(), offerCustomerType));

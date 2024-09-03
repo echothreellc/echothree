@@ -33,14 +33,14 @@ public class CommunicationEventPurposeTransferCache
     }
     
     public CommunicationEventPurposeTransfer getCommunicationEventPurposeTransfer(CommunicationEventPurpose communicationEventPurpose) {
-        CommunicationEventPurposeTransfer communicationEventPurposeTransfer = get(communicationEventPurpose);
+        var communicationEventPurposeTransfer = get(communicationEventPurpose);
         
         if(communicationEventPurposeTransfer == null) {
-            CommunicationEventPurposeDetail communicationEventPurposeDetail = communicationEventPurpose.getLastDetail();
-            String communicationEventPurposeName = communicationEventPurposeDetail.getCommunicationEventPurposeName();
-            Boolean isDefault = communicationEventPurposeDetail.getIsDefault();
-            Integer sortOrder = communicationEventPurposeDetail.getSortOrder();
-            String description = communicationControl.getBestCommunicationEventPurposeDescription(communicationEventPurpose, getLanguage());
+            var communicationEventPurposeDetail = communicationEventPurpose.getLastDetail();
+            var communicationEventPurposeName = communicationEventPurposeDetail.getCommunicationEventPurposeName();
+            var isDefault = communicationEventPurposeDetail.getIsDefault();
+            var sortOrder = communicationEventPurposeDetail.getSortOrder();
+            var description = communicationControl.getBestCommunicationEventPurposeDescription(communicationEventPurpose, getLanguage());
             
             communicationEventPurposeTransfer = new CommunicationEventPurposeTransfer(communicationEventPurposeName, isDefault, sortOrder, description);
             put(communicationEventPurpose, communicationEventPurposeTransfer);

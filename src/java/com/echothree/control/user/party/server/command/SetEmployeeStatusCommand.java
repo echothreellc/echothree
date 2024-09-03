@@ -65,11 +65,11 @@ public class SetEmployeeStatusCommand
     @Override
     protected BaseResult execute() {
         var employeeControl = Session.getModelController(EmployeeControl.class);
-        String employeeName = form.getEmployeeName();
-        PartyEmployee partyEmployee = employeeControl.getPartyEmployeeByName(employeeName);
+        var employeeName = form.getEmployeeName();
+        var partyEmployee = employeeControl.getPartyEmployeeByName(employeeName);
         
         if(partyEmployee != null) {
-            String employeeStatusChoice = form.getEmployeeStatusChoice();
+            var employeeStatusChoice = form.getEmployeeStatusChoice();
             
             EmployeeLogic.getInstance().setEmployeeStatus(session, this, partyEmployee.getParty(), employeeStatusChoice, getPartyPK());
         } else {

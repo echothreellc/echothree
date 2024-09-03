@@ -77,7 +77,7 @@ public class InvoiceLogic
     
     public InvoiceType getInvoiceTypeByName(final ExecutionErrorAccumulator eea, final String invoiceTypeName) {
         var invoiceControl = Session.getModelController(InvoiceControl.class);
-        InvoiceType invoiceType = invoiceControl.getInvoiceTypeByName(invoiceTypeName);
+        var invoiceType = invoiceControl.getInvoiceTypeByName(invoiceTypeName);
 
         if(invoiceType == null) {
             handleExecutionError(UnknownInvoiceTypeNameException.class, eea, ExecutionErrors.UnknownInvoiceTypeName.name(), invoiceTypeName);
@@ -88,7 +88,7 @@ public class InvoiceLogic
 
     public InvoiceRoleType getInvoiceRoleTypeByName(final ExecutionErrorAccumulator eea, final String invoiceRoleTypeName) {
         var invoiceControl = Session.getModelController(InvoiceControl.class);
-        InvoiceRoleType invoiceRoleType = invoiceControl.getInvoiceRoleTypeByName(invoiceRoleTypeName);
+        var invoiceRoleType = invoiceControl.getInvoiceRoleTypeByName(invoiceRoleTypeName);
 
         if(invoiceRoleType == null) {
             handleExecutionError(UnknownInvoiceRoleTypeNameException.class, eea, ExecutionErrors.UnknownInvoiceRoleTypeName.name(), invoiceRoleTypeName);
@@ -99,10 +99,10 @@ public class InvoiceLogic
 
     public SequenceType getInvoiceSequenceType(final ExecutionErrorAccumulator eea, final InvoiceType invoiceType) {
         SequenceType sequenceType = null;
-        InvoiceType parentInvoiceType = invoiceType;
+        var parentInvoiceType = invoiceType;
         
         do {
-            InvoiceTypeDetail invoiceTypeDetail = parentInvoiceType.getLastDetail();
+            var invoiceTypeDetail = parentInvoiceType.getLastDetail();
             
             sequenceType = invoiceTypeDetail.getInvoiceSequenceType();
             
@@ -128,7 +128,7 @@ public class InvoiceLogic
     
     public Sequence getInvoiceSequence(final ExecutionErrorAccumulator eea, final InvoiceType invoiceType) {
         Sequence sequence = null;
-        SequenceType sequenceType = getInvoiceSequenceType(eea, invoiceType);
+        var sequenceType = getInvoiceSequenceType(eea, invoiceType);
         
         if(eea == null || !eea.hasExecutionErrors()) {
             var sequenceControl = Session.getModelController(SequenceControl.class);
@@ -145,7 +145,7 @@ public class InvoiceLogic
     
     public String getInvoiceName(final ExecutionErrorAccumulator eea, final InvoiceType invoiceType) {
         String invoiceName = null;
-        Sequence sequence = getInvoiceSequence(eea, invoiceType);
+        var sequence = getInvoiceSequence(eea, invoiceType);
         
         if(eea == null || !eea.hasExecutionErrors()) {
             invoiceName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
@@ -183,7 +183,7 @@ public class InvoiceLogic
     }
 
     public String getTermTypeName(final Term term) {
-        TermDetail termDetail = term.getLastDetail();
+        var termDetail = term.getLastDetail();
         
         return termDetail.getTermType().getTermTypeName();
     }
@@ -276,7 +276,7 @@ public class InvoiceLogic
             final Long amount, final InvoiceLineType invoiceLineType, GlAccount glAccount, final String description, final BasePK createdBy) {
         InvoiceLine invoiceLine = null;
         var invoiceControl = Session.getModelController(InvoiceControl.class);
-        InvoiceLineUseType invoiceLineUseType = invoiceControl.getInvoiceLineUseTypeByName(InvoiceLineUseTypes.GL_ACCOUNT.name());
+        var invoiceLineUseType = invoiceControl.getInvoiceLineUseTypeByName(InvoiceLineUseTypes.GL_ACCOUNT.name());
         
         if(glAccount == null) {
             glAccount = invoiceLineType.getLastDetail().getDefaultGlAccount();

@@ -49,8 +49,8 @@ public class DeleteEmploymentCommand
     @Override
     protected BaseResult execute() {
         var employeeControl = Session.getModelController(EmployeeControl.class);
-        String employmentName = form.getEmploymentName();
-        Employment employment = employeeControl.getEmploymentByNameForUpdate(employmentName);
+        var employmentName = form.getEmploymentName();
+        var employment = employeeControl.getEmploymentByNameForUpdate(employmentName);
 
         if(employment != null) {
             employeeControl.deleteEmployment(employment, getPartyPK());

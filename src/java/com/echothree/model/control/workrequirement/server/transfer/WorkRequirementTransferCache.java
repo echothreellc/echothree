@@ -59,20 +59,20 @@ public class WorkRequirementTransferCache
     }
     
     public WorkRequirementTransfer getWorkRequirementTransfer(WorkRequirement workRequirement) {
-        WorkRequirementTransfer workRequirementTransfer = get(workRequirement);
+        var workRequirementTransfer = get(workRequirement);
         
         if(workRequirementTransfer == null) {
-            WorkRequirementDetail workRequirementDetail = workRequirement.getLastDetail();
-            String workRequirementName = workRequirementDetail.getWorkRequirementName();
-            WorkEffortTransfer workEffort = workEffortControl.getWorkEffortTransfer(userVisit, workRequirementDetail.getWorkEffort());
-            WorkRequirementScopeTransfer workRequirementScope = workRequirementControl.getWorkRequirementScopeTransfer(userVisit, workRequirementDetail.getWorkRequirementScope());
-            Long unformattedStartTime = workRequirementDetail.getStartTime();
-            String startTime = formatTypicalDateTime(unformattedStartTime);
-            Long unformattedRequiredTime = workRequirementDetail.getRequiredTime();
-            String requiredTime = formatTypicalDateTime(unformattedRequiredTime);
+            var workRequirementDetail = workRequirement.getLastDetail();
+            var workRequirementName = workRequirementDetail.getWorkRequirementName();
+            var workEffort = workEffortControl.getWorkEffortTransfer(userVisit, workRequirementDetail.getWorkEffort());
+            var workRequirementScope = workRequirementControl.getWorkRequirementScopeTransfer(userVisit, workRequirementDetail.getWorkRequirementScope());
+            var unformattedStartTime = workRequirementDetail.getStartTime();
+            var startTime = formatTypicalDateTime(unformattedStartTime);
+            var unformattedRequiredTime = workRequirementDetail.getRequiredTime();
+            var requiredTime = formatTypicalDateTime(unformattedRequiredTime);
 
-            EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(workRequirement.getPrimaryKey());
-            WorkflowEntityStatusTransfer workRequirementStatus = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
+            var entityInstance = coreControl.getEntityInstanceByBasePK(workRequirement.getPrimaryKey());
+            var workRequirementStatus = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
                     WorkRequirementStatusConstants.Workflow_WORK_REQUIREMENT_STATUS, entityInstance);
 
             workRequirementTransfer = new WorkRequirementTransfer(workRequirementName, workEffort, workRequirementScope, unformattedStartTime, startTime,

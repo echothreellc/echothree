@@ -65,20 +65,20 @@ public class EditRecoveryQuestionCommand
     
     @Override
     protected BaseResult execute() {
-        UserControl userControl = getUserControl();
-        EditRecoveryQuestionResult result = UserResultFactory.getEditRecoveryQuestionResult();
+        var userControl = getUserControl();
+        var result = UserResultFactory.getEditRecoveryQuestionResult();
         
         if(editMode.equals(EditMode.LOCK)) {
-            String recoveryQuestionName = spec.getRecoveryQuestionName();
-            RecoveryQuestion recoveryQuestion = userControl.getRecoveryQuestionByName(recoveryQuestionName);
+            var recoveryQuestionName = spec.getRecoveryQuestionName();
+            var recoveryQuestion = userControl.getRecoveryQuestionByName(recoveryQuestionName);
             
             if(recoveryQuestion != null) {
                 result.setRecoveryQuestion(userControl.getRecoveryQuestionTransfer(getUserVisit(), recoveryQuestion));
                 
                 if(lockEntity(recoveryQuestion)) {
-                    RecoveryQuestionDescription recoveryQuestionDescription = userControl.getRecoveryQuestionDescription(recoveryQuestion, getPreferredLanguage());
-                    RecoveryQuestionEdit edit = UserEditFactory.getRecoveryQuestionEdit();
-                    RecoveryQuestionDetail recoveryQuestionDetail = recoveryQuestion.getLastDetail();
+                    var recoveryQuestionDescription = userControl.getRecoveryQuestionDescription(recoveryQuestion, getPreferredLanguage());
+                    var edit = UserEditFactory.getRecoveryQuestionEdit();
+                    var recoveryQuestionDetail = recoveryQuestion.getLastDetail();
                     
                     result.setEdit(edit);
                     edit.setRecoveryQuestionName(recoveryQuestionDetail.getRecoveryQuestionName());
@@ -96,20 +96,20 @@ public class EditRecoveryQuestionCommand
                 addExecutionError(ExecutionErrors.UnknownRecoveryQuestionName.name(), recoveryQuestionName);
             }
         } else if(editMode.equals(EditMode.UPDATE)) {
-            String recoveryQuestionName = spec.getRecoveryQuestionName();
-            RecoveryQuestion recoveryQuestion = userControl.getRecoveryQuestionByNameForUpdate(recoveryQuestionName);
+            var recoveryQuestionName = spec.getRecoveryQuestionName();
+            var recoveryQuestion = userControl.getRecoveryQuestionByNameForUpdate(recoveryQuestionName);
             
             if(recoveryQuestion != null) {
                 recoveryQuestionName = edit.getRecoveryQuestionName();
-                RecoveryQuestion duplicateRecoveryQuestion = userControl.getRecoveryQuestionByName(recoveryQuestionName);
+                var duplicateRecoveryQuestion = userControl.getRecoveryQuestionByName(recoveryQuestionName);
                 
                 if(duplicateRecoveryQuestion == null || recoveryQuestion.equals(duplicateRecoveryQuestion)) {
                     if(lockEntityForUpdate(recoveryQuestion)) {
                         try {
                             var partyPK = getPartyPK();
-                            RecoveryQuestionDetailValue recoveryQuestionDetailValue = userControl.getRecoveryQuestionDetailValueForUpdate(recoveryQuestion);
-                            RecoveryQuestionDescription recoveryQuestionDescription = userControl.getRecoveryQuestionDescriptionForUpdate(recoveryQuestion, getPreferredLanguage());
-                            String description = edit.getDescription();
+                            var recoveryQuestionDetailValue = userControl.getRecoveryQuestionDetailValueForUpdate(recoveryQuestion);
+                            var recoveryQuestionDescription = userControl.getRecoveryQuestionDescriptionForUpdate(recoveryQuestion, getPreferredLanguage());
+                            var description = edit.getDescription();
                             
                             recoveryQuestionDetailValue.setRecoveryQuestionName(edit.getRecoveryQuestionName());
                             recoveryQuestionDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
@@ -122,7 +122,7 @@ public class EditRecoveryQuestionCommand
                             } else if(recoveryQuestionDescription != null && description == null) {
                                 userControl.deleteRecoveryQuestionDescription(recoveryQuestionDescription, partyPK);
                             } else if(recoveryQuestionDescription != null && description != null) {
-                                RecoveryQuestionDescriptionValue recoveryQuestionDescriptionValue = userControl.getRecoveryQuestionDescriptionValue(recoveryQuestionDescription);
+                                var recoveryQuestionDescriptionValue = userControl.getRecoveryQuestionDescriptionValue(recoveryQuestionDescription);
                                 
                                 recoveryQuestionDescriptionValue.setDescription(description);
                                 userControl.updateRecoveryQuestionDescriptionFromValue(recoveryQuestionDescriptionValue, partyPK);

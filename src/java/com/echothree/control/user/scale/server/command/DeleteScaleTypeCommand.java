@@ -49,8 +49,8 @@ public class DeleteScaleTypeCommand
    @Override
     protected BaseResult execute() {
         var scaleControl = Session.getModelController(ScaleControl.class);
-        String scaleTypeName = form.getScaleTypeName();
-        ScaleType scaleType = scaleControl.getScaleTypeByNameForUpdate(scaleTypeName);
+       var scaleTypeName = form.getScaleTypeName();
+       var scaleType = scaleControl.getScaleTypeByNameForUpdate(scaleTypeName);
         
         if(scaleType != null) {
             scaleControl.deleteScaleType(scaleType, getPartyPK());

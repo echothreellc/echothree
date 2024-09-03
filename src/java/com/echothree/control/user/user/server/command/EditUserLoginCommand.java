@@ -107,7 +107,7 @@ public class EditUserLoginCommand
     @Override
     public UserLogin getEntity(EditUserLoginResult result) {
         UserLogin userLogin = null;
-        String partyName = spec.getPartyName();
+        var partyName = spec.getPartyName();
         var parameterCount = (partyName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(spec);
 
         if(parameterCount == 1) {
@@ -126,7 +126,7 @@ public class EditUserLoginCommand
             }
             
             if(!hasExecutionErrors()) {
-                PartyType partyType = party.getLastDetail().getPartyType();
+                var partyType = party.getLastDetail().getPartyType();
                 String securityRoleGroupName = null;
                 var partyTypeName = partyType.getPartyTypeName();
 
@@ -142,7 +142,7 @@ public class EditUserLoginCommand
                         && SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, getParty(), securityRoleGroupName, UserLogin.name())) {
                     if(!hasExecutionErrors()) {
                         if(partyType.getAllowUserLogins()) {
-                            UserControl userControl = getUserControl();
+                            var userControl = getUserControl();
 
                             if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
                                 userLogin = userControl.getUserLogin(party);
@@ -175,7 +175,7 @@ public class EditUserLoginCommand
 
     @Override
     public void fillInResult(EditUserLoginResult result, UserLogin userLogin) {
-        UserControl userControl = getUserControl();
+        var userControl = getUserControl();
 
         result.setUserLogin(userControl.getUserLoginTransfer(getUserVisit(), userLogin));
     }
@@ -187,9 +187,9 @@ public class EditUserLoginCommand
 
     @Override
     public void canUpdate(UserLogin userLogin) {
-        UserControl userControl = getUserControl();
-        String username = edit.getUsername();
-        UserLogin duplicateUserLogin = userControl.getUserLoginByUsername(username);
+        var userControl = getUserControl();
+        var username = edit.getUsername();
+        var duplicateUserLogin = userControl.getUserLoginByUsername(username);
 
         if(duplicateUserLogin != null && !userLogin.equals(duplicateUserLogin)) {
             addExecutionError(ExecutionErrors.DuplicateUsername.name(), username);
@@ -198,8 +198,8 @@ public class EditUserLoginCommand
 
     @Override
     public void doUpdate(UserLogin userLogin) {
-        UserControl userControl = getUserControl();
-        UserLoginValue userLoginValue = userControl.getUserLoginValue(userLogin);
+        var userControl = getUserControl();
+        var userLoginValue = userControl.getUserLoginValue(userLogin);
         
         userLoginValue.setUsername(edit.getUsername());
         

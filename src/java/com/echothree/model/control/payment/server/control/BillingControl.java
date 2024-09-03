@@ -76,7 +76,7 @@ public class BillingControl
     }
     
     public List<BillingAccountRoleType> getBillingAccountRoleTypes() {
-        PreparedStatement ps = BillingAccountRoleTypeFactory.getInstance().prepareStatement(
+        var ps = BillingAccountRoleTypeFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
                 "FROM billingaccountroletypes " +
                 "ORDER BY bllactrtyp_sortorder, bllactrtyp_billingaccountroletypename");
@@ -88,7 +88,7 @@ public class BillingControl
         BillingAccountRoleType billingAccountRoleType;
         
         try {
-            PreparedStatement ps = BillingAccountRoleTypeFactory.getInstance().prepareStatement(
+            var ps = BillingAccountRoleTypeFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM billingaccountroletypes " +
                     "WHERE bllactrtyp_billingaccountroletypename = ?");
@@ -111,7 +111,7 @@ public class BillingControl
 
     private List<BillingAccountRoleTypeTransfer> getBillingAccountRoleTypeTransfers(final UserVisit userVisit, final List<BillingAccountRoleType> billingAccountRoleTypes) {
         List<BillingAccountRoleTypeTransfer> billingAccountRoleTypeTransfers = new ArrayList<>(billingAccountRoleTypes.size());
-        BillingAccountRoleTypeTransferCache billingAccountRoleTypeTransferCache = getPaymentTransferCaches(userVisit).getBillingAccountRoleTypeTransferCache();
+        var billingAccountRoleTypeTransferCache = getPaymentTransferCaches(userVisit).getBillingAccountRoleTypeTransferCache();
 
         billingAccountRoleTypes.forEach((billingAccountRoleType) ->
                 billingAccountRoleTypeTransfers.add(billingAccountRoleTypeTransferCache.getTransfer(billingAccountRoleType))
@@ -136,7 +136,7 @@ public class BillingControl
         BillingAccountRoleTypeDescription billingAccountRoleTypeDescription;
         
         try {
-            PreparedStatement ps = BillingAccountRoleTypeDescriptionFactory.getInstance().prepareStatement(
+            var ps = BillingAccountRoleTypeDescriptionFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM billingaccountroletypedescriptions " +
                     "WHERE bllactrtypd_bllactrtyp_billingaccountroletypeid = ? AND bllactrtypd_lang_languageid = ?");
@@ -154,7 +154,7 @@ public class BillingControl
     
     public String getBestBillingAccountRoleTypeDescription(BillingAccountRoleType billingAccountRoleType, Language language) {
         String description;
-        BillingAccountRoleTypeDescription billingAccountRoleTypeDescription = getBillingAccountRoleTypeDescription(billingAccountRoleType, language);
+        var billingAccountRoleTypeDescription = getBillingAccountRoleTypeDescription(billingAccountRoleType, language);
         
         if(billingAccountRoleTypeDescription == null && !language.getIsDefault()) {
             billingAccountRoleTypeDescription = getBillingAccountRoleTypeDescription(billingAccountRoleType, getPartyControl().getDefaultLanguage());
@@ -175,15 +175,15 @@ public class BillingControl
     
     public BillingAccount createBillingAccount(final Party billFrom, final Currency currency, final String reference, final String description, final BasePK createdBy) {
         var sequenceControl = Session.getModelController(SequenceControl.class);
-        Sequence sequence = sequenceControl.getDefaultSequence(billFrom.getLastDetail().getPartyType().getBillingAccountSequenceType());
-        String billingAccountName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
+        var sequence = sequenceControl.getDefaultSequence(billFrom.getLastDetail().getPartyType().getBillingAccountSequenceType());
+        var billingAccountName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
         
          return createBillingAccount(billingAccountName, currency, reference, description, createdBy);
     }
     
     public BillingAccount createBillingAccount(String billingAccountName, Currency currency, String reference, String description, BasePK createdBy) {
-        BillingAccount billingAccount = BillingAccountFactory.getInstance().create();
-        BillingAccountDetail billingAccountDetail = BillingAccountDetailFactory.getInstance().create(billingAccount,
+        var billingAccount = BillingAccountFactory.getInstance().create();
+        var billingAccountDetail = BillingAccountDetailFactory.getInstance().create(billingAccount,
                 billingAccountName, currency, reference, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -226,8 +226,8 @@ public class BillingControl
                         "AND bartb.bllactrtyp_billingaccountroletypeid = barb.bllactr_bllactrtyp_billingaccountroletypeid AND barb.bllactr_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = BillingAccountFactory.getInstance().prepareStatement(query);
+
+            var ps = BillingAccountFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, currency.getPrimaryKey().getEntityId());
             ps.setLong(2, billFrom.getPrimaryKey().getEntityId());
@@ -277,8 +277,8 @@ public class BillingControl
                         "AND barta.bllactrtyp_billingaccountroletypeid = bara.bllactr_bllactrtyp_billingaccountroletypeid AND bara.bllactr_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = BillingAccountFactory.getInstance().prepareStatement(query);
+
+            var ps = BillingAccountFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, billFrom.getPrimaryKey().getEntityId());
             ps.setString(2, BillingAccountRoleTypes.BILL_FROM.name());
@@ -328,8 +328,8 @@ public class BillingControl
                         "AND barta.bllactrtyp_billingaccountroletypeid = bara.bllactr_bllactrtyp_billingaccountroletypeid AND bara.bllactr_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = BillingAccountFactory.getInstance().prepareStatement(query);
+
+            var ps = BillingAccountFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, billTo.getPrimaryKey().getEntityId());
             ps.setString(2, BillingAccountRoleTypes.BILL_TO.name());
@@ -371,8 +371,8 @@ public class BillingControl
                         "WHERE bllact_activedetailid = bllactdt_billingaccountdetailid AND bllactdt_billingaccountname = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = BillingAccountFactory.getInstance().prepareStatement(query);
+
+            var ps = BillingAccountFactory.getInstance().prepareStatement(query);
             
             ps.setString(1, billingAccountName);
             
@@ -398,7 +398,7 @@ public class BillingControl
     
     public List<BillingAccountTransfer> getBillingAccountTransfers(UserVisit userVisit, Collection<BillingAccount> billingAccounts) {
         List<BillingAccountTransfer> billingAccountTransfers = new ArrayList<>(billingAccounts.size());
-        BillingAccountTransferCache billingAccountTransferCache = getPaymentTransferCaches(userVisit).getBillingAccountTransferCache();
+        var billingAccountTransferCache = getPaymentTransferCaches(userVisit).getBillingAccountTransferCache();
         
         billingAccounts.forEach((billingAccount) ->
                 billingAccountTransfers.add(billingAccountTransferCache.getTransfer(billingAccount))
@@ -440,8 +440,8 @@ public class BillingControl
                         "WHERE bllactst_bllact_billingaccountid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = BillingAccountStatusFactory.getInstance().prepareStatement(query);
+
+            var ps = BillingAccountStatusFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, billingAccount.getPrimaryKey().getEntityId());
             
@@ -467,14 +467,14 @@ public class BillingControl
     
     public BillingAccountRole createBillingAccountRoleUsingNames(BillingAccount billingAccount, Party party, PartyContactMechanism partyContactMechanism,
             String billingAccountRoleTypeName, BasePK createdBy) {
-        BillingAccountRoleType billingAccountRoleType = getBillingAccountRoleTypeByName(billingAccountRoleTypeName);
+        var billingAccountRoleType = getBillingAccountRoleTypeByName(billingAccountRoleTypeName);
         
         return createBillingAccountRole(billingAccount, party, partyContactMechanism, billingAccountRoleType, createdBy);
     }
     
     public BillingAccountRole createBillingAccountRole(BillingAccount billingAccount, Party party, PartyContactMechanism partyContactMechanism,
             BillingAccountRoleType billingAccountRoleType, BasePK createdBy) {
-        BillingAccountRole billingAccountRole = BillingAccountRoleFactory.getInstance().create(billingAccount, party, partyContactMechanism,
+        var billingAccountRole = BillingAccountRoleFactory.getInstance().create(billingAccount, party, partyContactMechanism,
                 billingAccountRoleType, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(billingAccount.getPrimaryKey(), EventTypes.MODIFY, billingAccountRole.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -498,8 +498,8 @@ public class BillingControl
                         "WHERE bllactr_bllact_billingaccountid = ? AND bllactr_bllactrtyp_billingaccountroletypeid = ? AND bllactr_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = BillingAccountRoleFactory.getInstance().prepareStatement(query);
+
+            var ps = BillingAccountRoleFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, billingAccount.getPrimaryKey().getEntityId());
             ps.setLong(2, billingAccountRoleType.getPrimaryKey().getEntityId());
@@ -518,7 +518,7 @@ public class BillingControl
     }
     
     public BillingAccountRole getBillingAccountRoleUsingNames(BillingAccount billingAccount, String billingAccountRoleTypeName) {
-        BillingAccountRoleType billingAccountRoleType = getBillingAccountRoleTypeByName(billingAccountRoleTypeName);
+        var billingAccountRoleType = getBillingAccountRoleTypeByName(billingAccountRoleTypeName);
         
         return getBillingAccountRole(billingAccount, billingAccountRoleType);
     }
@@ -554,8 +554,8 @@ public class BillingControl
                         "WHERE bllactr_bllact_billingAccountid = ? AND bllactr_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = BillingAccountRoleFactory.getInstance().prepareStatement(query);
+
+            var ps = BillingAccountRoleFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, billingAccount.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -595,8 +595,8 @@ public class BillingControl
                         "WHERE bllactr_pcm_partycontactmechanismid = ? AND bllactr_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = BillingAccountRoleFactory.getInstance().prepareStatement(query);
+
+            var ps = BillingAccountRoleFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, partyContactMechanism.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -623,7 +623,7 @@ public class BillingControl
     
     public List<BillingAccountRoleTransfer> getBillingAccountRoleTransfers(UserVisit userVisit, Collection<BillingAccountRole> billingAccountRoles) {
         List<BillingAccountRoleTransfer> billingAccountRoleTransfers = new ArrayList<>(billingAccountRoles.size());
-        BillingAccountRoleTransferCache billingAccountRoleTransferCache = getPaymentTransferCaches(userVisit).getBillingAccountRoleTransferCache();
+        var billingAccountRoleTransferCache = getPaymentTransferCaches(userVisit).getBillingAccountRoleTransferCache();
         
         billingAccountRoles.forEach((billingAccountRole) ->
                 billingAccountRoleTransfers.add(billingAccountRoleTransferCache.getTransfer(billingAccountRole))
@@ -638,16 +638,16 @@ public class BillingControl
     
     public void updateBillingAccountRoleFromValue(BillingAccountRoleValue billingAccountRoleValue, BasePK updatedBy) {
         if(billingAccountRoleValue.hasBeenModified()) {
-            BillingAccountRole billingAccountRole = BillingAccountRoleFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var billingAccountRole = BillingAccountRoleFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      billingAccountRoleValue.getPrimaryKey());
             
             billingAccountRole.setThruTime(session.START_TIME_LONG);
             billingAccountRole.store();
-            
-            BillingAccountPK billingAccountPK = billingAccountRole.getBillingAccountPK(); // Not updated
-            PartyPK partyPK = billingAccountRole.getPartyPK(); // Not updated
-            PartyContactMechanismPK partyContactMechanismPK = billingAccountRoleValue.getPartyContactMechanismPK();
-            BillingAccountRoleTypePK billingAccountRoleTypePK = billingAccountRole.getBillingAccountRoleTypePK(); // Not updated
+
+            var billingAccountPK = billingAccountRole.getBillingAccountPK(); // Not updated
+            var partyPK = billingAccountRole.getPartyPK(); // Not updated
+            var partyContactMechanismPK = billingAccountRoleValue.getPartyContactMechanismPK();
+            var billingAccountRoleTypePK = billingAccountRole.getBillingAccountRoleTypePK(); // Not updated
             
             billingAccountRole = BillingAccountRoleFactory.getInstance().create(billingAccountPK, partyPK, partyContactMechanismPK, billingAccountRoleTypePK,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);

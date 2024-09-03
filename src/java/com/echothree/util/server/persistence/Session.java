@@ -101,7 +101,7 @@ public class Session {
     }
 
     public Integer getNextEventTimeSequence(final EntityInstancePK entityInstancePK) {
-        Integer value = eventTimeSequences.get(entityInstancePK);
+        var value = eventTimeSequences.get(entityInstancePK);
 
         if(value == null) {
             value = 1;
@@ -299,7 +299,7 @@ public class Session {
 
     public static void setQueryParams(final PreparedStatement ps, final Object... params) {
         try {
-            for(int i = 0; i < params.length; i++) {
+            for(var i = 0; i < params.length; i++) {
                 if(params[i] instanceof BaseEntity) {
                     ps.setLong(i + 1, ((BaseEntity)params[i]).getPrimaryKey().getEntityId());
                 } else if(params[i] instanceof BasePK) {
@@ -325,7 +325,7 @@ public class Session {
     
     public void query(final String sql, final Object... params) {
         try {
-            PreparedStatement ps = prepareStatement(sql);
+            var ps = prepareStatement(sql);
 
             setQueryParams(ps, params);
 
@@ -339,13 +339,13 @@ public class Session {
         Integer result = null;
 
         try {
-            PreparedStatement ps = prepareStatement(sql);
+            var ps = prepareStatement(sql);
 
             setQueryParams(ps, params);
 
             ps.executeQuery();
             
-            try(ResultSet rs = ps.getResultSet()) {
+            try(var rs = ps.getResultSet()) {
                 if(rs.next()) {
                     result = rs.getInt(1);
                 }
@@ -371,12 +371,12 @@ public class Session {
         Long result = null;
         
         try {
-            PreparedStatement ps = prepareStatement(sql);
+            var ps = prepareStatement(sql);
             
             setQueryParams(ps, params);
             
             ps.executeQuery();
-            try(ResultSet rs = ps.getResultSet()) {
+            try(var rs = ps.getResultSet()) {
                 if(rs.next()) {
                     result = rs.getLong(1);
 
@@ -399,7 +399,7 @@ public class Session {
     }
     
     private void freePreparedStatementCache() {
-        Collection<PreparedStatement> preparedStatements = preparedStatementCache.values();
+        var preparedStatements = preparedStatementCache.values();
 
         preparedStatements.forEach((preparedStatement) -> {
             try {

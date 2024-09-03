@@ -72,25 +72,25 @@ public class CreateWorkEffortTypeCommand
     @Override
     protected BaseResult execute() {
         var workEffortControl = Session.getModelController(WorkEffortControl.class);
-        String workEffortTypeName = form.getWorkEffortTypeName();
-        WorkEffortType workEffortType = workEffortControl.getWorkEffortTypeByName(workEffortTypeName);
+        var workEffortTypeName = form.getWorkEffortTypeName();
+        var workEffortType = workEffortControl.getWorkEffortTypeByName(workEffortTypeName);
         
         if(workEffortType == null) {
             var coreControl = getCoreControl();
-            String componentVendorName = form.getComponentVendorName();
-            ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+            var componentVendorName = form.getComponentVendorName();
+            var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
 
             if(componentVendor != null) {
-                String entityTypeName = form.getEntityTypeName();
-                EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+                var entityTypeName = form.getEntityTypeName();
+                var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
 
                 if(entityType != null) {
-                    String workEffortSequenceName = form.getWorkEffortSequenceName();
+                    var workEffortSequenceName = form.getWorkEffortSequenceName();
                     Sequence workEffortSequence = null;
 
                     if(workEffortSequenceName != null) {
                         var sequenceControl = Session.getModelController(SequenceControl.class);
-                        SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.WORK_EFFORT.name());
+                        var sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.WORK_EFFORT.name());
 
                         if(sequenceType != null) {
                             workEffortSequence = sequenceControl.getSequenceByName(sequenceType, workEffortSequenceName);
@@ -101,12 +101,12 @@ public class CreateWorkEffortTypeCommand
 
                     if(workEffortSequenceName == null || workEffortSequence != null) {
                         var uomControl = Session.getModelController(UomControl.class);
-                        UnitOfMeasureKind timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
+                        var timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
 
                         if(timeUnitOfMeasureKind != null) {
-                            String scheduledTimeUnitOfMeasureTypeName = form.getScheduledTimeUnitOfMeasureTypeName();
+                            var scheduledTimeUnitOfMeasureTypeName = form.getScheduledTimeUnitOfMeasureTypeName();
                             UnitOfMeasureType scheduledTimeUnitOfMeasureType = null;
-                            String scheduledTime = form.getScheduledTime();
+                            var scheduledTime = form.getScheduledTime();
 
                             if(scheduledTimeUnitOfMeasureTypeName != null && scheduledTime != null) {
                                 scheduledTimeUnitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(timeUnitOfMeasureKind,
@@ -121,9 +121,9 @@ public class CreateWorkEffortTypeCommand
                             }
 
                             if(!hasExecutionErrors()) {
-                                String estimatedTimeAllowedUnitOfMeasureTypeName = form.getEstimatedTimeAllowedUnitOfMeasureTypeName();
+                                var estimatedTimeAllowedUnitOfMeasureTypeName = form.getEstimatedTimeAllowedUnitOfMeasureTypeName();
                                 UnitOfMeasureType estimatedTimeAllowedUnitOfMeasureType = null;
-                                String estimatedTimeAllowed = form.getEstimatedTimeAllowed();
+                                var estimatedTimeAllowed = form.getEstimatedTimeAllowed();
 
                                 if(estimatedTimeAllowedUnitOfMeasureTypeName != null && estimatedTimeAllowed != null) {
                                     estimatedTimeAllowedUnitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(timeUnitOfMeasureKind,
@@ -138,9 +138,9 @@ public class CreateWorkEffortTypeCommand
                                 }
 
                                 if(!hasExecutionErrors()) {
-                                    String maximumTimeAllowedUnitOfMeasureTypeName = form.getMaximumTimeAllowedUnitOfMeasureTypeName();
+                                    var maximumTimeAllowedUnitOfMeasureTypeName = form.getMaximumTimeAllowedUnitOfMeasureTypeName();
                                     UnitOfMeasureType maximumTimeAllowedUnitOfMeasureType = null;
-                                    String maximumTimeAllowed = form.getMaximumTimeAllowed();
+                                    var maximumTimeAllowed = form.getMaximumTimeAllowed();
 
                                     if(maximumTimeAllowedUnitOfMeasureTypeName != null && maximumTimeAllowed != null) {
                                         maximumTimeAllowedUnitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(timeUnitOfMeasureKind,
@@ -155,16 +155,16 @@ public class CreateWorkEffortTypeCommand
                                     }
 
                                     if(!hasExecutionErrors()) {
-                                        Conversion scheduledTimeConversion = scheduledTimeUnitOfMeasureType == null? null:
+                                        var scheduledTimeConversion = scheduledTimeUnitOfMeasureType == null? null:
                                             new Conversion(uomControl, scheduledTimeUnitOfMeasureType,
                                                 Long.valueOf(scheduledTime)).convertToLowestUnitOfMeasureType();
-                                        Conversion estimatedTimeAllowedConversion = estimatedTimeAllowedUnitOfMeasureType == null? null:
+                                        var estimatedTimeAllowedConversion = estimatedTimeAllowedUnitOfMeasureType == null? null:
                                             new Conversion(uomControl, estimatedTimeAllowedUnitOfMeasureType,
                                                 Long.valueOf(estimatedTimeAllowed)).convertToLowestUnitOfMeasureType();
-                                        Conversion maximumTimeAllowedConversion = maximumTimeAllowedUnitOfMeasureType == null? null:
+                                        var maximumTimeAllowedConversion = maximumTimeAllowedUnitOfMeasureType == null? null:
                                             new Conversion(uomControl, maximumTimeAllowedUnitOfMeasureType,
                                                 Long.valueOf(maximumTimeAllowed)).convertToLowestUnitOfMeasureType();
-                                        PartyPK createdBy = getPartyPK();
+                                        var createdBy = getPartyPK();
                                         var sortOrder = Integer.valueOf(form.getSortOrder());
                                         var description = form.getDescription();
 

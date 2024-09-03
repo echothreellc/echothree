@@ -54,7 +54,7 @@ public class PaymentMethodTypeLogic
             final Boolean isDefault, final Integer sortOrder, final Language language, final String description,
             final BasePK createdBy) {
         var paymentMethodTypeControl = Session.getModelController(PaymentMethodTypeControl.class);
-        PaymentMethodType paymentMethodType = paymentMethodTypeControl.getPaymentMethodTypeByName(paymentMethodTypeName);
+        var paymentMethodType = paymentMethodTypeControl.getPaymentMethodTypeByName(paymentMethodTypeName);
 
         if(paymentMethodType == null) {
             paymentMethodType = paymentMethodTypeControl.createPaymentMethodType(paymentMethodTypeName, isDefault, sortOrder, createdBy);
@@ -72,7 +72,7 @@ public class PaymentMethodTypeLogic
     public PaymentMethodType getPaymentMethodTypeByName(final ExecutionErrorAccumulator eea, final String paymentMethodTypeName,
             final EntityPermission entityPermission) {
         var paymentMethodTypeControl = Session.getModelController(PaymentMethodTypeControl.class);
-        PaymentMethodType paymentMethodType = paymentMethodTypeControl.getPaymentMethodTypeByName(paymentMethodTypeName, entityPermission);
+        var paymentMethodType = paymentMethodTypeControl.getPaymentMethodTypeByName(paymentMethodTypeName, entityPermission);
 
         if(paymentMethodType == null) {
             handleExecutionError(UnknownPaymentMethodTypeNameException.class, eea, ExecutionErrors.UnknownPaymentMethodTypeName.name(), paymentMethodTypeName);
@@ -93,7 +93,7 @@ public class PaymentMethodTypeLogic
             final PaymentMethodTypeUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
         PaymentMethodType paymentMethodType = null;
         var paymentMethodTypeControl = Session.getModelController(PaymentMethodTypeControl.class);
-        String paymentMethodTypeName = universalSpec.getPaymentMethodTypeName();
+        var paymentMethodTypeName = universalSpec.getPaymentMethodTypeName();
         var parameterCount = (paymentMethodTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {

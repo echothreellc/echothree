@@ -49,8 +49,8 @@ public class DeleteTermCommand
     @Override
     protected BaseResult execute() {
         var termControl = Session.getModelController(TermControl.class);
-        String termName = form.getTermName();
-        Term term = termControl.getTermByNameForUpdate(termName);
+        var termName = form.getTermName();
+        var term = termControl.getTermByNameForUpdate(termName);
         
         if(term != null) {
             termControl.deleteTerm(term, getPartyPK());

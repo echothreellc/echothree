@@ -40,7 +40,7 @@ public class ResultPropertyFilter
     private Map<Class, String> collectionFilters = new HashMap<>();
 
     public void addClassAndProperty(Class clazz, String property, String expression) {
-        Map<String, String> properties = classAndPropertyFilters.get(clazz);
+        var properties = classAndPropertyFilters.get(clazz);
         
         if(properties == null) {
             classAndPropertyFilters.put(clazz, properties);
@@ -63,8 +63,8 @@ public class ResultPropertyFilter
     
     @Override
     public boolean apply(Object source, String name, Object value) {
-        boolean filteredOut = true;
-        Class<?> clazz = source.getClass();
+        var filteredOut = true;
+        var clazz = source.getClass();
         
         if(Proxy.isProxyClass(clazz)) {
             if(source instanceof BaseResult) {
@@ -73,20 +73,20 @@ public class ResultPropertyFilter
         }
         
         if(classAndPropertyFilters.containsKey(clazz)) {
-            Map<String, String> properties = classAndPropertyFilters.get(clazz);
+            var properties = classAndPropertyFilters.get(clazz);
             
             if(properties == null) {
                 filteredOut = false;
             } else if(properties.containsKey(name)) {
-                String expression = properties.get(name);
+                var expression = properties.get(name);
 
                 if(expression == null) {
                     filteredOut = false;
                 } else {
-                    SimpleContext simpleContext = new SimpleContext();
+                    var simpleContext = new SimpleContext();
 
                     simpleContext.setVariable(name, expressionFactory.createValueExpression(value, value.getClass()));
-                    ValueExpression e = expressionFactory.createValueExpression(simpleContext, expression, Boolean.class);
+                    var e = expressionFactory.createValueExpression(simpleContext, expression, Boolean.class);
 
                     filteredOut = !(Boolean)e.getValue(simpleContext);
                 }
@@ -95,22 +95,22 @@ public class ResultPropertyFilter
         
         if(!filteredOut && value instanceof BaseWrapper) {
             @SuppressWarnings("unchecked")
-            Collection<Object> collection = ((BaseWrapper<Object>)value).getCollection();
+            var collection = ((BaseWrapper<Object>)value).getCollection();
             
             if(collection.size() > 0) {
-                Object firstObject = collection.iterator().next();
+                var firstObject = collection.iterator().next();
                 
                 if(firstObject instanceof BaseTransfer) {
-                    Class<?> listContains = firstObject.getClass();
-                    String expression = collectionFilters.get(listContains);
+                    var listContains = firstObject.getClass();
+                    var expression = collectionFilters.get(listContains);
                     
                     if(expression != null) {
-                        String simpleName = StringUtils.getInstance().lowerCaseFirstCharacter(listContains.getSimpleName());
-                        String variableName = simpleName.substring(0, simpleName.length() - 8);
+                        var simpleName = StringUtils.getInstance().lowerCaseFirstCharacter(listContains.getSimpleName());
+                        var variableName = simpleName.substring(0, simpleName.length() - 8);
                         Set<Object> objectsToRemove = new HashSet<>();
 
                         collection.stream().forEach((object) -> {
-                            SimpleContext simpleContext = new SimpleContext();
+                            var simpleContext = new SimpleContext();
                             simpleContext.setVariable(variableName, expressionFactory.createValueExpression(object, object.getClass()));
                             if (!(Boolean)expressionFactory.createValueExpression(simpleContext, expression, Boolean.class).getValue(simpleContext)) {
                                 objectsToRemove.add(object);

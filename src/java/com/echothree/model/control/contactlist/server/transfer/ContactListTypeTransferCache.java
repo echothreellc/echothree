@@ -39,21 +39,21 @@ public class ContactListTypeTransferCache
     }
     
     public ContactListTypeTransfer getContactListTypeTransfer(ContactListType contactListType) {
-        ContactListTypeTransfer contactListTypeTransfer = get(contactListType);
+        var contactListTypeTransfer = get(contactListType);
         
         if(contactListTypeTransfer == null) {
-            ContactListTypeDetail contactListTypeDetail = contactListType.getLastDetail();
-            String contactListTypeName = contactListTypeDetail.getContactListTypeName();
-            Chain confirmationRequestChain = contactListTypeDetail.getConfirmationRequestChain();
-            ChainTransfer confirmationRequestChainTransfer = confirmationRequestChain == null ? null : chainControl.getChainTransfer(userVisit, confirmationRequestChain);
-            Chain subscribeChain = contactListTypeDetail.getSubscribeChain();
-            ChainTransfer subscribeChainTransfer = subscribeChain == null ? null : chainControl.getChainTransfer(userVisit, subscribeChain);
-            Chain unsubscribeChain = contactListTypeDetail.getUnsubscribeChain();
-            ChainTransfer unsubscribeChainTransfer = unsubscribeChain == null ? null : chainControl.getChainTransfer(userVisit, unsubscribeChain);
-            Boolean usedForSolicitation = contactListTypeDetail.getUsedForSolicitation();
-            Boolean isDefault = contactListTypeDetail.getIsDefault();
-            Integer sortOrder = contactListTypeDetail.getSortOrder();
-            String description = contactListControl.getBestContactListTypeDescription(contactListType, getLanguage());
+            var contactListTypeDetail = contactListType.getLastDetail();
+            var contactListTypeName = contactListTypeDetail.getContactListTypeName();
+            var confirmationRequestChain = contactListTypeDetail.getConfirmationRequestChain();
+            var confirmationRequestChainTransfer = confirmationRequestChain == null ? null : chainControl.getChainTransfer(userVisit, confirmationRequestChain);
+            var subscribeChain = contactListTypeDetail.getSubscribeChain();
+            var subscribeChainTransfer = subscribeChain == null ? null : chainControl.getChainTransfer(userVisit, subscribeChain);
+            var unsubscribeChain = contactListTypeDetail.getUnsubscribeChain();
+            var unsubscribeChainTransfer = unsubscribeChain == null ? null : chainControl.getChainTransfer(userVisit, unsubscribeChain);
+            var usedForSolicitation = contactListTypeDetail.getUsedForSolicitation();
+            var isDefault = contactListTypeDetail.getIsDefault();
+            var sortOrder = contactListTypeDetail.getSortOrder();
+            var description = contactListControl.getBestContactListTypeDescription(contactListType, getLanguage());
             
             contactListTypeTransfer = new ContactListTypeTransfer(contactListTypeName, confirmationRequestChainTransfer, subscribeChainTransfer,
                     unsubscribeChainTransfer, usedForSolicitation, isDefault, sortOrder, description);

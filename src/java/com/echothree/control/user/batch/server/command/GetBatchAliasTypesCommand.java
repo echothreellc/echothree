@@ -65,9 +65,9 @@ public class GetBatchAliasTypesCommand
     @Override
     protected BaseResult execute() {
         var batchControl = Session.getModelController(BatchControl.class);
-        GetBatchAliasTypesResult result = BatchResultFactory.getGetBatchAliasTypesResult();
-        String batchTypeName = form.getBatchTypeName();
-        BatchType batchType = batchControl.getBatchTypeByName(batchTypeName);
+        var result = BatchResultFactory.getGetBatchAliasTypesResult();
+        var batchTypeName = form.getBatchTypeName();
+        var batchType = batchControl.getBatchTypeByName(batchTypeName);
 
         if(batchType != null) {
             result.setBatchType(batchControl.getBatchTypeTransfer(getUserVisit(), batchType));

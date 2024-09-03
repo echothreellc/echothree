@@ -104,16 +104,16 @@ public class ItemDescriptionTransferCache
     
     @Override
     public ItemDescriptionTransfer getTransfer(ItemDescription itemDescription) {
-        ItemDescriptionTransfer itemDescriptionTransfer = get(itemDescription);
+        var itemDescriptionTransfer = get(itemDescription);
         
         if(itemDescriptionTransfer == null) {
-            ItemDescriptionDetail itemDescriptionDetail = itemDescription.getLastDetail();
-            ItemDescriptionTypeTransfer itemDescriptionTypeTransfer = filterItemDescriptionType ? null : itemControl.getItemDescriptionTypeTransfer(userVisit, itemDescriptionDetail.getItemDescriptionType());
-            Item item = itemDescriptionDetail.getItem();
-            ItemTransfer itemTransfer = filterItem ? null : itemControl.getItemTransfer(userVisit, item);
-            LanguageTransfer languageTransfer = filterLanguage ? null : partyControl.getLanguageTransfer(userVisit, itemDescriptionDetail.getLanguage());
-            MimeType mimeType = filterMimeType ? null : itemDescriptionDetail.getMimeType();
-            MimeTypeTransfer mimeTypeTransfer = mimeType == null? null: coreControl.getMimeTypeTransfer(userVisit, mimeType);
+            var itemDescriptionDetail = itemDescription.getLastDetail();
+            var itemDescriptionTypeTransfer = filterItemDescriptionType ? null : itemControl.getItemDescriptionTypeTransfer(userVisit, itemDescriptionDetail.getItemDescriptionType());
+            var item = itemDescriptionDetail.getItem();
+            var itemTransfer = filterItem ? null : itemControl.getItemTransfer(userVisit, item);
+            var languageTransfer = filterLanguage ? null : partyControl.getLanguageTransfer(userVisit, itemDescriptionDetail.getLanguage());
+            var mimeType = filterMimeType ? null : itemDescriptionDetail.getMimeType();
+            var mimeTypeTransfer = mimeType == null? null: coreControl.getMimeTypeTransfer(userVisit, mimeType);
             ByteArray blobDescription = null;
             String clobDescription = null;
             String stringDescription = null;
@@ -123,10 +123,10 @@ public class ItemDescriptionTransferCache
             Boolean scaledFromParent = null;
             String eTag = null;
             long eTagEntityId = 0;
-            int eTagSize = 0;
+            var eTagSize = 0;
             
             if(includeBlob || includeETag) {
-                ItemBlobDescription itemBlobDescription = itemControl.getItemBlobDescription(itemDescription);
+                var itemBlobDescription = itemControl.getItemBlobDescription(itemDescription);
                 
                 if(itemBlobDescription != null) {
                     if(includeBlob) {
@@ -139,7 +139,7 @@ public class ItemDescriptionTransferCache
             }
             
             if(includeClob || includeETag) {
-                ItemClobDescription itemClobDescription = itemControl.getItemClobDescription(itemDescription);
+                var itemClobDescription = itemControl.getItemClobDescription(itemDescription);
                 
                 if(itemClobDescription != null) {
                     if(includeClob) {
@@ -152,7 +152,7 @@ public class ItemDescriptionTransferCache
             }
             
             if(includeString || includeETag) {
-                ItemStringDescription itemStringDescription = itemControl.getItemStringDescription(itemDescription);
+                var itemStringDescription = itemControl.getItemStringDescription(itemDescription);
                 
                 if(itemStringDescription != null) {
                     if(includeString) {
@@ -165,7 +165,7 @@ public class ItemDescriptionTransferCache
             }
 
             if(includeImageDescription) {
-                ItemImageDescription itemImageDescription = itemControl.getItemImageDescription(itemDescription);
+                var itemImageDescription = itemControl.getItemImageDescription(itemDescription);
 
                 if(itemImageDescription != null) {
                     itemImageTypeTransfer = filterItemImageType ? null : itemControl.getItemImageTypeTransfer(userVisit, itemImageDescription.getItemImageType());
@@ -177,17 +177,17 @@ public class ItemDescriptionTransferCache
 
             if(includeETag && eTagEntityId != 0) {
                 // Item Descriptions do not have their own EntityTime, fall back on the Item's EntityTime.
-                EntityTimeTransfer entityTimeTransfer = item == null ? null : itemTransfer.getEntityInstance().getEntityTime();
+                var entityTimeTransfer = item == null ? null : itemTransfer.getEntityInstance().getEntityTime();
                 Long maxTime;
                 
                 if(entityTimeTransfer == null) {
-                    EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(item.getPrimaryKey());
-                    EntityTime entityTime = coreControl.getEntityTime(entityInstance);
-                    Long modifiedTime = entityTime.getModifiedTime();
+                    var entityInstance = coreControl.getEntityInstanceByBasePK(item.getPrimaryKey());
+                    var entityTime = coreControl.getEntityTime(entityInstance);
+                    var modifiedTime = entityTime.getModifiedTime();
                     
                     maxTime = modifiedTime == null ? entityTime.getCreatedTime() : modifiedTime;
                 } else {
-                    Long modifiedTime = entityTimeTransfer.getUnformattedModifiedTime();
+                    var modifiedTime = entityTimeTransfer.getUnformattedModifiedTime();
                     
                     maxTime = modifiedTime == null ? entityTimeTransfer.getUnformattedCreatedTime() : modifiedTime;
                 }

@@ -79,25 +79,25 @@ public class EditContentPageLayoutDescriptionCommand
     @Override
     protected BaseResult execute() {
         var contentControl = Session.getModelController(ContentControl.class);
-        EditContentPageLayoutDescriptionResult result = ContentResultFactory.getEditContentPageLayoutDescriptionResult();
-        String contentPageLayoutName = spec.getContentPageLayoutName();
-        ContentPageLayout contentPageLayout = contentControl.getContentPageLayoutByName(contentPageLayoutName);
+        var result = ContentResultFactory.getEditContentPageLayoutDescriptionResult();
+        var contentPageLayoutName = spec.getContentPageLayoutName();
+        var contentPageLayout = contentControl.getContentPageLayoutByName(contentPageLayoutName);
         
         if(contentPageLayout != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                    ContentPageLayoutDescription contentPageLayoutDescription = contentControl.getContentPageLayoutDescription(contentPageLayout, language);
+                    var contentPageLayoutDescription = contentControl.getContentPageLayoutDescription(contentPageLayout, language);
                     
                     if(contentPageLayoutDescription != null) {
                         if(editMode.equals(EditMode.LOCK)) {
                             result.setContentPageLayoutDescription(contentControl.getContentPageLayoutDescriptionTransfer(getUserVisit(), contentPageLayoutDescription));
 
                             if(lockEntity(contentPageLayout)) {
-                                ContentPageLayoutDescriptionEdit edit = ContentEditFactory.getContentPageLayoutDescriptionEdit();
+                                var edit = ContentEditFactory.getContentPageLayoutDescriptionEdit();
 
                                 result.setEdit(edit);
                                 edit.setDescription(contentPageLayoutDescription.getDescription());
@@ -113,12 +113,12 @@ public class EditContentPageLayoutDescriptionCommand
                         addExecutionError(ExecutionErrors.UnknownContentPageLayoutDescription.name());
                     }
                 } else if(editMode.equals(EditMode.UPDATE)) {
-                    ContentPageLayoutDescriptionValue contentPageLayoutDescriptionValue = contentControl.getContentPageLayoutDescriptionValueForUpdate(contentPageLayout, language);
+                    var contentPageLayoutDescriptionValue = contentControl.getContentPageLayoutDescriptionValueForUpdate(contentPageLayout, language);
                     
                     if(contentPageLayoutDescriptionValue != null) {
                         if(lockEntityForUpdate(contentPageLayout)) {
                             try {
-                                String description = edit.getDescription();
+                                var description = edit.getDescription();
                                 
                                 contentPageLayoutDescriptionValue.setDescription(description);
                                 

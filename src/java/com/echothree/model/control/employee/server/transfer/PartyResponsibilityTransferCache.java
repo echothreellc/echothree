@@ -38,11 +38,11 @@ public class PartyResponsibilityTransferCache
     }
     
     public PartyResponsibilityTransfer getPartyResponsibilityTransfer(PartyResponsibility partyResponsibility) {
-        PartyResponsibilityTransfer partyResponsibilityTransfer = get(partyResponsibility);
+        var partyResponsibilityTransfer = get(partyResponsibility);
         
         if(partyResponsibilityTransfer == null) {
-            PartyTransfer party = partyControl.getPartyTransfer(userVisit, partyResponsibility.getParty());
-            ResponsibilityTypeTransfer responsibilityType = employeeControl.getResponsibilityTypeTransfer(userVisit, partyResponsibility.getResponsibilityType());
+            var party = partyControl.getPartyTransfer(userVisit, partyResponsibility.getParty());
+            var responsibilityType = employeeControl.getResponsibilityTypeTransfer(userVisit, partyResponsibility.getResponsibilityType());
             
             partyResponsibilityTransfer = new PartyResponsibilityTransfer(party, responsibilityType);
             put(partyResponsibility, partyResponsibilityTransfer);

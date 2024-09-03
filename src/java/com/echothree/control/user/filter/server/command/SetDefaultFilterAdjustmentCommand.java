@@ -65,12 +65,12 @@ public class SetDefaultFilterAdjustmentCommand
     @Override
     protected BaseResult execute() {
         var filterControl = Session.getModelController(FilterControl.class);
-        String filterKindName = form.getFilterKindName();
-        FilterKind filterKind = filterControl.getFilterKindByName(filterKindName);
+        var filterKindName = form.getFilterKindName();
+        var filterKind = filterControl.getFilterKindByName(filterKindName);
         
         if(filterKind != null) {
-            String filterAdjustmentName = form.getFilterAdjustmentName();
-            FilterAdjustmentDetailValue filterAdjustmentDetailValue = filterControl.getFilterAdjustmentDetailValueByNameForUpdate(filterKind, filterAdjustmentName);
+            var filterAdjustmentName = form.getFilterAdjustmentName();
+            var filterAdjustmentDetailValue = filterControl.getFilterAdjustmentDetailValueByNameForUpdate(filterKind, filterAdjustmentName);
             
             if(filterAdjustmentDetailValue != null) {
                 filterAdjustmentDetailValue.setIsDefault(Boolean.TRUE);

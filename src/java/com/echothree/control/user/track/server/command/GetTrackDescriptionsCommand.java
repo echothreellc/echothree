@@ -65,9 +65,9 @@ public class GetTrackDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var trackControl = Session.getModelController(TrackControl.class);
-        GetTrackDescriptionsResult result = TrackResultFactory.getGetTrackDescriptionsResult();
-        String trackName = form.getTrackName();
-        Track track = trackControl.getTrackByName(trackName);
+        var result = TrackResultFactory.getGetTrackDescriptionsResult();
+        var trackName = form.getTrackName();
+        var track = trackControl.getTrackByName(trackName);
         
         if(track != null) {
             result.setTrack(trackControl.getTrackTransfer(getUserVisit(), track));

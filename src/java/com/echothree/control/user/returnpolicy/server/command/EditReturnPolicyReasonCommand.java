@@ -81,27 +81,27 @@ public class EditReturnPolicyReasonCommand
     @Override
     protected BaseResult execute() {
         var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
-        EditReturnPolicyReasonResult result = ReturnPolicyResultFactory.getEditReturnPolicyReasonResult();
-        String returnPolicyName = spec.getReturnPolicyName();
-        String returnKindName = spec.getReturnKindName();
-        ReturnKind returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
+        var result = ReturnPolicyResultFactory.getEditReturnPolicyReasonResult();
+        var returnPolicyName = spec.getReturnPolicyName();
+        var returnKindName = spec.getReturnKindName();
+        var returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
         
         if(returnKind != null) {
-            ReturnPolicy returnPolicy = returnPolicyControl.getReturnPolicyByName(returnKind, returnPolicyName);
+            var returnPolicy = returnPolicyControl.getReturnPolicyByName(returnKind, returnPolicyName);
             
             if(returnPolicy != null) {
-                String returnReasonName = spec.getReturnReasonName();
-                ReturnReason returnReason = returnPolicyControl.getReturnReasonByName(returnKind, returnReasonName);
+                var returnReasonName = spec.getReturnReasonName();
+                var returnReason = returnPolicyControl.getReturnReasonByName(returnKind, returnReasonName);
                 
                 if(returnReason != null) {
                     if(editMode.equals(EditMode.LOCK)) {
-                        ReturnPolicyReason returnPolicyReason = returnPolicyControl.getReturnPolicyReason(returnPolicy, returnReason);
+                        var returnPolicyReason = returnPolicyControl.getReturnPolicyReason(returnPolicy, returnReason);
                         
                         if(returnPolicyReason != null) {
                             result.setReturnPolicyReason(returnPolicyControl.getReturnPolicyReasonTransfer(getUserVisit(), returnPolicyReason));
                             
                             if(lockEntity(returnPolicy)) {
-                                ReturnPolicyReasonEdit edit = ReturnPolicyEditFactory.getReturnPolicyReasonEdit();
+                                var edit = ReturnPolicyEditFactory.getReturnPolicyReasonEdit();
                                 
                                 result.setEdit(edit);
                                 edit.setIsDefault(returnPolicyReason.getIsDefault().toString());
@@ -116,7 +116,7 @@ public class EditReturnPolicyReasonCommand
                             addExecutionError(ExecutionErrors.UnknownReturnPolicyReason.name());
                         }
                     } else if(editMode.equals(EditMode.UPDATE)) {
-                        ReturnPolicyReasonValue returnPolicyReasonValue = returnPolicyControl.getReturnPolicyReasonValueForUpdate(returnPolicy, returnReason);
+                        var returnPolicyReasonValue = returnPolicyControl.getReturnPolicyReasonValueForUpdate(returnPolicy, returnReason);
                         
                         if(returnPolicyReasonValue != null) {
                             if(lockEntityForUpdate(returnPolicy)) {

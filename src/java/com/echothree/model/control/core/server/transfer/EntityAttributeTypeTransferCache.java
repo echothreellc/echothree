@@ -50,11 +50,11 @@ public class EntityAttributeTypeTransferCache
     }
     
     public EntityAttributeTypeTransfer getEntityAttributeTypeTransfer(EntityAttributeType entityAttributeType) {
-        EntityAttributeTypeTransfer entityAttributeTypeTransfer = get(entityAttributeType);
+        var entityAttributeTypeTransfer = get(entityAttributeType);
         
         if(entityAttributeTypeTransfer == null) {
-            String entityAttributeTypeName = filterEntityAttributeTypeName ? null : entityAttributeType.getEntityAttributeTypeName();
-            String description = filterDescription ? null : coreControl.getBestEntityAttributeTypeDescription(entityAttributeType, getLanguage());
+            var entityAttributeTypeName = filterEntityAttributeTypeName ? null : entityAttributeType.getEntityAttributeTypeName();
+            var description = filterDescription ? null : coreControl.getBestEntityAttributeTypeDescription(entityAttributeType, getLanguage());
             
             entityAttributeTypeTransfer = new EntityAttributeTypeTransfer(entityAttributeTypeName, description);
             put(entityAttributeType, entityAttributeTypeTransfer);

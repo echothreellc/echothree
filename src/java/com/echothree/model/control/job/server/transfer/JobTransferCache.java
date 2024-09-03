@@ -46,22 +46,22 @@ public class JobTransferCache
     }
     
     public JobTransfer getJobTransfer(Job job) {
-        JobTransfer jobTransfer = get(job);
+        var jobTransfer = get(job);
         
         if(jobTransfer == null) {
-            JobDetail jobDetail = job.getLastDetail();
-            JobStatus jobStatus = jobControl.getJobStatus(job);
-            String jobName = jobDetail.getJobName();
-            PartyTransfer runAsPartyTransfer = partyControl.getPartyTransfer(userVisit, jobDetail.getRunAsParty());
-            Integer sortOrder = jobDetail.getSortOrder();
-            String description = jobControl.getBestJobDescription(job, getLanguage());
-            Long unformattedLastStartTime = jobStatus.getLastStartTime();
-            String lastStartTime = formatTypicalDateTime(unformattedLastStartTime);
-            Long unformattedLastEndTime = jobStatus.getLastEndTime();
-            String lastEndTime = formatTypicalDateTime(unformattedLastEndTime);
+            var jobDetail = job.getLastDetail();
+            var jobStatus = jobControl.getJobStatus(job);
+            var jobName = jobDetail.getJobName();
+            var runAsPartyTransfer = partyControl.getPartyTransfer(userVisit, jobDetail.getRunAsParty());
+            var sortOrder = jobDetail.getSortOrder();
+            var description = jobControl.getBestJobDescription(job, getLanguage());
+            var unformattedLastStartTime = jobStatus.getLastStartTime();
+            var lastStartTime = formatTypicalDateTime(unformattedLastStartTime);
+            var unformattedLastEndTime = jobStatus.getLastEndTime();
+            var lastEndTime = formatTypicalDateTime(unformattedLastEndTime);
 
-            EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(job.getPrimaryKey());
-            WorkflowEntityStatusTransfer jobStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
+            var entityInstance = coreControl.getEntityInstanceByBasePK(job.getPrimaryKey());
+            var jobStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
                     JobStatusConstants.Workflow_JOB_STATUS, entityInstance);
 
             jobTransfer = new JobTransfer(jobName, runAsPartyTransfer, sortOrder, description, jobStatusTransfer, unformattedLastStartTime, lastStartTime,

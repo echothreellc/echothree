@@ -65,16 +65,16 @@ public class GetBatchAliasesCommand
     @Override
     protected BaseResult execute() {
         var batchControl = Session.getModelController(BatchControl.class);
-        GetBatchAliasesResult result = BatchResultFactory.getGetBatchAliasesResult();
-        String batchTypeName = form.getBatchTypeName();
-        BatchType batchType = batchControl.getBatchTypeByName(batchTypeName);
+        var result = BatchResultFactory.getGetBatchAliasesResult();
+        var batchTypeName = form.getBatchTypeName();
+        var batchType = batchControl.getBatchTypeByName(batchTypeName);
 
         if(batchType != null) {
-            String batchName = form.getBatchName();
-            Batch batch = batchControl.getBatchByName(batchType, batchName);
+            var batchName = form.getBatchName();
+            var batch = batchControl.getBatchByName(batchType, batchName);
 
             if(batch != null) {
-                UserVisit userVisit = getUserVisit();
+                var userVisit = getUserVisit();
 
                 result.setBatch(batchControl.getBatchTransfer(userVisit, batch));
                 result.setBatchAliases(batchControl.getBatchAliasTransfersByBatch(userVisit, batch));

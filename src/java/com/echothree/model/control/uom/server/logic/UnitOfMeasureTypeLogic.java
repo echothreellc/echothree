@@ -53,7 +53,7 @@ public class UnitOfMeasureTypeLogic
     public UnitOfMeasureType getUnitOfMeasureTypeByName(final ExecutionErrorAccumulator eea, final UnitOfMeasureKind unitOfMeasureKind,
             final String unitOfMeasureTypeName) {
         var uomControl = Session.getModelController(UomControl.class);
-        UnitOfMeasureType unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
+        var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
 
         if(unitOfMeasureType == null) {
             handleExecutionError(UnknownUnitOfMeasureTypeNameException.class, eea, ExecutionErrors.UnknownUnitOfMeasureTypeName.name(),
@@ -65,7 +65,7 @@ public class UnitOfMeasureTypeLogic
 
     public UnitOfMeasureType getUnitOfMeasureTypeByName(final ExecutionErrorAccumulator eea, final String unitOfMeasureKindName,
             final String unitOfMeasureTypeName) {
-        UnitOfMeasureKind unitOfMeasureKind = UnitOfMeasureKindLogic.getInstance().getUnitOfMeasureKindByName(eea, unitOfMeasureKindName);
+        var unitOfMeasureKind = UnitOfMeasureKindLogic.getInstance().getUnitOfMeasureKindByName(eea, unitOfMeasureKindName);
         UnitOfMeasureType unitOfMeasureType = null;
 
         if(!hasExecutionErrors(eea)) {
@@ -80,7 +80,7 @@ public class UnitOfMeasureTypeLogic
         UnitOfMeasureType unitOfMeasureType = null;
 
         if(unitOfMeasureName != null) {
-            String[] splitUomName = Splitter.on(':').trimResults().omitEmptyStrings().splitToList(unitOfMeasureName).toArray(new String[0]);
+            var splitUomName = Splitter.on(':').trimResults().omitEmptyStrings().splitToList(unitOfMeasureName).toArray(new String[0]);
 
             if(splitUomName.length == 2) {
                 unitOfMeasureKindName = splitUomName[0];
@@ -129,7 +129,7 @@ public class UnitOfMeasureTypeLogic
 
         if(parameterCount == 2) {
             var uomControl = Session.getModelController(UomControl.class);
-            UnitOfMeasureType unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
+            var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
 
             if(unitOfMeasureType != null) {
                 result = new Conversion(uomControl, unitOfMeasureType, Long.valueOf(value)).convertToLowestUnitOfMeasureType().getQuantity();
@@ -161,7 +161,7 @@ public class UnitOfMeasureTypeLogic
 
         if(parameterCount == 2) {
             var uomControl = Session.getModelController(UomControl.class);
-            UnitOfMeasureKind unitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(unitOfMeasureKindUseTypeName);
+            var unitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(unitOfMeasureKindUseTypeName);
 
             if(unitOfMeasureKind != null) {
                 result = checkUnitOfMeasure(eea, unitOfMeasureKind, value, unitOfMeasureTypeName, missingErrorClass, missingErrorKey,
@@ -232,10 +232,10 @@ public class UnitOfMeasureTypeLogic
         
         if(value != null) {
             var uomControl = Session.getModelController(UomControl.class);
-            UnitOfMeasureKind unitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(unitOfMeasureKindUseTypeName);
+            var unitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(unitOfMeasureKindUseTypeName);
             
             if(unitOfMeasureKind != null) {
-                Conversion conversion = new Conversion(uomControl, unitOfMeasureKind, value).convertToHighestUnitOfMeasureType();
+                var conversion = new Conversion(uomControl, unitOfMeasureKind, value).convertToHighestUnitOfMeasureType();
                 
                 result = new StringUnitOfMeasure(conversion.getQuantity().toString(), unitOfMeasureKind.getLastDetail().getUnitOfMeasureKindName(),
                         conversion.getUnitOfMeasureType().getLastDetail().getUnitOfMeasureTypeName());

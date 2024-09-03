@@ -97,7 +97,7 @@ public class GetItemResultsFacetTag
     @Override
     public int doStartTag() throws JspException {
         try {
-            GetItemResultsFacetForm commandForm = SearchUtil.getHome().getGetItemResultsFacetForm();
+            var commandForm = SearchUtil.getHome().getGetItemResultsFacetForm();
             
             commandForm.setSearchTypeName(searchTypeName);
             commandForm.setEntityAttributeName(entityAttributeName);
@@ -105,8 +105,8 @@ public class GetItemResultsFacetTag
             setOptions(options, null, commandForm);
 
             commandForm.setTransferProperties(transferProperties);
-            
-            CommandResult commandResult = SearchUtil.getHome().getItemResultsFacet(getUserVisitPK(), commandForm);
+
+            var commandResult = SearchUtil.getHome().getItemResultsFacet(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -114,8 +114,8 @@ public class GetItemResultsFacetTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetItemResultsFacetResult result = (GetItemResultsFacetResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetItemResultsFacetResult)executionResult.getResult();
 
                 pageContext.setAttribute(var, result.getUserVisitSearchFacet(), scope);
             }

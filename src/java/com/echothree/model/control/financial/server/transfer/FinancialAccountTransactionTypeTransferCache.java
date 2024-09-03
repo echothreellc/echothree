@@ -39,18 +39,18 @@ public class FinancialAccountTransactionTypeTransferCache
     }
     
     public FinancialAccountTransactionTypeTransfer getFinancialAccountTransactionTypeTransfer(FinancialAccountTransactionType financialAccountTransactionType) {
-        FinancialAccountTransactionTypeTransfer financialAccountTransactionTypeTransfer = get(financialAccountTransactionType);
+        var financialAccountTransactionTypeTransfer = get(financialAccountTransactionType);
         
         if(financialAccountTransactionTypeTransfer == null) {
-            FinancialAccountTransactionTypeDetail financialAccountTransactionTypeDetail = financialAccountTransactionType.getLastDetail();
-            FinancialAccountTypeTransfer financialAccountTypeTransfer = financialControl.getFinancialAccountTypeTransfer(userVisit, financialAccountTransactionTypeDetail.getFinancialAccountType());
-            String financialAccountTransactionTypeName = financialAccountTransactionTypeDetail.getFinancialAccountTransactionTypeName();
-            FinancialAccountTransactionType parentFinancialAccountTransactionType = financialAccountTransactionTypeDetail.getParentFinancialAccountTransactionType();
-            FinancialAccountTransactionTypeTransfer parentFinancialAccountTransactionTypeTransfer = parentFinancialAccountTransactionType == null? null: getFinancialAccountTransactionTypeTransfer(parentFinancialAccountTransactionType);
-            GlAccountTransfer glAccountTransfer = accountingControl.getGlAccountTransfer(userVisit, financialAccountTransactionTypeDetail.getGlAccount());
-            Boolean isDefault = financialAccountTransactionTypeDetail.getIsDefault();
-            Integer sortOrder = financialAccountTransactionTypeDetail.getSortOrder();
-            String description = financialControl.getBestFinancialAccountTransactionTypeDescription(financialAccountTransactionType, getLanguage());
+            var financialAccountTransactionTypeDetail = financialAccountTransactionType.getLastDetail();
+            var financialAccountTypeTransfer = financialControl.getFinancialAccountTypeTransfer(userVisit, financialAccountTransactionTypeDetail.getFinancialAccountType());
+            var financialAccountTransactionTypeName = financialAccountTransactionTypeDetail.getFinancialAccountTransactionTypeName();
+            var parentFinancialAccountTransactionType = financialAccountTransactionTypeDetail.getParentFinancialAccountTransactionType();
+            var parentFinancialAccountTransactionTypeTransfer = parentFinancialAccountTransactionType == null? null: getFinancialAccountTransactionTypeTransfer(parentFinancialAccountTransactionType);
+            var glAccountTransfer = accountingControl.getGlAccountTransfer(userVisit, financialAccountTransactionTypeDetail.getGlAccount());
+            var isDefault = financialAccountTransactionTypeDetail.getIsDefault();
+            var sortOrder = financialAccountTransactionTypeDetail.getSortOrder();
+            var description = financialControl.getBestFinancialAccountTransactionTypeDescription(financialAccountTransactionType, getLanguage());
             
             financialAccountTransactionTypeTransfer = new FinancialAccountTransactionTypeTransfer(financialAccountTypeTransfer,
                     financialAccountTransactionTypeName, parentFinancialAccountTransactionTypeTransfer, glAccountTransfer, isDefault, sortOrder, description);

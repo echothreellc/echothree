@@ -46,20 +46,20 @@ public class WorkTimeTransferCache
     }
     
     public WorkTimeTransfer getWorkTimeTransfer(WorkTime workTime) {
-        WorkTimeTransfer workTimeTransfer = get(workTime);
+        var workTimeTransfer = get(workTime);
         
         if(workTimeTransfer == null) {
-            WorkTimeDetail workTimeDetail = workTime.getLastDetail();
-            WorkRequirementTransfer workRequirement = workRequirementControl.getWorkRequirementTransfer(userVisit, workTimeDetail.getWorkRequirement());
-            Integer workTimeSequence = workTimeDetail.getWorkTimeSequence();
-            PartyTransfer party = partyControl.getPartyTransfer(userVisit, workTimeDetail.getParty());
-            Long unformattedStartTime = workTimeDetail.getStartTime();
-            String startTime = formatTypicalDateTime(unformattedStartTime);
-            Long unformattedEndTime = workTimeDetail.getEndTime();
-            String endTime = formatTypicalDateTime(unformattedEndTime);
+            var workTimeDetail = workTime.getLastDetail();
+            var workRequirement = workRequirementControl.getWorkRequirementTransfer(userVisit, workTimeDetail.getWorkRequirement());
+            var workTimeSequence = workTimeDetail.getWorkTimeSequence();
+            var party = partyControl.getPartyTransfer(userVisit, workTimeDetail.getParty());
+            var unformattedStartTime = workTimeDetail.getStartTime();
+            var startTime = formatTypicalDateTime(unformattedStartTime);
+            var unformattedEndTime = workTimeDetail.getEndTime();
+            var endTime = formatTypicalDateTime(unformattedEndTime);
 
-            EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(workTime.getPrimaryKey());
-            WorkflowEntityStatusTransfer workTimeStatus = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
+            var entityInstance = coreControl.getEntityInstanceByBasePK(workTime.getPrimaryKey());
+            var workTimeStatus = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
                     WorkTimeStatusConstants.Workflow_WORK_TIME_STATUS, entityInstance);
 
             workTimeTransfer = new WorkTimeTransfer(workRequirement, workTimeSequence, party, unformattedStartTime, startTime, unformattedEndTime, endTime,

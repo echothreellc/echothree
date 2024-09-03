@@ -32,11 +32,11 @@ public class CancellationReasonDescriptionTransferCache
     }
     
     public CancellationReasonDescriptionTransfer getCancellationReasonDescriptionTransfer(CancellationReasonDescription cancellationReasonDescription) {
-        CancellationReasonDescriptionTransfer cancellationReasonDescriptionTransfer = get(cancellationReasonDescription);
+        var cancellationReasonDescriptionTransfer = get(cancellationReasonDescription);
         
         if(cancellationReasonDescriptionTransfer == null) {
-            CancellationReasonTransfer cancellationReasonTransfer = cancellationPolicyControl.getCancellationReasonTransfer(userVisit, cancellationReasonDescription.getCancellationReason());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, cancellationReasonDescription.getLanguage());
+            var cancellationReasonTransfer = cancellationPolicyControl.getCancellationReasonTransfer(userVisit, cancellationReasonDescription.getCancellationReason());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, cancellationReasonDescription.getLanguage());
             
             cancellationReasonDescriptionTransfer = new CancellationReasonDescriptionTransfer(languageTransfer, cancellationReasonTransfer, cancellationReasonDescription.getDescription());
             put(cancellationReasonDescription, cancellationReasonDescriptionTransfer);

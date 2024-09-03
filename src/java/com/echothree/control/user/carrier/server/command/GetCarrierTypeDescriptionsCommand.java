@@ -65,9 +65,9 @@ public class GetCarrierTypeDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var carrierControl = Session.getModelController(CarrierControl.class);
-        GetCarrierTypeDescriptionsResult result = CarrierResultFactory.getGetCarrierTypeDescriptionsResult();
-        String carrierTypeName = form.getCarrierTypeName();
-        CarrierType carrierType = carrierControl.getCarrierTypeByName(carrierTypeName);
+        var result = CarrierResultFactory.getGetCarrierTypeDescriptionsResult();
+        var carrierTypeName = form.getCarrierTypeName();
+        var carrierType = carrierControl.getCarrierTypeByName(carrierTypeName);
         
         if(carrierType != null) {
             result.setCarrierType(carrierControl.getCarrierTypeTransfer(getUserVisit(), carrierType));

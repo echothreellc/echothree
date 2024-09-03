@@ -65,9 +65,9 @@ public class GetTerminationReasonChoicesCommand
     @Override
     protected BaseResult execute() {
         var employeeControl = Session.getModelController(EmployeeControl.class);
-        GetTerminationReasonChoicesResult result = EmployeeResultFactory.getGetTerminationReasonChoicesResult();
-        String defaultTerminationReasonChoice = form.getDefaultTerminationReasonChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = EmployeeResultFactory.getGetTerminationReasonChoicesResult();
+        var defaultTerminationReasonChoice = form.getDefaultTerminationReasonChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setTerminationReasonChoices(employeeControl.getTerminationReasonChoices(defaultTerminationReasonChoice,
                 getPreferredLanguage(), allowNullChoice));

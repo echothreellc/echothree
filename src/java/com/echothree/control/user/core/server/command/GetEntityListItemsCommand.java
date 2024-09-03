@@ -73,15 +73,15 @@ public class GetEntityListItemsCommand
                 form.getComponentVendorName(), form.getEntityTypeName(), form.getEntityAttributeName());
                 
         if(!hasExecutionErrors()) {
-            EntityAttributeType entityAttributeType = entityAttribute.getLastDetail().getEntityAttributeType();
-            String entityAttributeTypeName = entityAttributeType.getEntityAttributeTypeName();
+            var entityAttributeType = entityAttribute.getLastDetail().getEntityAttributeType();
+            var entityAttributeTypeName = entityAttributeType.getEntityAttributeTypeName();
 
             if(entityAttributeTypeName.equals(EntityAttributeTypes.LISTITEM.name())
                     || entityAttributeTypeName.equals(EntityAttributeTypes.MULTIPLELISTITEM.name())) {
                 entities = getCoreControl().getEntityListItems(entityAttribute);
             } else {
-                EntityAttributeDetail entityAttributeDetail = entityAttribute.getLastDetail();
-                EntityTypeDetail entityTypeDetail = entityAttributeDetail.getEntityType().getLastDetail();
+                var entityAttributeDetail = entityAttribute.getLastDetail();
+                var entityTypeDetail = entityAttributeDetail.getEntityType().getLastDetail();
                 
                 addExecutionError(ExecutionErrors.InvalidEntityAttributeType.name(),
                         entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
@@ -96,7 +96,7 @@ public class GetEntityListItemsCommand
     @Override
     protected BaseResult getResult(Collection<EntityListItem> entities) {
             var coreControl = getCoreControl();
-        GetEntityListItemsResult result = CoreResultFactory.getGetEntityListItemsResult();
+        var result = CoreResultFactory.getGetEntityListItemsResult();
         
         if(entities != null) {
             if(session.hasLimit(EntityListItemFactory.class)) {

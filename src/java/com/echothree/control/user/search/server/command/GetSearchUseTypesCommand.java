@@ -61,7 +61,7 @@ public class GetSearchUseTypesCommand
     @Override
     protected BaseResult execute() {
         var searchControl = Session.getModelController(SearchControl.class);
-        GetSearchUseTypesResult result = SearchResultFactory.getGetSearchUseTypesResult();
+        var result = SearchResultFactory.getGetSearchUseTypesResult();
         
         result.setSearchUseTypes(searchControl.getSearchUseTypeTransfers(getUserVisit()));
         

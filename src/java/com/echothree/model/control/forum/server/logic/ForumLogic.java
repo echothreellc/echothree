@@ -51,7 +51,7 @@ public class ForumLogic
     
     public ForumRoleType getForumRoleTypeByName(final ExecutionErrorAccumulator eea, final String forumRoleTypeName) {
         var forumControl = Session.getModelController(ForumControl.class);
-        ForumRoleType forumRoleType = forumControl.getForumRoleTypeByName(forumRoleTypeName);
+        var forumRoleType = forumControl.getForumRoleTypeByName(forumRoleTypeName);
 
         if(forumRoleType == null) {
             handleExecutionError(UnknownForumRoleTypeNameException.class, eea, ExecutionErrors.UnknownForumRoleTypeName.name(), forumRoleTypeName);
@@ -61,26 +61,26 @@ public class ForumLogic
     }
 
     public boolean isForumRoleTypePermitted(final ExecutionErrorAccumulator eea, final Forum forum, final Party party, final String forumRoleTypeName) {
-        ForumRoleType forumRoleType = getForumRoleTypeByName(eea, forumRoleTypeName);
+        var forumRoleType = getForumRoleTypeByName(eea, forumRoleTypeName);
 
         return isForumRoleTypePermitted(eea, forum, party, forumRoleType);
     }
 
     public boolean isForumRoleTypePermitted(final ExecutionErrorAccumulator eea, final Forum forum, final Party party, final ForumRoleType forumRoleType) {
         var forumControl = Session.getModelController(ForumControl.class);
-        boolean hasForumPartyTypeRoles = forumControl.hasForumPartyTypeRoles(forum, forumRoleType);
-        boolean hasForumPartyRoles = forumControl.hasForumPartyRoles(forum, forumRoleType);
-        boolean permitted = !(hasForumPartyTypeRoles || hasForumPartyRoles);
+        var hasForumPartyTypeRoles = forumControl.hasForumPartyTypeRoles(forum, forumRoleType);
+        var hasForumPartyRoles = forumControl.hasForumPartyRoles(forum, forumRoleType);
+        var permitted = !(hasForumPartyTypeRoles || hasForumPartyRoles);
 
         if(!permitted) {
             if(party == null) {
                 handleExecutionError(PartyRequiredException.class, eea, ExecutionErrors.PartyRequired.name());
             } else {
-                boolean hasForumPartyTypeRole = false;
-                boolean hasForumPartyRole = false;
+                var hasForumPartyTypeRole = false;
+                var hasForumPartyRole = false;
 
                 if(hasForumPartyTypeRoles) {
-                    PartyType partyType = party.getLastDetail().getPartyType();
+                    var partyType = party.getLastDetail().getPartyType();
 
                     hasForumPartyTypeRole = forumControl.hasForumPartyTypeRole(forum, partyType, forumRoleType);
                 }
@@ -92,17 +92,17 @@ public class ForumLogic
                 permitted |= hasForumPartyTypeRole || hasForumPartyRole;
 
                 if(!permitted) {
-                    String forumName = forum.getLastDetail().getForumName();
-                    String forumRoleTypeName = forumRoleType.getForumRoleTypeName();
+                    var forumName = forum.getLastDetail().getForumName();
+                    var forumRoleTypeName = forumRoleType.getForumRoleTypeName();
 
                     if(!hasForumPartyRole) {
-                        String partyName = party.getLastDetail().getPartyName();
+                        var partyName = party.getLastDetail().getPartyName();
 
                         handleExecutionError(UnknownForumPartyRoleException.class, eea, ExecutionErrors.UnknownForumPartyRole.name(), forumName, partyName, forumRoleTypeName);
                     }
 
                     if(!hasForumPartyTypeRole) {
-                        String partyTypeName = party.getLastDetail().getPartyType().getPartyTypeName();
+                        var partyTypeName = party.getLastDetail().getPartyType().getPartyTypeName();
 
                         handleExecutionError(UnknownForumPartyTypeRoleException.class, eea, ExecutionErrors.UnknownForumPartyTypeRole.name(), forumName, partyTypeName, forumRoleTypeName);
                     }
@@ -114,8 +114,8 @@ public class ForumLogic
     }
 
     public boolean isForumRoleTypePermitted(final ExecutionErrorAccumulator eea, final ForumThread forumThread, final Party party, final String forumRoleTypeName) {
-        ForumRoleType forumRoleType = getForumRoleTypeByName(eea, forumRoleTypeName);
-        boolean permitted = false;
+        var forumRoleType = getForumRoleTypeByName(eea, forumRoleTypeName);
+        var permitted = false;
 
         if(!hasExecutionErrors(eea)) {
             permitted = isForumRoleTypePermitted(eea, forumThread, party, forumRoleType);
@@ -126,11 +126,11 @@ public class ForumLogic
 
     public boolean isForumRoleTypePermitted(final ExecutionErrorAccumulator eea, final ForumThread forumThread, final Party party, final ForumRoleType forumRoleType) {
         var forumControl = Session.getModelController(ForumControl.class);
-        List<ForumForumThread> forumForumThreads = forumControl.getForumForumThreadsByForumThread(forumThread);
-        boolean permitted = false;
+        var forumForumThreads = forumControl.getForumForumThreadsByForumThread(forumThread);
+        var permitted = false;
 
         for(var forumForumThread : forumForumThreads) {
-            Forum forum = forumForumThread.getForum();
+            var forum = forumForumThread.getForum();
 
             permitted |= isForumRoleTypePermitted(eea, forum, party, forumRoleType);
 
@@ -143,8 +143,8 @@ public class ForumLogic
     }
 
     public boolean isForumRoleTypePermitted(final ExecutionErrorAccumulator eea, final ForumMessage forumMessage, final Party party, final String forumRoleTypeName) {
-        ForumRoleType forumRoleType = getForumRoleTypeByName(eea, forumRoleTypeName);
-        boolean permitted = false;
+        var forumRoleType = getForumRoleTypeByName(eea, forumRoleTypeName);
+        var permitted = false;
 
         if(!hasExecutionErrors(eea)) {
             permitted = isForumRoleTypePermitted(eea, forumMessage, party, forumRoleType);
@@ -154,7 +154,7 @@ public class ForumLogic
     }
 
     public boolean isForumRoleTypePermitted(final ExecutionErrorAccumulator eea, final ForumMessage forumMessage, final Party party, final ForumRoleType forumRoleType) {
-        ForumThread forumThread = forumMessage.getLastDetail().getForumThread();
+        var forumThread = forumMessage.getLastDetail().getForumThread();
 
         return isForumRoleTypePermitted(eea, forumThread, party, forumRoleType);
     }

@@ -44,13 +44,13 @@ public class ContentWebAddressTransferCache
     }
     
     public ContentWebAddressTransfer getContentWebAddressTransfer(ContentWebAddress contentWebAddress) {
-        ContentWebAddressTransfer contentWebAddressTransfer = get(contentWebAddress);
+        var contentWebAddressTransfer = get(contentWebAddress);
         
         if(contentWebAddressTransfer == null) {
-            ContentWebAddressDetail contentWebAddressDetail = contentWebAddress.getLastDetail();
-            String contentWebAddressName = contentWebAddressDetail.getContentWebAddressName();
-            ContentCollectionTransfer contentCollectionTransfer = contentControl.getContentCollectionTransfer(userVisit, contentWebAddressDetail.getContentCollection());
-            String description = contentControl.getBestContentWebAddressDescription(contentWebAddress, getLanguage());
+            var contentWebAddressDetail = contentWebAddress.getLastDetail();
+            var contentWebAddressName = contentWebAddressDetail.getContentWebAddressName();
+            var contentCollectionTransfer = contentControl.getContentCollectionTransfer(userVisit, contentWebAddressDetail.getContentCollection());
+            var description = contentControl.getBestContentWebAddressDescription(contentWebAddress, getLanguage());
             
             contentWebAddressTransfer = new ContentWebAddressTransfer(contentWebAddressName, contentCollectionTransfer, description);
             put(contentWebAddress, contentWebAddressTransfer);

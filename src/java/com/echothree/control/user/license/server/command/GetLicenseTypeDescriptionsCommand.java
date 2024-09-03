@@ -65,9 +65,9 @@ public class GetLicenseTypeDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var licenseControl = Session.getModelController(LicenseControl.class);
-        GetLicenseTypeDescriptionsResult result = LicenseResultFactory.getGetLicenseTypeDescriptionsResult();
-        String licenseTypeName = form.getLicenseTypeName();
-        LicenseType licenseType = licenseControl.getLicenseTypeByName(licenseTypeName);
+        var result = LicenseResultFactory.getGetLicenseTypeDescriptionsResult();
+        var licenseTypeName = form.getLicenseTypeName();
+        var licenseType = licenseControl.getLicenseTypeByName(licenseTypeName);
         
         if(licenseType != null) {
             result.setLicenseType(licenseControl.getLicenseTypeTransfer(getUserVisit(), licenseType));

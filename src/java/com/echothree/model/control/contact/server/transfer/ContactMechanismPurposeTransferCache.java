@@ -31,15 +31,15 @@ public class ContactMechanismPurposeTransferCache
     }
     
     public ContactMechanismPurposeTransfer getContactMechanismPurposeTransfer(ContactMechanismPurpose contactMechanismPurpose) {
-        ContactMechanismPurposeTransfer contactMechanismPurposeTransfer = get(contactMechanismPurpose);
+        var contactMechanismPurposeTransfer = get(contactMechanismPurpose);
         
         if(contactMechanismPurposeTransfer == null) {
-            String contactMechanismPurposeName = contactMechanismPurpose.getContactMechanismPurposeName();
-            ContactMechanismTypeTransfer contactMechanismType = contactControl.getContactMechanismTypeTransfer(userVisit, contactMechanismPurpose.getContactMechanismType());
-            Boolean eventSubscriber = contactMechanismPurpose.getEventSubscriber();
-            Boolean isDefault = contactMechanismPurpose.getIsDefault();
-            Integer sortOrder = contactMechanismPurpose.getSortOrder();
-            String description = contactControl.getBestContactMechanismPurposeDescription(contactMechanismPurpose, getLanguage());
+            var contactMechanismPurposeName = contactMechanismPurpose.getContactMechanismPurposeName();
+            var contactMechanismType = contactControl.getContactMechanismTypeTransfer(userVisit, contactMechanismPurpose.getContactMechanismType());
+            var eventSubscriber = contactMechanismPurpose.getEventSubscriber();
+            var isDefault = contactMechanismPurpose.getIsDefault();
+            var sortOrder = contactMechanismPurpose.getSortOrder();
+            var description = contactControl.getBestContactMechanismPurposeDescription(contactMechanismPurpose, getLanguage());
             
             contactMechanismPurposeTransfer = new ContactMechanismPurposeTransfer(contactMechanismPurposeName, contactMechanismType,
                     eventSubscriber, isDefault, sortOrder, description);

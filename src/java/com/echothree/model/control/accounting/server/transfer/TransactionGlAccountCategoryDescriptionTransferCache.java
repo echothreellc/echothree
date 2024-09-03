@@ -33,12 +33,12 @@ public class TransactionGlAccountCategoryDescriptionTransferCache
     
     @Override
     public TransactionGlAccountCategoryDescriptionTransfer getTransfer(TransactionGlAccountCategoryDescription transactionGlAccountCategoryDescription) {
-        TransactionGlAccountCategoryDescriptionTransfer transactionGlAccountCategoryDescriptionTransfer = get(transactionGlAccountCategoryDescription);
+        var transactionGlAccountCategoryDescriptionTransfer = get(transactionGlAccountCategoryDescription);
         
         if(transactionGlAccountCategoryDescriptionTransfer == null) {
-            TransactionGlAccountCategoryTransferCache transactionGlAccountCategoryTransferCache = accountingControl.getAccountingTransferCaches(userVisit).getTransactionGlAccountCategoryTransferCache();
-            TransactionGlAccountCategoryTransfer transactionGlAccountCategoryTransfer = transactionGlAccountCategoryTransferCache.getTransfer(transactionGlAccountCategoryDescription.getTransactionGlAccountCategory());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, transactionGlAccountCategoryDescription.getLanguage());
+            var transactionGlAccountCategoryTransferCache = accountingControl.getAccountingTransferCaches(userVisit).getTransactionGlAccountCategoryTransferCache();
+            var transactionGlAccountCategoryTransfer = transactionGlAccountCategoryTransferCache.getTransfer(transactionGlAccountCategoryDescription.getTransactionGlAccountCategory());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, transactionGlAccountCategoryDescription.getLanguage());
             
             transactionGlAccountCategoryDescriptionTransfer = new TransactionGlAccountCategoryDescriptionTransfer(languageTransfer, transactionGlAccountCategoryTransfer, transactionGlAccountCategoryDescription.getDescription());
             put(transactionGlAccountCategoryDescription, transactionGlAccountCategoryDescriptionTransfer);

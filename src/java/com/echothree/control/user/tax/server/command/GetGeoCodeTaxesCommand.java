@@ -52,12 +52,12 @@ public class GetGeoCodeTaxesCommand
     @Override
     protected BaseResult execute() {
         var taxControl = Session.getModelController(TaxControl.class);
-        GetGeoCodeTaxesResult result = TaxResultFactory.getGetGeoCodeTaxesResult();
-        String taxName = form.getTaxName();
-        Tax tax = taxControl.getTaxByName(taxName);
+        var result = TaxResultFactory.getGetGeoCodeTaxesResult();
+        var taxName = form.getTaxName();
+        var tax = taxControl.getTaxByName(taxName);
         
         if(tax != null) {
-            UserVisit userVisit = getUserVisit();
+            var userVisit = getUserVisit();
             
             result.setTax(taxControl.getTaxTransfer(userVisit, tax));
             result.setGeoCodeTaxes(taxControl.getGeoCodeTaxTransfersByTax(userVisit, tax));

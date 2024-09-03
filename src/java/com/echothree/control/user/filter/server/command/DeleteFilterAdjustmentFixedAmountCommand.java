@@ -75,17 +75,17 @@ public class DeleteFilterAdjustmentFixedAmountCommand
     @Override
     protected BaseResult execute() {
         var filterControl = Session.getModelController(FilterControl.class);
-        String filterKindName = form.getFilterKindName();
-        FilterKind filterKind = filterControl.getFilterKindByName(filterKindName);
+        var filterKindName = form.getFilterKindName();
+        var filterKind = filterControl.getFilterKindByName(filterKindName);
         
         if(filterKind != null) {
-            String filterAdjustmentName = form.getFilterAdjustmentName();
-            FilterAdjustment filterAdjustment = filterControl.getFilterAdjustmentByName(filterKind, filterAdjustmentName);
+            var filterAdjustmentName = form.getFilterAdjustmentName();
+            var filterAdjustment = filterControl.getFilterAdjustmentByName(filterKind, filterAdjustmentName);
             
             if(filterAdjustment != null) {
                 if(filterAdjustment.getLastDetail().getFilterAdjustmentType().getFilterAdjustmentTypeName().equals(FilterAdjustmentTypes.FIXED_AMOUNT.name())) {
                     var uomControl = Session.getModelController(UomControl.class);
-                    String unitOfMeasureName = form.getUnitOfMeasureName();
+                    var unitOfMeasureName = form.getUnitOfMeasureName();
                     String unitOfMeasureKindName = null;
                     String unitOfMeasureTypeName = null;
                     
@@ -102,18 +102,18 @@ public class DeleteFilterAdjustmentFixedAmountCommand
                     }
                     
                     if(unitOfMeasureKindName != null && unitOfMeasureTypeName != null) {
-                        UnitOfMeasureKind unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);
+                        var unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);
                         
                         if(unitOfMeasureKind != null) {
-                            UnitOfMeasureType unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
+                            var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
                             
                             if(unitOfMeasureType != null) {
                                 var accountingControl = Session.getModelController(AccountingControl.class);
-                                String currencyIsoName = form.getCurrencyIsoName();
-                                Currency currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
+                                var currencyIsoName = form.getCurrencyIsoName();
+                                var currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
                                 
                                 if(currency != null) {
-                                    FilterAdjustmentFixedAmount filterAdjustmentFixedAmount = filterControl.getFilterAdjustmentFixedAmountForUpdate(filterAdjustment, unitOfMeasureType,
+                                    var filterAdjustmentFixedAmount = filterControl.getFilterAdjustmentFixedAmountForUpdate(filterAdjustment, unitOfMeasureType,
                                     currency);
                                     
                                     if(filterAdjustmentFixedAmount != null) {

@@ -46,7 +46,7 @@ public class GenerateBaseKeysCommand
     
     @Override
     protected BaseResult execute() {
-        GenerateBaseKeysResult result = CoreResultFactory.getGenerateBaseKeysResult();
+        var result = CoreResultFactory.getGenerateBaseKeysResult();
         
         result.setBaseKeys(EncryptionUtils.getInstance().generateBaseKeys(this, getPartyPK()));
         

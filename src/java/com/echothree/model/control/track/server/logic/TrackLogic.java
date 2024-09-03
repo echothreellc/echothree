@@ -55,7 +55,7 @@ public class TrackLogic
     
     public Track getTrackByName(final ExecutionErrorAccumulator eea, final String trackName) {
         var trackControl = Session.getModelController(TrackControl.class);
-        Track track = trackControl.getTrackByName(trackName);
+        var track = trackControl.getTrackByName(trackName);
 
         if(track == null) {
             handleExecutionError(UnknownTrackNameException.class, eea, ExecutionErrors.UnknownTrackName.name(), trackName);
@@ -66,7 +66,7 @@ public class TrackLogic
     
     public Track getTrackByValue(final ExecutionErrorAccumulator eea, final String trackValue) {
         var trackControl = Session.getModelController(TrackControl.class);
-        Track track = trackControl.getTrackByValue(trackValue);
+        var track = trackControl.getTrackByValue(trackValue);
 
         if(track == null) {
             handleExecutionError(UnknownTrackValueException.class, eea, ExecutionErrors.UnknownTrackValue.name(), trackValue);
@@ -79,14 +79,14 @@ public class TrackLogic
         var coreControl = Session.getModelController(CoreControl.class);
         var workflowControl = Session.getModelController(WorkflowControl.class);
         var workflow = WorkflowLogic.getInstance().getWorkflowByName(eea, TrackStatusConstants.Workflow_TRACK_STATUS);
-        EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(track.getPrimaryKey());
-        WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdate(workflow, entityInstance);
-        WorkflowDestination workflowDestination = trackStatusChoice == null ? null : workflowControl.getWorkflowDestinationByName(workflowEntityStatus.getWorkflowStep(), trackStatusChoice);
+        var entityInstance = coreControl.getEntityInstanceByBasePK(track.getPrimaryKey());
+        var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdate(workflow, entityInstance);
+        var workflowDestination = trackStatusChoice == null ? null : workflowControl.getWorkflowDestinationByName(workflowEntityStatus.getWorkflowStep(), trackStatusChoice);
 
         if(workflowDestination != null || trackStatusChoice == null) {
             var workflowDestinationLogic = WorkflowDestinationLogic.getInstance();
-            String currentWorkflowStepName = workflowEntityStatus.getWorkflowStep().getLastDetail().getWorkflowStepName();
-            Map<String, Set<String>> map = workflowDestinationLogic.getWorkflowDestinationsAsMap(workflowDestination);
+            var currentWorkflowStepName = workflowEntityStatus.getWorkflowStep().getLastDetail().getWorkflowStepName();
+            var map = workflowDestinationLogic.getWorkflowDestinationsAsMap(workflowDestination);
             Long triggerTime = null;
 
             if(currentWorkflowStepName.equals(TrackStatusConstants.WorkflowStep_ACTIVE)) {

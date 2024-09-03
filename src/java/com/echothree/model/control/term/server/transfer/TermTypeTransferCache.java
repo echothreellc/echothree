@@ -30,13 +30,13 @@ public class TermTypeTransferCache
     }
     
     public TermTypeTransfer getTermTypeTransfer(TermType termType) {
-        TermTypeTransfer termTypeTransfer = get(termType);
+        var termTypeTransfer = get(termType);
         
         if(termTypeTransfer == null) {
-            String termTypeName = termType.getTermTypeName();
-            Boolean isDefault = termType.getIsDefault();
-            Integer sortOrder = termType.getSortOrder();
-            String description = termControl.getBestTermTypeDescription(termType, getLanguage());
+            var termTypeName = termType.getTermTypeName();
+            var isDefault = termType.getIsDefault();
+            var sortOrder = termType.getSortOrder();
+            var description = termControl.getBestTermTypeDescription(termType, getLanguage());
             
             termTypeTransfer = new TermTypeTransfer(termTypeName, isDefault, sortOrder, description);
             put(termType, termTypeTransfer);

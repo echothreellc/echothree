@@ -67,16 +67,16 @@ public class DeleteSearchDefaultOperatorDescriptionCommand
     @Override
     protected BaseResult execute() {
         var searchControl = Session.getModelController(SearchControl.class);
-        String searchDefaultOperatorName = form.getSearchDefaultOperatorName();
-        SearchDefaultOperator searchDefaultOperator = searchControl.getSearchDefaultOperatorByName(searchDefaultOperatorName);
+        var searchDefaultOperatorName = form.getSearchDefaultOperatorName();
+        var searchDefaultOperator = searchControl.getSearchDefaultOperatorByName(searchDefaultOperatorName);
         
         if(searchDefaultOperator != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                SearchDefaultOperatorDescription searchDefaultOperatorDescription = searchControl.getSearchDefaultOperatorDescriptionForUpdate(searchDefaultOperator, language);
+                var searchDefaultOperatorDescription = searchControl.getSearchDefaultOperatorDescriptionForUpdate(searchDefaultOperator, language);
                 
                 if(searchDefaultOperatorDescription != null) {
                     searchControl.deleteSearchDefaultOperatorDescription(searchDefaultOperatorDescription, getPartyPK());

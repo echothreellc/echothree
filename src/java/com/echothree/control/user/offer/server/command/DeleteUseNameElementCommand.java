@@ -60,8 +60,8 @@ public class DeleteUseNameElementCommand
     
     @Override
     protected BaseResult execute() {
-        String useNameElementName = form.getUseNameElementName();
-        UseNameElement useNameElement = UseNameElementLogic.getInstance().getUseNameElementByNameForUpdate(this, useNameElementName);
+        var useNameElementName = form.getUseNameElementName();
+        var useNameElement = UseNameElementLogic.getInstance().getUseNameElementByNameForUpdate(this, useNameElementName);
         
         if(!hasExecutionErrors()) {
             UseNameElementLogic.getInstance().deleteUseNameElement(this, useNameElement, getPartyPK());

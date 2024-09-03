@@ -68,17 +68,17 @@ public class GetIndexTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var indexControl = Session.getModelController(IndexControl.class);
-        GetIndexTypeDescriptionResult result = IndexResultFactory.getGetIndexTypeDescriptionResult();
-        String indexTypeName = form.getIndexTypeName();
-        IndexType indexType = indexControl.getIndexTypeByName(indexTypeName);
+        var result = IndexResultFactory.getGetIndexTypeDescriptionResult();
+        var indexTypeName = form.getIndexTypeName();
+        var indexType = indexControl.getIndexTypeByName(indexTypeName);
 
         if(indexType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
-                IndexTypeDescription indexTypeDescription = indexControl.getIndexTypeDescription(indexType, language);
+                var indexTypeDescription = indexControl.getIndexTypeDescription(indexType, language);
 
                 if(indexTypeDescription != null) {
                     result.setIndexTypeDescription(indexControl.getIndexTypeDescriptionTransfer(getUserVisit(), indexTypeDescription));

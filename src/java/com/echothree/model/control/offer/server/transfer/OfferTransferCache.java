@@ -98,22 +98,22 @@ public class OfferTransferCache
     }
     
     public OfferTransfer getOfferTransfer(Offer offer) {
-        OfferTransfer offerTransfer = get(offer);
+        var offerTransfer = get(offer);
         
         if(offerTransfer == null) {
-            OfferDetail offerDetail = offer.getLastDetail();
-            String offerName = filterOfferName ? null : offerDetail.getOfferName();
-            Sequence salesOrderSequence = filterSalesOrderSequence ? null : offerDetail.getSalesOrderSequence();
-            SequenceTransfer salesOrderSequenceTransfer = salesOrderSequence == null ? null : sequenceControl.getSequenceTransfer(userVisit, salesOrderSequence);
-            Party departmentParty = filterDepartment ? null : offerDetail.getDepartmentParty();
-            DepartmentTransfer departmentTransfer = departmentParty == null ? null : partyControl.getDepartmentTransfer(userVisit, offerDetail.getDepartmentParty());
-            Selector offerItemSelector = filterOfferItemSelector ? null : offerDetail.getOfferItemSelector();
-            SelectorTransfer offerItemSelectorTransfer = offerItemSelector == null ? null : selectorControl.getSelectorTransfer(userVisit, offerItemSelector);
-            Filter offerItemPriceFilter = filterOfferItemPriceFilter ? null : offerDetail.getOfferItemPriceFilter();
-            FilterTransfer offerItemPriceFilterTransfer = offerItemPriceFilter == null ? null : filterControl.getFilterTransfer(userVisit, offerItemPriceFilter);
-            Boolean isDefault = filterIsDefault ? null : offerDetail.getIsDefault();
-            Integer sortOrder = filterSortOrder ? null : offerDetail.getSortOrder();
-            String description = filterDescription ? null : offerControl.getBestOfferDescription(offer, getLanguage());
+            var offerDetail = offer.getLastDetail();
+            var offerName = filterOfferName ? null : offerDetail.getOfferName();
+            var salesOrderSequence = filterSalesOrderSequence ? null : offerDetail.getSalesOrderSequence();
+            var salesOrderSequenceTransfer = salesOrderSequence == null ? null : sequenceControl.getSequenceTransfer(userVisit, salesOrderSequence);
+            var departmentParty = filterDepartment ? null : offerDetail.getDepartmentParty();
+            var departmentTransfer = departmentParty == null ? null : partyControl.getDepartmentTransfer(userVisit, offerDetail.getDepartmentParty());
+            var offerItemSelector = filterOfferItemSelector ? null : offerDetail.getOfferItemSelector();
+            var offerItemSelectorTransfer = offerItemSelector == null ? null : selectorControl.getSelectorTransfer(userVisit, offerItemSelector);
+            var offerItemPriceFilter = filterOfferItemPriceFilter ? null : offerDetail.getOfferItemPriceFilter();
+            var offerItemPriceFilterTransfer = offerItemPriceFilter == null ? null : filterControl.getFilterTransfer(userVisit, offerItemPriceFilter);
+            var isDefault = filterIsDefault ? null : offerDetail.getIsDefault();
+            var sortOrder = filterSortOrder ? null : offerDetail.getSortOrder();
+            var description = filterDescription ? null : offerControl.getBestOfferDescription(offer, getLanguage());
             
             offerTransfer = new OfferTransfer(offerName, salesOrderSequenceTransfer, departmentTransfer, offerItemSelectorTransfer,
                     offerItemPriceFilterTransfer, isDefault, sortOrder, description);

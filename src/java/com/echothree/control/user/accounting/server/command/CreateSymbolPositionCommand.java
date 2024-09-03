@@ -66,8 +66,8 @@ public class CreateSymbolPositionCommand
     @Override
     protected BaseResult execute() {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        String symbolPositionName = form.getSymbolPositionName();
-        SymbolPosition symbolPosition = accountingControl.getSymbolPositionByName(symbolPositionName);
+        var symbolPositionName = form.getSymbolPositionName();
+        var symbolPosition = accountingControl.getSymbolPositionByName(symbolPositionName);
         
         if(symbolPosition == null) {
             var partyPK = getPartyPK();

@@ -53,15 +53,15 @@ public class CreateDateTimeFormatDescriptionCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        String dateTimeFormatName = form.getDateTimeFormatName();
-        DateTimeFormat dateTimeFormat = partyControl.getDateTimeFormatByName(dateTimeFormatName);
+        var dateTimeFormatName = form.getDateTimeFormatName();
+        var dateTimeFormat = partyControl.getDateTimeFormatByName(dateTimeFormatName);
         
         if(dateTimeFormat != null) {
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                DateTimeFormatDescription dateTimeFormatDescription = partyControl.getDateTimeFormatDescription(dateTimeFormat, language);
+                var dateTimeFormatDescription = partyControl.getDateTimeFormatDescription(dateTimeFormat, language);
                 
                 if(dateTimeFormatDescription == null) {
                     var description = form.getDescription();

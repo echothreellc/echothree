@@ -55,26 +55,26 @@ public class GetEmployeeLoginDefaultsCommand
     
     @Override
     protected BaseResult execute() {
-        GetEmployeeLoginDefaultsResult result = AuthenticationResultFactory.getGetEmployeeLoginDefaultsResult();
-        UserControl userControl = getUserControl();
-        UserSession userSession = userControl.getUserSessionByUserVisit(getUserVisit());
+        var result = AuthenticationResultFactory.getGetEmployeeLoginDefaultsResult();
+        var userControl = getUserControl();
+        var userSession = userControl.getUserSessionByUserVisit(getUserVisit());
         String username = null;
         String companyName = null;
         
         if(userSession != null) {
-            Party party = userSession.getParty();
+            var party = userSession.getParty();
             
             if(party != null) {
                 if(party.getLastDetail().getPartyType().getPartyTypeName().equals(PartyTypes.EMPLOYEE.name())) {
-                    UserLogin userLogin = userControl.getUserLogin(party);
-                    PartyRelationship partyRelationship = userSession.getPartyRelationship();
+                    var userLogin = userControl.getUserLogin(party);
+                    var partyRelationship = userSession.getPartyRelationship();
                     
                     username = userLogin.getUsername();
                     
                     if(partyRelationship != null) {
                         var partyControl = Session.getModelController(PartyControl.class);
-                        Party fromParty = partyRelationship.getFromParty();
-                        PartyCompany partyCompany = partyControl.getPartyCompany(fromParty);
+                        var fromParty = partyRelationship.getFromParty();
+                        var partyCompany = partyControl.getPartyCompany(fromParty);
                         
                         if(partyCompany != null) {
                             companyName = partyCompany.getPartyCompanyName();
@@ -83,8 +83,8 @@ public class GetEmployeeLoginDefaultsCommand
                 }
             }
         }
-        
-        EmployeeLoginForm employeeLoginForm = AuthenticationFormFactory.getEmployeeLoginForm();
+
+        var employeeLoginForm = AuthenticationFormFactory.getEmployeeLoginForm();
         employeeLoginForm.setUsername(username);
         employeeLoginForm.setCompanyName(companyName);
         result.setEmployeeLoginForm(employeeLoginForm);

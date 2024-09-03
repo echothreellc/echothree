@@ -112,8 +112,8 @@ public class EditPaymentProcessorResultCodeCommand
     @Override
     public void doLock(PaymentProcessorResultCodeEdit edit, PaymentProcessorResultCode paymentProcessorResultCode) {
         var paymentProcessorResultCodeControl = Session.getModelController(PaymentProcessorResultCodeControl.class);
-        PaymentProcessorResultCodeDescription paymentProcessorResultCodeDescription = paymentProcessorResultCodeControl.getPaymentProcessorResultCodeDescription(paymentProcessorResultCode, getPreferredLanguage());
-        PaymentProcessorResultCodeDetail paymentProcessorResultCodeDetail = paymentProcessorResultCode.getLastDetail();
+        var paymentProcessorResultCodeDescription = paymentProcessorResultCodeControl.getPaymentProcessorResultCodeDescription(paymentProcessorResultCode, getPreferredLanguage());
+        var paymentProcessorResultCodeDetail = paymentProcessorResultCode.getLastDetail();
         
         edit.setPaymentProcessorResultCodeName(paymentProcessorResultCodeDetail.getPaymentProcessorResultCodeName());
         edit.setIsDefault(paymentProcessorResultCodeDetail.getIsDefault().toString());
@@ -127,8 +127,8 @@ public class EditPaymentProcessorResultCodeCommand
     @Override
     public void canUpdate(PaymentProcessorResultCode paymentProcessorResultCode) {
         var paymentProcessorResultCodeControl = Session.getModelController(PaymentProcessorResultCodeControl.class);
-        String paymentProcessorResultCodeName = edit.getPaymentProcessorResultCodeName();
-        PaymentProcessorResultCode duplicatePaymentProcessorResultCode = paymentProcessorResultCodeControl.getPaymentProcessorResultCodeByName(paymentProcessorResultCodeName);
+        var paymentProcessorResultCodeName = edit.getPaymentProcessorResultCodeName();
+        var duplicatePaymentProcessorResultCode = paymentProcessorResultCodeControl.getPaymentProcessorResultCodeByName(paymentProcessorResultCodeName);
 
         if(duplicatePaymentProcessorResultCode != null && !paymentProcessorResultCode.equals(duplicatePaymentProcessorResultCode)) {
             addExecutionError(ExecutionErrors.DuplicatePaymentProcessorResultCodeName.name(), paymentProcessorResultCodeName);
@@ -139,9 +139,9 @@ public class EditPaymentProcessorResultCodeCommand
     public void doUpdate(PaymentProcessorResultCode paymentProcessorResultCode) {
         var paymentProcessorResultCodeControl = Session.getModelController(PaymentProcessorResultCodeControl.class);
         var partyPK = getPartyPK();
-        PaymentProcessorResultCodeDetailValue paymentProcessorResultCodeDetailValue = paymentProcessorResultCodeControl.getPaymentProcessorResultCodeDetailValueForUpdate(paymentProcessorResultCode);
-        PaymentProcessorResultCodeDescription paymentProcessorResultCodeDescription = paymentProcessorResultCodeControl.getPaymentProcessorResultCodeDescriptionForUpdate(paymentProcessorResultCode, getPreferredLanguage());
-        String description = edit.getDescription();
+        var paymentProcessorResultCodeDetailValue = paymentProcessorResultCodeControl.getPaymentProcessorResultCodeDetailValueForUpdate(paymentProcessorResultCode);
+        var paymentProcessorResultCodeDescription = paymentProcessorResultCodeControl.getPaymentProcessorResultCodeDescriptionForUpdate(paymentProcessorResultCode, getPreferredLanguage());
+        var description = edit.getDescription();
 
         paymentProcessorResultCodeDetailValue.setPaymentProcessorResultCodeName(edit.getPaymentProcessorResultCodeName());
         paymentProcessorResultCodeDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
@@ -154,7 +154,7 @@ public class EditPaymentProcessorResultCodeCommand
         } else if(paymentProcessorResultCodeDescription != null && description == null) {
             paymentProcessorResultCodeControl.deletePaymentProcessorResultCodeDescription(paymentProcessorResultCodeDescription, partyPK);
         } else if(paymentProcessorResultCodeDescription != null && description != null) {
-            PaymentProcessorResultCodeDescriptionValue paymentProcessorResultCodeDescriptionValue = paymentProcessorResultCodeControl.getPaymentProcessorResultCodeDescriptionValue(paymentProcessorResultCodeDescription);
+            var paymentProcessorResultCodeDescriptionValue = paymentProcessorResultCodeControl.getPaymentProcessorResultCodeDescriptionValue(paymentProcessorResultCodeDescription);
 
             paymentProcessorResultCodeDescriptionValue.setDescription(description);
             paymentProcessorResultCodeControl.updatePaymentProcessorResultCodeDescriptionFromValue(paymentProcessorResultCodeDescriptionValue, partyPK);

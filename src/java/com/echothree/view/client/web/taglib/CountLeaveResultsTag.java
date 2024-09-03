@@ -79,11 +79,11 @@ public class CountLeaveResultsTag
     public int doStartTag()
             throws JspException {
         try {
-            CountLeaveResultsForm commandForm = SearchUtil.getHome().getCountLeaveResultsForm();
+            var commandForm = SearchUtil.getHome().getCountLeaveResultsForm();
 
             commandForm.setSearchTypeName(searchTypeName);
 
-            CommandResult commandResult = SearchUtil.getHome().countLeaveResults(getUserVisitPK(), commandForm);
+            var commandResult = SearchUtil.getHome().countLeaveResults(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -91,8 +91,8 @@ public class CountLeaveResultsTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                CountLeaveResultsResult result = (CountLeaveResultsResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (CountLeaveResultsResult)executionResult.getResult();
 
                 pageContext.setAttribute(countVar, result.getCount(), scope);
             }

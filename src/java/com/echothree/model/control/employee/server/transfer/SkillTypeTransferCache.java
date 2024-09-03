@@ -33,14 +33,14 @@ public class SkillTypeTransferCache
     }
     
     public SkillTypeTransfer getSkillTypeTransfer(SkillType skillType) {
-        SkillTypeTransfer skillTypeTransfer = get(skillType);
+        var skillTypeTransfer = get(skillType);
         
         if(skillTypeTransfer == null) {
-            SkillTypeDetail skillTypeDetail = skillType.getLastDetail();
-            String skillTypeName = skillTypeDetail.getSkillTypeName();
-            Boolean isDefault = skillTypeDetail.getIsDefault();
-            Integer sortOrder = skillTypeDetail.getSortOrder();
-            String description = employeeControl.getBestSkillTypeDescription(skillType, getLanguage());
+            var skillTypeDetail = skillType.getLastDetail();
+            var skillTypeName = skillTypeDetail.getSkillTypeName();
+            var isDefault = skillTypeDetail.getIsDefault();
+            var sortOrder = skillTypeDetail.getSortOrder();
+            var description = employeeControl.getBestSkillTypeDescription(skillType, getLanguage());
             
             skillTypeTransfer = new SkillTypeTransfer(skillTypeName, isDefault, sortOrder, description);
             put(skillType, skillTypeTransfer);

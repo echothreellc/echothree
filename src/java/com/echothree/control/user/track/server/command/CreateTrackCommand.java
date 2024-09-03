@@ -67,10 +67,10 @@ public class CreateTrackCommand
     
     @Override
     protected BaseResult execute() {
-        CreateTrackResult result = TrackResultFactory.getCreateTrackResult();
+        var result = TrackResultFactory.getCreateTrackResult();
         var trackControl = Session.getModelController(TrackControl.class);
-        String value = form.getValue();
-        Track track = trackControl.getTrackByValue(value);
+        var value = form.getValue();
+        var track = trackControl.getTrackByValue(value);
         
         if(track == null) {
             var partyPK = getPartyPK();

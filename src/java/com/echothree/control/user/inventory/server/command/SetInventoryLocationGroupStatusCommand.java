@@ -54,17 +54,17 @@ public class SetInventoryLocationGroupStatusCommand
     @Override
     protected BaseResult execute() {
         var warehouseControl = Session.getModelController(WarehouseControl.class);
-        String warehouseName = form.getWarehouseName();
-        Warehouse warehouse = warehouseControl.getWarehouseByName(warehouseName);
+        var warehouseName = form.getWarehouseName();
+        var warehouse = warehouseControl.getWarehouseByName(warehouseName);
         
         if(warehouse != null) {
             var inventoryControl = Session.getModelController(InventoryControl.class);
-            Party warehouseParty = warehouse.getParty();
-            String inventoryLocationGroupName = form.getInventoryLocationGroupName();
-            InventoryLocationGroup inventoryLocationGroup = inventoryControl.getInventoryLocationGroupByName(warehouseParty, inventoryLocationGroupName);
+            var warehouseParty = warehouse.getParty();
+            var inventoryLocationGroupName = form.getInventoryLocationGroupName();
+            var inventoryLocationGroup = inventoryControl.getInventoryLocationGroupByName(warehouseParty, inventoryLocationGroupName);
             
             if(inventoryLocationGroup != null) {
-                String inventoryLocationGroupStatusChoice = form.getInventoryLocationGroupStatusChoice();
+                var inventoryLocationGroupStatusChoice = form.getInventoryLocationGroupStatusChoice();
                 
                 inventoryControl.setInventoryLocationGroupStatus(this, inventoryLocationGroup, inventoryLocationGroupStatusChoice, getPartyPK());
             } else {

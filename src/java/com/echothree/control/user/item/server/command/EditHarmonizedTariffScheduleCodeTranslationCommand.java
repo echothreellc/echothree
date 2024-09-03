@@ -96,18 +96,18 @@ public class EditHarmonizedTariffScheduleCodeTranslationCommand
     public HarmonizedTariffScheduleCodeTranslation getEntity(EditHarmonizedTariffScheduleCodeTranslationResult result) {
         var geoControl = Session.getModelController(GeoControl.class);
         HarmonizedTariffScheduleCodeTranslation harmonizedTariffScheduleCodeTranslation = null;
-        String countryName = spec.getCountryName();
-        GeoCode countryGeoCode = geoControl.getCountryByAlias(countryName);
+        var countryName = spec.getCountryName();
+        var countryGeoCode = geoControl.getCountryByAlias(countryName);
 
         if(countryGeoCode != null) {
             var itemControl = Session.getModelController(ItemControl.class);
-            String harmonizedTariffScheduleCodeName = spec.getHarmonizedTariffScheduleCodeName();
-            HarmonizedTariffScheduleCode harmonizedTariffScheduleCode = itemControl.getHarmonizedTariffScheduleCodeByName(countryGeoCode, harmonizedTariffScheduleCodeName);
+            var harmonizedTariffScheduleCodeName = spec.getHarmonizedTariffScheduleCodeName();
+            var harmonizedTariffScheduleCode = itemControl.getHarmonizedTariffScheduleCodeByName(countryGeoCode, harmonizedTariffScheduleCodeName);
 
             if(harmonizedTariffScheduleCode != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = spec.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = spec.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                 if(language != null) {
                     if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -157,8 +157,8 @@ public class EditHarmonizedTariffScheduleCodeTranslationCommand
 
     @Override
     protected void canUpdate(HarmonizedTariffScheduleCodeTranslation harmonizedTariffScheduleCodeTranslation) {
-        String overviewMimeTypeName = edit.getOverviewMimeTypeName();
-        String overview = edit.getOverview();
+        var overviewMimeTypeName = edit.getOverviewMimeTypeName();
+        var overview = edit.getOverview();
         
         overviewMimeType = MimeTypeLogic.getInstance().checkMimeType(this, overviewMimeTypeName, overview, MimeTypeUsageTypes.TEXT.name(),
                 ExecutionErrors.MissingRequiredOverviewMimeTypeName.name(), ExecutionErrors.MissingRequiredOverview.name(),
@@ -168,7 +168,7 @@ public class EditHarmonizedTariffScheduleCodeTranslationCommand
     @Override
     public void doUpdate(HarmonizedTariffScheduleCodeTranslation harmonizedTariffScheduleCodeTranslation) {
         var itemControl = Session.getModelController(ItemControl.class);
-        HarmonizedTariffScheduleCodeTranslationValue harmonizedTariffScheduleCodeTranslationValue = itemControl.getHarmonizedTariffScheduleCodeTranslationValue(harmonizedTariffScheduleCodeTranslation);
+        var harmonizedTariffScheduleCodeTranslationValue = itemControl.getHarmonizedTariffScheduleCodeTranslationValue(harmonizedTariffScheduleCodeTranslation);
 
         harmonizedTariffScheduleCodeTranslationValue.setDescription(edit.getDescription());
         harmonizedTariffScheduleCodeTranslationValue.setOverviewMimeTypePK(overviewMimeType == null ? null : overviewMimeType.getPrimaryKey());

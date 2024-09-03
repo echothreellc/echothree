@@ -79,24 +79,24 @@ public class EditJobDescriptionCommand
     @Override
     protected BaseResult execute() {
         var jobControl = Session.getModelController(JobControl.class);
-        EditJobDescriptionResult result = JobResultFactory.getEditJobDescriptionResult();
-        String jobName = spec.getJobName();
-        Job job = jobControl.getJobByName(jobName);
+        var result = JobResultFactory.getEditJobDescriptionResult();
+        var jobName = spec.getJobName();
+        var job = jobControl.getJobByName(jobName);
         
         if(job != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK)) {
-                    JobDescription jobDescription = jobControl.getJobDescription(job, language);
+                    var jobDescription = jobControl.getJobDescription(job, language);
                     
                     if(jobDescription != null) {
                         result.setJobDescription(jobControl.getJobDescriptionTransfer(getUserVisit(), jobDescription));
                         
                         if(lockEntity(job)) {
-                            JobDescriptionEdit edit = JobEditFactory.getJobDescriptionEdit();
+                            var edit = JobEditFactory.getJobDescriptionEdit();
                             
                             result.setEdit(edit);
                             edit.setDescription(jobDescription.getDescription());
@@ -109,12 +109,12 @@ public class EditJobDescriptionCommand
                         addExecutionError(ExecutionErrors.UnknownJobDescription.name());
                     }
                 } else if(editMode.equals(EditMode.UPDATE)) {
-                    JobDescriptionValue jobDescriptionValue = jobControl.getJobDescriptionValueForUpdate(job, language);
+                    var jobDescriptionValue = jobControl.getJobDescriptionValueForUpdate(job, language);
                     
                     if(jobDescriptionValue != null) {
                         if(lockEntityForUpdate(job)) {
                             try {
-                                String description = edit.getDescription();
+                                var description = edit.getDescription();
                                 
                                 jobDescriptionValue.setDescription(description);
                                 

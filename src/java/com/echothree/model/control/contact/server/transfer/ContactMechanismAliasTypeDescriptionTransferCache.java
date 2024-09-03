@@ -32,11 +32,11 @@ public class ContactMechanismAliasTypeDescriptionTransferCache
     }
     
     public ContactMechanismAliasTypeDescriptionTransfer getContactMechanismAliasTypeDescriptionTransfer(ContactMechanismAliasTypeDescription contactMechanismAliasTypeDescription) {
-        ContactMechanismAliasTypeDescriptionTransfer contactMechanismAliasTypeDescriptionTransfer = get(contactMechanismAliasTypeDescription);
+        var contactMechanismAliasTypeDescriptionTransfer = get(contactMechanismAliasTypeDescription);
         
         if(contactMechanismAliasTypeDescriptionTransfer == null) {
-            ContactMechanismAliasTypeTransfer contactMechanismAliasTypeTransfer = contactControl.getContactMechanismAliasTypeTransfer(userVisit, contactMechanismAliasTypeDescription.getContactMechanismAliasType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, contactMechanismAliasTypeDescription.getLanguage());
+            var contactMechanismAliasTypeTransfer = contactControl.getContactMechanismAliasTypeTransfer(userVisit, contactMechanismAliasTypeDescription.getContactMechanismAliasType());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, contactMechanismAliasTypeDescription.getLanguage());
             
             contactMechanismAliasTypeDescriptionTransfer = new ContactMechanismAliasTypeDescriptionTransfer(languageTransfer, contactMechanismAliasTypeTransfer, contactMechanismAliasTypeDescription.getDescription());
             put(contactMechanismAliasTypeDescription, contactMechanismAliasTypeDescriptionTransfer);

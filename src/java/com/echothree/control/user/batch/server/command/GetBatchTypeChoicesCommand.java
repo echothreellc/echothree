@@ -63,9 +63,9 @@ public class GetBatchTypeChoicesCommand
     @Override
     protected BaseResult execute() {
         var batchControl = Session.getModelController(BatchControl.class);
-        GetBatchTypeChoicesResult result = BatchResultFactory.getGetBatchTypeChoicesResult();
-        String defaultBatchTypeChoice = form.getDefaultBatchTypeChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = BatchResultFactory.getGetBatchTypeChoicesResult();
+        var defaultBatchTypeChoice = form.getDefaultBatchTypeChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setBatchTypeChoices(batchControl.getBatchTypeChoices(defaultBatchTypeChoice, getPreferredLanguage(),
                 allowNullChoice));

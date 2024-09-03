@@ -65,15 +65,15 @@ public class CreateEntityAppearanceCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String entityRef = form.getEntityRef();
-        EntityInstance entityInstance = coreControl.getEntityInstanceByEntityRef(entityRef);
+        var entityRef = form.getEntityRef();
+        var entityInstance = coreControl.getEntityInstanceByEntityRef(entityRef);
 
         if(entityInstance != null) {
-            EntityAppearance entityAppearance = coreControl.getEntityAppearance(entityInstance);
+            var entityAppearance = coreControl.getEntityAppearance(entityInstance);
 
             if(entityAppearance == null) {
-                String appearanceName = form.getAppearanceName();
-                Appearance appearance = AppearanceLogic.getInstance().getAppearanceByName(this, appearanceName);
+                var appearanceName = form.getAppearanceName();
+                var appearance = AppearanceLogic.getInstance().getAppearanceByName(this, appearanceName);
 
                 if(!hasExecutionErrors()) {
                     coreControl.createEntityAppearance(entityInstance, appearance, getPartyPK());

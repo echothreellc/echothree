@@ -76,13 +76,13 @@ public class EditItemCountryOfOriginCommand
     public ItemCountryOfOrigin getEntity(EditItemCountryOfOriginResult result) {
         var itemControl = Session.getModelController(ItemControl.class);
         ItemCountryOfOrigin itemCountryOfOrigin = null;
-        String itemName = spec.getItemName();
-        Item item = itemControl.getItemByName(itemName);
+        var itemName = spec.getItemName();
+        var item = itemControl.getItemByName(itemName);
 
         if(item != null) {
             var geoControl = Session.getModelController(GeoControl.class);
-            String countryName = spec.getCountryName();
-            GeoCode countryGeoCode = geoControl.getCountryByAlias(countryName);
+            var countryName = spec.getCountryName();
+            var countryGeoCode = geoControl.getCountryByAlias(countryName);
             
             if(countryGeoCode != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -124,7 +124,7 @@ public class EditItemCountryOfOriginCommand
     @Override
     public void doUpdate(ItemCountryOfOrigin itemCountryOfOrigin) {
         var itemControl = Session.getModelController(ItemControl.class);
-        ItemCountryOfOriginValue itemCountryOfOriginValue = itemControl.getItemCountryOfOriginValue(itemCountryOfOrigin);
+        var itemCountryOfOriginValue = itemControl.getItemCountryOfOriginValue(itemCountryOfOrigin);
 
         itemCountryOfOriginValue.setPercent(Integer.valueOf(edit.getPercent()));
 

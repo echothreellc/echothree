@@ -30,7 +30,7 @@ public class LetterUtil {
     public static LetterLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
 
             cachedLocal = (LetterLocal)ctx.lookup("ejb:echothree/echothree-server/LetterBean!com.echothree.control.user.letter.server.LetterLocal");
         }
@@ -42,7 +42,7 @@ public class LetterUtil {
     public static LetterRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
             
             cachedRemote = (LetterRemote)ctx.lookup("ejb:echothree/echothree-server/LetterBean!com.echothree.control.user.letter.common.LetterRemote");
         }

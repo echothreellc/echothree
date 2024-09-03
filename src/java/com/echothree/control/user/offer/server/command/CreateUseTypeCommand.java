@@ -65,13 +65,13 @@ public class CreateUseTypeCommand
     
     @Override
     protected BaseResult execute() {
-        CreateUseTypeResult result = OfferResultFactory.getCreateUseTypeResult();
-        String useTypeName = form.getUseTypeName();
+        var result = OfferResultFactory.getCreateUseTypeResult();
+        var useTypeName = form.getUseTypeName();
         var isDefault = Boolean.valueOf(form.getIsDefault());
         var sortOrder = Integer.valueOf(form.getSortOrder());
         var description = form.getDescription();
 
-        UseType useType = UseTypeLogic.getInstance().createUseType(this,
+        var useType = UseTypeLogic.getInstance().createUseType(this,
                 useTypeName, isDefault, sortOrder, getPreferredLanguage(), description, getPartyPK());
 
         if(useType != null && !hasExecutionErrors()) {

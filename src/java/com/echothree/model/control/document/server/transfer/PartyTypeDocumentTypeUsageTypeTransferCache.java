@@ -36,13 +36,13 @@ public class PartyTypeDocumentTypeUsageTypeTransferCache
     }
     
     public PartyTypeDocumentTypeUsageTypeTransfer getPartyTypeDocumentTypeUsageTypeTransfer(PartyTypeDocumentTypeUsageType partyTypeDocumentTypeUsageType) {
-        PartyTypeDocumentTypeUsageTypeTransfer partyTypeDocumentTypeUsageTypeTransfer = get(partyTypeDocumentTypeUsageType);
+        var partyTypeDocumentTypeUsageTypeTransfer = get(partyTypeDocumentTypeUsageType);
         
         if(partyTypeDocumentTypeUsageTypeTransfer == null) {
-            PartyTypeTransfer partyTypeTransfer = partyControl.getPartyTypeTransfer(userVisit, partyTypeDocumentTypeUsageType.getPartyType());
-            DocumentTypeUsageTypeTransfer documentTypeUsageTypeTransfer = documentControl.getDocumentTypeUsageTypeTransfer(userVisit, partyTypeDocumentTypeUsageType.getDocumentTypeUsageType());
-            Boolean isDefault = partyTypeDocumentTypeUsageType.getIsDefault();
-            Integer sortOrder = partyTypeDocumentTypeUsageType.getSortOrder();
+            var partyTypeTransfer = partyControl.getPartyTypeTransfer(userVisit, partyTypeDocumentTypeUsageType.getPartyType());
+            var documentTypeUsageTypeTransfer = documentControl.getDocumentTypeUsageTypeTransfer(userVisit, partyTypeDocumentTypeUsageType.getDocumentTypeUsageType());
+            var isDefault = partyTypeDocumentTypeUsageType.getIsDefault();
+            var sortOrder = partyTypeDocumentTypeUsageType.getSortOrder();
             
             partyTypeDocumentTypeUsageTypeTransfer = new PartyTypeDocumentTypeUsageTypeTransfer(partyTypeTransfer, documentTypeUsageTypeTransfer, isDefault, sortOrder);
             put(partyTypeDocumentTypeUsageType, partyTypeDocumentTypeUsageTypeTransfer);

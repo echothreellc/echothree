@@ -75,29 +75,29 @@ public class EditRatingTypeCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        EditRatingTypeResult result = RatingResultFactory.getEditRatingTypeResult();
-        String componentVendorName = spec.getComponentVendorName();
-        ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+        var result = RatingResultFactory.getEditRatingTypeResult();
+        var componentVendorName = spec.getComponentVendorName();
+        var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
         
         if(componentVendor != null) {
-            String entityTypeName = spec.getEntityTypeName();
-            EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+            var entityTypeName = spec.getEntityTypeName();
+            var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
             
             if(entityType != null) {
                 var ratingControl = Session.getModelController(RatingControl.class);
                 
                 if(editMode.equals(EditMode.LOCK)) {
-                    String ratingTypeName = spec.getRatingTypeName();
-                    RatingType ratingType = ratingControl.getRatingTypeByName(entityType, ratingTypeName);
+                    var ratingTypeName = spec.getRatingTypeName();
+                    var ratingType = ratingControl.getRatingTypeByName(entityType, ratingTypeName);
                     
                     if(ratingType != null) {
                         result.setRatingType(ratingControl.getRatingTypeTransfer(getUserVisit(), ratingType));
                         
                         if(lockEntity(ratingType)) {
-                            RatingTypeDescription ratingTypeDescription = ratingControl.getRatingTypeDescription(ratingType, getPreferredLanguage());
-                            RatingTypeEdit edit = RatingEditFactory.getRatingTypeEdit();
-                            RatingTypeDetail ratingTypeDetail = ratingType.getLastDetail();
-                            Sequence ratingSequence = ratingTypeDetail.getRatingSequence();
+                            var ratingTypeDescription = ratingControl.getRatingTypeDescription(ratingType, getPreferredLanguage());
+                            var edit = RatingEditFactory.getRatingTypeEdit();
+                            var ratingTypeDetail = ratingType.getLastDetail();
+                            var ratingSequence = ratingTypeDetail.getRatingSequence();
                             
                             result.setEdit(edit);
                             edit.setRatingTypeName(ratingTypeDetail.getRatingTypeName());
@@ -115,20 +115,20 @@ public class EditRatingTypeCommand
                         addExecutionError(ExecutionErrors.UnknownRatingTypeName.name(), ratingTypeName);
                     }
                 } else if(editMode.equals(EditMode.UPDATE)) {
-                    String ratingTypeName = spec.getRatingTypeName();
-                    RatingType ratingType = ratingControl.getRatingTypeByNameForUpdate(entityType, ratingTypeName);
+                    var ratingTypeName = spec.getRatingTypeName();
+                    var ratingType = ratingControl.getRatingTypeByNameForUpdate(entityType, ratingTypeName);
                     
                     if(ratingType != null) {
                         ratingTypeName = edit.getRatingTypeName();
-                        RatingType duplicateRatingType = ratingControl.getRatingTypeByName(entityType, ratingTypeName);
+                        var duplicateRatingType = ratingControl.getRatingTypeByName(entityType, ratingTypeName);
                         
                         if(duplicateRatingType == null || ratingType.equals(duplicateRatingType)) {
-                            String ratingSequenceName = edit.getRatingSequenceName();
+                            var ratingSequenceName = edit.getRatingSequenceName();
                             Sequence ratingSequence = null;
                             
                             if(ratingSequenceName != null) {
                                 var sequenceControl = Session.getModelController(SequenceControl.class);
-                                SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.RATING.name());
+                                var sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.RATING.name());
                                 
                                 if(sequenceType != null) {
                                     ratingSequence = sequenceControl.getSequenceByName(sequenceType, ratingSequenceName);
@@ -141,9 +141,9 @@ public class EditRatingTypeCommand
                                 if(lockEntityForUpdate(ratingType)) {
                                     try {
                                         var partyPK = getPartyPK();
-                                        RatingTypeDetailValue ratingTypeDetailValue = ratingControl.getRatingTypeDetailValueForUpdate(ratingType);
-                                        RatingTypeDescription ratingTypeDescription = ratingControl.getRatingTypeDescriptionForUpdate(ratingType, getPreferredLanguage());
-                                        String description = edit.getDescription();
+                                        var ratingTypeDetailValue = ratingControl.getRatingTypeDetailValueForUpdate(ratingType);
+                                        var ratingTypeDescription = ratingControl.getRatingTypeDescriptionForUpdate(ratingType, getPreferredLanguage());
+                                        var description = edit.getDescription();
                                         
                                         ratingTypeDetailValue.setRatingTypeName(edit.getRatingTypeName());
                                         ratingTypeDetailValue.setRatingSequencePK(ratingSequence == null ? null : ratingSequence.getPrimaryKey());
@@ -156,7 +156,7 @@ public class EditRatingTypeCommand
                                         } else if(ratingTypeDescription != null && description == null) {
                                             ratingControl.deleteRatingTypeDescription(ratingTypeDescription, partyPK);
                                         } else if(ratingTypeDescription != null && description != null) {
-                                            RatingTypeDescriptionValue ratingTypeDescriptionValue = ratingControl.getRatingTypeDescriptionValue(ratingTypeDescription);
+                                            var ratingTypeDescriptionValue = ratingControl.getRatingTypeDescriptionValue(ratingTypeDescription);
                                             
                                             ratingTypeDescriptionValue.setDescription(description);
                                             ratingControl.updateRatingTypeDescriptionFromValue(ratingTypeDescriptionValue, partyPK);

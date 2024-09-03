@@ -53,13 +53,13 @@ public class GetIconChoicesCommand
     @Override
     protected BaseResult execute() {
         var iconControl = Session.getModelController(IconControl.class);
-        GetIconChoicesResult result = IconResultFactory.getGetIconChoicesResult();
-        String iconUsageTypeName = form.getIconUsageTypeName();
-        IconUsageType iconUsageType = iconControl.getIconUsageTypeByName(iconUsageTypeName);
+        var result = IconResultFactory.getGetIconChoicesResult();
+        var iconUsageTypeName = form.getIconUsageTypeName();
+        var iconUsageType = iconControl.getIconUsageTypeByName(iconUsageTypeName);
         
         if(iconUsageType != null) {
-            String defaultIconChoice = form.getDefaultIconChoice();
-            boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+            var defaultIconChoice = form.getDefaultIconChoice();
+            var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
             
             result.setIconChoices(iconControl.getIconChoicesByIconUsageType(iconUsageType, defaultIconChoice,
                     getPreferredLanguage(), allowNullChoice));

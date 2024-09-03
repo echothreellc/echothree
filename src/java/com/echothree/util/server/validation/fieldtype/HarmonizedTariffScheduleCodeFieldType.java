@@ -34,9 +34,9 @@ public class HarmonizedTariffScheduleCodeFieldType
     
     @Override
     public String validate() {
-        boolean hadErrors = false;
-        
-        Matcher m = Patterns.HarmonizedTariffScheduleCode.matcher(fieldValue);
+        var hadErrors = false;
+
+        var m = Patterns.HarmonizedTariffScheduleCode.matcher(fieldValue);
         if(!m.matches()) {
             validationMessages.add(fieldName, new Message(Validator.ERROR_INVALID_FORMAT));
             hadErrors = true;

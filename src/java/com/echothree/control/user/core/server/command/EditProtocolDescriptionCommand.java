@@ -88,13 +88,13 @@ public class EditProtocolDescriptionCommand
     public ProtocolDescription getEntity(EditProtocolDescriptionResult result) {
         var coreControl = getCoreControl();
         ProtocolDescription protocolDescription = null;
-        String protocolName = spec.getProtocolName();
-        Protocol protocol = coreControl.getProtocolByName(protocolName);
+        var protocolName = spec.getProtocolName();
+        var protocol = coreControl.getProtocolByName(protocolName);
 
         if(protocol != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -136,7 +136,7 @@ public class EditProtocolDescriptionCommand
     @Override
     public void doUpdate(ProtocolDescription protocolDescription) {
         var coreControl = getCoreControl();
-        ProtocolDescriptionValue protocolDescriptionValue = coreControl.getProtocolDescriptionValue(protocolDescription);
+        var protocolDescriptionValue = coreControl.getProtocolDescriptionValue(protocolDescription);
         protocolDescriptionValue.setDescription(edit.getDescription());
 
         coreControl.updateProtocolDescriptionFromValue(protocolDescriptionValue, getPartyPK());

@@ -66,9 +66,9 @@ public class GetWishlistTypeDescriptionsCommand
     protected BaseResult execute() {
         var wishlistControl = Session.getModelController(WishlistControl.class);
 
-        GetWishlistTypeDescriptionsResult result = WishlistResultFactory.getGetWishlistTypeDescriptionsResult();
-        String wishlistTypeName = form.getWishlistTypeName();
-        WishlistType wishlistType = wishlistControl.getWishlistTypeByName(wishlistTypeName);
+        var result = WishlistResultFactory.getGetWishlistTypeDescriptionsResult();
+        var wishlistTypeName = form.getWishlistTypeName();
+        var wishlistType = wishlistControl.getWishlistTypeByName(wishlistTypeName);
         
         if(wishlistType != null) {
             result.setWishlistType(wishlistControl.getWishlistTypeTransfer(getUserVisit(), wishlistType));

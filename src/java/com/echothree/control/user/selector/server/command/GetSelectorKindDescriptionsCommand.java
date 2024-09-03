@@ -65,9 +65,9 @@ public class GetSelectorKindDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var selectorControl = Session.getModelController(SelectorControl.class);
-        GetSelectorKindDescriptionsResult result = SelectorResultFactory.getGetSelectorKindDescriptionsResult();
-        String selectorKindName = form.getSelectorKindName();
-        SelectorKind selectorKind = selectorControl.getSelectorKindByName(selectorKindName);
+        var result = SelectorResultFactory.getGetSelectorKindDescriptionsResult();
+        var selectorKindName = form.getSelectorKindName();
+        var selectorKind = selectorControl.getSelectorKindByName(selectorKindName);
         
         if(selectorKind != null) {
             result.setSelectorKind(selectorControl.getSelectorKindTransfer(getUserVisit(), selectorKind));

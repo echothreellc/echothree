@@ -212,8 +212,8 @@ public class CustomerControl
                     "WHERE cuty_activedetailid = cutydt_customertypedetailid " +
                     "FOR UPDATE";
         }
-        
-        PreparedStatement ps = CustomerTypeFactory.getInstance().prepareStatement(query);
+
+        var ps = CustomerTypeFactory.getInstance().prepareStatement(query);
         
         return CustomerTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
     }
@@ -239,8 +239,8 @@ public class CustomerControl
                     "WHERE cuty_activedetailid = cutydt_customertypedetailid AND cutydt_isdefault = 1 " +
                     "FOR UPDATE";
         }
-        
-        PreparedStatement ps = CustomerTypeFactory.getInstance().prepareStatement(query);
+
+        var ps = CustomerTypeFactory.getInstance().prepareStatement(query);
         
         return CustomerTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
     }
@@ -273,8 +273,8 @@ public class CustomerControl
                         "WHERE cuty_activedetailid = cutydt_customertypedetailid AND cutydt_customertypename = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CustomerTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = CustomerTypeFactory.getInstance().prepareStatement(query);
             
             ps.setString(1, customerTypeName);
             
@@ -304,7 +304,7 @@ public class CustomerControl
     
     public CustomerTypeChoicesBean getCustomerTypeChoices(String defaultCustomerTypeChoice, Language language,
             boolean allowNullChoice) {
-        List<CustomerType> customerTypes = getCustomerTypes();
+        var customerTypes = getCustomerTypes();
         var size = customerTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -320,7 +320,7 @@ public class CustomerControl
         }
         
         for(var customerType : customerTypes) {
-            CustomerTypeDetail customerTypeDetail = customerType.getLastDetail();
+            var customerTypeDetail = customerType.getLastDetail();
             var label = getBestCustomerTypeDescription(customerType, language);
             var value = customerTypeDetail.getCustomerTypeName();
             
@@ -344,7 +344,7 @@ public class CustomerControl
         List<CustomerTypeTransfer> customerTypeTransfers = null;
 
         if(customerTypes != null) {
-            CustomerTypeTransferCache customerTypeTransferCache = getCustomerTransferCaches(userVisit).getCustomerTypeTransferCache();
+            var customerTypeTransferCache = getCustomerTransferCaches(userVisit).getCustomerTypeTransferCache();
 
             customerTypeTransfers = new ArrayList<>(customerTypes.size());
 
@@ -436,23 +436,23 @@ public class CustomerControl
         offerControl.deleteOfferCustomerTypesByCustomerType(customerType, deletedBy);
         deleteCustomerTypePaymentMethodsByCustomerType(customerType, deletedBy);
         deleteCustomerTypeDescriptionsByCustomerType(customerType, deletedBy);
-        
-        CustomerTypeDetail customerTypeDetail = customerType.getLastDetailForUpdate();
+
+        var customerTypeDetail = customerType.getLastDetailForUpdate();
         customerTypeDetail.setThruTime(session.START_TIME_LONG);
         customerType.setActiveDetail(null);
         customerType.store();
         
         // Check for default, and pick one if necessary
-        CustomerType defaultCustomerType = getDefaultCustomerType();
+        var defaultCustomerType = getDefaultCustomerType();
         if(defaultCustomerType == null) {
-            List<CustomerType> customerTypes = getCustomerTypesForUpdate();
+            var customerTypes = getCustomerTypesForUpdate();
             
             if(!customerTypes.isEmpty()) {
-                Iterator<CustomerType> iter = customerTypes.iterator();
+                var iter = customerTypes.iterator();
                 if(iter.hasNext()) {
                     defaultCustomerType = iter.next();
                 }
-                CustomerTypeDetailValue customerTypeDetailValue = Objects.requireNonNull(defaultCustomerType).getLastDetailForUpdate().getCustomerTypeDetailValue().clone();
+                var customerTypeDetailValue = Objects.requireNonNull(defaultCustomerType).getLastDetailForUpdate().getCustomerTypeDetailValue().clone();
                 
                 customerTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateCustomerTypeFromValue(customerTypeDetailValue, false, deletedBy);
@@ -468,7 +468,7 @@ public class CustomerControl
     
     public CustomerTypeDescription createCustomerTypeDescription(CustomerType customerType, Language language, String description,
             BasePK createdBy) {
-        CustomerTypeDescription customerTypeDescription = CustomerTypeDescriptionFactory.getInstance().create(customerType,
+        var customerTypeDescription = CustomerTypeDescriptionFactory.getInstance().create(customerType,
                 language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
@@ -493,8 +493,8 @@ public class CustomerControl
                         "WHERE cutyd_cuty_customertypeid = ? AND cutyd_lang_languageid = ? AND cutyd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CustomerTypeDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = CustomerTypeDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, customerType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -541,8 +541,8 @@ public class CustomerControl
                         "WHERE cutyd_cuty_customertypeid = ? AND cutyd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CustomerTypeDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = CustomerTypeDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, customerType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -565,7 +565,7 @@ public class CustomerControl
     
     public String getBestCustomerTypeDescription(CustomerType customerType, Language language) {
         String description;
-        CustomerTypeDescription customerTypeDescription = getCustomerTypeDescription(customerType, language);
+        var customerTypeDescription = getCustomerTypeDescription(customerType, language);
         
         if(customerTypeDescription == null && !language.getIsDefault()) {
             customerTypeDescription = getCustomerTypeDescription(customerType, getPartyControl().getDefaultLanguage());
@@ -585,11 +585,11 @@ public class CustomerControl
     }
     
     public List<CustomerTypeDescriptionTransfer> getCustomerTypeDescriptionTransfers(UserVisit userVisit, CustomerType customerType) {
-        List<CustomerTypeDescription> customerTypeDescriptions = getCustomerTypeDescriptionsByCustomerType(customerType);
+        var customerTypeDescriptions = getCustomerTypeDescriptionsByCustomerType(customerType);
         List<CustomerTypeDescriptionTransfer> customerTypeDescriptionTransfers = null;
         
         if(customerTypeDescriptions != null) {
-            CustomerTypeDescriptionTransferCache customerTypeDescriptionTransferCache = getCustomerTransferCaches(userVisit).getCustomerTypeDescriptionTransferCache();
+            var customerTypeDescriptionTransferCache = getCustomerTransferCaches(userVisit).getCustomerTypeDescriptionTransferCache();
             
             customerTypeDescriptionTransfers = new ArrayList<>(customerTypeDescriptions.size());
             
@@ -603,15 +603,15 @@ public class CustomerControl
     
     public void updateCustomerTypeDescriptionFromValue(CustomerTypeDescriptionValue customerTypeDescriptionValue, BasePK updatedBy) {
         if(customerTypeDescriptionValue.hasBeenModified()) {
-            CustomerTypeDescription customerTypeDescription = CustomerTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var customerTypeDescription = CustomerTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      customerTypeDescriptionValue.getPrimaryKey());
             
             customerTypeDescription.setThruTime(session.START_TIME_LONG);
             customerTypeDescription.store();
-            
-            CustomerType customerType = customerTypeDescription.getCustomerType();
-            Language language = customerTypeDescription.getLanguage();
-            String description = customerTypeDescriptionValue.getDescription();
+
+            var customerType = customerTypeDescription.getCustomerType();
+            var language = customerTypeDescription.getLanguage();
+            var description = customerTypeDescriptionValue.getDescription();
             
             customerTypeDescription = CustomerTypeDescriptionFactory.getInstance().create(customerType, language,
                     description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -627,7 +627,7 @@ public class CustomerControl
     }
     
     public void deleteCustomerTypeDescriptionsByCustomerType(CustomerType customerType, BasePK deletedBy) {
-        List<CustomerTypeDescription> customerTypeDescriptions = getCustomerTypeDescriptionsByCustomerTypeForUpdate(customerType);
+        var customerTypeDescriptions = getCustomerTypeDescriptionsByCustomerTypeForUpdate(customerType);
         
         customerTypeDescriptions.forEach((customerTypeDescription) -> 
                 deleteCustomerTypeDescription(customerTypeDescription, deletedBy)
@@ -689,7 +689,7 @@ public class CustomerControl
                         "FOR UPDATE";
             }
 
-            PreparedStatement ps = CustomerFactory.getInstance().prepareStatement(query);
+            var ps = CustomerFactory.getInstance().prepareStatement(query);
 
             ps.setLong(1, Session.MAX_TIME);
 
@@ -726,7 +726,7 @@ public class CustomerControl
                         "FOR UPDATE";
             }
 
-            PreparedStatement ps = CustomerFactory.getInstance().prepareStatement(query);
+            var ps = CustomerFactory.getInstance().prepareStatement(query);
 
             ps.setLong(1, party.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -763,8 +763,8 @@ public class CustomerControl
                         "WHERE cu_customername = ? AND cu_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CustomerFactory.getInstance().prepareStatement(query);
+
+            var ps = CustomerFactory.getInstance().prepareStatement(query);
             
             ps.setString(1, customerName);
             ps.setLong(2, Session.MAX_TIME);
@@ -818,25 +818,25 @@ public class CustomerControl
 
     public void updateCustomerFromValue(CustomerValue customerValue, BasePK updatedBy) {
         if(customerValue.hasBeenModified()) {
-            Customer customer = CustomerFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, customerValue.getPrimaryKey());
+            var customer = CustomerFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, customerValue.getPrimaryKey());
 
             customer.setThruTime(session.START_TIME_LONG);
             customer.store();
 
-            PartyPK partyPK = customer.getPartyPK(); // Not updated
-            String customerName = customerValue.getCustomerName();
-            CustomerTypePK customerTypePK = customerValue.getCustomerTypePK();
-            OfferUsePK initialOfferUsePK = customerValue.getInitialOfferUsePK();
-            CancellationPolicyPK cancellationPolicyPK = customerValue.getCancellationPolicyPK();
-            ReturnPolicyPK returnPolicyPK = customerValue.getReturnPolicyPK();
-            GlAccountPK arGlAccountPK = customerValue.getArGlAccountPK();
-            Boolean holdUntilComplete = customerValue.getHoldUntilComplete();
-            Boolean allowBackorders = customerValue.getAllowBackorders();
-            Boolean allowSubstitutions = customerValue.getAllowSubstitutions();
-            Boolean allowCombiningShipments = customerValue.getAllowCombiningShipments();
-            Boolean requireReference = customerValue.getRequireReference();
-            Boolean allowReferenceDuplicates = customerValue.getAllowReferenceDuplicates();
-            String referenceValidationPattern = customerValue.getReferenceValidationPattern();
+            var partyPK = customer.getPartyPK(); // Not updated
+            var customerName = customerValue.getCustomerName();
+            var customerTypePK = customerValue.getCustomerTypePK();
+            var initialOfferUsePK = customerValue.getInitialOfferUsePK();
+            var cancellationPolicyPK = customerValue.getCancellationPolicyPK();
+            var returnPolicyPK = customerValue.getReturnPolicyPK();
+            var arGlAccountPK = customerValue.getArGlAccountPK();
+            var holdUntilComplete = customerValue.getHoldUntilComplete();
+            var allowBackorders = customerValue.getAllowBackorders();
+            var allowSubstitutions = customerValue.getAllowSubstitutions();
+            var allowCombiningShipments = customerValue.getAllowCombiningShipments();
+            var requireReference = customerValue.getRequireReference();
+            var allowReferenceDuplicates = customerValue.getAllowReferenceDuplicates();
+            var referenceValidationPattern = customerValue.getReferenceValidationPattern();
 
             customer = CustomerFactory.getInstance().create(partyPK, customerName, customerTypePK, initialOfferUsePK, cancellationPolicyPK, returnPolicyPK,
                     arGlAccountPK, holdUntilComplete, allowBackorders, allowSubstitutions, allowCombiningShipments, requireReference, allowReferenceDuplicates,
@@ -855,8 +855,8 @@ public class CustomerControl
             workflowControl.getWorkflowEntranceChoices(customerStatusChoicesBean, defaultCustomerStatusChoice, language, allowNullChoice,
                     workflowControl.getWorkflowByName(CustomerStatusConstants.Workflow_CUSTOMER_STATUS), partyPK);
         } else {
-            EntityInstance entityInstance = getCoreControl().getEntityInstanceByBasePK(customerParty.getPrimaryKey());
-            WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(CustomerStatusConstants.Workflow_CUSTOMER_STATUS,
+            var entityInstance = getCoreControl().getEntityInstanceByBasePK(customerParty.getPrimaryKey());
+            var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(CustomerStatusConstants.Workflow_CUSTOMER_STATUS,
                     entityInstance);
             
             workflowControl.getWorkflowDestinationChoices(customerStatusChoicesBean, defaultCustomerStatusChoice, language, allowNullChoice,
@@ -868,10 +868,10 @@ public class CustomerControl
     
     public void setCustomerStatus(ExecutionErrorAccumulator eea, Party party, String customerStatusChoice, PartyPK modifiedBy) {
         var workflowControl = getWorkflowControl();
-        EntityInstance entityInstance = getEntityInstanceByBaseEntity(party);
-        WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(CustomerStatusConstants.Workflow_CUSTOMER_STATUS,
+        var entityInstance = getEntityInstanceByBaseEntity(party);
+        var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(CustomerStatusConstants.Workflow_CUSTOMER_STATUS,
                 entityInstance);
-        WorkflowDestination workflowDestination = customerStatusChoice == null? null:
+        var workflowDestination = customerStatusChoice == null? null:
             workflowControl.getWorkflowDestinationByName(workflowEntityStatus.getWorkflowStep(), customerStatusChoice);
         
         if(workflowDestination != null || customerStatusChoice == null) {
@@ -890,8 +890,8 @@ public class CustomerControl
             workflowControl.getWorkflowEntranceChoices(customerCreditStatusChoicesBean, defaultCustomerCreditStatusChoice, language, allowNullChoice,
                     workflowControl.getWorkflowByName(CustomerCreditStatusConstants.Workflow_CUSTOMER_CREDIT_STATUS), partyPK);
         } else {
-            EntityInstance entityInstance = getCoreControl().getEntityInstanceByBasePK(customerParty.getPrimaryKey());
-            WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(CustomerCreditStatusConstants.Workflow_CUSTOMER_CREDIT_STATUS,
+            var entityInstance = getCoreControl().getEntityInstanceByBasePK(customerParty.getPrimaryKey());
+            var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(CustomerCreditStatusConstants.Workflow_CUSTOMER_CREDIT_STATUS,
                     entityInstance);
             
             workflowControl.getWorkflowDestinationChoices(customerCreditStatusChoicesBean, defaultCustomerCreditStatusChoice, language, allowNullChoice,
@@ -903,10 +903,10 @@ public class CustomerControl
     
     public void setCustomerCreditStatus(ExecutionErrorAccumulator eea, Party party, String customerCreditStatusChoice, PartyPK modifiedBy) {
         var workflowControl = getWorkflowControl();
-        EntityInstance entityInstance = getEntityInstanceByBaseEntity(party);
-        WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(CustomerCreditStatusConstants.Workflow_CUSTOMER_CREDIT_STATUS,
+        var entityInstance = getEntityInstanceByBaseEntity(party);
+        var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(CustomerCreditStatusConstants.Workflow_CUSTOMER_CREDIT_STATUS,
                 entityInstance);
-        WorkflowDestination workflowDestination = customerCreditStatusChoice == null? null:
+        var workflowDestination = customerCreditStatusChoice == null? null:
             workflowControl.getWorkflowDestinationByName(workflowEntityStatus.getWorkflowStep(), customerCreditStatusChoice);
         
         if(workflowDestination != null || customerCreditStatusChoice == null) {
@@ -922,19 +922,19 @@ public class CustomerControl
     
     public CustomerTypePaymentMethod createCustomerTypePaymentMethod(CustomerType customerType, PaymentMethod paymentMethod, Integer defaultSelectionPriority,
             Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        CustomerTypePaymentMethod defaultCustomerTypePaymentMethod = getDefaultCustomerTypePaymentMethod(customerType);
-        boolean defaultFound = defaultCustomerTypePaymentMethod != null;
+        var defaultCustomerTypePaymentMethod = getDefaultCustomerTypePaymentMethod(customerType);
+        var defaultFound = defaultCustomerTypePaymentMethod != null;
         
         if(defaultFound && isDefault) {
-            CustomerTypePaymentMethodValue defaultCustomerTypePaymentMethodValue = getDefaultCustomerTypePaymentMethodValueForUpdate(customerType);
+            var defaultCustomerTypePaymentMethodValue = getDefaultCustomerTypePaymentMethodValueForUpdate(customerType);
             
             defaultCustomerTypePaymentMethodValue.setIsDefault(Boolean.FALSE);
             updateCustomerTypePaymentMethodFromValue(defaultCustomerTypePaymentMethodValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        CustomerTypePaymentMethod customerTypePaymentMethod = CustomerTypePaymentMethodFactory.getInstance().create(session, customerType, paymentMethod,
+
+        var customerTypePaymentMethod = CustomerTypePaymentMethodFactory.getInstance().create(session, customerType, paymentMethod,
                 defaultSelectionPriority, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(customerType.getPrimaryKey(), EventTypes.MODIFY, customerTypePaymentMethod.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1111,7 +1111,7 @@ public class CustomerControl
     private List<CustomerTypePaymentMethodTransfer> getCustomerTypePaymentMethodTransfersByPaymentMethod(UserVisit userVisit,
             List<CustomerTypePaymentMethod> customerTypePaymentMethods) {
         List<CustomerTypePaymentMethodTransfer> customerTypePaymentMethodTransfers = customerTypePaymentMethodTransfers = new ArrayList<>(customerTypePaymentMethods.size());
-        CustomerTypePaymentMethodTransferCache customerTypePaymentMethodTransferCache = getCustomerTransferCaches(userVisit).getCustomerTypePaymentMethodTransferCache();
+        var customerTypePaymentMethodTransferCache = getCustomerTransferCaches(userVisit).getCustomerTypePaymentMethodTransferCache();
 
         for(var customerTypePaymentMethod : customerTypePaymentMethods) {
             customerTypePaymentMethodTransfers.add(customerTypePaymentMethodTransferCache.getCustomerTypePaymentMethodTransfer(customerTypePaymentMethod));
@@ -1131,26 +1131,26 @@ public class CustomerControl
     private void updateCustomerTypePaymentMethodFromValue(CustomerTypePaymentMethodValue customerTypePaymentMethodValue,
             boolean checkDefault, BasePK updatedBy) {
         if(customerTypePaymentMethodValue.hasBeenModified()) {
-            CustomerTypePaymentMethod customerTypePaymentMethod = CustomerTypePaymentMethodFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var customerTypePaymentMethod = CustomerTypePaymentMethodFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      customerTypePaymentMethodValue.getPrimaryKey());
             
             customerTypePaymentMethod.setThruTime(session.START_TIME_LONG);
             customerTypePaymentMethod.store();
-            
-            CustomerTypePK customerTypePK = customerTypePaymentMethod.getCustomerTypePK();
-            CustomerType customerType = customerTypePaymentMethod.getCustomerType();
-            PaymentMethodPK paymentMethodPK = customerTypePaymentMethod.getPaymentMethodPK();
-            Integer defaultSelectionPriority = customerTypePaymentMethodValue.getDefaultSelectionPriority();
-            Boolean isDefault = customerTypePaymentMethodValue.getIsDefault();
-            Integer sortOrder = customerTypePaymentMethodValue.getSortOrder();
+
+            var customerTypePK = customerTypePaymentMethod.getCustomerTypePK();
+            var customerType = customerTypePaymentMethod.getCustomerType();
+            var paymentMethodPK = customerTypePaymentMethod.getPaymentMethodPK();
+            var defaultSelectionPriority = customerTypePaymentMethodValue.getDefaultSelectionPriority();
+            var isDefault = customerTypePaymentMethodValue.getIsDefault();
+            var sortOrder = customerTypePaymentMethodValue.getSortOrder();
             
             if(checkDefault) {
-                CustomerTypePaymentMethod defaultCustomerTypePaymentMethod = getDefaultCustomerTypePaymentMethod(customerType);
-                boolean defaultFound = defaultCustomerTypePaymentMethod != null && !defaultCustomerTypePaymentMethod.equals(customerTypePaymentMethod);
+                var defaultCustomerTypePaymentMethod = getDefaultCustomerTypePaymentMethod(customerType);
+                var defaultFound = defaultCustomerTypePaymentMethod != null && !defaultCustomerTypePaymentMethod.equals(customerTypePaymentMethod);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    CustomerTypePaymentMethodValue defaultCustomerTypePaymentMethodValue = getDefaultCustomerTypePaymentMethodValueForUpdate(customerType);
+                    var defaultCustomerTypePaymentMethodValue = getDefaultCustomerTypePaymentMethodValueForUpdate(customerType);
                     
                     defaultCustomerTypePaymentMethodValue.setIsDefault(Boolean.FALSE);
                     updateCustomerTypePaymentMethodFromValue(defaultCustomerTypePaymentMethodValue, false, updatedBy);
@@ -1176,17 +1176,17 @@ public class CustomerControl
         customerTypePaymentMethod.store();
         
         // Check for default, and pick one if necessary
-        CustomerType customerType = customerTypePaymentMethod.getCustomerType();
-        CustomerTypePaymentMethod defaultCustomerTypePaymentMethod = getDefaultCustomerTypePaymentMethod(customerType);
+        var customerType = customerTypePaymentMethod.getCustomerType();
+        var defaultCustomerTypePaymentMethod = getDefaultCustomerTypePaymentMethod(customerType);
         if(defaultCustomerTypePaymentMethod == null) {
-            List<CustomerTypePaymentMethod> customerTypePaymentMethods = getCustomerTypePaymentMethodsByCustomerTypeForUpdate(customerType);
+            var customerTypePaymentMethods = getCustomerTypePaymentMethodsByCustomerTypeForUpdate(customerType);
             
             if(!customerTypePaymentMethods.isEmpty()) {
-                Iterator<CustomerTypePaymentMethod> iter = customerTypePaymentMethods.iterator();
+                var iter = customerTypePaymentMethods.iterator();
                 if(iter.hasNext()) {
                     defaultCustomerTypePaymentMethod = iter.next();
                 }
-                CustomerTypePaymentMethodValue customerTypePaymentMethodValue = defaultCustomerTypePaymentMethod.getCustomerTypePaymentMethodValue().clone();
+                var customerTypePaymentMethodValue = defaultCustomerTypePaymentMethod.getCustomerTypePaymentMethodValue().clone();
                 
                 customerTypePaymentMethodValue.setIsDefault(Boolean.TRUE);
                 updateCustomerTypePaymentMethodFromValue(customerTypePaymentMethodValue, false, deletedBy);
@@ -1216,19 +1216,19 @@ public class CustomerControl
     
     public CustomerTypeShippingMethod createCustomerTypeShippingMethod(CustomerType customerType, ShippingMethod shippingMethod, Integer defaultSelectionPriority,
             Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        CustomerTypeShippingMethod defaultCustomerTypeShippingMethod = getDefaultCustomerTypeShippingMethod(customerType);
-        boolean defaultFound = defaultCustomerTypeShippingMethod != null;
+        var defaultCustomerTypeShippingMethod = getDefaultCustomerTypeShippingMethod(customerType);
+        var defaultFound = defaultCustomerTypeShippingMethod != null;
         
         if(defaultFound && isDefault) {
-            CustomerTypeShippingMethodValue defaultCustomerTypeShippingMethodValue = getDefaultCustomerTypeShippingMethodValueForUpdate(customerType);
+            var defaultCustomerTypeShippingMethodValue = getDefaultCustomerTypeShippingMethodValueForUpdate(customerType);
             
             defaultCustomerTypeShippingMethodValue.setIsDefault(Boolean.FALSE);
             updateCustomerTypeShippingMethodFromValue(defaultCustomerTypeShippingMethodValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        CustomerTypeShippingMethod customerTypeShippingMethod = CustomerTypeShippingMethodFactory.getInstance().create(session, customerType, shippingMethod,
+
+        var customerTypeShippingMethod = CustomerTypeShippingMethodFactory.getInstance().create(session, customerType, shippingMethod,
                 defaultSelectionPriority, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(customerType.getPrimaryKey(), EventTypes.MODIFY, customerTypeShippingMethod.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1405,7 +1405,7 @@ public class CustomerControl
     private List<CustomerTypeShippingMethodTransfer> getCustomerTypeShippingMethodTransfersByShippingMethod(UserVisit userVisit,
             List<CustomerTypeShippingMethod> customerTypeShippingMethods) {
         List<CustomerTypeShippingMethodTransfer> customerTypeShippingMethodTransfers = customerTypeShippingMethodTransfers = new ArrayList<>(customerTypeShippingMethods.size());
-        CustomerTypeShippingMethodTransferCache customerTypeShippingMethodTransferCache = getCustomerTransferCaches(userVisit).getCustomerTypeShippingMethodTransferCache();
+        var customerTypeShippingMethodTransferCache = getCustomerTransferCaches(userVisit).getCustomerTypeShippingMethodTransferCache();
 
         for(var customerTypeShippingMethod : customerTypeShippingMethods) {
             customerTypeShippingMethodTransfers.add(customerTypeShippingMethodTransferCache.getCustomerTypeShippingMethodTransfer(customerTypeShippingMethod));
@@ -1425,26 +1425,26 @@ public class CustomerControl
     private void updateCustomerTypeShippingMethodFromValue(CustomerTypeShippingMethodValue customerTypeShippingMethodValue,
             boolean checkDefault, BasePK updatedBy) {
         if(customerTypeShippingMethodValue.hasBeenModified()) {
-            CustomerTypeShippingMethod customerTypeShippingMethod = CustomerTypeShippingMethodFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var customerTypeShippingMethod = CustomerTypeShippingMethodFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      customerTypeShippingMethodValue.getPrimaryKey());
             
             customerTypeShippingMethod.setThruTime(session.START_TIME_LONG);
             customerTypeShippingMethod.store();
-            
-            CustomerTypePK customerTypePK = customerTypeShippingMethod.getCustomerTypePK();
-            CustomerType customerType = customerTypeShippingMethod.getCustomerType();
-            ShippingMethodPK shippingMethodPK = customerTypeShippingMethod.getShippingMethodPK();
-            Integer defaultSelectionPriority = customerTypeShippingMethodValue.getDefaultSelectionPriority();
-            Boolean isDefault = customerTypeShippingMethodValue.getIsDefault();
-            Integer sortOrder = customerTypeShippingMethodValue.getSortOrder();
+
+            var customerTypePK = customerTypeShippingMethod.getCustomerTypePK();
+            var customerType = customerTypeShippingMethod.getCustomerType();
+            var shippingMethodPK = customerTypeShippingMethod.getShippingMethodPK();
+            var defaultSelectionPriority = customerTypeShippingMethodValue.getDefaultSelectionPriority();
+            var isDefault = customerTypeShippingMethodValue.getIsDefault();
+            var sortOrder = customerTypeShippingMethodValue.getSortOrder();
             
             if(checkDefault) {
-                CustomerTypeShippingMethod defaultCustomerTypeShippingMethod = getDefaultCustomerTypeShippingMethod(customerType);
-                boolean defaultFound = defaultCustomerTypeShippingMethod != null && !defaultCustomerTypeShippingMethod.equals(customerTypeShippingMethod);
+                var defaultCustomerTypeShippingMethod = getDefaultCustomerTypeShippingMethod(customerType);
+                var defaultFound = defaultCustomerTypeShippingMethod != null && !defaultCustomerTypeShippingMethod.equals(customerTypeShippingMethod);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    CustomerTypeShippingMethodValue defaultCustomerTypeShippingMethodValue = getDefaultCustomerTypeShippingMethodValueForUpdate(customerType);
+                    var defaultCustomerTypeShippingMethodValue = getDefaultCustomerTypeShippingMethodValueForUpdate(customerType);
                     
                     defaultCustomerTypeShippingMethodValue.setIsDefault(Boolean.FALSE);
                     updateCustomerTypeShippingMethodFromValue(defaultCustomerTypeShippingMethodValue, false, updatedBy);
@@ -1470,17 +1470,17 @@ public class CustomerControl
         customerTypeShippingMethod.store();
         
         // Check for default, and pick one if necessary
-        CustomerType customerType = customerTypeShippingMethod.getCustomerType();
-        CustomerTypeShippingMethod defaultCustomerTypeShippingMethod = getDefaultCustomerTypeShippingMethod(customerType);
+        var customerType = customerTypeShippingMethod.getCustomerType();
+        var defaultCustomerTypeShippingMethod = getDefaultCustomerTypeShippingMethod(customerType);
         if(defaultCustomerTypeShippingMethod == null) {
-            List<CustomerTypeShippingMethod> customerTypeShippingMethods = getCustomerTypeShippingMethodsByCustomerTypeForUpdate(customerType);
+            var customerTypeShippingMethods = getCustomerTypeShippingMethodsByCustomerTypeForUpdate(customerType);
             
             if(!customerTypeShippingMethods.isEmpty()) {
-                Iterator<CustomerTypeShippingMethod> iter = customerTypeShippingMethods.iterator();
+                var iter = customerTypeShippingMethods.iterator();
                 if(iter.hasNext()) {
                     defaultCustomerTypeShippingMethod = iter.next();
                 }
-                CustomerTypeShippingMethodValue customerTypeShippingMethodValue = defaultCustomerTypeShippingMethod.getCustomerTypeShippingMethodValue().clone();
+                var customerTypeShippingMethodValue = defaultCustomerTypeShippingMethod.getCustomerTypeShippingMethodValue().clone();
                 
                 customerTypeShippingMethodValue.setIsDefault(Boolean.TRUE);
                 updateCustomerTypeShippingMethodFromValue(customerTypeShippingMethodValue, false, deletedBy);

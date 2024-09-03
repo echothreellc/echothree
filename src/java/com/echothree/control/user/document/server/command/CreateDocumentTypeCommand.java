@@ -70,11 +70,11 @@ public class CreateDocumentTypeCommand
     @Override
     protected BaseResult execute() {
         var documentControl = Session.getModelController(DocumentControl.class);
-        String documentTypeName = form.getDocumentTypeName();
-        DocumentType documentType = documentControl.getDocumentTypeByName(documentTypeName);
+        var documentTypeName = form.getDocumentTypeName();
+        var documentType = documentControl.getDocumentTypeByName(documentTypeName);
 
         if(documentType == null) {
-            String parentDocumentTypeName = form.getParentDocumentTypeName();
+            var parentDocumentTypeName = form.getParentDocumentTypeName();
             DocumentType parentDocumentType = null;
 
             if(parentDocumentTypeName != null) {
@@ -83,7 +83,7 @@ public class CreateDocumentTypeCommand
 
             if(parentDocumentTypeName == null || parentDocumentType != null) {
                 MimeTypeUsageType mimeTypeUsageType = null;
-                String mimeTypeUsageTypeName = form.getMimeTypeUsageTypeName();
+                var mimeTypeUsageTypeName = form.getMimeTypeUsageTypeName();
 
                 if(mimeTypeUsageTypeName != null) {
                     var coreControl = getCoreControl();
@@ -93,8 +93,8 @@ public class CreateDocumentTypeCommand
 
                 if(mimeTypeUsageTypeName == null || mimeTypeUsageType != null) {
                     var partyPK = getPartyPK();
-                    String strMaximumPageCount = form.getMaximumPages();
-                    Integer maximumPageCount = strMaximumPageCount == null ? null : Integer.valueOf(form.getMaximumPages());
+                    var strMaximumPageCount = form.getMaximumPages();
+                    var maximumPageCount = strMaximumPageCount == null ? null : Integer.valueOf(form.getMaximumPages());
                     var isDefault = Boolean.valueOf(form.getIsDefault());
                     var sortOrder = Integer.valueOf(form.getSortOrder());
                     var description = form.getDescription();

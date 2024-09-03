@@ -136,20 +136,20 @@ public class InventoryControl
     
     public InventoryLocationGroup createInventoryLocationGroup(Party warehouseParty, String inventoryLocationGroupName,
             Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        InventoryLocationGroup defaultInventoryLocationGroup = getDefaultInventoryLocationGroup(warehouseParty);
-        boolean defaultFound = defaultInventoryLocationGroup != null;
+        var defaultInventoryLocationGroup = getDefaultInventoryLocationGroup(warehouseParty);
+        var defaultFound = defaultInventoryLocationGroup != null;
         
         if(defaultFound && isDefault) {
-            InventoryLocationGroupDetailValue defaultInventoryLocationGroupDetailValue = getDefaultInventoryLocationGroupDetailValueForUpdate(warehouseParty);
+            var defaultInventoryLocationGroupDetailValue = getDefaultInventoryLocationGroupDetailValueForUpdate(warehouseParty);
             
             defaultInventoryLocationGroupDetailValue.setIsDefault(Boolean.FALSE);
             updateInventoryLocationGroupFromValue(defaultInventoryLocationGroupDetailValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        InventoryLocationGroup inventoryLocationGroup = InventoryLocationGroupFactory.getInstance().create();
-        InventoryLocationGroupDetail inventoryLocationGroupDetail = InventoryLocationGroupDetailFactory.getInstance().create(session,
+
+        var inventoryLocationGroup = InventoryLocationGroupFactory.getInstance().create();
+        var inventoryLocationGroupDetail = InventoryLocationGroupDetailFactory.getInstance().create(session,
                 inventoryLocationGroup, warehouseParty, inventoryLocationGroupName, isDefault, sortOrder, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
@@ -182,8 +182,8 @@ public class InventoryControl
                         "AND invlocgrpdt_warehousepartyid = ? AND invlocgrpdt_inventorylocationgroupname = ? AND invlocgrpdt_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = InventoryLocationGroupFactory.getInstance().prepareStatement(query);
+
+            var ps = InventoryLocationGroupFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, warehouseParty.getPrimaryKey().getEntityId());
             ps.setString(2, inventoryLocationGroupName);
@@ -233,8 +233,8 @@ public class InventoryControl
                         "AND invlocgrpdt_warehousepartyid = ? AND invlocgrpdt_isdefault = 1 AND invlocgrpdt_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = InventoryLocationGroupFactory.getInstance().prepareStatement(query);
+
+            var ps = InventoryLocationGroupFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, warehouseParty.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -279,8 +279,8 @@ public class InventoryControl
                         "AND invlocgrpdt_warehousepartyid = ? AND invlocgrpdt_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = InventoryLocationGroupFactory.getInstance().prepareStatement(query);
+
+            var ps = InventoryLocationGroupFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, warehouseParty.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -306,7 +306,7 @@ public class InventoryControl
     }
     
     public List<InventoryLocationGroupTransfer> getInventoryLocationGroupTransfersByWarehouseParty(UserVisit userVisit, Party warehouseParty) {
-        List<InventoryLocationGroup> inventoryLocationGroups = getInventoryLocationGroupsByWarehouseParty(warehouseParty);
+        var inventoryLocationGroups = getInventoryLocationGroupsByWarehouseParty(warehouseParty);
         List<InventoryLocationGroupTransfer> inventoryLocationGroupTransfers = null;
         
         if(inventoryLocationGroups != null) {
@@ -322,7 +322,7 @@ public class InventoryControl
     
     public InventoryLocationGroupChoicesBean getInventoryLocationGroupChoicesByWarehouseParty(String defaultInventoryLocationGroupChoice,
             Language language, boolean allowNullChoice, Party warehouseParty) {
-        List<InventoryLocationGroup> inventoryLocationGroups = getInventoryLocationGroupsByWarehouseParty(warehouseParty);
+        var inventoryLocationGroups = getInventoryLocationGroupsByWarehouseParty(warehouseParty);
         var size = inventoryLocationGroups.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -339,8 +339,8 @@ public class InventoryControl
         }
         
         while(iter.hasNext()) {
-            InventoryLocationGroup inventoryLocationGroup = (InventoryLocationGroup)iter.next();
-            InventoryLocationGroupDetail inventoryLocationGroupDetail = inventoryLocationGroup.getLastDetail();
+            var inventoryLocationGroup = (InventoryLocationGroup)iter.next();
+            var inventoryLocationGroupDetail = inventoryLocationGroup.getLastDetail();
             
             var label = getBestInventoryLocationGroupDescription(inventoryLocationGroup, language);
             var value = inventoryLocationGroupDetail.getInventoryLocationGroupName();
@@ -359,26 +359,26 @@ public class InventoryControl
     
     private void updateInventoryLocationGroupFromValue(InventoryLocationGroupDetailValue inventoryLocationGroupDetailValue,
             boolean checkDefault, BasePK updatedBy) {
-        InventoryLocationGroup inventoryLocationGroup = InventoryLocationGroupFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, inventoryLocationGroupDetailValue.getInventoryLocationGroupPK());
-        InventoryLocationGroupDetail inventoryLocationGroupDetail = inventoryLocationGroup.getActiveDetailForUpdate();
+        var inventoryLocationGroup = InventoryLocationGroupFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, inventoryLocationGroupDetailValue.getInventoryLocationGroupPK());
+        var inventoryLocationGroupDetail = inventoryLocationGroup.getActiveDetailForUpdate();
         
         inventoryLocationGroupDetail.setThruTime(session.START_TIME_LONG);
         inventoryLocationGroupDetail.store();
-        
-        InventoryLocationGroupPK inventoryLocationGroupPK = inventoryLocationGroupDetail.getInventoryLocationGroupPK();
-        Party warehouseParty = inventoryLocationGroupDetail.getWarehouseParty();
-        PartyPK warehousePartyPK = inventoryLocationGroupDetail.getWarehousePartyPK();
-        String inventoryLocationGroupName = inventoryLocationGroupDetailValue.getInventoryLocationGroupName();
-        Boolean isDefault = inventoryLocationGroupDetailValue.getIsDefault();
-        Integer sortOrder = inventoryLocationGroupDetailValue.getSortOrder();
+
+        var inventoryLocationGroupPK = inventoryLocationGroupDetail.getInventoryLocationGroupPK();
+        var warehouseParty = inventoryLocationGroupDetail.getWarehouseParty();
+        var warehousePartyPK = inventoryLocationGroupDetail.getWarehousePartyPK();
+        var inventoryLocationGroupName = inventoryLocationGroupDetailValue.getInventoryLocationGroupName();
+        var isDefault = inventoryLocationGroupDetailValue.getIsDefault();
+        var sortOrder = inventoryLocationGroupDetailValue.getSortOrder();
         
         if(checkDefault) {
-            InventoryLocationGroup defaultInventoryLocationGroup = getDefaultInventoryLocationGroup(warehouseParty);
-            boolean defaultFound = defaultInventoryLocationGroup != null && !defaultInventoryLocationGroup.equals(inventoryLocationGroup);
+            var defaultInventoryLocationGroup = getDefaultInventoryLocationGroup(warehouseParty);
+            var defaultFound = defaultInventoryLocationGroup != null && !defaultInventoryLocationGroup.equals(inventoryLocationGroup);
             
             if(isDefault && defaultFound) {
                 // If I'm the default, and a default already existed...
-                InventoryLocationGroupDetailValue defaultInventoryLocationGroupDetailValue = getDefaultInventoryLocationGroupDetailValueForUpdate(warehouseParty);
+                var defaultInventoryLocationGroupDetailValue = getDefaultInventoryLocationGroupDetailValueForUpdate(warehouseParty);
                 
                 defaultInventoryLocationGroupDetailValue.setIsDefault(Boolean.FALSE);
                 updateInventoryLocationGroupFromValue(defaultInventoryLocationGroupDetailValue, false, updatedBy);
@@ -406,8 +406,8 @@ public class InventoryControl
             InventoryLocationGroup inventoryLocationGroup, PartyPK partyPK) {
         var workflowControl = getWorkflowControl();
         InventoryLocationGroupStatusChoicesBean inventoryLocationGroupStatusChoicesBean = new InventoryLocationGroupStatusChoicesBean();
-        EntityInstance entityInstance = getEntityInstanceByBaseEntity(inventoryLocationGroup);
-        WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(InventoryLocationGroupStatusConstants.Workflow_INVENTORY_LOCATION_GROUP_STATUS,
+        var entityInstance = getEntityInstanceByBaseEntity(inventoryLocationGroup);
+        var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(InventoryLocationGroupStatusConstants.Workflow_INVENTORY_LOCATION_GROUP_STATUS,
                 entityInstance);
         
         workflowControl.getWorkflowDestinationChoices(inventoryLocationGroupStatusChoicesBean, defaultInventoryLocationGroupStatusChoice, language,
@@ -419,10 +419,10 @@ public class InventoryControl
     public void setInventoryLocationGroupStatus(ExecutionErrorAccumulator eea, InventoryLocationGroup inventoryLocationGroup,
             String inventoryLocationGroupStatusChoice, PartyPK modifiedBy) {
         var workflowControl = getWorkflowControl();
-        EntityInstance entityInstance = getEntityInstanceByBaseEntity(inventoryLocationGroup);
-        WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(InventoryLocationGroupStatusConstants.Workflow_INVENTORY_LOCATION_GROUP_STATUS,
+        var entityInstance = getEntityInstanceByBaseEntity(inventoryLocationGroup);
+        var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(InventoryLocationGroupStatusConstants.Workflow_INVENTORY_LOCATION_GROUP_STATUS,
                 entityInstance);
-        WorkflowDestination workflowDestination = inventoryLocationGroupStatusChoice == null? null:
+        var workflowDestination = inventoryLocationGroupStatusChoice == null? null:
             workflowControl.getWorkflowDestinationByName(workflowEntityStatus.getWorkflowStep(), inventoryLocationGroupStatusChoice);
         
         if(workflowDestination != null || inventoryLocationGroupStatusChoice == null) {
@@ -434,26 +434,26 @@ public class InventoryControl
     
     private void deleteInventoryLocationGroup(InventoryLocationGroup inventoryLocationGroup, BasePK deletedBy, boolean adjustDefault) {
         deleteInventoryLocationGroupDescriptionsByInventoryLocationGroup(inventoryLocationGroup, deletedBy);
-        
-        InventoryLocationGroupDetail inventoryLocationGroupDetail = inventoryLocationGroup.getLastDetailForUpdate();
+
+        var inventoryLocationGroupDetail = inventoryLocationGroup.getLastDetailForUpdate();
         inventoryLocationGroupDetail.setThruTime(session.START_TIME_LONG);
         inventoryLocationGroupDetail.store();
         inventoryLocationGroup.setActiveDetail(null);
         
         if(adjustDefault) {
             // Check for default, and pick one if necessary
-            Party warehouseParty = inventoryLocationGroupDetail.getWarehouseParty();
-            InventoryLocationGroup defaultInventoryLocationGroup = getDefaultInventoryLocationGroup(warehouseParty);
+            var warehouseParty = inventoryLocationGroupDetail.getWarehouseParty();
+            var defaultInventoryLocationGroup = getDefaultInventoryLocationGroup(warehouseParty);
             
             if(defaultInventoryLocationGroup == null) {
-                List<InventoryLocationGroup> inventoryLocationGroups = getInventoryLocationGroupsByWarehousePartyForUpdate(warehouseParty);
+                var inventoryLocationGroups = getInventoryLocationGroupsByWarehousePartyForUpdate(warehouseParty);
                 
                 if(!inventoryLocationGroups.isEmpty()) {
                     Iterator iter = inventoryLocationGroups.iterator();
                     if(iter.hasNext()) {
                         defaultInventoryLocationGroup = (InventoryLocationGroup)iter.next();
                     }
-                    InventoryLocationGroupDetailValue inventoryLocationGroupDetailValue = Objects.requireNonNull(defaultInventoryLocationGroup).getLastDetailForUpdate().getInventoryLocationGroupDetailValue().clone();
+                    var inventoryLocationGroupDetailValue = Objects.requireNonNull(defaultInventoryLocationGroup).getLastDetailForUpdate().getInventoryLocationGroupDetailValue().clone();
                     
                     inventoryLocationGroupDetailValue.setIsDefault(Boolean.TRUE);
                     updateInventoryLocationGroupFromValue(inventoryLocationGroupDetailValue, false, deletedBy);
@@ -473,7 +473,7 @@ public class InventoryControl
     }
     
     public void deleteInventoryLocationGroupsByWarehouseParty(Party warehouseParty, BasePK deletedBy) {
-        List<InventoryLocationGroup> inventoryLocationGroups = getInventoryLocationGroupsByWarehousePartyForUpdate(warehouseParty);
+        var inventoryLocationGroups = getInventoryLocationGroupsByWarehousePartyForUpdate(warehouseParty);
         
         inventoryLocationGroups.forEach((inventoryLocationGroup) -> {
             deleteInventoryLocationGroup(inventoryLocationGroup, deletedBy, false);
@@ -485,7 +485,7 @@ public class InventoryControl
     // --------------------------------------------------------------------------------
     
     public InventoryLocationGroupDescription createInventoryLocationGroupDescription(InventoryLocationGroup inventoryLocationGroup, Language language, String description, BasePK createdBy) {
-        InventoryLocationGroupDescription inventoryLocationGroupDescription = InventoryLocationGroupDescriptionFactory.getInstance().create(inventoryLocationGroup, language, description, session.START_TIME_LONG,
+        var inventoryLocationGroupDescription = InventoryLocationGroupDescriptionFactory.getInstance().create(inventoryLocationGroup, language, description, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
         sendEvent(inventoryLocationGroup.getPrimaryKey(), EventTypes.MODIFY, inventoryLocationGroupDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -509,8 +509,8 @@ public class InventoryControl
                         "WHERE invlocgrpd_invlocgrp_inventorylocationgroupid = ? AND invlocgrpd_lang_languageid = ? AND invlocgrpd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = InventoryLocationGroupDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = InventoryLocationGroupDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, inventoryLocationGroup.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -558,8 +558,8 @@ public class InventoryControl
                         "WHERE invlocgrpd_invlocgrp_inventorylocationgroupid = ? AND invlocgrpd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = InventoryLocationGroupDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = InventoryLocationGroupDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, inventoryLocationGroup.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -582,7 +582,7 @@ public class InventoryControl
     
     public String getBestInventoryLocationGroupDescription(InventoryLocationGroup inventoryLocationGroup, Language language) {
         String description;
-        InventoryLocationGroupDescription inventoryLocationGroupDescription = getInventoryLocationGroupDescription(inventoryLocationGroup, language);
+        var inventoryLocationGroupDescription = getInventoryLocationGroupDescription(inventoryLocationGroup, language);
         
         if(inventoryLocationGroupDescription == null && !language.getIsDefault()) {
             inventoryLocationGroupDescription = getInventoryLocationGroupDescription(inventoryLocationGroup, getPartyControl().getDefaultLanguage());
@@ -602,7 +602,7 @@ public class InventoryControl
     }
     
     public List<InventoryLocationGroupDescriptionTransfer> getInventoryLocationGroupDescriptionTransfersByInventoryLocationGroup(UserVisit userVisit, InventoryLocationGroup inventoryLocationGroup) {
-        List<InventoryLocationGroupDescription> inventoryLocationGroupDescriptions = getInventoryLocationGroupDescriptionsByInventoryLocationGroup(inventoryLocationGroup);
+        var inventoryLocationGroupDescriptions = getInventoryLocationGroupDescriptionsByInventoryLocationGroup(inventoryLocationGroup);
         List<InventoryLocationGroupDescriptionTransfer> inventoryLocationGroupDescriptionTransfers = null;
         
         if(inventoryLocationGroupDescriptions != null) {
@@ -618,14 +618,14 @@ public class InventoryControl
     
     public void updateInventoryLocationGroupDescriptionFromValue(InventoryLocationGroupDescriptionValue inventoryLocationGroupDescriptionValue, BasePK updatedBy) {
         if(inventoryLocationGroupDescriptionValue.hasBeenModified()) {
-            InventoryLocationGroupDescription inventoryLocationGroupDescription = InventoryLocationGroupDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, inventoryLocationGroupDescriptionValue.getPrimaryKey());
+            var inventoryLocationGroupDescription = InventoryLocationGroupDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, inventoryLocationGroupDescriptionValue.getPrimaryKey());
             
             inventoryLocationGroupDescription.setThruTime(session.START_TIME_LONG);
             inventoryLocationGroupDescription.store();
-            
-            InventoryLocationGroup inventoryLocationGroup = inventoryLocationGroupDescription.getInventoryLocationGroup();
-            Language language = inventoryLocationGroupDescription.getLanguage();
-            String description = inventoryLocationGroupDescriptionValue.getDescription();
+
+            var inventoryLocationGroup = inventoryLocationGroupDescription.getInventoryLocationGroup();
+            var language = inventoryLocationGroupDescription.getLanguage();
+            var description = inventoryLocationGroupDescriptionValue.getDescription();
             
             inventoryLocationGroupDescription = InventoryLocationGroupDescriptionFactory.getInstance().create(inventoryLocationGroup, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -642,7 +642,7 @@ public class InventoryControl
     }
     
     public void deleteInventoryLocationGroupDescriptionsByInventoryLocationGroup(InventoryLocationGroup inventoryLocationGroup, BasePK deletedBy) {
-        List<InventoryLocationGroupDescription> inventoryLocationGroupDescriptions = getInventoryLocationGroupDescriptionsByInventoryLocationGroupForUpdate(inventoryLocationGroup);
+        var inventoryLocationGroupDescriptions = getInventoryLocationGroupDescriptionsByInventoryLocationGroupForUpdate(inventoryLocationGroup);
         
         inventoryLocationGroupDescriptions.forEach((inventoryLocationGroupDescription) -> 
                 deleteInventoryLocationGroupDescription(inventoryLocationGroupDescription, deletedBy)
@@ -655,7 +655,7 @@ public class InventoryControl
     
     public InventoryLocationGroupVolume createInventoryLocationGroupVolume(InventoryLocationGroup inventoryLocationGroup,
             Long height, Long width, Long depth, BasePK createdBy) {
-        InventoryLocationGroupVolume inventoryLocationGroupVolume = InventoryLocationGroupVolumeFactory.getInstance().create(inventoryLocationGroup, height, width, depth,
+        var inventoryLocationGroupVolume = InventoryLocationGroupVolumeFactory.getInstance().create(inventoryLocationGroup, height, width, depth,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(inventoryLocationGroup.getPrimaryKey(), EventTypes.MODIFY, inventoryLocationGroupVolume.getPrimaryKey(), null, createdBy);
@@ -679,8 +679,8 @@ public class InventoryControl
                         "WHERE invlocgrpvol_invlocgrp_inventorylocationgroupid = ? AND invlocgrpvol_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = InventoryLocationGroupVolumeFactory.getInstance().prepareStatement(query);
+
+            var ps = InventoryLocationGroupVolumeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, inventoryLocationGroup.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -710,23 +710,23 @@ public class InventoryControl
     }
     
     public InventoryLocationGroupVolumeTransfer getInventoryLocationGroupVolumeTransfer(UserVisit userVisit, InventoryLocationGroup inventoryInventoryLocationGroupGroup) {
-        InventoryLocationGroupVolume inventoryInventoryLocationGroupGroupVolume = getInventoryLocationGroupVolume(inventoryInventoryLocationGroupGroup);
+        var inventoryInventoryLocationGroupGroupVolume = getInventoryLocationGroupVolume(inventoryInventoryLocationGroupGroup);
         
         return inventoryInventoryLocationGroupGroupVolume == null? null: getInventoryTransferCaches(userVisit).getInventoryLocationGroupVolumeTransferCache().getTransfer(inventoryInventoryLocationGroupGroupVolume);
     }
     
     public void updateInventoryLocationGroupVolumeFromValue(InventoryLocationGroupVolumeValue inventoryInventoryLocationGroupGroupVolumeValue, BasePK updatedBy) {
         if(inventoryInventoryLocationGroupGroupVolumeValue.hasBeenModified()) {
-            InventoryLocationGroupVolume inventoryInventoryLocationGroupGroupVolume = InventoryLocationGroupVolumeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var inventoryInventoryLocationGroupGroupVolume = InventoryLocationGroupVolumeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      inventoryInventoryLocationGroupGroupVolumeValue.getPrimaryKey());
             
             inventoryInventoryLocationGroupGroupVolume.setThruTime(session.START_TIME_LONG);
             inventoryInventoryLocationGroupGroupVolume.store();
-            
-            InventoryLocationGroupPK inventoryInventoryLocationGroupGroupPK = inventoryInventoryLocationGroupGroupVolume.getInventoryLocationGroupPK(); // Not updated
-            Long height = inventoryInventoryLocationGroupGroupVolumeValue.getHeight();
-            Long width = inventoryInventoryLocationGroupGroupVolumeValue.getWidth();
-            Long depth = inventoryInventoryLocationGroupGroupVolumeValue.getDepth();
+
+            var inventoryInventoryLocationGroupGroupPK = inventoryInventoryLocationGroupGroupVolume.getInventoryLocationGroupPK(); // Not updated
+            var height = inventoryInventoryLocationGroupGroupVolumeValue.getHeight();
+            var width = inventoryInventoryLocationGroupGroupVolumeValue.getWidth();
+            var depth = inventoryInventoryLocationGroupGroupVolumeValue.getDepth();
             
             inventoryInventoryLocationGroupGroupVolume = InventoryLocationGroupVolumeFactory.getInstance().create(inventoryInventoryLocationGroupGroupPK, height,
                     width, depth, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -742,7 +742,7 @@ public class InventoryControl
     }
     
     public void deleteInventoryLocationGroupVolumeByInventoryLocationGroup(InventoryLocationGroup inventoryInventoryLocationGroupGroup, BasePK deletedBy) {
-        InventoryLocationGroupVolume inventoryInventoryLocationGroupGroupVolume = getInventoryLocationGroupVolumeForUpdate(inventoryInventoryLocationGroupGroup);
+        var inventoryInventoryLocationGroupGroupVolume = getInventoryLocationGroupVolumeForUpdate(inventoryInventoryLocationGroupGroup);
         
         if(inventoryInventoryLocationGroupGroupVolume != null)
             deleteInventoryLocationGroupVolume(inventoryInventoryLocationGroupGroupVolume, deletedBy);
@@ -754,7 +754,7 @@ public class InventoryControl
     
     public InventoryLocationGroupCapacity createInventoryLocationGroupCapacity(InventoryLocationGroup inventoryInventoryLocationGroupGroup,
             UnitOfMeasureType unitOfMeasureType, Long capacity, BasePK createdBy) {
-        InventoryLocationGroupCapacity inventoryInventoryLocationGroupGroupCapacity = InventoryLocationGroupCapacityFactory.getInstance().create(inventoryInventoryLocationGroupGroup,
+        var inventoryInventoryLocationGroupGroupCapacity = InventoryLocationGroupCapacityFactory.getInstance().create(inventoryInventoryLocationGroupGroup,
                 unitOfMeasureType, capacity, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(inventoryInventoryLocationGroupGroup.getPrimaryKey(), EventTypes.MODIFY, inventoryInventoryLocationGroupGroupCapacity.getPrimaryKey(), null, createdBy);
@@ -782,8 +782,8 @@ public class InventoryControl
                         "WHERE invlocgrpcap_invlocgrp_inventorylocationgroupid = ? AND invlocgrpcap_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = InventoryLocationGroupCapacityFactory.getInstance().prepareStatement(query);
+
+            var ps = InventoryLocationGroupCapacityFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, inventoryInventoryLocationGroupGroup.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -827,8 +827,8 @@ public class InventoryControl
                         "AND invlocgrpcap_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = InventoryLocationGroupCapacityFactory.getInstance().prepareStatement(query);
+
+            var ps = InventoryLocationGroupCapacityFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, inventoryInventoryLocationGroupGroup.getPrimaryKey().getEntityId());
             ps.setLong(2, unitOfMeasureType.getPrimaryKey().getEntityId());
@@ -851,22 +851,22 @@ public class InventoryControl
     }
     
     public InventoryLocationGroupCapacityValue getInventoryLocationGroupCapacityValueForUpdate(InventoryLocationGroup inventoryLocationGroup, UnitOfMeasureType unitOfMeasureType) {
-        InventoryLocationGroupCapacity inventoryLocationGroupCapacity = getInventoryLocationGroupCapacityForUpdate(inventoryLocationGroup, unitOfMeasureType);
+        var inventoryLocationGroupCapacity = getInventoryLocationGroupCapacityForUpdate(inventoryLocationGroup, unitOfMeasureType);
         
         return inventoryLocationGroupCapacity == null? null: inventoryLocationGroupCapacity.getInventoryLocationGroupCapacityValue().clone();
     }
     
     public void updateInventoryLocationGroupCapacityFromValue(InventoryLocationGroupCapacityValue inventoryLocationGroupCapacityValue, BasePK updatedBy) {
         if(inventoryLocationGroupCapacityValue.hasBeenModified()) {
-            InventoryLocationGroupCapacity inventoryLocationGroupCapacity = InventoryLocationGroupCapacityFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var inventoryLocationGroupCapacity = InventoryLocationGroupCapacityFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      inventoryLocationGroupCapacityValue.getPrimaryKey());
             
             inventoryLocationGroupCapacity.setThruTime(session.START_TIME_LONG);
             inventoryLocationGroupCapacity.store();
-            
-            UnitOfMeasureTypePK unitOfMeasureTypePK = inventoryLocationGroupCapacity.getUnitOfMeasureTypePK(); // Not updated
-            InventoryLocationGroupPK inventoryLocationGroupPK = inventoryLocationGroupCapacity.getInventoryLocationGroupPK(); // Not updated
-            Long capacity = inventoryLocationGroupCapacityValue.getCapacity();
+
+            var unitOfMeasureTypePK = inventoryLocationGroupCapacity.getUnitOfMeasureTypePK(); // Not updated
+            var inventoryLocationGroupPK = inventoryLocationGroupCapacity.getInventoryLocationGroupPK(); // Not updated
+            var capacity = inventoryLocationGroupCapacityValue.getCapacity();
             
             inventoryLocationGroupCapacity = InventoryLocationGroupCapacityFactory.getInstance().create(inventoryLocationGroupPK, unitOfMeasureTypePK, capacity,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -880,9 +880,9 @@ public class InventoryControl
     }
     
     public List<InventoryLocationGroupCapacityTransfer> getInventoryLocationGroupCapacityTransfersByInventoryLocationGroup(UserVisit userVisit, InventoryLocationGroup inventoryLocationGroup) {
-        List<InventoryLocationGroupCapacity> inventoryLocationGroupCapacities = getInventoryLocationGroupCapacitiesByInventoryLocationGroup(inventoryLocationGroup);
+        var inventoryLocationGroupCapacities = getInventoryLocationGroupCapacitiesByInventoryLocationGroup(inventoryLocationGroup);
         List<InventoryLocationGroupCapacityTransfer> inventoryLocationGroupCapacityTransfers = new ArrayList<>(inventoryLocationGroupCapacities.size());
-        InventoryLocationGroupCapacityTransferCache inventoryLocationGroupCapacityTransferCache = getInventoryTransferCaches(userVisit).getInventoryLocationGroupCapacityTransferCache();
+        var inventoryLocationGroupCapacityTransferCache = getInventoryTransferCaches(userVisit).getInventoryLocationGroupCapacityTransferCache();
         
         inventoryLocationGroupCapacities.forEach((inventoryLocationGroupCapacity) ->
                 inventoryLocationGroupCapacityTransfers.add(inventoryLocationGroupCapacityTransferCache.getTransfer(inventoryLocationGroupCapacity))
@@ -898,7 +898,7 @@ public class InventoryControl
     }
     
     public void deleteInventoryLocationGroupCapacitiesByInventoryLocationGroup(InventoryLocationGroup inventoryLocationGroup, BasePK deletedBy) {
-        List<InventoryLocationGroupCapacity> inventoryLocationGroupCapacities = getInventoryLocationGroupCapacitiesByInventoryLocationGroupForUpdate(inventoryLocationGroup);
+        var inventoryLocationGroupCapacities = getInventoryLocationGroupCapacitiesByInventoryLocationGroupForUpdate(inventoryLocationGroup);
         
         inventoryLocationGroupCapacities.forEach((inventoryLocationGroupCapacity) -> 
                 deleteInventoryLocationGroupCapacity(inventoryLocationGroupCapacity, deletedBy)
@@ -1379,7 +1379,7 @@ public class InventoryControl
     }
     
     public List<InventoryConditionUseType> getInventoryConditionUseTypes() {
-        PreparedStatement ps = InventoryConditionUseTypeFactory.getInstance().prepareStatement(
+        var ps = InventoryConditionUseTypeFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
                 "FROM inventoryconditionusetypes " +
                 "ORDER BY invconut_inventoryconditionusetypename " +
@@ -1392,7 +1392,7 @@ public class InventoryControl
         InventoryConditionUseType inventoryConditionUseType;
         
         try {
-            PreparedStatement ps = InventoryConditionUseTypeFactory.getInstance().prepareStatement(
+            var ps = InventoryConditionUseTypeFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM inventoryconditionusetypes " +
                     "WHERE invconut_inventoryconditionusetypename = ?");
@@ -1409,7 +1409,7 @@ public class InventoryControl
     }
     
     public InventoryConditionUseTypeChoicesBean getInventoryConditionUseTypeChoices(String defaultInventoryConditionUseTypeChoice, Language language) {
-        List<InventoryConditionUseType>inventoryConditionUseTypes = getInventoryConditionUseTypes();
+        var inventoryConditionUseTypes = getInventoryConditionUseTypes();
         var size = inventoryConditionUseTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -1417,7 +1417,7 @@ public class InventoryControl
         Iterator iter = inventoryConditionUseTypes.iterator();
         
         while(iter.hasNext()) {
-            InventoryConditionUseType inventoryConditionUseType = (InventoryConditionUseType)iter.next();
+            var inventoryConditionUseType = (InventoryConditionUseType)iter.next();
             
             var label = getBestInventoryConditionUseTypeDescription(inventoryConditionUseType, language);
             var value = inventoryConditionUseType.getInventoryConditionUseTypeName();
@@ -1443,7 +1443,7 @@ public class InventoryControl
         List<InventoryConditionUseTypeTransfer> inventoryConditionUseTypeTransfers = null;
         
         if(inventoryConditionUseTypes != null) {
-            InventoryConditionUseTypeTransferCache inventoryConditionUseTypeTransferCache = getInventoryTransferCaches(userVisit).getInventoryConditionUseTypeTransferCache();
+            var inventoryConditionUseTypeTransferCache = getInventoryTransferCaches(userVisit).getInventoryConditionUseTypeTransferCache();
             
             inventoryConditionUseTypeTransfers = new ArrayList<>(inventoryConditionUseTypes.size());
             
@@ -1470,7 +1470,7 @@ public class InventoryControl
         InventoryConditionUseTypeDescription inventoryConditionUseTypeDescription;
         
         try {
-            PreparedStatement ps = InventoryConditionUseTypeDescriptionFactory.getInstance().prepareStatement(
+            var ps = InventoryConditionUseTypeDescriptionFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM inventoryconditionusetypedescriptions " +
                     "WHERE invconutd_invconut_inventoryconditionusetypeid = ? AND invconutd_lang_languageid = ?");
@@ -1488,7 +1488,7 @@ public class InventoryControl
     
     public String getBestInventoryConditionUseTypeDescription(InventoryConditionUseType inventoryConditionUseType, Language language) {
         String description;
-        InventoryConditionUseTypeDescription inventoryConditionUseTypeDescription = getInventoryConditionUseTypeDescription(inventoryConditionUseType, language);
+        var inventoryConditionUseTypeDescription = getInventoryConditionUseTypeDescription(inventoryConditionUseType, language);
         
         if(inventoryConditionUseTypeDescription == null && !language.getIsDefault()) {
             inventoryConditionUseTypeDescription = getInventoryConditionUseTypeDescription(inventoryConditionUseType, getPartyControl().getDefaultLanguage());
@@ -1509,19 +1509,19 @@ public class InventoryControl
     
     public InventoryConditionUse createInventoryConditionUse(InventoryConditionUseType inventoryConditionUseType,
             InventoryCondition inventoryCondition, Boolean isDefault, BasePK createdBy) {
-        InventoryConditionUse defaultInventoryConditionUse = getDefaultInventoryConditionUse(inventoryConditionUseType);
-        boolean defaultFound = defaultInventoryConditionUse != null;
+        var defaultInventoryConditionUse = getDefaultInventoryConditionUse(inventoryConditionUseType);
+        var defaultFound = defaultInventoryConditionUse != null;
         
         if(defaultFound && isDefault) {
-            InventoryConditionUseValue defaultInventoryConditionUseValue = getDefaultInventoryConditionUseValueForUpdate(inventoryConditionUseType);
+            var defaultInventoryConditionUseValue = getDefaultInventoryConditionUseValueForUpdate(inventoryConditionUseType);
             
             defaultInventoryConditionUseValue.setIsDefault(Boolean.FALSE);
             updateInventoryConditionUseFromValue(defaultInventoryConditionUseValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        InventoryConditionUse inventoryConditionUse = InventoryConditionUseFactory.getInstance().create(inventoryConditionUseType,
+
+        var inventoryConditionUse = InventoryConditionUseFactory.getInstance().create(inventoryConditionUseType,
                 inventoryCondition, isDefault, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(inventoryCondition.getPrimaryKey(), EventTypes.MODIFY, inventoryConditionUse.getPrimaryKey(),
@@ -1549,7 +1549,7 @@ public class InventoryControl
                         "AND invconu_thrutime = ? " +
                         "FOR UPDATE";
             }
-            PreparedStatement ps = InventoryConditionUseFactory.getInstance().prepareStatement(query);
+            var ps = InventoryConditionUseFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, inventoryConditionUseType.getPrimaryKey().getEntityId());
             ps.setLong(2, inventoryCondition.getPrimaryKey().getEntityId());
@@ -1595,7 +1595,7 @@ public class InventoryControl
                         "WHERE invconu_invconut_inventoryconditionusetypeid = ? AND invconu_isdefault = 1 AND invconu_thrutime = ? " +
                         "FOR UPDATE";
             }
-            PreparedStatement ps = InventoryConditionUseFactory.getInstance().prepareStatement(query);
+            var ps = InventoryConditionUseFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, inventoryConditionUseType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1640,8 +1640,8 @@ public class InventoryControl
                         "WHERE invconu_invcon_inventoryconditionid = ? AND invconu_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = InventoryConditionUseFactory.getInstance().prepareStatement(query);
+
+            var ps = InventoryConditionUseFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, inventoryCondition.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1685,8 +1685,8 @@ public class InventoryControl
                         "WHERE invconu_invconut_inventoryconditionusetypeid = ? AND invconu_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = InventoryConditionUseFactory.getInstance().prepareStatement(query);
+
+            var ps = InventoryConditionUseFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, inventoryConditionUseType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1712,7 +1712,7 @@ public class InventoryControl
         List<InventoryConditionUseTransfer> inventoryConditionUseTransfers = null;
         
         if(inventoryConditionUses != null) {
-            InventoryConditionUseTransferCache inventoryConditionUseTransferCache = getInventoryTransferCaches(userVisit).getInventoryConditionUseTransferCache();
+            var inventoryConditionUseTransferCache = getInventoryTransferCaches(userVisit).getInventoryConditionUseTransferCache();
             
             inventoryConditionUseTransfers = new ArrayList<>(inventoryConditionUses.size());
             
@@ -1751,24 +1751,24 @@ public class InventoryControl
     
     private void updateInventoryConditionUseFromValue(InventoryConditionUseValue inventoryConditionUseValue, boolean checkDefault,
             BasePK updatedBy) {
-        InventoryConditionUse inventoryConditionUse = InventoryConditionUseFactory.getInstance().getEntityFromPK(session,
+        var inventoryConditionUse = InventoryConditionUseFactory.getInstance().getEntityFromPK(session,
                 EntityPermission.READ_WRITE, inventoryConditionUseValue.getPrimaryKey());
         
         inventoryConditionUse.setThruTime(session.START_TIME_LONG);
         inventoryConditionUse.store();
-        
-        InventoryConditionUseTypePK inventoryConditionUseTypePK = inventoryConditionUse.getInventoryConditionUseTypePK();
-        InventoryConditionUseType inventoryConditionUseType = inventoryConditionUse.getInventoryConditionUseType();
-        InventoryConditionPK inventoryConditionPK = inventoryConditionUse.getInventoryConditionPK();
-        Boolean isDefault = inventoryConditionUseValue.getIsDefault();
+
+        var inventoryConditionUseTypePK = inventoryConditionUse.getInventoryConditionUseTypePK();
+        var inventoryConditionUseType = inventoryConditionUse.getInventoryConditionUseType();
+        var inventoryConditionPK = inventoryConditionUse.getInventoryConditionPK();
+        var isDefault = inventoryConditionUseValue.getIsDefault();
         
         if(checkDefault) {
-            InventoryConditionUse defaultInventoryConditionUse = getDefaultInventoryConditionUse(inventoryConditionUseType);
-            boolean defaultFound = defaultInventoryConditionUse != null && !defaultInventoryConditionUse.equals(inventoryConditionUse);
+            var defaultInventoryConditionUse = getDefaultInventoryConditionUse(inventoryConditionUseType);
+            var defaultFound = defaultInventoryConditionUse != null && !defaultInventoryConditionUse.equals(inventoryConditionUse);
             
             if(isDefault && defaultFound) {
                 // If I'm the default, and a default already existed...
-                InventoryConditionUseValue defaultInventoryConditionUseValue = getDefaultInventoryConditionUseValueForUpdate(inventoryConditionUseType);
+                var defaultInventoryConditionUseValue = getDefaultInventoryConditionUseValueForUpdate(inventoryConditionUseType);
                 
                 defaultInventoryConditionUseValue.setIsDefault(Boolean.FALSE);
                 updateInventoryConditionUseFromValue(defaultInventoryConditionUseValue, false, updatedBy);
@@ -1795,17 +1795,17 @@ public class InventoryControl
         inventoryConditionUse.store();
         
         // Check for default, and pick one if necessary
-        InventoryConditionUseType inventoryConditionUseType = inventoryConditionUse.getInventoryConditionUseType();
-        InventoryConditionUse defaultInventoryConditionUse = getDefaultInventoryConditionUse(inventoryConditionUseType);
+        var inventoryConditionUseType = inventoryConditionUse.getInventoryConditionUseType();
+        var defaultInventoryConditionUse = getDefaultInventoryConditionUse(inventoryConditionUseType);
         if(defaultInventoryConditionUse == null) {
-            List<InventoryConditionUse> inventoryConditionUses = getInventoryConditionUsesByInventoryConditionUseTypeForUpdate(inventoryConditionUseType);
+            var inventoryConditionUses = getInventoryConditionUsesByInventoryConditionUseTypeForUpdate(inventoryConditionUseType);
             
             if(!inventoryConditionUses.isEmpty()) {
                 Iterator iter = inventoryConditionUses.iterator();
                 if(iter.hasNext()) {
                     defaultInventoryConditionUse = (InventoryConditionUse)iter.next();
                 }
-                InventoryConditionUseValue inventoryConditionUseValue = defaultInventoryConditionUse.getInventoryConditionUseValue().clone();
+                var inventoryConditionUseValue = defaultInventoryConditionUse.getInventoryConditionUseValue().clone();
                 
                 inventoryConditionUseValue.setIsDefault(Boolean.TRUE);
                 updateInventoryConditionUseFromValue(inventoryConditionUseValue, false, deletedBy);
@@ -1817,7 +1817,7 @@ public class InventoryControl
     }
     
     public void deleteInventoryConditionUseByInventoryCondition(InventoryCondition inventoryCondition, BasePK deletedBy) {
-        List<InventoryConditionUse> inventoryConditionUses = getInventoryConditionUsesByInventoryConditionForUpdate(inventoryCondition);
+        var inventoryConditionUses = getInventoryConditionUsesByInventoryConditionForUpdate(inventoryCondition);
         
         inventoryConditionUses.forEach((inventoryConditionUse) -> 
                 deleteInventoryConditionUse(inventoryConditionUse, deletedBy)
@@ -1831,7 +1831,7 @@ public class InventoryControl
     public InventoryConditionGlAccount createInventoryConditionGlAccount(InventoryCondition inventoryCondition,
             ItemAccountingCategory itemAccountingCategory, GlAccount inventoryGlAccount, GlAccount salesGlAccount,
             GlAccount returnsGlAccount, GlAccount cogsGlAccount, GlAccount returnsCogsGlAccount, BasePK createdBy) {
-        InventoryConditionGlAccount inventoryConditionGlAccount = InventoryConditionGlAccountFactory.getInstance().create(session,
+        var inventoryConditionGlAccount = InventoryConditionGlAccountFactory.getInstance().create(session,
                 inventoryCondition, itemAccountingCategory, inventoryGlAccount, salesGlAccount, returnsGlAccount, cogsGlAccount,
                 returnsCogsGlAccount, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
@@ -1857,8 +1857,8 @@ public class InventoryControl
                         "WHERE invcongla_invcon_inventoryconditionid = ? AND invcongla_iactgc_itemaccountingcategoryid = ? AND invcongla_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = InventoryConditionGlAccountFactory.getInstance().prepareStatement(query);
+
+            var ps = InventoryConditionGlAccountFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, inventoryCondition.getPrimaryKey().getEntityId());
             ps.setLong(2, itemAccountingCategory.getPrimaryKey().getEntityId());
@@ -1904,8 +1904,8 @@ public class InventoryControl
                         "WHERE invcongla_invcon_inventoryconditionid = ? AND invcongla_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = InventoryConditionGlAccountFactory.getInstance().prepareStatement(query);
+
+            var ps = InventoryConditionGlAccountFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, inventoryCondition.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1946,8 +1946,8 @@ public class InventoryControl
                         "WHERE invcongla_iactgc_itemaccountingcategoryid = ? AND invcongla_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = InventoryConditionGlAccountFactory.getInstance().prepareStatement(query);
+
+            var ps = InventoryConditionGlAccountFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, itemAccountingCategory.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1970,19 +1970,19 @@ public class InventoryControl
     
     public void updateInventoryConditionGlAccountFromValue(InventoryConditionGlAccountValue inventoryConditionGlAccountValue, BasePK updatedBy) {
         if(inventoryConditionGlAccountValue.hasBeenModified()) {
-            InventoryConditionGlAccount inventoryConditionGlAccount = InventoryConditionGlAccountFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var inventoryConditionGlAccount = InventoryConditionGlAccountFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      inventoryConditionGlAccountValue.getPrimaryKey());
             
             inventoryConditionGlAccount.setThruTime(session.START_TIME_LONG);
             inventoryConditionGlAccount.store();
-            
-            InventoryConditionPK inventoryConditionPK = inventoryConditionGlAccount.getInventoryConditionPK();
-            ItemAccountingCategoryPK itemAccountingCategoryPK = inventoryConditionGlAccount.getItemAccountingCategoryPK();
-            GlAccountPK inventoryGlAccountPK = inventoryConditionGlAccountValue.getInventoryGlAccountPK();
-            GlAccountPK salesGlAccountPK = inventoryConditionGlAccountValue.getSalesGlAccountPK();
-            GlAccountPK returnsGlAccountPK = inventoryConditionGlAccountValue.getReturnsGlAccountPK();
-            GlAccountPK cogsGlAccountPK = inventoryConditionGlAccountValue.getCogsGlAccountPK();
-            GlAccountPK returnsCogsGlAccountPK = inventoryConditionGlAccountValue.getReturnsCogsGlAccountPK();
+
+            var inventoryConditionPK = inventoryConditionGlAccount.getInventoryConditionPK();
+            var itemAccountingCategoryPK = inventoryConditionGlAccount.getItemAccountingCategoryPK();
+            var inventoryGlAccountPK = inventoryConditionGlAccountValue.getInventoryGlAccountPK();
+            var salesGlAccountPK = inventoryConditionGlAccountValue.getSalesGlAccountPK();
+            var returnsGlAccountPK = inventoryConditionGlAccountValue.getReturnsGlAccountPK();
+            var cogsGlAccountPK = inventoryConditionGlAccountValue.getCogsGlAccountPK();
+            var returnsCogsGlAccountPK = inventoryConditionGlAccountValue.getReturnsCogsGlAccountPK();
             
             inventoryConditionGlAccount = InventoryConditionGlAccountFactory.getInstance().create(inventoryConditionPK,
                     itemAccountingCategoryPK, inventoryGlAccountPK, salesGlAccountPK, returnsGlAccountPK, cogsGlAccountPK,
@@ -2001,9 +2001,9 @@ public class InventoryControl
     }
     
     public List<InventoryConditionGlAccountTransfer> getInventoryConditionGlAccountTransfersByInventoryCondition(UserVisit userVisit, InventoryCondition inventoryCondition) {
-        List<InventoryConditionGlAccount> inventoryConditionGlAccounts = getInventoryConditionGlAccountsByInventoryCondition(inventoryCondition);
+        var inventoryConditionGlAccounts = getInventoryConditionGlAccountsByInventoryCondition(inventoryCondition);
         List<InventoryConditionGlAccountTransfer> inventoryConditionGlAccountTransfers = new ArrayList<>(inventoryConditionGlAccounts.size());
-        InventoryConditionGlAccountTransferCache inventoryConditionGlAccountTransferCache = getInventoryTransferCaches(userVisit).getInventoryConditionGlAccountTransferCache();
+        var inventoryConditionGlAccountTransferCache = getInventoryTransferCaches(userVisit).getInventoryConditionGlAccountTransferCache();
         
         inventoryConditionGlAccounts.forEach((inventoryConditionGlAccount) ->
                 inventoryConditionGlAccountTransfers.add(inventoryConditionGlAccountTransferCache.getTransfer(inventoryConditionGlAccount))
@@ -2033,7 +2033,7 @@ public class InventoryControl
     }
     
     public void deleteInventoryConditionGlAccountByInventoryConditionAndItemAccountingCategory(InventoryCondition inventoryCondition, ItemAccountingCategory itemAccountingCategory, BasePK deletedBy) {
-        InventoryConditionGlAccount inventoryConditionGlAccount = getInventoryConditionGlAccountForUpdate(inventoryCondition, itemAccountingCategory);
+        var inventoryConditionGlAccount = getInventoryConditionGlAccountForUpdate(inventoryCondition, itemAccountingCategory);
         
         if(inventoryConditionGlAccount!= null) {
             deleteInventoryConditionGlAccount(inventoryConditionGlAccount, deletedBy);
@@ -2046,7 +2046,7 @@ public class InventoryControl
     
     public PartyInventoryLevel createPartyInventoryLevel(Party party, Item item, InventoryCondition inventoryCondition,
             Long minimumInventory, Long maximumInventory, Long reorderQuantity, BasePK createdBy) {
-        PartyInventoryLevel partyInventoryLevel = PartyInventoryLevelFactory.getInstance().create(party, item,
+        var partyInventoryLevel = PartyInventoryLevelFactory.getInstance().create(party, item,
                 inventoryCondition, minimumInventory, maximumInventory, reorderQuantity, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
@@ -2072,8 +2072,8 @@ public class InventoryControl
                         "WHERE parinvlvl_par_partyid = ? AND parinvlvl_itm_itemid = ? AND parinvlvl_invcon_inventoryconditionid = ? AND parinvlvl_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PartyInventoryLevelFactory.getInstance().prepareStatement(query);
+
+            var ps = PartyInventoryLevelFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, party.getPrimaryKey().getEntityId());
             ps.setLong(2, item.getPrimaryKey().getEntityId());
@@ -2125,8 +2125,8 @@ public class InventoryControl
                         "WHERE parinvlvl_par_partyid = ? AND parinvlvl_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PartyInventoryLevelFactory.getInstance().prepareStatement(query);
+
+            var ps = PartyInventoryLevelFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, party.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -2168,8 +2168,8 @@ public class InventoryControl
                         "WHERE parinvlvl_itm_itemid = ? AND parinvlvl_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PartyInventoryLevelFactory.getInstance().prepareStatement(query);
+
+            var ps = PartyInventoryLevelFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, item.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -2211,8 +2211,8 @@ public class InventoryControl
                         "WHERE parinvlvl_invcon_inventoryconditionid = ? AND parinvlvl_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PartyInventoryLevelFactory.getInstance().prepareStatement(query);
+
+            var ps = PartyInventoryLevelFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, inventoryCondition.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -2239,7 +2239,7 @@ public class InventoryControl
     
     public List<PartyInventoryLevelTransfer> getPartyInventoryLevelTransfers(UserVisit userVisit, Collection<PartyInventoryLevel> partyInventoryLevels) {
         List<PartyInventoryLevelTransfer> partyInventoryLevelTransfers = new ArrayList<>(partyInventoryLevels.size());
-        PartyInventoryLevelTransferCache partyInventoryLevelTransferCache = getInventoryTransferCaches(userVisit).getPartyInventoryLevelTransferCache();
+        var partyInventoryLevelTransferCache = getInventoryTransferCaches(userVisit).getPartyInventoryLevelTransferCache();
         
         partyInventoryLevels.forEach((partyInventoryLevel) ->
                 partyInventoryLevelTransfers.add(partyInventoryLevelTransferCache.getTransfer(partyInventoryLevel))
@@ -2262,18 +2262,18 @@ public class InventoryControl
     
     public void updatePartyInventoryLevelFromValue(PartyInventoryLevelValue partyInventoryLevelValue, BasePK updatedBy) {
         if(partyInventoryLevelValue.hasBeenModified()) {
-            PartyInventoryLevel partyInventoryLevel = PartyInventoryLevelFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var partyInventoryLevel = PartyInventoryLevelFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      partyInventoryLevelValue.getPrimaryKey());
             
             partyInventoryLevel.setThruTime(session.START_TIME_LONG);
             partyInventoryLevel.store();
-            
-            PartyPK partyPK = partyInventoryLevel.getPartyPK(); // Not updated
-            ItemPK itemPK = partyInventoryLevel.getItemPK(); // Not updated
-            InventoryConditionPK inventoryConditionPK = partyInventoryLevel.getInventoryConditionPK(); // Not updated
-            Long minimumInventory = partyInventoryLevelValue.getMinimumInventory();
-            Long maximumInventory = partyInventoryLevelValue.getMaximumInventory();
-            Long reorderQuantity = partyInventoryLevelValue.getReorderQuantity();
+
+            var partyPK = partyInventoryLevel.getPartyPK(); // Not updated
+            var itemPK = partyInventoryLevel.getItemPK(); // Not updated
+            var inventoryConditionPK = partyInventoryLevel.getInventoryConditionPK(); // Not updated
+            var minimumInventory = partyInventoryLevelValue.getMinimumInventory();
+            var maximumInventory = partyInventoryLevelValue.getMaximumInventory();
+            var reorderQuantity = partyInventoryLevelValue.getReorderQuantity();
             
             partyInventoryLevel = PartyInventoryLevelFactory.getInstance().create(partyPK, itemPK, inventoryConditionPK,
                     minimumInventory, maximumInventory, reorderQuantity, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -2313,11 +2313,11 @@ public class InventoryControl
 
     public AllocationPriority createAllocationPriority(String allocationPriorityName, Integer priority, Boolean isDefault, Integer sortPriority,
             BasePK createdBy) {
-        AllocationPriority defaultAllocationPriority = getDefaultAllocationPriority();
-        boolean defaultFound = defaultAllocationPriority != null;
+        var defaultAllocationPriority = getDefaultAllocationPriority();
+        var defaultFound = defaultAllocationPriority != null;
 
         if(defaultFound && isDefault) {
-            AllocationPriorityDetailValue defaultAllocationPriorityDetailValue = getDefaultAllocationPriorityDetailValueForUpdate();
+            var defaultAllocationPriorityDetailValue = getDefaultAllocationPriorityDetailValueForUpdate();
 
             defaultAllocationPriorityDetailValue.setIsDefault(Boolean.FALSE);
             updateAllocationPriorityFromValue(defaultAllocationPriorityDetailValue, false, createdBy);
@@ -2325,8 +2325,8 @@ public class InventoryControl
             isDefault = Boolean.TRUE;
         }
 
-        AllocationPriority allocationPriority = AllocationPriorityFactory.getInstance().create();
-        AllocationPriorityDetail allocationPriorityDetail = AllocationPriorityDetailFactory.getInstance().create(allocationPriority, allocationPriorityName,
+        var allocationPriority = AllocationPriorityFactory.getInstance().create();
+        var allocationPriorityDetail = AllocationPriorityDetailFactory.getInstance().create(allocationPriority, allocationPriorityName,
                 priority, isDefault, sortPriority, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -2490,7 +2490,7 @@ public class InventoryControl
     }
 
     public AllocationPriorityChoicesBean getAllocationPriorityChoices(String defaultAllocationPriorityChoice, Language language, boolean allowNullChoice) {
-        List<AllocationPriority> allocationPriorities = getAllocationPriorities();
+        var allocationPriorities = getAllocationPriorities();
         var size = allocationPriorities.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -2506,7 +2506,7 @@ public class InventoryControl
         }
 
         for(var allocationPriority : allocationPriorities) {
-            AllocationPriorityDetail allocationPriorityDetail = allocationPriority.getLastDetail();
+            var allocationPriorityDetail = allocationPriority.getLastDetail();
 
             var label = getBestAllocationPriorityDescription(allocationPriority, language);
             var value = allocationPriorityDetail.getAllocationPriorityName();
@@ -2526,26 +2526,26 @@ public class InventoryControl
     private void updateAllocationPriorityFromValue(AllocationPriorityDetailValue allocationPriorityDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(allocationPriorityDetailValue.hasBeenModified()) {
-            AllocationPriority allocationPriority = AllocationPriorityFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var allocationPriority = AllocationPriorityFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      allocationPriorityDetailValue.getAllocationPriorityPK());
-            AllocationPriorityDetail allocationPriorityDetail = allocationPriority.getActiveDetailForUpdate();
+            var allocationPriorityDetail = allocationPriority.getActiveDetailForUpdate();
 
             allocationPriorityDetail.setThruTime(session.START_TIME_LONG);
             allocationPriorityDetail.store();
 
-            AllocationPriorityPK allocationPriorityPK = allocationPriorityDetail.getAllocationPriorityPK(); // Not updated
-            String allocationPriorityName = allocationPriorityDetailValue.getAllocationPriorityName();
-            Integer priority = allocationPriorityDetailValue.getPriority();
-            Boolean isDefault = allocationPriorityDetailValue.getIsDefault();
-            Integer sortOrder = allocationPriorityDetailValue.getSortOrder();
+            var allocationPriorityPK = allocationPriorityDetail.getAllocationPriorityPK(); // Not updated
+            var allocationPriorityName = allocationPriorityDetailValue.getAllocationPriorityName();
+            var priority = allocationPriorityDetailValue.getPriority();
+            var isDefault = allocationPriorityDetailValue.getIsDefault();
+            var sortOrder = allocationPriorityDetailValue.getSortOrder();
 
             if(checkDefault) {
-                AllocationPriority defaultAllocationPriority = getDefaultAllocationPriority();
-                boolean defaultFound = defaultAllocationPriority != null && !defaultAllocationPriority.equals(allocationPriority);
+                var defaultAllocationPriority = getDefaultAllocationPriority();
+                var defaultFound = defaultAllocationPriority != null && !defaultAllocationPriority.equals(allocationPriority);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    AllocationPriorityDetailValue defaultAllocationPriorityDetailValue = getDefaultAllocationPriorityDetailValueForUpdate();
+                    var defaultAllocationPriorityDetailValue = getDefaultAllocationPriorityDetailValueForUpdate();
 
                     defaultAllocationPriorityDetailValue.setIsDefault(Boolean.FALSE);
                     updateAllocationPriorityFromValue(defaultAllocationPriorityDetailValue, false, updatedBy);
@@ -2572,22 +2572,22 @@ public class InventoryControl
     public void deleteAllocationPriority(AllocationPriority allocationPriority, BasePK deletedBy) {
         deleteAllocationPriorityDescriptionsByAllocationPriority(allocationPriority, deletedBy);
 
-        AllocationPriorityDetail allocationPriorityDetail = allocationPriority.getLastDetailForUpdate();
+        var allocationPriorityDetail = allocationPriority.getLastDetailForUpdate();
         allocationPriorityDetail.setThruTime(session.START_TIME_LONG);
         allocationPriority.setActiveDetail(null);
         allocationPriority.store();
 
         // Check for default, and pick one if necessary
-        AllocationPriority defaultAllocationPriority = getDefaultAllocationPriority();
+        var defaultAllocationPriority = getDefaultAllocationPriority();
         if(defaultAllocationPriority == null) {
-            List<AllocationPriority> allocationPriorities = getAllocationPrioritiesForUpdate();
+            var allocationPriorities = getAllocationPrioritiesForUpdate();
 
             if(!allocationPriorities.isEmpty()) {
-                Iterator<AllocationPriority> iter = allocationPriorities.iterator();
+                var iter = allocationPriorities.iterator();
                 if(iter.hasNext()) {
                     defaultAllocationPriority = iter.next();
                 }
-                AllocationPriorityDetailValue allocationPriorityDetailValue = Objects.requireNonNull(defaultAllocationPriority).getLastDetailForUpdate().getAllocationPriorityDetailValue().clone();
+                var allocationPriorityDetailValue = Objects.requireNonNull(defaultAllocationPriority).getLastDetailForUpdate().getAllocationPriorityDetailValue().clone();
 
                 allocationPriorityDetailValue.setIsDefault(Boolean.TRUE);
                 updateAllocationPriorityFromValue(allocationPriorityDetailValue, false, deletedBy);
@@ -2602,7 +2602,7 @@ public class InventoryControl
     // --------------------------------------------------------------------------------
 
     public AllocationPriorityDescription createAllocationPriorityDescription(AllocationPriority allocationPriority, Language language, String description, BasePK createdBy) {
-        AllocationPriorityDescription allocationPriorityDescription = AllocationPriorityDescriptionFactory.getInstance().create(allocationPriority, language, description,
+        var allocationPriorityDescription = AllocationPriorityDescriptionFactory.getInstance().create(allocationPriority, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(allocationPriority.getPrimaryKey(), EventTypes.MODIFY, allocationPriorityDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2682,7 +2682,7 @@ public class InventoryControl
 
     public String getBestAllocationPriorityDescription(AllocationPriority allocationPriority, Language language) {
         String description;
-        AllocationPriorityDescription allocationPriorityDescription = getAllocationPriorityDescription(allocationPriority, language);
+        var allocationPriorityDescription = getAllocationPriorityDescription(allocationPriority, language);
 
         if(allocationPriorityDescription == null && !language.getIsDefault()) {
             allocationPriorityDescription = getAllocationPriorityDescription(allocationPriority, getPartyControl().getDefaultLanguage());
@@ -2702,9 +2702,9 @@ public class InventoryControl
     }
 
     public List<AllocationPriorityDescriptionTransfer> getAllocationPriorityDescriptionTransfersByAllocationPriority(UserVisit userVisit, AllocationPriority allocationPriority) {
-        List<AllocationPriorityDescription> allocationPriorityDescriptions = getAllocationPriorityDescriptionsByAllocationPriority(allocationPriority);
+        var allocationPriorityDescriptions = getAllocationPriorityDescriptionsByAllocationPriority(allocationPriority);
         List<AllocationPriorityDescriptionTransfer> allocationPriorityDescriptionTransfers = new ArrayList<>(allocationPriorityDescriptions.size());
-        AllocationPriorityDescriptionTransferCache allocationPriorityDescriptionTransferCache = getInventoryTransferCaches(userVisit).getAllocationPriorityDescriptionTransferCache();
+        var allocationPriorityDescriptionTransferCache = getInventoryTransferCaches(userVisit).getAllocationPriorityDescriptionTransferCache();
 
         allocationPriorityDescriptions.forEach((allocationPriorityDescription) ->
                 allocationPriorityDescriptionTransfers.add(allocationPriorityDescriptionTransferCache.getTransfer(allocationPriorityDescription))
@@ -2715,15 +2715,15 @@ public class InventoryControl
 
     public void updateAllocationPriorityDescriptionFromValue(AllocationPriorityDescriptionValue allocationPriorityDescriptionValue, BasePK updatedBy) {
         if(allocationPriorityDescriptionValue.hasBeenModified()) {
-            AllocationPriorityDescription allocationPriorityDescription = AllocationPriorityDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var allocationPriorityDescription = AllocationPriorityDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     allocationPriorityDescriptionValue.getPrimaryKey());
 
             allocationPriorityDescription.setThruTime(session.START_TIME_LONG);
             allocationPriorityDescription.store();
 
-            AllocationPriority allocationPriority = allocationPriorityDescription.getAllocationPriority();
-            Language language = allocationPriorityDescription.getLanguage();
-            String description = allocationPriorityDescriptionValue.getDescription();
+            var allocationPriority = allocationPriorityDescription.getAllocationPriority();
+            var language = allocationPriorityDescription.getLanguage();
+            var description = allocationPriorityDescriptionValue.getDescription();
 
             allocationPriorityDescription = AllocationPriorityDescriptionFactory.getInstance().create(allocationPriority, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -2740,7 +2740,7 @@ public class InventoryControl
     }
 
     public void deleteAllocationPriorityDescriptionsByAllocationPriority(AllocationPriority allocationPriority, BasePK deletedBy) {
-        List<AllocationPriorityDescription> allocationPriorityDescriptions = getAllocationPriorityDescriptionsByAllocationPriorityForUpdate(allocationPriority);
+        var allocationPriorityDescriptions = getAllocationPriorityDescriptionsByAllocationPriorityForUpdate(allocationPriority);
 
         allocationPriorityDescriptions.forEach((allocationPriorityDescription) -> 
                 deleteAllocationPriorityDescription(allocationPriorityDescription, deletedBy)

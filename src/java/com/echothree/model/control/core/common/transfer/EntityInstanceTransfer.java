@@ -155,7 +155,7 @@ public final class EntityInstanceTransfer
         if(o == null || getClass() != o.getClass()) {
             return false;
         }
-        EntityInstanceTransfer that = (EntityInstanceTransfer) o;
+        var that = (EntityInstanceTransfer) o;
         return entityType.equals(that.entityType) && entityUniqueId.equals(that.entityUniqueId);
     }
 

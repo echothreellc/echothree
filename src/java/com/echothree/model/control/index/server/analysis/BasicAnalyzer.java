@@ -130,7 +130,7 @@ public class BasicAnalyzer
         Analyzer selectedAnalyzer = null;
         
         if(language != null) {
-            String languageIsoName = language.getLanguageIsoName();
+            var languageIsoName = language.getLanguageIsoName();
             
             if(languageIsoName.equals(Languages.en.name())) {
                 selectedAnalyzer = new EnglishAnalyzer();
@@ -165,8 +165,8 @@ public class BasicAnalyzer
 
     private Map<String, Analyzer> getEntityAttributeFieldAnalyzers(final List<EntityAttribute> entityAttributes, final Map<String, Analyzer> fieldAnalyzers) {
         entityAttributes.stream().map(EntityAttribute::getLastDetail).forEach((entityAttributeDetail) -> {
-            String fieldName = entityAttributeDetail.getEntityAttributeName();
-            String entityAttributeTypeName = entityAttributeDetail.getEntityAttributeType().getEntityAttributeTypeName();
+            var fieldName = entityAttributeDetail.getEntityAttributeName();
+            var entityAttributeTypeName = entityAttributeDetail.getEntityAttributeType().getEntityAttributeTypeName();
             if(IndexerDebugFlags.LogBaseAnalyzer) {
                 log.info("--- fieldName = " + fieldName + ", entityAttributeTypeName = " + entityAttributeTypeName);
             }

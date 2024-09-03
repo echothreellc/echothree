@@ -65,9 +65,9 @@ public class GetItemCategoryDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var itemControl = Session.getModelController(ItemControl.class);
-        GetItemCategoryDescriptionsResult result = ItemResultFactory.getGetItemCategoryDescriptionsResult();
-        String itemCategoryName = form.getItemCategoryName();
-        ItemCategory itemCategory = itemControl.getItemCategoryByName(itemCategoryName);
+        var result = ItemResultFactory.getGetItemCategoryDescriptionsResult();
+        var itemCategoryName = form.getItemCategoryName();
+        var itemCategory = itemControl.getItemCategoryByName(itemCategoryName);
         
         if(itemCategory != null) {
             result.setItemCategory(itemControl.getItemCategoryTransfer(getUserVisit(), itemCategory));

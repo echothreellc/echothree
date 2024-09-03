@@ -66,13 +66,13 @@ public class SetDefaultLocationTypeCommand
     @Override
     protected BaseResult execute() {
         var warehouseControl = Session.getModelController(WarehouseControl.class);
-        String warehouseName = form.getWarehouseName();
-        Warehouse warehouse = warehouseControl.getWarehouseByName(warehouseName);
+        var warehouseName = form.getWarehouseName();
+        var warehouse = warehouseControl.getWarehouseByName(warehouseName);
         
         if(warehouse != null) {
-            Party warehouseParty = warehouse.getParty();
-            String locationTypeName = form.getLocationTypeName();
-            LocationTypeDetailValue locationTypeDetailValue = warehouseControl.getLocationTypeDetailValueByNameForUpdate(warehouseParty, locationTypeName);
+            var warehouseParty = warehouse.getParty();
+            var locationTypeName = form.getLocationTypeName();
+            var locationTypeDetailValue = warehouseControl.getLocationTypeDetailValueByNameForUpdate(warehouseParty, locationTypeName);
             
             if(locationTypeDetailValue != null) {
                 locationTypeDetailValue.setIsDefault(Boolean.TRUE);

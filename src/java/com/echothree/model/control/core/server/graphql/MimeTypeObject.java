@@ -102,7 +102,7 @@ public class MimeTypeObject
         
         if(CoreSecurityUtils.getHasMimeTypeUsagesAccess(env)) {
             var coreControl = Session.getModelController(CoreControl.class);
-            List<MimeTypeUsage> entities = coreControl.getMimeTypeUsagesByMimeType(mimeType);
+            var entities = coreControl.getMimeTypeUsagesByMimeType(mimeType);
             List<MimeTypeUsageObject> objects = new ArrayList<>(entities.size());
 
             entities.forEach((entity) -> {
@@ -123,7 +123,7 @@ public class MimeTypeObject
         
         if(CoreSecurityUtils.getHasMimeTypeFileExtensionsAccess(env)) {
             var coreControl = Session.getModelController(CoreControl.class);
-            List<MimeTypeFileExtension> entities = coreControl.getMimeTypeFileExtensionsByMimeType(mimeType);
+            var entities = coreControl.getMimeTypeFileExtensionsByMimeType(mimeType);
             List<MimeTypeFileExtensionObject> objects = new ArrayList<>(entities.size());
 
             entities.forEach((entity) -> {

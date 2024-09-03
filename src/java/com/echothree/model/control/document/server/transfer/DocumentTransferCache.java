@@ -55,23 +55,23 @@ public class DocumentTransferCache
     }
     
     public DocumentTransfer getDocumentTransfer(Document document) {
-        DocumentTransfer documentTransfer = get(document);
+        var documentTransfer = get(document);
         
         if(documentTransfer == null) {
-            DocumentDetail documentDetail = document.getLastDetail();
-            String documentName = documentDetail.getDocumentName();
-            DocumentTypeTransfer documentType = documentControl.getDocumentTypeTransfer(userVisit, documentDetail.getDocumentType());
-            MimeTypeTransfer mimeType = coreControl.getMimeTypeTransfer(userVisit, documentDetail.getMimeType());
-            Integer pages = documentDetail.getPages();
-            String description = documentControl.getBestDocumentDescription(document, getLanguage());
+            var documentDetail = document.getLastDetail();
+            var documentName = documentDetail.getDocumentName();
+            var documentType = documentControl.getDocumentTypeTransfer(userVisit, documentDetail.getDocumentType());
+            var mimeType = coreControl.getMimeTypeTransfer(userVisit, documentDetail.getMimeType());
+            var pages = documentDetail.getPages();
+            var description = documentControl.getBestDocumentDescription(document, getLanguage());
             ByteArray blob = null;
             String clob = null;
             String eTag = null;
             long eTagEntityId = 0;
-            int eTagSize = 0;
+            var eTagSize = 0;
             
             if(includeBlob) {
-                DocumentBlob documentBlob = documentControl.getDocumentBlob(document);
+                var documentBlob = documentControl.getDocumentBlob(document);
                 
                 if(documentBlob != null) {
                     blob = documentBlob.getBlob();
@@ -79,7 +79,7 @@ public class DocumentTransferCache
             }
             
             if(includeClob) {
-                DocumentClob documentClob = documentControl.getDocumentClob(document);
+                var documentClob = documentControl.getDocumentClob(document);
                 
                 if(documentClob != null) {
                     clob = documentClob.getClob();
@@ -87,8 +87,8 @@ public class DocumentTransferCache
             }
             
             if(includeETag && eTagEntityId != 0) {
-                EntityTimeTransfer entityTimeTransfer = documentTransfer.getEntityInstance().getEntityTime();
-                Long modifiedTime = entityTimeTransfer.getUnformattedModifiedTime();
+                var entityTimeTransfer = documentTransfer.getEntityInstance().getEntityTime();
+                var modifiedTime = entityTimeTransfer.getUnformattedModifiedTime();
                 long maxTime = modifiedTime == null ? entityTimeTransfer.getUnformattedCreatedTime() : modifiedTime;
 
                 // EntityId-Size-ModifiedTime

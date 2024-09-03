@@ -62,8 +62,8 @@ public class SetDefaultTrainingClassCommand
     @Override
     protected BaseResult execute() {
         var trainingControl = Session.getModelController(TrainingControl.class);
-        String trainingClassName = form.getTrainingClassName();
-        TrainingClassDetailValue trainingClassDetailValue = trainingControl.getTrainingClassDetailValueByNameForUpdate(trainingClassName);
+        var trainingClassName = form.getTrainingClassName();
+        var trainingClassDetailValue = trainingControl.getTrainingClassDetailValueByNameForUpdate(trainingClassName);
         
         if(trainingClassDetailValue != null) {
             trainingClassDetailValue.setIsDefault(Boolean.TRUE);

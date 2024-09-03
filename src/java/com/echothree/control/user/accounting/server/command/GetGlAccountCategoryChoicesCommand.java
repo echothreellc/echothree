@@ -63,9 +63,9 @@ public class GetGlAccountCategoryChoicesCommand
     @Override
     protected BaseResult execute() {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        GetGlAccountCategoryChoicesResult result = AccountingResultFactory.getGetGlAccountCategoryChoicesResult();
-        String defaultGlAccountCategoryChoice = form.getDefaultGlAccountCategoryChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = AccountingResultFactory.getGetGlAccountCategoryChoicesResult();
+        var defaultGlAccountCategoryChoice = form.getDefaultGlAccountCategoryChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setGlAccountCategoryChoices(accountingControl.getGlAccountCategoryChoices(defaultGlAccountCategoryChoice, getPreferredLanguage(),
                 allowNullChoice));

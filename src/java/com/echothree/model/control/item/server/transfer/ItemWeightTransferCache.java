@@ -39,14 +39,14 @@ public class ItemWeightTransferCache
     
     @Override
     public ItemWeightTransfer getTransfer(ItemWeight itemWeight) {
-        ItemWeightTransfer itemWeightTransfer = get(itemWeight);
+        var itemWeightTransfer = get(itemWeight);
         
         if(itemWeightTransfer == null) {
-            ItemTransfer itemTransfer = itemControl.getItemTransfer(userVisit, itemWeight.getItem());
-            UnitOfMeasureTypeTransfer unitOfMeasureTypeTransfer = uomControl.getUnitOfMeasureTypeTransfer(userVisit,
+            var itemTransfer = itemControl.getItemTransfer(userVisit, itemWeight.getItem());
+            var unitOfMeasureTypeTransfer = uomControl.getUnitOfMeasureTypeTransfer(userVisit,
                     itemWeight.getUnitOfMeasureType());
-            UnitOfMeasureKind weightUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_WEIGHT);
-            String weight = formatUnitOfMeasure(weightUnitOfMeasureKind, itemWeight.getWeight());
+            var weightUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_WEIGHT);
+            var weight = formatUnitOfMeasure(weightUnitOfMeasureKind, itemWeight.getWeight());
             
             itemWeightTransfer = new ItemWeightTransfer(itemTransfer, unitOfMeasureTypeTransfer, weight);
             put(itemWeight, itemWeightTransfer);

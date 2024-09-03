@@ -80,8 +80,8 @@ public class OrderControl
             Boolean allowBackorders, Boolean allowSubstitutions, Boolean allowCombiningShipments, Term term, FreeOnBoard freeOnBoard,
             String reference, String description, CancellationPolicy cancellationPolicy, ReturnPolicy returnPolicy, Boolean taxable,
             BasePK createdBy) {
-        Order order = OrderFactory.getInstance().create();
-        OrderDetail orderDetail = OrderDetailFactory.getInstance().create(order, orderType, orderName, orderPriority,
+        var order = OrderFactory.getInstance().create();
+        var orderDetail = OrderDetailFactory.getInstance().create(order, orderType, orderName, orderPriority,
                 currency, holdUntilComplete, allowBackorders, allowSubstitutions, allowCombiningShipments, term,
                 freeOnBoard, reference, description, cancellationPolicy, returnPolicy, taxable, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
@@ -106,7 +106,7 @@ public class OrderControl
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.Order */
     public Order getOrderByEntityInstance(EntityInstance entityInstance) {
         OrderPK pk = new OrderPK(entityInstance.getEntityUniqueId());
-        Order order = OrderFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
+        var order = OrderFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
 
         return order;
     }
@@ -186,7 +186,7 @@ public class OrderControl
     private Order getOrderByNameUsingNames(String orderTypeName, String orderName, EntityPermission entityPermission) {
         var orderTypeControl = Session.getModelController(OrderTypeControl.class);
 
-        OrderType orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
+        var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         return getOrderByName(orderType, orderName, entityPermission);
     }
@@ -232,28 +232,28 @@ public class OrderControl
 
     public void updateOrderFromValue(OrderDetailValue orderDetailValue, BasePK updatedBy) {
         if(orderDetailValue.hasBeenModified()) {
-            Order order = OrderFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, orderDetailValue.getOrderPK());
-            OrderDetail orderDetail = order.getActiveDetailForUpdate();
+            var order = OrderFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, orderDetailValue.getOrderPK());
+            var orderDetail = order.getActiveDetailForUpdate();
             
             orderDetail.setThruTime(session.START_TIME_LONG);
             orderDetail.store();
-            
-            OrderPK orderPK = orderDetail.getOrderPK(); // Not updated
-            OrderTypePK orderTypePK = orderDetail.getOrderTypePK(); // Not updated
-            String orderName = orderDetailValue.getOrderName();
-            OrderPriorityPK orderPriorityPK = orderDetailValue.getOrderPriorityPK();
-            CurrencyPK currencyPK = orderDetail.getCurrencyPK(); // Not updated
-            Boolean holdUntilComplete = orderDetailValue.getHoldUntilComplete();
-            Boolean allowBackorders = orderDetailValue.getAllowBackorders();
-            Boolean allowSubstitutions = orderDetailValue.getAllowSubstitutions();
-            Boolean allowCombiningShipments = orderDetailValue.getAllowCombiningShipments();
-            TermPK termPK = orderDetailValue.getTermPK();
-            FreeOnBoardPK freeOnBoardPK = orderDetailValue.getFreeOnBoardPK();
-            String reference = orderDetailValue.getReference();
-            String description = orderDetailValue.getDescription();
-            CancellationPolicyPK cancellationPolicyPK = orderDetailValue.getCancellationPolicyPK();
-            ReturnPolicyPK returnPolicyPK = orderDetailValue.getReturnPolicyPK();
-            Boolean taxable = orderDetailValue.getTaxable();
+
+            var orderPK = orderDetail.getOrderPK(); // Not updated
+            var orderTypePK = orderDetail.getOrderTypePK(); // Not updated
+            var orderName = orderDetailValue.getOrderName();
+            var orderPriorityPK = orderDetailValue.getOrderPriorityPK();
+            var currencyPK = orderDetail.getCurrencyPK(); // Not updated
+            var holdUntilComplete = orderDetailValue.getHoldUntilComplete();
+            var allowBackorders = orderDetailValue.getAllowBackorders();
+            var allowSubstitutions = orderDetailValue.getAllowSubstitutions();
+            var allowCombiningShipments = orderDetailValue.getAllowCombiningShipments();
+            var termPK = orderDetailValue.getTermPK();
+            var freeOnBoardPK = orderDetailValue.getFreeOnBoardPK();
+            var reference = orderDetailValue.getReference();
+            var description = orderDetailValue.getDescription();
+            var cancellationPolicyPK = orderDetailValue.getCancellationPolicyPK();
+            var returnPolicyPK = orderDetailValue.getReturnPolicyPK();
+            var taxable = orderDetailValue.getTaxable();
             
             orderDetail = OrderDetailFactory.getInstance().create(orderPK, orderTypePK, orderName, orderPriorityPK, currencyPK, holdUntilComplete,
                     allowBackorders, allowSubstitutions, allowCombiningShipments, termPK, freeOnBoardPK, reference, description, cancellationPolicyPK,
@@ -278,9 +278,9 @@ public class OrderControl
         orderAdjustmentControl.deleteOrderAdjustmentsByOrder(order, deletedBy);
         orderLineControl.deleteOrderLinesByOrder(order, deletedBy);
         removeOrderUserVisitsByOrder(order);
-        
-        OrderDetail orderDetail = order.getLastDetailForUpdate();
-        String orderTypeName = orderDetail.getOrderType().getLastDetail().getOrderTypeName();
+
+        var orderDetail = order.getLastDetailForUpdate();
+        var orderTypeName = orderDetail.getOrderType().getLastDetail().getOrderTypeName();
         if(orderTypeName.equals(OrderTypes.WISHLIST.name())) {
             var wishlistControl = Session.getModelController(WishlistControl.class);
             
@@ -302,7 +302,7 @@ public class OrderControl
     
     public void deleteOrdersByWishlistType(WishlistType wishlistType, BasePK deletedBy) {
         var wishlistControl = Session.getModelController(WishlistControl.class);
-        List<Wishlist> wishlists = wishlistControl.getWishlistsByWishlistTypeForUpdate(wishlistType);
+        var wishlists = wishlistControl.getWishlistsByWishlistTypeForUpdate(wishlistType);
         
         wishlists.forEach((wishlist) -> {
             deleteOrder(wishlist.getOrderForUpdate(), deletedBy);
@@ -333,8 +333,8 @@ public class OrderControl
                         "WHERE ordst_ord_orderid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = OrderStatusFactory.getInstance().prepareStatement(query);
+
+            var ps = OrderStatusFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, order.getPrimaryKey().getEntityId());
             
@@ -355,7 +355,7 @@ public class OrderControl
     }
     
     public void removeOrderStatusByOrder(Order order) {
-        OrderStatus orderStatus = getOrderStatusForUpdate(order);
+        var orderStatus = getOrderStatusForUpdate(order);
         
         if(orderStatus != null) {
             orderStatus.remove();

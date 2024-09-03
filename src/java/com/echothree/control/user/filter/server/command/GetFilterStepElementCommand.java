@@ -72,32 +72,32 @@ public class GetFilterStepElementCommand
     @Override
     protected BaseResult execute() {
         var filterControl = Session.getModelController(FilterControl.class);
-        GetFilterStepElementResult result = FilterResultFactory.getGetFilterStepElementResult();
-        String filterKindName = form.getFilterKindName();
-        FilterKind filterKind = filterControl.getFilterKindByName(filterKindName);
+        var result = FilterResultFactory.getGetFilterStepElementResult();
+        var filterKindName = form.getFilterKindName();
+        var filterKind = filterControl.getFilterKindByName(filterKindName);
         
         if(filterKind != null) {
-            UserVisit userVisit = getUserVisit();
-            String filterTypeName = form.getFilterTypeName();
-            FilterType filterType = filterControl.getFilterTypeByName(filterKind, filterTypeName);
+            var userVisit = getUserVisit();
+            var filterTypeName = form.getFilterTypeName();
+            var filterType = filterControl.getFilterTypeByName(filterKind, filterTypeName);
             
             result.setFilterKind(filterControl.getFilterKindTransfer(userVisit, filterKind));
             
             if(filterType != null) {
-                String filterName = form.getFilterName();
-                Filter filter = filterControl.getFilterByName(filterType, filterName);
+                var filterName = form.getFilterName();
+                var filter = filterControl.getFilterByName(filterType, filterName);
                 
                 result.setFilterType(filterControl.getFilterTypeTransfer(userVisit, filterType));
                 
                 if(filter != null) {
-                    String filterStepName = form.getFilterStepName();
-                    FilterStep filterStep = filterControl.getFilterStepByName(filter, filterStepName);
+                    var filterStepName = form.getFilterStepName();
+                    var filterStep = filterControl.getFilterStepByName(filter, filterStepName);
                     
                     result.setFilter(filterControl.getFilterTransfer(userVisit, filter));
                     
                     if(filterStep != null) {
-                        String filterStepElementName = form.getFilterStepElementName();
-                        FilterStepElement filterStepElement = filterControl.getFilterStepElementByName(filterStep, filterStepElementName);
+                        var filterStepElementName = form.getFilterStepElementName();
+                        var filterStepElement = filterControl.getFilterStepElementByName(filterStep, filterStepElementName);
                         
                         result.setFilterStep(filterControl.getFilterStepTransfer(userVisit, filterStep));
                         

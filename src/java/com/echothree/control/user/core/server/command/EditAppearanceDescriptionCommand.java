@@ -88,13 +88,13 @@ public class EditAppearanceDescriptionCommand
     public AppearanceDescription getEntity(EditAppearanceDescriptionResult result) {
         var coreControl = getCoreControl();
         AppearanceDescription appearanceDescription = null;
-        String appearanceName = spec.getAppearanceName();
-        Appearance appearance = coreControl.getAppearanceByName(appearanceName);
+        var appearanceName = spec.getAppearanceName();
+        var appearance = coreControl.getAppearanceByName(appearanceName);
 
         if(appearance != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -136,7 +136,7 @@ public class EditAppearanceDescriptionCommand
     @Override
     public void doUpdate(AppearanceDescription appearanceDescription) {
         var coreControl = getCoreControl();
-        AppearanceDescriptionValue appearanceDescriptionValue = coreControl.getAppearanceDescriptionValue(appearanceDescription);
+        var appearanceDescriptionValue = coreControl.getAppearanceDescriptionValue(appearanceDescription);
         appearanceDescriptionValue.setDescription(edit.getDescription());
 
         coreControl.updateAppearanceDescriptionFromValue(appearanceDescriptionValue, getPartyPK());

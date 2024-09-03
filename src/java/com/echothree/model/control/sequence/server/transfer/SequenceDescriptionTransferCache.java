@@ -32,12 +32,12 @@ public class SequenceDescriptionTransferCache
     }
     
     public SequenceDescriptionTransfer getSequenceDescriptionTransfer(SequenceDescription sequenceDescription) {
-        SequenceDescriptionTransfer sequenceDescriptionTransfer = get(sequenceDescription);
+        var sequenceDescriptionTransfer = get(sequenceDescription);
         
         if(sequenceDescriptionTransfer == null) {
-            SequenceTransferCache sequenceTransferCache = sequenceControl.getSequenceTransferCaches(userVisit).getSequenceTransferCache();
-            SequenceTransfer sequenceTransfer = sequenceTransferCache.getSequenceTransfer(sequenceDescription.getSequence());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, sequenceDescription.getLanguage());
+            var sequenceTransferCache = sequenceControl.getSequenceTransferCaches(userVisit).getSequenceTransferCache();
+            var sequenceTransfer = sequenceTransferCache.getSequenceTransfer(sequenceDescription.getSequence());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, sequenceDescription.getLanguage());
             
             sequenceDescriptionTransfer = new SequenceDescriptionTransfer(languageTransfer, sequenceTransfer, sequenceDescription.getDescription());
             put(sequenceDescription, sequenceDescriptionTransfer);

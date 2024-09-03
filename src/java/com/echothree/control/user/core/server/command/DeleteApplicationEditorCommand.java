@@ -64,16 +64,16 @@ public class DeleteApplicationEditorCommand
     
     @Override
     protected BaseResult execute() {
-        String applicationName = form.getApplicationName();
-        Application application = ApplicationLogic.getInstance().getApplicationByName(this, applicationName);
+        var applicationName = form.getApplicationName();
+        var application = ApplicationLogic.getInstance().getApplicationByName(this, applicationName);
         
         if(!hasExecutionErrors()) {
-            String editorName = form.getEditorName();
-            Editor editor = ApplicationLogic.getInstance().getEditorByName(this, editorName);
+            var editorName = form.getEditorName();
+            var editor = ApplicationLogic.getInstance().getEditorByName(this, editorName);
             
             if(!hasExecutionErrors()) {
                 var coreControl = getCoreControl();
-                ApplicationEditor applicationEditor = coreControl.getApplicationEditorForUpdate(application, editor);
+                var applicationEditor = coreControl.getApplicationEditorForUpdate(application, editor);
                 
                 if(applicationEditor != null) {
                     coreControl.deleteApplicationEditor(applicationEditor, getPartyPK());

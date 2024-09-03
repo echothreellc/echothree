@@ -68,17 +68,17 @@ public class GetLicenseTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var licenseControl = Session.getModelController(LicenseControl.class);
-        GetLicenseTypeDescriptionResult result = LicenseResultFactory.getGetLicenseTypeDescriptionResult();
-        String licenseTypeName = form.getLicenseTypeName();
-        LicenseType licenseType = licenseControl.getLicenseTypeByName(licenseTypeName);
+        var result = LicenseResultFactory.getGetLicenseTypeDescriptionResult();
+        var licenseTypeName = form.getLicenseTypeName();
+        var licenseType = licenseControl.getLicenseTypeByName(licenseTypeName);
 
         if(licenseType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
-                LicenseTypeDescription licenseTypeDescription = licenseControl.getLicenseTypeDescription(licenseType, language);
+                var licenseTypeDescription = licenseControl.getLicenseTypeDescription(licenseType, language);
 
                 if(licenseTypeDescription != null) {
                     result.setLicenseTypeDescription(licenseControl.getLicenseTypeDescriptionTransfer(getUserVisit(), licenseTypeDescription));

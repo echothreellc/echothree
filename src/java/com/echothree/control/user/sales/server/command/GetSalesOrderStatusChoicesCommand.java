@@ -66,8 +66,8 @@ public class GetSalesOrderStatusChoicesCommand
         var order = orderName == null? null: SalesOrderLogic.getInstance().getOrderByName(this, orderName);
 
         if(!hasExecutionErrors()) {
-            String defaultSalesOrderStatusChoice = form.getDefaultSalesOrderStatusChoice();
-            boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+            var defaultSalesOrderStatusChoice = form.getDefaultSalesOrderStatusChoice();
+            var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 
             result.setSalesOrderStatusChoices(SalesOrderLogic.getInstance().getSalesOrderStatusChoices(defaultSalesOrderStatusChoice,
                     getPreferredLanguage(), allowNullChoice, order, getPartyPK()));

@@ -80,41 +80,41 @@ public class CreateBlogCommentCommand
     @Override
     protected BaseResult execute() {
         var userControl = Session.getModelController(UserControl.class);
-        CreateBlogCommentResult result = ForumResultFactory.getCreateBlogCommentResult();
-        String username = form.getUsername();
-        UserLogin userLogin = username == null ? null : userControl.getUserLoginByUsername(username);
+        var result = ForumResultFactory.getCreateBlogCommentResult();
+        var username = form.getUsername();
+        var userLogin = username == null ? null : userControl.getUserLoginByUsername(username);
 
         if(username == null || userLogin != null) {
             var forumControl = Session.getModelController(ForumControl.class);
-            String parentForumMessageName = form.getParentForumMessageName();
-            ForumMessage parentForumMessage = forumControl.getForumMessageByName(parentForumMessageName);
+            var parentForumMessageName = form.getParentForumMessageName();
+            var parentForumMessage = forumControl.getForumMessageByName(parentForumMessageName);
 
             if(parentForumMessage != null) {
-                ForumMessageDetail parentForumMessageDetail = parentForumMessage.getLastDetail();
-                String forumMessageTypeName = parentForumMessageDetail.getForumMessageType().getForumMessageTypeName();
+                var parentForumMessageDetail = parentForumMessage.getLastDetail();
+                var forumMessageTypeName = parentForumMessageDetail.getForumMessageType().getForumMessageTypeName();
 
                 if(forumMessageTypeName.equals(ForumConstants.ForumMessageType_BLOG_ENTRY) || forumMessageTypeName.equals(ForumConstants.ForumMessageType_BLOG_COMMENT)) {
-                    ForumRoleType forumRoleType = ForumLogic.getInstance().getForumRoleTypeByName(this, ForumConstants.ForumRoleType_COMMENTOR);
+                    var forumRoleType = ForumLogic.getInstance().getForumRoleTypeByName(this, ForumConstants.ForumRoleType_COMMENTOR);
 
                     if(!hasExecutionErrors()) {
-                        Party party = userLogin == null ? getParty() : userLogin.getParty();
-                        ForumThread forumThread = parentForumMessageDetail.getForumThread();
-                        Forum forum = forumControl.getDefaultForumForumThread(forumThread).getForum();
+                        var party = userLogin == null ? getParty() : userLogin.getParty();
+                        var forumThread = parentForumMessageDetail.getForumThread();
+                        var forum = forumControl.getDefaultForumForumThread(forumThread).getForum();
 
                         if(ForumLogic.getInstance().isForumRoleTypePermitted(this, forum, party, forumRoleType)) {
                             var partyControl = Session.getModelController(PartyControl.class);
-                            String languageIsoName = form.getLanguageIsoName();
-                            Language language = languageIsoName == null? getPreferredLanguage(): partyControl.getLanguageByIsoName(languageIsoName);
+                            var languageIsoName = form.getLanguageIsoName();
+                            var language = languageIsoName == null? getPreferredLanguage(): partyControl.getLanguageByIsoName(languageIsoName);
 
                             if(language != null) {
                                 var iconControl = Session.getModelController(IconControl.class);
-                                String forumMessageIconName = form.getForumMessageIconName();
-                                Icon forumMessageIcon = iconControl.getIconByName(forumMessageIconName);
+                                var forumMessageIconName = form.getForumMessageIconName();
+                                var forumMessageIcon = iconControl.getIconByName(forumMessageIconName);
 
                                 if(forumMessageIconName == null || forumMessageIcon != null) {
                                     if(forumMessageIcon != null) {
-                                        IconUsageType iconUsageType = iconControl.getIconUsageTypeByName(IconConstants.IconUsageType_FORUM_MESSAGE);
-                                        IconUsage iconUsage = iconControl.getIconUsage(iconUsageType, forumMessageIcon);
+                                        var iconUsageType = iconControl.getIconUsageTypeByName(IconConstants.IconUsageType_FORUM_MESSAGE);
+                                        var iconUsage = iconControl.getIconUsage(iconUsageType, forumMessageIcon);
 
                                         if(iconUsage == null) {
                                             addExecutionError(ExecutionErrors.UnknownIconUsage.name());
@@ -123,25 +123,25 @@ public class CreateBlogCommentCommand
 
                                     if(!hasExecutionErrors()) {
                                         var coreControl = getCoreControl();
-                                        String contentMimeTypeName = form.getContentMimeTypeName();
-                                        MimeType contentMimeType = contentMimeTypeName == null? null: coreControl.getMimeTypeByName(contentMimeTypeName);
+                                        var contentMimeTypeName = form.getContentMimeTypeName();
+                                        var contentMimeType = contentMimeTypeName == null? null: coreControl.getMimeTypeByName(contentMimeTypeName);
 
                                         if(contentMimeType != null) {
-                                            ForumMimeType forumMimeType = forumControl.getForumMimeType(forum, contentMimeType);
+                                            var forumMimeType = forumControl.getForumMimeType(forum, contentMimeType);
 
                                             if(forumMimeType != null) {
-                                                String title = form.getTitle();
-                                                String rawPostedTime = form.getPostedTime();
-                                                Long postedTime = rawPostedTime == null? session.START_TIME_LONG: Long.valueOf(rawPostedTime);
-                                                String content = form.getContent();
+                                                var title = form.getTitle();
+                                                var rawPostedTime = form.getPostedTime();
+                                                var postedTime = rawPostedTime == null? session.START_TIME_LONG: Long.valueOf(rawPostedTime);
+                                                var content = form.getContent();
                                                 BasePK createdBy = getPartyPK();
 
-                                                ForumMessageType forumMessageType = forumControl.getForumMessageTypeByName(ForumConstants.ForumMessageType_BLOG_COMMENT);
-                                                ForumMessage forumMessage = forumControl.createForumMessage(forumThread, forumMessageType, parentForumMessage, forumMessageIcon, postedTime, createdBy);
+                                                var forumMessageType = forumControl.getForumMessageTypeByName(ForumConstants.ForumMessageType_BLOG_COMMENT);
+                                                var forumMessage = forumControl.createForumMessage(forumThread, forumMessageType, parentForumMessage, forumMessageIcon, postedTime, createdBy);
                                                 forumControl.createForumMessageRole(forumMessage, forumRoleType, party, createdBy);
 
-                                                ForumMessagePartType forumMessagePartType = forumControl.getForumMessagePartTypeByName(ForumConstants.ForumMessagePartType_TITLE);
-                                                ForumMessagePart forumMessagePart = forumControl.createForumMessagePart(forumMessage, forumMessagePartType, language, null, createdBy);
+                                                var forumMessagePartType = forumControl.getForumMessagePartTypeByName(ForumConstants.ForumMessagePartType_TITLE);
+                                                var forumMessagePart = forumControl.createForumMessagePart(forumMessage, forumMessagePartType, language, null, createdBy);
                                                 forumControl.createForumStringMessagePart(forumMessagePart, title, createdBy);
 
                                                 forumMessagePartType = forumControl.getForumMessagePartTypeByName(ForumConstants.ForumMessagePartType_CONTENT);

@@ -144,7 +144,7 @@ public class ContentPageTag
     public int doStartTag()
             throws JspException {
         try {
-            GetContentPageForm commandForm = ContentUtil.getHome().getGetContentPageForm();
+            var commandForm = ContentUtil.getHome().getGetContentPageForm();
 
             commandForm.setContentWebAddressName(contentWebAddressName);
             commandForm.setContentCollectionName(contentCollectionName);
@@ -158,7 +158,7 @@ public class ContentPageTag
 
             commandForm.setTransferProperties(transferProperties);
 
-            CommandResult commandResult = ContentUtil.getHome().getContentPage(getUserVisitPK(), commandForm);
+            var commandResult = ContentUtil.getHome().getContentPage(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -166,8 +166,8 @@ public class ContentPageTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetContentPageResult result = (GetContentPageResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetContentPageResult)executionResult.getResult();
 
                 pageContext.setAttribute(var, result.getContentPage(), scope);
             }

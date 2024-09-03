@@ -94,7 +94,7 @@ public class EditItemPriceCommand
     @Override
     protected void setupValidatorForEdit(Validator validator, BaseForm specForm) {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        String currencyIsoName = spec.getCurrencyIsoName();
+        var currencyIsoName = spec.getCurrencyIsoName();
         
         validator.setCurrency(accountingControl.getCurrencyByIsoName(currencyIsoName));
     }
@@ -116,23 +116,23 @@ public class EditItemPriceCommand
     public ItemPrice getEntity(EditItemPriceResult result) {
         var itemControl = Session.getModelController(ItemControl.class);
         ItemPrice itemPrice = null;
-        String itemName = spec.getItemName();
-        Item item = itemControl.getItemByName(itemName);
+        var itemName = spec.getItemName();
+        var item = itemControl.getItemByName(itemName);
 
         if(item != null) {
             var inventoryControl = Session.getModelController(InventoryControl.class);
-            String inventoryConditionName = spec.getInventoryConditionName();
-            InventoryCondition inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
+            var inventoryConditionName = spec.getInventoryConditionName();
+            var inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
 
             if(inventoryCondition != null) {
                 var uomControl = Session.getModelController(UomControl.class);
-                ItemDetail itemDetail = item.getLastDetail();
-                String unitOfMeasureTypeName = spec.getUnitOfMeasureTypeName();
-                UnitOfMeasureType unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(itemDetail.getUnitOfMeasureKind(), unitOfMeasureTypeName);
+                var itemDetail = item.getLastDetail();
+                var unitOfMeasureTypeName = spec.getUnitOfMeasureTypeName();
+                var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(itemDetail.getUnitOfMeasureKind(), unitOfMeasureTypeName);
 
                 if(unitOfMeasureType != null) {
                     var accountingControl = Session.getModelController(AccountingControl.class);
-                    String currencyIsoName = spec.getCurrencyIsoName();
+                    var currencyIsoName = spec.getCurrencyIsoName();
 
                     currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
 
@@ -177,11 +177,11 @@ public class EditItemPriceCommand
         var itemControl = Session.getModelController(ItemControl.class);
 
         if(itemPriceTypeName.equals(ItemPriceTypes.FIXED.name())) {
-            ItemFixedPrice itemFixedPrice = itemControl.getItemFixedPrice(itemPrice);
+            var itemFixedPrice = itemControl.getItemFixedPrice(itemPrice);
 
             edit.setUnitPrice(AmountUtils.getInstance().formatPriceUnit(currency, itemFixedPrice.getUnitPrice()));
         } else if(itemPriceTypeName.equals(ItemPriceTypes.VARIABLE.name())) {
-            ItemVariablePrice itemVariablePrice = itemControl.getItemVariablePrice(itemPrice);
+            var itemVariablePrice = itemControl.getItemVariablePrice(itemPrice);
 
             edit.setMinimumUnitPrice(AmountUtils.getInstance().formatPriceUnit(currency, itemVariablePrice.getMinimumUnitPrice()));
             edit.setMaximumUnitPrice(AmountUtils.getInstance().formatPriceUnit(currency, itemVariablePrice.getMaximumUnitPrice()));
@@ -199,7 +199,7 @@ public class EditItemPriceCommand
     @Override
     public void canUpdate(ItemPrice itemPrice) {
         if(itemPriceTypeName.equals(ItemPriceTypes.FIXED.name())) {
-            String strUnitPrice = edit.getUnitPrice();
+            var strUnitPrice = edit.getUnitPrice();
 
             if(strUnitPrice != null) {
                 unitPrice = Long.valueOf(strUnitPrice);
@@ -207,9 +207,9 @@ public class EditItemPriceCommand
                 addExecutionError(ExecutionErrors.MissingUnitPrice.name());
             }
         } else if(itemPriceTypeName.equals(ItemPriceTypes.VARIABLE.name())) {
-            String strMinimumUnitPrice = edit.getMinimumUnitPrice();
-            String strMaximumUnitPrice = edit.getMaximumUnitPrice();
-            String strUnitPriceIncrement = edit.getUnitPriceIncrement();
+            var strMinimumUnitPrice = edit.getMinimumUnitPrice();
+            var strMaximumUnitPrice = edit.getMaximumUnitPrice();
+            var strUnitPriceIncrement = edit.getUnitPriceIncrement();
 
             if(strMinimumUnitPrice != null) {
                 minimumUnitPrice = Long.valueOf(strMinimumUnitPrice);
@@ -237,13 +237,13 @@ public class EditItemPriceCommand
     public void doUpdate(ItemPrice itemPrice) {
         var itemControl = Session.getModelController(ItemControl.class);
         if(itemPriceTypeName.equals(ItemPriceTypes.FIXED.name())) {
-            ItemFixedPriceValue itemFixedPriceValue = itemControl.getItemFixedPriceValueForUpdate(itemPrice);
+            var itemFixedPriceValue = itemControl.getItemFixedPriceValueForUpdate(itemPrice);
 
             itemFixedPriceValue.setUnitPrice(unitPrice);
 
             itemControl.updateItemFixedPriceFromValue(itemFixedPriceValue, getPartyPK());
         } else if(itemPriceTypeName.equals(ItemPriceTypes.VARIABLE.name())) {
-            ItemVariablePriceValue itemVariablePriceValue = itemControl.getItemVariablePriceValueForUpdate(itemPrice);
+            var itemVariablePriceValue = itemControl.getItemVariablePriceValueForUpdate(itemPrice);
 
             itemVariablePriceValue.setMinimumUnitPrice(minimumUnitPrice);
             itemVariablePriceValue.setMaximumUnitPrice(maximumUnitPrice);

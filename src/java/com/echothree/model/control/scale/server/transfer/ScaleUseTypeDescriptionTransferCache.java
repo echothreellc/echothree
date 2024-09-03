@@ -32,11 +32,11 @@ public class ScaleUseTypeDescriptionTransferCache
     }
     
     public ScaleUseTypeDescriptionTransfer getScaleUseTypeDescriptionTransfer(ScaleUseTypeDescription scaleUseTypeDescription) {
-        ScaleUseTypeDescriptionTransfer scaleUseTypeDescriptionTransfer = get(scaleUseTypeDescription);
+        var scaleUseTypeDescriptionTransfer = get(scaleUseTypeDescription);
         
         if(scaleUseTypeDescriptionTransfer == null) {
-            ScaleUseTypeTransfer scaleUseTypeTransfer = scaleControl.getScaleUseTypeTransfer(userVisit, scaleUseTypeDescription.getScaleUseType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, scaleUseTypeDescription.getLanguage());
+            var scaleUseTypeTransfer = scaleControl.getScaleUseTypeTransfer(userVisit, scaleUseTypeDescription.getScaleUseType());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, scaleUseTypeDescription.getLanguage());
             
             scaleUseTypeDescriptionTransfer = new ScaleUseTypeDescriptionTransfer(languageTransfer, scaleUseTypeTransfer, scaleUseTypeDescription.getDescription());
             put(scaleUseTypeDescription, scaleUseTypeDescriptionTransfer);

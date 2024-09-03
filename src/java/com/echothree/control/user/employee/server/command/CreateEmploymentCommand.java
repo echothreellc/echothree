@@ -58,26 +58,26 @@ public class CreateEmploymentCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        String partyName = form.getPartyName();
-        Party party = partyControl.getPartyByName(partyName);
+        var partyName = form.getPartyName();
+        var party = partyControl.getPartyByName(partyName);
 
         if(party != null) {
-            String companyName = form.getCompanyName();
-            PartyCompany partyCompany = partyControl.getPartyCompanyByName(companyName);
+            var companyName = form.getCompanyName();
+            var partyCompany = partyControl.getPartyCompanyByName(companyName);
 
             if(partyCompany != null) {
                 var employeeControl = Session.getModelController(EmployeeControl.class);
-                String terminationTypeName = form.getTerminationTypeName();
-                TerminationType terminationType = employeeControl.getTerminationTypeByName(terminationTypeName);
+                var terminationTypeName = form.getTerminationTypeName();
+                var terminationType = employeeControl.getTerminationTypeByName(terminationTypeName);
 
                 if(terminationTypeName == null || terminationType != null) {
-                    String terminationReasonName = form.getTerminationReasonName();
-                    TerminationReason terminationReason = employeeControl.getTerminationReasonByName(terminationReasonName);
+                    var terminationReasonName = form.getTerminationReasonName();
+                    var terminationReason = employeeControl.getTerminationReasonByName(terminationReasonName);
 
                     if(terminationReasonName == null || terminationReason != null) {
-                        Long startTime = Long.valueOf(form.getStartTime());
-                        String strEndTime = form.getEndTime();
-                        Long endTime = strEndTime == null ? null : Long.valueOf(strEndTime);
+                        var startTime = Long.valueOf(form.getStartTime());
+                        var strEndTime = form.getEndTime();
+                        var endTime = strEndTime == null ? null : Long.valueOf(strEndTime);
 
                         employeeControl.createEmployment(party, partyCompany.getParty(), startTime, endTime, terminationType, terminationReason, getPartyPK());
                     } else {

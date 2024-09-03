@@ -95,12 +95,12 @@ public class CreateOfferCommand
     protected BaseResult execute() {
         var result = OfferResultFactory.getCreateOfferResult();
         Offer offer = null;
-        String salesOrderSequenceName = form.getSalesOrderSequenceName();
+        var salesOrderSequenceName = form.getSalesOrderSequenceName();
         Sequence salesOrderSequence = null;
 
         if(salesOrderSequenceName != null) {
             var sequenceControl = Session.getModelController(SequenceControl.class);
-            SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.SALES_ORDER.name());
+            var sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.SALES_ORDER.name());
 
             if(sequenceType != null) {
                 salesOrderSequence = sequenceControl.getSequenceByName(sequenceType, salesOrderSequenceName);
@@ -111,33 +111,33 @@ public class CreateOfferCommand
 
         if(salesOrderSequenceName == null || salesOrderSequence != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String companyName = form.getCompanyName();
-            PartyCompany partyCompany = companyName == null? partyControl.getDefaultPartyCompany():
+            var companyName = form.getCompanyName();
+            var partyCompany = companyName == null? partyControl.getDefaultPartyCompany():
                 partyControl.getPartyCompanyByName(companyName);
-            Party partyCompanyParty = partyCompany == null? null: partyCompany.getParty();
+            var partyCompanyParty = partyCompany == null? null: partyCompany.getParty();
 
             if(companyName == null || partyCompanyParty != null) {
-                String divisionName = form.getDivisionName();
-                PartyDivision partyDivision = divisionName == null? partyControl.getDefaultPartyDivision(partyCompanyParty):
+                var divisionName = form.getDivisionName();
+                var partyDivision = divisionName == null? partyControl.getDefaultPartyDivision(partyCompanyParty):
                     partyControl.getPartyDivisionByName(partyCompanyParty, divisionName);
-                Party partyDivisionParty = partyDivision == null? null: partyDivision.getParty();
+                var partyDivisionParty = partyDivision == null? null: partyDivision.getParty();
 
                 if(divisionName == null || partyDivisionParty != null) {
-                    String departmentName = form.getDepartmentName();
-                    PartyDepartment partyDepartment = departmentName == null? partyControl.getDefaultPartyDepartment(partyDivisionParty):
+                    var departmentName = form.getDepartmentName();
+                    var partyDepartment = departmentName == null? partyControl.getDefaultPartyDepartment(partyDivisionParty):
                         partyControl.getPartyDepartmentByName(partyDivisionParty, departmentName);
-                    Party partyDepartmentParty = partyDepartment == null? null: partyDepartment.getParty();
+                    var partyDepartmentParty = partyDepartment == null? null: partyDepartment.getParty();
 
                     if(departmentName == null || partyDepartmentParty != null) {
-                        String offerItemSelectorName = form.getOfferItemSelectorName();
+                        var offerItemSelectorName = form.getOfferItemSelectorName();
                         Selector offerItemSelector = null;
 
                         if(offerItemSelectorName != null) {
                             var selectorControl = Session.getModelController(SelectorControl.class);
-                            SelectorKind selectorKind = selectorControl.getSelectorKindByName(SelectorKinds.ITEM.name());
+                            var selectorKind = selectorControl.getSelectorKindByName(SelectorKinds.ITEM.name());
 
                             if(selectorKind != null) {
-                                SelectorType selectorType = selectorControl.getSelectorTypeByName(selectorKind,
+                                var selectorType = selectorControl.getSelectorTypeByName(selectorKind,
                                         SelectorTypes.OFFER.name());
 
                                 if(selectorType != null) {
@@ -151,13 +151,13 @@ public class CreateOfferCommand
                         }
 
                         if(offerItemSelectorName == null || offerItemSelector != null) {
-                            String offerItemPriceFilterName = form.getOfferItemPriceFilterName();
+                            var offerItemPriceFilterName = form.getOfferItemPriceFilterName();
                             Filter offerItemPriceFilter = null;
 
                             if(offerItemPriceFilterName != null) {
                                 var filterControl = Session.getModelController(FilterControl.class);
-                                FilterKind filterKind = filterControl.getFilterKindByName(FilterKinds.PRICE.name());
-                                FilterType filterType = filterControl.getFilterTypeByName(filterKind, FilterTypes.OFFER_ITEM_PRICE.name());
+                                var filterKind = filterControl.getFilterKindByName(FilterKinds.PRICE.name());
+                                var filterType = filterControl.getFilterTypeByName(filterKind, FilterTypes.OFFER_ITEM_PRICE.name());
 
                                 if(filterType != null) {
                                     offerItemPriceFilter = filterControl.getFilterByName(filterType, offerItemPriceFilterName);

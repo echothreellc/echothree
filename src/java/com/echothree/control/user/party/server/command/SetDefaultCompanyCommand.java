@@ -49,8 +49,8 @@ public class SetDefaultCompanyCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        String companyName = form.getCompanyName();
-        PartyCompanyValue partyCompanyValue = partyControl.getPartyCompanyValueByNameForUpdate(companyName);
+        var companyName = form.getCompanyName();
+        var partyCompanyValue = partyControl.getPartyCompanyValueByNameForUpdate(companyName);
         
         if(partyCompanyValue != null) {
             partyCompanyValue.setIsDefault(Boolean.TRUE);

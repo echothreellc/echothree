@@ -39,9 +39,9 @@ public class InitialContextUtils {
 
     public InitialContext getInitialContext()
             throws NamingException {
-        Properties env = new Properties();
-        InputStream is = InitialContextUtils.class.getClassLoader().getResourceAsStream("echothree-jndi.properties");
-        boolean loaded = false;
+        var env = new Properties();
+        var is = InitialContextUtils.class.getClassLoader().getResourceAsStream("echothree-jndi.properties");
+        var loaded = false;
 
         if(is != null) {
             try {

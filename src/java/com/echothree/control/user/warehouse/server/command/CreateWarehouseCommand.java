@@ -178,7 +178,7 @@ public class CreateWarehouseCommand
         }
 
         if(warehouse != null) {
-            Party party = warehouse.getParty();
+            var party = warehouse.getParty();
             
             result.setEntityRef(party.getPrimaryKey().getEntityRef());
             result.setWarehouseName(warehouse.getWarehouseName());

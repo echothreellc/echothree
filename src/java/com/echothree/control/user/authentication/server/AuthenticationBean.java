@@ -64,12 +64,12 @@ public class AuthenticationBean
         
         try {
             var userControl = Session.getModelController(UserControl.class);
-            UserVisit userVisit = userControl.createUserVisit(null, null, null, null, null, null, null, null);
+            var userVisit = userControl.createUserVisit(null, null, null, null, null, null, null, null);
             var partyControl = Session.getModelController(PartyControl.class);
-            Party party = partyControl.getPartyByName(PartyNames.DATA_LOADER.name());
+            var party = partyControl.getPartyByName(PartyNames.DATA_LOADER.name());
             
             if(party == null) {
-                PartyType partyType = partyControl.getPartyTypeByName(PartyTypes.UTILITY.name());
+                var partyType = partyControl.getPartyTypeByName(PartyTypes.UTILITY.name());
                 
                 if(partyType != null) {
                     party = partyControl.createParty(PartyNames.DATA_LOADER.name(), partyType, null, null, null, null, null);

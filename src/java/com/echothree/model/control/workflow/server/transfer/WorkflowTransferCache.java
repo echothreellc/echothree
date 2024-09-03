@@ -67,17 +67,17 @@ public class WorkflowTransferCache
     }
     
     public WorkflowTransfer getWorkflowTransfer(Workflow workflow) {
-        WorkflowTransfer workflowTransfer = get(workflow);
+        var workflowTransfer = get(workflow);
         
         if(workflowTransfer == null) {
-            WorkflowDetail workflowDetail = workflow.getLastDetail();
-            String workflowName = filterWorkflowName ? null : workflowDetail.getWorkflowName();
-            SelectorType selectorType = filterSelectorType ? null : workflowDetail.getSelectorType();
-            SelectorTypeTransfer selectorTypeTransfer = selectorType == null? null: selectorControl.getSelectorTypeTransfer(userVisit, selectorType);
-            SecurityRoleGroup securityRoleGroup = filterSecurityRoleGroup ? null : workflowDetail.getSecurityRoleGroup();
-            SecurityRoleGroupTransfer securityRoleGroupTransfer = securityRoleGroup == null? null: securityControl.getSecurityRoleGroupTransfer(userVisit, securityRoleGroup);
-            Integer sortOrder = filterSortOrder ? null : workflowDetail.getSortOrder();
-            String description = filterDescription ? null : workflowControl.getBestWorkflowDescription(workflow, getLanguage());
+            var workflowDetail = workflow.getLastDetail();
+            var workflowName = filterWorkflowName ? null : workflowDetail.getWorkflowName();
+            var selectorType = filterSelectorType ? null : workflowDetail.getSelectorType();
+            var selectorTypeTransfer = selectorType == null? null: selectorControl.getSelectorTypeTransfer(userVisit, selectorType);
+            var securityRoleGroup = filterSecurityRoleGroup ? null : workflowDetail.getSecurityRoleGroup();
+            var securityRoleGroupTransfer = securityRoleGroup == null? null: securityControl.getSecurityRoleGroupTransfer(userVisit, securityRoleGroup);
+            var sortOrder = filterSortOrder ? null : workflowDetail.getSortOrder();
+            var description = filterDescription ? null : workflowControl.getBestWorkflowDescription(workflow, getLanguage());
             
             workflowTransfer = new WorkflowTransfer(workflowName, selectorTypeTransfer,
                     securityRoleGroupTransfer, sortOrder, description);

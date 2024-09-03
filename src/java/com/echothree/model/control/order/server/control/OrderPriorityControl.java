@@ -62,11 +62,11 @@ public class OrderPriorityControl
 
     public OrderPriority createOrderPriority(OrderType orderType, String orderPriorityName, Integer priority, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
-        OrderPriority defaultOrderPriority = getDefaultOrderPriority(orderType);
-        boolean defaultFound = defaultOrderPriority != null;
+        var defaultOrderPriority = getDefaultOrderPriority(orderType);
+        var defaultFound = defaultOrderPriority != null;
 
         if(defaultFound && isDefault) {
-            OrderPriorityDetailValue defaultOrderPriorityDetailValue = getDefaultOrderPriorityDetailValueForUpdate(orderType);
+            var defaultOrderPriorityDetailValue = getDefaultOrderPriorityDetailValueForUpdate(orderType);
 
             defaultOrderPriorityDetailValue.setIsDefault(Boolean.FALSE);
             updateOrderPriorityFromValue(defaultOrderPriorityDetailValue, false, createdBy);
@@ -74,8 +74,8 @@ public class OrderPriorityControl
             isDefault = Boolean.TRUE;
         }
 
-        OrderPriority orderPriority = OrderPriorityFactory.getInstance().create();
-        OrderPriorityDetail orderPriorityDetail = OrderPriorityDetailFactory.getInstance().create(orderPriority, orderType, orderPriorityName, priority,
+        var orderPriority = OrderPriorityFactory.getInstance().create();
+        var orderPriorityDetail = OrderPriorityDetailFactory.getInstance().create(orderPriority, orderType, orderPriorityName, priority,
                 isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -234,7 +234,7 @@ public class OrderPriorityControl
 
     public List<OrderPriorityTransfer> getOrderPriorityTransfers(UserVisit userVisit, Collection<OrderPriority> orderPriorities) {
         List<OrderPriorityTransfer> orderPriorityTransfers = new ArrayList<>(orderPriorities.size());
-        OrderPriorityTransferCache orderPriorityTransferCache = getOrderTransferCaches(userVisit).getOrderPriorityTransferCache();
+        var orderPriorityTransferCache = getOrderTransferCaches(userVisit).getOrderPriorityTransferCache();
 
         orderPriorities.forEach((orderPriority) ->
                 orderPriorityTransfers.add(orderPriorityTransferCache.getOrderPriorityTransfer(orderPriority))
@@ -249,7 +249,7 @@ public class OrderPriorityControl
 
     public OrderPriorityChoicesBean getOrderPriorityChoices(String defaultOrderPriorityChoice, Language language, boolean allowNullChoice,
             OrderType orderType) {
-        List<OrderPriority> orderPriorities = getOrderPriorities(orderType);
+        var orderPriorities = getOrderPriorities(orderType);
         var size = orderPriorities.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -265,7 +265,7 @@ public class OrderPriorityControl
         }
 
         for(var orderPriority : orderPriorities) {
-            OrderPriorityDetail orderPriorityDetail = orderPriority.getLastDetail();
+            var orderPriorityDetail = orderPriority.getLastDetail();
 
             var label = getBestOrderPriorityDescription(orderPriority, language);
             var value = orderPriorityDetail.getOrderPriorityName();
@@ -285,28 +285,28 @@ public class OrderPriorityControl
     private void updateOrderPriorityFromValue(OrderPriorityDetailValue orderPriorityDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(orderPriorityDetailValue.hasBeenModified()) {
-            OrderPriority orderPriority = OrderPriorityFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var orderPriority = OrderPriorityFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      orderPriorityDetailValue.getOrderPriorityPK());
-            OrderPriorityDetail orderPriorityDetail = orderPriority.getActiveDetailForUpdate();
+            var orderPriorityDetail = orderPriority.getActiveDetailForUpdate();
 
             orderPriorityDetail.setThruTime(session.START_TIME_LONG);
             orderPriorityDetail.store();
 
-            OrderType orderType = orderPriorityDetail.getOrderType(); // Not updated
-            OrderTypePK orderTypePK = orderType.getPrimaryKey(); // Not updated
-            OrderPriorityPK orderPriorityPK = orderPriorityDetail.getOrderPriorityPK(); // Not updated
-            String orderPriorityName = orderPriorityDetailValue.getOrderPriorityName();
-            Integer priority = orderPriorityDetailValue.getPriority();
-            Boolean isDefault = orderPriorityDetailValue.getIsDefault();
-            Integer sortOrder = orderPriorityDetailValue.getSortOrder();
+            var orderType = orderPriorityDetail.getOrderType(); // Not updated
+            var orderTypePK = orderType.getPrimaryKey(); // Not updated
+            var orderPriorityPK = orderPriorityDetail.getOrderPriorityPK(); // Not updated
+            var orderPriorityName = orderPriorityDetailValue.getOrderPriorityName();
+            var priority = orderPriorityDetailValue.getPriority();
+            var isDefault = orderPriorityDetailValue.getIsDefault();
+            var sortOrder = orderPriorityDetailValue.getSortOrder();
 
             if(checkDefault) {
-                OrderPriority defaultOrderPriority = getDefaultOrderPriority(orderType);
-                boolean defaultFound = defaultOrderPriority != null && !defaultOrderPriority.equals(orderPriority);
+                var defaultOrderPriority = getDefaultOrderPriority(orderType);
+                var defaultFound = defaultOrderPriority != null && !defaultOrderPriority.equals(orderPriority);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    OrderPriorityDetailValue defaultOrderPriorityDetailValue = getDefaultOrderPriorityDetailValueForUpdate(orderType);
+                    var defaultOrderPriorityDetailValue = getDefaultOrderPriorityDetailValueForUpdate(orderType);
 
                     defaultOrderPriorityDetailValue.setIsDefault(Boolean.FALSE);
                     updateOrderPriorityFromValue(defaultOrderPriorityDetailValue, false, updatedBy);
@@ -333,23 +333,23 @@ public class OrderPriorityControl
     public void deleteOrderPriority(OrderPriority orderPriority, BasePK deletedBy) {
         deleteOrderPriorityDescriptionsByOrderPriority(orderPriority, deletedBy);
 
-        OrderPriorityDetail orderPriorityDetail = orderPriority.getLastDetailForUpdate();
+        var orderPriorityDetail = orderPriority.getLastDetailForUpdate();
         orderPriorityDetail.setThruTime(session.START_TIME_LONG);
         orderPriority.setActiveDetail(null);
         orderPriority.store();
 
         // Check for default, and pick one if necessary
-        OrderType orderType = orderPriorityDetail.getOrderType();
-        OrderPriority defaultOrderPriority = getDefaultOrderPriority(orderType);
+        var orderType = orderPriorityDetail.getOrderType();
+        var defaultOrderPriority = getDefaultOrderPriority(orderType);
         if(defaultOrderPriority == null) {
-            List<OrderPriority> orderPriorities = getOrderPrioritiesForUpdate(orderType);
+            var orderPriorities = getOrderPrioritiesForUpdate(orderType);
 
             if(!orderPriorities.isEmpty()) {
-                Iterator<OrderPriority> iter = orderPriorities.iterator();
+                var iter = orderPriorities.iterator();
                 if(iter.hasNext()) {
                     defaultOrderPriority = iter.next();
                 }
-                OrderPriorityDetailValue orderPriorityDetailValue = Objects.requireNonNull(defaultOrderPriority).getLastDetailForUpdate().getOrderPriorityDetailValue().clone();
+                var orderPriorityDetailValue = Objects.requireNonNull(defaultOrderPriority).getLastDetailForUpdate().getOrderPriorityDetailValue().clone();
 
                 orderPriorityDetailValue.setIsDefault(Boolean.TRUE);
                 updateOrderPriorityFromValue(orderPriorityDetailValue, false, deletedBy);
@@ -364,7 +364,7 @@ public class OrderPriorityControl
     // --------------------------------------------------------------------------------
 
     public OrderPriorityDescription createOrderPriorityDescription(OrderPriority orderPriority, Language language, String description, BasePK createdBy) {
-        OrderPriorityDescription orderPriorityDescription = OrderPriorityDescriptionFactory.getInstance().create(orderPriority, language, description,
+        var orderPriorityDescription = OrderPriorityDescriptionFactory.getInstance().create(orderPriority, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(orderPriority.getPrimaryKey(), EventTypes.MODIFY, orderPriorityDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -443,7 +443,7 @@ public class OrderPriorityControl
 
     public String getBestOrderPriorityDescription(OrderPriority orderPriority, Language language) {
         String description;
-        OrderPriorityDescription orderPriorityDescription = getOrderPriorityDescription(orderPriority, language);
+        var orderPriorityDescription = getOrderPriorityDescription(orderPriority, language);
 
         if(orderPriorityDescription == null && !language.getIsDefault()) {
             orderPriorityDescription = getOrderPriorityDescription(orderPriority, getPartyControl().getDefaultLanguage());
@@ -463,9 +463,9 @@ public class OrderPriorityControl
     }
 
     public List<OrderPriorityDescriptionTransfer> getOrderPriorityDescriptionTransfersByOrderPriority(UserVisit userVisit, OrderPriority orderPriority) {
-        List<OrderPriorityDescription> orderPriorityDescriptions = getOrderPriorityDescriptionsByOrderPriority(orderPriority);
+        var orderPriorityDescriptions = getOrderPriorityDescriptionsByOrderPriority(orderPriority);
         List<OrderPriorityDescriptionTransfer> orderPriorityDescriptionTransfers = new ArrayList<>(orderPriorityDescriptions.size());
-        OrderPriorityDescriptionTransferCache orderPriorityDescriptionTransferCache = getOrderTransferCaches(userVisit).getOrderPriorityDescriptionTransferCache();
+        var orderPriorityDescriptionTransferCache = getOrderTransferCaches(userVisit).getOrderPriorityDescriptionTransferCache();
 
         orderPriorityDescriptions.forEach((orderPriorityDescription) ->
                 orderPriorityDescriptionTransfers.add(orderPriorityDescriptionTransferCache.getOrderPriorityDescriptionTransfer(orderPriorityDescription))
@@ -476,15 +476,15 @@ public class OrderPriorityControl
 
     public void updateOrderPriorityDescriptionFromValue(OrderPriorityDescriptionValue orderPriorityDescriptionValue, BasePK updatedBy) {
         if(orderPriorityDescriptionValue.hasBeenModified()) {
-            OrderPriorityDescription orderPriorityDescription = OrderPriorityDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var orderPriorityDescription = OrderPriorityDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     orderPriorityDescriptionValue.getPrimaryKey());
 
             orderPriorityDescription.setThruTime(session.START_TIME_LONG);
             orderPriorityDescription.store();
 
-            OrderPriority orderPriority = orderPriorityDescription.getOrderPriority();
-            Language language = orderPriorityDescription.getLanguage();
-            String description = orderPriorityDescriptionValue.getDescription();
+            var orderPriority = orderPriorityDescription.getOrderPriority();
+            var language = orderPriorityDescription.getLanguage();
+            var description = orderPriorityDescriptionValue.getDescription();
 
             orderPriorityDescription = OrderPriorityDescriptionFactory.getInstance().create(orderPriority, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -501,7 +501,7 @@ public class OrderPriorityControl
     }
 
     public void deleteOrderPriorityDescriptionsByOrderPriority(OrderPriority orderPriority, BasePK deletedBy) {
-        List<OrderPriorityDescription> orderPriorityDescriptions = getOrderPriorityDescriptionsByOrderPriorityForUpdate(orderPriority);
+        var orderPriorityDescriptions = getOrderPriorityDescriptionsByOrderPriorityForUpdate(orderPriority);
 
         orderPriorityDescriptions.forEach((orderPriorityDescription) -> 
                 deleteOrderPriorityDescription(orderPriorityDescription, deletedBy)

@@ -80,19 +80,19 @@ public class EditTaxCommand
     @Override
     protected BaseResult execute() {
         var taxControl = Session.getModelController(TaxControl.class);
-        EditTaxResult result = TaxResultFactory.getEditTaxResult();
+        var result = TaxResultFactory.getEditTaxResult();
         
         if(editMode.equals(EditMode.LOCK)) {
-            String taxName = spec.getTaxName();
-            Tax tax = taxControl.getTaxByName(taxName);
+            var taxName = spec.getTaxName();
+            var tax = taxControl.getTaxByName(taxName);
             
             if(tax != null) {
                 result.setTax(taxControl.getTaxTransfer(getUserVisit(), tax));
                 
                 if(lockEntity(tax)) {
-                    TaxDescription taxDescription = taxControl.getTaxDescription(tax, getPreferredLanguage());
-                    TaxEdit edit = TaxEditFactory.getTaxEdit();
-                    TaxDetail taxDetail = tax.getLastDetail();
+                    var taxDescription = taxControl.getTaxDescription(tax, getPreferredLanguage());
+                    var edit = TaxEditFactory.getTaxEdit();
+                    var taxDetail = tax.getLastDetail();
                     
                     result.setEdit(edit);
                     edit.setTaxName(taxDetail.getTaxName());
@@ -117,33 +117,33 @@ public class EditTaxCommand
                 addExecutionError(ExecutionErrors.UnknownTaxName.name(), taxName);
             }
         } else if(editMode.equals(EditMode.UPDATE)) {
-            String taxName = spec.getTaxName();
-            Tax tax = taxControl.getTaxByNameForUpdate(taxName);
+            var taxName = spec.getTaxName();
+            var tax = taxControl.getTaxByNameForUpdate(taxName);
             
             if(tax != null) {
                 taxName = edit.getTaxName();
-                Tax duplicateTax = taxControl.getTaxByName(taxName);
+                var duplicateTax = taxControl.getTaxByName(taxName);
                 
                 if(duplicateTax == null || tax.equals(duplicateTax)) {
                     var contactControl = Session.getModelController(ContactControl.class);
-                    String contactMechanismPurposeName = edit.getContactMechanismPurposeName();
-                    ContactMechanismPurpose contactMechanismPurpose = contactControl.getContactMechanismPurposeByName(contactMechanismPurposeName);
+                    var contactMechanismPurposeName = edit.getContactMechanismPurposeName();
+                    var contactMechanismPurpose = contactControl.getContactMechanismPurposeByName(contactMechanismPurposeName);
                     
                     if(contactMechanismPurpose != null) {
-                        ContactMechanismType contactMechanismType = contactControl.getContactMechanismTypeByName(ContactMechanismTypes.POSTAL_ADDRESS.name());
+                        var contactMechanismType = contactControl.getContactMechanismTypeByName(ContactMechanismTypes.POSTAL_ADDRESS.name());
                         
                         if(contactMechanismPurpose.getContactMechanismType().equals(contactMechanismType)) {
                             var accountingControl = Session.getModelController(AccountingControl.class);
-                            String glAccountName = edit.getGlAccountName();
-                            GlAccount glAccount = accountingControl.getGlAccountByName(glAccountName);
+                            var glAccountName = edit.getGlAccountName();
+                            var glAccount = accountingControl.getGlAccountByName(glAccountName);
                             
                             if(glAccount != null) {
                                 if(lockEntityForUpdate(tax)) {
                                     try {
                                         var partyPK = getPartyPK();
-                                        TaxDetailValue taxDetailValue = taxControl.getTaxDetailValueForUpdate(tax);
-                                        TaxDescription taxDescription = taxControl.getTaxDescriptionForUpdate(tax, getPreferredLanguage());
-                                        String description = edit.getDescription();
+                                        var taxDetailValue = taxControl.getTaxDetailValueForUpdate(tax);
+                                        var taxDescription = taxControl.getTaxDescriptionForUpdate(tax, getPreferredLanguage());
+                                        var description = edit.getDescription();
                                         
                                         taxDetailValue.setTaxName(edit.getTaxName());
                                         taxDetailValue.setContactMechanismPurposePK(contactMechanismPurpose.getPrimaryKey());
@@ -162,7 +162,7 @@ public class EditTaxCommand
                                         } else if(taxDescription != null && description == null) {
                                             taxControl.deleteTaxDescription(taxDescription, partyPK);
                                         } else if(taxDescription != null && description != null) {
-                                            TaxDescriptionValue taxDescriptionValue = taxControl.getTaxDescriptionValue(taxDescription);
+                                            var taxDescriptionValue = taxControl.getTaxDescriptionValue(taxDescription);
                                             
                                             taxDescriptionValue.setDescription(description);
                                             taxControl.updateTaxDescriptionFromValue(taxDescriptionValue, partyPK);

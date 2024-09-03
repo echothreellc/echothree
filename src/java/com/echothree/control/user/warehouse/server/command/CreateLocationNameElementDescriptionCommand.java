@@ -72,25 +72,25 @@ public class CreateLocationNameElementDescriptionCommand
     @Override
     protected BaseResult execute() {
         var warehouseControl = Session.getModelController(WarehouseControl.class);
-        String warehouseName = form.getWarehouseName();
-        Warehouse warehouse = warehouseControl.getWarehouseByName(warehouseName);
+        var warehouseName = form.getWarehouseName();
+        var warehouse = warehouseControl.getWarehouseByName(warehouseName);
         
         if(warehouse != null) {
-            Party warehouseParty = warehouse.getParty();
-            String locationTypeName = form.getLocationTypeName();
-            LocationType locationType = warehouseControl.getLocationTypeByName(warehouseParty, locationTypeName);
+            var warehouseParty = warehouse.getParty();
+            var locationTypeName = form.getLocationTypeName();
+            var locationType = warehouseControl.getLocationTypeByName(warehouseParty, locationTypeName);
             
             if(locationType != null) {
-                String locationNameElementName = form.getLocationNameElementName();
-                LocationNameElement locationNameElement = warehouseControl.getLocationNameElementByName(locationType, locationNameElementName);
+                var locationNameElementName = form.getLocationNameElementName();
+                var locationNameElement = warehouseControl.getLocationNameElementByName(locationType, locationNameElementName);
                 
                 if(locationNameElement != null) {
                     var partyControl = Session.getModelController(PartyControl.class);
-                    String languageIsoName = form.getLanguageIsoName();
-                    Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                    var languageIsoName = form.getLanguageIsoName();
+                    var language = partyControl.getLanguageByIsoName(languageIsoName);
                     
                     if(language != null) {
-                        LocationNameElementDescription locationNameElementDescription = warehouseControl.getLocationNameElementDescription(locationNameElement, language);
+                        var locationNameElementDescription = warehouseControl.getLocationNameElementDescription(locationNameElement, language);
                         
                         if(locationNameElementDescription == null) {
                             var description = form.getDescription();

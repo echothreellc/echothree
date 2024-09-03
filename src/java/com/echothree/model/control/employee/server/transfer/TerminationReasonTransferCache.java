@@ -33,14 +33,14 @@ public class TerminationReasonTransferCache
     }
     
     public TerminationReasonTransfer getTerminationReasonTransfer(TerminationReason terminationReason) {
-        TerminationReasonTransfer terminationReasonTransfer = get(terminationReason);
+        var terminationReasonTransfer = get(terminationReason);
         
         if(terminationReasonTransfer == null) {
-            TerminationReasonDetail terminationReasonDetail = terminationReason.getLastDetail();
-            String terminationReasonName = terminationReasonDetail.getTerminationReasonName();
-            Boolean isDefault = terminationReasonDetail.getIsDefault();
-            Integer sortOrder = terminationReasonDetail.getSortOrder();
-            String description = employeeControl.getBestTerminationReasonDescription(terminationReason, getLanguage());
+            var terminationReasonDetail = terminationReason.getLastDetail();
+            var terminationReasonName = terminationReasonDetail.getTerminationReasonName();
+            var isDefault = terminationReasonDetail.getIsDefault();
+            var sortOrder = terminationReasonDetail.getSortOrder();
+            var description = employeeControl.getBestTerminationReasonDescription(terminationReason, getLanguage());
             
             terminationReasonTransfer = new TerminationReasonTransfer(terminationReasonName, isDefault, sortOrder, description);
             put(terminationReason, terminationReasonTransfer);

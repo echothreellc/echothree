@@ -34,15 +34,15 @@ public class ChainTypeTransferCache
     }
     
     public ChainTypeTransfer getChainTypeTransfer(ChainType chainType) {
-        ChainTypeTransfer chainTypeTransfer = get(chainType);
+        var chainTypeTransfer = get(chainType);
         
         if(chainTypeTransfer == null) {
-            ChainTypeDetail chainTypeDetail = chainType.getLastDetail();
-            ChainKindTransfer chainKindTransfer = chainControl.getChainKindTransfer(userVisit, chainTypeDetail.getChainKind());
-            String chainTypeName = chainTypeDetail.getChainTypeName();
-            Boolean isDefault = chainTypeDetail.getIsDefault();
-            Integer sortOrder = chainTypeDetail.getSortOrder();
-            String description = chainControl.getBestChainTypeDescription(chainType, getLanguage());
+            var chainTypeDetail = chainType.getLastDetail();
+            var chainKindTransfer = chainControl.getChainKindTransfer(userVisit, chainTypeDetail.getChainKind());
+            var chainTypeName = chainTypeDetail.getChainTypeName();
+            var isDefault = chainTypeDetail.getIsDefault();
+            var sortOrder = chainTypeDetail.getSortOrder();
+            var description = chainControl.getBestChainTypeDescription(chainType, getLanguage());
             
             chainTypeTransfer = new ChainTypeTransfer(chainKindTransfer, chainTypeName, isDefault, sortOrder, description);
             put(chainType, chainTypeTransfer);

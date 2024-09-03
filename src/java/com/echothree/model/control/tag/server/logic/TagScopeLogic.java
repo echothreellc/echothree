@@ -72,7 +72,7 @@ public class TagScopeLogic
     public TagScope getTagScopeByName(final ExecutionErrorAccumulator eea, final String tagScopeName,
             final EntityPermission entityPermission) {
         var tagControl = Session.getModelController(TagControl.class);
-        TagScope tagScope = tagControl.getTagScopeByName(tagScopeName, entityPermission);
+        var tagScope = tagControl.getTagScopeByName(tagScopeName, entityPermission);
 
         if(tagScope == null) {
             handleExecutionError(UnknownTagScopeNameException.class, eea, ExecutionErrors.UnknownTagScopeName.name(), tagScopeName);
@@ -93,7 +93,7 @@ public class TagScopeLogic
             final TagScopeUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
         TagScope tagScope = null;
         var tagControl = Session.getModelController(TagControl.class);
-        String tagScopeName = universalSpec.getTagScopeName();
+        var tagScopeName = universalSpec.getTagScopeName();
         var parameterCount = (tagScopeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {

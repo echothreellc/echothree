@@ -87,20 +87,20 @@ public class EditPeriodKindCommand
     @Override
     protected BaseResult execute() {
         var periodControl = Session.getModelController(PeriodControl.class);
-        EditPeriodKindResult result = PeriodResultFactory.getEditPeriodKindResult();
+        var result = PeriodResultFactory.getEditPeriodKindResult();
         
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-            String periodKindName = spec.getPeriodKindName();
-            PeriodKind periodKind = periodControl.getPeriodKindByName(periodKindName);
+            var periodKindName = spec.getPeriodKindName();
+            var periodKind = periodControl.getPeriodKindByName(periodKindName);
             
             if(periodKind != null) {
                 if(editMode.equals(EditMode.LOCK)) {
                     if(lockEntity(periodKind)) {
-                        PeriodKindDescription periodKindDescription = periodControl.getPeriodKindDescription(periodKind, getPreferredLanguage());
-                        PeriodKindEdit edit = PeriodEditFactory.getPeriodKindEdit();
-                        PeriodKindDetail periodKindDetail = periodKind.getLastDetail();
-                        WorkflowEntrance workflowEntrance = periodKindDetail.getWorkflowEntrance();
-                        Workflow workflow = workflowEntrance == null? null: workflowEntrance.getLastDetail().getWorkflow();
+                        var periodKindDescription = periodControl.getPeriodKindDescription(periodKind, getPreferredLanguage());
+                        var edit = PeriodEditFactory.getPeriodKindEdit();
+                        var periodKindDetail = periodKind.getLastDetail();
+                        var workflowEntrance = periodKindDetail.getWorkflowEntrance();
+                        var workflow = workflowEntrance == null? null: workflowEntrance.getLastDetail().getWorkflow();
 
                         result.setPeriodKind(periodControl.getPeriodKindTransfer(getUserVisit(), periodKind));
 
@@ -126,32 +126,32 @@ public class EditPeriodKindCommand
                 addExecutionError(ExecutionErrors.UnknownPeriodKindName.name(), periodKindName);
             }
         } else if(editMode.equals(EditMode.UPDATE)) {
-            String periodKindName = spec.getPeriodKindName();
-            PeriodKind periodKind = periodControl.getPeriodKindByNameForUpdate(periodKindName);
+            var periodKindName = spec.getPeriodKindName();
+            var periodKind = periodControl.getPeriodKindByNameForUpdate(periodKindName);
 
             if(periodKind != null) {
                 periodKindName = edit.getPeriodKindName();
-                PeriodKind duplicatePeriodKind = periodControl.getPeriodKindByName(periodKindName);
+                var duplicatePeriodKind = periodControl.getPeriodKindByName(periodKindName);
 
                 if(duplicatePeriodKind == null || periodKind.equals(duplicatePeriodKind)) {
-                    String workflowName = edit.getWorkflowName();
-                    String workflowEntranceName = edit.getWorkflowEntranceName();
+                    var workflowName = edit.getWorkflowName();
+                    var workflowEntranceName = edit.getWorkflowEntranceName();
                     var parameterCount = (workflowName == null ? 0 : 1) + (workflowEntranceName == null ? 0 : 1);
 
                     if(parameterCount == 0 || parameterCount == 2) {
                         var workflowControl = Session.getModelController(WorkflowControl.class);
-                        Workflow workflow = workflowName == null ? null : workflowControl.getWorkflowByName(workflowName);
+                        var workflow = workflowName == null ? null : workflowControl.getWorkflowByName(workflowName);
 
                         if(workflowName == null || workflow != null) {
-                             WorkflowEntrance workflowEntrance = workflowEntranceName == null? null: workflowControl.getWorkflowEntranceByName(workflow, workflowEntranceName);
+                            var workflowEntrance = workflowEntranceName == null? null: workflowControl.getWorkflowEntranceByName(workflow, workflowEntranceName);
 
                             if(workflowEntranceName == null || workflowEntrance != null) {
                                 if(lockEntityForUpdate(periodKind)) {
                                     try {
                                         var partyPK = getPartyPK();
-                                        PeriodKindDetailValue periodKindDetailValue = periodControl.getPeriodKindDetailValueForUpdate(periodKind);
-                                        PeriodKindDescription periodKindDescription = periodControl.getPeriodKindDescriptionForUpdate(periodKind, getPreferredLanguage());
-                                        String description = edit.getDescription();
+                                        var periodKindDetailValue = periodControl.getPeriodKindDetailValueForUpdate(periodKind);
+                                        var periodKindDescription = periodControl.getPeriodKindDescriptionForUpdate(periodKind, getPreferredLanguage());
+                                        var description = edit.getDescription();
 
                                         periodKindDetailValue.setPeriodKindName(edit.getPeriodKindName());
                                         periodKindDetailValue.setWorkflowEntrancePK(workflowEntrance == null? null: workflowEntrance.getPrimaryKey());
@@ -165,7 +165,7 @@ public class EditPeriodKindCommand
                                         } else if(periodKindDescription != null && description == null) {
                                             periodControl.deletePeriodKindDescription(periodKindDescription, partyPK);
                                         } else if(periodKindDescription != null && description != null) {
-                                            PeriodKindDescriptionValue periodKindDescriptionValue = periodControl.getPeriodKindDescriptionValue(periodKindDescription);
+                                            var periodKindDescriptionValue = periodControl.getPeriodKindDescriptionValue(periodKindDescription);
 
                                             periodKindDescriptionValue.setDescription(description);
                                             periodControl.updatePeriodKindDescriptionFromValue(periodKindDescriptionValue, partyPK);

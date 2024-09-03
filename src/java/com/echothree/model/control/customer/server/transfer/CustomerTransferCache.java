@@ -175,49 +175,49 @@ public class CustomerTransferCache
     }
 
     public CustomerTransfer getTransfer(Party party) {
-        CustomerTransfer customerTransfer = get(party);
+        var customerTransfer = get(party);
 
         if(customerTransfer == null) {
-            PartyDetail partyDetail = party.getLastDetail();
-            String partyName = partyDetail.getPartyName();
-            PartyTypeTransfer partyTypeTransfer = partyControl.getPartyTypeTransfer(userVisit, partyDetail.getPartyType());
-            Language preferredLanguage = partyDetail.getPreferredLanguage();
-            LanguageTransfer preferredLanguageTransfer = preferredLanguage == null ? null : partyControl.getLanguageTransfer(userVisit, preferredLanguage);
-            Currency preferredCurrency = partyDetail.getPreferredCurrency();
-            CurrencyTransfer preferredCurrencyTransfer = preferredCurrency == null ? null : accountingControl.getCurrencyTransfer(userVisit, preferredCurrency);
-            TimeZone preferredTimeZone = partyDetail.getPreferredTimeZone();
-            TimeZoneTransfer preferredTimeZoneTransfer = preferredTimeZone == null ? null : partyControl.getTimeZoneTransfer(userVisit, preferredTimeZone);
-            DateTimeFormat preferredDateTimeFormat = partyDetail.getPreferredDateTimeFormat();
-            DateTimeFormatTransfer preferredDateTimeFormatTransfer = preferredDateTimeFormat == null ? null : partyControl.getDateTimeFormatTransfer(userVisit, preferredDateTimeFormat);
-            Customer customer = customerControl.getCustomer(party);
-            String customerName = customer.getCustomerName();
-            CustomerTypeTransfer customerTypeTransfer = customerControl.getCustomerTypeTransfer(userVisit, customer.getCustomerType());
-            OfferUseTransfer initialOfferUse = offerUseControl.getOfferUseTransfer(userVisit, customer.getInitialOfferUse());
-            CancellationPolicy cancellationPolicy = customer.getCancellationPolicy();
-            CancellationPolicyTransfer cancellationPolicyTransfer = cancellationPolicy == null ? null : cancellationPolicyControl.getCancellationPolicyTransfer(userVisit, cancellationPolicy);
-            ReturnPolicy returnPolicy = customer.getReturnPolicy();
-            ReturnPolicyTransfer returnPolicyTransfer = returnPolicy == null ? null : returnPolicyControl.getReturnPolicyTransfer(userVisit, returnPolicy);
-            GlAccount arGlAccount = customer.getArGlAccount();
-            GlAccountTransfer arGlAccountTransfer = arGlAccount == null ? null : accountingControl.getGlAccountTransfer(userVisit, arGlAccount);
-            Boolean holdUntilComplete = customer.getHoldUntilComplete();
-            Boolean allowBackorders = customer.getAllowBackorders();
-            Boolean allowSubstitutions = customer.getAllowSubstitutions();
-            Boolean allowCombiningShipments = customer.getAllowCombiningShipments();
-            Boolean requireReference = customer.getRequireReference();
-            Boolean allowReferenceDuplicates = customer.getAllowReferenceDuplicates();
-            String referenceValidationPattern = customer.getReferenceValidationPattern();
-            Person person = partyControl.getPerson(party);
-            PersonTransfer personTransfer = person == null ? null : partyControl.getPersonTransfer(userVisit, person);
-            PartyGroup partyGroup = partyControl.getPartyGroup(party);
-            PartyGroupTransfer partyGroupTransfer = partyGroup == null ? null : partyControl.getPartyGroupTransfer(userVisit, partyGroup);
-            Profile profile = partyControl.getProfile(party);
-            ProfileTransfer profileTransfer = profile == null ? null : partyControl.getProfileTransfer(userVisit, profile);
+            var partyDetail = party.getLastDetail();
+            var partyName = partyDetail.getPartyName();
+            var partyTypeTransfer = partyControl.getPartyTypeTransfer(userVisit, partyDetail.getPartyType());
+            var preferredLanguage = partyDetail.getPreferredLanguage();
+            var preferredLanguageTransfer = preferredLanguage == null ? null : partyControl.getLanguageTransfer(userVisit, preferredLanguage);
+            var preferredCurrency = partyDetail.getPreferredCurrency();
+            var preferredCurrencyTransfer = preferredCurrency == null ? null : accountingControl.getCurrencyTransfer(userVisit, preferredCurrency);
+            var preferredTimeZone = partyDetail.getPreferredTimeZone();
+            var preferredTimeZoneTransfer = preferredTimeZone == null ? null : partyControl.getTimeZoneTransfer(userVisit, preferredTimeZone);
+            var preferredDateTimeFormat = partyDetail.getPreferredDateTimeFormat();
+            var preferredDateTimeFormatTransfer = preferredDateTimeFormat == null ? null : partyControl.getDateTimeFormatTransfer(userVisit, preferredDateTimeFormat);
+            var customer = customerControl.getCustomer(party);
+            var customerName = customer.getCustomerName();
+            var customerTypeTransfer = customerControl.getCustomerTypeTransfer(userVisit, customer.getCustomerType());
+            var initialOfferUse = offerUseControl.getOfferUseTransfer(userVisit, customer.getInitialOfferUse());
+            var cancellationPolicy = customer.getCancellationPolicy();
+            var cancellationPolicyTransfer = cancellationPolicy == null ? null : cancellationPolicyControl.getCancellationPolicyTransfer(userVisit, cancellationPolicy);
+            var returnPolicy = customer.getReturnPolicy();
+            var returnPolicyTransfer = returnPolicy == null ? null : returnPolicyControl.getReturnPolicyTransfer(userVisit, returnPolicy);
+            var arGlAccount = customer.getArGlAccount();
+            var arGlAccountTransfer = arGlAccount == null ? null : accountingControl.getGlAccountTransfer(userVisit, arGlAccount);
+            var holdUntilComplete = customer.getHoldUntilComplete();
+            var allowBackorders = customer.getAllowBackorders();
+            var allowSubstitutions = customer.getAllowSubstitutions();
+            var allowCombiningShipments = customer.getAllowCombiningShipments();
+            var requireReference = customer.getRequireReference();
+            var allowReferenceDuplicates = customer.getAllowReferenceDuplicates();
+            var referenceValidationPattern = customer.getReferenceValidationPattern();
+            var person = partyControl.getPerson(party);
+            var personTransfer = person == null ? null : partyControl.getPersonTransfer(userVisit, person);
+            var partyGroup = partyControl.getPartyGroup(party);
+            var partyGroupTransfer = partyGroup == null ? null : partyControl.getPartyGroupTransfer(userVisit, partyGroup);
+            var profile = partyControl.getProfile(party);
+            var profileTransfer = profile == null ? null : partyControl.getProfileTransfer(userVisit, profile);
 
-            EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(party.getPrimaryKey());
-            WorkflowEntityStatusTransfer customerStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
+            var entityInstance = coreControl.getEntityInstanceByBasePK(party.getPrimaryKey());
+            var customerStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
                     CustomerStatusConstants.Workflow_CUSTOMER_STATUS, entityInstance);
 
-            WorkflowEntityStatusTransfer customerCreditStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
+            var customerCreditStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
                     CustomerCreditStatusConstants.Workflow_CUSTOMER_CREDIT_STATUS, entityInstance);
 
             customerTransfer = new CustomerTransfer(partyName, partyTypeTransfer, preferredLanguageTransfer, preferredCurrencyTransfer,

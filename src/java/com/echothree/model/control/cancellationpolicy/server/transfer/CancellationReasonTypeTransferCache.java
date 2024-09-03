@@ -32,13 +32,13 @@ public class CancellationReasonTypeTransferCache
     }
     
     public CancellationReasonTypeTransfer getCancellationReasonTypeTransfer(CancellationReasonType cancellationReasonType) {
-        CancellationReasonTypeTransfer cancellationReasonTypeTransfer = get(cancellationReasonType);
+        var cancellationReasonTypeTransfer = get(cancellationReasonType);
         
         if(cancellationReasonTypeTransfer == null) {
-            CancellationReasonTransfer cancellationReason = cancellationPolicyControl.getCancellationReasonTransfer(userVisit, cancellationReasonType.getCancellationReason());
-            CancellationTypeTransfer cancellationType = cancellationPolicyControl.getCancellationTypeTransfer(userVisit, cancellationReasonType.getCancellationType());
-            Boolean isDefault = cancellationReasonType.getIsDefault();
-            Integer sortOrder = cancellationReasonType.getSortOrder();
+            var cancellationReason = cancellationPolicyControl.getCancellationReasonTransfer(userVisit, cancellationReasonType.getCancellationReason());
+            var cancellationType = cancellationPolicyControl.getCancellationTypeTransfer(userVisit, cancellationReasonType.getCancellationType());
+            var isDefault = cancellationReasonType.getIsDefault();
+            var sortOrder = cancellationReasonType.getSortOrder();
             
             cancellationReasonTypeTransfer = new CancellationReasonTypeTransfer(cancellationReason, cancellationType, isDefault, sortOrder);
             put(cancellationReasonType, cancellationReasonTypeTransfer);

@@ -66,8 +66,8 @@ public class CreateSearchDefaultOperatorCommand
     @Override
     protected BaseResult execute() {
         var searchControl = Session.getModelController(SearchControl.class);
-        String searchDefaultOperatorName = form.getSearchDefaultOperatorName();
-        SearchDefaultOperator searchDefaultOperator = searchControl.getSearchDefaultOperatorByName(searchDefaultOperatorName);
+        var searchDefaultOperatorName = form.getSearchDefaultOperatorName();
+        var searchDefaultOperator = searchControl.getSearchDefaultOperatorByName(searchDefaultOperatorName);
         
         if(searchDefaultOperator == null) {
             var partyPK = getPartyPK();

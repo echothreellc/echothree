@@ -30,7 +30,7 @@ public class TermUtil {
     public static TermLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
 
             cachedLocal = (TermLocal)ctx.lookup("ejb:echothree/echothree-server/TermBean!com.echothree.control.user.term.server.TermLocal");
         }
@@ -42,7 +42,7 @@ public class TermUtil {
     public static TermRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
             
             cachedRemote = (TermRemote)ctx.lookup("ejb:echothree/echothree-server/TermBean!com.echothree.control.user.term.common.TermRemote");
         }

@@ -80,41 +80,41 @@ public class CreateEntityBlobAttributeCommand
             var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form);
 
             if(!hasExecutionErrors()) {
-                String entityAttributeName = form.getEntityAttributeName();
-                String entityAttributeUlid = form.getEntityAttributeUlid();
+                var entityAttributeName = form.getEntityAttributeName();
+                var entityAttributeUlid = form.getEntityAttributeUlid();
                 
                 parameterCount = (entityAttributeName == null ? 0 : 1) + (entityAttributeUlid == null ? 0 : 1);
                 
                 if(parameterCount == 1) {
-                    EntityAttribute entityAttribute = entityAttributeName == null ?
+                    var entityAttribute = entityAttributeName == null ?
                             EntityAttributeLogic.getInstance().getEntityAttributeByUlid(this, entityAttributeUlid) :
                             EntityAttributeLogic.getInstance().getEntityAttributeByName(this, entityInstance.getEntityType(), entityAttributeName);
 
                     if(!hasExecutionErrors()) {
-                        String entityAttributeTypeName = entityAttribute.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
+                        var entityAttributeTypeName = entityAttribute.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
 
                         if(EntityAttributeTypes.BLOB.name().equals(entityAttributeTypeName)) {
                             if(entityInstance.getEntityType().equals(entityAttribute.getLastDetail().getEntityType())) {
-                                String languageIsoName = form.getLanguageIsoName();
-                                String languageUlid = form.getLanguageUlid();
+                                var languageIsoName = form.getLanguageIsoName();
+                                var languageUlid = form.getLanguageUlid();
 
                                 parameterCount = (languageIsoName == null ? 0 : 1) + (languageUlid == null ? 0 : 1);
 
                                 if(parameterCount == 1) {
-                                    Language language = languageIsoName == null ?
+                                    var language = languageIsoName == null ?
                                             LanguageLogic.getInstance().getLanguageByUlid(this, languageUlid) :
                                             LanguageLogic.getInstance().getLanguageByName(this, languageIsoName);
 
                                     if(!hasExecutionErrors()) {
                                         var coreControl = getCoreControl();
-                                        EntityBlobAttribute entityBlobAttribute = coreControl.getEntityBlobAttribute(entityAttribute, entityInstance, language);
+                                        var entityBlobAttribute = coreControl.getEntityBlobAttribute(entityAttribute, entityInstance, language);
 
                                         if(entityBlobAttribute == null) {
-                                            MimeType mimeType = MimeTypeLogic.getInstance().getMimeTypeByName(this, form.getMimeTypeName());
+                                            var mimeType = MimeTypeLogic.getInstance().getMimeTypeByName(this, form.getMimeTypeName());
 
                                             if(!hasExecutionErrors()) {
                                                 if(mimeType.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName().equals(EntityAttributeTypes.BLOB.name())) {
-                                                    ByteArray blobAttribute = form.getBlobAttribute();
+                                                    var blobAttribute = form.getBlobAttribute();
 
                                                     if(blobAttribute != null) {
                                                         coreControl.createEntityBlobAttribute(entityAttribute, entityInstance, language, blobAttribute, mimeType, getPartyPK());
@@ -134,8 +134,8 @@ public class CreateEntityBlobAttributeCommand
                                     }
                                 }
                             } else {
-                                EntityTypeDetail expectedEntityTypeDetail = entityAttribute.getLastDetail().getEntityType().getLastDetail();
-                                EntityTypeDetail suppliedEntityTypeDetail = entityInstance.getEntityType().getLastDetail();
+                                var expectedEntityTypeDetail = entityAttribute.getLastDetail().getEntityType().getLastDetail();
+                                var suppliedEntityTypeDetail = entityInstance.getEntityType().getLastDetail();
 
                                 addExecutionError(ExecutionErrors.MismatchedEntityType.name(),
                                         expectedEntityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),

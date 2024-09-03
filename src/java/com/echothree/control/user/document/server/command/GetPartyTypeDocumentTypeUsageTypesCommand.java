@@ -68,18 +68,18 @@ public class GetPartyTypeDocumentTypeUsageTypesCommand
     
     @Override
     protected BaseResult execute() {
-        GetPartyTypeDocumentTypeUsageTypesResult result = DocumentResultFactory.getGetPartyTypeDocumentTypeUsageTypesResult();
-        String partyTypeName = form.getPartyTypeName();
-        String documentTypeUsageTypeName = form.getDocumentTypeUsageTypeName();
+        var result = DocumentResultFactory.getGetPartyTypeDocumentTypeUsageTypesResult();
+        var partyTypeName = form.getPartyTypeName();
+        var documentTypeUsageTypeName = form.getDocumentTypeUsageTypeName();
         var parameterCount = (partyTypeName == null ? 0 : 1) + (documentTypeUsageTypeName == null ? 0 : 1);
         
         if(parameterCount == 1) {
             var documentControl = Session.getModelController(DocumentControl.class);
-            UserVisit userVisit = getUserVisit();
+            var userVisit = getUserVisit();
 
             if(partyTypeName != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                PartyType partyType = partyControl.getPartyTypeByName(partyTypeName);
+                var partyType = partyControl.getPartyTypeByName(partyTypeName);
 
                 if(partyType != null) {
                     result.setPartyType(partyControl.getPartyTypeTransfer(userVisit, partyType));
@@ -88,7 +88,7 @@ public class GetPartyTypeDocumentTypeUsageTypesCommand
                     addExecutionError(ExecutionErrors.UnknownPartyTypeName.name(), partyTypeName);
                 }
             } else if(documentTypeUsageTypeName != null) {
-                DocumentTypeUsageType documentTypeUsageType = documentControl.getDocumentTypeUsageTypeByName(documentTypeUsageTypeName);
+                var documentTypeUsageType = documentControl.getDocumentTypeUsageTypeByName(documentTypeUsageTypeName);
 
                 if(documentTypeUsageType != null) {
                     result.setDocumentTypeUsageType(documentControl.getDocumentTypeUsageTypeTransfer(userVisit, documentTypeUsageType));

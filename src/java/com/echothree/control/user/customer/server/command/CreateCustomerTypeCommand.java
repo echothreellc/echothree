@@ -117,12 +117,12 @@ public class CreateCustomerTypeCommand
     protected BaseResult execute() {
         var result = CustomerResultFactory.getCreateCustomerTypeResult();
         CustomerType customerType = null;
-        String customerSequenceName = form.getCustomerSequenceName();
+        var customerSequenceName = form.getCustomerSequenceName();
         Sequence customerSequence = null;
         
         if(customerSequenceName != null) {
             var sequenceControl = Session.getModelController(SequenceControl.class);
-            SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.CUSTOMER.name());
+            var sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.CUSTOMER.name());
             
             if(sequenceType != null) {
                 customerSequence = sequenceControl.getSequenceByName(sequenceType, customerSequenceName);
@@ -131,18 +131,18 @@ public class CreateCustomerTypeCommand
         
         if(customerSequenceName == null || customerSequence != null) {
             var offerControl = Session.getModelController(OfferControl.class);
-            String defaultOfferName = form.getDefaultOfferName();
-            String defaultUseName = form.getDefaultUseName();
-            String defaultSourceName = form.getDefaultSourceName();
+            var defaultOfferName = form.getDefaultOfferName();
+            var defaultUseName = form.getDefaultUseName();
+            var defaultSourceName = form.getDefaultSourceName();
             OfferUse defaultOfferUse = null;
-            boolean invalidDefaultOfferOrSourceSpecification = false;
+            var invalidDefaultOfferOrSourceSpecification = false;
             
             if(defaultOfferName != null && defaultUseName != null && defaultSourceName == null) {
-                Offer defaultOffer = offerControl.getOfferByName(defaultOfferName);
+                var defaultOffer = offerControl.getOfferByName(defaultOfferName);
                 
                 if(defaultOffer != null) {
                     var useControl = Session.getModelController(UseControl.class);
-                    Use defaultUse = useControl.getUseByName(defaultUseName);
+                    var defaultUse = useControl.getUseByName(defaultUseName);
                     
                     if(defaultUse != null) {
                         var offerUseControl = Session.getModelController(OfferUseControl.class);
@@ -159,7 +159,7 @@ public class CreateCustomerTypeCommand
                 }
             } else if(defaultOfferName == null && defaultUseName == null && defaultSourceName != null) {
                 var sourceControl = Session.getModelController(SourceControl.class);
-                Source source = sourceControl.getSourceByName(defaultSourceName);
+                var source = sourceControl.getSourceByName(defaultSourceName);
                 
                 if(source != null) {
                     defaultOfferUse = source.getLastDetail().getOfferUse();
@@ -180,30 +180,30 @@ public class CreateCustomerTypeCommand
                 var defaultFreeOnBoard = defaultFreeOnBoardName == null ? null : FreeOnBoardLogic.getInstance().getFreeOnBoardByName(this, defaultFreeOnBoardName);
 
                 if(!hasExecutionErrors()) {
-                    String defaultCancellationPolicyName = form.getDefaultCancellationPolicyName();
+                    var defaultCancellationPolicyName = form.getDefaultCancellationPolicyName();
                     CancellationPolicy defaultCancellationPolicy = null;
                     
                     if(defaultCancellationPolicyName != null) {
                         var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
-                        CancellationKind returnKind = cancellationPolicyControl.getCancellationKindByName(CancellationKinds.CUSTOMER_CANCELLATION.name());
+                        var returnKind = cancellationPolicyControl.getCancellationKindByName(CancellationKinds.CUSTOMER_CANCELLATION.name());
                         
                         defaultCancellationPolicy = cancellationPolicyControl.getCancellationPolicyByName(returnKind, defaultCancellationPolicyName);
                     }
                     
                     if(defaultCancellationPolicyName == null || defaultCancellationPolicy != null) {
-                        String defaultReturnPolicyName = form.getDefaultReturnPolicyName();
+                        var defaultReturnPolicyName = form.getDefaultReturnPolicyName();
                         ReturnPolicy defaultReturnPolicy = null;
                         
                         if(defaultReturnPolicyName != null) {
                             var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
-                            ReturnKind returnKind = returnPolicyControl.getReturnKindByName(ReturnKinds.CUSTOMER_RETURN.name());
+                            var returnKind = returnPolicyControl.getReturnKindByName(ReturnKinds.CUSTOMER_RETURN.name());
                             
                             defaultReturnPolicy = returnPolicyControl.getReturnPolicyByName(returnKind, defaultReturnPolicyName);
                         }
                         
                         if(defaultReturnPolicyName == null || defaultReturnPolicy != null) {
                             var workflowControl = Session.getModelController(WorkflowControl.class);
-                            String defaultCustomerStatusChoice = form.getDefaultCustomerStatusChoice();
+                            var defaultCustomerStatusChoice = form.getDefaultCustomerStatusChoice();
                             WorkflowEntrance defaultCustomerStatus = null;
                             
                             if(defaultCustomerStatusChoice != null) {
@@ -212,7 +212,7 @@ public class CreateCustomerTypeCommand
                             }
                             
                             if(defaultCustomerStatusChoice == null || defaultCustomerStatus != null) {
-                                String defaultCustomerCreditStatusChoice = form.getDefaultCustomerCreditStatusChoice();
+                                var defaultCustomerCreditStatusChoice = form.getDefaultCustomerCreditStatusChoice();
                                 WorkflowEntrance defaultCustomerCreditStatus = null;
                                 
                                 if(defaultCustomerCreditStatusChoice != null) {
@@ -222,27 +222,27 @@ public class CreateCustomerTypeCommand
                                 
                                 if(defaultCustomerCreditStatusChoice == null || defaultCustomerCreditStatus != null) {
                                     var accountingControl = Session.getModelController(AccountingControl.class);
-                                    String defaultArGlAccountName = form.getDefaultArGlAccountName();
-                                    GlAccount defaultArGlAccount = defaultArGlAccountName == null ? null : accountingControl.getGlAccountByName(defaultArGlAccountName);
+                                    var defaultArGlAccountName = form.getDefaultArGlAccountName();
+                                    var defaultArGlAccount = defaultArGlAccountName == null ? null : accountingControl.getGlAccountByName(defaultArGlAccountName);
 
                                     if(defaultArGlAccountName == null || defaultArGlAccount != null) {
-                                        String glAccountCategoryName = defaultArGlAccount == null ? null
+                                        var glAccountCategoryName = defaultArGlAccount == null ? null
                                                 : defaultArGlAccount.getLastDetail().getGlAccountCategory().getLastDetail().getGlAccountCategoryName();
 
                                         if(glAccountCategoryName == null || glAccountCategoryName.equals(AccountingConstants.GlAccountCategory_ACCOUNTS_RECEIVABLE)) {
-                                            String allocationPriorityName = form.getAllocationPriorityName();
-                                            AllocationPriority allocationPriority = allocationPriorityName == null ? null : AllocationPriorityLogic.getInstance().getAllocationPriorityByName(this, allocationPriorityName);
+                                            var allocationPriorityName = form.getAllocationPriorityName();
+                                            var allocationPriority = allocationPriorityName == null ? null : AllocationPriorityLogic.getInstance().getAllocationPriorityByName(this, allocationPriorityName);
                                             
                                             if(!hasExecutionErrors()) {
-                                                String customerTypeName = form.getCustomerTypeName();
-                                                Boolean defaultHoldUntilComplete = Boolean.valueOf(form.getDefaultHoldUntilComplete());
-                                                Boolean defaultAllowBackorders = Boolean.valueOf(form.getDefaultAllowBackorders());
-                                                Boolean defaultAllowSubstitutions = Boolean.valueOf(form.getDefaultAllowSubstitutions());
-                                                Boolean defaultAllowCombiningShipments = Boolean.valueOf(form.getDefaultAllowCombiningShipments());
-                                                Boolean defaultRequireReference = Boolean.valueOf(form.getDefaultRequireReference());
-                                                Boolean defaultAllowReferenceDuplicates = Boolean.valueOf(form.getDefaultAllowReferenceDuplicates());
-                                                String defaultReferenceValidationPattern = form.getDefaultReferenceValidationPattern();
-                                                Boolean defaultTaxable = Boolean.valueOf(form.getDefaultTaxable());
+                                                var customerTypeName = form.getCustomerTypeName();
+                                                var defaultHoldUntilComplete = Boolean.valueOf(form.getDefaultHoldUntilComplete());
+                                                var defaultAllowBackorders = Boolean.valueOf(form.getDefaultAllowBackorders());
+                                                var defaultAllowSubstitutions = Boolean.valueOf(form.getDefaultAllowSubstitutions());
+                                                var defaultAllowCombiningShipments = Boolean.valueOf(form.getDefaultAllowCombiningShipments());
+                                                var defaultRequireReference = Boolean.valueOf(form.getDefaultRequireReference());
+                                                var defaultAllowReferenceDuplicates = Boolean.valueOf(form.getDefaultAllowReferenceDuplicates());
+                                                var defaultReferenceValidationPattern = form.getDefaultReferenceValidationPattern();
+                                                var defaultTaxable = Boolean.valueOf(form.getDefaultTaxable());
                                                 var isDefault = Boolean.valueOf(form.getIsDefault());
                                                 var sortOrder = Integer.valueOf(form.getSortOrder());
                                                 var description = form.getDescription();

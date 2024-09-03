@@ -38,11 +38,11 @@ public class EntityMessageTransferCache
     }
     
     public EntityMessageTransfer getEntityMessageTransfer(EntityMessage entityMessage) {
-        EntityMessageTransfer entityMessageTransfer = get(entityMessage);
+        var entityMessageTransfer = get(entityMessage);
         
         if(entityMessageTransfer == null) {
-            EntityInstanceTransfer entityInstance = coreControl.getEntityInstanceTransfer(userVisit, entityMessage, false, false, false, false, false, false);
-            MessageTransfer message = messageControl.getMessageTransfer(userVisit, entityMessage.getMessage());
+            var entityInstance = coreControl.getEntityInstanceTransfer(userVisit, entityMessage, false, false, false, false, false, false);
+            var message = messageControl.getMessageTransfer(userVisit, entityMessage.getMessage());
             
             entityMessageTransfer = new EntityMessageTransfer(entityInstance, message);
             put(entityMessage, entityMessageTransfer);

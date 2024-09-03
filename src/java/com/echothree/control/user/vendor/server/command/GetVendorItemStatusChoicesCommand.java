@@ -69,18 +69,18 @@ public class GetVendorItemStatusChoicesCommand
     @Override
     protected BaseResult execute() {
         var vendorControl = Session.getModelController(VendorControl.class);
-        GetVendorItemStatusChoicesResult result = VendorResultFactory.getGetVendorItemStatusChoicesResult();
-        String vendorName = form.getVendorName();
-        Vendor vendor = vendorControl.getVendorByName(vendorName);
+        var result = VendorResultFactory.getGetVendorItemStatusChoicesResult();
+        var vendorName = form.getVendorName();
+        var vendor = vendorControl.getVendorByName(vendorName);
 
         if(vendor != null) {
-            Party vendorParty = vendor.getParty();
-            String vendorItemName = form.getVendorItemName();
-            VendorItem vendorItem = vendorControl.getVendorItemByVendorPartyAndVendorItemName(vendorParty, vendorItemName);
+            var vendorParty = vendor.getParty();
+            var vendorItemName = form.getVendorItemName();
+            var vendorItem = vendorControl.getVendorItemByVendorPartyAndVendorItemName(vendorParty, vendorItemName);
 
             if(vendorItem != null) {
-                String defaultVendorItemStatusChoice = form.getDefaultVendorItemStatusChoice();
-                boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+                var defaultVendorItemStatusChoice = form.getDefaultVendorItemStatusChoice();
+                var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 
                 result.setVendorItemStatusChoices(vendorControl.getVendorItemStatusChoices(defaultVendorItemStatusChoice, getPreferredLanguage(),
                         allowNullChoice, vendorItem, getPartyPK()));

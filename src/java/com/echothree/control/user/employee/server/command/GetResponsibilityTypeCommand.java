@@ -52,9 +52,9 @@ public class GetResponsibilityTypeCommand
     @Override
     protected BaseResult execute() {
         var employeeControl = Session.getModelController(EmployeeControl.class);
-        GetResponsibilityTypeResult result = EmployeeResultFactory.getGetResponsibilityTypeResult();
-        String responsibilityTypeName = form.getResponsibilityTypeName();
-        ResponsibilityType responsibilityType = employeeControl.getResponsibilityTypeByName(responsibilityTypeName);
+        var result = EmployeeResultFactory.getGetResponsibilityTypeResult();
+        var responsibilityTypeName = form.getResponsibilityTypeName();
+        var responsibilityType = employeeControl.getResponsibilityTypeByName(responsibilityTypeName);
         
         if(responsibilityType != null) {
             result.setResponsibilityType(employeeControl.getResponsibilityTypeTransfer(getUserVisit(), responsibilityType));

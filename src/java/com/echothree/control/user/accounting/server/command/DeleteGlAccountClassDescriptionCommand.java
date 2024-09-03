@@ -67,16 +67,16 @@ public class DeleteGlAccountClassDescriptionCommand
     @Override
     protected BaseResult execute() {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        String glAccountClassName = form.getGlAccountClassName();
-        GlAccountClass glAccountClass = accountingControl.getGlAccountClassByName(glAccountClassName);
+        var glAccountClassName = form.getGlAccountClassName();
+        var glAccountClass = accountingControl.getGlAccountClassByName(glAccountClassName);
         
         if(glAccountClass != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                GlAccountClassDescription glAccountClassDescription = accountingControl.getGlAccountClassDescriptionForUpdate(glAccountClass, language);
+                var glAccountClassDescription = accountingControl.getGlAccountClassDescriptionForUpdate(glAccountClass, language);
                 
                 if(glAccountClassDescription != null) {
                     accountingControl.deleteGlAccountClassDescription(glAccountClassDescription, getPartyPK());

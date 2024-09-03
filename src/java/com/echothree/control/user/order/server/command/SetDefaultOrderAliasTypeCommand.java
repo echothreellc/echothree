@@ -70,8 +70,8 @@ public class SetDefaultOrderAliasTypeCommand
 
         if(orderType != null) {
             var orderAliasControl = Session.getModelController(OrderAliasControl.class);
-            String orderAliasTypeName = form.getOrderAliasTypeName();
-            OrderAliasTypeDetailValue orderAliasTypeDetailValue = orderAliasControl.getOrderAliasTypeDetailValueByNameForUpdate(orderType, orderAliasTypeName);
+            var orderAliasTypeName = form.getOrderAliasTypeName();
+            var orderAliasTypeDetailValue = orderAliasControl.getOrderAliasTypeDetailValueByNameForUpdate(orderType, orderAliasTypeName);
 
             if(orderAliasTypeDetailValue != null) {
                 orderAliasTypeDetailValue.setIsDefault(Boolean.TRUE);

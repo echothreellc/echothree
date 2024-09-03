@@ -224,14 +224,14 @@ public class SecurePlugIn implements SecurePlugInInterface {
         this.servletName = servlet.getServletConfig().getServletName();
         
         // Prepare a Digester to scan the web application deployment descriptor
-        Digester digester = new Digester();
+        var digester = new Digester();
         digester.push(this);
         digester.setNamespaceAware(true);
         digester.setValidating(false);
         
         // Register our local copy of the DTDs that we can find
-        for(int i = 0; i < registrations.length; i += 2) {
-            URL url = this.getClass().getResource(registrations[i + 1]);
+        for(var i = 0; i < registrations.length; i += 2) {
+            var url = this.getClass().getResource(registrations[i + 1]);
             if(url != null) {
                 digester.register(registrations[i], url.toString());
             }

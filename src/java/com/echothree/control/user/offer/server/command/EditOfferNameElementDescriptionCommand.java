@@ -79,25 +79,25 @@ public class EditOfferNameElementDescriptionCommand
     @Override
     protected BaseResult execute() {
         var offerNameElementControl = Session.getModelController(OfferNameElementControl.class);
-        EditOfferNameElementDescriptionResult result = OfferResultFactory.getEditOfferNameElementDescriptionResult();
-        String offerNameElementName = spec.getOfferNameElementName();
-        OfferNameElement offerNameElement = offerNameElementControl.getOfferNameElementByName(offerNameElementName);
+        var result = OfferResultFactory.getEditOfferNameElementDescriptionResult();
+        var offerNameElementName = spec.getOfferNameElementName();
+        var offerNameElement = offerNameElementControl.getOfferNameElementByName(offerNameElementName);
         
         if(offerNameElement != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                    OfferNameElementDescription offerNameElementDescription = offerNameElementControl.getOfferNameElementDescription(offerNameElement, language);
+                    var offerNameElementDescription = offerNameElementControl.getOfferNameElementDescription(offerNameElement, language);
                     
                     if(offerNameElementDescription != null) {
                         if(editMode.equals(EditMode.LOCK)) {
                             result.setOfferNameElementDescription(offerNameElementControl.getOfferNameElementDescriptionTransfer(getUserVisit(), offerNameElementDescription));
 
                             if(lockEntity(offerNameElement)) {
-                                OfferNameElementDescriptionEdit edit = OfferEditFactory.getOfferNameElementDescriptionEdit();
+                                var edit = OfferEditFactory.getOfferNameElementDescriptionEdit();
 
                                 result.setEdit(edit);
                                 edit.setDescription(offerNameElementDescription.getDescription());
@@ -113,12 +113,12 @@ public class EditOfferNameElementDescriptionCommand
                         addExecutionError(ExecutionErrors.UnknownOfferNameElementDescription.name());
                     }
                 } else if(editMode.equals(EditMode.UPDATE)) {
-                    OfferNameElementDescriptionValue offerNameElementDescriptionValue = offerNameElementControl.getOfferNameElementDescriptionValueForUpdate(offerNameElement, language);
+                    var offerNameElementDescriptionValue = offerNameElementControl.getOfferNameElementDescriptionValueForUpdate(offerNameElement, language);
                     
                     if(offerNameElementDescriptionValue != null) {
                         if(lockEntityForUpdate(offerNameElement)) {
                             try {
-                                String description = edit.getDescription();
+                                var description = edit.getDescription();
                                 
                                 offerNameElementDescriptionValue.setDescription(description);
                                 

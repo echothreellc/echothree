@@ -65,15 +65,15 @@ public class SetDefaultDocumentTypeUsageCommand
     @Override
     protected BaseResult execute() {
         var documentControl = Session.getModelController(DocumentControl.class);
-        String documentTypeUsageTypeName = form.getDocumentTypeUsageTypeName();
-        DocumentTypeUsageType documentTypeUsageType = documentControl.getDocumentTypeUsageTypeByName(documentTypeUsageTypeName);
+        var documentTypeUsageTypeName = form.getDocumentTypeUsageTypeName();
+        var documentTypeUsageType = documentControl.getDocumentTypeUsageTypeByName(documentTypeUsageTypeName);
 
         if(documentTypeUsageType != null) {
-            String documentTypeName = form.getDocumentTypeName();
-            DocumentType documentType = documentControl.getDocumentTypeByName(documentTypeName);
+            var documentTypeName = form.getDocumentTypeName();
+            var documentType = documentControl.getDocumentTypeByName(documentTypeName);
 
             if(documentType != null) {
-                DocumentTypeUsageValue documentTypeUsageValue = documentControl.getDocumentTypeUsageValueForUpdate(documentTypeUsageType, documentType);
+                var documentTypeUsageValue = documentControl.getDocumentTypeUsageValueForUpdate(documentTypeUsageType, documentType);
 
                 if(documentTypeUsageValue != null) {
                     documentTypeUsageValue.setIsDefault(Boolean.TRUE);

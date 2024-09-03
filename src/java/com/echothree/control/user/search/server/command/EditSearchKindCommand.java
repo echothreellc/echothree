@@ -91,7 +91,7 @@ public class EditSearchKindCommand
     public SearchKind getEntity(EditSearchKindResult result) {
         var searchControl = Session.getModelController(SearchControl.class);
         SearchKind searchKind;
-        String searchKindName = spec.getSearchKindName();
+        var searchKindName = spec.getSearchKindName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
             searchKind = searchControl.getSearchKindByName(searchKindName);
@@ -121,8 +121,8 @@ public class EditSearchKindCommand
     @Override
     public void doLock(SearchKindEdit edit, SearchKind searchKind) {
         var searchControl = Session.getModelController(SearchControl.class);
-        SearchKindDescription searchKindDescription = searchControl.getSearchKindDescription(searchKind, getPreferredLanguage());
-        SearchKindDetail searchKindDetail = searchKind.getLastDetail();
+        var searchKindDescription = searchControl.getSearchKindDescription(searchKind, getPreferredLanguage());
+        var searchKindDetail = searchKind.getLastDetail();
 
         edit.setSearchKindName(searchKindDetail.getSearchKindName());
         edit.setIsDefault(searchKindDetail.getIsDefault().toString());
@@ -136,8 +136,8 @@ public class EditSearchKindCommand
     @Override
     public void canUpdate(SearchKind searchKind) {
         var searchControl = Session.getModelController(SearchControl.class);
-        String searchKindName = edit.getSearchKindName();
-        SearchKind duplicateSearchKind = searchControl.getSearchKindByName(searchKindName);
+        var searchKindName = edit.getSearchKindName();
+        var duplicateSearchKind = searchControl.getSearchKindByName(searchKindName);
 
         if(duplicateSearchKind != null && !searchKind.equals(duplicateSearchKind)) {
             addExecutionError(ExecutionErrors.DuplicateSearchKindName.name(), searchKindName);
@@ -148,9 +148,9 @@ public class EditSearchKindCommand
     public void doUpdate(SearchKind searchKind) {
         var searchControl = Session.getModelController(SearchControl.class);
         var partyPK = getPartyPK();
-        SearchKindDetailValue searchKindDetailValue = searchControl.getSearchKindDetailValueForUpdate(searchKind);
-        SearchKindDescription searchKindDescription = searchControl.getSearchKindDescriptionForUpdate(searchKind, getPreferredLanguage());
-        String description = edit.getDescription();
+        var searchKindDetailValue = searchControl.getSearchKindDetailValueForUpdate(searchKind);
+        var searchKindDescription = searchControl.getSearchKindDescriptionForUpdate(searchKind, getPreferredLanguage());
+        var description = edit.getDescription();
 
         searchKindDetailValue.setSearchKindName(edit.getSearchKindName());
         searchKindDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
@@ -163,7 +163,7 @@ public class EditSearchKindCommand
         } else if(searchKindDescription != null && description == null) {
             searchControl.deleteSearchKindDescription(searchKindDescription, partyPK);
         } else if(searchKindDescription != null && description != null) {
-            SearchKindDescriptionValue searchKindDescriptionValue = searchControl.getSearchKindDescriptionValue(searchKindDescription);
+            var searchKindDescriptionValue = searchControl.getSearchKindDescriptionValue(searchKindDescription);
 
             searchKindDescriptionValue.setDescription(description);
             searchControl.updateSearchKindDescriptionFromValue(searchKindDescriptionValue, partyPK);

@@ -64,12 +64,12 @@ public class SetDefaultSearchTypeCommand
     @Override
     protected BaseResult execute() {
         var searchControl = Session.getModelController(SearchControl.class);
-        String searchKindName = form.getSearchKindName();
-        SearchKind searchKind = searchControl.getSearchKindByName(searchKindName);
+        var searchKindName = form.getSearchKindName();
+        var searchKind = searchControl.getSearchKindByName(searchKindName);
         
         if(searchKind != null) {
-            String searchTypeName = form.getSearchTypeName();
-            SearchTypeDetailValue searchTypeDetailValue = searchControl.getSearchTypeDetailValueByNameForUpdate(searchKind,
+            var searchTypeName = form.getSearchTypeName();
+            var searchTypeDetailValue = searchControl.getSearchTypeDetailValueByNameForUpdate(searchKind,
                     searchTypeName);
             
             if(searchTypeDetailValue != null) {

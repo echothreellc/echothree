@@ -85,9 +85,9 @@ public class OutTag
     }
 
     protected QName[] toQNames(final String[] tags) {
-        final QName[] qnames = new QName[tags.length];
+        final var qnames = new QName[tags.length];
         
-        for(int i = 0; i < tags.length; ++i) {
+        for(var i = 0; i < tags.length; ++i) {
             qnames[i] = new QName(null, tags[i], null, null);
         }
 
@@ -98,7 +98,7 @@ public class OutTag
             throws JspException {
         XMLParserConfiguration parser = new HTMLConfiguration();
         StringWriter stringWriter = new StringWriter();
-        org.cyberneko.html.filters.Writer writer = new org.cyberneko.html.filters.Writer(stringWriter, "UTF-8");
+        var writer = new org.cyberneko.html.filters.Writer(stringWriter, "UTF-8");
 
         XMLDocumentFilter[] filters = {
             new AbsoluteUrlFilter(pageContext),
@@ -133,7 +133,7 @@ public class OutTag
         } else if(mimeTypeName == null) {
             log.error("mimeTypeName == null");
         } else {
-            String html = StringUtils.getInstance().convertToHtml(value, mimeTypeName);
+            var html = StringUtils.getInstance().convertToHtml(value, mimeTypeName);
 
             if(absoluteUrls != null) {
                 if(Boolean.parseBoolean(absoluteUrls)) {

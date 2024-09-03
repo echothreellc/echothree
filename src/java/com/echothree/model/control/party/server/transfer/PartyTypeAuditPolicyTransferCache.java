@@ -41,14 +41,14 @@ public class PartyTypeAuditPolicyTransferCache
     }
 
     public PartyTypeAuditPolicyTransfer getPartyTypeAuditPolicyTransfer(PartyTypeAuditPolicy partyTypeAuditPolicy) {
-        PartyTypeAuditPolicyTransfer partyTypeAuditPolicyTransfer = get(partyTypeAuditPolicy);
+        var partyTypeAuditPolicyTransfer = get(partyTypeAuditPolicy);
 
         if(partyTypeAuditPolicyTransfer == null) {
-            PartyTypeAuditPolicyDetail partyTypeAuditPolicyDetail = partyTypeAuditPolicy.getLastDetail();
-            PartyTypeTransfer partyTypeTransfer = partyControl.getPartyTypeTransfer(userVisit, partyTypeAuditPolicyDetail.getPartyType());
-            Boolean auditCommands = partyTypeAuditPolicyDetail.getAuditCommands();
-            Long unformattedRetainUserVisitsTime = partyTypeAuditPolicyDetail.getRetainUserVisitsTime();
-            String retainUserVisitsTime = formatUnitOfMeasure(timeUnitOfMeasureKind, unformattedRetainUserVisitsTime);
+            var partyTypeAuditPolicyDetail = partyTypeAuditPolicy.getLastDetail();
+            var partyTypeTransfer = partyControl.getPartyTypeTransfer(userVisit, partyTypeAuditPolicyDetail.getPartyType());
+            var auditCommands = partyTypeAuditPolicyDetail.getAuditCommands();
+            var unformattedRetainUserVisitsTime = partyTypeAuditPolicyDetail.getRetainUserVisitsTime();
+            var retainUserVisitsTime = formatUnitOfMeasure(timeUnitOfMeasureKind, unformattedRetainUserVisitsTime);
 
             partyTypeAuditPolicyTransfer = new PartyTypeAuditPolicyTransfer(partyTypeTransfer, auditCommands, unformattedRetainUserVisitsTime,
                     retainUserVisitsTime);

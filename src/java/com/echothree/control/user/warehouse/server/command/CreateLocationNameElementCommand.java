@@ -75,24 +75,24 @@ public class CreateLocationNameElementCommand
     protected BaseResult execute() {
         var result = WarehouseResultFactory.getCreateLocationNameElementResult();
         var warehouseControl = Session.getModelController(WarehouseControl.class);
-        String warehouseName = form.getWarehouseName();
-        Warehouse warehouse = warehouseControl.getWarehouseByName(warehouseName);
+        var warehouseName = form.getWarehouseName();
+        var warehouse = warehouseControl.getWarehouseByName(warehouseName);
         
         if(warehouse != null) {
-            Party warehouseParty = warehouse.getParty();
-            String locationTypeName = form.getLocationTypeName();
-            LocationType locationType = warehouseControl.getLocationTypeByName(warehouseParty, locationTypeName);
+            var warehouseParty = warehouse.getParty();
+            var locationTypeName = form.getLocationTypeName();
+            var locationType = warehouseControl.getLocationTypeByName(warehouseParty, locationTypeName);
             
             if(locationType != null) {
-                String locationNameElementName = form.getLocationNameElementName();
-                LocationNameElement locationNameElement = warehouseControl.getLocationNameElementByName(locationType,
+                var locationNameElementName = form.getLocationNameElementName();
+                var locationNameElement = warehouseControl.getLocationNameElementByName(locationType,
                         locationNameElementName);
                 
                 if(locationNameElement == null) {
                     BasePK createdBy = getPartyPK();
-                    Integer offset = Integer.valueOf(form.getOffset());
-                    Integer length = Integer.valueOf(form.getLength());
-                    String validationPattern = form.getValidationPattern();
+                    var offset = Integer.valueOf(form.getOffset());
+                    var length = Integer.valueOf(form.getLength());
+                    var validationPattern = form.getValidationPattern();
                     var description = form.getDescription();
                     
                     locationNameElement = warehouseControl.createLocationNameElement(locationType, locationNameElementName, offset,

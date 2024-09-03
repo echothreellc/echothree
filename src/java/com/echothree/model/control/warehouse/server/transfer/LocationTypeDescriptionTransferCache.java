@@ -32,12 +32,12 @@ public class LocationTypeDescriptionTransferCache
     }
     
     public LocationTypeDescriptionTransfer getLocationTypeDescriptionTransfer(LocationTypeDescription locationTypeDescription) {
-        LocationTypeDescriptionTransfer locationTypeDescriptionTransfer = get(locationTypeDescription);
+        var locationTypeDescriptionTransfer = get(locationTypeDescription);
         
         if(locationTypeDescriptionTransfer == null) {
-            LocationTypeTransferCache locationTypeTransferCache = warehouseControl.getWarehouseTransferCaches(userVisit).getLocationTypeTransferCache();
-            LocationTypeTransfer locationTypeTransfer = locationTypeTransferCache.getLocationTypeTransfer(locationTypeDescription.getLocationType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, locationTypeDescription.getLanguage());
+            var locationTypeTransferCache = warehouseControl.getWarehouseTransferCaches(userVisit).getLocationTypeTransferCache();
+            var locationTypeTransfer = locationTypeTransferCache.getLocationTypeTransfer(locationTypeDescription.getLocationType());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, locationTypeDescription.getLanguage());
             
             locationTypeDescriptionTransfer = new LocationTypeDescriptionTransfer(languageTransfer, locationTypeTransfer, locationTypeDescription.getDescription());
             put(locationTypeDescription, locationTypeDescriptionTransfer);

@@ -73,8 +73,8 @@ public class GetSearchDefaultOperatorCommand
     
     @Override
     protected BaseResult execute() {
-        GetSearchDefaultOperatorResult result = SearchResultFactory.getGetSearchDefaultOperatorResult();
-        String searchDefaultOperatorName = form.getSearchDefaultOperatorName();
+        var result = SearchResultFactory.getGetSearchDefaultOperatorResult();
+        var searchDefaultOperatorName = form.getSearchDefaultOperatorName();
         var parameterCount = (searchDefaultOperatorName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {

@@ -101,8 +101,8 @@ public class RatingControl
     
     public RatingType createRatingType(EntityType entityType, String ratingTypeName, Sequence ratingSequence, Integer sortOrder,
             BasePK createdBy) {
-        RatingType ratingType = RatingTypeFactory.getInstance().create();
-        RatingTypeDetail ratingTypeDetail = RatingTypeDetailFactory.getInstance().create(ratingType, entityType,
+        var ratingType = RatingTypeFactory.getInstance().create();
+        var ratingTypeDetail = RatingTypeDetailFactory.getInstance().create(ratingType, entityType,
                 ratingTypeName, ratingSequence, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -134,8 +134,8 @@ public class RatingControl
                         "WHERE rtgtyp_activedetailid = rtgtypdt_ratingtypedetailid AND rtgtypdt_ent_entitytypeid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = RatingTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = RatingTypeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, entityType.getPrimaryKey().getEntityId());
             
@@ -173,8 +173,8 @@ public class RatingControl
                         "AND rtgtypdt_ratingtypename = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = RatingTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = RatingTypeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, entityType.getPrimaryKey().getEntityId());
             ps.setString(2, ratingTypeName);
@@ -208,9 +208,9 @@ public class RatingControl
     }
     
     public List<RatingTypeTransfer> getRatingTypeTransfers(UserVisit userVisit, EntityType entityType) {
-        List<RatingType> ratingTypes = getRatingTypes(entityType);
+        var ratingTypes = getRatingTypes(entityType);
         List<RatingTypeTransfer> ratingTypeTransfers = new ArrayList<>(ratingTypes.size());
-        RatingTypeTransferCache ratingTypeTransferCache = getRatingTransferCaches(userVisit).getRatingTypeTransferCache();
+        var ratingTypeTransferCache = getRatingTransferCaches(userVisit).getRatingTypeTransferCache();
         
         ratingTypes.forEach((ratingType) ->
                 ratingTypeTransfers.add(ratingTypeTransferCache.getRatingTypeTransfer(ratingType))
@@ -221,18 +221,18 @@ public class RatingControl
     
     public void updateRatingTypeFromValue(RatingTypeDetailValue ratingTypeDetailValue, BasePK updatedBy) {
         if(ratingTypeDetailValue.hasBeenModified()) {
-            RatingType ratingType = RatingTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var ratingType = RatingTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      ratingTypeDetailValue.getRatingTypePK());
-            RatingTypeDetail ratingTypeDetail = ratingType.getActiveDetailForUpdate();
+            var ratingTypeDetail = ratingType.getActiveDetailForUpdate();
             
             ratingTypeDetail.setThruTime(session.START_TIME_LONG);
             ratingTypeDetail.store();
-            
-            RatingTypePK ratingTypePK = ratingTypeDetail.getRatingTypePK(); // Not updated
-            EntityTypePK entityTypePK = ratingTypeDetail.getEntityTypePK(); // Not updated
-            String ratingTypeName = ratingTypeDetailValue.getRatingTypeName();
-            SequencePK ratingSequencePK = ratingTypeDetailValue.getRatingSequencePK();
-            Integer sortOrder = ratingTypeDetailValue.getSortOrder();
+
+            var ratingTypePK = ratingTypeDetail.getRatingTypePK(); // Not updated
+            var entityTypePK = ratingTypeDetail.getEntityTypePK(); // Not updated
+            var ratingTypeName = ratingTypeDetailValue.getRatingTypeName();
+            var ratingSequencePK = ratingTypeDetailValue.getRatingSequencePK();
+            var sortOrder = ratingTypeDetailValue.getSortOrder();
             
             ratingTypeDetail = RatingTypeDetailFactory.getInstance().create(ratingTypePK, entityTypePK, ratingTypeName,
                     ratingSequencePK, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -247,8 +247,8 @@ public class RatingControl
     public void deleteRatingType(RatingType ratingType, BasePK deletedBy) {
         deleteRatingTypeDescriptionsByRatingType(ratingType, deletedBy);
         deleteRatingTypeListItemsByRatingType(ratingType, deletedBy);
-        
-        RatingTypeDetail ratingTypeDetail = ratingType.getLastDetailForUpdate();
+
+        var ratingTypeDetail = ratingType.getLastDetailForUpdate();
         ratingTypeDetail.setThruTime(session.START_TIME_LONG);
         ratingType.setActiveDetail(null);
         ratingType.store();
@@ -272,7 +272,7 @@ public class RatingControl
     
     public RatingTypeDescription createRatingTypeDescription(RatingType ratingType, Language language, String description,
             BasePK createdBy) {
-        RatingTypeDescription ratingTypeDescription = RatingTypeDescriptionFactory.getInstance().create(ratingType,
+        var ratingTypeDescription = RatingTypeDescriptionFactory.getInstance().create(ratingType,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(ratingType.getPrimaryKey(), EventTypes.MODIFY, ratingTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -296,8 +296,8 @@ public class RatingControl
                         "WHERE rtgtypd_rtgtyp_ratingtypeid = ? AND rtgtypd_lang_languageid = ? AND rtgtypd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = RatingTypeDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = RatingTypeDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, ratingType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -344,8 +344,8 @@ public class RatingControl
                         "WHERE rtgtypd_rtgtyp_ratingtypeid = ? AND rtgtypd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = RatingTypeDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = RatingTypeDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, ratingType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -368,7 +368,7 @@ public class RatingControl
     
     public String getBestRatingTypeDescription(RatingType ratingType, Language language) {
         String description;
-        RatingTypeDescription ratingTypeDescription = getRatingTypeDescription(ratingType, language);
+        var ratingTypeDescription = getRatingTypeDescription(ratingType, language);
         
         if(ratingTypeDescription == null && !language.getIsDefault()) {
             ratingTypeDescription = getRatingTypeDescription(ratingType, getPartyControl().getDefaultLanguage());
@@ -388,9 +388,9 @@ public class RatingControl
     }
     
     public List<RatingTypeDescriptionTransfer> getRatingTypeDescriptionTransfers(UserVisit userVisit, RatingType ratingType) {
-        List<RatingTypeDescription> ratingTypeDescriptions = getRatingTypeDescriptionsByRatingType(ratingType);
+        var ratingTypeDescriptions = getRatingTypeDescriptionsByRatingType(ratingType);
         List<RatingTypeDescriptionTransfer> ratingTypeDescriptionTransfers = new ArrayList<>(ratingTypeDescriptions.size());
-        RatingTypeDescriptionTransferCache ratingTypeDescriptionTransferCache = getRatingTransferCaches(userVisit).getRatingTypeDescriptionTransferCache();
+        var ratingTypeDescriptionTransferCache = getRatingTransferCaches(userVisit).getRatingTypeDescriptionTransferCache();
         
         ratingTypeDescriptions.forEach((ratingTypeDescription) ->
                 ratingTypeDescriptionTransfers.add(ratingTypeDescriptionTransferCache.getRatingTypeDescriptionTransfer(ratingTypeDescription))
@@ -401,14 +401,14 @@ public class RatingControl
     
     public void updateRatingTypeDescriptionFromValue(RatingTypeDescriptionValue ratingTypeDescriptionValue, BasePK updatedBy) {
         if(ratingTypeDescriptionValue.hasBeenModified()) {
-            RatingTypeDescription ratingTypeDescription = RatingTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, ratingTypeDescriptionValue.getPrimaryKey());
+            var ratingTypeDescription = RatingTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, ratingTypeDescriptionValue.getPrimaryKey());
             
             ratingTypeDescription.setThruTime(session.START_TIME_LONG);
             ratingTypeDescription.store();
-            
-            RatingType ratingType = ratingTypeDescription.getRatingType();
-            Language language = ratingTypeDescription.getLanguage();
-            String description = ratingTypeDescriptionValue.getDescription();
+
+            var ratingType = ratingTypeDescription.getRatingType();
+            var language = ratingTypeDescription.getLanguage();
+            var description = ratingTypeDescriptionValue.getDescription();
             
             ratingTypeDescription = RatingTypeDescriptionFactory.getInstance().create(ratingType, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
@@ -424,7 +424,7 @@ public class RatingControl
     }
     
     public void deleteRatingTypeDescriptionsByRatingType(RatingType ratingType, BasePK deletedBy) {
-        List<RatingTypeDescription> ratingTypeDescriptions = getRatingTypeDescriptionsByRatingTypeForUpdate(ratingType);
+        var ratingTypeDescriptions = getRatingTypeDescriptionsByRatingTypeForUpdate(ratingType);
         
         ratingTypeDescriptions.forEach((ratingTypeDescription) -> 
                 deleteRatingTypeDescription(ratingTypeDescription, deletedBy)
@@ -437,20 +437,20 @@ public class RatingControl
     
     public RatingTypeListItem createRatingTypeListItem(RatingType ratingType, String ratingTypeListItemName, Boolean isDefault,
             Integer sortOrder, BasePK createdBy) {
-        RatingTypeListItem defaultRatingTypeListItem = getDefaultRatingTypeListItem(ratingType);
-        boolean defaultFound = defaultRatingTypeListItem != null;
+        var defaultRatingTypeListItem = getDefaultRatingTypeListItem(ratingType);
+        var defaultFound = defaultRatingTypeListItem != null;
         
         if(defaultFound && isDefault) {
-            RatingTypeListItemDetailValue defaultRatingTypeListItemDetailValue = getDefaultRatingTypeListItemDetailValueForUpdate(ratingType);
+            var defaultRatingTypeListItemDetailValue = getDefaultRatingTypeListItemDetailValueForUpdate(ratingType);
             
             defaultRatingTypeListItemDetailValue.setIsDefault(Boolean.FALSE);
             updateRatingTypeListItemFromValue(defaultRatingTypeListItemDetailValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        RatingTypeListItem ratingTypeListItem = RatingTypeListItemFactory.getInstance().create();
-        RatingTypeListItemDetail ratingTypeListItemDetail = RatingTypeListItemDetailFactory.getInstance().create(session,
+
+        var ratingTypeListItem = RatingTypeListItemFactory.getInstance().create();
+        var ratingTypeListItemDetail = RatingTypeListItemDetailFactory.getInstance().create(session,
                 ratingTypeListItem, ratingType, ratingTypeListItemName, isDefault, sortOrder, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
@@ -485,8 +485,8 @@ public class RatingControl
                         "AND rtgtyplidt_rtgtyp_ratingtypeid = ? AND rtgtyplidt_ratingtypelistitemname = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = RatingTypeListItemFactory.getInstance().prepareStatement(query);
+
+            var ps = RatingTypeListItemFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, ratingType.getPrimaryKey().getEntityId());
             ps.setString(2, ratingTypeListItemName);
@@ -533,8 +533,8 @@ public class RatingControl
                         "AND rtgtyplidt_rtgtyp_ratingtypeid = ? AND rtgtyplidt_isdefault = 1 " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = RatingTypeListItemFactory.getInstance().prepareStatement(query);
+
+            var ps = RatingTypeListItemFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, ratingType.getPrimaryKey().getEntityId());
             
@@ -577,8 +577,8 @@ public class RatingControl
                         "AND rtgtyplidt_rtgtyp_ratingtypeid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = RatingTypeListItemFactory.getInstance().prepareStatement(query);
+
+            var ps = RatingTypeListItemFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, ratingType.getPrimaryKey().getEntityId());
             
@@ -603,9 +603,9 @@ public class RatingControl
     }
     
     public List<RatingTypeListItemTransfer> getRatingTypeListItemTransfers(UserVisit userVisit, RatingType ratingType) {
-        List<RatingTypeListItem> ratingTypeListItems = getRatingTypeListItems(ratingType);
+        var ratingTypeListItems = getRatingTypeListItems(ratingType);
         List<RatingTypeListItemTransfer> ratingTypeListItemTransfers = new ArrayList<>(ratingTypeListItems.size());
-        RatingTypeListItemTransferCache ratingTypeListItemTransferCache = getRatingTransferCaches(userVisit).getRatingTypeListItemTransferCache();
+        var ratingTypeListItemTransferCache = getRatingTransferCaches(userVisit).getRatingTypeListItemTransferCache();
         
         ratingTypeListItems.forEach((ratingTypeListItem) ->
                 ratingTypeListItemTransfers.add(ratingTypeListItemTransferCache.getRatingTypeListItemTransfer(ratingTypeListItem))
@@ -617,27 +617,27 @@ public class RatingControl
     private void updateRatingTypeListItemFromValue(RatingTypeListItemDetailValue ratingTypeListItemDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(ratingTypeListItemDetailValue.hasBeenModified()) {
-            RatingTypeListItem ratingTypeListItem = RatingTypeListItemFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var ratingTypeListItem = RatingTypeListItemFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      ratingTypeListItemDetailValue.getRatingTypeListItemPK());
-            RatingTypeListItemDetail ratingTypeListItemDetail = ratingTypeListItem.getActiveDetailForUpdate();
+            var ratingTypeListItemDetail = ratingTypeListItem.getActiveDetailForUpdate();
             
             ratingTypeListItemDetail.setThruTime(session.START_TIME_LONG);
             ratingTypeListItemDetail.store();
-            
-            RatingTypeListItemPK ratingTypeListItemPK = ratingTypeListItemDetail.getRatingTypeListItemPK();
-            RatingType ratingType = ratingTypeListItemDetail.getRatingType();
-            RatingTypePK ratingTypePK = ratingType.getPrimaryKey();
-            String ratingTypeListItemName = ratingTypeListItemDetailValue.getRatingTypeListItemName();
-            Boolean isDefault = ratingTypeListItemDetailValue.getIsDefault();
-            Integer sortOrder = ratingTypeListItemDetailValue.getSortOrder();
+
+            var ratingTypeListItemPK = ratingTypeListItemDetail.getRatingTypeListItemPK();
+            var ratingType = ratingTypeListItemDetail.getRatingType();
+            var ratingTypePK = ratingType.getPrimaryKey();
+            var ratingTypeListItemName = ratingTypeListItemDetailValue.getRatingTypeListItemName();
+            var isDefault = ratingTypeListItemDetailValue.getIsDefault();
+            var sortOrder = ratingTypeListItemDetailValue.getSortOrder();
             
             if(checkDefault) {
-                RatingTypeListItem defaultRatingTypeListItem = getDefaultRatingTypeListItem(ratingType);
-                boolean defaultFound = defaultRatingTypeListItem != null && !defaultRatingTypeListItem.equals(ratingTypeListItem);
+                var defaultRatingTypeListItem = getDefaultRatingTypeListItem(ratingType);
+                var defaultFound = defaultRatingTypeListItem != null && !defaultRatingTypeListItem.equals(ratingTypeListItem);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    RatingTypeListItemDetailValue defaultRatingTypeListItemDetailValue = getDefaultRatingTypeListItemDetailValueForUpdate(ratingType);
+                    var defaultRatingTypeListItemDetailValue = getDefaultRatingTypeListItemDetailValueForUpdate(ratingType);
                     
                     defaultRatingTypeListItemDetailValue.setIsDefault(Boolean.FALSE);
                     updateRatingTypeListItemFromValue(defaultRatingTypeListItemDetailValue, false, updatedBy);
@@ -663,7 +663,7 @@ public class RatingControl
     
     public RatingTypeListItemChoicesBean getRatingTypeListItemChoices(String defaultRatingTypeListItemChoice, Language language,
             boolean allowNullChoice, RatingType ratingType) {
-        List<RatingTypeListItem> ratingTypeListItems = getRatingTypeListItems(ratingType);
+        var ratingTypeListItems = getRatingTypeListItems(ratingType);
         var size = ratingTypeListItems.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -679,7 +679,7 @@ public class RatingControl
         }
         
         for(var ratingTypeListItem : ratingTypeListItems) {
-            RatingTypeListItemDetail ratingTypeListItemDetail = ratingTypeListItem.getLastDetail();
+            var ratingTypeListItemDetail = ratingTypeListItem.getLastDetail();
             var label = getBestRatingTypeListItemDescription(ratingTypeListItem, language);
             var value = ratingTypeListItemDetail.getRatingTypeListItemName();
             
@@ -745,7 +745,7 @@ public class RatingControl
     
     public RatingTypeListItemDescription createRatingTypeListItemDescription(RatingTypeListItem ratingTypeListItem, Language language,
             String description, BasePK createdBy) {
-        RatingTypeListItemDescription ratingTypeListItemDescription = RatingTypeListItemDescriptionFactory.getInstance().create(session,
+        var ratingTypeListItemDescription = RatingTypeListItemDescriptionFactory.getInstance().create(session,
                 ratingTypeListItem, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(ratingTypeListItem.getPrimaryKey(), EventTypes.MODIFY, ratingTypeListItemDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -769,8 +769,8 @@ public class RatingControl
                         "WHERE rtgtyplid_rtgtypli_ratingtypelistitemid = ? AND rtgtyplid_lang_languageid = ? AND rtgtyplid_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = RatingTypeListItemDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = RatingTypeListItemDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, ratingTypeListItem.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -817,8 +817,8 @@ public class RatingControl
                         "WHERE rtgtyplid_rtgtypli_ratingtypelistitemid = ? AND rtgtyplid_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = RatingTypeListItemDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = RatingTypeListItemDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, ratingTypeListItem.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -841,7 +841,7 @@ public class RatingControl
     
     public String getBestRatingTypeListItemDescription(RatingTypeListItem ratingTypeListItem, Language language) {
         String description;
-        RatingTypeListItemDescription ratingTypeListItemDescription = getRatingTypeListItemDescription(ratingTypeListItem, language);
+        var ratingTypeListItemDescription = getRatingTypeListItemDescription(ratingTypeListItem, language);
         
         if(ratingTypeListItemDescription == null && !language.getIsDefault()) {
             ratingTypeListItemDescription = getRatingTypeListItemDescription(ratingTypeListItem, getPartyControl().getDefaultLanguage());
@@ -861,9 +861,9 @@ public class RatingControl
     }
     
     public List<RatingTypeListItemDescriptionTransfer> getRatingTypeListItemDescriptionTransfers(UserVisit userVisit, RatingTypeListItem ratingTypeListItem) {
-        List<RatingTypeListItemDescription> ratingTypeListItemDescriptions = getRatingTypeListItemDescriptionsByRatingTypeListItem(ratingTypeListItem);
+        var ratingTypeListItemDescriptions = getRatingTypeListItemDescriptionsByRatingTypeListItem(ratingTypeListItem);
         List<RatingTypeListItemDescriptionTransfer> ratingTypeListItemDescriptionTransfers = new ArrayList<>(ratingTypeListItemDescriptions.size());
-        RatingTypeListItemDescriptionTransferCache ratingTypeListItemDescriptionTransferCache = getRatingTransferCaches(userVisit).getRatingTypeListItemDescriptionTransferCache();
+        var ratingTypeListItemDescriptionTransferCache = getRatingTransferCaches(userVisit).getRatingTypeListItemDescriptionTransferCache();
         
         ratingTypeListItemDescriptions.forEach((ratingTypeListItemDescription) ->
                 ratingTypeListItemDescriptionTransfers.add(ratingTypeListItemDescriptionTransferCache.getRatingTypeListItemDescriptionTransfer(ratingTypeListItemDescription))
@@ -874,14 +874,14 @@ public class RatingControl
     
     public void updateRatingTypeListItemDescriptionFromValue(RatingTypeListItemDescriptionValue ratingTypeListItemDescriptionValue, BasePK updatedBy) {
         if(ratingTypeListItemDescriptionValue.hasBeenModified()) {
-            RatingTypeListItemDescription ratingTypeListItemDescription = RatingTypeListItemDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, ratingTypeListItemDescriptionValue.getPrimaryKey());
+            var ratingTypeListItemDescription = RatingTypeListItemDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, ratingTypeListItemDescriptionValue.getPrimaryKey());
             
             ratingTypeListItemDescription.setThruTime(session.START_TIME_LONG);
             ratingTypeListItemDescription.store();
-            
-            RatingTypeListItem ratingTypeListItem = ratingTypeListItemDescription.getRatingTypeListItem();
-            Language language = ratingTypeListItemDescription.getLanguage();
-            String description = ratingTypeListItemDescriptionValue.getDescription();
+
+            var ratingTypeListItem = ratingTypeListItemDescription.getRatingTypeListItem();
+            var language = ratingTypeListItemDescription.getLanguage();
+            var description = ratingTypeListItemDescriptionValue.getDescription();
             
             ratingTypeListItemDescription = RatingTypeListItemDescriptionFactory.getInstance().create(ratingTypeListItem, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
@@ -897,7 +897,7 @@ public class RatingControl
     }
     
     public void deleteRatingTypeListItemDescriptionsByRatingTypeListItem(RatingTypeListItem ratingTypeListItem, BasePK deletedBy) {
-        List<RatingTypeListItemDescription> ratingTypeListItemDescriptions = getRatingTypeListItemDescriptionsByRatingTypeListItemForUpdate(ratingTypeListItem);
+        var ratingTypeListItemDescriptions = getRatingTypeListItemDescriptionsByRatingTypeListItemForUpdate(ratingTypeListItem);
         
         ratingTypeListItemDescriptions.forEach((ratingTypeListItemDescription) -> 
                 deleteRatingTypeListItemDescription(ratingTypeListItemDescription, deletedBy)
@@ -910,8 +910,8 @@ public class RatingControl
     
     public Rating createRating(String ratingName, RatingTypeListItem ratingTypeListItem, EntityInstance ratedEntityInstance,
             EntityInstance ratedByEntityInstance, BasePK createdBy) {
-        Rating rating = RatingFactory.getInstance().create();
-        RatingDetail ratingDetail = RatingDetailFactory.getInstance().create(rating, ratingName, ratingTypeListItem,
+        var rating = RatingFactory.getInstance().create();
+        var ratingDetail = RatingDetailFactory.getInstance().create(rating, ratingName, ratingTypeListItem,
                 ratedEntityInstance, ratedByEntityInstance, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -942,8 +942,8 @@ public class RatingControl
                         "WHERE rtg_activedetailid = rtgdt_ratingdetailid AND rtgdt_ratingname = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = RatingFactory.getInstance().prepareStatement(query);
+
+            var ps = RatingFactory.getInstance().prepareStatement(query);
             
             ps.setString(1, ratingName);
             
@@ -968,7 +968,7 @@ public class RatingControl
     }
     
     public RatingDetailValue getRatingDetailValueByNameForUpdate(String ratingName) {
-        Rating rating = getRatingByNameForUpdate(ratingName);
+        var rating = getRatingByNameForUpdate(ratingName);
         
         return rating == null? null: getRatingDetailValue(rating.getLastDetailForUpdate());
     }
@@ -992,8 +992,8 @@ public class RatingControl
                         "AND rtgdt_ratedbyentityinstanceid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = RatingFactory.getInstance().prepareStatement(query);
+
+            var ps = RatingFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, ratedEntityInstance.getPrimaryKey().getEntityId());
             ps.setLong(2, ratedByEntityInstance.getPrimaryKey().getEntityId());
@@ -1034,8 +1034,8 @@ public class RatingControl
                         "WHERE rtg_activedetailid = rtgdt_ratingdetailid AND rtgdt_ratedentityinstanceid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = RatingFactory.getInstance().prepareStatement(query);
+
+            var ps = RatingFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, ratedEntityInstance.getPrimaryKey().getEntityId());
             
@@ -1072,8 +1072,8 @@ public class RatingControl
                         "WHERE rtg_activedetailid = rtgdt_ratingdetailid AND rtgdt_ratedbyentityinstanceid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = RatingFactory.getInstance().prepareStatement(query);
+
+            var ps = RatingFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, ratedByEntityInstance.getPrimaryKey().getEntityId());
             
@@ -1109,8 +1109,8 @@ public class RatingControl
                         "WHERE rtg_activedetailid = rtgdt_ratingdetailid AND rtgdt_rtgtypli_ratingtypelistitemid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = RatingFactory.getInstance().prepareStatement(query);
+
+            var ps = RatingFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, ratingTypeListItem.getPrimaryKey().getEntityId());
             
@@ -1152,8 +1152,8 @@ public class RatingControl
                         "AND rtgtypli_activedetailid = rtgtyplidt_ratingtypelistitemdetailid AND rtgtyplidt_rtgtyp_ratingtypeid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = RatingFactory.getInstance().prepareStatement(query);
+
+            var ps = RatingFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, ratedEntityInstance.getPrimaryKey().getEntityId());
             ps.setLong(2, ratingType.getPrimaryKey().getEntityId());
@@ -1181,7 +1181,7 @@ public class RatingControl
     
     public List<RatingTransfer> getRatingTransfers(UserVisit userVisit, Collection<Rating> ratings) {
         List<RatingTransfer> ratingTransfers = new ArrayList<>(ratings.size());
-        RatingTransferCache ratingTransferCache = getRatingTransferCaches(userVisit).getRatingTransferCache();
+        var ratingTransferCache = getRatingTransferCaches(userVisit).getRatingTransferCache();
         
         ratings.forEach((rating) ->
                 ratingTransfers.add(ratingTransferCache.getRatingTransfer(rating))
@@ -1201,17 +1201,17 @@ public class RatingControl
     
     public void updateRatingFromValue(RatingDetailValue ratingDetailValue,  BasePK updatedBy) {
         if(ratingDetailValue.hasBeenModified()) {
-            Rating rating = RatingFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, ratingDetailValue.getRatingPK());
-            RatingDetail ratingDetail = rating.getActiveDetailForUpdate();
+            var rating = RatingFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, ratingDetailValue.getRatingPK());
+            var ratingDetail = rating.getActiveDetailForUpdate();
             
             ratingDetail.setThruTime(session.START_TIME_LONG);
             ratingDetail.store();
-            
-            RatingPK ratingPK = ratingDetail.getRatingPK(); // Not updated
-            String ratingName = ratingDetail.getRatingName(); // Not updated
-            RatingTypeListItemPK ratingTypeListItemPK = ratingDetailValue.getRatingTypeListItemPK();
-            EntityInstancePK ratedEntityInstancePK = ratingDetail.getRatedEntityInstancePK(); // Not updated
-            EntityInstancePK ratedByEntityInstancePK = ratingDetail.getRatedByEntityInstancePK(); // Not updated
+
+            var ratingPK = ratingDetail.getRatingPK(); // Not updated
+            var ratingName = ratingDetail.getRatingName(); // Not updated
+            var ratingTypeListItemPK = ratingDetailValue.getRatingTypeListItemPK();
+            var ratedEntityInstancePK = ratingDetail.getRatedEntityInstancePK(); // Not updated
+            var ratedByEntityInstancePK = ratingDetail.getRatedByEntityInstancePK(); // Not updated
             
             ratingDetail = RatingDetailFactory.getInstance().create(ratingPK, ratingName, ratingTypeListItemPK, ratedEntityInstancePK, ratedByEntityInstancePK,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1225,7 +1225,7 @@ public class RatingControl
     }
     
     public void deleteRating(Rating rating, BasePK deletedBy) {
-        RatingDetail ratingDetail = rating.getLastDetailForUpdate();
+        var ratingDetail = rating.getLastDetailForUpdate();
         
         ratingDetail.setThruTime(session.START_TIME_LONG);
         rating.setActiveDetail(null);

@@ -49,19 +49,19 @@ public class ContactMechanismTransferCache
     }
     
     public ContactMechanismTransfer getContactMechanismTransfer(ContactMechanism contactMechanism) {
-        ContactMechanismTransfer contactMechanismTransfer = get(contactMechanism);
+        var contactMechanismTransfer = get(contactMechanism);
         
         if(contactMechanismTransfer == null) {
-            ContactMechanismDetail contactMechanismDetail = contactMechanism.getLastDetail();
-            String contactMechanismName = contactMechanismDetail.getContactMechanismName();
-            ContactMechanismTypeTransfer contactMechanismType = contactControl.getContactMechanismTypeTransfer(userVisit,
+            var contactMechanismDetail = contactMechanism.getLastDetail();
+            var contactMechanismName = contactMechanismDetail.getContactMechanismName();
+            var contactMechanismType = contactControl.getContactMechanismTypeTransfer(userVisit,
                     contactMechanismDetail.getContactMechanismType());
-            Boolean allowSolicitation = contactMechanismDetail.getAllowSolicitation();
+            var allowSolicitation = contactMechanismDetail.getAllowSolicitation();
 
             contactMechanismTransfer = new ContactMechanismTransfer(contactMechanismName, contactMechanismType, allowSolicitation);
             put(contactMechanism, contactMechanismTransfer);
 
-            String contactMechanismTypeName = contactMechanismType.getContactMechanismTypeName();
+            var contactMechanismTypeName = contactMechanismType.getContactMechanismTypeName();
             
             if(contactMechanismTypeName.equals(ContactMechanismTypes.POSTAL_ADDRESS.name())) {
                 contactMechanismTransfer.setContactPostalAddress(contactControl.getContactPostalAddressTransfer(userVisit, contactControl.getContactPostalAddress(contactMechanism)) );

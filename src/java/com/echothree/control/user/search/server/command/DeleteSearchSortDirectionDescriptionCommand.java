@@ -67,16 +67,16 @@ public class DeleteSearchSortDirectionDescriptionCommand
     @Override
     protected BaseResult execute() {
         var searchControl = Session.getModelController(SearchControl.class);
-        String searchSortDirectionName = form.getSearchSortDirectionName();
-        SearchSortDirection searchSortDirection = searchControl.getSearchSortDirectionByName(searchSortDirectionName);
+        var searchSortDirectionName = form.getSearchSortDirectionName();
+        var searchSortDirection = searchControl.getSearchSortDirectionByName(searchSortDirectionName);
         
         if(searchSortDirection != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                SearchSortDirectionDescription searchSortDirectionDescription = searchControl.getSearchSortDirectionDescriptionForUpdate(searchSortDirection, language);
+                var searchSortDirectionDescription = searchControl.getSearchSortDirectionDescriptionForUpdate(searchSortDirection, language);
                 
                 if(searchSortDirectionDescription != null) {
                     searchControl.deleteSearchSortDirectionDescription(searchSortDirectionDescription, getPartyPK());

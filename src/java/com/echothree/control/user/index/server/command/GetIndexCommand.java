@@ -59,8 +59,8 @@ public class GetIndexCommand
     
     @Override
     protected BaseResult execute() {
-        GetIndexResult result = IndexResultFactory.getGetIndexResult();
-        String indexName = form.getIndexName();
+        var result = IndexResultFactory.getGetIndexResult();
+        var indexName = form.getIndexName();
         var parameterCount = (indexName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {

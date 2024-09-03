@@ -51,9 +51,9 @@ public class GetTermDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var termControl = Session.getModelController(TermControl.class);
-        GetTermDescriptionsResult result = TermResultFactory.getGetTermDescriptionsResult();
-        String termName = form.getTermName();
-        Term term = termControl.getTermByName(termName);
+        var result = TermResultFactory.getGetTermDescriptionsResult();
+        var termName = form.getTermName();
+        var term = termControl.getTermByName(termName);
         
         if(term != null) {
             result.setTerm(termControl.getTermTransfer(getUserVisit(), term));

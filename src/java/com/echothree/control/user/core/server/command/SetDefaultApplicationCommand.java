@@ -61,8 +61,8 @@ public class SetDefaultApplicationCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String applicationName = form.getApplicationName();
-        ApplicationDetailValue applicationDetailValue = coreControl.getApplicationDetailValueByNameForUpdate(applicationName);
+        var applicationName = form.getApplicationName();
+        var applicationDetailValue = coreControl.getApplicationDetailValueByNameForUpdate(applicationName);
         
         if(applicationDetailValue != null) {
             applicationDetailValue.setIsDefault(Boolean.TRUE);

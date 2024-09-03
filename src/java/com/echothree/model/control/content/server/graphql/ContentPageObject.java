@@ -106,12 +106,12 @@ public class ContentPageObject
     public List<ContentPageAreaObject> getContentPageAreas(final DataFetchingEnvironment env) {
         var contentControl = Session.getModelController(ContentControl.class);
         var userControl = Session.getModelController(UserControl.class);
-        Language preferredLanguage = userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env));
-        List<ContentPageLayoutArea> entities = contentControl.getContentPageLayoutAreasByContentPageLayout(getContentPageDetail().getContentPageLayout());
+        var preferredLanguage = userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env));
+        var entities = contentControl.getContentPageLayoutAreasByContentPageLayout(getContentPageDetail().getContentPageLayout());
         List<ContentPageAreaObject> contentPageAreas = new ArrayList<>(entities.size());
         
         entities.forEach((entity) -> {
-            ContentPageArea contentPageArea = contentControl.getBestContentPageArea(contentPage, entity, preferredLanguage);
+            var contentPageArea = contentControl.getBestContentPageArea(contentPage, entity, preferredLanguage);
 
             if(contentPageArea != null) {
                 contentPageAreas.add(new ContentPageAreaObject(contentPageArea));

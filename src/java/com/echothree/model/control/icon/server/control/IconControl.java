@@ -87,8 +87,8 @@ public class IconControl
     // --------------------------------------------------------------------------------
     
     public Icon createIcon(String iconName, Document document, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        Icon icon = IconFactory.getInstance().create();
-        IconDetail iconDetail = IconDetailFactory.getInstance().create(icon, iconName, document, isDefault, sortOrder,
+        var icon = IconFactory.getInstance().create();
+        var iconDetail = IconDetailFactory.getInstance().create(icon, iconName, document, isDefault, sortOrder,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -116,8 +116,8 @@ public class IconControl
                     "WHERE icn_activedetailid = icndt_icondetailid " +
                     "FOR UPDATE";
         }
-        
-        PreparedStatement ps = IconFactory.getInstance().prepareStatement(query);
+
+        var ps = IconFactory.getInstance().prepareStatement(query);
         
         return IconFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
     }
@@ -146,8 +146,8 @@ public class IconControl
                         "WHERE icn_activedetailid = icndt_icondetailid AND icndt_iconname = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = IconFactory.getInstance().prepareStatement(query);
+
+            var ps = IconFactory.getInstance().prepareStatement(query);
             
             ps.setString(1, iconName);
             
@@ -170,8 +170,8 @@ public class IconControl
     public IconChoicesBean getIconChoicesByIconUsageType(IconUsageType iconUsageType, String defaultIconChoice, Language language,
             boolean allowNullChoice) {
         var documentControl = Session.getModelController(DocumentControl.class);
-        List<IconUsage> iconUsages = getIconUsagesByIconUsageType(iconUsageType);
-        List<Icon> icons = getIcons();
+        var iconUsages = getIconUsagesByIconUsageType(iconUsageType);
+        var icons = getIcons();
         var size = icons.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -183,8 +183,8 @@ public class IconControl
         }
         
         for(var iconUsage : iconUsages) {
-            IconDetail iconDetail = iconUsage.getIcon().getLastDetail();
-            Document document = iconDetail.getDocument();
+            var iconDetail = iconUsage.getIcon().getLastDetail();
+            var document = iconDetail.getDocument();
             var label = documentControl.getBestDocumentDescription(document, language);
             var value = iconDetail.getIconName();
             
@@ -204,7 +204,7 @@ public class IconControl
     }
     
     public List<IconTransfer> getIconTransfers(UserVisit userVisit) {
-        List<Icon> icons = getIcons();
+        var icons = getIcons();
         List<IconTransfer> iconTransfers = new ArrayList<>(icons.size());
         
         icons.forEach((icon) -> {
@@ -216,8 +216,8 @@ public class IconControl
     
     public void deleteIcon(Icon icon, BasePK deletedBy) {
         deleteIconUsagesByIcon(icon, deletedBy);
-        
-        IconDetail iconDetail = icon.getLastDetailForUpdate();
+
+        var iconDetail = icon.getLastDetailForUpdate();
         iconDetail.setThruTime(session.START_TIME_LONG);
         iconDetail.store();
         icon.setActiveDetail(null);
@@ -230,20 +230,20 @@ public class IconControl
     // --------------------------------------------------------------------------------
     
     public IconUsageType createIconUsageType(String iconUsageTypeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        IconUsageType defaultIconUsageType = getDefaultIconUsageType();
-        boolean defaultFound = defaultIconUsageType != null;
+        var defaultIconUsageType = getDefaultIconUsageType();
+        var defaultFound = defaultIconUsageType != null;
         
         if(defaultFound && isDefault) {
-            IconUsageTypeDetailValue defaultIconUsageTypeDetailValue = getDefaultIconUsageTypeDetailValueForUpdate();
+            var defaultIconUsageTypeDetailValue = getDefaultIconUsageTypeDetailValueForUpdate();
             
             defaultIconUsageTypeDetailValue.setIsDefault(Boolean.FALSE);
             updateIconUsageTypeFromValue(defaultIconUsageTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        IconUsageType iconUsageType = IconUsageTypeFactory.getInstance().create();
-        IconUsageTypeDetail iconUsageTypeDetail = IconUsageTypeDetailFactory.getInstance().create(iconUsageType,
+
+        var iconUsageType = IconUsageTypeFactory.getInstance().create();
+        var iconUsageTypeDetail = IconUsageTypeDetailFactory.getInstance().create(iconUsageType,
                 iconUsageTypeName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -274,8 +274,8 @@ public class IconControl
                         "WHERE icnutyp_activedetailid = icnutypdt_iconusagetypedetailid AND icnutypdt_iconusagetypename = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = IconUsageTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = IconUsageTypeFactory.getInstance().prepareStatement(query);
             
             ps.setString(1, iconUsageTypeName);
             
@@ -316,8 +316,8 @@ public class IconControl
                     "WHERE icnutyp_activedetailid = icnutypdt_iconusagetypedetailid AND icnutypdt_isdefault = 1 " +
                     "FOR UPDATE";
         }
-        
-        PreparedStatement ps = IconUsageTypeFactory.getInstance().prepareStatement(query);
+
+        var ps = IconUsageTypeFactory.getInstance().prepareStatement(query);
         
         return IconUsageTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
     }
@@ -348,8 +348,8 @@ public class IconControl
                     "WHERE icnutyp_activedetailid = icnutypdt_iconusagetypedetailid " +
                     "FOR UPDATE";
         }
-        
-        PreparedStatement ps = IconUsageTypeFactory.getInstance().prepareStatement(query);
+
+        var ps = IconUsageTypeFactory.getInstance().prepareStatement(query);
         
         return IconUsageTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
     }
@@ -363,7 +363,7 @@ public class IconControl
     }
     
     public IconUsageTypeChoicesBean getIconUsageTypeChoices(String defaultIconUsageTypeChoice, Language language, boolean allowNullChoice) {
-        List<IconUsageType> iconUsageTypes = getIconUsageTypes();
+        var iconUsageTypes = getIconUsageTypes();
         var size = iconUsageTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -379,7 +379,7 @@ public class IconControl
         }
         
         for(var iconUsageType : iconUsageTypes) {
-            IconUsageTypeDetail iconUsageTypeDetail = iconUsageType.getLastDetail();
+            var iconUsageTypeDetail = iconUsageType.getLastDetail();
             
             var label = getBestIconUsageTypeDescription(iconUsageType, language);
             var value = iconUsageTypeDetail.getIconUsageTypeName();
@@ -401,9 +401,9 @@ public class IconControl
     }
     
     public List<IconUsageTypeTransfer> getIconUsageTypeTransfers(UserVisit userVisit) {
-        List<IconUsageType> iconUsageTypes = getIconUsageTypes();
+        var iconUsageTypes = getIconUsageTypes();
         List<IconUsageTypeTransfer> iconUsageTypeTransfers = new ArrayList<>(iconUsageTypes.size());
-        IconUsageTypeTransferCache iconUsageTypeTransferCache = getIconTransferCaches(userVisit).getIconUsageTypeTransferCache();
+        var iconUsageTypeTransferCache = getIconTransferCaches(userVisit).getIconUsageTypeTransferCache();
         
         iconUsageTypes.forEach((iconUsageType) ->
                 iconUsageTypeTransfers.add(iconUsageTypeTransferCache.getIconUsageTypeTransfer(iconUsageType))
@@ -413,25 +413,25 @@ public class IconControl
     }
     
     private void updateIconUsageTypeFromValue(IconUsageTypeDetailValue iconUsageTypeDetailValue, boolean checkDefault, BasePK updatedBy) {
-        IconUsageType iconUsageType = IconUsageTypeFactory.getInstance().getEntityFromPK(session,
+        var iconUsageType = IconUsageTypeFactory.getInstance().getEntityFromPK(session,
                 EntityPermission.READ_WRITE, iconUsageTypeDetailValue.getIconUsageTypePK());
-        IconUsageTypeDetail iconUsageTypeDetail = iconUsageType.getActiveDetailForUpdate();
+        var iconUsageTypeDetail = iconUsageType.getActiveDetailForUpdate();
         
         iconUsageTypeDetail.setThruTime(session.START_TIME_LONG);
         iconUsageTypeDetail.store();
-        
-        IconUsageTypePK iconUsageTypePK = iconUsageTypeDetail.getIconUsageTypePK();
-        String iconUsageTypeName = iconUsageTypeDetailValue.getIconUsageTypeName();
-        Boolean isDefault = iconUsageTypeDetailValue.getIsDefault();
-        Integer sortOrder = iconUsageTypeDetailValue.getSortOrder();
+
+        var iconUsageTypePK = iconUsageTypeDetail.getIconUsageTypePK();
+        var iconUsageTypeName = iconUsageTypeDetailValue.getIconUsageTypeName();
+        var isDefault = iconUsageTypeDetailValue.getIsDefault();
+        var sortOrder = iconUsageTypeDetailValue.getSortOrder();
         
         if(checkDefault) {
-            IconUsageType defaultIconUsageType = getDefaultIconUsageType();
-            boolean defaultFound = defaultIconUsageType != null && !defaultIconUsageType.equals(iconUsageType);
+            var defaultIconUsageType = getDefaultIconUsageType();
+            var defaultFound = defaultIconUsageType != null && !defaultIconUsageType.equals(iconUsageType);
             
             if(isDefault && defaultFound) {
                 // If I'm the default, and a default already existed...
-                IconUsageTypeDetailValue defaultIconUsageTypeDetailValue = getDefaultIconUsageTypeDetailValueForUpdate();
+                var defaultIconUsageTypeDetailValue = getDefaultIconUsageTypeDetailValueForUpdate();
                 
                 defaultIconUsageTypeDetailValue.setIsDefault(Boolean.FALSE);
                 updateIconUsageTypeFromValue(defaultIconUsageTypeDetailValue, false, updatedBy);
@@ -457,23 +457,23 @@ public class IconControl
     
     public void deleteIconUsageType(IconUsageType iconUsageType, BasePK deletedBy) {
         deleteIconUsageTypeDescriptionsByIconUsageType(iconUsageType, deletedBy);
-        
-        IconUsageTypeDetail iconUsageTypeDetail = iconUsageType.getLastDetailForUpdate();
+
+        var iconUsageTypeDetail = iconUsageType.getLastDetailForUpdate();
         iconUsageTypeDetail.setThruTime(session.START_TIME_LONG);
         iconUsageType.setActiveDetail(null);
         iconUsageType.store();
         
         // Check for default, and pick one if necessary
-        IconUsageType defaultIconUsageType = getDefaultIconUsageType();
+        var defaultIconUsageType = getDefaultIconUsageType();
         if(defaultIconUsageType == null) {
-            List<IconUsageType> iconUsageTypes = getIconUsageTypesForUpdate();
+            var iconUsageTypes = getIconUsageTypesForUpdate();
             
             if(!iconUsageTypes.isEmpty()) {
-                Iterator<IconUsageType> iter = iconUsageTypes.iterator();
+                var iter = iconUsageTypes.iterator();
                 if(iter.hasNext()) {
                     defaultIconUsageType = iter.next();
                 }
-                IconUsageTypeDetailValue iconUsageTypeDetailValue = Objects.requireNonNull(defaultIconUsageType).getLastDetailForUpdate().getIconUsageTypeDetailValue().clone();
+                var iconUsageTypeDetailValue = Objects.requireNonNull(defaultIconUsageType).getLastDetailForUpdate().getIconUsageTypeDetailValue().clone();
                 
                 iconUsageTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateIconUsageTypeFromValue(iconUsageTypeDetailValue, false, deletedBy);
@@ -489,7 +489,7 @@ public class IconControl
     
     public IconUsageTypeDescription createIconUsageTypeDescription(IconUsageType iconUsageType, Language language, String description,
             BasePK createdBy) {
-        IconUsageTypeDescription iconUsageTypeDescription = IconUsageTypeDescriptionFactory.getInstance().create(iconUsageType,
+        var iconUsageTypeDescription = IconUsageTypeDescriptionFactory.getInstance().create(iconUsageType,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(iconUsageType.getPrimaryKey(), EventTypes.MODIFY, iconUsageTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -513,8 +513,8 @@ public class IconControl
                         "WHERE icnutypd_icnutyp_iconusagetypeid = ? AND icnutypd_lang_languageid = ? AND icnutypd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = IconUsageTypeDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = IconUsageTypeDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, iconUsageType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -561,8 +561,8 @@ public class IconControl
                         "WHERE icnutypd_icnutyp_iconusagetypeid = ? AND icnutypd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = IconUsageTypeDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = IconUsageTypeDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, iconUsageType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -585,7 +585,7 @@ public class IconControl
     
     public String getBestIconUsageTypeDescription(IconUsageType iconUsageType, Language language) {
         String description;
-        IconUsageTypeDescription iconUsageTypeDescription = getIconUsageTypeDescription(iconUsageType, language);
+        var iconUsageTypeDescription = getIconUsageTypeDescription(iconUsageType, language);
         
         if(iconUsageTypeDescription == null && !language.getIsDefault()) {
             iconUsageTypeDescription = getIconUsageTypeDescription(iconUsageType, getPartyControl().getDefaultLanguage());
@@ -605,7 +605,7 @@ public class IconControl
     }
     
     public List<IconUsageTypeDescriptionTransfer> getIconUsageTypeDescriptionTransfersByIconUsageType(UserVisit userVisit, IconUsageType iconUsageType) {
-        List<IconUsageTypeDescription> iconUsageTypeDescriptions = getIconUsageTypeDescriptionsByIconUsageType(iconUsageType);
+        var iconUsageTypeDescriptions = getIconUsageTypeDescriptionsByIconUsageType(iconUsageType);
         List<IconUsageTypeDescriptionTransfer> iconUsageTypeDescriptionTransfers = new ArrayList<>(iconUsageTypeDescriptions.size());
         
         iconUsageTypeDescriptions.forEach((iconUsageTypeDescription) -> {
@@ -617,15 +617,15 @@ public class IconControl
     
     public void updateIconUsageTypeDescriptionFromValue(IconUsageTypeDescriptionValue iconUsageTypeDescriptionValue, BasePK updatedBy) {
         if(iconUsageTypeDescriptionValue.hasBeenModified()) {
-            IconUsageTypeDescription iconUsageTypeDescription = IconUsageTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var iconUsageTypeDescription = IconUsageTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      iconUsageTypeDescriptionValue.getPrimaryKey());
             
             iconUsageTypeDescription.setThruTime(session.START_TIME_LONG);
             iconUsageTypeDescription.store();
-            
-            IconUsageType iconUsageType = iconUsageTypeDescription.getIconUsageType();
-            Language language = iconUsageTypeDescription.getLanguage();
-            String description = iconUsageTypeDescriptionValue.getDescription();
+
+            var iconUsageType = iconUsageTypeDescription.getIconUsageType();
+            var language = iconUsageTypeDescription.getLanguage();
+            var description = iconUsageTypeDescriptionValue.getDescription();
             
             iconUsageTypeDescription = IconUsageTypeDescriptionFactory.getInstance().create(iconUsageType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -642,7 +642,7 @@ public class IconControl
     }
     
     public void deleteIconUsageTypeDescriptionsByIconUsageType(IconUsageType iconUsageType, BasePK deletedBy) {
-        List<IconUsageTypeDescription> iconUsageTypeDescriptions = getIconUsageTypeDescriptionsByIconUsageTypeForUpdate(iconUsageType);
+        var iconUsageTypeDescriptions = getIconUsageTypeDescriptionsByIconUsageTypeForUpdate(iconUsageType);
         
         iconUsageTypeDescriptions.forEach((iconUsageTypeDescription) -> 
                 deleteIconUsageTypeDescription(iconUsageTypeDescription, deletedBy)
@@ -655,19 +655,19 @@ public class IconControl
     
     public IconUsage createIconUsage(IconUsageType iconUsageType, Icon icon, Boolean isDefault,
             Integer sortOrder, BasePK createdBy) {
-        IconUsage defaultIconUsage = getDefaultIconUsage(iconUsageType);
-        boolean defaultFound = defaultIconUsage != null;
+        var defaultIconUsage = getDefaultIconUsage(iconUsageType);
+        var defaultFound = defaultIconUsage != null;
         
         if(defaultFound && isDefault) {
-            IconUsageValue defaultIconUsageValue = getDefaultIconUsageValueForUpdate(iconUsageType);
+            var defaultIconUsageValue = getDefaultIconUsageValueForUpdate(iconUsageType);
             
             defaultIconUsageValue.setIsDefault(Boolean.FALSE);
             updateIconUsageFromValue(defaultIconUsageValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        IconUsage iconUsage = IconUsageFactory.getInstance().create(iconUsageType, icon,
+
+        var iconUsage = IconUsageFactory.getInstance().create(iconUsageType, icon,
                 isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(iconUsageType.getPrimaryKey(), EventTypes.MODIFY, iconUsage.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -691,8 +691,8 @@ public class IconControl
                         "WHERE icnu_icnutyp_iconusagetypeid = ? AND icnu_icn_iconid = ? AND icnu_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = IconUsageFactory.getInstance().prepareStatement(query);
+
+            var ps = IconUsageFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, iconUsageType.getPrimaryKey().getEntityId());
             ps.setLong(2, icon.getPrimaryKey().getEntityId());
@@ -715,7 +715,7 @@ public class IconControl
     }
     
     public IconUsageValue getIconUsageValueForUpdate(IconUsageType iconUsageType, Icon icon) {
-        IconUsage iconUsage = getIconUsageForUpdate(iconUsageType, icon);
+        var iconUsage = getIconUsageForUpdate(iconUsageType, icon);
         
         return iconUsage == null? null: iconUsage.getIconUsageValue().clone();
     }
@@ -736,8 +736,8 @@ public class IconControl
                         "WHERE icnu_icnutyp_iconusagetypeid = ? AND icnu_isdefault = 1 AND icnu_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = IconUsageFactory.getInstance().prepareStatement(query);
+
+            var ps = IconUsageFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, iconUsageType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -759,7 +759,7 @@ public class IconControl
     }
     
     public IconUsageValue getDefaultIconUsageValueForUpdate(IconUsageType iconUsageType) {
-        IconUsage iconUsage = getDefaultIconUsageForUpdate(iconUsageType);
+        var iconUsage = getDefaultIconUsageForUpdate(iconUsageType);
         
         return iconUsage == null? null: iconUsage.getIconUsageValue().clone();
     }
@@ -782,8 +782,8 @@ public class IconControl
                         "WHERE icnu_icnutyp_iconusagetypeid = ? AND icnu_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = IconUsageFactory.getInstance().prepareStatement(query);
+
+            var ps = IconUsageFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, iconUsageType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -823,8 +823,8 @@ public class IconControl
                         "WHERE icnu_icn_iconid = ? AND icnu_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = IconUsageFactory.getInstance().prepareStatement(query);
+
+            var ps = IconUsageFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, icon.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -847,7 +847,7 @@ public class IconControl
     
     public List<IconUsageTransfer> getIconUsageTransfers(UserVisit userVisit, Collection<IconUsage> iconUsages) {
         List<IconUsageTransfer> iconUsageTransfers = new ArrayList<>(iconUsages.size());
-        IconUsageTransferCache iconUsageTransferCache = getIconTransferCaches(userVisit).getIconUsageTransferCache();
+        var iconUsageTransferCache = getIconTransferCaches(userVisit).getIconUsageTransferCache();
         
         iconUsages.forEach((iconUsage) ->
                 iconUsageTransfers.add(iconUsageTransferCache.getIconUsageTransfer(iconUsage))
@@ -870,25 +870,25 @@ public class IconControl
     
     private void updateIconUsageFromValue(IconUsageValue iconUsageValue, boolean checkDefault, BasePK updatedBy) {
         if(iconUsageValue.hasBeenModified()) {
-            IconUsage iconUsage = IconUsageFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var iconUsage = IconUsageFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      iconUsageValue.getPrimaryKey());
             
             iconUsage.setThruTime(session.START_TIME_LONG);
             iconUsage.store();
-            
-            IconUsageType iconUsageType = iconUsage.getIconUsageType(); // Not Updated
-            IconUsageTypePK iconUsageTypePK = iconUsageType.getPrimaryKey(); // Not Updated
-            IconPK iconPK = iconUsage.getIconPK(); // Not Updated
-            Boolean isDefault = iconUsageValue.getIsDefault();
-            Integer sortOrder = iconUsageValue.getSortOrder();
+
+            var iconUsageType = iconUsage.getIconUsageType(); // Not Updated
+            var iconUsageTypePK = iconUsageType.getPrimaryKey(); // Not Updated
+            var iconPK = iconUsage.getIconPK(); // Not Updated
+            var isDefault = iconUsageValue.getIsDefault();
+            var sortOrder = iconUsageValue.getSortOrder();
             
             if(checkDefault) {
-                IconUsage defaultIconUsage = getDefaultIconUsage(iconUsageType);
-                boolean defaultFound = defaultIconUsage != null && !defaultIconUsage.equals(iconUsage);
+                var defaultIconUsage = getDefaultIconUsage(iconUsageType);
+                var defaultFound = defaultIconUsage != null && !defaultIconUsage.equals(iconUsage);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    IconUsageValue defaultIconUsageValue = getDefaultIconUsageValueForUpdate(iconUsageType);
+                    var defaultIconUsageValue = getDefaultIconUsageValueForUpdate(iconUsageType);
                     
                     defaultIconUsageValue.setIsDefault(Boolean.FALSE);
                     updateIconUsageFromValue(defaultIconUsageValue, false, updatedBy);
@@ -914,17 +914,17 @@ public class IconControl
         iconUsage.store();
         
         // Check for default, and pick one if necessary
-        IconUsageType iconUsageType = iconUsage.getIconUsageType();
-        IconUsage defaultIconUsage = getDefaultIconUsage(iconUsageType);
+        var iconUsageType = iconUsage.getIconUsageType();
+        var defaultIconUsage = getDefaultIconUsage(iconUsageType);
         if(defaultIconUsage == null) {
-            List<IconUsage> iconUsages = getIconUsagesByIconUsageTypeForUpdate(iconUsageType);
+            var iconUsages = getIconUsagesByIconUsageTypeForUpdate(iconUsageType);
             
             if(!iconUsages.isEmpty()) {
-                Iterator<IconUsage> iter = iconUsages.iterator();
+                var iter = iconUsages.iterator();
                 if(iter.hasNext()) {
                     defaultIconUsage = iter.next();
                 }
-                IconUsageValue iconUsageValue = defaultIconUsage.getIconUsageValue().clone();
+                var iconUsageValue = defaultIconUsage.getIconUsageValue().clone();
                 
                 iconUsageValue.setIsDefault(Boolean.TRUE);
                 updateIconUsageFromValue(iconUsageValue, false, deletedBy);

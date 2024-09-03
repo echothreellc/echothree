@@ -55,17 +55,17 @@ public class GetChainInstancesCommand
     @Override
     protected BaseResult execute() {
         var chainControl = Session.getModelController(ChainControl.class);
-        GetChainInstancesResult result = ChainResultFactory.getGetChainInstancesResult();
-        String chainKindName = form.getChainKindName();
-        ChainKind chainKind = chainControl.getChainKindByName(chainKindName);
+        var result = ChainResultFactory.getGetChainInstancesResult();
+        var chainKindName = form.getChainKindName();
+        var chainKind = chainControl.getChainKindByName(chainKindName);
         
         if(chainKind != null) {
-            String chainTypeName = form.getChainTypeName();
-            ChainType chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
+            var chainTypeName = form.getChainTypeName();
+            var chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
             
             if(chainType != null) {
-                String chainName = form.getChainName();
-                Chain chain = chainControl.getChainByName(chainType, chainName);
+                var chainName = form.getChainName();
+                var chain = chainControl.getChainByName(chainType, chainName);
                 
                 if(chain != null) {
                     result.setChain(chainControl.getChainTransfer(getUserVisit(), chain));

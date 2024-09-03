@@ -66,14 +66,14 @@ public class ForumMessageSearchEvaluator
         this.forumMessageType = forumMessageType;
         
         var forumControl = Session.getModelController(ForumControl.class);
-        ForumMessageTypePartType indexDefaultForumMessageTypePartType = forumControl.getIndexDefaultForumMessageTypePartType(forumMessageType);
+        var indexDefaultForumMessageTypePartType = forumControl.getIndexDefaultForumMessageTypePartType(forumMessageType);
 
         setField(indexDefaultForumMessageTypePartType.getForumMessagePartType().getForumMessagePartTypeName());
     }
     
     public EntityInstancePKHolder getEntityInstancePKHolderByForum(Forum forum) {
         EntityInstancePKHolder entityInstancePKHolder;
-        PreparedStatement ps = EntityInstanceFactory.getInstance().prepareStatement(
+        var ps = EntityInstanceFactory.getInstance().prepareStatement(
                 "SELECT _PK_ " +
                 "FROM componentvendors, componentvendordetails, entitytypes, entitytypedetails, entityinstances, forummessages, forummessagedetails, forumforumthreads " +
                 "WHERE frmmsg_activedetailid = frmmsgdt_forummessagedetailid " +
@@ -99,7 +99,7 @@ public class ForumMessageSearchEvaluator
 
     public EntityInstancePKHolder getEntityInstancePKHolderByForumMessageType(ForumMessageType forumMessageType) {
         EntityInstancePKHolder entityInstancePKHolder;
-        PreparedStatement ps = EntityInstanceFactory.getInstance().prepareStatement(
+        var ps = EntityInstanceFactory.getInstance().prepareStatement(
                 "SELECT _PK_ " +
                 "FROM componentvendors, componentvendordetails, entitytypes, entitytypedetails, entityinstances, forummessages, forummessagedetails " +
                 "WHERE frmmsg_activedetailid = frmmsgdt_forummessagedetailid " +
@@ -141,7 +141,7 @@ public class ForumMessageSearchEvaluator
     @Override
     public SortField[] getSortFields(String searchSortOrderName) {
         SortField[] sortFields = null;
-        boolean reverse = searchSortDirection.getLastDetail().getSearchSortDirectionName().equals(SearchSortDirections.DESCENDING.name());
+        var reverse = searchSortDirection.getLastDetail().getSearchSortDirectionName().equals(SearchSortDirections.DESCENDING.name());
         
         if(searchSortOrderName.equals(SearchSortOrders.SCORE.name())) {
             sortFields = new SortField[]{
@@ -183,12 +183,12 @@ public class ForumMessageSearchEvaluator
 
     @Override
     protected EntityInstancePKHolder executeSearch(final ExecutionErrorAccumulator eea) {
-        EntityInstancePKHolder resultSet = super.executeSearch(eea);
+        var resultSet = super.executeSearch(eea);
         
         if(resultSet == null || resultSet.size() > 0) {
             if(q != null) {
                 if(resultSet == null || resultSet.size() > 0) {
-                    EntityInstancePKHolder entityInstancePKHolder = executeQuery(eea);
+                    var entityInstancePKHolder = executeQuery(eea);
 
                     if(resultSet == null) {
                         resultSet = entityInstancePKHolder;
@@ -201,7 +201,7 @@ public class ForumMessageSearchEvaluator
 
         if(resultSet == null || resultSet.size() > 0) {
             if(forum != null) {
-                EntityInstancePKHolder entityInstancePKHolder = getEntityInstancePKHolderByForum(forum);
+                var entityInstancePKHolder = getEntityInstancePKHolderByForum(forum);
 
                 if(resultSet == null) {
                     resultSet = entityInstancePKHolder;
@@ -213,7 +213,7 @@ public class ForumMessageSearchEvaluator
 
         if(resultSet == null || resultSet.size() > 0) {
             if(forumMessageType != null) {
-                EntityInstancePKHolder entityInstancePKHolder = getEntityInstancePKHolderByForumMessageType(forumMessageType);
+                var entityInstancePKHolder = getEntityInstancePKHolderByForumMessageType(forumMessageType);
 
                 if(resultSet == null) {
                     resultSet = entityInstancePKHolder;

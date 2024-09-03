@@ -55,21 +55,21 @@ public class DeleteWorkRequirementTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var workEffortControl = Session.getModelController(WorkEffortControl.class);
-        String workEffortTypeName = form.getWorkEffortTypeName();
-        WorkEffortType workEffortType = workEffortControl.getWorkEffortTypeByName(workEffortTypeName);
+        var workEffortTypeName = form.getWorkEffortTypeName();
+        var workEffortType = workEffortControl.getWorkEffortTypeByName(workEffortTypeName);
         
         if(workEffortType != null) {
             var workRequirementControl = Session.getModelController(WorkRequirementControl.class);
-            String workRequirementTypeName = form.getWorkRequirementTypeName();
-            WorkRequirementType workRequirementType = workRequirementControl.getWorkRequirementTypeByName(workEffortType, workRequirementTypeName);
+            var workRequirementTypeName = form.getWorkRequirementTypeName();
+            var workRequirementType = workRequirementControl.getWorkRequirementTypeByName(workEffortType, workRequirementTypeName);
             
             if(workRequirementType != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = form.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = form.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
                 
                 if(language != null) {
-                    WorkRequirementTypeDescription workRequirementTypeDescription = workRequirementControl.getWorkRequirementTypeDescriptionForUpdate(workRequirementType, language);
+                    var workRequirementTypeDescription = workRequirementControl.getWorkRequirementTypeDescriptionForUpdate(workRequirementType, language);
                     
                     if(workRequirementTypeDescription != null) {
                         workRequirementControl.deleteWorkRequirementTypeDescription(workRequirementTypeDescription, getPartyPK());

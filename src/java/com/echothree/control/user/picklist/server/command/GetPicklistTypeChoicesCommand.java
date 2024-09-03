@@ -63,9 +63,9 @@ public class GetPicklistTypeChoicesCommand
     @Override
     protected BaseResult execute() {
         var picklistControl = Session.getModelController(PicklistControl.class);
-        GetPicklistTypeChoicesResult result = PicklistResultFactory.getGetPicklistTypeChoicesResult();
-        String defaultPicklistTypeChoice = form.getDefaultPicklistTypeChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = PicklistResultFactory.getGetPicklistTypeChoicesResult();
+        var defaultPicklistTypeChoice = form.getDefaultPicklistTypeChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setPicklistTypeChoices(picklistControl.getPicklistTypeChoices(defaultPicklistTypeChoice, getPreferredLanguage(),
                 allowNullChoice));

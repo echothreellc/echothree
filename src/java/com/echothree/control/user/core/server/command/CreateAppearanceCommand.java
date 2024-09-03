@@ -78,34 +78,34 @@ public class CreateAppearanceCommand
     
     @Override
     protected BaseResult execute() {
-        CreateAppearanceResult result = CoreResultFactory.getCreateAppearanceResult();
+        var result = CoreResultFactory.getCreateAppearanceResult();
         var coreControl = getCoreControl();
-        String appearanceName = form.getAppearanceName();
+        var appearanceName = form.getAppearanceName();
         
         if(appearanceName == null) {
             var sequenceControl = Session.getModelController(SequenceControl.class);
-            Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.APPEARANCE.name());
+            var sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.APPEARANCE.name());
             
             appearanceName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
         }
-        
-        Appearance appearance = coreControl.getAppearanceByName(appearanceName);
+
+        var appearance = coreControl.getAppearanceByName(appearanceName);
         
         if(appearance == null) {
-            String textColorName = form.getTextColorName();
-            Color textColor = textColorName == null ? null : coreControl.getColorByName(textColorName);
+            var textColorName = form.getTextColorName();
+            var textColor = textColorName == null ? null : coreControl.getColorByName(textColorName);
             
             if(textColorName == null || textColor != null) {
-                String backgroundColorName = form.getBackgroundColorName();
-                Color backgroundColor = backgroundColorName == null ? null : coreControl.getColorByName(backgroundColorName);
+                var backgroundColorName = form.getBackgroundColorName();
+                var backgroundColor = backgroundColorName == null ? null : coreControl.getColorByName(backgroundColorName);
 
                 if(backgroundColorName == null || backgroundColor != null) {
-                    String fontStyleName = form.getFontStyleName();
-                    FontStyle fontStyle = fontStyleName == null ? null : AppearanceLogic.getInstance().getFontStyleByName(this, fontStyleName);
+                    var fontStyleName = form.getFontStyleName();
+                    var fontStyle = fontStyleName == null ? null : AppearanceLogic.getInstance().getFontStyleByName(this, fontStyleName);
                     
                     if(!hasExecutionErrors()) {
-                        String fontWeightName = form.getFontWeightName();
-                        FontWeight fontWeight = fontWeightName == null ? null : AppearanceLogic.getInstance().getFontWeightByName(this, fontWeightName);
+                        var fontWeightName = form.getFontWeightName();
+                        var fontWeight = fontWeightName == null ? null : AppearanceLogic.getInstance().getFontWeightByName(this, fontWeightName);
 
                         if(!hasExecutionErrors()) {
                             var partyPK = getPartyPK();

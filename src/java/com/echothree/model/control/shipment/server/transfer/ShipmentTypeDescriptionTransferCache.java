@@ -36,11 +36,11 @@ public class ShipmentTypeDescriptionTransferCache
 
     @Override
     public ShipmentTypeDescriptionTransfer getTransfer(ShipmentTypeDescription shipmentTypeDescription) {
-        ShipmentTypeDescriptionTransfer shipmentTypeDescriptionTransfer = get(shipmentTypeDescription);
+        var shipmentTypeDescriptionTransfer = get(shipmentTypeDescription);
         
         if(shipmentTypeDescriptionTransfer == null) {
-            ShipmentTypeTransfer shipmentTypeTransfer = shipmentControl.getShipmentTypeTransfer(userVisit, shipmentTypeDescription.getShipmentType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, shipmentTypeDescription.getLanguage());
+            var shipmentTypeTransfer = shipmentControl.getShipmentTypeTransfer(userVisit, shipmentTypeDescription.getShipmentType());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, shipmentTypeDescription.getLanguage());
             
             shipmentTypeDescriptionTransfer = new ShipmentTypeDescriptionTransfer(languageTransfer, shipmentTypeTransfer, shipmentTypeDescription.getDescription());
             put(shipmentTypeDescription, shipmentTypeDescriptionTransfer);

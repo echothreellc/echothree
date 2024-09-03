@@ -34,14 +34,14 @@ public class FilterAdjustmentSourceTransferCache
 
     @Override
     public FilterAdjustmentSourceTransfer getTransfer(FilterAdjustmentSource filterAdjustmentSource) {
-        FilterAdjustmentSourceTransfer filterAdjustmentSourceTransfer = get(filterAdjustmentSource);
+        var filterAdjustmentSourceTransfer = get(filterAdjustmentSource);
         
         if(filterAdjustmentSourceTransfer == null) {
-            String filterAdjustmentSourceName = filterAdjustmentSource.getFilterAdjustmentSourceName();
-            Boolean allowedForInitialAmount = filterAdjustmentSource.getAllowedForInitialAmount();
-            Boolean isDefault = filterAdjustmentSource.getIsDefault();
-            Integer sortOrder = filterAdjustmentSource.getSortOrder();
-            String description = filterControl.getBestFilterAdjustmentSourceDescription(filterAdjustmentSource, getLanguage());
+            var filterAdjustmentSourceName = filterAdjustmentSource.getFilterAdjustmentSourceName();
+            var allowedForInitialAmount = filterAdjustmentSource.getAllowedForInitialAmount();
+            var isDefault = filterAdjustmentSource.getIsDefault();
+            var sortOrder = filterAdjustmentSource.getSortOrder();
+            var description = filterControl.getBestFilterAdjustmentSourceDescription(filterAdjustmentSource, getLanguage());
             
             filterAdjustmentSourceTransfer = new FilterAdjustmentSourceTransfer(filterAdjustmentSourceName, allowedForInitialAmount, isDefault,
             sortOrder, description);

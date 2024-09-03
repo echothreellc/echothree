@@ -73,20 +73,20 @@ public class PaymentMethodControl
     
     public PaymentMethod createPaymentMethod(String paymentMethodName, PaymentMethodType paymentMethodType, PaymentProcessor paymentProcessor,
             Selector itemSelector, Selector salesOrderItemSelector, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        PaymentMethod defaultPaymentMethod = getDefaultPaymentMethod();
-        boolean defaultFound = defaultPaymentMethod != null;
+        var defaultPaymentMethod = getDefaultPaymentMethod();
+        var defaultFound = defaultPaymentMethod != null;
         
         if(defaultFound && isDefault) {
-            PaymentMethodDetailValue defaultPaymentMethodDetailValue = getDefaultPaymentMethodDetailValueForUpdate();
+            var defaultPaymentMethodDetailValue = getDefaultPaymentMethodDetailValueForUpdate();
             
             defaultPaymentMethodDetailValue.setIsDefault(Boolean.FALSE);
             updatePaymentMethodFromValue(defaultPaymentMethodDetailValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        PaymentMethod paymentMethod = PaymentMethodFactory.getInstance().create();
-        PaymentMethodDetail paymentMethodDetail = PaymentMethodDetailFactory.getInstance().create(paymentMethod, paymentMethodName, paymentMethodType,
+
+        var paymentMethod = PaymentMethodFactory.getInstance().create();
+        var paymentMethodDetail = PaymentMethodDetailFactory.getInstance().create(paymentMethod, paymentMethodName, paymentMethodType,
                 paymentProcessor, itemSelector, salesOrderItemSelector, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -120,8 +120,8 @@ public class PaymentMethodControl
                         "WHERE pm_activedetailid = pmdt_paymentmethoddetailid AND pmdt_paymentmethodname = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PaymentMethodFactory.getInstance().prepareStatement(query);
+
+            var ps = PaymentMethodFactory.getInstance().prepareStatement(query);
             
             ps.setString(1, paymentMethodName);
             
@@ -159,8 +159,8 @@ public class PaymentMethodControl
                     "WHERE pm_activedetailid = pmdt_paymentmethoddetailid " +
                     "FOR UPDATE";
         }
-        
-        PreparedStatement ps = PaymentMethodFactory.getInstance().prepareStatement(query);
+
+        var ps = PaymentMethodFactory.getInstance().prepareStatement(query);
         
         return PaymentMethodFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
     }
@@ -191,7 +191,7 @@ public class PaymentMethodControl
                         "FOR UPDATE";
             }
 
-            PreparedStatement ps = PaymentMethodFactory.getInstance().prepareStatement(query);
+            var ps = PaymentMethodFactory.getInstance().prepareStatement(query);
 
             ps.setLong(1, paymentMethodType.getPrimaryKey().getEntityId());
 
@@ -229,7 +229,7 @@ public class PaymentMethodControl
                         "FOR UPDATE";
             }
 
-            PreparedStatement ps = PaymentMethodFactory.getInstance().prepareStatement(query);
+            var ps = PaymentMethodFactory.getInstance().prepareStatement(query);
 
             ps.setLong(1, paymentProcessor.getPrimaryKey().getEntityId());
 
@@ -262,8 +262,8 @@ public class PaymentMethodControl
                     "WHERE pm_activedetailid = pmdt_paymentmethoddetailid AND pmdt_isdefault = 1 " +
                     "FOR UPDATE";
         }
-        
-        PreparedStatement ps = PaymentMethodFactory.getInstance().prepareStatement(query);
+
+        var ps = PaymentMethodFactory.getInstance().prepareStatement(query);
         
         return PaymentMethodFactory.getInstance().getEntityFromQuery(entityPermission, ps);
     }
@@ -293,7 +293,7 @@ public class PaymentMethodControl
         }
 
         for(var paymentMethod : paymentMethods) {
-            PaymentMethodDetail paymentMethodDetail = paymentMethod.getLastDetail();
+            var paymentMethodDetail = paymentMethod.getLastDetail();
             var label = getBestPaymentMethodDescription(paymentMethod, language);
             var value = paymentMethodDetail.getPaymentMethodName();
 
@@ -323,7 +323,7 @@ public class PaymentMethodControl
     
     public List<PaymentMethodTransfer> getPaymentMethodTransfers(UserVisit userVisit, Collection<PaymentMethod> paymentMethods) {
         List<PaymentMethodTransfer> paymentMethodTransfers = new ArrayList<>(paymentMethods.size());
-        PaymentMethodTransferCache paymentMethodTransferCache = getPaymentTransferCaches(userVisit).getPaymentMethodTransferCache();
+        var paymentMethodTransferCache = getPaymentTransferCaches(userVisit).getPaymentMethodTransferCache();
 
         paymentMethods.forEach((paymentMethod) ->
                 paymentMethodTransfers.add(paymentMethodTransferCache.getTransfer(paymentMethod))
@@ -343,29 +343,29 @@ public class PaymentMethodControl
     private void updatePaymentMethodFromValue(PaymentMethodDetailValue paymentMethodDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(paymentMethodDetailValue.hasBeenModified()) {
-            PaymentMethod paymentMethod = PaymentMethodFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var paymentMethod = PaymentMethodFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      paymentMethodDetailValue.getPaymentMethodPK());
-            PaymentMethodDetail paymentMethodDetail = paymentMethod.getActiveDetailForUpdate();
+            var paymentMethodDetail = paymentMethod.getActiveDetailForUpdate();
             
             paymentMethodDetail.setThruTime(session.START_TIME_LONG);
             paymentMethodDetail.store();
-            
-            PaymentMethodPK paymentMethodPK = paymentMethodDetail.getPaymentMethodPK(); // Not updated
-            String paymentMethodName = paymentMethodDetailValue.getPaymentMethodName();
-            PaymentMethodTypePK paymentMethodTypePK = paymentMethodDetail.getPaymentMethodTypePK(); // Not updated
-            PaymentProcessorPK paymentProcessorPK = paymentMethodDetailValue.getPaymentProcessorPK();
-            SelectorPK itemSelectorPK = paymentMethodDetailValue.getItemSelectorPK();
-            SelectorPK salesOrderItemSelectorPK = paymentMethodDetailValue.getSalesOrderItemSelectorPK();
-            Boolean isDefault = paymentMethodDetailValue.getIsDefault();
-            Integer sortOrder = paymentMethodDetailValue.getSortOrder();
+
+            var paymentMethodPK = paymentMethodDetail.getPaymentMethodPK(); // Not updated
+            var paymentMethodName = paymentMethodDetailValue.getPaymentMethodName();
+            var paymentMethodTypePK = paymentMethodDetail.getPaymentMethodTypePK(); // Not updated
+            var paymentProcessorPK = paymentMethodDetailValue.getPaymentProcessorPK();
+            var itemSelectorPK = paymentMethodDetailValue.getItemSelectorPK();
+            var salesOrderItemSelectorPK = paymentMethodDetailValue.getSalesOrderItemSelectorPK();
+            var isDefault = paymentMethodDetailValue.getIsDefault();
+            var sortOrder = paymentMethodDetailValue.getSortOrder();
             
             if(checkDefault) {
-                PaymentMethod defaultPaymentMethod = getDefaultPaymentMethod();
-                boolean defaultFound = defaultPaymentMethod != null && !defaultPaymentMethod.equals(paymentMethod);
+                var defaultPaymentMethod = getDefaultPaymentMethod();
+                var defaultFound = defaultPaymentMethod != null && !defaultPaymentMethod.equals(paymentMethod);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    PaymentMethodDetailValue defaultPaymentMethodDetailValue = getDefaultPaymentMethodDetailValueForUpdate();
+                    var defaultPaymentMethodDetailValue = getDefaultPaymentMethodDetailValueForUpdate();
                     
                     defaultPaymentMethodDetailValue.setIsDefault(Boolean.FALSE);
                     updatePaymentMethodFromValue(defaultPaymentMethodDetailValue, false, updatedBy);
@@ -398,23 +398,23 @@ public class PaymentMethodControl
         orderPaymentPreferenceControl.deleteOrderPaymentPreferencesByPaymentMethod(paymentMethod, deletedBy);
         partyPaymentMethodControl.deletePartyPaymentMethodsByPaymentMethod(paymentMethod, deletedBy);
         deletePaymentMethodDescriptionsByPaymentMethod(paymentMethod, deletedBy);
-        
-        PaymentMethodDetail paymentMethodDetail = paymentMethod.getLastDetailForUpdate();
+
+        var paymentMethodDetail = paymentMethod.getLastDetailForUpdate();
         paymentMethodDetail.setThruTime(session.START_TIME_LONG);
         paymentMethodDetail.store();
         paymentMethod.setActiveDetail(null);
         
         // Check for default, and pick one if necessary
-        PaymentMethod defaultPaymentMethod = getDefaultPaymentMethod();
+        var defaultPaymentMethod = getDefaultPaymentMethod();
         if(defaultPaymentMethod == null) {
-            List<PaymentMethod> paymentMethods = getPaymentMethodsForUpdate();
+            var paymentMethods = getPaymentMethodsForUpdate();
             
             if(!paymentMethods.isEmpty()) {
-                Iterator<PaymentMethod> iter = paymentMethods.iterator();
+                var iter = paymentMethods.iterator();
                 if(iter.hasNext()) {
                     defaultPaymentMethod = iter.next();
                 }
-                PaymentMethodDetailValue paymentMethodDetailValue = Objects.requireNonNull(defaultPaymentMethod).getLastDetailForUpdate().getPaymentMethodDetailValue().clone();
+                var paymentMethodDetailValue = Objects.requireNonNull(defaultPaymentMethod).getLastDetailForUpdate().getPaymentMethodDetailValue().clone();
                 
                 paymentMethodDetailValue.setIsDefault(Boolean.TRUE);
                 updatePaymentMethodFromValue(paymentMethodDetailValue, false, deletedBy);
@@ -425,7 +425,7 @@ public class PaymentMethodControl
     }
     
     public void deletePaymentMethodsByPaymentProcessor(PaymentProcessor paymentProcessor, BasePK deletedBy) {
-        List<PaymentMethod> paymentMethods = getPaymentMethodsByPaymentProcessorForUpdate(paymentProcessor);
+        var paymentMethods = getPaymentMethodsByPaymentProcessorForUpdate(paymentProcessor);
         
         paymentMethods.forEach((paymentMethod) -> 
                 deletePaymentMethod(paymentMethod, deletedBy)
@@ -438,7 +438,7 @@ public class PaymentMethodControl
     
     public PaymentMethodDescription createPaymentMethodDescription(PaymentMethod paymentMethod, Language language,
             String description, BasePK createdBy) {
-        PaymentMethodDescription paymentMethodDescription = PaymentMethodDescriptionFactory.getInstance().create(session,
+        var paymentMethodDescription = PaymentMethodDescriptionFactory.getInstance().create(session,
                 paymentMethod, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(paymentMethod.getPrimaryKey(), EventTypes.MODIFY, paymentMethodDescription.getPrimaryKey(),
@@ -464,8 +464,8 @@ public class PaymentMethodControl
                         "WHERE pmd_pm_paymentmethodid = ? AND pmd_lang_languageid = ? AND pmd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PaymentMethodDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = PaymentMethodDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, paymentMethod.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -512,8 +512,8 @@ public class PaymentMethodControl
                         "WHERE pmd_pm_paymentmethodid = ? AND pmd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PaymentMethodDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = PaymentMethodDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, paymentMethod.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -536,7 +536,7 @@ public class PaymentMethodControl
     
     public String getBestPaymentMethodDescription(PaymentMethod paymentMethod, Language language) {
         String description;
-        PaymentMethodDescription paymentMethodDescription = getPaymentMethodDescription(paymentMethod, language);
+        var paymentMethodDescription = getPaymentMethodDescription(paymentMethod, language);
         
         if(paymentMethodDescription == null && !language.getIsDefault()) {
             paymentMethodDescription = getPaymentMethodDescription(paymentMethod, getPartyControl().getDefaultLanguage());
@@ -556,9 +556,9 @@ public class PaymentMethodControl
     }
     
     public List<PaymentMethodDescriptionTransfer> getPaymentMethodDescriptionTransfers(UserVisit userVisit, PaymentMethod paymentMethod) {
-        List<PaymentMethodDescription> paymentMethodDescriptions = getPaymentMethodDescriptions(paymentMethod);
+        var paymentMethodDescriptions = getPaymentMethodDescriptions(paymentMethod);
         List<PaymentMethodDescriptionTransfer> paymentMethodDescriptionTransfers = new ArrayList<>(paymentMethodDescriptions.size());
-        PaymentMethodDescriptionTransferCache paymentMethodDescriptionTransferCache = getPaymentTransferCaches(userVisit).getPaymentMethodDescriptionTransferCache();
+        var paymentMethodDescriptionTransferCache = getPaymentTransferCaches(userVisit).getPaymentMethodDescriptionTransferCache();
         
         paymentMethodDescriptions.forEach((paymentMethodDescription) ->
                 paymentMethodDescriptionTransfers.add(paymentMethodDescriptionTransferCache.getTransfer(paymentMethodDescription))
@@ -569,15 +569,15 @@ public class PaymentMethodControl
     
     public void updatePaymentMethodDescriptionFromValue(PaymentMethodDescriptionValue paymentMethodDescriptionValue, BasePK updatedBy) {
         if(paymentMethodDescriptionValue.hasBeenModified()) {
-            PaymentMethodDescription paymentMethodDescription = PaymentMethodDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var paymentMethodDescription = PaymentMethodDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      paymentMethodDescriptionValue.getPrimaryKey());
             
             paymentMethodDescription.setThruTime(session.START_TIME_LONG);
             paymentMethodDescription.store();
-            
-            PaymentMethod paymentMethod = paymentMethodDescription.getPaymentMethod();
-            Language language = paymentMethodDescription.getLanguage();
-            String description = paymentMethodDescriptionValue.getDescription();
+
+            var paymentMethod = paymentMethodDescription.getPaymentMethod();
+            var language = paymentMethodDescription.getLanguage();
+            var description = paymentMethodDescriptionValue.getDescription();
             
             paymentMethodDescription = PaymentMethodDescriptionFactory.getInstance().create(paymentMethod, language,
                     description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -595,7 +595,7 @@ public class PaymentMethodControl
     }
     
     public void deletePaymentMethodDescriptionsByPaymentMethod(PaymentMethod paymentMethod, BasePK deletedBy) {
-        List<PaymentMethodDescription> paymentMethodDescriptions = getPaymentMethodDescriptionsForUpdate(paymentMethod);
+        var paymentMethodDescriptions = getPaymentMethodDescriptionsForUpdate(paymentMethod);
         
         paymentMethodDescriptions.forEach((paymentMethodDescription) -> 
                 deletePaymentMethodDescription(paymentMethodDescription, deletedBy)
@@ -607,7 +607,7 @@ public class PaymentMethodControl
     // --------------------------------------------------------------------------------
     
     public PaymentMethodCheck createPaymentMethodCheck(PaymentMethod paymentMethod, Integer holdDays, BasePK createdBy) {
-        PaymentMethodCheck paymentMethodCheck = PaymentMethodCheckFactory.getInstance().create(paymentMethod, holdDays,
+        var paymentMethodCheck = PaymentMethodCheckFactory.getInstance().create(paymentMethod, holdDays,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(paymentMethod.getPrimaryKey(), EventTypes.MODIFY, paymentMethodCheck.getPrimaryKey(),
@@ -632,8 +632,8 @@ public class PaymentMethodControl
                         "WHERE pmchk_pm_paymentmethodid = ? AND pmchk_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PaymentMethodCheckFactory.getInstance().prepareStatement(query);
+
+            var ps = PaymentMethodCheckFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, paymentMethod.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -655,21 +655,21 @@ public class PaymentMethodControl
     }
     
     public PaymentMethodCheckValue getPaymentMethodCheckValueForUpdate(PaymentMethod paymentMethod) {
-        PaymentMethodCheck paymentMethodCheck = getPaymentMethodCheckForUpdate(paymentMethod);
+        var paymentMethodCheck = getPaymentMethodCheckForUpdate(paymentMethod);
         
         return paymentMethodCheck == null? null: paymentMethodCheck.getPaymentMethodCheckValue().clone();
     }
     
     public void updatePaymentMethodCheckFromValue(PaymentMethodCheckValue paymentMethodCheckValue, BasePK updatedBy) {
         if(paymentMethodCheckValue.hasBeenModified()) {
-            PaymentMethodCheck paymentMethodCheck = PaymentMethodCheckFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var paymentMethodCheck = PaymentMethodCheckFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      paymentMethodCheckValue.getPrimaryKey());
             
             paymentMethodCheck.setThruTime(session.START_TIME_LONG);
             paymentMethodCheck.store();
-            
-            PaymentMethodPK paymentMethodPK = paymentMethodCheck.getPaymentMethodPK(); // Not updated
-            Integer holdDays = paymentMethodCheckValue.getHoldDays();
+
+            var paymentMethodPK = paymentMethodCheck.getPaymentMethodPK(); // Not updated
+            var holdDays = paymentMethodCheckValue.getHoldDays();
             
             paymentMethodCheck = PaymentMethodCheckFactory.getInstance().create(paymentMethodPK, holdDays,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -695,7 +695,7 @@ public class PaymentMethodControl
             Boolean checkExpirationDate, Boolean requestSecurityCode, Boolean requireSecurityCode,
             String cardNumberValidationPattern, String securityCodeValidationPattern, Boolean retainCreditCard,
             Boolean retainSecurityCode, Boolean requestBilling, Boolean requireBilling, Boolean requestIssuer, Boolean requireIssuer, BasePK createdBy) {
-        PaymentMethodCreditCard paymentMethodCreditCard = PaymentMethodCreditCardFactory.getInstance().create(session,
+        var paymentMethodCreditCard = PaymentMethodCreditCardFactory.getInstance().create(session,
                 paymentMethod, requestNameOnCard, requireNameOnCard, checkCardNumber, requestExpirationDate, requireExpirationDate,
                 checkExpirationDate, requestSecurityCode, requireSecurityCode, cardNumberValidationPattern,
                 securityCodeValidationPattern, retainCreditCard, retainSecurityCode, requestBilling, requireBilling, requestIssuer, requireIssuer,
@@ -723,8 +723,8 @@ public class PaymentMethodControl
                         "WHERE pmcc_pm_paymentmethodid = ? AND pmcc_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PaymentMethodCreditCardFactory.getInstance().prepareStatement(query);
+
+            var ps = PaymentMethodCreditCardFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, paymentMethod.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -746,36 +746,36 @@ public class PaymentMethodControl
     }
     
     public PaymentMethodCreditCardValue getPaymentMethodCreditCardValueForUpdate(PaymentMethod paymentMethod) {
-        PaymentMethodCreditCard paymentMethodCreditCard = getPaymentMethodCreditCardForUpdate(paymentMethod);
+        var paymentMethodCreditCard = getPaymentMethodCreditCardForUpdate(paymentMethod);
         
         return paymentMethodCreditCard == null? null: paymentMethodCreditCard.getPaymentMethodCreditCardValue().clone();
     }
     
     public void updatePaymentMethodCreditCardFromValue(PaymentMethodCreditCardValue paymentMethodCreditCardValue, BasePK updatedBy) {
         if(paymentMethodCreditCardValue.hasBeenModified()) {
-            PaymentMethodCreditCard paymentMethodCreditCard = PaymentMethodCreditCardFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var paymentMethodCreditCard = PaymentMethodCreditCardFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      paymentMethodCreditCardValue.getPrimaryKey());
             
             paymentMethodCreditCard.setThruTime(session.START_TIME_LONG);
             paymentMethodCreditCard.store();
-            
-            PaymentMethodPK paymentMethodPK = paymentMethodCreditCard.getPaymentMethodPK(); // Not updated
-            Boolean requestNameOnCard = paymentMethodCreditCardValue.getRequestNameOnCard();
-            Boolean reqireNameOnCard = paymentMethodCreditCardValue.getRequireNameOnCard();
-            Boolean checkCardNumber = paymentMethodCreditCardValue.getCheckCardNumber();
-            Boolean requestExpirationDate = paymentMethodCreditCardValue.getRequireExpirationDate();
-            Boolean requireExpirationDate = paymentMethodCreditCardValue.getRequireExpirationDate();
-            Boolean checkExpirationDate = paymentMethodCreditCardValue.getCheckExpirationDate();
-            Boolean requestSecurityCode = paymentMethodCreditCardValue.getRequestSecurityCode();
-            Boolean requireSecurityCode = paymentMethodCreditCardValue.getRequireSecurityCode();
-            String cardNumberValidationPattern = paymentMethodCreditCardValue.getCardNumberValidationPattern();
-            String securityCodeValidationPattern = paymentMethodCreditCardValue.getSecurityCodeValidationPattern();
-            Boolean retainCreditCard = paymentMethodCreditCardValue.getRetainCreditCard();
-            Boolean retainSecurityCode = paymentMethodCreditCardValue.getRetainSecurityCode();
-            Boolean requestBilling = paymentMethodCreditCardValue.getRequestBilling();
-            Boolean requireBilling = paymentMethodCreditCardValue.getRequireBilling();
-            Boolean requestIssuer = paymentMethodCreditCardValue.getRequestIssuer();
-            Boolean requireIssuer = paymentMethodCreditCardValue.getRequireIssuer();
+
+            var paymentMethodPK = paymentMethodCreditCard.getPaymentMethodPK(); // Not updated
+            var requestNameOnCard = paymentMethodCreditCardValue.getRequestNameOnCard();
+            var reqireNameOnCard = paymentMethodCreditCardValue.getRequireNameOnCard();
+            var checkCardNumber = paymentMethodCreditCardValue.getCheckCardNumber();
+            var requestExpirationDate = paymentMethodCreditCardValue.getRequireExpirationDate();
+            var requireExpirationDate = paymentMethodCreditCardValue.getRequireExpirationDate();
+            var checkExpirationDate = paymentMethodCreditCardValue.getCheckExpirationDate();
+            var requestSecurityCode = paymentMethodCreditCardValue.getRequestSecurityCode();
+            var requireSecurityCode = paymentMethodCreditCardValue.getRequireSecurityCode();
+            var cardNumberValidationPattern = paymentMethodCreditCardValue.getCardNumberValidationPattern();
+            var securityCodeValidationPattern = paymentMethodCreditCardValue.getSecurityCodeValidationPattern();
+            var retainCreditCard = paymentMethodCreditCardValue.getRetainCreditCard();
+            var retainSecurityCode = paymentMethodCreditCardValue.getRetainSecurityCode();
+            var requestBilling = paymentMethodCreditCardValue.getRequestBilling();
+            var requireBilling = paymentMethodCreditCardValue.getRequireBilling();
+            var requestIssuer = paymentMethodCreditCardValue.getRequestIssuer();
+            var requireIssuer = paymentMethodCreditCardValue.getRequireIssuer();
             
             paymentMethodCreditCard = PaymentMethodCreditCardFactory.getInstance().create(paymentMethodPK,
                     requestNameOnCard, reqireNameOnCard, checkCardNumber, requestExpirationDate, requireExpirationDate,

@@ -47,10 +47,10 @@ public class SetUserVisitPreferredDateTimeFormatCommand
     
     @Override
     protected BaseResult execute() {
-        DateTimeFormat currency = DateTimeFormatLogic.getInstance().getDateTimeFormatByName(this, form.getDateTimeFormatName());
+        var currency = DateTimeFormatLogic.getInstance().getDateTimeFormatByName(this, form.getDateTimeFormatName());
 
         if(!hasExecutionErrors()) {
-            UserControl userControl = getUserControl();
+            var userControl = getUserControl();
 
             userControl.setUserVisitPreferredDateTimeFormat(getUserVisitForUpdate(), currency, getPartyPK());
         }

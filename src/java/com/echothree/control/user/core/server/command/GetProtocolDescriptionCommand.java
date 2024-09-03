@@ -67,17 +67,17 @@ public class GetProtocolDescriptionCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        GetProtocolDescriptionResult result = CoreResultFactory.getGetProtocolDescriptionResult();
-        String protocolName = form.getProtocolName();
-        Protocol protocol = coreControl.getProtocolByName(protocolName);
+        var result = CoreResultFactory.getGetProtocolDescriptionResult();
+        var protocolName = form.getProtocolName();
+        var protocol = coreControl.getProtocolByName(protocolName);
 
         if(protocol != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
-                ProtocolDescription protocolDescription = coreControl.getProtocolDescription(protocol, language);
+                var protocolDescription = coreControl.getProtocolDescription(protocol, language);
 
                 if(protocolDescription != null) {
                     result.setProtocolDescription(coreControl.getProtocolDescriptionTransfer(getUserVisit(), protocolDescription));

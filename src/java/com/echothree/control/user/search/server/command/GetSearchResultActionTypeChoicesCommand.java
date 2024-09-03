@@ -63,9 +63,9 @@ public class GetSearchResultActionTypeChoicesCommand
     @Override
     protected BaseResult execute() {
         var searchControl = Session.getModelController(SearchControl.class);
-        GetSearchResultActionTypeChoicesResult result = SearchResultFactory.getGetSearchResultActionTypeChoicesResult();
-        String defaultSearchResultActionTypeChoice = form.getDefaultSearchResultActionTypeChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = SearchResultFactory.getGetSearchResultActionTypeChoicesResult();
+        var defaultSearchResultActionTypeChoice = form.getDefaultSearchResultActionTypeChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setSearchResultActionTypeChoices(searchControl.getSearchResultActionTypeChoices(defaultSearchResultActionTypeChoice, getPreferredLanguage(),
                 allowNullChoice));

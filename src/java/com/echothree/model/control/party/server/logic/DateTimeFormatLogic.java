@@ -41,7 +41,7 @@ public class DateTimeFormatLogic
     
     public DateTimeFormat getDateTimeFormatByName(final ExecutionErrorAccumulator eea, final String dateTimeFormatName) {
         var partyControl = Session.getModelController(PartyControl.class);
-        DateTimeFormat dateTimeFormat = partyControl.getDateTimeFormatByName(dateTimeFormatName);
+        var dateTimeFormat = partyControl.getDateTimeFormatByName(dateTimeFormatName);
 
         if(dateTimeFormat == null) {
             handleExecutionError(UnknownDateTimeFormatNameException.class, eea, ExecutionErrors.UnknownDateTimeFormatName.name(), dateTimeFormatName);

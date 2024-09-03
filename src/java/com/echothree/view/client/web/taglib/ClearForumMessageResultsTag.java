@@ -74,11 +74,11 @@ public class ClearForumMessageResultsTag
     public int doStartTag()
             throws JspException {
         try {
-            ClearForumMessageResultsForm commandForm = SearchUtil.getHome().getClearForumMessageResultsForm();
+            var commandForm = SearchUtil.getHome().getClearForumMessageResultsForm();
 
             commandForm.setSearchTypeName(searchTypeName);
-            
-            CommandResult commandResult = SearchUtil.getHome().clearForumMessageResults(getUserVisitPK(), commandForm);
+
+            var commandResult = SearchUtil.getHome().clearForumMessageResults(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {

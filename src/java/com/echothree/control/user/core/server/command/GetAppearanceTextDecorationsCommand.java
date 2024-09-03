@@ -62,9 +62,9 @@ public class GetAppearanceTextDecorationsCommand
     
     @Override
     protected BaseResult execute() {
-        GetAppearanceTextDecorationsResult result = CoreResultFactory.getGetAppearanceTextDecorationsResult();
-        String appearanceName = form.getAppearanceName();
-        Appearance appearance = AppearanceLogic.getInstance().getAppearanceByName(this, appearanceName);
+        var result = CoreResultFactory.getGetAppearanceTextDecorationsResult();
+        var appearanceName = form.getAppearanceName();
+        var appearance = AppearanceLogic.getInstance().getAppearanceByName(this, appearanceName);
         
         if(!hasExecutionErrors()) {
             var coreControl = getCoreControl();

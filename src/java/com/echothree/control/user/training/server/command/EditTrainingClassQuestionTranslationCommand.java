@@ -99,22 +99,22 @@ public class EditTrainingClassQuestionTranslationCommand
     public TrainingClassQuestionTranslation getEntity(EditTrainingClassQuestionTranslationResult result) {
         var trainingControl = Session.getModelController(TrainingControl.class);
         TrainingClassQuestionTranslation trainingClassQuestionTranslation = null;
-        String trainingClassName = spec.getTrainingClassName();
-        TrainingClass trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
+        var trainingClassName = spec.getTrainingClassName();
+        var trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
 
         if(trainingClass != null) {
-            String trainingClassSectionName = spec.getTrainingClassSectionName();
+            var trainingClassSectionName = spec.getTrainingClassSectionName();
             
             trainingClassSection = trainingControl.getTrainingClassSectionByName(trainingClass, trainingClassSectionName);
 
             if(trainingClassSection != null) {
-                String trainingClassQuestionName = spec.getTrainingClassQuestionName();
-                TrainingClassQuestion trainingClassQuestion = trainingControl.getTrainingClassQuestionByName(trainingClassSection, trainingClassQuestionName);
+                var trainingClassQuestionName = spec.getTrainingClassQuestionName();
+                var trainingClassQuestion = trainingControl.getTrainingClassQuestionByName(trainingClassSection, trainingClassQuestionName);
 
                 if(trainingClassQuestion != null) {
                     var partyControl = Session.getModelController(PartyControl.class);
-                    String languageIsoName = spec.getLanguageIsoName();
-                    Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                    var languageIsoName = spec.getLanguageIsoName();
+                    var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                     if(language != null) {
                         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -167,9 +167,9 @@ public class EditTrainingClassQuestionTranslationCommand
 
     @Override
     protected void canUpdate(TrainingClassQuestionTranslation trainingClassQuestionTranslation) {
-        MimeTypeLogic mimeTypeLogic = MimeTypeLogic.getInstance();
-        String questionMimeTypeName = edit.getQuestionMimeTypeName();
-        String question = edit.getQuestion();
+        var mimeTypeLogic = MimeTypeLogic.getInstance();
+        var questionMimeTypeName = edit.getQuestionMimeTypeName();
+        var question = edit.getQuestion();
         
         questionMimeType = mimeTypeLogic.checkMimeType(this, questionMimeTypeName, question, MimeTypeUsageTypes.TEXT.name(),
                 ExecutionErrors.MissingRequiredQuestionMimeTypeName.name(), ExecutionErrors.MissingRequiredQuestion.name(),
@@ -179,7 +179,7 @@ public class EditTrainingClassQuestionTranslationCommand
     @Override
     public void doUpdate(TrainingClassQuestionTranslation trainingClassQuestionTranslation) {
         var trainingControl = Session.getModelController(TrainingControl.class);
-        TrainingClassQuestionTranslationValue trainingClassQuestionTranslationValue = trainingControl.getTrainingClassQuestionTranslationValue(trainingClassQuestionTranslation);
+        var trainingClassQuestionTranslationValue = trainingControl.getTrainingClassQuestionTranslationValue(trainingClassQuestionTranslation);
         
         trainingClassQuestionTranslationValue.setQuestionMimeTypePK(questionMimeType.getPrimaryKey());
         trainingClassQuestionTranslationValue.setQuestion(edit.getQuestion());

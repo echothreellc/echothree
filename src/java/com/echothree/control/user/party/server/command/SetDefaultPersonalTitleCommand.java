@@ -50,11 +50,11 @@ public class SetDefaultPersonalTitleCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        String personalTitleId = form.getPersonalTitleId();
-        PersonalTitlePK personalTitlePK = partyControl.convertPersonalTitleIdToPK(personalTitleId);
+        var personalTitleId = form.getPersonalTitleId();
+        var personalTitlePK = partyControl.convertPersonalTitleIdToPK(personalTitleId);
         
         if(personalTitlePK != null) {
-             PersonalTitleDetailValue personalTitleDetailValue = partyControl.getPersonalTitleDetailValueByPKForUpdate(personalTitlePK);
+            var personalTitleDetailValue = partyControl.getPersonalTitleDetailValueByPKForUpdate(personalTitlePK);
              
              personalTitleDetailValue.setIsDefault(Boolean.TRUE);
              partyControl.updatePersonalTitleFromValue(personalTitleDetailValue, getPartyPK());

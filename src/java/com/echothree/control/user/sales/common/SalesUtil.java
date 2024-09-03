@@ -30,7 +30,7 @@ public class SalesUtil {
     public static SalesLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
 
             cachedLocal = (SalesLocal)ctx.lookup("ejb:echothree/echothree-server/SalesBean!com.echothree.control.user.sales.server.SalesLocal");
         }
@@ -42,7 +42,7 @@ public class SalesUtil {
     public static SalesRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
             
             cachedRemote = (SalesRemote)ctx.lookup("ejb:echothree/echothree-server/SalesBean!com.echothree.control.user.sales.common.SalesRemote");
         }

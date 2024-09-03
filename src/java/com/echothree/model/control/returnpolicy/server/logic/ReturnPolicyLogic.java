@@ -204,7 +204,7 @@ public class ReturnPolicyLogic
             final ReturnPolicy returnPolicies[]) {
         ReturnPolicy returnPolicy = null;
 
-        for(int i = 0 ; returnPolicy == null && i < returnPolicies.length ; i++) {
+        for(var i = 0; returnPolicy == null && i < returnPolicies.length ; i++) {
             returnPolicy = returnPolicies[i];
         }
 
@@ -230,7 +230,7 @@ public class ReturnPolicyLogic
         var orderControl = Session.getModelController(OrderControl.class);
 
         // Both CUSTOMERs and VENDORs use Orders and OrderLines, so check for ReturnPolicy use there first.
-        boolean inUse = orderControl.countOrdersByReturnPolicy(returnPolicy) != 0;
+        var inUse = orderControl.countOrdersByReturnPolicy(returnPolicy) != 0;
 
         if(!inUse) {
             var orderLineControl = Session.getModelController(OrderLineControl.class);
@@ -239,7 +239,7 @@ public class ReturnPolicyLogic
         }
 
         if(!inUse) {
-            String returnKindName = returnPolicy.getLastDetail().getReturnKind().getLastDetail().getReturnKindName();
+            var returnKindName = returnPolicy.getLastDetail().getReturnKind().getLastDetail().getReturnKindName();
 
             if(returnKindName.equals(ReturnKinds.CUSTOMER_RETURN.name())) {
                 var itemControl = Session.getModelController(ItemControl.class);

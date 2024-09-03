@@ -101,8 +101,8 @@ public class EditItemAliasCommand
     @Override
     public ItemAlias getEntity(EditItemAliasResult result) {
         var itemControl = Session.getModelController(ItemControl.class);
-        String alias = spec.getAlias();
-        ItemAlias itemAlias = itemControl.getItemAliasByAliasForUpdate(alias);
+        var alias = spec.getAlias();
+        var itemAlias = itemControl.getItemAliasByAliasForUpdate(alias);
 
         if(itemAlias == null) {
             addExecutionError(ExecutionErrors.UnknownItemAlias.name(), alias);
@@ -136,32 +136,32 @@ public class EditItemAliasCommand
     @Override
     public void canUpdate(ItemAlias itemAlias) {
         var itemControl = Session.getModelController(ItemControl.class);
-        String alias = edit.getAlias();
-        Item duplicateItem = itemControl.getItemByName(alias);
+        var alias = edit.getAlias();
+        var duplicateItem = itemControl.getItemByName(alias);
 
         if(duplicateItem == null) {
-            ItemAlias duplicateItemAlias = itemControl.getItemAliasByAlias(alias);
+            var duplicateItemAlias = itemControl.getItemAliasByAlias(alias);
 
             if(duplicateItemAlias == null || duplicateItemAlias.getPrimaryKey().equals(itemAlias.getPrimaryKey())) {
                 var uomControl = Session.getModelController(UomControl.class);
-                String unitOfMeasureTypeName = edit.getUnitOfMeasureTypeName();
-                ItemDetail itemDetail = itemAlias.getItem().getLastDetail();
-                UnitOfMeasureKind unitOfMeasureKind = itemDetail.getUnitOfMeasureKind();
+                var unitOfMeasureTypeName = edit.getUnitOfMeasureTypeName();
+                var itemDetail = itemAlias.getItem().getLastDetail();
+                var unitOfMeasureKind = itemDetail.getUnitOfMeasureKind();
 
                 unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
 
                 if(unitOfMeasureType != null) {
-                    String itemAliasTypeName = edit.getItemAliasTypeName();
+                    var itemAliasTypeName = edit.getItemAliasTypeName();
 
                     itemAliasType = itemControl.getItemAliasTypeByName(itemAliasTypeName);
 
                     if(itemAliasType != null) {
-                        ItemAliasTypeDetail itemAliasTypeDetail = itemAliasType.getLastDetail();
-                        String validationPattern = itemAliasTypeDetail.getValidationPattern();
+                        var itemAliasTypeDetail = itemAliasType.getLastDetail();
+                        var validationPattern = itemAliasTypeDetail.getValidationPattern();
 
                         if(validationPattern != null) {
-                            Pattern pattern = Pattern.compile(validationPattern);
-                            Matcher m = pattern.matcher(alias);
+                            var pattern = Pattern.compile(validationPattern);
+                            var m = pattern.matcher(alias);
 
                             if(!m.matches()) {
                                 addExecutionError(ExecutionErrors.InvalidAlias.name(), alias);
@@ -189,9 +189,9 @@ public class EditItemAliasCommand
     @Override
     public void doUpdate(ItemAlias itemAlias) {
         var itemControl = Session.getModelController(ItemControl.class);
-        ItemAliasValue itemAliasValue = itemControl.getItemAliasValue(itemAlias);
-        String alias = edit.getAlias();
-        String originalAlias = itemAliasValue.getAlias();
+        var itemAliasValue = itemControl.getItemAliasValue(itemAlias);
+        var alias = edit.getAlias();
+        var originalAlias = itemAliasValue.getAlias();
         BasePK updatedBy = getPartyPK();
 
         itemAliasValue.setUnitOfMeasureTypePK(unitOfMeasureType.getPrimaryKey());
@@ -202,19 +202,19 @@ public class EditItemAliasCommand
 
         if(itemAliasValue.getAliasHasBeenModified()) {
             var vendorControl = Session.getModelController(VendorControl.class);
-            List<Vendor> vendors = vendorControl.getVendorsByDefaultItemAliasType(itemAliasType);
+            var vendors = vendorControl.getVendorsByDefaultItemAliasType(itemAliasType);
 
             for(var vendor : vendors) {
-                Party vendorParty = vendor.getParty();
-                VendorItem vendorItem = vendorControl.getVendorItemByVendorPartyAndVendorItemNameForUpdate(vendorParty, originalAlias);
+                var vendorParty = vendor.getParty();
+                var vendorItem = vendorControl.getVendorItemByVendorPartyAndVendorItemNameForUpdate(vendorParty, originalAlias);
 
                 if(vendorItem != null) {
                     try {
                         if(lockEntity(vendorItem) && lockEntityForUpdate(vendorItem)) {
-                            VendorItem duplicateVendorItem = vendorControl.getVendorItemByVendorPartyAndVendorItemName(vendorParty, alias);
+                            var duplicateVendorItem = vendorControl.getVendorItemByVendorPartyAndVendorItemName(vendorParty, alias);
 
                             if(duplicateVendorItem == null) {
-                                VendorItemDetailValue vendorItemDetailValue = vendorControl.getVendorItemDetailValueForUpdate(vendorItem);
+                                var vendorItemDetailValue = vendorControl.getVendorItemDetailValueForUpdate(vendorItem);
 
                                 vendorItemDetailValue.setVendorItemName(alias);
 

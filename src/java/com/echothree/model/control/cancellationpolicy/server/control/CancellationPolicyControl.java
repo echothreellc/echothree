@@ -140,7 +140,7 @@ public class CancellationPolicyControl
     // --------------------------------------------------------------------------------
     
     public PartyCancellationPolicy createPartyCancellationPolicy(Party party, CancellationPolicy cancellationPolicy, BasePK createdBy) {
-        PartyCancellationPolicy partyCancellationPolicy = PartyCancellationPolicyFactory.getInstance().create(party, cancellationPolicy,
+        var partyCancellationPolicy = PartyCancellationPolicyFactory.getInstance().create(party, cancellationPolicy,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partyCancellationPolicy.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -278,7 +278,7 @@ public class CancellationPolicyControl
     
     public List<PartyCancellationPolicyTransfer> getPartyCancellationPolicyTransfers(UserVisit userVisit, Collection<PartyCancellationPolicy> cancellationPolicies) {
         List<PartyCancellationPolicyTransfer> cancellationPolicyTransfers = new ArrayList<>(cancellationPolicies.size());
-        PartyCancellationPolicyTransferCache cancellationPolicyTransferCache = getCancellationPolicyTransferCaches(userVisit).getPartyCancellationPolicyTransferCache();
+        var cancellationPolicyTransferCache = getCancellationPolicyTransferCaches(userVisit).getPartyCancellationPolicyTransferCache();
 
         cancellationPolicies.forEach((cancellationPolicy) ->
                 cancellationPolicyTransfers.add(cancellationPolicyTransferCache.getPartyCancellationPolicyTransfer(cancellationPolicy))
@@ -326,20 +326,20 @@ public class CancellationPolicyControl
     
     public CancellationKind createCancellationKind(String cancellationKindName, SequenceType cancellationSequenceType, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
-        CancellationKind defaultCancellationKind = getDefaultCancellationKind();
-        boolean defaultFound = defaultCancellationKind != null;
+        var defaultCancellationKind = getDefaultCancellationKind();
+        var defaultFound = defaultCancellationKind != null;
         
         if(defaultFound && isDefault) {
-            CancellationKindDetailValue defaultCancellationKindDetailValue = getDefaultCancellationKindDetailValueForUpdate();
+            var defaultCancellationKindDetailValue = getDefaultCancellationKindDetailValueForUpdate();
             
             defaultCancellationKindDetailValue.setIsDefault(Boolean.FALSE);
             updateCancellationKindFromValue(defaultCancellationKindDetailValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        CancellationKind cancellationKind = CancellationKindFactory.getInstance().create();
-        CancellationKindDetail cancellationKindDetail = CancellationKindDetailFactory.getInstance().create(cancellationKind, cancellationKindName,
+
+        var cancellationKind = CancellationKindFactory.getInstance().create();
+        var cancellationKindDetail = CancellationKindDetailFactory.getInstance().create(cancellationKind, cancellationKindName,
                 cancellationSequenceType, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -392,8 +392,8 @@ public class CancellationPolicyControl
                         "WHERE cnclk_activedetailid = cnclkdt_cancellationkinddetailid AND cnclkdt_cancellationkindname = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CancellationKindFactory.getInstance().prepareStatement(query);
+
+            var ps = CancellationKindFactory.getInstance().prepareStatement(query);
             
             ps.setString(1, cancellationKindName);
             
@@ -434,8 +434,8 @@ public class CancellationPolicyControl
                     "WHERE cnclk_activedetailid = cnclkdt_cancellationkinddetailid AND cnclkdt_isdefault = 1 " +
                     "FOR UPDATE";
         }
-        
-        PreparedStatement ps = CancellationKindFactory.getInstance().prepareStatement(query);
+
+        var ps = CancellationKindFactory.getInstance().prepareStatement(query);
         
         return CancellationKindFactory.getInstance().getEntityFromQuery(entityPermission, ps);
     }
@@ -467,8 +467,8 @@ public class CancellationPolicyControl
                     "WHERE cnclk_activedetailid = cnclkdt_cancellationkinddetailid " +
                     "FOR UPDATE";
         }
-        
-        PreparedStatement ps = CancellationKindFactory.getInstance().prepareStatement(query);
+
+        var ps = CancellationKindFactory.getInstance().prepareStatement(query);
         
         return CancellationKindFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
     }
@@ -482,7 +482,7 @@ public class CancellationPolicyControl
     }
     
     public CancellationKindChoicesBean getCancellationKindChoices(String defaultCancellationKindChoice, Language language, boolean allowNullChoice) {
-        List<CancellationKind> cancellationKinds = getCancellationKinds();
+        var cancellationKinds = getCancellationKinds();
         var size = cancellationKinds.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -498,7 +498,7 @@ public class CancellationPolicyControl
         }
         
         for(var cancellationKind : cancellationKinds) {
-            CancellationKindDetail cancellationKindDetail = cancellationKind.getLastDetail();
+            var cancellationKindDetail = cancellationKind.getLastDetail();
             
             var label = getBestCancellationKindDescription(cancellationKind, language);
             var value = cancellationKindDetail.getCancellationKindName();
@@ -535,26 +535,26 @@ public class CancellationPolicyControl
     }
 
     private void updateCancellationKindFromValue(CancellationKindDetailValue cancellationKindDetailValue, boolean checkDefault, BasePK updatedBy) {
-        CancellationKind cancellationKind = CancellationKindFactory.getInstance().getEntityFromPK(session,
+        var cancellationKind = CancellationKindFactory.getInstance().getEntityFromPK(session,
                 EntityPermission.READ_WRITE, cancellationKindDetailValue.getCancellationKindPK());
-        CancellationKindDetail cancellationKindDetail = cancellationKind.getActiveDetailForUpdate();
+        var cancellationKindDetail = cancellationKind.getActiveDetailForUpdate();
         
         cancellationKindDetail.setThruTime(session.START_TIME_LONG);
         cancellationKindDetail.store();
-        
-        CancellationKindPK cancellationKindPK = cancellationKindDetail.getCancellationKindPK();
-        String cancellationKindName = cancellationKindDetailValue.getCancellationKindName();
-        SequenceTypePK cancellationSequenceTypePK = cancellationKindDetailValue.getCancellationSequenceTypePK();
-        Boolean isDefault = cancellationKindDetailValue.getIsDefault();
-        Integer sortOrder = cancellationKindDetailValue.getSortOrder();
+
+        var cancellationKindPK = cancellationKindDetail.getCancellationKindPK();
+        var cancellationKindName = cancellationKindDetailValue.getCancellationKindName();
+        var cancellationSequenceTypePK = cancellationKindDetailValue.getCancellationSequenceTypePK();
+        var isDefault = cancellationKindDetailValue.getIsDefault();
+        var sortOrder = cancellationKindDetailValue.getSortOrder();
         
         if(checkDefault) {
-            CancellationKind defaultCancellationKind = getDefaultCancellationKind();
-            boolean defaultFound = defaultCancellationKind != null && !defaultCancellationKind.equals(cancellationKind);
+            var defaultCancellationKind = getDefaultCancellationKind();
+            var defaultFound = defaultCancellationKind != null && !defaultCancellationKind.equals(cancellationKind);
             
             if(isDefault && defaultFound) {
                 // If I'm the default, and a default already existed...
-                CancellationKindDetailValue defaultCancellationKindDetailValue = getDefaultCancellationKindDetailValueForUpdate();
+                var defaultCancellationKindDetailValue = getDefaultCancellationKindDetailValueForUpdate();
                 
                 defaultCancellationKindDetailValue.setIsDefault(Boolean.FALSE);
                 updateCancellationKindFromValue(defaultCancellationKindDetailValue, false, updatedBy);
@@ -580,23 +580,23 @@ public class CancellationPolicyControl
     
     public void deleteCancellationKind(CancellationKind cancellationKind, BasePK deletedBy) {
         deleteCancellationKindDescriptionsByCancellationKind(cancellationKind, deletedBy);
-        
-        CancellationKindDetail cancellationKindDetail = cancellationKind.getLastDetailForUpdate();
+
+        var cancellationKindDetail = cancellationKind.getLastDetailForUpdate();
         cancellationKindDetail.setThruTime(session.START_TIME_LONG);
         cancellationKind.setActiveDetail(null);
         cancellationKind.store();
         
         // Check for default, and pick one if necessary
-        CancellationKind defaultCancellationKind = getDefaultCancellationKind();
+        var defaultCancellationKind = getDefaultCancellationKind();
         if(defaultCancellationKind == null) {
-            List<CancellationKind> cancellationKinds = getCancellationKindsForUpdate();
+            var cancellationKinds = getCancellationKindsForUpdate();
             
             if(!cancellationKinds.isEmpty()) {
-                Iterator<CancellationKind> iter = cancellationKinds.iterator();
+                var iter = cancellationKinds.iterator();
                 if(iter.hasNext()) {
                     defaultCancellationKind = iter.next();
                 }
-                CancellationKindDetailValue cancellationKindDetailValue = Objects.requireNonNull(defaultCancellationKind).getLastDetailForUpdate().getCancellationKindDetailValue().clone();
+                var cancellationKindDetailValue = Objects.requireNonNull(defaultCancellationKind).getLastDetailForUpdate().getCancellationKindDetailValue().clone();
                 
                 cancellationKindDetailValue.setIsDefault(Boolean.TRUE);
                 updateCancellationKindFromValue(cancellationKindDetailValue, false, deletedBy);
@@ -612,7 +612,7 @@ public class CancellationPolicyControl
     
     public CancellationKindDescription createCancellationKindDescription(CancellationKind cancellationKind, Language language, String description,
             BasePK createdBy) {
-        CancellationKindDescription cancellationKindDescription = CancellationKindDescriptionFactory.getInstance().create(cancellationKind,
+        var cancellationKindDescription = CancellationKindDescriptionFactory.getInstance().create(cancellationKind,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(cancellationKind.getPrimaryKey(), EventTypes.MODIFY, cancellationKindDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -636,8 +636,8 @@ public class CancellationPolicyControl
                         "WHERE cnclkd_cnclk_cancellationkindid = ? AND cnclkd_lang_languageid = ? AND cnclkd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CancellationKindDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = CancellationKindDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, cancellationKind.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -685,8 +685,8 @@ public class CancellationPolicyControl
                         "WHERE cnclkd_cnclk_cancellationkindid = ? AND cnclkd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CancellationKindDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = CancellationKindDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, cancellationKind.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -709,7 +709,7 @@ public class CancellationPolicyControl
     
     public String getBestCancellationKindDescription(CancellationKind cancellationKind, Language language) {
         String description;
-        CancellationKindDescription cancellationKindDescription = getCancellationKindDescription(cancellationKind, language);
+        var cancellationKindDescription = getCancellationKindDescription(cancellationKind, language);
         
         if(cancellationKindDescription == null && !language.getIsDefault()) {
             cancellationKindDescription = getCancellationKindDescription(cancellationKind, getPartyControl().getDefaultLanguage());
@@ -729,7 +729,7 @@ public class CancellationPolicyControl
     }
     
     public List<CancellationKindDescriptionTransfer> getCancellationKindDescriptionTransfersByCancellationKind(UserVisit userVisit, CancellationKind cancellationKind) {
-        List<CancellationKindDescription> cancellationKindDescriptions = getCancellationKindDescriptionsByCancellationKind(cancellationKind);
+        var cancellationKindDescriptions = getCancellationKindDescriptionsByCancellationKind(cancellationKind);
         List<CancellationKindDescriptionTransfer> cancellationKindDescriptionTransfers = new ArrayList<>(cancellationKindDescriptions.size());
         
         cancellationKindDescriptions.forEach((cancellationKindDescription) -> {
@@ -741,15 +741,15 @@ public class CancellationPolicyControl
     
     public void updateCancellationKindDescriptionFromValue(CancellationKindDescriptionValue cancellationKindDescriptionValue, BasePK updatedBy) {
         if(cancellationKindDescriptionValue.hasBeenModified()) {
-            CancellationKindDescription cancellationKindDescription = CancellationKindDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var cancellationKindDescription = CancellationKindDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      cancellationKindDescriptionValue.getPrimaryKey());
             
             cancellationKindDescription.setThruTime(session.START_TIME_LONG);
             cancellationKindDescription.store();
-            
-            CancellationKind cancellationKind = cancellationKindDescription.getCancellationKind();
-            Language language = cancellationKindDescription.getLanguage();
-            String description = cancellationKindDescriptionValue.getDescription();
+
+            var cancellationKind = cancellationKindDescription.getCancellationKind();
+            var language = cancellationKindDescription.getLanguage();
+            var description = cancellationKindDescriptionValue.getDescription();
             
             cancellationKindDescription = CancellationKindDescriptionFactory.getInstance().create(cancellationKind, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -766,7 +766,7 @@ public class CancellationPolicyControl
     }
     
     public void deleteCancellationKindDescriptionsByCancellationKind(CancellationKind cancellationKind, BasePK deletedBy) {
-        List<CancellationKindDescription> cancellationKindDescriptions = getCancellationKindDescriptionsByCancellationKindForUpdate(cancellationKind);
+        var cancellationKindDescriptions = getCancellationKindDescriptionsByCancellationKindForUpdate(cancellationKind);
         
         cancellationKindDescriptions.forEach((cancellationKindDescription) -> 
                 deleteCancellationKindDescription(cancellationKindDescription, deletedBy)
@@ -779,20 +779,20 @@ public class CancellationPolicyControl
     
     public CancellationPolicy createCancellationPolicy(CancellationKind cancellationKind, String cancellationPolicyName, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
-        CancellationPolicy defaultCancellationPolicy = getDefaultCancellationPolicy(cancellationKind);
-        boolean defaultFound = defaultCancellationPolicy != null;
+        var defaultCancellationPolicy = getDefaultCancellationPolicy(cancellationKind);
+        var defaultFound = defaultCancellationPolicy != null;
         
         if(defaultFound && isDefault) {
-            CancellationPolicyDetailValue defaultCancellationPolicyDetailValue = getDefaultCancellationPolicyDetailValueForUpdate(cancellationKind);
+            var defaultCancellationPolicyDetailValue = getDefaultCancellationPolicyDetailValueForUpdate(cancellationKind);
             
             defaultCancellationPolicyDetailValue.setIsDefault(Boolean.FALSE);
             updateCancellationPolicyFromValue(defaultCancellationPolicyDetailValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        CancellationPolicy cancellationPolicy = CancellationPolicyFactory.getInstance().create();
-        CancellationPolicyDetail cancellationPolicyDetail = CancellationPolicyDetailFactory.getInstance().create(session,
+
+        var cancellationPolicy = CancellationPolicyFactory.getInstance().create();
+        var cancellationPolicyDetail = CancellationPolicyDetailFactory.getInstance().create(session,
                 cancellationPolicy, cancellationKind, cancellationPolicyName, isDefault, sortOrder, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
@@ -849,8 +849,8 @@ public class CancellationPolicyControl
                         "WHERE cnclplcy_activedetailid = cnclplcydt_cancellationpolicydetailid AND cnclplcydt_cnclk_cancellationkindid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CancellationPolicyFactory.getInstance().prepareStatement(query);
+
+            var ps = CancellationPolicyFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, cancellationKind.getPrimaryKey().getEntityId());
             
@@ -888,8 +888,8 @@ public class CancellationPolicyControl
                         "AND cnclplcydt_cnclk_cancellationkindid = ? AND cnclplcydt_isdefault = 1 " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CancellationPolicyFactory.getInstance().prepareStatement(query);
+
+            var ps = CancellationPolicyFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, cancellationKind.getPrimaryKey().getEntityId());
             
@@ -931,8 +931,8 @@ public class CancellationPolicyControl
                         "AND cnclplcydt_cnclk_cancellationkindid = ? AND cnclplcydt_cancellationpolicyname = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CancellationPolicyFactory.getInstance().prepareStatement(query);
+
+            var ps = CancellationPolicyFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, cancellationKind.getPrimaryKey().getEntityId());
             ps.setString(2, cancellationPolicyName);
@@ -963,7 +963,7 @@ public class CancellationPolicyControl
     
     public CancellationPolicyChoicesBean getCancellationPolicyChoices(String defaultCancellationPolicyChoice, Language language,
             boolean allowNullChoice, CancellationKind cancellationKind) {
-        List<CancellationPolicy> cancellationPolicies = getCancellationPolicies(cancellationKind);
+        var cancellationPolicies = getCancellationPolicies(cancellationKind);
         var size = cancellationPolicies.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -979,9 +979,9 @@ public class CancellationPolicyControl
         }
         
         for(var cancellationPolicy : cancellationPolicies) {
-            CancellationPolicyDetail cancellationPolicyDetail = cancellationPolicy.getLastDetail();
-            String cancellationPolicyName = cancellationPolicyDetail.getCancellationPolicyName();
-            CancellationPolicyTranslation cancellationPolicyTranslation = getBestCancellationPolicyTranslation(cancellationPolicy, language);
+            var cancellationPolicyDetail = cancellationPolicy.getLastDetail();
+            var cancellationPolicyName = cancellationPolicyDetail.getCancellationPolicyName();
+            var cancellationPolicyTranslation = getBestCancellationPolicyTranslation(cancellationPolicy, language);
 
             var label = cancellationPolicyTranslation == null ? cancellationPolicyName : cancellationPolicyTranslation.getDescription();
             var value = cancellationPolicyName;
@@ -1004,7 +1004,7 @@ public class CancellationPolicyControl
 
     public List<CancellationPolicyTransfer> getCancellationPolicyTransfers(UserVisit userVisit, Collection<CancellationPolicy> cancellationPolicies) {
         List<CancellationPolicyTransfer> cancellationPolicyTransfers = new ArrayList<>(cancellationPolicies.size());
-        CancellationPolicyTransferCache cancellationPolicyTransferCache = getCancellationPolicyTransferCaches(userVisit).getCancellationPolicyTransferCache();
+        var cancellationPolicyTransferCache = getCancellationPolicyTransferCaches(userVisit).getCancellationPolicyTransferCache();
 
         cancellationPolicies.forEach((cancellationPolicy) ->
                 cancellationPolicyTransfers.add(cancellationPolicyTransferCache.getCancellationPolicyTransfer(cancellationPolicy))
@@ -1020,27 +1020,27 @@ public class CancellationPolicyControl
     private void updateCancellationPolicyFromValue(CancellationPolicyDetailValue cancellationPolicyDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(cancellationPolicyDetailValue.hasBeenModified()) {
-            CancellationPolicy cancellationPolicy = CancellationPolicyFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var cancellationPolicy = CancellationPolicyFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      cancellationPolicyDetailValue.getCancellationPolicyPK());
-            CancellationPolicyDetail cancellationPolicyDetail = cancellationPolicy.getActiveDetailForUpdate();
+            var cancellationPolicyDetail = cancellationPolicy.getActiveDetailForUpdate();
             
             cancellationPolicyDetail.setThruTime(session.START_TIME_LONG);
             cancellationPolicyDetail.store();
-            
-            CancellationPolicyPK cancellationPolicyPK = cancellationPolicyDetail.getCancellationPolicyPK();
-            CancellationKind cancellationKind = cancellationPolicyDetail.getCancellationKind();
-            CancellationKindPK cancellationKindPK = cancellationKind.getPrimaryKey();
-            String cancellationPolicyName = cancellationPolicyDetailValue.getCancellationPolicyName();
-            Boolean isDefault = cancellationPolicyDetailValue.getIsDefault();
-            Integer sortOrder = cancellationPolicyDetailValue.getSortOrder();
+
+            var cancellationPolicyPK = cancellationPolicyDetail.getCancellationPolicyPK();
+            var cancellationKind = cancellationPolicyDetail.getCancellationKind();
+            var cancellationKindPK = cancellationKind.getPrimaryKey();
+            var cancellationPolicyName = cancellationPolicyDetailValue.getCancellationPolicyName();
+            var isDefault = cancellationPolicyDetailValue.getIsDefault();
+            var sortOrder = cancellationPolicyDetailValue.getSortOrder();
             
             if(checkDefault) {
-                CancellationPolicy defaultCancellationPolicy = getDefaultCancellationPolicy(cancellationKind);
-                boolean defaultFound = defaultCancellationPolicy != null && !defaultCancellationPolicy.equals(cancellationPolicy);
+                var defaultCancellationPolicy = getDefaultCancellationPolicy(cancellationKind);
+                var defaultFound = defaultCancellationPolicy != null && !defaultCancellationPolicy.equals(cancellationPolicy);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    CancellationPolicyDetailValue defaultCancellationPolicyDetailValue = getDefaultCancellationPolicyDetailValueForUpdate(cancellationKind);
+                    var defaultCancellationPolicyDetailValue = getDefaultCancellationPolicyDetailValueForUpdate(cancellationKind);
                     
                     defaultCancellationPolicyDetailValue.setIsDefault(Boolean.FALSE);
                     updateCancellationPolicyFromValue(defaultCancellationPolicyDetailValue, false, updatedBy);
@@ -1068,24 +1068,24 @@ public class CancellationPolicyControl
         deletePartyCancellationPoliciesByCancellationPolicy(cancellationPolicy, deletedBy);
         deleteCancellationPolicyReasonsByCancellationPolicy(cancellationPolicy, deletedBy);
         deleteCancellationPolicyTranslationsByCancellationPolicy(cancellationPolicy, deletedBy);
-        
-        CancellationPolicyDetail cancellationPolicyDetail = cancellationPolicy.getLastDetailForUpdate();
+
+        var cancellationPolicyDetail = cancellationPolicy.getLastDetailForUpdate();
         cancellationPolicyDetail.setThruTime(session.START_TIME_LONG);
         cancellationPolicy.setActiveDetail(null);
         cancellationPolicy.store();
         
         // Check for default, and pick one if necessary
-        CancellationKind cancellationKind = cancellationPolicyDetail.getCancellationKind();
-        CancellationPolicy defaultCancellationPolicy = getDefaultCancellationPolicy(cancellationKind);
+        var cancellationKind = cancellationPolicyDetail.getCancellationKind();
+        var defaultCancellationPolicy = getDefaultCancellationPolicy(cancellationKind);
         if(defaultCancellationPolicy == null) {
-            List<CancellationPolicy> cancellationPolicies = getCancellationPoliciesForUpdate(cancellationKind);
+            var cancellationPolicies = getCancellationPoliciesForUpdate(cancellationKind);
             
             if(!cancellationPolicies.isEmpty()) {
-                Iterator<CancellationPolicy> iter = cancellationPolicies.iterator();
+                var iter = cancellationPolicies.iterator();
                 if(iter.hasNext()) {
                     defaultCancellationPolicy = iter.next();
                 }
-                CancellationPolicyDetailValue cancellationPolicyDetailValue = Objects.requireNonNull(defaultCancellationPolicy).getLastDetailForUpdate().getCancellationPolicyDetailValue().clone();
+                var cancellationPolicyDetailValue = Objects.requireNonNull(defaultCancellationPolicy).getLastDetailForUpdate().getCancellationPolicyDetailValue().clone();
                 
                 cancellationPolicyDetailValue.setIsDefault(Boolean.TRUE);
                 updateCancellationPolicyFromValue(cancellationPolicyDetailValue, false, deletedBy);
@@ -1096,7 +1096,7 @@ public class CancellationPolicyControl
     }
     
     public void deleteCancellationPoliciesByCancellationKind(CancellationKind cancellationKind, BasePK deletedBy) {
-        List<CancellationPolicy> cancellationPolicies = getCancellationPoliciesForUpdate(cancellationKind);
+        var cancellationPolicies = getCancellationPoliciesForUpdate(cancellationKind);
         
         cancellationPolicies.forEach((cancellationPolicy) -> 
                 deleteCancellationPolicy(cancellationPolicy, deletedBy)
@@ -1109,7 +1109,7 @@ public class CancellationPolicyControl
 
     public CancellationPolicyTranslation createCancellationPolicyTranslation(CancellationPolicy cancellationPolicy, Language language,
             String description, MimeType policyMimeType, String policy, BasePK createdBy) {
-        CancellationPolicyTranslation cancellationPolicyTranslation = CancellationPolicyTranslationFactory.getInstance().create(cancellationPolicy,
+        var cancellationPolicyTranslation = CancellationPolicyTranslationFactory.getInstance().create(cancellationPolicy,
                 language, description, policyMimeType, policy, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(cancellationPolicy.getPrimaryKey(), EventTypes.MODIFY, cancellationPolicyTranslation.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1188,7 +1188,7 @@ public class CancellationPolicyControl
     }
 
     public CancellationPolicyTranslation getBestCancellationPolicyTranslation(CancellationPolicy cancellationPolicy, Language language) {
-        CancellationPolicyTranslation cancellationPolicyTranslation = getCancellationPolicyTranslation(cancellationPolicy, language);
+        var cancellationPolicyTranslation = getCancellationPolicyTranslation(cancellationPolicy, language);
 
         if(cancellationPolicyTranslation == null && !language.getIsDefault()) {
             cancellationPolicyTranslation = getCancellationPolicyTranslation(cancellationPolicy, getPartyControl().getDefaultLanguage());
@@ -1202,9 +1202,9 @@ public class CancellationPolicyControl
     }
 
     public List<CancellationPolicyTranslationTransfer> getCancellationPolicyTranslationTransfers(UserVisit userVisit, CancellationPolicy cancellationPolicy) {
-        List<CancellationPolicyTranslation> cancellationPolicyTranslations = getCancellationPolicyTranslationsByCancellationPolicy(cancellationPolicy);
+        var cancellationPolicyTranslations = getCancellationPolicyTranslationsByCancellationPolicy(cancellationPolicy);
         List<CancellationPolicyTranslationTransfer> cancellationPolicyTranslationTransfers = new ArrayList<>(cancellationPolicyTranslations.size());
-        CancellationPolicyTranslationTransferCache cancellationPolicyTranslationTransferCache = getCancellationPolicyTransferCaches(userVisit).getCancellationPolicyTranslationTransferCache();
+        var cancellationPolicyTranslationTransferCache = getCancellationPolicyTransferCaches(userVisit).getCancellationPolicyTranslationTransferCache();
 
         cancellationPolicyTranslations.forEach((cancellationPolicyTranslation) ->
                 cancellationPolicyTranslationTransfers.add(cancellationPolicyTranslationTransferCache.getCancellationPolicyTranslationTransfer(cancellationPolicyTranslation))
@@ -1215,17 +1215,17 @@ public class CancellationPolicyControl
 
     public void updateCancellationPolicyTranslationFromValue(CancellationPolicyTranslationValue cancellationPolicyTranslationValue, BasePK updatedBy) {
         if(cancellationPolicyTranslationValue.hasBeenModified()) {
-            CancellationPolicyTranslation cancellationPolicyTranslation = CancellationPolicyTranslationFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var cancellationPolicyTranslation = CancellationPolicyTranslationFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     cancellationPolicyTranslationValue.getPrimaryKey());
 
             cancellationPolicyTranslation.setThruTime(session.START_TIME_LONG);
             cancellationPolicyTranslation.store();
 
-            CancellationPolicyPK cancellationPolicyPK = cancellationPolicyTranslation.getCancellationPolicyPK();
-            LanguagePK languagePK = cancellationPolicyTranslation.getLanguagePK();
-            String description = cancellationPolicyTranslationValue.getDescription();
-            MimeTypePK policyMimeTypePK = cancellationPolicyTranslationValue.getPolicyMimeTypePK();
-            String policy = cancellationPolicyTranslationValue.getPolicy();
+            var cancellationPolicyPK = cancellationPolicyTranslation.getCancellationPolicyPK();
+            var languagePK = cancellationPolicyTranslation.getLanguagePK();
+            var description = cancellationPolicyTranslationValue.getDescription();
+            var policyMimeTypePK = cancellationPolicyTranslationValue.getPolicyMimeTypePK();
+            var policy = cancellationPolicyTranslationValue.getPolicy();
 
             cancellationPolicyTranslation = CancellationPolicyTranslationFactory.getInstance().create(cancellationPolicyPK, languagePK, description,
                     policyMimeTypePK, policy, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1242,7 +1242,7 @@ public class CancellationPolicyControl
     }
 
     public void deleteCancellationPolicyTranslationsByCancellationPolicy(CancellationPolicy cancellationPolicy, BasePK deletedBy) {
-        List<CancellationPolicyTranslation> cancellationPolicyTranslations = getCancellationPolicyTranslationsByCancellationPolicyForUpdate(cancellationPolicy);
+        var cancellationPolicyTranslations = getCancellationPolicyTranslationsByCancellationPolicyForUpdate(cancellationPolicy);
 
         cancellationPolicyTranslations.forEach((cancellationPolicyTranslation) -> 
                 deleteCancellationPolicyTranslation(cancellationPolicyTranslation, deletedBy)
@@ -1255,19 +1255,19 @@ public class CancellationPolicyControl
     
     public CancellationPolicyReason createCancellationPolicyReason(CancellationPolicy cancellationPolicy, CancellationReason cancellationReason, Boolean isDefault,
             Integer sortOrder, BasePK createdBy) {
-        CancellationPolicyReason defaultCancellationPolicyReason = getDefaultCancellationPolicyReason(cancellationPolicy);
-        boolean defaultFound = defaultCancellationPolicyReason != null;
+        var defaultCancellationPolicyReason = getDefaultCancellationPolicyReason(cancellationPolicy);
+        var defaultFound = defaultCancellationPolicyReason != null;
         
         if(defaultFound && isDefault) {
-            CancellationPolicyReasonValue defaultCancellationPolicyReasonValue = getDefaultCancellationPolicyReasonValueForUpdate(cancellationPolicy);
+            var defaultCancellationPolicyReasonValue = getDefaultCancellationPolicyReasonValueForUpdate(cancellationPolicy);
             
             defaultCancellationPolicyReasonValue.setIsDefault(Boolean.FALSE);
             updateCancellationPolicyReasonFromValue(defaultCancellationPolicyReasonValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        CancellationPolicyReason cancellationPolicyReason = CancellationPolicyReasonFactory.getInstance().create(cancellationPolicy, cancellationReason,
+
+        var cancellationPolicyReason = CancellationPolicyReasonFactory.getInstance().create(cancellationPolicy, cancellationReason,
                 isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(cancellationPolicy.getPrimaryKey(), EventTypes.MODIFY, cancellationPolicyReason.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1291,8 +1291,8 @@ public class CancellationPolicyControl
                         "WHERE cnclplcyrsn_cnclplcy_cancellationpolicyid = ? AND cnclplcyrsn_cnclrsn_cancellationreasonid = ? AND cnclplcyrsn_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CancellationPolicyReasonFactory.getInstance().prepareStatement(query);
+
+            var ps = CancellationPolicyReasonFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, cancellationPolicy.getPrimaryKey().getEntityId());
             ps.setLong(2, cancellationReason.getPrimaryKey().getEntityId());
@@ -1315,7 +1315,7 @@ public class CancellationPolicyControl
     }
     
     public CancellationPolicyReasonValue getCancellationPolicyReasonValueForUpdate(CancellationPolicy cancellationPolicy, CancellationReason cancellationReason) {
-        CancellationPolicyReason cancellationPolicyReason = getCancellationPolicyReasonForUpdate(cancellationPolicy, cancellationReason);
+        var cancellationPolicyReason = getCancellationPolicyReasonForUpdate(cancellationPolicy, cancellationReason);
         
         return cancellationPolicyReason == null? null: cancellationPolicyReason.getCancellationPolicyReasonValue().clone();
     }
@@ -1336,8 +1336,8 @@ public class CancellationPolicyControl
                         "WHERE cnclplcyrsn_cnclplcy_cancellationpolicyid = ? AND cnclplcyrsn_isdefault = 1 AND cnclplcyrsn_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CancellationPolicyReasonFactory.getInstance().prepareStatement(query);
+
+            var ps = CancellationPolicyReasonFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, cancellationPolicy.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1359,7 +1359,7 @@ public class CancellationPolicyControl
     }
     
     public CancellationPolicyReasonValue getDefaultCancellationPolicyReasonValueForUpdate(CancellationPolicy cancellationPolicy) {
-        CancellationPolicyReason cancellationPolicyReason = getDefaultCancellationPolicyReasonForUpdate(cancellationPolicy);
+        var cancellationPolicyReason = getDefaultCancellationPolicyReasonForUpdate(cancellationPolicy);
         
         return cancellationPolicyReason == null? null: cancellationPolicyReason.getCancellationPolicyReasonValue().clone();
     }
@@ -1383,8 +1383,8 @@ public class CancellationPolicyControl
                         "WHERE cnclplcyrsn_cnclplcy_cancellationpolicyid = ? AND cnclplcyrsn_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CancellationPolicyReasonFactory.getInstance().prepareStatement(query);
+
+            var ps = CancellationPolicyReasonFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, cancellationPolicy.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1424,8 +1424,8 @@ public class CancellationPolicyControl
                         "WHERE cnclplcyrsn_cnclrsn_cancellationreasonid = ? AND cnclplcyrsn_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CancellationPolicyReasonFactory.getInstance().prepareStatement(query);
+
+            var ps = CancellationPolicyReasonFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, cancellationReason.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1448,7 +1448,7 @@ public class CancellationPolicyControl
     
     public List<CancellationPolicyReasonTransfer> getCancellationPolicyReasonTransfers(UserVisit userVisit, Collection<CancellationPolicyReason> cancellationPolicyReasons) {
         List<CancellationPolicyReasonTransfer> cancellationPolicyReasonTransfers = new ArrayList<>(cancellationPolicyReasons.size());
-        CancellationPolicyReasonTransferCache cancellationPolicyReasonTransferCache = getCancellationPolicyTransferCaches(userVisit).getCancellationPolicyReasonTransferCache();
+        var cancellationPolicyReasonTransferCache = getCancellationPolicyTransferCaches(userVisit).getCancellationPolicyReasonTransferCache();
         
         cancellationPolicyReasons.forEach((cancellationPolicyReason) ->
                 cancellationPolicyReasonTransfers.add(cancellationPolicyReasonTransferCache.getCancellationPolicyReasonTransfer(cancellationPolicyReason))
@@ -1471,25 +1471,25 @@ public class CancellationPolicyControl
     
     private void updateCancellationPolicyReasonFromValue(CancellationPolicyReasonValue cancellationPolicyReasonValue, boolean checkDefault, BasePK updatedBy) {
         if(cancellationPolicyReasonValue.hasBeenModified()) {
-            CancellationPolicyReason cancellationPolicyReason = CancellationPolicyReasonFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var cancellationPolicyReason = CancellationPolicyReasonFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      cancellationPolicyReasonValue.getPrimaryKey());
             
             cancellationPolicyReason.setThruTime(session.START_TIME_LONG);
             cancellationPolicyReason.store();
-            
-            CancellationPolicy cancellationPolicy = cancellationPolicyReason.getCancellationPolicy(); // Not Updated
-            CancellationPolicyPK cancellationPolicyPK = cancellationPolicy.getPrimaryKey(); // Not Updated
-            CancellationReasonPK cancellationReasonPK = cancellationPolicyReason.getCancellationReasonPK(); // Not Updated
-            Boolean isDefault = cancellationPolicyReasonValue.getIsDefault();
-            Integer sortOrder = cancellationPolicyReasonValue.getSortOrder();
+
+            var cancellationPolicy = cancellationPolicyReason.getCancellationPolicy(); // Not Updated
+            var cancellationPolicyPK = cancellationPolicy.getPrimaryKey(); // Not Updated
+            var cancellationReasonPK = cancellationPolicyReason.getCancellationReasonPK(); // Not Updated
+            var isDefault = cancellationPolicyReasonValue.getIsDefault();
+            var sortOrder = cancellationPolicyReasonValue.getSortOrder();
             
             if(checkDefault) {
-                CancellationPolicyReason defaultCancellationPolicyReason = getDefaultCancellationPolicyReason(cancellationPolicy);
-                boolean defaultFound = defaultCancellationPolicyReason != null && !defaultCancellationPolicyReason.equals(cancellationPolicyReason);
+                var defaultCancellationPolicyReason = getDefaultCancellationPolicyReason(cancellationPolicy);
+                var defaultFound = defaultCancellationPolicyReason != null && !defaultCancellationPolicyReason.equals(cancellationPolicyReason);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    CancellationPolicyReasonValue defaultCancellationPolicyReasonValue = getDefaultCancellationPolicyReasonValueForUpdate(cancellationPolicy);
+                    var defaultCancellationPolicyReasonValue = getDefaultCancellationPolicyReasonValueForUpdate(cancellationPolicy);
                     
                     defaultCancellationPolicyReasonValue.setIsDefault(Boolean.FALSE);
                     updateCancellationPolicyReasonFromValue(defaultCancellationPolicyReasonValue, false, updatedBy);
@@ -1515,17 +1515,17 @@ public class CancellationPolicyControl
         cancellationPolicyReason.store();
         
         // Check for default, and pick one if necessary
-        CancellationPolicy cancellationPolicy = cancellationPolicyReason.getCancellationPolicy();
-        CancellationPolicyReason defaultCancellationPolicyReason = getDefaultCancellationPolicyReason(cancellationPolicy);
+        var cancellationPolicy = cancellationPolicyReason.getCancellationPolicy();
+        var defaultCancellationPolicyReason = getDefaultCancellationPolicyReason(cancellationPolicy);
         if(defaultCancellationPolicyReason == null) {
-            List<CancellationPolicyReason> cancellationPolicyReasons = getCancellationPolicyReasonsByCancellationPolicyForUpdate(cancellationPolicy);
+            var cancellationPolicyReasons = getCancellationPolicyReasonsByCancellationPolicyForUpdate(cancellationPolicy);
             
             if(!cancellationPolicyReasons.isEmpty()) {
-                Iterator<CancellationPolicyReason> iter = cancellationPolicyReasons.iterator();
+                var iter = cancellationPolicyReasons.iterator();
                 if(iter.hasNext()) {
                     defaultCancellationPolicyReason = iter.next();
                 }
-                CancellationPolicyReasonValue cancellationPolicyReasonValue = defaultCancellationPolicyReason.getCancellationPolicyReasonValue().clone();
+                var cancellationPolicyReasonValue = defaultCancellationPolicyReason.getCancellationPolicyReasonValue().clone();
                 
                 cancellationPolicyReasonValue.setIsDefault(Boolean.TRUE);
                 updateCancellationPolicyReasonFromValue(cancellationPolicyReasonValue, false, deletedBy);
@@ -1555,20 +1555,20 @@ public class CancellationPolicyControl
     
     public CancellationReason createCancellationReason(CancellationKind cancellationKind, String cancellationReasonName, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
-        CancellationReason defaultCancellationReason = getDefaultCancellationReason(cancellationKind);
-        boolean defaultFound = defaultCancellationReason != null;
+        var defaultCancellationReason = getDefaultCancellationReason(cancellationKind);
+        var defaultFound = defaultCancellationReason != null;
         
         if(defaultFound && isDefault) {
-            CancellationReasonDetailValue defaultCancellationReasonDetailValue = getDefaultCancellationReasonDetailValueForUpdate(cancellationKind);
+            var defaultCancellationReasonDetailValue = getDefaultCancellationReasonDetailValueForUpdate(cancellationKind);
             
             defaultCancellationReasonDetailValue.setIsDefault(Boolean.FALSE);
             updateCancellationReasonFromValue(defaultCancellationReasonDetailValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        CancellationReason cancellationReason = CancellationReasonFactory.getInstance().create();
-        CancellationReasonDetail cancellationReasonDetail = CancellationReasonDetailFactory.getInstance().create(session,
+
+        var cancellationReason = CancellationReasonFactory.getInstance().create();
+        var cancellationReasonDetail = CancellationReasonDetailFactory.getInstance().create(session,
                 cancellationReason, cancellationKind, cancellationReasonName, isDefault, sortOrder, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
@@ -1602,8 +1602,8 @@ public class CancellationPolicyControl
                         "WHERE cnclrsn_activedetailid = cnclrsndt_cancellationreasondetailid AND cnclrsndt_cnclk_cancellationkindid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CancellationReasonFactory.getInstance().prepareStatement(query);
+
+            var ps = CancellationReasonFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, cancellationKind.getPrimaryKey().getEntityId());
             
@@ -1641,8 +1641,8 @@ public class CancellationPolicyControl
                         "AND cnclrsndt_cnclk_cancellationkindid = ? AND cnclrsndt_isdefault = 1 " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CancellationReasonFactory.getInstance().prepareStatement(query);
+
+            var ps = CancellationReasonFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, cancellationKind.getPrimaryKey().getEntityId());
             
@@ -1684,8 +1684,8 @@ public class CancellationPolicyControl
                         "AND cnclrsndt_cnclk_cancellationkindid = ? AND cnclrsndt_cancellationreasonname = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CancellationReasonFactory.getInstance().prepareStatement(query);
+
+            var ps = CancellationReasonFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, cancellationKind.getPrimaryKey().getEntityId());
             ps.setString(2, cancellationReasonName);
@@ -1716,7 +1716,7 @@ public class CancellationPolicyControl
     
     public CancellationReasonChoicesBean getCancellationReasonChoices(String defaultCancellationReasonChoice, Language language,
             boolean allowNullChoice, CancellationKind cancellationKind) {
-        List<CancellationReason> cancellationReasons = getCancellationReasons(cancellationKind);
+        var cancellationReasons = getCancellationReasons(cancellationKind);
         var size = cancellationReasons.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -1732,7 +1732,7 @@ public class CancellationPolicyControl
         }
         
         for(var cancellationReason : cancellationReasons) {
-            CancellationReasonDetail cancellationReasonDetail = cancellationReason.getLastDetail();
+            var cancellationReasonDetail = cancellationReason.getLastDetail();
             var label = getBestCancellationReasonDescription(cancellationReason, language);
             var value = cancellationReasonDetail.getCancellationReasonName();
             
@@ -1753,9 +1753,9 @@ public class CancellationPolicyControl
     }
     
     public List<CancellationReasonTransfer> getCancellationReasonTransfersByCancellationKind(UserVisit userVisit, CancellationKind cancellationKind) {
-        List<CancellationReason> cancellationReasons = getCancellationReasons(cancellationKind);
+        var cancellationReasons = getCancellationReasons(cancellationKind);
         List<CancellationReasonTransfer> cancellationReasonTransfers = new ArrayList<>(cancellationReasons.size());
-        CancellationReasonTransferCache cancellationReasonTransferCache = getCancellationPolicyTransferCaches(userVisit).getCancellationReasonTransferCache();
+        var cancellationReasonTransferCache = getCancellationPolicyTransferCaches(userVisit).getCancellationReasonTransferCache();
         
         cancellationReasons.forEach((cancellationReason) ->
                 cancellationReasonTransfers.add(cancellationReasonTransferCache.getCancellationReasonTransfer(cancellationReason))
@@ -1767,27 +1767,27 @@ public class CancellationPolicyControl
     private void updateCancellationReasonFromValue(CancellationReasonDetailValue cancellationReasonDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(cancellationReasonDetailValue.hasBeenModified()) {
-            CancellationReason cancellationReason = CancellationReasonFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var cancellationReason = CancellationReasonFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      cancellationReasonDetailValue.getCancellationReasonPK());
-            CancellationReasonDetail cancellationReasonDetail = cancellationReason.getActiveDetailForUpdate();
+            var cancellationReasonDetail = cancellationReason.getActiveDetailForUpdate();
             
             cancellationReasonDetail.setThruTime(session.START_TIME_LONG);
             cancellationReasonDetail.store();
-            
-            CancellationReasonPK cancellationReasonPK = cancellationReasonDetail.getCancellationReasonPK();
-            CancellationKind cancellationKind = cancellationReasonDetail.getCancellationKind();
-            CancellationKindPK cancellationKindPK = cancellationKind.getPrimaryKey();
-            String cancellationReasonName = cancellationReasonDetailValue.getCancellationReasonName();
-            Boolean isDefault = cancellationReasonDetailValue.getIsDefault();
-            Integer sortOrder = cancellationReasonDetailValue.getSortOrder();
+
+            var cancellationReasonPK = cancellationReasonDetail.getCancellationReasonPK();
+            var cancellationKind = cancellationReasonDetail.getCancellationKind();
+            var cancellationKindPK = cancellationKind.getPrimaryKey();
+            var cancellationReasonName = cancellationReasonDetailValue.getCancellationReasonName();
+            var isDefault = cancellationReasonDetailValue.getIsDefault();
+            var sortOrder = cancellationReasonDetailValue.getSortOrder();
             
             if(checkDefault) {
-                CancellationReason defaultCancellationReason = getDefaultCancellationReason(cancellationKind);
-                boolean defaultFound = defaultCancellationReason != null && !defaultCancellationReason.equals(cancellationReason);
+                var defaultCancellationReason = getDefaultCancellationReason(cancellationKind);
+                var defaultFound = defaultCancellationReason != null && !defaultCancellationReason.equals(cancellationReason);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    CancellationReasonDetailValue defaultCancellationReasonDetailValue = getDefaultCancellationReasonDetailValueForUpdate(cancellationKind);
+                    var defaultCancellationReasonDetailValue = getDefaultCancellationReasonDetailValueForUpdate(cancellationKind);
                     
                     defaultCancellationReasonDetailValue.setIsDefault(Boolean.FALSE);
                     updateCancellationReasonFromValue(defaultCancellationReasonDetailValue, false, updatedBy);
@@ -1815,24 +1815,24 @@ public class CancellationPolicyControl
         deleteCancellationPolicyReasonsByCancellationReason(cancellationReason, deletedBy);
         deleteCancellationReasonTypesByCancellationReason(cancellationReason, deletedBy);
         deleteCancellationReasonDescriptionsByCancellationReason(cancellationReason, deletedBy);
-        
-        CancellationReasonDetail cancellationReasonDetail = cancellationReason.getLastDetailForUpdate();
+
+        var cancellationReasonDetail = cancellationReason.getLastDetailForUpdate();
         cancellationReasonDetail.setThruTime(session.START_TIME_LONG);
         cancellationReason.setActiveDetail(null);
         cancellationReason.store();
         
         // Check for default, and pick one if necessary
-        CancellationKind cancellationKind = cancellationReasonDetail.getCancellationKind();
-        CancellationReason defaultCancellationReason = getDefaultCancellationReason(cancellationKind);
+        var cancellationKind = cancellationReasonDetail.getCancellationKind();
+        var defaultCancellationReason = getDefaultCancellationReason(cancellationKind);
         if(defaultCancellationReason == null) {
-            List<CancellationReason> cancellationReasons = getCancellationReasonsForUpdate(cancellationKind);
+            var cancellationReasons = getCancellationReasonsForUpdate(cancellationKind);
             
             if(!cancellationReasons.isEmpty()) {
-                Iterator<CancellationReason> iter = cancellationReasons.iterator();
+                var iter = cancellationReasons.iterator();
                 if(iter.hasNext()) {
                     defaultCancellationReason = iter.next();
                 }
-                CancellationReasonDetailValue cancellationReasonDetailValue = Objects.requireNonNull(defaultCancellationReason).getLastDetailForUpdate().getCancellationReasonDetailValue().clone();
+                var cancellationReasonDetailValue = Objects.requireNonNull(defaultCancellationReason).getLastDetailForUpdate().getCancellationReasonDetailValue().clone();
                 
                 cancellationReasonDetailValue.setIsDefault(Boolean.TRUE);
                 updateCancellationReasonFromValue(cancellationReasonDetailValue, false, deletedBy);
@@ -1843,7 +1843,7 @@ public class CancellationPolicyControl
     }
     
     public void deleteCancellationReasonsByCancellationKind(CancellationKind cancellationKind, BasePK deletedBy) {
-        List<CancellationReason> cancellationReasons = getCancellationReasonsForUpdate(cancellationKind);
+        var cancellationReasons = getCancellationReasonsForUpdate(cancellationKind);
         
         cancellationReasons.forEach((cancellationReason) -> 
                 deleteCancellationReason(cancellationReason, deletedBy)
@@ -1856,7 +1856,7 @@ public class CancellationPolicyControl
     
     public CancellationReasonDescription createCancellationReasonDescription(CancellationReason cancellationReason, Language language, String description,
             BasePK createdBy) {
-        CancellationReasonDescription cancellationReasonDescription = CancellationReasonDescriptionFactory.getInstance().create(cancellationReason,
+        var cancellationReasonDescription = CancellationReasonDescriptionFactory.getInstance().create(cancellationReason,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(cancellationReason.getPrimaryKey(), EventTypes.MODIFY, cancellationReasonDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1880,8 +1880,8 @@ public class CancellationPolicyControl
                         "WHERE cnclrsnd_cnclrsn_cancellationreasonid = ? AND cnclrsnd_lang_languageid = ? AND cnclrsnd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CancellationReasonDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = CancellationReasonDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, cancellationReason.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -1929,8 +1929,8 @@ public class CancellationPolicyControl
                         "WHERE cnclrsnd_cnclrsn_cancellationreasonid = ? AND cnclrsnd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CancellationReasonDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = CancellationReasonDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, cancellationReason.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1953,7 +1953,7 @@ public class CancellationPolicyControl
     
     public String getBestCancellationReasonDescription(CancellationReason cancellationReason, Language language) {
         String description;
-        CancellationReasonDescription cancellationReasonDescription = getCancellationReasonDescription(cancellationReason, language);
+        var cancellationReasonDescription = getCancellationReasonDescription(cancellationReason, language);
         
         if(cancellationReasonDescription == null && !language.getIsDefault()) {
             cancellationReasonDescription = getCancellationReasonDescription(cancellationReason, getPartyControl().getDefaultLanguage());
@@ -1973,7 +1973,7 @@ public class CancellationPolicyControl
     }
     
     public List<CancellationReasonDescriptionTransfer> getCancellationReasonDescriptionTransfersByCancellationReason(UserVisit userVisit, CancellationReason cancellationReason) {
-        List<CancellationReasonDescription> cancellationReasonDescriptions = getCancellationReasonDescriptionsByCancellationReason(cancellationReason);
+        var cancellationReasonDescriptions = getCancellationReasonDescriptionsByCancellationReason(cancellationReason);
         List<CancellationReasonDescriptionTransfer> cancellationReasonDescriptionTransfers = new ArrayList<>(cancellationReasonDescriptions.size());
         
         cancellationReasonDescriptions.forEach((cancellationReasonDescription) -> {
@@ -1985,15 +1985,15 @@ public class CancellationPolicyControl
     
     public void updateCancellationReasonDescriptionFromValue(CancellationReasonDescriptionValue cancellationReasonDescriptionValue, BasePK updatedBy) {
         if(cancellationReasonDescriptionValue.hasBeenModified()) {
-            CancellationReasonDescription cancellationReasonDescription = CancellationReasonDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var cancellationReasonDescription = CancellationReasonDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      cancellationReasonDescriptionValue.getPrimaryKey());
             
             cancellationReasonDescription.setThruTime(session.START_TIME_LONG);
             cancellationReasonDescription.store();
-            
-            CancellationReason cancellationReason = cancellationReasonDescription.getCancellationReason();
-            Language language = cancellationReasonDescription.getLanguage();
-            String description = cancellationReasonDescriptionValue.getDescription();
+
+            var cancellationReason = cancellationReasonDescription.getCancellationReason();
+            var language = cancellationReasonDescription.getLanguage();
+            var description = cancellationReasonDescriptionValue.getDescription();
             
             cancellationReasonDescription = CancellationReasonDescriptionFactory.getInstance().create(cancellationReason, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -2010,7 +2010,7 @@ public class CancellationPolicyControl
     }
     
     public void deleteCancellationReasonDescriptionsByCancellationReason(CancellationReason cancellationReason, BasePK deletedBy) {
-        List<CancellationReasonDescription> cancellationReasonDescriptions = getCancellationReasonDescriptionsByCancellationReasonForUpdate(cancellationReason);
+        var cancellationReasonDescriptions = getCancellationReasonDescriptionsByCancellationReasonForUpdate(cancellationReason);
         
         cancellationReasonDescriptions.forEach((cancellationReasonDescription) -> 
                 deleteCancellationReasonDescription(cancellationReasonDescription, deletedBy)
@@ -2023,19 +2023,19 @@ public class CancellationPolicyControl
     
     public CancellationReasonType createCancellationReasonType(CancellationReason cancellationReason, CancellationType cancellationType, Boolean isDefault,
             Integer sortOrder, BasePK createdBy) {
-        CancellationReasonType defaultCancellationReasonType = getDefaultCancellationReasonType(cancellationReason);
-        boolean defaultFound = defaultCancellationReasonType != null;
+        var defaultCancellationReasonType = getDefaultCancellationReasonType(cancellationReason);
+        var defaultFound = defaultCancellationReasonType != null;
         
         if(defaultFound && isDefault) {
-            CancellationReasonTypeValue defaultCancellationReasonTypeValue = getDefaultCancellationReasonTypeValueForUpdate(cancellationReason);
+            var defaultCancellationReasonTypeValue = getDefaultCancellationReasonTypeValueForUpdate(cancellationReason);
             
             defaultCancellationReasonTypeValue.setIsDefault(Boolean.FALSE);
             updateCancellationReasonTypeFromValue(defaultCancellationReasonTypeValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        CancellationReasonType cancellationReasonType = CancellationReasonTypeFactory.getInstance().create(cancellationReason, cancellationType,
+
+        var cancellationReasonType = CancellationReasonTypeFactory.getInstance().create(cancellationReason, cancellationType,
                 isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(cancellationReason.getPrimaryKey(), EventTypes.MODIFY, cancellationReasonType.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2059,8 +2059,8 @@ public class CancellationPolicyControl
                         "WHERE cnclrsntyp_cnclrsn_cancellationreasonid = ? AND cnclrsntyp_cncltyp_cancellationtypeid = ? AND cnclrsntyp_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CancellationReasonTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = CancellationReasonTypeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, cancellationReason.getPrimaryKey().getEntityId());
             ps.setLong(2, cancellationType.getPrimaryKey().getEntityId());
@@ -2083,7 +2083,7 @@ public class CancellationPolicyControl
     }
     
     public CancellationReasonTypeValue getCancellationReasonTypeValueForUpdate(CancellationReason cancellationReason, CancellationType cancellationType) {
-        CancellationReasonType cancellationReasonType = getCancellationReasonTypeForUpdate(cancellationReason, cancellationType);
+        var cancellationReasonType = getCancellationReasonTypeForUpdate(cancellationReason, cancellationType);
         
         return cancellationReasonType == null? null: cancellationReasonType.getCancellationReasonTypeValue().clone();
     }
@@ -2104,8 +2104,8 @@ public class CancellationPolicyControl
                         "WHERE cnclrsntyp_cnclrsn_cancellationreasonid = ? AND cnclrsntyp_isdefault = 1 AND cnclrsntyp_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CancellationReasonTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = CancellationReasonTypeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, cancellationReason.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -2127,7 +2127,7 @@ public class CancellationPolicyControl
     }
     
     public CancellationReasonTypeValue getDefaultCancellationReasonTypeValueForUpdate(CancellationReason cancellationReason) {
-        CancellationReasonType cancellationReasonType = getDefaultCancellationReasonTypeForUpdate(cancellationReason);
+        var cancellationReasonType = getDefaultCancellationReasonTypeForUpdate(cancellationReason);
         
         return cancellationReasonType == null? null: cancellationReasonType.getCancellationReasonTypeValue().clone();
     }
@@ -2152,8 +2152,8 @@ public class CancellationPolicyControl
                         "WHERE cnclrsntyp_cnclrsn_cancellationreasonid = ? AND cnclrsntyp_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CancellationReasonTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = CancellationReasonTypeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, cancellationReason.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -2193,8 +2193,8 @@ public class CancellationPolicyControl
                         "WHERE cnclrsntyp_cncltyp_cancellationtypeid = ? AND cnclrsntyp_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CancellationReasonTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = CancellationReasonTypeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, cancellationType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -2217,7 +2217,7 @@ public class CancellationPolicyControl
     
     public List<CancellationReasonTypeTransfer> getCancellationReasonTypeTransfers(UserVisit userVisit, Collection<CancellationReasonType> cancellationReasonTypes) {
         List<CancellationReasonTypeTransfer> cancellationReasonTypeTransfers = new ArrayList<>(cancellationReasonTypes.size());
-        CancellationReasonTypeTransferCache cancellationReasonTypeTransferCache = getCancellationPolicyTransferCaches(userVisit).getCancellationReasonTypeTransferCache();
+        var cancellationReasonTypeTransferCache = getCancellationPolicyTransferCaches(userVisit).getCancellationReasonTypeTransferCache();
         
         cancellationReasonTypes.forEach((cancellationReasonType) ->
                 cancellationReasonTypeTransfers.add(cancellationReasonTypeTransferCache.getCancellationReasonTypeTransfer(cancellationReasonType))
@@ -2240,25 +2240,25 @@ public class CancellationPolicyControl
     
     private void updateCancellationReasonTypeFromValue(CancellationReasonTypeValue cancellationReasonTypeValue, boolean checkDefault, BasePK updatedBy) {
         if(cancellationReasonTypeValue.hasBeenModified()) {
-            CancellationReasonType cancellationReasonType = CancellationReasonTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var cancellationReasonType = CancellationReasonTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      cancellationReasonTypeValue.getPrimaryKey());
             
             cancellationReasonType.setThruTime(session.START_TIME_LONG);
             cancellationReasonType.store();
-            
-            CancellationReason cancellationReason = cancellationReasonType.getCancellationReason(); // Not Updated
-            CancellationReasonPK cancellationReasonPK = cancellationReason.getPrimaryKey(); // Not Updated
-            CancellationTypePK cancellationTypePK = cancellationReasonType.getCancellationTypePK(); // Not Updated
-            Boolean isDefault = cancellationReasonTypeValue.getIsDefault();
-            Integer sortOrder = cancellationReasonTypeValue.getSortOrder();
+
+            var cancellationReason = cancellationReasonType.getCancellationReason(); // Not Updated
+            var cancellationReasonPK = cancellationReason.getPrimaryKey(); // Not Updated
+            var cancellationTypePK = cancellationReasonType.getCancellationTypePK(); // Not Updated
+            var isDefault = cancellationReasonTypeValue.getIsDefault();
+            var sortOrder = cancellationReasonTypeValue.getSortOrder();
             
             if(checkDefault) {
-                CancellationReasonType defaultCancellationReasonType = getDefaultCancellationReasonType(cancellationReason);
-                boolean defaultFound = defaultCancellationReasonType != null && !defaultCancellationReasonType.equals(cancellationReasonType);
+                var defaultCancellationReasonType = getDefaultCancellationReasonType(cancellationReason);
+                var defaultFound = defaultCancellationReasonType != null && !defaultCancellationReasonType.equals(cancellationReasonType);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    CancellationReasonTypeValue defaultCancellationReasonTypeValue = getDefaultCancellationReasonTypeValueForUpdate(cancellationReason);
+                    var defaultCancellationReasonTypeValue = getDefaultCancellationReasonTypeValueForUpdate(cancellationReason);
                     
                     defaultCancellationReasonTypeValue.setIsDefault(Boolean.FALSE);
                     updateCancellationReasonTypeFromValue(defaultCancellationReasonTypeValue, false, updatedBy);
@@ -2284,17 +2284,17 @@ public class CancellationPolicyControl
         cancellationReasonType.store();
         
         // Check for default, and pick one if necessary
-        CancellationReason cancellationReason = cancellationReasonType.getCancellationReason();
-        CancellationReasonType defaultCancellationReasonType = getDefaultCancellationReasonType(cancellationReason);
+        var cancellationReason = cancellationReasonType.getCancellationReason();
+        var defaultCancellationReasonType = getDefaultCancellationReasonType(cancellationReason);
         if(defaultCancellationReasonType == null) {
-            List<CancellationReasonType> cancellationReasonTypes = getCancellationReasonTypesByCancellationReasonForUpdate(cancellationReason);
+            var cancellationReasonTypes = getCancellationReasonTypesByCancellationReasonForUpdate(cancellationReason);
             
             if(!cancellationReasonTypes.isEmpty()) {
-                Iterator<CancellationReasonType> iter = cancellationReasonTypes.iterator();
+                var iter = cancellationReasonTypes.iterator();
                 if(iter.hasNext()) {
                     defaultCancellationReasonType = iter.next();
                 }
-                CancellationReasonTypeValue cancellationReasonTypeValue = defaultCancellationReasonType.getCancellationReasonTypeValue().clone();
+                var cancellationReasonTypeValue = defaultCancellationReasonType.getCancellationReasonTypeValue().clone();
                 
                 cancellationReasonTypeValue.setIsDefault(Boolean.TRUE);
                 updateCancellationReasonTypeFromValue(cancellationReasonTypeValue, false, deletedBy);
@@ -2324,20 +2324,20 @@ public class CancellationPolicyControl
     
     public CancellationType createCancellationType(CancellationKind cancellationKind, String cancellationTypeName, Sequence cancellationSequence, Boolean isDefault,
             Integer sortOrder, BasePK createdBy) {
-        CancellationType defaultCancellationType = getDefaultCancellationType(cancellationKind);
-        boolean defaultFound = defaultCancellationType != null;
+        var defaultCancellationType = getDefaultCancellationType(cancellationKind);
+        var defaultFound = defaultCancellationType != null;
         
         if(defaultFound && isDefault) {
-            CancellationTypeDetailValue defaultCancellationTypeDetailValue = getDefaultCancellationTypeDetailValueForUpdate(cancellationKind);
+            var defaultCancellationTypeDetailValue = getDefaultCancellationTypeDetailValueForUpdate(cancellationKind);
             
             defaultCancellationTypeDetailValue.setIsDefault(Boolean.FALSE);
             updateCancellationTypeFromValue(defaultCancellationTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        CancellationType cancellationType = CancellationTypeFactory.getInstance().create();
-        CancellationTypeDetail cancellationTypeDetail = CancellationTypeDetailFactory.getInstance().create(session,
+
+        var cancellationType = CancellationTypeFactory.getInstance().create();
+        var cancellationTypeDetail = CancellationTypeDetailFactory.getInstance().create(session,
                 cancellationType, cancellationKind, cancellationTypeName, cancellationSequence, isDefault, sortOrder, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
@@ -2371,8 +2371,8 @@ public class CancellationPolicyControl
                         "WHERE cncltyp_activedetailid = cncltypdt_cancellationtypedetailid AND cncltypdt_cnclk_cancellationkindid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CancellationTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = CancellationTypeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, cancellationKind.getPrimaryKey().getEntityId());
             
@@ -2410,8 +2410,8 @@ public class CancellationPolicyControl
                         "AND cncltypdt_cnclk_cancellationkindid = ? AND cncltypdt_isdefault = 1 " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CancellationTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = CancellationTypeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, cancellationKind.getPrimaryKey().getEntityId());
             
@@ -2453,8 +2453,8 @@ public class CancellationPolicyControl
                         "AND cncltypdt_cnclk_cancellationkindid = ? AND cncltypdt_cancellationtypename = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CancellationTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = CancellationTypeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, cancellationKind.getPrimaryKey().getEntityId());
             ps.setString(2, cancellationTypeName);
@@ -2485,7 +2485,7 @@ public class CancellationPolicyControl
     
     public CancellationTypeChoicesBean getCancellationTypeChoices(String defaultCancellationTypeChoice, Language language,
             boolean allowNullChoice, CancellationKind cancellationKind) {
-        List<CancellationType> cancellationTypes = getCancellationTypes(cancellationKind);
+        var cancellationTypes = getCancellationTypes(cancellationKind);
         var size = cancellationTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -2501,7 +2501,7 @@ public class CancellationPolicyControl
         }
         
         for(var cancellationType : cancellationTypes) {
-            CancellationTypeDetail cancellationTypeDetail = cancellationType.getLastDetail();
+            var cancellationTypeDetail = cancellationType.getLastDetail();
             var label = getBestCancellationTypeDescription(cancellationType, language);
             var value = cancellationTypeDetail.getCancellationTypeName();
             
@@ -2522,9 +2522,9 @@ public class CancellationPolicyControl
     }
     
     public List<CancellationTypeTransfer> getCancellationTypeTransfersByCancellationKind(UserVisit userVisit, CancellationKind cancellationKind) {
-        List<CancellationType> cancellationTypes = getCancellationTypes(cancellationKind);
+        var cancellationTypes = getCancellationTypes(cancellationKind);
         List<CancellationTypeTransfer> cancellationTypeTransfers = new ArrayList<>(cancellationTypes.size());
-        CancellationTypeTransferCache cancellationTypeTransferCache = getCancellationPolicyTransferCaches(userVisit).getCancellationTypeTransferCache();
+        var cancellationTypeTransferCache = getCancellationPolicyTransferCaches(userVisit).getCancellationTypeTransferCache();
         
         cancellationTypes.forEach((cancellationType) ->
                 cancellationTypeTransfers.add(cancellationTypeTransferCache.getCancellationTypeTransfer(cancellationType))
@@ -2536,28 +2536,28 @@ public class CancellationPolicyControl
     private void updateCancellationTypeFromValue(CancellationTypeDetailValue cancellationTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(cancellationTypeDetailValue.hasBeenModified()) {
-            CancellationType cancellationType = CancellationTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var cancellationType = CancellationTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      cancellationTypeDetailValue.getCancellationTypePK());
-            CancellationTypeDetail cancellationTypeDetail = cancellationType.getActiveDetailForUpdate();
+            var cancellationTypeDetail = cancellationType.getActiveDetailForUpdate();
             
             cancellationTypeDetail.setThruTime(session.START_TIME_LONG);
             cancellationTypeDetail.store();
-            
-            CancellationTypePK cancellationTypePK = cancellationTypeDetail.getCancellationTypePK();
-            CancellationKind cancellationKind = cancellationTypeDetail.getCancellationKind();
-            CancellationKindPK cancellationKindPK = cancellationKind.getPrimaryKey();
-            String cancellationTypeName = cancellationTypeDetailValue.getCancellationTypeName();
-            SequencePK cancellationSequencePK = cancellationTypeDetailValue.getCancellationSequencePK();
-            Boolean isDefault = cancellationTypeDetailValue.getIsDefault();
-            Integer sortOrder = cancellationTypeDetailValue.getSortOrder();
+
+            var cancellationTypePK = cancellationTypeDetail.getCancellationTypePK();
+            var cancellationKind = cancellationTypeDetail.getCancellationKind();
+            var cancellationKindPK = cancellationKind.getPrimaryKey();
+            var cancellationTypeName = cancellationTypeDetailValue.getCancellationTypeName();
+            var cancellationSequencePK = cancellationTypeDetailValue.getCancellationSequencePK();
+            var isDefault = cancellationTypeDetailValue.getIsDefault();
+            var sortOrder = cancellationTypeDetailValue.getSortOrder();
             
             if(checkDefault) {
-                CancellationType defaultCancellationType = getDefaultCancellationType(cancellationKind);
-                boolean defaultFound = defaultCancellationType != null && !defaultCancellationType.equals(cancellationType);
+                var defaultCancellationType = getDefaultCancellationType(cancellationKind);
+                var defaultFound = defaultCancellationType != null && !defaultCancellationType.equals(cancellationType);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    CancellationTypeDetailValue defaultCancellationTypeDetailValue = getDefaultCancellationTypeDetailValueForUpdate(cancellationKind);
+                    var defaultCancellationTypeDetailValue = getDefaultCancellationTypeDetailValueForUpdate(cancellationKind);
                     
                     defaultCancellationTypeDetailValue.setIsDefault(Boolean.FALSE);
                     updateCancellationTypeFromValue(defaultCancellationTypeDetailValue, false, updatedBy);
@@ -2584,24 +2584,24 @@ public class CancellationPolicyControl
     public void deleteCancellationType(CancellationType cancellationType, BasePK deletedBy) {
         deleteCancellationReasonTypesByCancellationType(cancellationType, deletedBy);
         deleteCancellationTypeDescriptionsByCancellationType(cancellationType, deletedBy);
-        
-        CancellationTypeDetail cancellationTypeDetail = cancellationType.getLastDetailForUpdate();
+
+        var cancellationTypeDetail = cancellationType.getLastDetailForUpdate();
         cancellationTypeDetail.setThruTime(session.START_TIME_LONG);
         cancellationType.setActiveDetail(null);
         cancellationType.store();
         
         // Check for default, and pick one if necessary
-        CancellationKind cancellationKind = cancellationTypeDetail.getCancellationKind();
-        CancellationType defaultCancellationType = getDefaultCancellationType(cancellationKind);
+        var cancellationKind = cancellationTypeDetail.getCancellationKind();
+        var defaultCancellationType = getDefaultCancellationType(cancellationKind);
         if(defaultCancellationType == null) {
-            List<CancellationType> cancellationTypes = getCancellationTypesForUpdate(cancellationKind);
+            var cancellationTypes = getCancellationTypesForUpdate(cancellationKind);
             
             if(!cancellationTypes.isEmpty()) {
-                Iterator<CancellationType> iter = cancellationTypes.iterator();
+                var iter = cancellationTypes.iterator();
                 if(iter.hasNext()) {
                     defaultCancellationType = iter.next();
                 }
-                CancellationTypeDetailValue cancellationTypeDetailValue = Objects.requireNonNull(defaultCancellationType).getLastDetailForUpdate().getCancellationTypeDetailValue().clone();
+                var cancellationTypeDetailValue = Objects.requireNonNull(defaultCancellationType).getLastDetailForUpdate().getCancellationTypeDetailValue().clone();
                 
                 cancellationTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateCancellationTypeFromValue(cancellationTypeDetailValue, false, deletedBy);
@@ -2612,7 +2612,7 @@ public class CancellationPolicyControl
     }
     
     public void deleteCancellationTypesByCancellationKind(CancellationKind cancellationKind, BasePK deletedBy) {
-        List<CancellationType> cancellationTypes = getCancellationTypesForUpdate(cancellationKind);
+        var cancellationTypes = getCancellationTypesForUpdate(cancellationKind);
         
         cancellationTypes.forEach((cancellationType) -> 
                 deleteCancellationType(cancellationType, deletedBy)
@@ -2625,7 +2625,7 @@ public class CancellationPolicyControl
     
     public CancellationTypeDescription createCancellationTypeDescription(CancellationType cancellationType, Language language, String description,
             BasePK createdBy) {
-        CancellationTypeDescription cancellationTypeDescription = CancellationTypeDescriptionFactory.getInstance().create(cancellationType,
+        var cancellationTypeDescription = CancellationTypeDescriptionFactory.getInstance().create(cancellationType,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(cancellationType.getPrimaryKey(), EventTypes.MODIFY, cancellationTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2649,8 +2649,8 @@ public class CancellationPolicyControl
                         "WHERE cncltypd_cncltyp_cancellationtypeid = ? AND cncltypd_lang_languageid = ? AND cncltypd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CancellationTypeDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = CancellationTypeDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, cancellationType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -2698,8 +2698,8 @@ public class CancellationPolicyControl
                         "WHERE cncltypd_cncltyp_cancellationtypeid = ? AND cncltypd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CancellationTypeDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = CancellationTypeDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, cancellationType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -2722,7 +2722,7 @@ public class CancellationPolicyControl
     
     public String getBestCancellationTypeDescription(CancellationType cancellationType, Language language) {
         String description;
-        CancellationTypeDescription cancellationTypeDescription = getCancellationTypeDescription(cancellationType, language);
+        var cancellationTypeDescription = getCancellationTypeDescription(cancellationType, language);
         
         if(cancellationTypeDescription == null && !language.getIsDefault()) {
             cancellationTypeDescription = getCancellationTypeDescription(cancellationType, getPartyControl().getDefaultLanguage());
@@ -2742,7 +2742,7 @@ public class CancellationPolicyControl
     }
     
     public List<CancellationTypeDescriptionTransfer> getCancellationTypeDescriptionTransfersByCancellationType(UserVisit userVisit, CancellationType cancellationType) {
-        List<CancellationTypeDescription> cancellationTypeDescriptions = getCancellationTypeDescriptionsByCancellationType(cancellationType);
+        var cancellationTypeDescriptions = getCancellationTypeDescriptionsByCancellationType(cancellationType);
         List<CancellationTypeDescriptionTransfer> cancellationTypeDescriptionTransfers = new ArrayList<>(cancellationTypeDescriptions.size());
         
         cancellationTypeDescriptions.forEach((cancellationTypeDescription) -> {
@@ -2754,15 +2754,15 @@ public class CancellationPolicyControl
     
     public void updateCancellationTypeDescriptionFromValue(CancellationTypeDescriptionValue cancellationTypeDescriptionValue, BasePK updatedBy) {
         if(cancellationTypeDescriptionValue.hasBeenModified()) {
-            CancellationTypeDescription cancellationTypeDescription = CancellationTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var cancellationTypeDescription = CancellationTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      cancellationTypeDescriptionValue.getPrimaryKey());
             
             cancellationTypeDescription.setThruTime(session.START_TIME_LONG);
             cancellationTypeDescription.store();
-            
-            CancellationType cancellationType = cancellationTypeDescription.getCancellationType();
-            Language language = cancellationTypeDescription.getLanguage();
-            String description = cancellationTypeDescriptionValue.getDescription();
+
+            var cancellationType = cancellationTypeDescription.getCancellationType();
+            var language = cancellationTypeDescription.getLanguage();
+            var description = cancellationTypeDescriptionValue.getDescription();
             
             cancellationTypeDescription = CancellationTypeDescriptionFactory.getInstance().create(cancellationType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -2779,7 +2779,7 @@ public class CancellationPolicyControl
     }
     
     public void deleteCancellationTypeDescriptionsByCancellationType(CancellationType cancellationType, BasePK deletedBy) {
-        List<CancellationTypeDescription> cancellationTypeDescriptions = getCancellationTypeDescriptionsByCancellationTypeForUpdate(cancellationType);
+        var cancellationTypeDescriptions = getCancellationTypeDescriptionsByCancellationTypeForUpdate(cancellationType);
         
         cancellationTypeDescriptions.forEach((cancellationTypeDescription) -> 
                 deleteCancellationTypeDescription(cancellationTypeDescription, deletedBy)

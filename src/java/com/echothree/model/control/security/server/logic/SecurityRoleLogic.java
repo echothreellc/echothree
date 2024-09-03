@@ -193,7 +193,7 @@ public class SecurityRoleLogic
     }
     
     public boolean hasSecurityRole(final Party party, final SecurityRole securityRole) {
-        boolean result = false;
+        var result = false;
 
         if(party != null) {
             var securityControl = Session.getModelController(SecurityControl.class);

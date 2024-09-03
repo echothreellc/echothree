@@ -111,11 +111,11 @@ public class ScaleControl
     // --------------------------------------------------------------------------------
 
     public ScaleType createScaleType(String scaleTypeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        ScaleType defaultScaleType = getDefaultScaleType();
-        boolean defaultFound = defaultScaleType != null;
+        var defaultScaleType = getDefaultScaleType();
+        var defaultFound = defaultScaleType != null;
 
         if(defaultFound && isDefault) {
-            ScaleTypeDetailValue defaultScaleTypeDetailValue = getDefaultScaleTypeDetailValueForUpdate();
+            var defaultScaleTypeDetailValue = getDefaultScaleTypeDetailValueForUpdate();
 
             defaultScaleTypeDetailValue.setIsDefault(Boolean.FALSE);
             updateScaleTypeFromValue(defaultScaleTypeDetailValue, false, createdBy);
@@ -123,8 +123,8 @@ public class ScaleControl
             isDefault = Boolean.TRUE;
         }
 
-        ScaleType scaleType = ScaleTypeFactory.getInstance().create();
-        ScaleTypeDetail scaleTypeDetail = ScaleTypeDetailFactory.getInstance().create(scaleType,
+        var scaleType = ScaleTypeFactory.getInstance().create();
+        var scaleTypeDetail = ScaleTypeDetailFactory.getInstance().create(scaleType,
                 scaleTypeName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -250,7 +250,7 @@ public class ScaleControl
 
     public List<ScaleTypeTransfer> getScaleTypeTransfers(UserVisit userVisit, Collection<ScaleType> scaleTypes) {
         List<ScaleTypeTransfer> scaleTypeTransfers = new ArrayList<>(scaleTypes.size());
-        ScaleTypeTransferCache scaleTypeTransferCache = getScaleTransferCaches(userVisit).getScaleTypeTransferCache();
+        var scaleTypeTransferCache = getScaleTransferCaches(userVisit).getScaleTypeTransferCache();
 
         scaleTypes.forEach((scaleType) ->
                 scaleTypeTransfers.add(scaleTypeTransferCache.getScaleTypeTransfer(scaleType))
@@ -264,7 +264,7 @@ public class ScaleControl
     }
 
     public ScaleTypeChoicesBean getScaleTypeChoices(String defaultScaleTypeChoice, Language language, boolean allowNullChoice) {
-        List<ScaleType> scaleTypes = getScaleTypes();
+        var scaleTypes = getScaleTypes();
         var size = scaleTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -280,7 +280,7 @@ public class ScaleControl
         }
 
         for(var scaleType : scaleTypes) {
-            ScaleTypeDetail scaleTypeDetail = scaleType.getLastDetail();
+            var scaleTypeDetail = scaleType.getLastDetail();
 
             var label = getBestScaleTypeDescription(scaleType, language);
             var value = scaleTypeDetail.getScaleTypeName();
@@ -300,25 +300,25 @@ public class ScaleControl
     private void updateScaleTypeFromValue(ScaleTypeDetailValue scaleTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(scaleTypeDetailValue.hasBeenModified()) {
-            ScaleType scaleType = ScaleTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var scaleType = ScaleTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      scaleTypeDetailValue.getScaleTypePK());
-            ScaleTypeDetail scaleTypeDetail = scaleType.getActiveDetailForUpdate();
+            var scaleTypeDetail = scaleType.getActiveDetailForUpdate();
 
             scaleTypeDetail.setThruTime(session.START_TIME_LONG);
             scaleTypeDetail.store();
 
-            ScaleTypePK scaleTypePK = scaleTypeDetail.getScaleTypePK(); // Not updated
-            String scaleTypeName = scaleTypeDetailValue.getScaleTypeName();
-            Boolean isDefault = scaleTypeDetailValue.getIsDefault();
-            Integer sortOrder = scaleTypeDetailValue.getSortOrder();
+            var scaleTypePK = scaleTypeDetail.getScaleTypePK(); // Not updated
+            var scaleTypeName = scaleTypeDetailValue.getScaleTypeName();
+            var isDefault = scaleTypeDetailValue.getIsDefault();
+            var sortOrder = scaleTypeDetailValue.getSortOrder();
 
             if(checkDefault) {
-                ScaleType defaultScaleType = getDefaultScaleType();
-                boolean defaultFound = defaultScaleType != null && !defaultScaleType.equals(scaleType);
+                var defaultScaleType = getDefaultScaleType();
+                var defaultFound = defaultScaleType != null && !defaultScaleType.equals(scaleType);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    ScaleTypeDetailValue defaultScaleTypeDetailValue = getDefaultScaleTypeDetailValueForUpdate();
+                    var defaultScaleTypeDetailValue = getDefaultScaleTypeDetailValueForUpdate();
 
                     defaultScaleTypeDetailValue.setIsDefault(Boolean.FALSE);
                     updateScaleTypeFromValue(defaultScaleTypeDetailValue, false, updatedBy);
@@ -346,22 +346,22 @@ public class ScaleControl
         deleteScaleTypeDescriptionsByScaleType(scaleType, deletedBy);
         deleteScalesByScaleType(scaleType, deletedBy);
 
-        ScaleTypeDetail scaleTypeDetail = scaleType.getLastDetailForUpdate();
+        var scaleTypeDetail = scaleType.getLastDetailForUpdate();
         scaleTypeDetail.setThruTime(session.START_TIME_LONG);
         scaleType.setActiveDetail(null);
         scaleType.store();
 
         // Check for default, and pick one if necessary
-        ScaleType defaultScaleType = getDefaultScaleType();
+        var defaultScaleType = getDefaultScaleType();
         if(defaultScaleType == null) {
-            List<ScaleType> scaleTypes = getScaleTypesForUpdate();
+            var scaleTypes = getScaleTypesForUpdate();
 
             if(!scaleTypes.isEmpty()) {
-                Iterator<ScaleType> iter = scaleTypes.iterator();
+                var iter = scaleTypes.iterator();
                 if(iter.hasNext()) {
                     defaultScaleType = iter.next();
                 }
-                ScaleTypeDetailValue scaleTypeDetailValue = Objects.requireNonNull(defaultScaleType).getLastDetailForUpdate().getScaleTypeDetailValue().clone();
+                var scaleTypeDetailValue = Objects.requireNonNull(defaultScaleType).getLastDetailForUpdate().getScaleTypeDetailValue().clone();
 
                 scaleTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateScaleTypeFromValue(scaleTypeDetailValue, false, deletedBy);
@@ -377,7 +377,7 @@ public class ScaleControl
 
     public ScaleTypeDescription createScaleTypeDescription(ScaleType scaleType,
             Language language, String description, BasePK createdBy) {
-        ScaleTypeDescription scaleTypeDescription = ScaleTypeDescriptionFactory.getInstance().create(scaleType,
+        var scaleTypeDescription = ScaleTypeDescriptionFactory.getInstance().create(scaleType,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(scaleType.getPrimaryKey(), EventTypes.MODIFY, scaleTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -459,7 +459,7 @@ public class ScaleControl
 
     public String getBestScaleTypeDescription(ScaleType scaleType, Language language) {
         String description;
-        ScaleTypeDescription scaleTypeDescription = getScaleTypeDescription(scaleType, language);
+        var scaleTypeDescription = getScaleTypeDescription(scaleType, language);
 
         if(scaleTypeDescription == null && !language.getIsDefault()) {
             scaleTypeDescription = getScaleTypeDescription(scaleType, getPartyControl().getDefaultLanguage());
@@ -479,9 +479,9 @@ public class ScaleControl
     }
 
     public List<ScaleTypeDescriptionTransfer> getScaleTypeDescriptionTransfersByScaleType(UserVisit userVisit, ScaleType scaleType) {
-        List<ScaleTypeDescription> scaleTypeDescriptions = getScaleTypeDescriptionsByScaleType(scaleType);
+        var scaleTypeDescriptions = getScaleTypeDescriptionsByScaleType(scaleType);
         List<ScaleTypeDescriptionTransfer> scaleTypeDescriptionTransfers = new ArrayList<>(scaleTypeDescriptions.size());
-        ScaleTypeDescriptionTransferCache scaleTypeDescriptionTransferCache = getScaleTransferCaches(userVisit).getScaleTypeDescriptionTransferCache();
+        var scaleTypeDescriptionTransferCache = getScaleTransferCaches(userVisit).getScaleTypeDescriptionTransferCache();
 
         scaleTypeDescriptions.forEach((scaleTypeDescription) ->
                 scaleTypeDescriptionTransfers.add(scaleTypeDescriptionTransferCache.getScaleTypeDescriptionTransfer(scaleTypeDescription))
@@ -492,15 +492,15 @@ public class ScaleControl
 
     public void updateScaleTypeDescriptionFromValue(ScaleTypeDescriptionValue scaleTypeDescriptionValue, BasePK updatedBy) {
         if(scaleTypeDescriptionValue.hasBeenModified()) {
-            ScaleTypeDescription scaleTypeDescription = ScaleTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var scaleTypeDescription = ScaleTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     scaleTypeDescriptionValue.getPrimaryKey());
 
             scaleTypeDescription.setThruTime(session.START_TIME_LONG);
             scaleTypeDescription.store();
 
-            ScaleType scaleType = scaleTypeDescription.getScaleType();
-            Language language = scaleTypeDescription.getLanguage();
-            String description = scaleTypeDescriptionValue.getDescription();
+            var scaleType = scaleTypeDescription.getScaleType();
+            var language = scaleTypeDescription.getLanguage();
+            var description = scaleTypeDescriptionValue.getDescription();
 
             scaleTypeDescription = ScaleTypeDescriptionFactory.getInstance().create(scaleType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -517,7 +517,7 @@ public class ScaleControl
     }
 
     public void deleteScaleTypeDescriptionsByScaleType(ScaleType scaleType, BasePK deletedBy) {
-        List<ScaleTypeDescription> scaleTypeDescriptions = getScaleTypeDescriptionsByScaleTypeForUpdate(scaleType);
+        var scaleTypeDescriptions = getScaleTypeDescriptionsByScaleTypeForUpdate(scaleType);
 
         scaleTypeDescriptions.forEach((scaleTypeDescription) -> 
                 deleteScaleTypeDescription(scaleTypeDescription, deletedBy)
@@ -530,11 +530,11 @@ public class ScaleControl
 
     public Scale createScale(String scaleName, ScaleType scaleType, ServerService serverService, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
-        Scale defaultScale = getDefaultScale();
-        boolean defaultFound = defaultScale != null;
+        var defaultScale = getDefaultScale();
+        var defaultFound = defaultScale != null;
 
         if(defaultFound && isDefault) {
-            ScaleDetailValue defaultScaleDetailValue = getDefaultScaleDetailValueForUpdate();
+            var defaultScaleDetailValue = getDefaultScaleDetailValueForUpdate();
 
             defaultScaleDetailValue.setIsDefault(Boolean.FALSE);
             updateScaleFromValue(defaultScaleDetailValue, false, createdBy);
@@ -542,8 +542,8 @@ public class ScaleControl
             isDefault = Boolean.TRUE;
         }
 
-        Scale scale = ScaleFactory.getInstance().create();
-        ScaleDetail scaleDetail = ScaleDetailFactory.getInstance().create(scale, scaleName, scaleType, serverService, isDefault, sortOrder,
+        var scale = ScaleFactory.getInstance().create();
+        var scaleDetail = ScaleDetailFactory.getInstance().create(scale, scaleName, scaleType, serverService, isDefault, sortOrder,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -736,7 +736,7 @@ public class ScaleControl
 
     public List<ScaleTransfer> getScaleTransfers(UserVisit userVisit, Collection<Scale> scales) {
         List<ScaleTransfer> scaleTransfers = new ArrayList<>(scales.size());
-        ScaleTransferCache scaleTransferCache = getScaleTransferCaches(userVisit).getScaleTransferCache();
+        var scaleTransferCache = getScaleTransferCaches(userVisit).getScaleTransferCache();
 
         scales.forEach((scale) ->
                 scaleTransfers.add(scaleTransferCache.getScaleTransfer(scale))
@@ -750,7 +750,7 @@ public class ScaleControl
     }
 
     public ScaleChoicesBean getScaleChoices(String defaultScaleChoice, Language language, boolean allowNullChoice) {
-        List<Scale> scales = getScales();
+        var scales = getScales();
         var size = scales.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -766,7 +766,7 @@ public class ScaleControl
         }
 
         for(var scale : scales) {
-            ScaleDetail scaleDetail = scale.getLastDetail();
+            var scaleDetail = scale.getLastDetail();
 
             var label = getBestScaleDescription(scale, language);
             var value = scaleDetail.getScaleName();
@@ -786,27 +786,27 @@ public class ScaleControl
     private void updateScaleFromValue(ScaleDetailValue scaleDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(scaleDetailValue.hasBeenModified()) {
-            Scale scale = ScaleFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var scale = ScaleFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      scaleDetailValue.getScalePK());
-            ScaleDetail scaleDetail = scale.getActiveDetailForUpdate();
+            var scaleDetail = scale.getActiveDetailForUpdate();
 
             scaleDetail.setThruTime(session.START_TIME_LONG);
             scaleDetail.store();
 
-            ScalePK scalePK = scaleDetail.getScalePK(); // Not updated
-            String scaleName = scaleDetailValue.getScaleName();
-            ScaleTypePK scaleTypePK = scaleDetailValue.getScaleTypePK();
-            ServerServicePK serverServicePK = scaleDetailValue.getServerServicePK();
-            Boolean isDefault = scaleDetailValue.getIsDefault();
-            Integer sortOrder = scaleDetailValue.getSortOrder();
+            var scalePK = scaleDetail.getScalePK(); // Not updated
+            var scaleName = scaleDetailValue.getScaleName();
+            var scaleTypePK = scaleDetailValue.getScaleTypePK();
+            var serverServicePK = scaleDetailValue.getServerServicePK();
+            var isDefault = scaleDetailValue.getIsDefault();
+            var sortOrder = scaleDetailValue.getSortOrder();
 
             if(checkDefault) {
-                Scale defaultScale = getDefaultScale();
-                boolean defaultFound = defaultScale != null && !defaultScale.equals(scale);
+                var defaultScale = getDefaultScale();
+                var defaultFound = defaultScale != null && !defaultScale.equals(scale);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    ScaleDetailValue defaultScaleDetailValue = getDefaultScaleDetailValueForUpdate();
+                    var defaultScaleDetailValue = getDefaultScaleDetailValueForUpdate();
 
                     defaultScaleDetailValue.setIsDefault(Boolean.FALSE);
                     updateScaleFromValue(defaultScaleDetailValue, false, updatedBy);
@@ -831,7 +831,7 @@ public class ScaleControl
     }
 
     private void deleteScale(Scale scale, boolean checkDefault, BasePK deletedBy) {
-        ScaleDetail scaleDetail = scale.getLastDetailForUpdate();
+        var scaleDetail = scale.getLastDetailForUpdate();
 
         deleteScaleDescriptionsByScale(scale, deletedBy);
         deletePartyScaleUsesByScale(scale, deletedBy);
@@ -842,17 +842,17 @@ public class ScaleControl
 
         if(checkDefault) {
             // Check for default, and pick one if necessary
-            Scale defaultScale = getDefaultScale();
+            var defaultScale = getDefaultScale();
 
             if(defaultScale == null) {
-                List<Scale> scales = getScalesForUpdate();
+                var scales = getScalesForUpdate();
 
                 if(!scales.isEmpty()) {
-                    Iterator<Scale> iter = scales.iterator();
+                    var iter = scales.iterator();
                     if(iter.hasNext()) {
                         defaultScale = iter.next();
                     }
-                    ScaleDetailValue scaleDetailValue = Objects.requireNonNull(defaultScale).getLastDetailForUpdate().getScaleDetailValue().clone();
+                    var scaleDetailValue = Objects.requireNonNull(defaultScale).getLastDetailForUpdate().getScaleDetailValue().clone();
 
                     scaleDetailValue.setIsDefault(Boolean.TRUE);
                     updateScaleFromValue(scaleDetailValue, false, deletedBy);
@@ -889,7 +889,7 @@ public class ScaleControl
 
     public ScaleDescription createScaleDescription(Scale scale,
             Language language, String description, BasePK createdBy) {
-        ScaleDescription scaleDescription = ScaleDescriptionFactory.getInstance().create(scale,
+        var scaleDescription = ScaleDescriptionFactory.getInstance().create(scale,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(scale.getPrimaryKey(), EventTypes.MODIFY, scaleDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -971,7 +971,7 @@ public class ScaleControl
 
     public String getBestScaleDescription(Scale scale, Language language) {
         String description;
-        ScaleDescription scaleDescription = getScaleDescription(scale, language);
+        var scaleDescription = getScaleDescription(scale, language);
 
         if(scaleDescription == null && !language.getIsDefault()) {
             scaleDescription = getScaleDescription(scale, getPartyControl().getDefaultLanguage());
@@ -991,9 +991,9 @@ public class ScaleControl
     }
 
     public List<ScaleDescriptionTransfer> getScaleDescriptionTransfersByScale(UserVisit userVisit, Scale scale) {
-        List<ScaleDescription> scaleDescriptions = getScaleDescriptionsByScale(scale);
+        var scaleDescriptions = getScaleDescriptionsByScale(scale);
         List<ScaleDescriptionTransfer> scaleDescriptionTransfers = new ArrayList<>(scaleDescriptions.size());
-        ScaleDescriptionTransferCache scaleDescriptionTransferCache = getScaleTransferCaches(userVisit).getScaleDescriptionTransferCache();
+        var scaleDescriptionTransferCache = getScaleTransferCaches(userVisit).getScaleDescriptionTransferCache();
 
         scaleDescriptions.forEach((scaleDescription) ->
                 scaleDescriptionTransfers.add(scaleDescriptionTransferCache.getScaleDescriptionTransfer(scaleDescription))
@@ -1004,15 +1004,15 @@ public class ScaleControl
 
     public void updateScaleDescriptionFromValue(ScaleDescriptionValue scaleDescriptionValue, BasePK updatedBy) {
         if(scaleDescriptionValue.hasBeenModified()) {
-            ScaleDescription scaleDescription = ScaleDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var scaleDescription = ScaleDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     scaleDescriptionValue.getPrimaryKey());
 
             scaleDescription.setThruTime(session.START_TIME_LONG);
             scaleDescription.store();
 
-            Scale scale = scaleDescription.getScale();
-            Language language = scaleDescription.getLanguage();
-            String description = scaleDescriptionValue.getDescription();
+            var scale = scaleDescription.getScale();
+            var language = scaleDescription.getLanguage();
+            var description = scaleDescriptionValue.getDescription();
 
             scaleDescription = ScaleDescriptionFactory.getInstance().create(scale, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1029,7 +1029,7 @@ public class ScaleControl
     }
 
     public void deleteScaleDescriptionsByScale(Scale scale, BasePK deletedBy) {
-        List<ScaleDescription> scaleDescriptions = getScaleDescriptionsByScaleForUpdate(scale);
+        var scaleDescriptions = getScaleDescriptionsByScaleForUpdate(scale);
 
         scaleDescriptions.forEach((scaleDescription) -> 
                 deleteScaleDescription(scaleDescription, deletedBy)
@@ -1041,11 +1041,11 @@ public class ScaleControl
     // --------------------------------------------------------------------------------
 
     public ScaleUseType createScaleUseType(String scaleUseTypeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        ScaleUseType defaultScaleUseType = getDefaultScaleUseType();
-        boolean defaultFound = defaultScaleUseType != null;
+        var defaultScaleUseType = getDefaultScaleUseType();
+        var defaultFound = defaultScaleUseType != null;
 
         if(defaultFound && isDefault) {
-            ScaleUseTypeDetailValue defaultScaleUseTypeDetailValue = getDefaultScaleUseTypeDetailValueForUpdate();
+            var defaultScaleUseTypeDetailValue = getDefaultScaleUseTypeDetailValueForUpdate();
 
             defaultScaleUseTypeDetailValue.setIsDefault(Boolean.FALSE);
             updateScaleUseTypeFromValue(defaultScaleUseTypeDetailValue, false, createdBy);
@@ -1053,8 +1053,8 @@ public class ScaleControl
             isDefault = Boolean.TRUE;
         }
 
-        ScaleUseType scaleUseType = ScaleUseTypeFactory.getInstance().create();
-        ScaleUseTypeDetail scaleUseTypeDetail = ScaleUseTypeDetailFactory.getInstance().create(scaleUseType,
+        var scaleUseType = ScaleUseTypeFactory.getInstance().create();
+        var scaleUseTypeDetail = ScaleUseTypeDetailFactory.getInstance().create(scaleUseType,
                 scaleUseTypeName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -1180,7 +1180,7 @@ public class ScaleControl
 
     public List<ScaleUseTypeTransfer> getScaleUseTypeTransfers(UserVisit userVisit, Collection<ScaleUseType> scaleUseTypes) {
         List<ScaleUseTypeTransfer> scaleUseTypeTransfers = new ArrayList<>(scaleUseTypes.size());
-        ScaleUseTypeTransferCache scaleUseTypeTransferCache = getScaleTransferCaches(userVisit).getScaleUseTypeTransferCache();
+        var scaleUseTypeTransferCache = getScaleTransferCaches(userVisit).getScaleUseTypeTransferCache();
 
         scaleUseTypes.forEach((scaleUseType) ->
                 scaleUseTypeTransfers.add(scaleUseTypeTransferCache.getScaleUseTypeTransfer(scaleUseType))
@@ -1194,7 +1194,7 @@ public class ScaleControl
     }
 
     public ScaleUseTypeChoicesBean getScaleUseTypeChoices(String defaultScaleUseTypeChoice, Language language, boolean allowNullChoice) {
-        List<ScaleUseType> scaleUseTypes = getScaleUseTypes();
+        var scaleUseTypes = getScaleUseTypes();
         var size = scaleUseTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -1210,7 +1210,7 @@ public class ScaleControl
         }
 
         for(var scaleUseType : scaleUseTypes) {
-            ScaleUseTypeDetail scaleUseTypeDetail = scaleUseType.getLastDetail();
+            var scaleUseTypeDetail = scaleUseType.getLastDetail();
 
             var label = getBestScaleUseTypeDescription(scaleUseType, language);
             var value = scaleUseTypeDetail.getScaleUseTypeName();
@@ -1230,25 +1230,25 @@ public class ScaleControl
     private void updateScaleUseTypeFromValue(ScaleUseTypeDetailValue scaleUseTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(scaleUseTypeDetailValue.hasBeenModified()) {
-            ScaleUseType scaleUseType = ScaleUseTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var scaleUseType = ScaleUseTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      scaleUseTypeDetailValue.getScaleUseTypePK());
-            ScaleUseTypeDetail scaleUseTypeDetail = scaleUseType.getActiveDetailForUpdate();
+            var scaleUseTypeDetail = scaleUseType.getActiveDetailForUpdate();
 
             scaleUseTypeDetail.setThruTime(session.START_TIME_LONG);
             scaleUseTypeDetail.store();
 
-            ScaleUseTypePK scaleUseTypePK = scaleUseTypeDetail.getScaleUseTypePK(); // Not updated
-            String scaleUseTypeName = scaleUseTypeDetailValue.getScaleUseTypeName();
-            Boolean isDefault = scaleUseTypeDetailValue.getIsDefault();
-            Integer sortOrder = scaleUseTypeDetailValue.getSortOrder();
+            var scaleUseTypePK = scaleUseTypeDetail.getScaleUseTypePK(); // Not updated
+            var scaleUseTypeName = scaleUseTypeDetailValue.getScaleUseTypeName();
+            var isDefault = scaleUseTypeDetailValue.getIsDefault();
+            var sortOrder = scaleUseTypeDetailValue.getSortOrder();
 
             if(checkDefault) {
-                ScaleUseType defaultScaleUseType = getDefaultScaleUseType();
-                boolean defaultFound = defaultScaleUseType != null && !defaultScaleUseType.equals(scaleUseType);
+                var defaultScaleUseType = getDefaultScaleUseType();
+                var defaultFound = defaultScaleUseType != null && !defaultScaleUseType.equals(scaleUseType);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    ScaleUseTypeDetailValue defaultScaleUseTypeDetailValue = getDefaultScaleUseTypeDetailValueForUpdate();
+                    var defaultScaleUseTypeDetailValue = getDefaultScaleUseTypeDetailValueForUpdate();
 
                     defaultScaleUseTypeDetailValue.setIsDefault(Boolean.FALSE);
                     updateScaleUseTypeFromValue(defaultScaleUseTypeDetailValue, false, updatedBy);
@@ -1276,22 +1276,22 @@ public class ScaleControl
         deleteScaleUseTypeDescriptionsByScaleUseType(scaleUseType, deletedBy);
         deletePartyScaleUsesByScaleUseType(scaleUseType, deletedBy);
 
-        ScaleUseTypeDetail scaleUseTypeDetail = scaleUseType.getLastDetailForUpdate();
+        var scaleUseTypeDetail = scaleUseType.getLastDetailForUpdate();
         scaleUseTypeDetail.setThruTime(session.START_TIME_LONG);
         scaleUseType.setActiveDetail(null);
         scaleUseType.store();
 
         // Check for default, and pick one if necessary
-        ScaleUseType defaultScaleUseType = getDefaultScaleUseType();
+        var defaultScaleUseType = getDefaultScaleUseType();
         if(defaultScaleUseType == null) {
-            List<ScaleUseType> scaleUseTypes = getScaleUseTypesForUpdate();
+            var scaleUseTypes = getScaleUseTypesForUpdate();
 
             if(!scaleUseTypes.isEmpty()) {
-                Iterator<ScaleUseType> iter = scaleUseTypes.iterator();
+                var iter = scaleUseTypes.iterator();
                 if(iter.hasNext()) {
                     defaultScaleUseType = iter.next();
                 }
-                ScaleUseTypeDetailValue scaleUseTypeDetailValue = Objects.requireNonNull(defaultScaleUseType).getLastDetailForUpdate().getScaleUseTypeDetailValue().clone();
+                var scaleUseTypeDetailValue = Objects.requireNonNull(defaultScaleUseType).getLastDetailForUpdate().getScaleUseTypeDetailValue().clone();
 
                 scaleUseTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateScaleUseTypeFromValue(scaleUseTypeDetailValue, false, deletedBy);
@@ -1307,7 +1307,7 @@ public class ScaleControl
 
     public ScaleUseTypeDescription createScaleUseTypeDescription(ScaleUseType scaleUseType,
             Language language, String description, BasePK createdBy) {
-        ScaleUseTypeDescription scaleUseTypeDescription = ScaleUseTypeDescriptionFactory.getInstance().create(scaleUseType,
+        var scaleUseTypeDescription = ScaleUseTypeDescriptionFactory.getInstance().create(scaleUseType,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(scaleUseType.getPrimaryKey(), EventTypes.MODIFY, scaleUseTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1389,7 +1389,7 @@ public class ScaleControl
 
     public String getBestScaleUseTypeDescription(ScaleUseType scaleUseType, Language language) {
         String description;
-        ScaleUseTypeDescription scaleUseTypeDescription = getScaleUseTypeDescription(scaleUseType, language);
+        var scaleUseTypeDescription = getScaleUseTypeDescription(scaleUseType, language);
 
         if(scaleUseTypeDescription == null && !language.getIsDefault()) {
             scaleUseTypeDescription = getScaleUseTypeDescription(scaleUseType, getPartyControl().getDefaultLanguage());
@@ -1409,9 +1409,9 @@ public class ScaleControl
     }
 
     public List<ScaleUseTypeDescriptionTransfer> getScaleUseTypeDescriptionTransfersByScaleUseType(UserVisit userVisit, ScaleUseType scaleUseType) {
-        List<ScaleUseTypeDescription> scaleUseTypeDescriptions = getScaleUseTypeDescriptionsByScaleUseType(scaleUseType);
+        var scaleUseTypeDescriptions = getScaleUseTypeDescriptionsByScaleUseType(scaleUseType);
         List<ScaleUseTypeDescriptionTransfer> scaleUseTypeDescriptionTransfers = new ArrayList<>(scaleUseTypeDescriptions.size());
-        ScaleUseTypeDescriptionTransferCache scaleUseTypeDescriptionTransferCache = getScaleTransferCaches(userVisit).getScaleUseTypeDescriptionTransferCache();
+        var scaleUseTypeDescriptionTransferCache = getScaleTransferCaches(userVisit).getScaleUseTypeDescriptionTransferCache();
 
         scaleUseTypeDescriptions.forEach((scaleUseTypeDescription) ->
                 scaleUseTypeDescriptionTransfers.add(scaleUseTypeDescriptionTransferCache.getScaleUseTypeDescriptionTransfer(scaleUseTypeDescription))
@@ -1422,15 +1422,15 @@ public class ScaleControl
 
     public void updateScaleUseTypeDescriptionFromValue(ScaleUseTypeDescriptionValue scaleUseTypeDescriptionValue, BasePK updatedBy) {
         if(scaleUseTypeDescriptionValue.hasBeenModified()) {
-            ScaleUseTypeDescription scaleUseTypeDescription = ScaleUseTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var scaleUseTypeDescription = ScaleUseTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     scaleUseTypeDescriptionValue.getPrimaryKey());
 
             scaleUseTypeDescription.setThruTime(session.START_TIME_LONG);
             scaleUseTypeDescription.store();
 
-            ScaleUseType scaleUseType = scaleUseTypeDescription.getScaleUseType();
-            Language language = scaleUseTypeDescription.getLanguage();
-            String description = scaleUseTypeDescriptionValue.getDescription();
+            var scaleUseType = scaleUseTypeDescription.getScaleUseType();
+            var language = scaleUseTypeDescription.getLanguage();
+            var description = scaleUseTypeDescriptionValue.getDescription();
 
             scaleUseTypeDescription = ScaleUseTypeDescriptionFactory.getInstance().create(scaleUseType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1447,7 +1447,7 @@ public class ScaleControl
     }
 
     public void deleteScaleUseTypeDescriptionsByScaleUseType(ScaleUseType scaleUseType, BasePK deletedBy) {
-        List<ScaleUseTypeDescription> scaleUseTypeDescriptions = getScaleUseTypeDescriptionsByScaleUseTypeForUpdate(scaleUseType);
+        var scaleUseTypeDescriptions = getScaleUseTypeDescriptionsByScaleUseTypeForUpdate(scaleUseType);
 
         scaleUseTypeDescriptions.forEach((scaleUseTypeDescription) -> 
                 deleteScaleUseTypeDescription(scaleUseTypeDescription, deletedBy)
@@ -1459,7 +1459,7 @@ public class ScaleControl
     // --------------------------------------------------------------------------------
     
     public PartyScaleUse createPartyScaleUse(Party party, ScaleUseType scaleUseType, Scale scale, BasePK createdBy) {
-        PartyScaleUse partyScaleUse = PartyScaleUseFactory.getInstance().create(party, scaleUseType, scale,
+        var partyScaleUse = PartyScaleUseFactory.getInstance().create(party, scaleUseType, scale,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partyScaleUse.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1497,7 +1497,7 @@ public class ScaleControl
     }
 
     public PartyScaleUse getPartyScaleUseUsingNames(Party party, String scaleUseTypeName) {
-        ScaleUseType scaleUseType = getScaleUseTypeByName(scaleUseTypeName);
+        var scaleUseType = getScaleUseTypeByName(scaleUseTypeName);
         PartyScaleUse partyScaleUse = null;
 
         if(scaleUseType != null) {
@@ -1624,7 +1624,7 @@ public class ScaleControl
 
     public List<PartyScaleUseTransfer> getPartyScaleUseTransfers(UserVisit userVisit, Collection<PartyScaleUse> partyScaleUses) {
         List<PartyScaleUseTransfer> partyScaleUseTransfers = new ArrayList<>(partyScaleUses.size());
-        PartyScaleUseTransferCache partyScaleUseTransferCache = getScaleTransferCaches(userVisit).getPartyScaleUseTransferCache();
+        var partyScaleUseTransferCache = getScaleTransferCaches(userVisit).getPartyScaleUseTransferCache();
 
         partyScaleUses.forEach((partyScaleUse) ->
                 partyScaleUseTransfers.add(partyScaleUseTransferCache.getPartyScaleUseTransfer(partyScaleUse))
@@ -1639,15 +1639,15 @@ public class ScaleControl
 
     public void updatePartyScaleUseFromValue(PartyScaleUseValue partyScaleUseValue, BasePK updatedBy) {
         if(partyScaleUseValue.hasBeenModified()) {
-            PartyScaleUse partyScaleUse = PartyScaleUseFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var partyScaleUse = PartyScaleUseFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     partyScaleUseValue.getPrimaryKey());
             
             partyScaleUse.setThruTime(session.START_TIME_LONG);
             partyScaleUse.store();
-            
-            PartyPK partyPK = partyScaleUse.getPartyPK(); // Not updated
-            ScaleUseTypePK scaleUseTypePK = partyScaleUse.getScaleUseTypePK(); // Not updated
-            ScalePK scalePK = partyScaleUseValue.getScalePK();
+
+            var partyPK = partyScaleUse.getPartyPK(); // Not updated
+            var scaleUseTypePK = partyScaleUse.getScaleUseTypePK(); // Not updated
+            var scalePK = partyScaleUseValue.getScalePK();
             
             partyScaleUse = PartyScaleUseFactory.getInstance().create(partyPK, scaleUseTypePK,
                     scalePK, session.START_TIME_LONG, Session.MAX_TIME_LONG);

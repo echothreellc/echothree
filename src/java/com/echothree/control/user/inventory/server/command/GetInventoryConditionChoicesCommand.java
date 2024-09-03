@@ -66,13 +66,13 @@ public class GetInventoryConditionChoicesCommand
     @Override
     protected BaseResult execute() {
         var inventoryControl = Session.getModelController(InventoryControl.class);
-        GetInventoryConditionChoicesResult result = InventoryResultFactory.getGetInventoryConditionChoicesResult();
-        String inventoryConditionUseTypeName = form.getInventoryConditionUseTypeName();
-        InventoryConditionUseType inventoryConditionUseType = inventoryConditionUseTypeName == null? null: inventoryControl.getInventoryConditionUseTypeByName(inventoryConditionUseTypeName);
+        var result = InventoryResultFactory.getGetInventoryConditionChoicesResult();
+        var inventoryConditionUseTypeName = form.getInventoryConditionUseTypeName();
+        var inventoryConditionUseType = inventoryConditionUseTypeName == null? null: inventoryControl.getInventoryConditionUseTypeByName(inventoryConditionUseTypeName);
         
         if(inventoryConditionUseTypeName == null || inventoryConditionUseType != null) {
-        String defaultInventoryConditionChoice = form.getDefaultInventoryConditionChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+            var defaultInventoryConditionChoice = form.getDefaultInventoryConditionChoice();
+            var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
             if(inventoryConditionUseType == null) {
                 result.setInventoryConditionChoices(inventoryControl.getInventoryConditionChoices(defaultInventoryConditionChoice,

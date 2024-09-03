@@ -88,13 +88,13 @@ public class EditEditorDescriptionCommand
     public EditorDescription getEntity(EditEditorDescriptionResult result) {
         var coreControl = getCoreControl();
         EditorDescription editorDescription = null;
-        String editorName = spec.getEditorName();
-        Editor editor = coreControl.getEditorByName(editorName);
+        var editorName = spec.getEditorName();
+        var editor = coreControl.getEditorByName(editorName);
 
         if(editor != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -136,7 +136,7 @@ public class EditEditorDescriptionCommand
     @Override
     public void doUpdate(EditorDescription editorDescription) {
         var coreControl = getCoreControl();
-        EditorDescriptionValue editorDescriptionValue = coreControl.getEditorDescriptionValue(editorDescription);
+        var editorDescriptionValue = coreControl.getEditorDescriptionValue(editorDescription);
         editorDescriptionValue.setDescription(edit.getDescription());
 
         coreControl.updateEditorDescriptionFromValue(editorDescriptionValue, getPartyPK());

@@ -62,16 +62,16 @@ public class CreateInvoiceLineUseTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var invoiceControl = Session.getModelController(InvoiceControl.class);
-        String invoiceLineUseTypeName = form.getInvoiceLineUseTypeName();
-        InvoiceLineUseType invoiceLineUseType = invoiceControl.getInvoiceLineUseTypeByName(invoiceLineUseTypeName);
+        var invoiceLineUseTypeName = form.getInvoiceLineUseTypeName();
+        var invoiceLineUseType = invoiceControl.getInvoiceLineUseTypeByName(invoiceLineUseTypeName);
         
         if(invoiceLineUseType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                InvoiceLineUseTypeDescription invoiceLineUseTypeDescription = invoiceControl.getInvoiceLineUseTypeDescription(invoiceLineUseType, language);
+                var invoiceLineUseTypeDescription = invoiceControl.getInvoiceLineUseTypeDescription(invoiceLineUseType, language);
                 
                 if(invoiceLineUseTypeDescription == null) {
                     var description = form.getDescription();

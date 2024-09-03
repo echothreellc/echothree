@@ -107,41 +107,41 @@ public class EditContentCategoryItemCommand
     public ContentCategoryItem getEntity(EditContentCategoryItemResult result) {
         var contentControl = Session.getModelController(ContentControl.class);
         ContentCategoryItem contentCategoryItem = null;
-        String contentCollectionName = spec.getContentCollectionName();
-        ContentCollection contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
+        var contentCollectionName = spec.getContentCollectionName();
+        var contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
         
         if(contentCollection != null) {
-            String contentCatalogName = spec.getContentCatalogName();
-            ContentCatalog contentCatalog = contentControl.getContentCatalogByName(contentCollection, contentCatalogName);
+            var contentCatalogName = spec.getContentCatalogName();
+            var contentCatalog = contentControl.getContentCatalogByName(contentCollection, contentCatalogName);
             
             if(contentCatalog != null) {
-                String contentCategoryName = spec.getContentCategoryName();
-                ContentCategory contentCategory = contentControl.getContentCategoryByName(contentCatalog, contentCategoryName);
+                var contentCategoryName = spec.getContentCategoryName();
+                var contentCategory = contentControl.getContentCategoryByName(contentCatalog, contentCategoryName);
                 
                 if(contentCategory != null) {
                     var itemControl = Session.getModelController(ItemControl.class);
-                    String itemName = spec.getItemName();
-                    Item item = itemControl.getItemByName(itemName);
+                    var itemName = spec.getItemName();
+                    var item = itemControl.getItemByName(itemName);
                     
                     if(item != null) {
                         var inventoryControl = Session.getModelController(InventoryControl.class);
-                        String inventoryConditionName = spec.getInventoryConditionName();
-                        InventoryCondition inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
+                        var inventoryConditionName = spec.getInventoryConditionName();
+                        var inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
 
                         if(inventoryCondition != null) {
                             var uomControl = Session.getModelController(UomControl.class);
-                            String unitOfMeasureTypeName = spec.getUnitOfMeasureTypeName();
-                            ItemDetail itemDetail = item.getLastDetail();
-                            UnitOfMeasureKind unitOfMeasureKind = itemDetail.getUnitOfMeasureKind();
-                            UnitOfMeasureType unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
+                            var unitOfMeasureTypeName = spec.getUnitOfMeasureTypeName();
+                            var itemDetail = item.getLastDetail();
+                            var unitOfMeasureKind = itemDetail.getUnitOfMeasureKind();
+                            var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
 
                             if(unitOfMeasureType != null) {
                                 var accountingControl = Session.getModelController(AccountingControl.class);
-                                String currencyIsoName = spec.getCurrencyIsoName();
-                                Currency currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
+                                var currencyIsoName = spec.getCurrencyIsoName();
+                                var currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
 
                                 if(currency != null) {
-                                    ContentCatalogItem contentCatalogItem = contentControl.getContentCatalogItem(contentCatalog,
+                                    var contentCatalogItem = contentControl.getContentCatalogItem(contentCatalog,
                                             item, inventoryCondition, unitOfMeasureType, currency);
 
                                     if(contentCatalogItem != null) {
@@ -204,7 +204,7 @@ public class EditContentCategoryItemCommand
     @Override
     public void doUpdate(ContentCategoryItem contentCategoryItem) {
         var contentControl = Session.getModelController(ContentControl.class);
-        ContentCategoryItemValue contentCategoryItemValue = contentControl.getContentCategoryItemValue(contentCategoryItem);
+        var contentCategoryItemValue = contentControl.getContentCategoryItemValue(contentCategoryItem);
 
         contentCategoryItemValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
         contentCategoryItemValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));

@@ -64,12 +64,12 @@ public class SetDefaultSequenceCommand
     @Override
     protected BaseResult execute() {
         var sequenceControl = Session.getModelController(SequenceControl.class);
-        String sequenceTypeName = form.getSequenceTypeName();
-        SequenceType sequenceType = sequenceControl.getSequenceTypeByName(sequenceTypeName);
+        var sequenceTypeName = form.getSequenceTypeName();
+        var sequenceType = sequenceControl.getSequenceTypeByName(sequenceTypeName);
         
         if(sequenceType != null) {
-            String sequenceName = form.getSequenceName();
-            SequenceDetailValue sequenceDetailValue = sequenceControl.getSequenceDetailValueByNameForUpdate(sequenceType, sequenceName);
+            var sequenceName = form.getSequenceName();
+            var sequenceDetailValue = sequenceControl.getSequenceDetailValueByNameForUpdate(sequenceType, sequenceName);
             
             if(sequenceDetailValue != null) {
                 sequenceDetailValue.setIsDefault(Boolean.TRUE);

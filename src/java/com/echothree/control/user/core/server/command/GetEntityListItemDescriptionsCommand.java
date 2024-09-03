@@ -72,29 +72,29 @@ public class GetEntityListItemDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        GetEntityListItemDescriptionsResult result = CoreResultFactory.getGetEntityListItemDescriptionsResult();
-        String componentVendorName = form.getComponentVendorName();
-        ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+        var result = CoreResultFactory.getGetEntityListItemDescriptionsResult();
+        var componentVendorName = form.getComponentVendorName();
+        var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
         
         if(componentVendor != null) {
-            String entityTypeName = form.getEntityTypeName();
-            EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+            var entityTypeName = form.getEntityTypeName();
+            var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
             
             if(entityType != null) {
-                String entityAttributeName = form.getEntityAttributeName();
-                EntityAttribute entityAttribute = coreControl.getEntityAttributeByName(entityType, entityAttributeName);
+                var entityAttributeName = form.getEntityAttributeName();
+                var entityAttribute = coreControl.getEntityAttributeByName(entityType, entityAttributeName);
                 
                 if(entityAttribute != null) {
-                    EntityAttributeType entityAttributeType = entityAttribute.getLastDetail().getEntityAttributeType();
-                    String entityAttributeTypeName = entityAttributeType.getEntityAttributeTypeName();
+                    var entityAttributeType = entityAttribute.getLastDetail().getEntityAttributeType();
+                    var entityAttributeTypeName = entityAttributeType.getEntityAttributeTypeName();
                     
                     if(entityAttributeTypeName.equals(EntityAttributeTypes.LISTITEM.name())
                             || entityAttributeTypeName.equals(EntityAttributeTypes.MULTIPLELISTITEM.name())) {
-                        String entityListItemName = form.getEntityListItemName();
-                        EntityListItem entityListItem = coreControl.getEntityListItemByName(entityAttribute, entityListItemName);
+                        var entityListItemName = form.getEntityListItemName();
+                        var entityListItem = coreControl.getEntityListItemByName(entityAttribute, entityListItemName);
                         
                         if(entityListItem != null) {
-                            UserVisit userVisit = getUserVisit();
+                            var userVisit = getUserVisit();
                             
                             result.setEntityListItem(coreControl.getEntityListItemTransfer(userVisit, entityListItem, null));
                             result.setEntityListItemDescriptions(coreControl.getEntityListItemDescriptionTransfersByEntityListItem(userVisit, entityListItem, null));

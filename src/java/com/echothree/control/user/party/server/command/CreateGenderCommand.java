@@ -52,8 +52,8 @@ public class CreateGenderCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        String genderName = form.getGenderName();
-        Gender gender = partyControl.getGenderByName(genderName);
+        var genderName = form.getGenderName();
+        var gender = partyControl.getGenderByName(genderName);
         
         if(gender == null) {
                 var partyPK = getPartyPK();

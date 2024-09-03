@@ -64,23 +64,23 @@ public class EditMoodDescriptionCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        EditMoodDescriptionResult result = PartyResultFactory.getEditMoodDescriptionResult();
-        String moodName = spec.getMoodName();
-        Mood mood = partyControl.getMoodByName(moodName);
+        var result = PartyResultFactory.getEditMoodDescriptionResult();
+        var moodName = spec.getMoodName();
+        var mood = partyControl.getMoodByName(moodName);
         
         if(mood != null) {
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK)) {
-                    MoodDescription moodDescription = partyControl.getMoodDescription(mood, language);
+                    var moodDescription = partyControl.getMoodDescription(mood, language);
                     
                     if(moodDescription != null) {
                         result.setMoodDescription(partyControl.getMoodDescriptionTransfer(getUserVisit(), moodDescription));
                         
                         if(lockEntity(mood)) {
-                            MoodDescriptionEdit edit = PartyEditFactory.getMoodDescriptionEdit();
+                            var edit = PartyEditFactory.getMoodDescriptionEdit();
                             
                             result.setEdit(edit);
                             edit.setDescription(moodDescription.getDescription());
@@ -93,12 +93,12 @@ public class EditMoodDescriptionCommand
                         addExecutionError(ExecutionErrors.UnknownMoodDescription.name());
                     }
                 } else if(editMode.equals(EditMode.UPDATE)) {
-                    MoodDescriptionValue moodDescriptionValue = partyControl.getMoodDescriptionValueForUpdate(mood, language);
+                    var moodDescriptionValue = partyControl.getMoodDescriptionValueForUpdate(mood, language);
                     
                     if(moodDescriptionValue != null) {
                         if(lockEntityForUpdate(mood)) {
                             try {
-                                String description = edit.getDescription();
+                                var description = edit.getDescription();
                                 
                                 moodDescriptionValue.setDescription(description);
                                 

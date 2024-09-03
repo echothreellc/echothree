@@ -85,7 +85,7 @@ public class EditComponentVendorCommand
     public ComponentVendor getEntity(EditComponentVendorResult result) {
         var coreControl = getCoreControl();
         ComponentVendor componentVendor = null;
-        String componentVendorName = spec.getComponentVendorName();
+        var componentVendorName = spec.getComponentVendorName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
             componentVendor = coreControl.getComponentVendorByName(componentVendorName);
@@ -116,7 +116,7 @@ public class EditComponentVendorCommand
 
     @Override
     public void doLock(ComponentVendorEdit edit, ComponentVendor componentVendor) {
-        ComponentVendorDetail componentVendorDetail = componentVendor.getLastDetail();
+        var componentVendorDetail = componentVendor.getLastDetail();
 
         edit.setComponentVendorName(componentVendorDetail.getComponentVendorName());
         edit.setDescription(componentVendorDetail.getDescription());
@@ -125,8 +125,8 @@ public class EditComponentVendorCommand
     @Override
     public void canUpdate(ComponentVendor componentVendor) {
         var coreControl = getCoreControl();
-        String componentVendorName = edit.getComponentVendorName();
-        ComponentVendor duplicateComponentVendor = coreControl.getComponentVendorByName(componentVendorName);
+        var componentVendorName = edit.getComponentVendorName();
+        var duplicateComponentVendor = coreControl.getComponentVendorByName(componentVendorName);
 
         if(duplicateComponentVendor != null && !componentVendor.equals(duplicateComponentVendor)) {
             addExecutionError(ExecutionErrors.DuplicateComponentVendorName.name(), componentVendorName);
@@ -136,7 +136,7 @@ public class EditComponentVendorCommand
     @Override
     public void doUpdate(ComponentVendor componentVendor) {
         var coreControl = getCoreControl();
-        ComponentVendorDetailValue componentVendorDetailValue = coreControl.getComponentVendorDetailValueForUpdate(componentVendor);
+        var componentVendorDetailValue = coreControl.getComponentVendorDetailValueForUpdate(componentVendor);
 
         componentVendorDetailValue.setComponentVendorName(edit.getComponentVendorName());
         componentVendorDetailValue.setDescription(edit.getDescription());

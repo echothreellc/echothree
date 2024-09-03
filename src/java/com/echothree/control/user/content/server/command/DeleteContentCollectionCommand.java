@@ -63,8 +63,8 @@ public class DeleteContentCollectionCommand
     @Override
     protected BaseResult execute() {
         var contentControl = Session.getModelController(ContentControl.class);
-        String contentCollectionName = form.getContentCollectionName();
-        ContentCollection contentCollection = contentControl.getContentCollectionByNameForUpdate(contentCollectionName);
+        var contentCollectionName = form.getContentCollectionName();
+        var contentCollection = contentControl.getContentCollectionByNameForUpdate(contentCollectionName);
         
         if(contentCollection != null) {
             contentControl.deleteContentCollection(contentCollection, getPartyPK());

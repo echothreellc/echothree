@@ -71,21 +71,21 @@ public class GetPartyCancellationPolicyCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        GetPartyCancellationPolicyResult result = CancellationPolicyResultFactory.getGetPartyCancellationPolicyResult();
-        String partyName = form.getPartyName();
-        Party party = partyControl.getPartyByName(partyName);
+        var result = CancellationPolicyResultFactory.getGetPartyCancellationPolicyResult();
+        var partyName = form.getPartyName();
+        var party = partyControl.getPartyByName(partyName);
 
         if(party != null) {
             var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
-            String cancellationKindName = form.getCancellationKindName();
-            CancellationKind cancellationKind = cancellationPolicyControl.getCancellationKindByName(cancellationKindName);
+            var cancellationKindName = form.getCancellationKindName();
+            var cancellationKind = cancellationPolicyControl.getCancellationKindByName(cancellationKindName);
 
             if(cancellationKind != null) {
-                String cancellationPolicyName = form.getCancellationPolicyName();
-                CancellationPolicy cancellationPolicy = cancellationPolicyControl.getCancellationPolicyByName(cancellationKind, cancellationPolicyName);
+                var cancellationPolicyName = form.getCancellationPolicyName();
+                var cancellationPolicy = cancellationPolicyControl.getCancellationPolicyByName(cancellationKind, cancellationPolicyName);
 
                 if(cancellationPolicy != null) {
-                    PartyCancellationPolicy partyCancellationPolicy = cancellationPolicyControl.getPartyCancellationPolicy(party, cancellationPolicy);
+                    var partyCancellationPolicy = cancellationPolicyControl.getPartyCancellationPolicy(party, cancellationPolicy);
 
                     if(partyCancellationPolicy != null) {
                         result.setPartyCancellationPolicy(cancellationPolicyControl.getPartyCancellationPolicyTransfer(getUserVisit(), partyCancellationPolicy));

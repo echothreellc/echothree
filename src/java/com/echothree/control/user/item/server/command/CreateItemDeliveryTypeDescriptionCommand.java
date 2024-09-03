@@ -62,16 +62,16 @@ public class CreateItemDeliveryTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var itemControl = Session.getModelController(ItemControl.class);
-        String itemDeliveryTypeName = form.getItemDeliveryTypeName();
-        ItemDeliveryType itemDeliveryType = itemControl.getItemDeliveryTypeByName(itemDeliveryTypeName);
+        var itemDeliveryTypeName = form.getItemDeliveryTypeName();
+        var itemDeliveryType = itemControl.getItemDeliveryTypeByName(itemDeliveryTypeName);
         
         if(itemDeliveryType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                ItemDeliveryTypeDescription itemDeliveryTypeDescription = itemControl.getItemDeliveryTypeDescription(itemDeliveryType, language);
+                var itemDeliveryTypeDescription = itemControl.getItemDeliveryTypeDescription(itemDeliveryType, language);
                 
                 if(itemDeliveryTypeDescription == null) {
                     var description = form.getDescription();

@@ -152,7 +152,7 @@ public class EditRelatedItemTypeCommand
         } else if(relatedItemTypeDescription != null && description == null) {
             itemControl.deleteRelatedItemTypeDescription(relatedItemTypeDescription, partyPK);
         } else if(relatedItemTypeDescription != null && description != null) {
-            RelatedItemTypeDescriptionValue relatedItemTypeDescriptionValue = itemControl.getRelatedItemTypeDescriptionValue(relatedItemTypeDescription);
+            var relatedItemTypeDescriptionValue = itemControl.getRelatedItemTypeDescriptionValue(relatedItemTypeDescription);
 
             relatedItemTypeDescriptionValue.setDescription(description);
             itemControl.updateRelatedItemTypeDescriptionFromValue(relatedItemTypeDescriptionValue, partyPK);

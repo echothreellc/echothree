@@ -53,13 +53,13 @@ public class GetCustomerCreditStatusChoicesCommand
     @Override
     protected BaseResult execute() {
         var customerControl = Session.getModelController(CustomerControl.class);
-        GetCustomerCreditStatusChoicesResult result = CustomerResultFactory.getGetCustomerCreditStatusChoicesResult();
-        String customerName = form.getCustomerName();
-        Customer customer = customerName == null? null: customerControl.getCustomerByName(customerName);
+        var result = CustomerResultFactory.getGetCustomerCreditStatusChoicesResult();
+        var customerName = form.getCustomerName();
+        var customer = customerName == null? null: customerControl.getCustomerByName(customerName);
         
         if(customerName == null || customer != null) {
-            String defaultCustomerCreditStatusChoice = form.getDefaultCustomerCreditStatusChoice();
-            boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+            var defaultCustomerCreditStatusChoice = form.getDefaultCustomerCreditStatusChoice();
+            var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
             
             result.setCustomerCreditStatusChoices(customerControl.getCustomerCreditStatusChoices(defaultCustomerCreditStatusChoice,
                     getPreferredLanguage(), allowNullChoice, customer == null? null: customer.getParty(), getPartyPK()));

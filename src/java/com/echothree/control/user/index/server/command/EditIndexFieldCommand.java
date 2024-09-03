@@ -95,12 +95,12 @@ public class EditIndexFieldCommand
     public IndexField getEntity(EditIndexFieldResult result) {
         var indexControl = Session.getModelController(IndexControl.class);
         IndexField indexField = null;
-        String indexTypeName = spec.getIndexTypeName();
+        var indexTypeName = spec.getIndexTypeName();
 
         indexType = indexControl.getIndexTypeByName(indexTypeName);
 
         if(indexType != null) {
-            String indexFieldName = spec.getIndexFieldName();
+            var indexFieldName = spec.getIndexFieldName();
 
             if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
                 indexField = indexControl.getIndexFieldByName(indexType, indexFieldName);
@@ -133,8 +133,8 @@ public class EditIndexFieldCommand
     @Override
     public void doLock(IndexFieldEdit edit, IndexField indexField) {
         var indexControl = Session.getModelController(IndexControl.class);
-        IndexFieldDescription indexFieldDescription = indexControl.getIndexFieldDescription(indexField, getPreferredLanguage());
-        IndexFieldDetail indexFieldDetail = indexField.getLastDetail();
+        var indexFieldDescription = indexControl.getIndexFieldDescription(indexField, getPreferredLanguage());
+        var indexFieldDetail = indexField.getLastDetail();
 
         edit.setIndexFieldName(indexFieldDetail.getIndexFieldName());
         edit.setIsDefault(indexFieldDetail.getIsDefault().toString());
@@ -148,9 +148,9 @@ public class EditIndexFieldCommand
     @Override
     public void canUpdate(IndexField indexField) {
         var indexControl = Session.getModelController(IndexControl.class);
-        IndexTypeDetail indexTypeDetail = indexType.getLastDetail();
-        String indexFieldName = edit.getIndexFieldName();
-        IndexField duplicateIndexField = indexControl.getIndexFieldByName(indexType, indexFieldName);
+        var indexTypeDetail = indexType.getLastDetail();
+        var indexFieldName = edit.getIndexFieldName();
+        var duplicateIndexField = indexControl.getIndexFieldByName(indexType, indexFieldName);
 
         if(duplicateIndexField != null && !indexField.equals(duplicateIndexField)) {
             addExecutionError(ExecutionErrors.DuplicateIndexFieldName.name(), indexTypeDetail.getIndexTypeName(), indexFieldName);
@@ -161,9 +161,9 @@ public class EditIndexFieldCommand
     public void doUpdate(IndexField indexField) {
         var indexControl = Session.getModelController(IndexControl.class);
         var partyPK = getPartyPK();
-        IndexFieldDetailValue indexFieldDetailValue = indexControl.getIndexFieldDetailValueForUpdate(indexField);
-        IndexFieldDescription indexFieldDescription = indexControl.getIndexFieldDescriptionForUpdate(indexField, getPreferredLanguage());
-        String description = edit.getDescription();
+        var indexFieldDetailValue = indexControl.getIndexFieldDetailValueForUpdate(indexField);
+        var indexFieldDescription = indexControl.getIndexFieldDescriptionForUpdate(indexField, getPreferredLanguage());
+        var description = edit.getDescription();
 
         indexFieldDetailValue.setIndexFieldName(edit.getIndexFieldName());
         indexFieldDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
@@ -176,7 +176,7 @@ public class EditIndexFieldCommand
         } else if(indexFieldDescription != null && description == null) {
             indexControl.deleteIndexFieldDescription(indexFieldDescription, partyPK);
         } else if(indexFieldDescription != null && description != null) {
-            IndexFieldDescriptionValue indexFieldDescriptionValue = indexControl.getIndexFieldDescriptionValue(indexFieldDescription);
+            var indexFieldDescriptionValue = indexControl.getIndexFieldDescriptionValue(indexFieldDescription);
 
             indexFieldDescriptionValue.setDescription(description);
             indexControl.updateIndexFieldDescriptionFromValue(indexFieldDescriptionValue, partyPK);

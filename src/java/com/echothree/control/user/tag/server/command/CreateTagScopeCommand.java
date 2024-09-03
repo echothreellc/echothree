@@ -72,21 +72,21 @@ public class CreateTagScopeCommand
     
     @Override
     protected BaseResult execute() {
-        CreateTagScopeResult result = TagResultFactory.getCreateTagScopeResult();
+        var result = TagResultFactory.getCreateTagScopeResult();
         var tagControl = Session.getModelController(TagControl.class);
-        String tagScopeName = form.getTagScopeName();
+        var tagScopeName = form.getTagScopeName();
         
         if(tagScopeName == null) {
             var sequenceControl = Session.getModelController(SequenceControl.class);
-            Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.TAG_SCOPE.name());
+            var sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.TAG_SCOPE.name());
             
             tagScopeName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
         }
-        
-        TagScope tagScope = tagControl.getTagScopeByName(tagScopeName);
+
+        var tagScope = tagControl.getTagScopeByName(tagScopeName);
         
         if(tagScope == null) {
-            PartyPK createdBy = getPartyPK();
+            var createdBy = getPartyPK();
             var isDefault = Boolean.valueOf(form.getIsDefault());
             var sortOrder = Integer.valueOf(form.getSortOrder());
             var description = form.getDescription();

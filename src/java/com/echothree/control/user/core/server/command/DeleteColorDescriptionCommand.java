@@ -66,16 +66,16 @@ public class DeleteColorDescriptionCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String colorName = form.getColorName();
-        Color color = coreControl.getColorByName(colorName);
+        var colorName = form.getColorName();
+        var color = coreControl.getColorByName(colorName);
         
         if(color != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                ColorDescription colorDescription = coreControl.getColorDescriptionForUpdate(color, language);
+                var colorDescription = coreControl.getColorDescriptionForUpdate(color, language);
                 
                 if(colorDescription != null) {
                     coreControl.deleteColorDescription(colorDescription, getPartyPK());

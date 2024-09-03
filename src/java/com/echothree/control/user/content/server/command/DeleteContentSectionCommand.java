@@ -66,14 +66,14 @@ public class DeleteContentSectionCommand
     @Override
     protected BaseResult execute() {
         var contentControl = Session.getModelController(ContentControl.class);
-        String contentCollectionName = form.getContentCollectionName();
-        ContentCollection contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
+        var contentCollectionName = form.getContentCollectionName();
+        var contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
 
         if(contentCollection != null) {
-            String contentSectionName = form.getContentSectionName();
+            var contentSectionName = form.getContentSectionName();
 
             if(!contentSectionName.equalsIgnoreCase(ContentSections.ROOT.toString())) {
-                ContentSection contentSection = contentControl.getContentSectionByNameForUpdate(contentCollection, contentSectionName);
+                var contentSection = contentControl.getContentSectionByNameForUpdate(contentCollection, contentSectionName);
 
                 if(contentSection != null) {
                     contentControl.deleteContentSection(contentSection, getPartyPK());

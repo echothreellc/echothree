@@ -32,12 +32,12 @@ public class ShippingMethodDescriptionTransferCache
     }
     
     public ShippingMethodDescriptionTransfer getShippingMethodDescriptionTransfer(ShippingMethodDescription shippingMethodDescription) {
-        ShippingMethodDescriptionTransfer shippingMethodDescriptionTransfer = get(shippingMethodDescription);
+        var shippingMethodDescriptionTransfer = get(shippingMethodDescription);
         
         if(shippingMethodDescriptionTransfer == null) {
-            ShippingMethodTransfer shippingMethodTransfer = shippingControl.getShippingMethodTransfer(userVisit, shippingMethodDescription.getShippingMethod());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, shippingMethodDescription.getLanguage());
-            String description = shippingMethodDescription.getDescription();
+            var shippingMethodTransfer = shippingControl.getShippingMethodTransfer(userVisit, shippingMethodDescription.getShippingMethod());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, shippingMethodDescription.getLanguage());
+            var description = shippingMethodDescription.getDescription();
             
             shippingMethodDescriptionTransfer = new ShippingMethodDescriptionTransfer(languageTransfer, shippingMethodTransfer,
                     description);

@@ -89,13 +89,13 @@ public class EditSearchResultActionTypeDescriptionCommand
     public SearchResultActionTypeDescription getEntity(EditSearchResultActionTypeDescriptionResult result) {
         var searchControl = Session.getModelController(SearchControl.class);
         SearchResultActionTypeDescription searchResultActionTypeDescription = null;
-        String searchResultActionTypeName = spec.getSearchResultActionTypeName();
-        SearchResultActionType searchResultActionType = searchControl.getSearchResultActionTypeByName(searchResultActionTypeName);
+        var searchResultActionTypeName = spec.getSearchResultActionTypeName();
+        var searchResultActionType = searchControl.getSearchResultActionTypeByName(searchResultActionTypeName);
 
         if(searchResultActionType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -137,7 +137,7 @@ public class EditSearchResultActionTypeDescriptionCommand
     @Override
     public void doUpdate(SearchResultActionTypeDescription searchResultActionTypeDescription) {
         var searchControl = Session.getModelController(SearchControl.class);
-        SearchResultActionTypeDescriptionValue searchResultActionTypeDescriptionValue = searchControl.getSearchResultActionTypeDescriptionValue(searchResultActionTypeDescription);
+        var searchResultActionTypeDescriptionValue = searchControl.getSearchResultActionTypeDescriptionValue(searchResultActionTypeDescription);
         searchResultActionTypeDescriptionValue.setDescription(edit.getDescription());
 
         searchControl.updateSearchResultActionTypeDescriptionFromValue(searchResultActionTypeDescriptionValue, getPartyPK());

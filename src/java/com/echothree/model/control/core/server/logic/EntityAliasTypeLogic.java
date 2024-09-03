@@ -102,10 +102,10 @@ public class EntityAliasTypeLogic
     public EntityAliasType getEntityAliasTypeByName(final ExecutionErrorAccumulator eea, final EntityType entityType,
             final String entityAliasTypeName, EntityPermission entityPermission) {
         var coreControl = Session.getModelController(CoreControl.class);
-        EntityAliasType entityAliasType = coreControl.getEntityAliasTypeByName(entityType, entityAliasTypeName, entityPermission);
+        var entityAliasType = coreControl.getEntityAliasTypeByName(entityType, entityAliasTypeName, entityPermission);
 
         if(entityAliasType == null) {
-            EntityTypeDetail entityTypeDetail = entityType.getLastDetail();
+            var entityTypeDetail = entityType.getLastDetail();
             
             handleExecutionError(UnknownEntityAliasTypeNameException.class, eea, ExecutionErrors.UnknownEntityAliasTypeName.name(),
                     entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(), entityTypeDetail.getEntityTypeName(), entityAliasTypeName);
@@ -126,7 +126,7 @@ public class EntityAliasTypeLogic
     
     public EntityAliasType getEntityAliasTypeByName(final ExecutionErrorAccumulator eea, final ComponentVendor componentVendor,
             final String entityTypeName, final String entityAliasTypeName, EntityPermission entityPermission) {
-        EntityType entityType = EntityTypeLogic.getInstance().getEntityTypeByName(eea, componentVendor, entityTypeName);
+        var entityType = EntityTypeLogic.getInstance().getEntityTypeByName(eea, componentVendor, entityTypeName);
         EntityAliasType entityAliasType = null;
         
         if(eea == null || !eea.hasExecutionErrors()) {
@@ -148,7 +148,7 @@ public class EntityAliasTypeLogic
     
     public EntityAliasType getEntityAliasTypeByName(final ExecutionErrorAccumulator eea, final String componentVendorName,
             final String entityTypeName, final String entityAliasTypeName, EntityPermission entityPermission) {
-        EntityType entityType = EntityTypeLogic.getInstance().getEntityTypeByName(eea, componentVendorName, entityTypeName);
+        var entityType = EntityTypeLogic.getInstance().getEntityTypeByName(eea, componentVendorName, entityTypeName);
         EntityAliasType entityAliasType = null;
         
         if(eea == null || !eea.hasExecutionErrors()) {
@@ -238,8 +238,8 @@ public class EntityAliasTypeLogic
     public EntityAliasType getEntityAliasType(final ExecutionErrorAccumulator eea, final EntityInstance entityInstance,
             final EntityAliasTypeSpec spec, final EntityAliasTypeUlid ulid, final EntityPermission entityPermission) {
         EntityAliasType entityAliasType = null;
-        String entityAliasTypeName = spec.getEntityAliasTypeName();
-        String entityAliasTypeUlid = ulid.getEntityAliasTypeUlid();
+        var entityAliasTypeName = spec.getEntityAliasTypeName();
+        var entityAliasTypeUlid = ulid.getEntityAliasTypeUlid();
         var parameterCount = (entityAliasTypeName == null ? 0 : 1) + (entityAliasTypeUlid == null ? 0 : 1);
 
         if (parameterCount == 1) {
@@ -253,8 +253,8 @@ public class EntityAliasTypeLogic
         // If there are no other errors, and the EntityAliasType was specified by ULID, then verify the EntityType...
         if((eea == null || !eea.hasExecutionErrors()) && entityAliasTypeUlid != null) {
             if(!entityInstance.getEntityType().equals(entityAliasType.getLastDetail().getEntityType())) {
-                EntityTypeDetail expectedEntityTypeDetail = entityAliasType.getLastDetail().getEntityType().getLastDetail();
-                EntityTypeDetail suppliedEntityTypeDetail = entityInstance.getEntityType().getLastDetail();
+                var expectedEntityTypeDetail = entityAliasType.getLastDetail().getEntityType().getLastDetail();
+                var suppliedEntityTypeDetail = entityInstance.getEntityType().getLastDetail();
 
                 handleExecutionError(MismatchedEntityTypeException.class, eea, ExecutionErrors.MismatchedEntityType.name(),
                         expectedEntityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
@@ -353,7 +353,7 @@ public class EntityAliasTypeLogic
     public EntityAlias getEntityAliasByAlias(final ExecutionErrorAccumulator eea, final EntityAliasType entityAliasType,
             final String alias) {
         var coreControl = Session.getModelController(CoreControl.class);
-        EntityAlias entityAlias = coreControl.getEntityAliasByEntityAliasTypeAndAlias(entityAliasType, alias);
+        var entityAlias = coreControl.getEntityAliasByEntityAliasTypeAndAlias(entityAliasType, alias);
 
         if(entityAlias == null) {
             var entityAliasTypeDetail = entityAliasType.getLastDetail();

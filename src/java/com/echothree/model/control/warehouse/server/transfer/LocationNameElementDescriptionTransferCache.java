@@ -32,12 +32,12 @@ public class LocationNameElementDescriptionTransferCache
     }
     
     public LocationNameElementDescriptionTransfer getLocationNameElementDescriptionTransfer(LocationNameElementDescription locationNameElementDescription) {
-        LocationNameElementDescriptionTransfer locationNameElementDescriptionTransfer = get(locationNameElementDescription);
+        var locationNameElementDescriptionTransfer = get(locationNameElementDescription);
         
         if(locationNameElementDescriptionTransfer == null) {
-            LocationNameElementTransferCache locationNameElementTransferCache = warehouseControl.getWarehouseTransferCaches(userVisit).getLocationNameElementTransferCache();
-            LocationNameElementTransfer locationNameElementTransfer = locationNameElementTransferCache.getLocationNameElementTransfer(locationNameElementDescription.getLocationNameElement());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, locationNameElementDescription.getLanguage());
+            var locationNameElementTransferCache = warehouseControl.getWarehouseTransferCaches(userVisit).getLocationNameElementTransferCache();
+            var locationNameElementTransfer = locationNameElementTransferCache.getLocationNameElementTransfer(locationNameElementDescription.getLocationNameElement());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, locationNameElementDescription.getLanguage());
             
             locationNameElementDescriptionTransfer = new LocationNameElementDescriptionTransfer(languageTransfer, locationNameElementTransfer, locationNameElementDescription.getDescription());
             put(locationNameElementDescription, locationNameElementDescriptionTransfer);
