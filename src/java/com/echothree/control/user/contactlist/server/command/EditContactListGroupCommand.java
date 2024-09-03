@@ -86,7 +86,7 @@ public class EditContactListGroupCommand
     @Override
     public ContactListGroup getEntity(EditContactListGroupResult result) {
         var contactListControl = Session.getModelController(ContactListControl.class);
-        ContactListGroup contactListGroup = null;
+        ContactListGroup contactListGroup;
         var contactListGroupName = spec.getContactListGroupName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {

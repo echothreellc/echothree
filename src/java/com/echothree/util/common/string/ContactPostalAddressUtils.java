@@ -193,7 +193,7 @@ public class ContactPostalAddressUtils {
     public List<String> formatContactPostalAddress(final ContactPostalAddressTransfer contactPostalAddress) {
         var postalAddressFormat = contactPostalAddress.getCountryGeoCode().getPostalAddressFormat();
         var postalAddressLines = postalAddressFormat.getPostalAddressLines();
-        List<String> result = null;
+        List<String> result;
         
         if(postalAddressLines == null) {
             throw new IllegalArgumentException("PostalAddressFormatIncludeLines is a required Option to format ContactPostalAddress TO");

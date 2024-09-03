@@ -67,7 +67,7 @@ public class GetPartyPrinterGroupUsesCommand
         var partyControl = Session.getModelController(PartyControl.class);
         var result = PrinterResultFactory.getGetPartyPrinterGroupUsesResult();
         var partyName = form.getPartyName();
-        Party party = null;
+        Party party;
 
         if(partyName != null) {
             party = partyControl.getPartyByName(partyName);

@@ -87,7 +87,7 @@ public class EditWarehouseTypeCommand
     @Override
     public WarehouseType getEntity(EditWarehouseTypeResult result) {
         var warehouseControl = Session.getModelController(WarehouseControl.class);
-        WarehouseType warehouseType = null;
+        WarehouseType warehouseType;
         var warehouseTypeName = spec.getWarehouseTypeName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {

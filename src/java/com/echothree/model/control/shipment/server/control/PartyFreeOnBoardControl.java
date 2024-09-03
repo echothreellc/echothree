@@ -53,7 +53,7 @@ public class PartyFreeOnBoardControl
     }
 
     private PartyFreeOnBoard getPartyFreeOnBoard(Party party, EntityPermission entityPermission) {
-        PartyFreeOnBoard partyFreeOnBoard = null;
+        PartyFreeOnBoard partyFreeOnBoard;
 
         try {
             String query = null;
@@ -99,7 +99,7 @@ public class PartyFreeOnBoardControl
     }
 
     private List<PartyFreeOnBoard> getPartyFreeOnBoardsByFreeOnBoard(FreeOnBoard freeOnBoard, EntityPermission entityPermission) {
-        List<PartyFreeOnBoard> partyFreeOnBoards = null;
+        List<PartyFreeOnBoard> partyFreeOnBoards;
 
         try {
             String query = null;

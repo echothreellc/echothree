@@ -136,7 +136,7 @@ public class CacheTag
     
     protected String getBaseType()
             throws JspException {
-        String baseType = null;
+        String baseType;
 
         try {
             baseType = new ContentType(pageContext.getResponse().getContentType()).getBaseType();

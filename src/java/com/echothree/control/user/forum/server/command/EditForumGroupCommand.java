@@ -74,7 +74,7 @@ public class EditForumGroupCommand
     @Override
     public ForumGroup getEntity(EditForumGroupResult result) {
         var forumControl = Session.getModelController(ForumControl.class);
-        ForumGroup forumGroup = null;
+        ForumGroup forumGroup;
         var forumGroupName = spec.getForumGroupName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {

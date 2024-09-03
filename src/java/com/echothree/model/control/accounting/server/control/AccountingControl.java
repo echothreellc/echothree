@@ -4876,7 +4876,7 @@ public class AccountingControl
         TransactionGroup transactionGroup = null;
         
         if(workflowStep != null) {
-            List<TransactionGroup> transactionGroups = null;
+            List<TransactionGroup> transactionGroups;
             
             try {
                 var ps = TransactionGroupFactory.getInstance().prepareStatement(
@@ -4952,7 +4952,7 @@ public class AccountingControl
         
         try {
             String query = null;
-            
+
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
                 query = "SELECT _ALL_ " +
                         "FROM transactiongroups, transactiongroupdetails " +
@@ -4975,7 +4975,7 @@ public class AccountingControl
         
         return transactionGroup;
     }
-    
+
     public TransactionGroup getTransactionGroupByName(String transactionGroupName) {
         return getTransactionGroupByName(transactionGroupName, EntityPermission.READ_ONLY);
     }

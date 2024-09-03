@@ -2171,7 +2171,7 @@ public class ForumControl
     }
     
     private ForumTypeMessageType getForumTypeMessageType(ForumType forumType, ForumMessageType forumMessageType, EntityPermission entityPermission) {
-        ForumTypeMessageType forumTypeMessageType = null;
+        ForumTypeMessageType forumTypeMessageType;
 
         try {
             String query = null;
@@ -2209,7 +2209,7 @@ public class ForumControl
     }
 
     private ForumTypeMessageType getDefaultForumTypeMessageType(ForumType forumType, EntityPermission entityPermission) {
-        ForumTypeMessageType forumTypeMessageType = null;
+        ForumTypeMessageType forumTypeMessageType;
 
         try {
             String query = null;
@@ -2642,7 +2642,7 @@ public class ForumControl
     }
     
     public long countForumThreadsByForum(Forum forum, boolean includeFutureForumThreads) {
-        long count = 0;
+        long count;
         
         if (includeFutureForumThreads) {
             count = session.queryForLong(

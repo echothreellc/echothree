@@ -165,7 +165,7 @@ public class PaymentMethodControl
     }
     
     private List<PaymentMethod> getPaymentMethodsByPaymentMethodType(PaymentMethodType paymentMethodType, EntityPermission entityPermission) {
-        List<PaymentMethod> paymentMethod = null;
+        List<PaymentMethod> paymentMethod;
 
         try {
             String query = null;
@@ -203,7 +203,7 @@ public class PaymentMethodControl
     }
 
     private List<PaymentMethod> getPaymentMethodsByPaymentProcessor(PaymentProcessor paymentProcessor, EntityPermission entityPermission) {
-        List<PaymentMethod> paymentMethod = null;
+        List<PaymentMethod> paymentMethod;
 
         try {
             String query = null;

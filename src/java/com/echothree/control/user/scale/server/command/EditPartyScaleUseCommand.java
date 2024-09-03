@@ -88,7 +88,7 @@ public class EditPartyScaleUseCommand
     public PartyScaleUse getEntity(EditPartyScaleUseResult result) {
         PartyScaleUse partyScaleUse = null;
         var partyName = spec.getPartyName();
-        Party party = null;
+        Party party;
 
         if(partyName != null) {
             var partyControl = Session.getModelController(PartyControl.class);

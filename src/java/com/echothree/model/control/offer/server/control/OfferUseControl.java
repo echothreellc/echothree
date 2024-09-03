@@ -110,7 +110,7 @@ public class OfferUseControl
     }
 
     private List<OfferUse> getOfferUsesByOffer(Offer offer, EntityPermission entityPermission) {
-        List<OfferUse> offerUses = null;
+        List<OfferUse> offerUses;
 
         try {
             String query = null;
@@ -149,7 +149,7 @@ public class OfferUseControl
     }
 
     private List<OfferUse> getOfferUsesByUse(Use use, EntityPermission entityPermission) {
-        List<OfferUse> offerUses = null;
+        List<OfferUse> offerUses;
 
         try {
             String query = null;
@@ -188,7 +188,7 @@ public class OfferUseControl
     }
 
     private List<OfferUse> getOfferUsesBySalesOrderSequence(Sequence salesOrderSequence, EntityPermission entityPermission) {
-        List<OfferUse> offerUses = null;
+        List<OfferUse> offerUses;
 
         try {
             String query = null;
@@ -227,7 +227,7 @@ public class OfferUseControl
     }
 
     public OfferUse getOfferUse(Offer offer, Use use, EntityPermission entityPermission) {
-        OfferUse offerUse = null;
+        OfferUse offerUse;
 
         try {
             String query = null;

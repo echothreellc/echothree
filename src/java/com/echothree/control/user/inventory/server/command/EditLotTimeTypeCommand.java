@@ -86,7 +86,7 @@ public class EditLotTimeTypeCommand
     @Override
     public LotTimeType getEntity(EditLotTimeTypeResult result) {
         var lotTimeControl = Session.getModelController(LotTimeControl.class);
-        LotTimeType lotTimeType = null;
+        LotTimeType lotTimeType;
         var lotTimeTypeName = spec.getLotTimeTypeName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {

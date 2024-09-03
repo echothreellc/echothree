@@ -100,7 +100,7 @@ public class EditOrderTypeCommand
     @Override
     public OrderType getEntity(EditOrderTypeResult result) {
         var orderTypeControl = Session.getModelController(OrderTypeControl.class);
-        OrderType orderType = null;
+        OrderType orderType;
         var orderTypeName = spec.getOrderTypeName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {

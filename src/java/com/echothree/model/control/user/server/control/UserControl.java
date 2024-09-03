@@ -152,7 +152,7 @@ public class UserControl
     
     public UserKey createUserKey() {
         UserKey userKey;
-        String userKeyName = null;
+        String userKeyName;
         
         do {
             StringBuilder userKeyNameBuilder = new StringBuilder(40);
@@ -384,7 +384,7 @@ public class UserControl
         var workflowStep = getWorkflowControl().getWorkflowStepUsingNames(Workflow_USER_VISIT_GROUP_STATUS, WorkflowStep_USER_VISIT_GROUP_STATUS_ACTIVE);
 
         if(workflowStep != null) {
-            List<UserVisitGroup> userVisitGroups = null;
+            List<UserVisitGroup> userVisitGroups;
 
             try {
                 var ps = UserVisitGroupFactory.getInstance().prepareStatement(

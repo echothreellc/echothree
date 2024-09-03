@@ -113,7 +113,7 @@ public class EditCountryCommand
     @Override
     public GeoCode getEntity(EditCountryResult result) {
         var geoControl = Session.getModelController(GeoControl.class);
-        GeoCode geoCode = null;
+        GeoCode geoCode;
         var geoCodeName = spec.getGeoCodeName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {

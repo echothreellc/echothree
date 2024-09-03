@@ -90,7 +90,7 @@ public class EditDocumentTypeCommand
     @Override
     public DocumentType getEntity(EditDocumentTypeResult result) {
         var documentControl = Session.getModelController(DocumentControl.class);
-        DocumentType documentType = null;
+        DocumentType documentType;
         var documentTypeName = spec.getDocumentTypeName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {

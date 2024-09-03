@@ -94,7 +94,7 @@ public class UseNameElementControl
     }
 
     public UseNameElement getUseNameElementByName(String useNameElementName, EntityPermission entityPermission) {
-        UseNameElement useNameElement = null;
+        UseNameElement useNameElement;
 
         try {
             String query = null;
@@ -238,7 +238,7 @@ public class UseNameElementControl
 
     private UseNameElementDescription getUseNameElementDescription(UseNameElement useNameElement, Language language,
             EntityPermission entityPermission) {
-        UseNameElementDescription useNameElementDescription = null;
+        UseNameElementDescription useNameElementDescription;
 
         try {
             String query = null;

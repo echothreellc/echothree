@@ -13348,7 +13348,7 @@ public class CoreControl
         BaseEncryptionKey baseEncryptionKey = null;
         
         if(workflowStep != null) {
-            List<BaseEncryptionKey> baseEncryptionKeys = null;
+            List<BaseEncryptionKey> baseEncryptionKeys;
             
             try {
                 var query = new StringBuilder("SELECT _ALL_ " +

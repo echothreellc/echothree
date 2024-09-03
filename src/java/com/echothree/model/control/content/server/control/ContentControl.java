@@ -3188,7 +3188,7 @@ public class ContentControl
     }
 
     private List<ContentCatalogItem> getContentCatalogItemsByContentCatalog(ContentCatalog contentCatalog, EntityPermission entityPermission) {
-        List<ContentCatalogItem> contentCatalogItems = null;
+        List<ContentCatalogItem> contentCatalogItems;
 
         try {
             String query = null;
@@ -3234,7 +3234,7 @@ public class ContentControl
 
     private List<ContentCatalogItem> getContentCatalogItemsByContentCatalogAndItem(ContentCatalog contentCatalog, Item item,
             EntityPermission entityPermission) {
-        List<ContentCatalogItem> contentCatalogItems = null;
+        List<ContentCatalogItem> contentCatalogItems;
 
         try {
             String query = null;
@@ -3552,7 +3552,7 @@ public class ContentControl
     }
 
     private ContentCatalogItemFixedPrice getContentCatalogItemFixedPrice(ContentCatalogItem contentCatalogItem, EntityPermission entityPermission) {
-        ContentCatalogItemFixedPrice contentCatalogItemFixedPrice = null;
+        ContentCatalogItemFixedPrice contentCatalogItemFixedPrice;
 
         try {
             String query = null;
@@ -3642,7 +3642,7 @@ public class ContentControl
     }
 
     private ContentCatalogItemVariablePrice getContentCatalogItemVariablePrice(ContentCatalogItem contentCatalogItem, EntityPermission entityPermission) {
-        ContentCatalogItemVariablePrice contentCatalogItemVariablePrice = null;
+        ContentCatalogItemVariablePrice contentCatalogItemVariablePrice;
 
         try {
             String query = null;
@@ -3841,7 +3841,7 @@ public class ContentControl
     }
     
     private List<ContentCategory> getContentCategoriesByParentContentCategory(ContentCategory parentContentCategory, EntityPermission entityPermission) {
-        List<ContentCategory> contentCategories = null;
+        List<ContentCategory> contentCategories;
 
         try {
             String query = null;

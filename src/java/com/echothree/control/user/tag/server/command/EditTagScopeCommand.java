@@ -86,7 +86,7 @@ public class EditTagScopeCommand
     @Override
     public TagScope getEntity(EditTagScopeResult result) {
         var tagControl = Session.getModelController(TagControl.class);
-        TagScope tagScope = null;
+        TagScope tagScope;
         var tagScopeName = spec.getTagScopeName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {

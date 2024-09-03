@@ -89,7 +89,7 @@ public class EditReturnKindCommand
     @Override
     public ReturnKind getEntity(EditReturnKindResult result) {
         var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
-        ReturnKind returnKind = null;
+        ReturnKind returnKind;
         var returnKindName = spec.getReturnKindName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {

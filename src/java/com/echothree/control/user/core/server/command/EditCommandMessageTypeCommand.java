@@ -84,7 +84,7 @@ public class EditCommandMessageTypeCommand
     @Override
     public CommandMessageType getEntity(EditCommandMessageTypeResult result) {
         var coreControl = getCoreControl();
-        CommandMessageType commandMessageType = null;
+        CommandMessageType commandMessageType;
         var commandMessageTypeName = spec.getCommandMessageTypeName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {

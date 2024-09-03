@@ -563,7 +563,7 @@ public class ClubControl
     }
     
     public ClubItemType getClubItemTypeByName(String clubItemTypeName) {
-        ClubItemType clubItemType = null;
+        ClubItemType clubItemType;
 
         try {
             var ps = ClubItemTypeFactory.getInstance().prepareStatement(

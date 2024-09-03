@@ -86,7 +86,7 @@ public class EditSelectorKindCommand
     @Override
     public SelectorKind getEntity(EditSelectorKindResult result) {
         var selectorControl = Session.getModelController(SelectorControl.class);
-        SelectorKind selectorKind = null;
+        SelectorKind selectorKind;
         var selectorKindName = spec.getSelectorKindName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {

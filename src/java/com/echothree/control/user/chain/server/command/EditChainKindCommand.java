@@ -86,7 +86,7 @@ public class EditChainKindCommand
     @Override
     public ChainKind getEntity(EditChainKindResult result) {
         var chainControl = Session.getModelController(ChainControl.class);
-        ChainKind chainKind = null;
+        ChainKind chainKind;
         var chainKindName = spec.getChainKindName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {

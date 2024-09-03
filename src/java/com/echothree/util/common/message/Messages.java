@@ -159,7 +159,7 @@ public class Messages
      */
     public Messages add(String property, Message message) {
         var item = messages.get(property);
-        Map<String, Message> hashMap = null;
+        Map<String, Message> hashMap;
         
         if(item == null) {
             hashMap = new HashMap<>();
@@ -351,12 +351,12 @@ public class Messages
         /**
          * The list of <code>Message</code>s.
          */
-        protected Map<String, Message> hashMap = null;
+        protected Map<String, Message> hashMap;
         
         /**
          * The position in the list of messages.
          */
-        protected int iOrder = 0;
+        protected int iOrder;
         
         public MessageItem(Map<String, Message> hashMap, int iOrder) {
             this.hashMap = hashMap;

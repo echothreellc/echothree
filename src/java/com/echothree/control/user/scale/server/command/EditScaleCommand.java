@@ -91,7 +91,7 @@ public class EditScaleCommand
     @Override
     public Scale getEntity(EditScaleResult result) {
         var scaleControl = Session.getModelController(ScaleControl.class);
-        Scale scale = null;
+        Scale scale;
         var scaleName = spec.getScaleName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {

@@ -60,7 +60,7 @@ public class CheckSecurityRolesTag
     @Override
     public int doStartTag()
             throws JspException {
-        String newSecurityRoles = null;
+        String newSecurityRoles;
         var pageSecurityRoles = (HashSet<String>)pageContext.getAttribute(WebConstants.Attribute_SECURITY_ROLES, PageContext.REQUEST_SCOPE);
         
         try {

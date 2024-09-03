@@ -84,7 +84,7 @@ public class EditProtocolCommand
     @Override
     public Protocol getEntity(EditProtocolResult result) {
         var coreControl = getCoreControl();
-        Protocol protocol = null;
+        Protocol protocol;
         var protocolName = spec.getProtocolName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {

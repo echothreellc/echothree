@@ -86,7 +86,7 @@ public class EditHarmonizedTariffScheduleCodeUseTypeCommand
     @Override
     public HarmonizedTariffScheduleCodeUseType getEntity(EditHarmonizedTariffScheduleCodeUseTypeResult result) {
         var itemControl = Session.getModelController(ItemControl.class);
-        HarmonizedTariffScheduleCodeUseType harmonizedTariffScheduleCodeUseType = null;
+        HarmonizedTariffScheduleCodeUseType harmonizedTariffScheduleCodeUseType;
         var harmonizedTariffScheduleCodeUseTypeName = spec.getHarmonizedTariffScheduleCodeUseTypeName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {

@@ -87,7 +87,7 @@ public class EditServiceCommand
     @Override
     public Service getEntity(EditServiceResult result) {
         var coreControl = getCoreControl();
-        Service service = null;
+        Service service;
         var serviceName = spec.getServiceName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {

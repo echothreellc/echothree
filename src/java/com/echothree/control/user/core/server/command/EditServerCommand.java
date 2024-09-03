@@ -84,7 +84,7 @@ public class EditServerCommand
     @Override
     public Server getEntity(EditServerResult result) {
         var coreControl = getCoreControl();
-        Server server = null;
+        Server server;
         var serverName = spec.getServerName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {

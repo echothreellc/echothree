@@ -86,7 +86,7 @@ public class EditPartySecurityRoleTemplateCommand
     @Override
     public PartySecurityRoleTemplate getEntity(EditPartySecurityRoleTemplateResult result) {
         var securityControl = Session.getModelController(SecurityControl.class);
-        PartySecurityRoleTemplate partySecurityRoleTemplate = null;
+        PartySecurityRoleTemplate partySecurityRoleTemplate;
         var partySecurityRoleTemplateName = spec.getPartySecurityRoleTemplateName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {

@@ -86,7 +86,7 @@ public class EditScaleTypeCommand
     @Override
     public ScaleType getEntity(EditScaleTypeResult result) {
         var scaleControl = Session.getModelController(ScaleControl.class);
-        ScaleType scaleType = null;
+        ScaleType scaleType;
         var scaleTypeName = spec.getScaleTypeName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {

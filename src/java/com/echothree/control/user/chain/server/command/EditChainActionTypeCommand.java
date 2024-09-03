@@ -87,7 +87,7 @@ public class EditChainActionTypeCommand
     @Override
     public ChainActionType getEntity(EditChainActionTypeResult result) {
         var chainControl = Session.getModelController(ChainControl.class);
-        ChainActionType chainActionType = null;
+        ChainActionType chainActionType;
         var chainActionTypeName = spec.getChainActionTypeName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {

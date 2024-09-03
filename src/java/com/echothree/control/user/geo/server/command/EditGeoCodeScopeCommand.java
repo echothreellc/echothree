@@ -86,7 +86,7 @@ public class EditGeoCodeScopeCommand
     @Override
     public GeoCodeScope getEntity(EditGeoCodeScopeResult result) {
         var geoControl = Session.getModelController(GeoControl.class);
-        GeoCodeScope geoCodeScope = null;
+        GeoCodeScope geoCodeScope;
         var geoCodeScopeName = spec.getGeoCodeScopeName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {

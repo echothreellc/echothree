@@ -99,7 +99,7 @@ public class SecureRewriteTag
         // Generate the hyperlink URL
         var tagUtils = TagUtils.getInstance();
         var params = tagUtils.computeParameters(pageContext, paramId, paramName, paramProperty, paramScope, name, property, scope, transaction);
-        String url = null;
+        String url;
         
         try {
             url = SecureRequestUtils.computeURL(pageContext, forward, href, page, action, params, anchor, false);

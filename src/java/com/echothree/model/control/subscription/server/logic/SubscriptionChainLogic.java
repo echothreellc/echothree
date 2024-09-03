@@ -60,7 +60,7 @@ public class SubscriptionChainLogic
         var party = subscription.getLastDetail().getParty();
         var subscriptionTypeChains = chainTypeName.equals(ChainConstants.ChainType_RENEWAL) ? null
                 : subscriptionControl.getSubscriptionTypeChainsBySubscriptionTypeAndChainType(subscriptionType, chainType);
-        Chain chain = null;
+        Chain chain;
         ChainInstance chainInstance = null;
         
         if(subscriptionTypeChains == null || subscriptionTypeChains.isEmpty()) {

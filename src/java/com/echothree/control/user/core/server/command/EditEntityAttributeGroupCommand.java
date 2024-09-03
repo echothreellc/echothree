@@ -84,7 +84,7 @@ public class EditEntityAttributeGroupCommand
     @Override
     public EntityAttributeGroup getEntity(EditEntityAttributeGroupResult result) {
         var coreControl = getCoreControl();
-        EntityAttributeGroup entityAttributeGroup = null;
+        EntityAttributeGroup entityAttributeGroup;
         var entityAttributeGroupName = spec.getEntityAttributeGroupName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {

@@ -2981,7 +2981,7 @@ public class ChainControl
     }
 
     private ChainActionLetter getChainActionLetter(ChainAction chainAction, EntityPermission entityPermission) {
-        ChainActionLetter chainActionLetter = null;
+        ChainActionLetter chainActionLetter;
 
         try {
             String query = null;
@@ -3069,7 +3069,7 @@ public class ChainControl
     }
 
     private ChainActionSurvey getChainActionSurvey(ChainAction chainAction, EntityPermission entityPermission) {
-        ChainActionSurvey chainActionSurvey = null;
+        ChainActionSurvey chainActionSurvey;
 
         try {
             String query = null;
@@ -3157,7 +3157,7 @@ public class ChainControl
     }
 
     private ChainActionChainActionSet getChainActionChainActionSet(ChainAction chainAction, EntityPermission entityPermission) {
-        ChainActionChainActionSet chainActionChainActionSet = null;
+        ChainActionChainActionSet chainActionChainActionSet;
 
         try {
             String query = null;

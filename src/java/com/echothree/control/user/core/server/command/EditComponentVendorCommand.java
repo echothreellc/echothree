@@ -82,7 +82,7 @@ public class EditComponentVendorCommand
     @Override
     public ComponentVendor getEntity(EditComponentVendorResult result) {
         var coreControl = getCoreControl();
-        ComponentVendor componentVendor = null;
+        ComponentVendor componentVendor;
         var componentVendorName = spec.getComponentVendorName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {

@@ -6021,7 +6021,7 @@ public class PartyControl
     }
 
     private List<BirthdayFormat> getBirthdayFormatsByEntityType(EntityType entityType, EntityPermission entityPermission) {
-        List<BirthdayFormat> birthdayFormats = null;
+        List<BirthdayFormat> birthdayFormats;
 
         try {
             String query = null;
@@ -6094,7 +6094,7 @@ public class PartyControl
     }
 
     private BirthdayFormat getBirthdayFormatByName(String birthdayFormatName, EntityPermission entityPermission) {
-        BirthdayFormat birthdayFormat = null;
+        BirthdayFormat birthdayFormat;
 
         try {
             String query = null;
@@ -6282,7 +6282,7 @@ public class PartyControl
     }
 
     private BirthdayFormatDescription getBirthdayFormatDescription(BirthdayFormat birthdayFormat, Language language, EntityPermission entityPermission) {
-        BirthdayFormatDescription birthdayFormatDescription = null;
+        BirthdayFormatDescription birthdayFormatDescription;
 
         try {
             String query = null;

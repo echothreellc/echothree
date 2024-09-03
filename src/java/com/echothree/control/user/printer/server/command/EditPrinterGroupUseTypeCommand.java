@@ -86,7 +86,7 @@ public class EditPrinterGroupUseTypeCommand
     @Override
     public PrinterGroupUseType getEntity(EditPrinterGroupUseTypeResult result) {
         var printerControl = Session.getModelController(PrinterControl.class);
-        PrinterGroupUseType printerGroupUseType = null;
+        PrinterGroupUseType printerGroupUseType;
         var printerGroupUseTypeName = spec.getPrinterGroupUseTypeName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {

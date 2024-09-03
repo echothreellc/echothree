@@ -915,7 +915,7 @@ public class WorkEffortControl
     }
     
     private List<WorkEffort> getWorkEffortsByWorkEffortScope(WorkEffortScope workEffortScope, EntityPermission entityPermission) {
-        List<WorkEffort> workEfforts = null;
+        List<WorkEffort> workEfforts;
 
         try {
             String query = null;
@@ -955,7 +955,7 @@ public class WorkEffortControl
     }
 
     private List<WorkEffort> getWorkEffortsByOwningEntityInstance(EntityInstance owningEntityInstanceId, EntityPermission entityPermission) {
-        List<WorkEffort> workEfforts = null;
+        List<WorkEffort> workEfforts;
 
         try {
             String query = null;
@@ -995,7 +995,7 @@ public class WorkEffortControl
     }
 
     private WorkEffort getWorkEffortByName(String workEffortName, EntityPermission entityPermission) {
-        WorkEffort workEffort = null;
+        WorkEffort workEffort;
 
         try {
             String query = null;
@@ -1034,7 +1034,7 @@ public class WorkEffortControl
     }
 
     private WorkEffort getWorkEffort(EntityInstance owningEntityInstanceId, WorkEffortScope workEffortScope, EntityPermission entityPermission) {
-        WorkEffort workEffort = null;
+        WorkEffort workEffort;
 
         try {
             String query = null;

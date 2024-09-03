@@ -79,7 +79,7 @@ public class EditBlogCommentCommand
     @Override
     public ForumMessage getEntity(EditBlogCommentResult result) {
         var forumControl = Session.getModelController(ForumControl.class);
-        ForumMessage forumMessage = null;
+        ForumMessage forumMessage;
         var forumMessageName = spec.getForumMessageName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {

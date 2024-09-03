@@ -155,7 +155,7 @@ public class SourceControl
     }
 
     private Source getSourceByName(String sourceName, EntityPermission entityPermission) {
-        Source source = null;
+        Source source;
 
         try {
             String query = null;
@@ -200,7 +200,7 @@ public class SourceControl
     }
 
     private List<Source> getSourcesByOfferUse(OfferUse offerUse, EntityPermission entityPermission) {
-        List<Source> sources = null;
+        List<Source> sources;
 
         try {
             String query = null;

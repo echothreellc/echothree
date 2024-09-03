@@ -179,7 +179,7 @@ public class PartyTrainingClassLogic
         var party = preparedPartyTrainingClass.getParty();
         var trainingClass = preparedPartyTrainingClass.getTrainingClass();
         var completedTime = preparedPartyTrainingClass.getCompletedTime();
-        WorkEffort workEffort = null;
+        WorkEffort workEffort;
 
         var partyTrainingClass = trainingControl.createPartyTrainingClass(preparedPartyTrainingClass.getParty(), trainingClass,
                 preparedPartyTrainingClass.completedTime, preparedPartyTrainingClass.getValidUntilTime(), createdBy);

@@ -147,7 +147,7 @@ public class UseControl
     }
 
     public Use getUseByName(String useName, EntityPermission entityPermission) {
-        Use use = null;
+        Use use;
 
         try {
             String query = null;
@@ -223,7 +223,7 @@ public class UseControl
     }
 
     private List<Use> getUsesByUseType(UseType useType, EntityPermission entityPermission) {
-        List<Use> uses = null;
+        List<Use> uses;
 
         try {
             String query = null;
@@ -413,7 +413,7 @@ public class UseControl
     }
 
     private UseDescription getUseDescription(Use use, Language language, EntityPermission entityPermission) {
-        UseDescription useDescription = null;
+        UseDescription useDescription;
 
         try {
             String query = null;

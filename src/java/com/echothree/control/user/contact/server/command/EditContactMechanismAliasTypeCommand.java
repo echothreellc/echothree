@@ -87,7 +87,7 @@ public class EditContactMechanismAliasTypeCommand
     @Override
     public ContactMechanismAliasType getEntity(EditContactMechanismAliasTypeResult result) {
         var contactControl = Session.getModelController(ContactControl.class);
-        ContactMechanismAliasType contactMechanismAliasType = null;
+        ContactMechanismAliasType contactMechanismAliasType;
         var contactMechanismAliasTypeName = spec.getContactMechanismAliasTypeName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {

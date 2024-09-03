@@ -86,7 +86,7 @@ public class EditPaymentProcessorCommand
     @Override
     public PaymentProcessor getEntity(EditPaymentProcessorResult result) {
         var paymentProcessorControl = Session.getModelController(PaymentProcessorControl.class);
-        PaymentProcessor paymentProcessor = null;
+        PaymentProcessor paymentProcessor;
         var paymentProcessorName = spec.getPaymentProcessorName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {

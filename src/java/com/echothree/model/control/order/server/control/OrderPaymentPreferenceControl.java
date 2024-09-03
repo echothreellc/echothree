@@ -90,7 +90,7 @@ public class OrderPaymentPreferenceControl
     }
 
     public OrderPaymentPreference getOrderPaymentPreferenceBySequence(Order order, Integer orderPaymentPreferenceSequence, EntityPermission entityPermission) {
-        OrderPaymentPreference orderPaymentPreference = null;
+        OrderPaymentPreference orderPaymentPreference;
 
         try {
             String query = null;
@@ -136,7 +136,7 @@ public class OrderPaymentPreferenceControl
     }
 
     private List<OrderPaymentPreference> getOrderPaymentPreferencesByOrder(Order order, EntityPermission entityPermission) {
-        List<OrderPaymentPreference> orderPaymentPreferences = null;
+        List<OrderPaymentPreference> orderPaymentPreferences;
 
         try {
             String query = null;
@@ -175,7 +175,7 @@ public class OrderPaymentPreferenceControl
     }
 
     private List<OrderPaymentPreference> getOrderPaymentPreferencesByPaymentMethod(PaymentMethod paymentMethod, EntityPermission entityPermission) {
-        List<OrderPaymentPreference> orderPaymentPreferences = null;
+        List<OrderPaymentPreference> orderPaymentPreferences;
 
         try {
             String query = null;
@@ -213,7 +213,7 @@ public class OrderPaymentPreferenceControl
     }
 
     private List<OrderPaymentPreference> getOrderPaymentPreferencesByPartyPaymentMethod(PartyPaymentMethod partyPaymentMethod, EntityPermission entityPermission) {
-        List<OrderPaymentPreference> orderPaymentPreferences = null;
+        List<OrderPaymentPreference> orderPaymentPreferences;
 
         try {
             String query = null;

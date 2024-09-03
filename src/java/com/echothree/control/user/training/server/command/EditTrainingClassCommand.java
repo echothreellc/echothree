@@ -117,7 +117,7 @@ public class EditTrainingClassCommand
     @Override
     public TrainingClass getEntity(EditTrainingClassResult result) {
         var trainingControl = Session.getModelController(TrainingControl.class);
-        TrainingClass trainingClass = null;
+        TrainingClass trainingClass;
         var trainingClassName = spec.getTrainingClassName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {

@@ -108,7 +108,7 @@ public class EditPartyPaymentMethodCommand
     @Override
     public PartyPaymentMethod getEntity(EditPartyPaymentMethodResult result) {
         var partyPaymentMethodControl = Session.getModelController(PartyPaymentMethodControl.class);
-        PartyPaymentMethod partyPaymentMethod = null;
+        PartyPaymentMethod partyPaymentMethod;
         var partyPaymentMethodName = spec.getPartyPaymentMethodName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {

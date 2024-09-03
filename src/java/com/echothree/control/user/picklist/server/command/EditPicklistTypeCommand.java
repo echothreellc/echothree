@@ -95,7 +95,7 @@ public class EditPicklistTypeCommand
     @Override
     public PicklistType getEntity(EditPicklistTypeResult result) {
         var picklistControl = Session.getModelController(PicklistControl.class);
-        PicklistType picklistType = null;
+        PicklistType picklistType;
         var picklistTypeName = spec.getPicklistTypeName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {

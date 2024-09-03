@@ -85,7 +85,7 @@ public class EditBlogEntryCommand
     @Override
     public ForumMessage getEntity(EditBlogEntryResult result) {
         var forumControl = Session.getModelController(ForumControl.class);
-        ForumMessage forumMessage = null;
+        ForumMessage forumMessage;
         var forumMessageName = spec.getForumMessageName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {

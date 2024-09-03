@@ -96,7 +96,7 @@ public class EditShipmentTypeCommand
     @Override
     public ShipmentType getEntity(EditShipmentTypeResult result) {
         var shipmentControl = Session.getModelController(ShipmentControl.class);
-        ShipmentType shipmentType = null;
+        ShipmentType shipmentType;
         var shipmentTypeName = spec.getShipmentTypeName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {

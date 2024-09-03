@@ -86,7 +86,7 @@ public class EditSubscriptionKindCommand
     @Override
     public SubscriptionKind getEntity(EditSubscriptionKindResult result) {
         var subscriptionControl = Session.getModelController(SubscriptionControl.class);
-        SubscriptionKind subscriptionKind = null;
+        SubscriptionKind subscriptionKind;
         var subscriptionKindName = spec.getSubscriptionKindName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {

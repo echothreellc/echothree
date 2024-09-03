@@ -56,7 +56,7 @@ public class WorkflowEntityStatusTransferCache
             var fromTime = formatTypicalDateTime(unformattedFromTime);
             var unformattedThruTime = workflowEntityStatus.getThruTime();
             var thruTime = formatTypicalDateTime(unformattedThruTime);
-            Long unformattedTriggerTime = null;
+            Long unformattedTriggerTime;
             String triggerTime = null;
 
             if(includeTriggerTime) {

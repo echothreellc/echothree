@@ -67,7 +67,7 @@ public class GetPartyScaleUsesCommand
         var partyControl = Session.getModelController(PartyControl.class);
         var result = ScaleResultFactory.getGetPartyScaleUsesResult();
         var partyName = form.getPartyName();
-        Party party = null;
+        Party party;
 
         if(partyName != null) {
             party = partyControl.getPartyByName(partyName);

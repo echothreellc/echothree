@@ -95,7 +95,7 @@ public class InvoiceLogic
     }
 
     public SequenceType getInvoiceSequenceType(final ExecutionErrorAccumulator eea, final InvoiceType invoiceType) {
-        SequenceType sequenceType = null;
+        SequenceType sequenceType;
         var parentInvoiceType = invoiceType;
         
         do {

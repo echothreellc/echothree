@@ -119,8 +119,8 @@ public class CreateChainActionCommand
     
     private abstract class BaseChainActionType {
 
-        ChainControl chainControl = null;
-        ChainActionType chainActionType = null;
+        ChainControl chainControl;
+        ChainActionType chainActionType;
 
         public BaseChainActionType(ChainControl chainControl, String chainActionTypeName) {
             this.chainControl = chainControl;

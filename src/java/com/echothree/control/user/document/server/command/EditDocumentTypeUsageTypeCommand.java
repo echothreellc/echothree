@@ -86,7 +86,7 @@ public class EditDocumentTypeUsageTypeCommand
     @Override
     public DocumentTypeUsageType getEntity(EditDocumentTypeUsageTypeResult result) {
         var documentControl = Session.getModelController(DocumentControl.class);
-        DocumentTypeUsageType documentTypeUsageType = null;
+        DocumentTypeUsageType documentTypeUsageType;
         var documentTypeUsageTypeName = spec.getDocumentTypeUsageTypeName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {

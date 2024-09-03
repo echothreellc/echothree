@@ -65,7 +65,7 @@ public class DeletePartyPrinterGroupUseCommand
     @Override
     protected BaseResult execute() {
         var partyName = form.getPartyName();
-        Party party = null;
+        Party party;
 
         if(partyName != null) {
             var partyControl = Session.getModelController(PartyControl.class);

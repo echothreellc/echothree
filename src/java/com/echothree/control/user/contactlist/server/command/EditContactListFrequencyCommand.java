@@ -86,7 +86,7 @@ public class EditContactListFrequencyCommand
     @Override
     public ContactListFrequency getEntity(EditContactListFrequencyResult result) {
         var contactListControl = Session.getModelController(ContactListControl.class);
-        ContactListFrequency contactListFrequency = null;
+        ContactListFrequency contactListFrequency;
         var contactListFrequencyName = spec.getContactListFrequencyName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {

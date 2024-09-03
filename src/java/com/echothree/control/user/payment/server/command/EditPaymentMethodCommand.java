@@ -142,7 +142,7 @@ public class EditPaymentMethodCommand
     @Override
     public PaymentMethod getEntity(EditPaymentMethodResult result) {
         var paymentMethodControl = Session.getModelController(PaymentMethodControl.class);
-        PaymentMethod paymentMethod = null;
+        PaymentMethod paymentMethod;
         var paymentMethodName = spec.getPaymentMethodName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {

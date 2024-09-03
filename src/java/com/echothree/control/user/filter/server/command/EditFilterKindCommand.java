@@ -86,7 +86,7 @@ public class EditFilterKindCommand
     @Override
     public FilterKind getEntity(EditFilterKindResult result) {
         var filterControl = Session.getModelController(FilterControl.class);
-        FilterKind filterKind = null;
+        FilterKind filterKind;
         var filterKindName = spec.getFilterKindName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {

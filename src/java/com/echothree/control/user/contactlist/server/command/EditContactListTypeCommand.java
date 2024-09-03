@@ -93,7 +93,7 @@ public class EditContactListTypeCommand
     @Override
     public ContactListType getEntity(EditContactListTypeResult result) {
         var contactListControl = Session.getModelController(ContactListControl.class);
-        ContactListType contactListType = null;
+        ContactListType contactListType;
         var contactListTypeName = spec.getContactListTypeName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {

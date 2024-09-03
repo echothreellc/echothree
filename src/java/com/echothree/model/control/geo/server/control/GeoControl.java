@@ -186,7 +186,7 @@ public class GeoControl
         var countryIso2Letter = countryGeoCodeAlias.getAlias();
         var geoCodeScopeName = countryIso2Letter + "_STATES";
         var geoCodeScope = getGeoCodeScopeByName(geoCodeScopeName);
-        List<GeoCode> states = null;
+        List<GeoCode> states;
 
         if(geoCodeScope != null) {
             states = getGeoCodesByGeoCodeScope(geoCodeScope);

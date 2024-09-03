@@ -92,7 +92,7 @@ public class EditSalesOrderBatchCommand
 
     @Override
     public Batch getEntity(EditSalesOrderBatchResult result) {
-        Batch batch = null;
+        Batch batch;
         var batchName = spec.getBatchName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {

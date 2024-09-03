@@ -681,7 +681,7 @@ public class OfferControl
     }
 
     private OfferCustomerType getOfferCustomerType(Offer offer, CustomerType customerType, EntityPermission entityPermission) {
-        OfferCustomerType offerCustomerType = null;
+        OfferCustomerType offerCustomerType;
 
         try {
             String query = null;
@@ -726,7 +726,7 @@ public class OfferControl
     }
 
     private OfferCustomerType getDefaultOfferCustomerType(Offer offer, EntityPermission entityPermission) {
-        OfferCustomerType offerCustomerType = null;
+        OfferCustomerType offerCustomerType;
 
         try {
             String query = null;
@@ -770,7 +770,7 @@ public class OfferControl
     }
 
     private List<OfferCustomerType> getOfferCustomerTypesByOffer(Offer offer, EntityPermission entityPermission) {
-        List<OfferCustomerType> offerCustomerTypes = null;
+        List<OfferCustomerType> offerCustomerTypes;
 
         try {
             String query = null;
@@ -810,7 +810,7 @@ public class OfferControl
     }
 
     private List<OfferCustomerType> getOfferCustomerTypesByCustomerType(CustomerType customerType, EntityPermission entityPermission) {
-        List<OfferCustomerType> offerCustomerTypes = null;
+        List<OfferCustomerType> offerCustomerTypes;
 
         try {
             String query = null;

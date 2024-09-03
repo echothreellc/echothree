@@ -87,7 +87,7 @@ public class EditGeoCodeTypeCommand
     @Override
     public GeoCodeType getEntity(EditGeoCodeTypeResult result) {
         var geoControl = Session.getModelController(GeoControl.class);
-        GeoCodeType geoCodeType = null;
+        GeoCodeType geoCodeType;
         var geoCodeTypeName = spec.getGeoCodeTypeName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {

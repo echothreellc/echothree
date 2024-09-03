@@ -86,7 +86,7 @@ public class EditPrinterCommand
     @Override
     public Printer getEntity(EditPrinterResult result) {
         var printerControl = Session.getModelController(PrinterControl.class);
-        Printer printer = null;
+        Printer printer;
         var printerName = spec.getPrinterName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {

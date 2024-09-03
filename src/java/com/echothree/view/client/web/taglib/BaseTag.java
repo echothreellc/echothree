@@ -88,7 +88,7 @@ public class BaseTag
     }
     
     public static void setOptions(String options, Set<String> defaultOptions, BaseForm commandForm) {
-        Set<String> commandOptions = null;
+        Set<String> commandOptions;
         
         if(options == null) {
             commandOptions = defaultOptions;

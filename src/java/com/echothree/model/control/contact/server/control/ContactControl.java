@@ -455,7 +455,7 @@ public class ContactControl
 
     private List<ContactMechanismAliasType> getContactMechanismAliasTypesByParentContactMechanismAliasType(ContactMechanismAliasType parentContactMechanismAliasType,
             EntityPermission entityPermission) {
-        List<ContactMechanismAliasType> contactMechanismAliasTypes = null;
+        List<ContactMechanismAliasType> contactMechanismAliasTypes;
 
         try {
             String query = null;
@@ -1316,7 +1316,7 @@ public class ContactControl
     
     private List<ContactMechanismAlias> getContactMechanismAliasesByContactMechanism(ContactMechanism contactMechanism,
             EntityPermission entityPermission) {
-        List<ContactMechanismAlias> contactMechanismAliases = null;
+        List<ContactMechanismAlias> contactMechanismAliases;
 
         try {
             String query = null;
@@ -1355,7 +1355,7 @@ public class ContactControl
 
     private List<ContactMechanismAlias> getContactMechanismAliasesByContactMechanismAliasType(ContactMechanismAliasType contactMechanismAliasType,
             EntityPermission entityPermission) {
-        List<ContactMechanismAlias> contactMechanismAliases = null;
+        List<ContactMechanismAlias> contactMechanismAliases;
 
         try {
             String query = null;
@@ -3516,7 +3516,7 @@ public class ContactControl
     }
     
     public PostalAddressElementTypeDescription getPostalAddressElementTypeDescription(PostalAddressElementType postalAddressElementType, Language language) {
-        PostalAddressElementTypeDescription postalAddressElementTypeDescription = null;
+        PostalAddressElementTypeDescription postalAddressElementTypeDescription;
 
         try {
             var ps = PostalAddressElementTypeDescriptionFactory.getInstance().prepareStatement(

@@ -84,7 +84,7 @@ public class EditMimeTypeCommand
     @Override
     public MimeType getEntity(EditMimeTypeResult result) {
         var coreControl = getCoreControl();
-        MimeType mimeType = null;
+        MimeType mimeType;
         var mimeTypeName = spec.getMimeTypeName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {

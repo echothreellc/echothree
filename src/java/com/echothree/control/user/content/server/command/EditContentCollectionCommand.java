@@ -93,7 +93,7 @@ public class EditContentCollectionCommand
     @Override
     public ContentCollection getEntity(EditContentCollectionResult result) {
         var contentControl = Session.getModelController(ContentControl.class);
-        ContentCollection contentCollection = null;
+        ContentCollection contentCollection;
         var contentCollectionName = spec.getContentCollectionName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {

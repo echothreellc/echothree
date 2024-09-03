@@ -79,7 +79,7 @@ public class EditForumCommand
     @Override
     public Forum getEntity(EditForumResult result) {
         var forumControl = Session.getModelController(ForumControl.class);
-        Forum forum = null;
+        Forum forum;
         var forumName = spec.getForumName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {

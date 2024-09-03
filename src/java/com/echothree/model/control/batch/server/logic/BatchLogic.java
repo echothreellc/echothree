@@ -54,7 +54,7 @@ public class BatchLogic
     }
     
     public SequenceType getBatchSequenceType(final ExecutionErrorAccumulator eea, final BatchType batchType) {
-        SequenceType sequenceType = null;
+        SequenceType sequenceType;
         var parentBatchType = batchType;
 
         do {

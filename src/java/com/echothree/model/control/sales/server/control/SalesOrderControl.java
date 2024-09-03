@@ -80,7 +80,7 @@ public class SalesOrderControl
     }
 
     private SalesOrder getSalesOrder(Order order, EntityPermission entityPermission) {
-        SalesOrder salesOrder = null;
+        SalesOrder salesOrder;
 
         try {
             String query = null;
@@ -181,7 +181,7 @@ public class SalesOrderControl
     }
 
     private SalesOrderLine getSalesOrderLine(OrderLine orderLine, EntityPermission entityPermission) {
-        SalesOrderLine salesOrderLine = null;
+        SalesOrderLine salesOrderLine;
 
         try {
             String query = null;

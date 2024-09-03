@@ -83,7 +83,7 @@ public class EditEmploymentCommand
     @Override
     public Employment getEntity(EditEmploymentResult result) {
         var employeeControl = Session.getModelController(EmployeeControl.class);
-        Employment employment = null;
+        Employment employment;
         var employmentName = spec.getEmploymentName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {

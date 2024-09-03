@@ -86,7 +86,7 @@ public class EditContentWebAddressCommand
     @Override
     public ContentWebAddress getEntity(EditContentWebAddressResult result) {
         var contentControl = Session.getModelController(ContentControl.class);
-        ContentWebAddress contentWebAddress = null;
+        ContentWebAddress contentWebAddress;
         var contentWebAddressName = spec.getContentWebAddressName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {

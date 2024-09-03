@@ -1335,7 +1335,7 @@ public class ItemControl
     
     private List<ItemCategory> getItemCategoriesByParentItemCategory(ItemCategory parentItemCategory,
             EntityPermission entityPermission) {
-        List<ItemCategory> itemCategories = null;
+        List<ItemCategory> itemCategories;
 
         try {
             String query = null;
@@ -2972,7 +2972,7 @@ public class ItemControl
     }
 
     public ItemAliasChecksumTypeDescription getItemAliasChecksumTypeDescription(ItemAliasChecksumType itemAliasChecksumType, Language language) {
-        ItemAliasChecksumTypeDescription itemAliasChecksumTypeDescription = null;
+        ItemAliasChecksumTypeDescription itemAliasChecksumTypeDescription;
 
         try {
             var ps = ItemAliasChecksumTypeDescriptionFactory.getInstance().prepareStatement(
@@ -7479,7 +7479,7 @@ public class ItemControl
 
     private List<ItemDescriptionTypeUseType> getItemDescriptionTypeUseTypesByParentItemDescriptionTypeUseType(ItemDescriptionTypeUseType parentItemDescriptionTypeUseType,
             EntityPermission entityPermission) {
-        List<ItemDescriptionTypeUseType> itemDescriptionTypeUseTypes = null;
+        List<ItemDescriptionTypeUseType> itemDescriptionTypeUseTypes;
 
         try {
             String query = null;
@@ -8676,7 +8676,7 @@ public class ItemControl
     }
     
     private ItemDescription getBestItemDescriptionWithinLanguage(final ItemDescriptionType itemDescriptionType, final Item item, final Language language) {
-        ItemDescription itemDescription = null;
+        ItemDescription itemDescription;
         var attemptedItemDescriptionType = itemDescriptionType;
         
         do {

@@ -86,7 +86,7 @@ public class EditLeaveReasonCommand
     @Override
     public LeaveReason getEntity(EditLeaveReasonResult result) {
         var employeeControl = Session.getModelController(EmployeeControl.class);
-        LeaveReason leaveReason = null;
+        LeaveReason leaveReason;
         var leaveReasonName = spec.getLeaveReasonName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {

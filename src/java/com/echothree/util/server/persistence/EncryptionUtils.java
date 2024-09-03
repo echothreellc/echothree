@@ -313,7 +313,7 @@ public class EncryptionUtils {
     }
 
     private Cipher getInitializedCipher(final SecretKey secretKey, final byte[] iv, final int cipherMode) {
-        Cipher cipher = null;
+        Cipher cipher;
 
         try {
             cipher = Cipher.getInstance(EncryptionConstants.transformation);
@@ -340,7 +340,7 @@ public class EncryptionUtils {
     private byte[] encryptDataUsingBaseKeys(final BaseKeys baseKeys, final byte[] decryptedData) {
         var cipher1 = getInitializedCipher(baseKeys.getKey1(), baseKeys.getIv1(), Cipher.ENCRYPT_MODE);
         var cipher2 = getInitializedCipher(baseKeys.getKey2(), baseKeys.getIv2(), Cipher.ENCRYPT_MODE);
-        byte[] encryptedData = null;
+        byte[] encryptedData;
 
         try {
             encryptedData = cipher2.doFinal(cipher1.doFinal(decryptedData));
@@ -358,7 +358,7 @@ public class EncryptionUtils {
     private byte[] decryptDataUsingBaseKeys(final BaseKeys baseKeys, final byte[] encryptedData) {
         var cipher1 = getInitializedCipher(baseKeys.getKey1(), baseKeys.getIv1(), Cipher.DECRYPT_MODE);
         var cipher2 = getInitializedCipher(baseKeys.getKey2(), baseKeys.getIv2(), Cipher.DECRYPT_MODE);
-        byte[] decryptedData = null;
+        byte[] decryptedData;
 
         try {
             decryptedData = cipher1.doFinal(cipher2.doFinal(encryptedData));

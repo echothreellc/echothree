@@ -38,8 +38,8 @@ public abstract class BaseEditCommand<S extends BaseSpec, E extends BaseEdit>
         extends BaseCommand {
     
     private EntityLockControl entityLockControl = null;
-    private List<FieldDefinition> specFieldDefinitions = null;
-    private List<FieldDefinition> editFieldDefinitions = null;
+    private List<FieldDefinition> specFieldDefinitions;
+    private List<FieldDefinition> editFieldDefinitions;
     protected EditMode editMode = null;
     protected S spec = null;
     protected E edit = null;

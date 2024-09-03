@@ -86,7 +86,7 @@ public class EditCarrierTypeCommand
     @Override
     public CarrierType getEntity(EditCarrierTypeResult result) {
         var carrierControl = Session.getModelController(CarrierControl.class);
-        CarrierType carrierType = null;
+        CarrierType carrierType;
         var carrierTypeName = spec.getCarrierTypeName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {

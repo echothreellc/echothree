@@ -210,8 +210,8 @@ public class CreateSelectorNodeCommand
     }
     
     private abstract class BaseSelectorNodeType {
-        SelectorControl selectorControl = null;
-        SelectorNodeType selectorNodeType = null;
+        SelectorControl selectorControl;
+        SelectorNodeType selectorNodeType;
         
         protected BaseSelectorNodeType(SelectorControl selectorControl, String selectorNodeTypeName) {
             this.selectorControl = selectorControl;

@@ -2054,7 +2054,7 @@ public class UomControl
      * UnitOfMeasureKind.
      */
     public UnitOfMeasureKindUse getUnitOfMeasureKindUseByUnitOfMeasureKindUseType(UnitOfMeasureKindUseType unitOfMeasureKindUseType) {
-        UnitOfMeasureKindUse unitOfMeasureKindUse = null;
+        UnitOfMeasureKindUse unitOfMeasureKindUse;
         
         if(!unitOfMeasureKindUseType.getAllowMultiple()) {
             try {

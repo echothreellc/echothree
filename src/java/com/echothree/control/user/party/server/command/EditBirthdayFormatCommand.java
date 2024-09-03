@@ -86,7 +86,7 @@ public class EditBirthdayFormatCommand
     @Override
     public BirthdayFormat getEntity(EditBirthdayFormatResult result) {
         var partyControl = Session.getModelController(PartyControl.class);
-        BirthdayFormat birthdayFormat = null;
+        BirthdayFormat birthdayFormat;
         var birthdayFormatName = spec.getBirthdayFormatName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {

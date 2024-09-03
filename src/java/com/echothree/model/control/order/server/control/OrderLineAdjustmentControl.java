@@ -498,7 +498,7 @@ public class OrderLineAdjustmentControl
     }
 
     private List<OrderLineAdjustment> getOrderLineAdjustmentsByOrderLine(OrderLine orderLine, EntityPermission entityPermission) {
-        List<OrderLineAdjustment> orderLineAdjustments = null;
+        List<OrderLineAdjustment> orderLineAdjustments;
 
         try {
             String query = null;

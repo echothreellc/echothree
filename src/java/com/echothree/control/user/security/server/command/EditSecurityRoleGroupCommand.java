@@ -87,7 +87,7 @@ public class EditSecurityRoleGroupCommand
     @Override
     public SecurityRoleGroup getEntity(EditSecurityRoleGroupResult result) {
         var securityControl = Session.getModelController(SecurityControl.class);
-        SecurityRoleGroup securityRoleGroup = null;
+        SecurityRoleGroup securityRoleGroup;
         var securityRoleGroupName = spec.getSecurityRoleGroupName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {

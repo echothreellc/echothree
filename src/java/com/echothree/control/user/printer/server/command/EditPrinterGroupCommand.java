@@ -90,7 +90,7 @@ public class EditPrinterGroupCommand
     @Override
     public PrinterGroup getEntity(EditPrinterGroupResult result) {
         var printerControl = Session.getModelController(PrinterControl.class);
-        PrinterGroup printerGroup = null;
+        PrinterGroup printerGroup;
         var printerGroupName = spec.getPrinterGroupName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {

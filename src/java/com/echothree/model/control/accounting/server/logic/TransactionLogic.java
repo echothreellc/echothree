@@ -93,7 +93,7 @@ public class TransactionLogic {
     private Long getAmount(final GlAccount glAccount, final Currency originalCurrency, final Long originalAmount) {
         var currency = glAccount.getLastDetail().getCurrency();
         
-        Long amount = null;
+        Long amount;
         if(originalCurrency.equals(currency)) {
             amount = originalAmount;
         } else {

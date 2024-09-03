@@ -88,7 +88,7 @@ public class EditPartyPrinterGroupUseCommand
     public PartyPrinterGroupUse getEntity(EditPartyPrinterGroupUseResult result) {
         PartyPrinterGroupUse partyPrinterGroupUse = null;
         var partyName = spec.getPartyName();
-        Party party = null;
+        Party party;
 
         if(partyName != null) {
             var partyControl = Session.getModelController(PartyControl.class);

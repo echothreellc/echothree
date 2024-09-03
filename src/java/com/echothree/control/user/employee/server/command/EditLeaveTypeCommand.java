@@ -86,7 +86,7 @@ public class EditLeaveTypeCommand
     @Override
     public LeaveType getEntity(EditLeaveTypeResult result) {
         var employeeControl = Session.getModelController(EmployeeControl.class);
-        LeaveType leaveType = null;
+        LeaveType leaveType;
         var leaveTypeName = spec.getLeaveTypeName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {

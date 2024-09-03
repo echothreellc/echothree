@@ -91,7 +91,7 @@ public class EditShippingMethodCommand
     @Override
     public ShippingMethod getEntity(EditShippingMethodResult result) {
         var shippingControl = Session.getModelController(ShippingControl.class);
-        ShippingMethod shippingMethod = null;
+        ShippingMethod shippingMethod;
         var shippingMethodName = spec.getShippingMethodName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {

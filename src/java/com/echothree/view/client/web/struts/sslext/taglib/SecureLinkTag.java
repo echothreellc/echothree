@@ -125,7 +125,7 @@ public class SecureLinkTag
             }
         }
         
-        String url = null;
+        String url;
         try {
             url = SecureRequestUtils.computeURL(pageContext, forward, href, page, action, params, anchor, false);
         } catch (MalformedURLException e) {

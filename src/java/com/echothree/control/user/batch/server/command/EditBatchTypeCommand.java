@@ -95,7 +95,7 @@ public class EditBatchTypeCommand
     @Override
     public BatchType getEntity(EditBatchTypeResult result) {
         var batchControl = Session.getModelController(BatchControl.class);
-        BatchType batchType = null;
+        BatchType batchType;
         var batchTypeName = spec.getBatchTypeName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
